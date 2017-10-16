@@ -11,6 +11,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/functions.hpp>
+#include <actl/io/all.hpp>
 #include <actl/iterator/all.hpp>
 #include <actl/macros.hpp>
 #include <actl/property_map/all.hpp>
