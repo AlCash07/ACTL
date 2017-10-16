@@ -13,6 +13,7 @@
 #include <actl/functions.hpp>
 #include <actl/iterator/all.hpp>
 #include <actl/macros.hpp>
+#include <actl/property_map/all.hpp>
 #include <actl/range/all.hpp>
 #include <actl/type/all.hpp>
 #include <actl/type_traits/all.hpp>
