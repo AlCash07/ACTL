@@ -1,16 +1,21 @@
-#pragma once
-
-/**
- * Write returns number of characters written.
+/***************************************************************************************************
+ * Function write returns number of characters written.
  * Arguments supported by default:
  * - char, standard integer and floating point types
  * - range, string
  * Two consecutive arguments starting with an iterator are treated as a range:
  * - Iterator first, Iterator last
  * - Iterator first, Integer count
- * Write to the text device writes strings until the null character is reached, so const char*
- *   arguments are processed one by one, not grouped into ranges.
- */
+ * Function write to the text device writes strings until the null character is reached, so
+ * const char* arguments are processed one by one, not grouped into ranges.
+ ***************************************************************************************************
+ * Copyright 2017 Oleksandr Bacherikov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
+#pragma once
 
 #include <cmath>
 #include <string>

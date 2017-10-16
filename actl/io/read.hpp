@@ -1,24 +1,29 @@
-#pragma once
-
-/**
- * Read returns true if all the arguments were successfully read.
+/***************************************************************************************************
+ * Function read returns true if all the arguments were successfully read.
  * Arguments supported by default:
  * - char, standard integer and floating point types
  * - range, string
  * Two consecutive arguments starting with an output iterator are treated as a range:
  * - Iterator first, Iterator last
  * - Iterator first, Integer count
- * Read from the text device additionally supports characters skip:
+ * Function read from the text device additionally supports characters skip:
  * - char: skip until the given character is encountered and read it
  * - const char*: skip all the characters from the string
  * - predicate: skip all the characters satisfying the predicate
  * Character ranges from the text device are treated differently:
- *   they are read until the range size is reached or termination character is found
- *   (can be one of the characters in a given string or defined by predicate, isspace by default)
+ * they are read until the range size is reached or termination character is found
+ * (can be one of the characters in a given string or defined by predicate, isspace by default)
  * - char (&)[N], terminator
  * - range<char>, terminator
  * - string&, terminator
- */
+ ***************************************************************************************************
+ * Copyright 2017 Oleksandr Bacherikov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
+#pragma once
 
 #include <cstring>
 #include <string>
