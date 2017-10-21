@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include <array>
 #include <actl/iterator/transition_iterator.hpp>
 #include <actl/property_map/property_map.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/type_traits/is_iterator.hpp>
 #include <actl/type_traits/type_traits.hpp>
+#include <array>
 
 namespace ac {
 

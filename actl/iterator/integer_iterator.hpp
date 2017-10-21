@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <type_traits>
 #include <actl/assert.hpp>
 #include <actl/iterator/iterator_facade.hpp>
+#include <type_traits>
 
 namespace ac {
 

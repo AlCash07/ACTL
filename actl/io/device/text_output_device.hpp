@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <iterator>
-#include <string>
 #include <actl/assert.hpp>
 #include <actl/io/device/buffered_output_device.hpp>
+#include <iterator>
+#include <string>
 
 namespace ac {
 

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <type_traits>
 #include <actl/property_map/property_map.hpp>
+#include <type_traits>
 
 namespace ac {
 

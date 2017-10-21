@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <algorithm>
-#include <cstdint>
 #include <actl/io/io_traits.hpp>
 #include <actl/macros.hpp>
+#include <algorithm>
+#include <cstdint>
 
 namespace ac {
 

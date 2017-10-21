@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <algorithm>
 #include <actl/io/io_traits.hpp>
 #include <actl/macros.hpp>
+#include <algorithm>
 
 namespace ac {
 

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <cstdio>
 #include <actl/io/device/text_input_device.hpp>
+#include <cstdio>
 
 namespace ac {
 
