@@ -12,6 +12,7 @@
 #pragma once
 
 #include <iterator>
+#include <memory>
 
 namespace ac {
 
@@ -51,7 +52,7 @@ template <class Ref, class Pointer>
 struct operator_arrow_dispatch {  // proxy references
     struct proxy {
         explicit proxy(const Ref& ref) : ref_{ref} {}
-        Ref* operator -> () { return &ref_; }
+        Ref* operator -> () { return std::addressof(ref_); }
         Ref ref_;
     };
 
@@ -64,7 +65,7 @@ template <class T, class Pointer>
 struct operator_arrow_dispatch<T&, Pointer> {  // "real" references
     using type = Pointer;
 
-    static type apply(T& x) { return &x; }
+    static type apply(T& x) { return std::addressof(x); }
 };
 
 template <class Iterator, class Category, class Value, class Reference, class Pointer,

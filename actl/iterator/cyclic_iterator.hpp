@@ -8,8 +8,9 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/functions.hpp>
+#include <actl/macros.hpp>
 #include <actl/iterator/iterator_facade.hpp>
-#include <cstdlib>
 
 namespace ac {
 
@@ -26,7 +27,7 @@ class cyclic_iterator
                              typename std::iterator_traits<Iterator>::difference_type> {
 public:
     cyclic_iterator(Iterator it, Iterator begin, Iterator end)
-        : it_{it}, begin_{begin}, end_{end} {}
+        : it_{it != end ? it : begin}, begin_{begin}, end_{end} {}
 
 private:
     friend struct iterator_core_access;
@@ -35,17 +36,17 @@ private:
 
     void increment() {
         ++it_;
-        if (it_ == end_) it_ = begin_;
+        if (EXPECT_FALSE(it_ == end_)) it_ = begin_;
     }
 
     void decrement() {
-        if (it_ == begin_) it_ = end_;
+        if (EXPECT_FALSE(it_ == begin_)) it_ = end_;
         --it_;
     }
 
     void advance(typename std::iterator_traits<Iterator>::difference_type n) {
         auto cycle = end_ - begin_;
-        ACTL_ASSERT(std::abs(n) < cycle);
+        ACTL_ASSERT(abs(n) < cycle);
         if (n > 0) {
             it_ += n - (n >= end_ - it_ ? cycle : 0);
         } else {

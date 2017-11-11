@@ -14,21 +14,20 @@ namespace ac {
 /**
  * Iterator that applies a function to each assigned value.
  */
-template <class UnaryFunction>
+template <class T, class UnaryFunction>
 class function_output_iterator
-    : public iterator_facade<function_output_iterator<UnaryFunction>,
+    : public iterator_facade<function_output_iterator<T, UnaryFunction>,
                              std::output_iterator_tag,
-                             void,
-                             const function_output_iterator<UnaryFunction>&,
-                             void,
+                             T,
+                             const function_output_iterator<T, UnaryFunction>&,
+                             T*,
                              void> {
 public:
     explicit function_output_iterator(const UnaryFunction& f = UnaryFunction{}) : f_{f} {}
 
-    template <class T>
-    const function_output_iterator& operator = (const T& value) const {
+    template <class T1>
+    void operator = (const T1& value) const {
         f_(value);
-        return *this;
     }
 
 private:
@@ -41,9 +40,9 @@ private:
     UnaryFunction f_;
 };
 
-template <class UnaryFunction>
+template <class T = void, class UnaryFunction>
 inline auto make_function_output_iterator(const UnaryFunction& f) {
-    return function_output_iterator<UnaryFunction>(f);
+    return function_output_iterator<T, UnaryFunction>(f);
 }
 
 }  // namespace ac

@@ -25,8 +25,8 @@ inline constexpr T abs(const T& x) {
 }
 
 template <class T>
-inline constexpr int sgn(const T& x) {
-    return (T{0} < x) - (x < T{0});
+inline constexpr int sgn(const T& x, const T& y = T{0}) {
+    return (y < x) - (x < y);
 }
 
 template <class T>

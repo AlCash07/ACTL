@@ -13,15 +13,16 @@
 
 namespace ac {
 
-template <class T, class R = void>
-struct enable_if_type { using type = R; };
-
-template <class T, class R = void>
-using enable_if_type_t = typename enable_if_type<T, R>::type;
+// TODO: switch to std after C++17.
+template <typename... Ts> struct make_void { typedef void type; };
+template <typename... Ts> using void_t = typename make_void<Ts...>::type;
 
 // TODO: switch to std after C++17.
 template <bool B>
 using bool_constant = std::integral_constant<bool, B>;
+
+template <int N>
+using int_constant = std::integral_constant<int, N>;
 
 template <class T>
 struct is_signed_int : bool_constant<std::is_signed<T>::value && std::is_integral<T>::value> {};

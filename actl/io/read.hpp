@@ -268,7 +268,7 @@ inline std::enable_if_t<!is_non_const_iterator<T0>::value, bool> read(io_tag, De
 
 template <class Device, class... Ts>
 inline bool read(Device& in, Ts&&... args) {
-    static_assert(!std::is_base_of<io_tag, Device>::value, "no matching call for read found");
+    static_assert(!std::is_base_of<io_tag, Device>::value, "no matching call for read");
     return read(typename Device::category{}, in, std::forward<Ts>(args)...);
 }
 

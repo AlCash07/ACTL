@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <iterator>
 #include <actl/type_traits/type_traits.hpp>
 
 namespace ac {
@@ -23,7 +24,7 @@ template <class T, class = void>
 struct is_iterator_impl : std::false_type {};
 
 template <class T>
-struct is_iterator_impl<T, enable_if_type_t<dereference_t<T>>> : std::true_type {};
+struct is_iterator_impl<T, void_t<dereference_t<T>>> : std::true_type {};
 
 template <class T, bool = false>
 struct is_const_iterator_impl : std::false_type {};
@@ -36,8 +37,7 @@ template <class T, class = void>
 struct has_iterator_category_impl : std::false_type {};
 
 template <class T>
-struct has_iterator_category_impl<T, enable_if_type_t<typename T::iterator_category>>
-    : std::true_type {};
+struct has_iterator_category_impl<T, void_t<typename T::iterator_category>> : std::true_type {};
 
 }  // namespace detail
 

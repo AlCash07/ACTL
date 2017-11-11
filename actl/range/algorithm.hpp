@@ -48,6 +48,11 @@ inline typename Range::iterator unique(Range& dst) {
     return std::unique(dst.begin(), dst.end());
 }
 
+template <class Range, class BinaryPredicate>
+inline typename Range::iterator unique(Range& dst, BinaryPredicate pred) {
+    return std::unique(dst.begin(), dst.end(), pred);
+}
+
 template <class Range>
 inline void reverse(Range& dst) {
     std::reverse(dst.begin(), dst.end());
@@ -98,9 +103,29 @@ inline typename Range::iterator min_element(const Range& src) {
     return std::min_element(src.begin(), src.end());
 }
 
+template <class Range, class Compare>
+inline typename Range::iterator min_element(const Range& src, Compare comp) {
+    return std::min_element(src.begin(), src.end(), comp);
+}
+
 template <class Range>
 inline typename Range::iterator max_element(const Range& src) {
     return std::max_element(src.begin(), src.end());
+}
+
+template <class Range, class Compare>
+inline typename Range::iterator max_element(const Range& src, Compare comp) {
+    return std::max_element(src.begin(), src.end(), comp);
+}
+
+template <class Range, class Iterator = typename Range::iterator>
+inline std::pair<Iterator, Iterator> minmax_element(const Range& src) {
+    return std::minmax_element(src.begin(), src.end());
+}
+
+template <class Range, class Compare, class Iterator = typename Range::iterator>
+inline std::pair<Iterator, Iterator> minmax_element(const Range& src, Compare comp) {
+    return std::minmax_element(src.begin(), src.end(), comp);
 }
 
 template <class Range0, class Range1>
@@ -108,9 +133,19 @@ inline bool lexicographical_compare(const Range0& lhs, const Range1& rhs) {
     return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
+template <class Range0, class Range1, class Compare>
+inline bool lexicographical_compare(const Range0& lhs, const Range1& rhs, Compare comp) {
+    return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), comp);
+}
+
 template <class Range>
 inline bool next_permutation(Range& dst) {
     return std::next_permutation(dst.begin(), dst.end());
+}
+
+template <class Range, class Compare>
+inline bool next_permutation(Range& dst, Compare comp) {
+    return std::next_permutation(dst.begin(), dst.end(), comp);
 }
 
 }  // namespace ac

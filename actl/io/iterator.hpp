@@ -59,18 +59,17 @@ template <class T, class Device>
 class output_device_iterator
     : public iterator_facade<output_device_iterator<T, Device>,
                              std::output_iterator_tag,
-                             void,
+                             T,
                              const output_device_iterator<T, Device>&,
-                             void,
+                             T*,
                              void> {
 public:
     explicit output_device_iterator(Device& device) : device_{&device} {}
 
     output_device_iterator(const output_device_iterator&) = default;
 
-    const output_device_iterator& operator = (const T& value) const {
+    void operator = (const T& value) const {
         write(*device_, value);
-        return *this;
     }
 
 private:

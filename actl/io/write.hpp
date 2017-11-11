@@ -174,7 +174,7 @@ inline std::enable_if_t<!is_iterator<T0>::value, int> write(io_tag, Device& out,
 
 template <class Device, class... Ts>
 inline int write(Device& out, Ts&&... args) {
-    static_assert(!std::is_base_of<io_tag, Device>::value, "no matching call for write found");
+    static_assert(!std::is_base_of<io_tag, Device>::value, "no matching call for write");
     return write(typename Device::category{}, out, std::forward<Ts>(args)...);
 }
 

@@ -30,11 +30,11 @@ template <class Derived, class It, class C, class V, class R, class P, class D>
 struct iterator_adaptor_base {
     using type =
         iterator_facade<Derived,
-                        deduce_t<C, typename std::iterator_traits<It>::iterator_category>,
-                        deduce_t<V, typename std::iterator_traits<It>::value_type>,
-                        deduce_t<R, typename std::iterator_traits<It>::reference>,
-                        deduce_t<P, typename std::iterator_traits<It>::pointer>,
-                        deduce_t<D, typename std::iterator_traits<It>::difference_type>>;
+                        deduce_type_t<C, typename std::iterator_traits<It>::iterator_category>,
+                        deduce_type_t<V, typename std::iterator_traits<It>::value_type>,
+                        deduce_type_t<R, typename std::iterator_traits<It>::reference>,
+                        deduce_type_t<P, typename std::iterator_traits<It>::pointer>,
+                        deduce_type_t<D, typename std::iterator_traits<It>::difference_type>>;
 };
 
 }  // namespace detail
@@ -60,7 +60,8 @@ private:
 
     void decrement() { --it_; }
 
-    void advance(typename base_type::difference_type n) { it_ += n; }
+    template <class T = typename base_type::difference_type>
+    void advance(T n) { it_ += n; }
 
     template <class Derived1, class It1, class C1, class V1, class R1, class P1, class D1>
     bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& other) const {
