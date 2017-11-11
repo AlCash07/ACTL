@@ -1,0 +1,37 @@
+/***************************************************************************************************
+ * Copyright 2017 Oleksandr Bacherikov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
+#pragma once
+
+#include <actl/geometry/point.hpp>
+#include <actl/geometry/traits/aliases.hpp>
+#include <actl/geometry/traits/policy.hpp>
+
+namespace ac {
+
+template <class P = use_default>
+struct comparable_norm : geometry::policy {};
+
+template <class P = use_default, class S = use_default>
+struct standard_norm : geometry::policy {};
+
+template <class P, int N, class T>
+inline auto norm(comparable_norm<P>, const point<N, T>& point) {
+    return deferred_sqrt(abs<P>(point));
+}
+
+template <class P, class S, int N, class T>
+inline auto norm(standard_norm<P, S>, const point<N, T>& point) {
+    return (geometry::sqrt_t<S, T>)norm(comparable_norm<P>(), point);
+}
+
+template <int N, class T>
+inline auto norm(const point<N, T>& point) {
+    return norm(standard_norm<>(), point);
+}
+
+}  // namespace ac
