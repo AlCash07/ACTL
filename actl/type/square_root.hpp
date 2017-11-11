@@ -22,7 +22,7 @@ public:
     constexpr square_root(const T& value) : sqr_{sqr(value)} {}
 
     template <class T1>
-    explicit operator T1() const {
+    explicit operator T1 () const {
         return math::sqrt(static_cast<T1>(sqr_));
     }
 
@@ -36,10 +36,10 @@ private:
 
     T sqr_;
 
-#define SQUARE_ROOT_COMPARE(v)                                                                 \
-    template <class T0, class T1>                                                              \
-    friend constexpr bool operator v(const square_root<T0>& lhs, const square_root<T1>& rhs) { \
-        return sqr(lhs) v sqr(rhs);                                                            \
+#define SQUARE_ROOT_COMPARE(v)                                                                  \
+    template <class T0, class T1>                                                               \
+    friend constexpr bool operator v (const square_root<T0>& lhs, const square_root<T1>& rhs) { \
+        return sqr(lhs) v sqr(rhs);                                                             \
     }
 
     SQUARE_ROOT_COMPARE(==)
@@ -56,7 +56,7 @@ private:
     }
 
     template <class T0, class T1>
-    friend constexpr auto operator*(const square_root<T0>& lhs, const square_root<T1>& rhs) {
+    friend constexpr auto operator * (const square_root<T0>& lhs, const square_root<T1>& rhs) {
         return deferred_sqrt(sqr(lhs) * sqr(rhs));
     }
 };
