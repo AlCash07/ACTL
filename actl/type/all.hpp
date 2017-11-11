@@ -8,4 +8,5 @@
 #pragma once
 
 #include <actl/type/compressed_pair.hpp>
+#include <actl/type/square_root.hpp>
 #include <actl/type/use_default.hpp>
