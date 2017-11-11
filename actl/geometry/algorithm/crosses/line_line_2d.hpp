@@ -37,39 +37,39 @@ namespace detail {
 
 template <class T0, class K0, class T1, class K1, class T2>
 inline bool cross_test(const line<2, T0, K0>& lhs, const line<2, T1, K1>& rhs,
-                       T2 sarea, T2 larea, T2 rarea) {
-    if (sarea < T2{0}) {
-        sarea = -sarea;
+                       T2 tarea, T2 larea, T2 rarea) {
+    if (tarea < T2{0}) {
+        tarea = -tarea;
         larea = -larea;
         rarea = -rarea;
     }
-    return line_test(lhs, larea, sarea) && line_test(rhs, rarea, sarea);
+    return line_test(lhs, larea, tarea) && line_test(rhs, rarea, tarea);
 }
 
 template <class R = use_default, class AP, class T0, class K0, class T1, class K1,
           class X = geometry::ratio_t<R, T0, T1>>
 inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<2, T0, K0>& lhs,
                                                   const line<2, T1, K1>& rhs) {
-    auto sarea = area(policy, rhs.slope, lhs.slope);
-    if (sarea == 0) return {false, X{}};
+    auto tarea = area(policy, rhs.slope, lhs.slope);
+    if (tarea == 0) return {false, X{}};
     auto larea = area(policy, lhs.start, rhs);
-    if (!cross_test(lhs, rhs, sarea, larea, area(policy, rhs.start, lhs))) return {false, X{}};
-    return {true, static_cast<X>(larea) / sarea};
+    if (!cross_test(lhs, rhs, tarea, larea, area(policy, rhs.start, lhs))) return {false, X{}};
+    return {true, static_cast<X>(larea) / tarea};
 }
 
 template <class R = use_default, class AP, class T0, class K0, class T1, class K1,
           class X = geometry::ratio_t<R, T0, T1>>
 inline std::pair<bool, any_line<2, X>> intersect_lines(const AP& policy, const line<2, T0, K0>& lhs,
                                                        const line<2, T1, K1>& rhs) {
-    auto sarea = area(policy, rhs.slope, lhs.slope);
+    auto tarea = area(policy, rhs.slope, lhs.slope);
     auto larea = area(policy, lhs.start, rhs);
-    if (sarea == 0) {
+    if (tarea == 0) {
         if (larea != 0) return {false, any_line<2, X>()};
         return common_line<X>(lhs, rhs);
     }
-    if (!cross_test(lhs, rhs, sarea, larea, area(policy, rhs.start, lhs)))
+    if (!cross_test(lhs, rhs, tarea, larea, area(policy, rhs.start, lhs)))
         return {false, any_line<2, X>()};
-    return {true, any_line<2, X>(lhs(static_cast<X>(larea) / sarea), point<2, X>(), true)};
+    return {true, any_line<2, X>(lhs(static_cast<X>(larea) / tarea), point<2, X>(), true)};
 }
 
 }  // namespace detail
