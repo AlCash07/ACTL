@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include <iterator>
 #include <actl/type_traits/type_traits.hpp>
+#include <iterator>
 
 namespace ac {
 

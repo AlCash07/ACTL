@@ -9,4 +9,5 @@
 
 #include <actl/type_traits/ctype.hpp>
 #include <actl/type_traits/is_iterator.hpp>
+#include <actl/type_traits/output_type.hpp>
 #include <actl/type_traits/type_traits.hpp>
