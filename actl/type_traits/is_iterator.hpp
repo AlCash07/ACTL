@@ -56,15 +56,12 @@ struct has_iterator_category : detail::has_iterator_category_impl<std::iterator_
 
 namespace detail {
 
-template <class T, class Category, bool = false>
-struct is_xxx_iterator_impl : std::false_type {};
-
-template <class T, class Category>
-struct is_xxx_iterator_impl<T, Category, true>
+template <class T, class Category, bool = ac::has_iterator_category<T>::value>
+struct is_xxx_iterator
     : std::is_same<Category, typename std::iterator_traits<T>::iterator_category> {};
 
 template <class T, class Category>
-struct is_xxx_iterator : is_xxx_iterator_impl<T, Category, has_iterator_category<T>::value> {};
+struct is_xxx_iterator<T, Category, false> : std::false_type {};
 
 }  // namespace detail
 

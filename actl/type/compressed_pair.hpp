@@ -21,7 +21,7 @@ protected:
     template <class U>
     constexpr member(U&& value) : T(std::forward<U>(value)) {}
 
-    constexpr       T& get()       noexcept { return *this; }
+    constexpr T&       get()       noexcept { return *this; }
     constexpr const T& get() const noexcept { return *this; }
 };
 
@@ -33,7 +33,7 @@ protected:
     template <class U>
     constexpr member(U&& value) : value_{std::forward<U>(value)} {}
 
-    constexpr       T& get()       noexcept { return value_; }
+    constexpr T&       get()       noexcept { return value_; }
     constexpr const T& get() const noexcept { return value_; }
 
 private:
@@ -59,10 +59,10 @@ public:
         : detail::member<0, T1>(std::forward<U1>(first)),
           detail::member<1, T2>(std::forward<U2>(second)) {}
 
-    constexpr       T1& first()       noexcept { return detail::member<0, T1>::get(); }
+    constexpr T1&       first()       noexcept { return detail::member<0, T1>::get(); }
     constexpr const T1& first() const noexcept { return detail::member<0, T1>::get(); }
 
-    constexpr       T2& second()       noexcept { return detail::member<1, T2>::get(); }
+    constexpr T2&       second()       noexcept { return detail::member<1, T2>::get(); }
     constexpr const T2& second() const noexcept { return detail::member<1, T2>::get(); }
 };
 
