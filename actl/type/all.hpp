@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <actl/type/boolean.hpp>
 #include <actl/type/compressed_pair.hpp>
+#include <actl/type/none.hpp>
 #include <actl/type/square_root.hpp>
 #include <actl/type/use_default.hpp>
