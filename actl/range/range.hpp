@@ -79,10 +79,10 @@ protected:
 template <class It>
 class range_base<It, std::bidirectional_iterator_tag>
     : public range_base<It, std::forward_iterator_tag> {
-    using base_type = range_base<It, std::forward_iterator_tag>;
+    using base_t = range_base<It, std::forward_iterator_tag>;
 
 public:
-    typename base_type::reference back() const {
+    typename base_t::reference back() const {
         ACTL_ASSERT(!this->empty());
         auto end = this->end_;
         return *--end;
@@ -97,18 +97,18 @@ protected:
     range_base() = default;
 
     template <class It1>
-    range_base(It1 first, It1 last) : base_type(first, last) {}
+    range_base(It1 first, It1 last) : base_t(first, last) {}
 };
 
 template <class It>
 class range_base<It, std::random_access_iterator_tag>
     : public range_base<It, std::bidirectional_iterator_tag> {
-    using base_type = range_base<It, std::bidirectional_iterator_tag>;
+    using base_t = range_base<It, std::bidirectional_iterator_tag>;
 
 public:
-    using typename base_type::size_type;
+    using typename base_t::size_type;
 
-    typename base_type::reference operator [] (typename base_type::difference_type at) const {
+    typename base_t::reference operator [] (typename base_t::difference_type at) const {
         ACTL_ASSERT(at >= 0);
         ACTL_ASSERT(static_cast<size_type>(at) < size());
         return this->begin_[at];
@@ -120,20 +120,20 @@ protected:
     range_base() = default;
 
     template <class It1>
-    range_base(It1 first, It1 last) : base_type(first, last) {}
+    range_base(It1 first, It1 last) : base_t(first, last) {}
 };
 
 }  // namespace detail
 
 template <class It>
 class range : public detail::range_base<It, typename std::iterator_traits<It>::iterator_category> {
-    using base_type = detail::range_base<It, typename std::iterator_traits<It>::iterator_category>;
+    using base_t = detail::range_base<It, typename std::iterator_traits<It>::iterator_category>;
 
 public:
     range() = default;
 
     template <class Iterator>
-    range(Iterator first, Iterator last) : base_type(first, last) {}
+    range(Iterator first, Iterator last) : base_t(first, last) {}
 };
 
 template <class Iterator>

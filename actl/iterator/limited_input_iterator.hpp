@@ -17,12 +17,12 @@ namespace ac {
  */
 template <class Iterator>
 class limited_input_iterator : public iterator_adaptor<limited_input_iterator<Iterator>, Iterator> {
-    using base_type = iterator_adaptor<limited_input_iterator<Iterator>, Iterator>;
+    using base_t = iterator_adaptor<limited_input_iterator<Iterator>, Iterator>;
 
 public:
-    limited_input_iterator() : base_type(Iterator{}), limit_{0} {}
+    limited_input_iterator() : base_t(Iterator{}), limit_{0} {}
 
-    explicit limited_input_iterator(const Iterator& it, int limit) : base_type(it), limit_{limit} {}
+    explicit limited_input_iterator(const Iterator& it, int limit) : base_t(it), limit_{limit} {}
 
 private:
     friend struct iterator_core_access;

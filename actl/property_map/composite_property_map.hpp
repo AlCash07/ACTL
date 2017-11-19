@@ -58,13 +58,13 @@ public:
 
 template <class OM, class IM, bool T>
 class composite_pm_invert<OM, IM, T, true, true> : public composite_pm_base<OM, IM, T, true> {
-    using base_type = composite_pm_base<OM, IM, T, true>;
+    using base_t = composite_pm_base<OM, IM, T, true>;
 
 public:
-    using base_type::base_type;
+    using base_t::base_t;
 
-    constexpr const typename base_type::key_type invert(
-        const typename base_type::value_type& value) const {
+    constexpr const typename base_t::key_type invert(
+        const typename base_t::value_type& value) const {
         return this->maps_.first().invert(this->maps_.second().invert(value));
     }
 };
@@ -102,7 +102,7 @@ private:
 
 template <class OM, class IM, bool T, bool I>
 class composite_pm_impl<OM, IM, true, T, I> : public composite_pm_mid<OM, IM, true, I> {
-    using base_type = composite_pm_mid<OM, IM, true, I>;
+    using base_t = composite_pm_mid<OM, IM, true, I>;
 
 public:
     using iterator = pm_iterator<typename OM::iterator,
@@ -115,7 +115,7 @@ public:
                                        typename OM::key_type,
                                        typename property_traits<IM>::const_reference>;
 
-    using base_type::base_type;
+    using base_t::base_t;
 
     iterator begin() { return {this->maps_.first().begin(), this->maps_.second()}; }
     iterator end()   { return {this->maps_.first().end(),   this->maps_.second()}; }
@@ -144,7 +144,7 @@ private:
 
 template <class OM, class IM>
 class composite_pm_impl<OM, IM, false, true, true> : public composite_pm_mid<OM, IM, true, true> {
-    using base_type = composite_pm_mid<OM, IM, true, true>;
+    using base_t = composite_pm_mid<OM, IM, true, true>;
 
 public:
     using iterator = pm_invert_iterator<typename IM::iterator,
@@ -157,7 +157,7 @@ public:
                                               typename property_traits<OM>::key_type,
                                               typename IM::const_reference>;
 
-    using base_type::base_type;
+    using base_t::base_t;
 
     iterator begin() { return {this->maps_.second().begin(), this->maps_.first()}; }
     iterator end()   { return {this->maps_.second().end(),   this->maps_.first()}; }
@@ -181,10 +181,10 @@ class composite_property_map
 template <class OuterMap, class InnerMap>
 class composite_property_map<OuterMap, InnerMap>
     : public detail::composite_pm_impl_t<OuterMap, InnerMap> {
-    using base_type = detail::composite_pm_impl_t<OuterMap, InnerMap>;
+    using base_t = detail::composite_pm_impl_t<OuterMap, InnerMap>;
 
 public:
-    using base_type::base_type;
+    using base_t::base_t;
 };
 
 template <class Map>

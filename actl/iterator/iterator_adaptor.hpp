@@ -50,17 +50,17 @@ protected:
     It& base() { return it_; }
 
 private:
-    using base_type = typename detail::iterator_adaptor_base<Derived, It, C, V, R, P, D>::type;
+    using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, P, D>::type;
 
     friend struct iterator_core_access;
 
-    typename base_type::reference dereference() const { return *it_; }
+    typename base_t::reference dereference() const { return *it_; }
 
     void increment() { ++it_; }
 
     void decrement() { --it_; }
 
-    template <class T = typename base_type::difference_type>
+    template <class T = typename base_t::difference_type>
     void advance(T n) { it_ += n; }
 
     template <class Derived1, class It1, class C1, class V1, class R1, class P1, class D1>
@@ -69,7 +69,7 @@ private:
     }
 
     template <class Derived1, class It1, class C1, class V1, class R1, class P1, class D1>
-    typename base_type::difference_type distance_to(
+    typename base_t::difference_type distance_to(
         const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& other) const {
         return other.base() - it_;
     }
