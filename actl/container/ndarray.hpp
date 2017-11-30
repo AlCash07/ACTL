@@ -10,9 +10,9 @@
 #include <actl/assert.hpp>
 #include <actl/functions.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/type/boolean.hpp>
 #include <actl/type_traits/type_traits.hpp>
 #include <array>
+#include <memory>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -25,12 +25,6 @@ template <int N, class Data, class Dimensions>
 class ndarray_base;
 
 /* Helper types. */
-
-template <class T>
-struct static_size : int_constant<-1> {};
-
-template <class T, int N>
-struct static_size<std::array<T, N>> : int_constant<N> {};
 
 template <int...>
 struct static_array {
@@ -74,40 +68,65 @@ struct nd_initializer_list<T, 0> { using type = T; };
 template <class T, int N>
 using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
 
-/* NDArray data class, supports container or pointer as data. */
+/* NDArray container class, supports std::array and std::unique_ptr as data. */
 
 template <int N, class Data>
-class ndarray_data {
-    using T = typename Data::value_type;
+class ndarray_container;
 
+template <int N, class T, int Size>
+class ndarray_container<N, std::array<T, Size>> {
 public:
     using value_type = T;
 
-    template <class D = Data>
-    ndarray_data(std::enable_if_t<static_size<D>::value == -1, int> size) : data_(size) {}
+    ndarray_container(int size) {}
 
-    template <class D = Data>
-    ndarray_data(std::enable_if_t<static_size<D>::value != -1, int> size) {}
+    T*       data()       { return data_.data(); }
+    const T* data() const { return data_.data(); }
+
+    void swap(ndarray_container& other) { std::swap(data_, other.data_); }
+
+private:
+    std::array<T, Size> data_;
+};
+
+template <int N, class T>
+class ndarray_container<N, std::unique_ptr<T>> {
+public:
+    using value_type = T;
+
+    ndarray_container(int size) : data_(new T[size]) {}
+
+    T*       data()       { return data_.get(); }
+    const T* data() const { return data_.get(); }
+
+    void swap(ndarray_container& other) { std::swap(data_, other.data_); }
+
+private:
+    std::unique_ptr<T> data_;
+};
+
+/* NDArray data class, supports container or pointer as data. */
+
+template <int N, class Data>
+class ndarray_data : public ndarray_container<N, Data> {
+    using base_t = ndarray_container<N, Data>;
+    using T = typename base_t::value_type;
+
+public:
+    ndarray_data(int size) : base_t(size) {}
 
     template <class InputIterator>
-    ndarray_data(int size, InputIterator it) : ndarray_data(size) {
+    ndarray_data(int size, InputIterator it) : base_t(size) {
         std::copy_n(it, size, this->data());
     }
 
     template <class Strides>
     explicit ndarray_data(int size, nd_initializer_list_t<T, N> ilist, Strides strides)
-        : ndarray_data(size) {
-        initialize<0>(data(), ilist, strides);
+        : base_t(size) {
+        initialize<0>(this->data(), ilist, strides);
     }
 
-    void swap(ndarray_data& other) {
-        using std::swap;
-        swap(data_, other.data_);
-    }
-
-    // reinterpret_cast is required in case of bool.
-    T*       data()       { return reinterpret_cast<T*>(data_.data()); }
-    const T* data() const { return reinterpret_cast<const T*>(data_.data()); }
+    void swap(ndarray_data& other) { base_t::swap(other); }
 
 private:
     template <int I, class Strides>
@@ -126,9 +145,6 @@ private:
         ACTL_ASSERT(static_cast<int>(ilist.size()) <= strides[I]);
         copy(ilist, data);
     }
-
-    std::conditional_t<std::is_same<Data, std::vector<bool>>::value, std::vector<boolean>, Data>
-        data_;
 };
 
 template <int N, class T>
@@ -459,8 +475,8 @@ using ndarray_base_static =
  * N-dimensional array.
  */
 template <class T, int N>
-class ndarray : public detail::ndarray_base<N, std::vector<T>> {
-    using base_t = detail::ndarray_base<N, std::vector<T>>;
+class ndarray : public detail::ndarray_base<N, std::unique_ptr<T>> {
+    using base_t = detail::ndarray_base<N, std::unique_ptr<T>>;
 
 public:
     using base_t::base_t;
