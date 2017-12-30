@@ -20,7 +20,7 @@ struct crosses_plane_sphere : NormPolicy {};
 template <class P, class NP, int N, class T0, class T1>
 inline bool crosses(const crosses_plane_sphere<P, NP>& policy, const plane<N, T0>& plane,
                     const sphere<N, T1>& sphere) {
-    auto dist = abs(plane.template operator ()<P>(sphere.center));
+    auto dist = abs(plane.template operator()<P>(sphere.center));
     return sphere.radius * norm(policy, plane.normal) <= dist;
 }
 

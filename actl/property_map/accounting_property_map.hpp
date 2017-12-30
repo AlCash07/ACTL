@@ -50,7 +50,7 @@ class accounting_property_map
     static_assert(std::is_integral<Value>::value, "value type must be integral");
 
 public:
-    Value& operator [] (const Key& key) {
+    Value& operator[](const Key& key) {
         auto pair = this->data_.insert({key, static_cast<Value>(this->data_.size())});
         if (pair.second) this->push_back(&pair.first->first);
         return pair.first->second;

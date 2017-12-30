@@ -34,9 +34,9 @@ public:
     template <class... Ts>
     explicit constexpr composite_pm_base(Ts&&... args) : maps_(std::forward<Ts>(args)...) {}
 
-    constexpr Ref operator [] (const Key& key) { return maps_.second()[maps_.first()[key]]; }
+    constexpr Ref operator[](const Key& key) { return maps_.second()[maps_.first()[key]]; }
 
-    constexpr const Ref operator [] (const Key& key) const {
+    constexpr const Ref operator[](const Key& key) const {
         return maps_.second()[maps_.first()[key]];
     }
 

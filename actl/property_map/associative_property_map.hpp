@@ -23,9 +23,9 @@ public:
     using container_property_map<false, AssociativeContainer, Key, Value, Value&,
                                  Value>::container_property_map;
 
-    Value& operator [] (const Key& key) { return this->data_[key]; }
+    Value& operator[](const Key& key) { return this->data_[key]; }
 
-    Value operator [] (const Key& key) const {
+    Value operator[](const Key& key) const {
         auto it = this->data_.find(key);
         return it == this->data_.end() ? Value{} : it->second;
     }

@@ -22,7 +22,7 @@ public:
     constexpr square_root(const T& value) : sqr_{sqr(value)} {}
 
     template <class T1>
-    explicit operator T1 () const {
+    explicit operator T1() const {
         return math::sqrt(static_cast<T1>(sqr_));
     }
 

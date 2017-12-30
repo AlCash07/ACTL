@@ -36,7 +36,7 @@ public:
 
     bool empty() const { return begin_ == end_; }
 
-    bool operator () () const { return !empty(); }
+    bool operator()() const { return !empty(); }
 
     typename std::iterator_traits<It>::reference front() const {
         ACTL_ASSERT(!empty());
@@ -108,7 +108,7 @@ class range_base<It, std::random_access_iterator_tag>
 public:
     using typename base_t::size_type;
 
-    typename base_t::reference operator [] (typename base_t::difference_type at) const {
+    typename base_t::reference operator[](typename base_t::difference_type at) const {
         ACTL_ASSERT(at >= 0);
         ACTL_ASSERT(static_cast<size_type>(at) < size());
         return this->begin_[at];

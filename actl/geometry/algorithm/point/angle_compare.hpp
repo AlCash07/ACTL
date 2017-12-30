@@ -18,7 +18,7 @@ public:
         : origin_(origin), zero_(!origin) {}
 
     template <class T0, class T1>
-    bool operator () (const point2d<T0>& lhs, const point2d<T1>& rhs) const {
+    bool operator()(const point2d<T0>& lhs, const point2d<T1>& rhs) const {
         comparable_area_points<P> policy;
         return (zero_ ? area(policy, lhs, rhs) : area(policy, lhs, rhs, origin_)) > 0;
     }

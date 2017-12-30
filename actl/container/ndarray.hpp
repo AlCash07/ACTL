@@ -28,7 +28,7 @@ class ndarray_base;
 
 template <int...>
 struct static_array {
-    int operator [] (int i) const {
+    int operator[](int i) const {
         ACTL_ASSERT(false);
         return -1;
     }
@@ -36,7 +36,7 @@ struct static_array {
 
 template <int I0, int... Is>
 struct static_array<I0, Is...> {
-    constexpr int operator [] (int i) const {
+    constexpr int operator[](int i) const {
         return i == 0 ? I0 : static_array<Is...>()[i - 1];
     }
 };
@@ -272,8 +272,8 @@ public:
 
     explicit ndarray_shape(T value) : base_t(1) { *this->data() = value; }
 
-    constexpr operator T&       ()       { return *this->data(); }
-    constexpr operator const T& () const { return *this->data(); }
+    constexpr operator T&      ()       { return *this->data(); }
+    constexpr operator const T&() const { return *this->data(); }
 };
 
 /* NDArray subscript operator implementation */
@@ -337,11 +337,11 @@ public:
         return this->strides()[i];
     }
 
-    reference operator [] (int i) {
+    reference operator[](int i) {
         return ndarray_reference<T, N, Dims>::get(this, i);
     }
 
-    const_reference operator [] (int i) const {
+    const_reference operator[](int i) const {
         return ndarray_reference<const T, N, Dims>::get(this, i);
     }
 };
@@ -400,12 +400,12 @@ public:
     bool empty() const { return this->size() == 0; }
 
     template <class... Ints>
-    T& operator () (Ints... indices) {
+    T& operator()(Ints... indices) {
         return this->data()[getIndex<0>(indices...)];
     }
 
     template <class... Ints>
-    const T& operator () (Ints... indices) const {
+    const T& operator()(Ints... indices) const {
         return this->data()[getIndex<0>(indices...)];
     }
 

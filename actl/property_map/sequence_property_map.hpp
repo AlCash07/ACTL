@@ -34,7 +34,7 @@ public:
 
     explicit range_property_map(Range range) : data_{range} {}
 
-    constexpr Ref operator [] (const Key& key) const { return data_[key]; }
+    constexpr Ref operator[](const Key& key) const { return data_[key]; }
 
     iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
     iterator end()   const { return {data_.end(),   data_.begin(), data_.end()}; }
@@ -70,9 +70,9 @@ public:
     template <class... Ts>
     explicit constexpr sequence_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
 
-    constexpr Ref operator [] (const Key& key) { return data_[key]; }
+    constexpr Ref operator[](const Key& key) { return data_[key]; }
 
-    constexpr CRef operator [] (const Key& key) const { return data_[key]; }
+    constexpr CRef operator[](const Key& key) const { return data_[key]; }
 
     iterator begin() { return {data_.begin(), data_.begin(), data_.end()}; }
     iterator end()   { return {data_.end(),   data_.begin(), data_.end()}; }

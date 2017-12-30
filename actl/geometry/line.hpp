@@ -105,7 +105,7 @@ struct line : public Kind {
     template <class T1, class K1>
     explicit constexpr line(const line<N, T1, K1>& other) { (*this) = other; }
 
-    constexpr operator bool () const { return slope; }
+    constexpr operator bool() const { return slope; }
 
     void swap(line& other) {
         using std::swap;
@@ -128,7 +128,7 @@ struct line : public Kind {
     constexpr uint8_t end_kind()   const { return endpoint::end(this->kind()); }
 
     template <class T1>
-    constexpr auto operator () (const T1& t) const {
+    constexpr auto operator()(const T1& t) const {
         return start + t * slope;
     }
 };

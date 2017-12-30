@@ -17,7 +17,7 @@ namespace ac {
 template <class Key, class Value = Key>
 class identity_property_map : public creative_property_map<true, Key, Value> {
 public:
-    constexpr Value operator [] (const Key& key) const { return static_cast<Value>(key); }
+    constexpr Value operator[](const Key& key) const { return static_cast<Value>(key); }
 
     constexpr Key invert(const Value& value) const { return static_cast<Key>(value); }
 };
@@ -28,9 +28,9 @@ public:
 template <class Key, class Value = Key>
 class identity_ref_property_map : public property_map<false, true, Key, Value> {
 public:
-    constexpr Value& operator [] (Key& key) const { return static_cast<Value&>(key); }
+    constexpr Value& operator[](Key& key) const { return static_cast<Value&>(key); }
 
-    constexpr const Value& operator [] (const Key& key) const {
+    constexpr const Value& operator[](const Key& key) const {
         return static_cast<const Value&>(key);
     }
 

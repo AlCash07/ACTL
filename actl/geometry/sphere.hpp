@@ -28,7 +28,7 @@ struct sphere {
     template <class T1>
     explicit constexpr sphere(const sphere<N, T1>& other) { (*this) = other; }
 
-    explicit constexpr operator bool () const { return radius > T{0}; }
+    explicit constexpr operator bool() const { return radius > T{0}; }
 
     void swap(sphere& other) {
         using std::swap;

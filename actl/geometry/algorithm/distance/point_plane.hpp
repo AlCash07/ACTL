@@ -18,7 +18,7 @@ struct distance_point_plane : NormPolicy {};
 template <class P, class R, class NP, int N, class T0, class T1>
 inline auto distance(distance_point_plane<P, R, NP> policy, const point<N, T0>& point,
                      const plane<N, T1>& plane) {
-    return static_cast<geometry::ratio_t<R, T0, T1>>(plane.template operator ()<P>(point)) /
+    return static_cast<geometry::ratio_t<R, T0, T1>>(plane.template operator()<P>(point)) /
            norm(policy, plane.normal);
 }
 

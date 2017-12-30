@@ -44,21 +44,21 @@ public:
     constexpr T*       data()       { return coordinates_; }
     constexpr const T* data() const { return coordinates_; }
 
-    constexpr T& operator [] (int index) {
+    constexpr T& operator[](int index) {
         ACTL_ASSERT(0 <= index && index < N);
         return data()[index];
     }
 
-    constexpr T& operator () (int index) { return data()[index]; }
+    constexpr T& operator()(int index) { return data()[index]; }
 
-    constexpr const T& operator [] (int index) const {
+    constexpr const T& operator[](int index) const {
         ACTL_ASSERT(0 <= index && index < N);
         return data()[index];
     }
 
-    constexpr const T& operator () (int index) const { return data()[index]; }
+    constexpr const T& operator()(int index) const { return data()[index]; }
 
-    explicit constexpr operator bool () const {
+    explicit constexpr operator bool() const {
         for (int i = 0; i < N; ++i)
             if (data()[i]) return true;
         return false;

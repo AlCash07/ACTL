@@ -20,7 +20,7 @@ class function_property_map : public creative_property_map<false, Key, Return> {
 public:
     explicit function_property_map(Function f = Function{}) : f_{f} {}
 
-    Return operator [] (const Key& key) const { return f_(key); }
+    Return operator[](const Key& key) const { return f_(key); }
 
 private:
     Function f_;

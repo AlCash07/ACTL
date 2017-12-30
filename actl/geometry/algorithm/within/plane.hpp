@@ -17,7 +17,7 @@ struct within_plane : geometry::policy {};
 
 template <class P, int N, class T0, class T1>
 inline int within(within_plane<P>, const point<N, T0>& point, const plane<N, T1>& plane) {
-    return plane.template operator ()<P>(point) == 0 ? 0 : 1;
+    return plane.template operator()<P>(point) == 0 ? 0 : 1;
 }
 
 template <int N, class T0, class T1>

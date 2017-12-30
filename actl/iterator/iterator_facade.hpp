@@ -138,7 +138,7 @@ class iterator_facade_base<It, std::random_access_iterator_tag, V, R, P, D>
 public:
     using iterator_category = std::random_access_iterator_tag;
 
-    R operator [] (D n) const { return *(this->derived() + n); }
+    R operator[](D n) const { return *(this->derived() + n); }
 
     It& operator += (D n) {
         iterator_core_access::advance(this->derived(), n);

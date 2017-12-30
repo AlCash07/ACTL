@@ -33,7 +33,7 @@ struct plane {
     template <class T1>
     explicit constexpr plane(const plane<N, T1>& other) { (*this) = other; }
 
-    explicit constexpr operator bool () const { return normal; }
+    explicit constexpr operator bool() const { return normal; }
 
     void swap(plane& other) {
         using std::swap;
@@ -50,7 +50,7 @@ struct plane {
 
     // Oriented distance from @p point to the plane times the normal norm.
     template <class P = use_default, class T1>
-    constexpr auto operator () (const point<N, T1>& point) const {
+    constexpr auto operator()(const point<N, T1>& point) const {
         return dot<P>(normal, point) - d;
     };
 };
