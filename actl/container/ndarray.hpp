@@ -70,11 +70,11 @@ using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
 
 /* NDArray container class, supports std::array and std::unique_ptr as data. */
 
-template <int N, class Data>
+template <class Data>
 class ndarray_container;
 
-template <int N, class T, int Size>
-class ndarray_container<N, std::array<T, Size>> {
+template <class T, int Size>
+class ndarray_container<std::array<T, Size>> {
 public:
     using value_type = T;
 
@@ -89,8 +89,8 @@ private:
     std::array<T, Size> data_;
 };
 
-template <int N, class T>
-class ndarray_container<N, std::unique_ptr<T>> {
+template <class T>
+class ndarray_container<std::unique_ptr<T>> {
 public:
     using value_type = T;
 
@@ -108,8 +108,8 @@ private:
 /* NDArray data class, supports container or pointer as data. */
 
 template <int N, class Data>
-class ndarray_data : public ndarray_container<N, Data> {
-    using base_t = ndarray_container<N, Data>;
+class ndarray_data : public ndarray_container<Data> {
+    using base_t = ndarray_container<Data>;
     using T = typename base_t::value_type;
 
 public:
@@ -123,6 +123,7 @@ public:
     template <class Strides>
     explicit ndarray_data(int size, nd_initializer_list_t<T, N> ilist, Strides strides)
         : base_t(size) {
+        std::fill_n(this->data(), size, T{});
         initialize<0>(this->data(), ilist, strides);
     }
 
