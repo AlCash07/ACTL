@@ -13,7 +13,7 @@ namespace ac {
 
 namespace detail {
 
-template <int I, class T, bool = std::is_empty<T>::value && !std::is_final<T>::value>
+template <int I, class T, bool = std::is_empty_v<T> && !std::is_final_v<T>>
 class member : private T {
 protected:
     constexpr member() = default;

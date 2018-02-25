@@ -16,7 +16,7 @@ struct policy {};
 
 template <class T>
 struct is_policy
-    : bool_constant<std::is_same<use_default, T>::value || std::is_base_of<policy, T>::value> {};
+    : std::bool_constant<std::is_same_v<use_default, T> || std::is_base_of_v<policy, T>> {};
 
 template <class T, class R = void>
 using disable_if_policy_t = std::enable_if_t<!is_policy<std::decay_t<T>>::value, R>;

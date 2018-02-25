@@ -106,8 +106,7 @@ struct property_traits_impl<T, false, true> {
 }  // namespace detail
 
 template <class T>
-struct property_traits
-    : detail::property_traits_impl<T, std::is_base_of<property_map_base, T>::value,
-                                   is_random_access_iterator<T>::value> {};
+struct property_traits : detail::property_traits_impl<T, std::is_base_of_v<property_map_base, T>,
+                                                      is_random_access_iterator<T>::value> {};
 
 }  // namespace ac

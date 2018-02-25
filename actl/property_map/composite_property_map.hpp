@@ -26,8 +26,8 @@ template <class OM, class IM, bool T, bool I,
           class Value = typename property_traits<IM>::value_type,
           class Ref   = typename property_traits<IM>::reference>
 class composite_pm_base : public property_map<T, I, Key, Value, Ref> {
-    static_assert(std::is_convertible<typename property_traits<OM>::reference,
-                                      const typename property_traits<IM>::key_type&>::value,
+    static_assert(std::is_convertible_v<typename property_traits<OM>::reference,
+                                        const typename property_traits<IM>::key_type&>,
                   "incompatible maps");
 
 public:

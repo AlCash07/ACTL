@@ -24,7 +24,7 @@ template <class T, class = void>
 struct is_iterator_impl : std::false_type {};
 
 template <class T>
-struct is_iterator_impl<T, void_t<dereference_t<T>>> : std::true_type {};
+struct is_iterator_impl<T, std::void_t<dereference_t<T>>> : std::true_type {};
 
 template <class T, bool = false>
 struct is_const_iterator_impl : std::false_type {};
@@ -37,7 +37,8 @@ template <class T, class = void>
 struct has_iterator_category_impl : std::false_type {};
 
 template <class T>
-struct has_iterator_category_impl<T, void_t<typename T::iterator_category>> : std::true_type {};
+struct has_iterator_category_impl<T, std::void_t<typename T::iterator_category>> : std::true_type {
+};
 
 }  // namespace detail
 
@@ -49,7 +50,7 @@ struct is_const_iterator : detail::is_const_iterator_impl<T, is_iterator<T>::val
 
 template <class T>
 struct is_non_const_iterator
-    : bool_constant<is_iterator<T>::value && !is_const_iterator<T>::value> {};
+    : std::bool_constant<is_iterator<T>::value && !is_const_iterator<T>::value> {};
 
 template <class T>
 struct has_iterator_category : detail::has_iterator_category_impl<std::iterator_traits<T>> {};

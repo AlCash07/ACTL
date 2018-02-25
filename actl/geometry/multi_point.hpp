@@ -16,7 +16,7 @@ namespace detail {
 
 template <class Range, bool = false>
 class multi_point : public Range {
-    static_assert(std::is_same<point_tag, geometry::tag_t<typename Range::value_type>>::value,
+    static_assert(std::is_same_v<point_tag, geometry::tag_t<typename Range::value_type>>,
                   "multi_point must be a range of points");
 
 public:
@@ -38,7 +38,7 @@ public:
  * @tparam T either a point (then std::vector is used as container) or a range of points.
  */
 template <class T>
-using multi_point = detail::multi_point<T, std::is_same<geometry::tag_t<T>, point_tag>::value>;
+using multi_point = detail::multi_point<T, std::is_same_v<geometry::tag_t<T>, point_tag>>;
 
 template <class T>
 struct geometry_traits<multi_point<T>>

@@ -37,8 +37,7 @@ inline int write(Device& out, char arg) {
 }
 
 template <class Device, class T>
-inline std::enable_if_t<std::is_arithmetic<T>::value, int> write(binary_io_tag, Device& out,
-                                                                 T arg) {
+inline std::enable_if_t<std::is_arithmetic_v<T>, int> write(binary_io_tag, Device& out, T arg) {
     return out.write_string(reinterpret_cast<const char*>(&arg), sizeof(T));
 }
 
@@ -83,8 +82,8 @@ inline std::enable_if_t<is_signed_int<Int>::value, int> write(text_io_tag, Devic
 }
 
 template <class Device, class Float>
-inline std::enable_if_t<std::is_floating_point<Float>::value, int> write(text_io_tag, Device& out,
-                                                                         Float arg) {
+inline std::enable_if_t<std::is_floating_point_v<Float>, int> write(text_io_tag, Device& out,
+                                                                    Float arg) {
     char* last = out.get_end();
     bool negative = std::signbit(arg);
     if (negative) arg = -arg;
@@ -174,7 +173,7 @@ inline std::enable_if_t<!is_iterator<T0>::value, int> write(io_tag, Device& out,
 
 template <class Device, class... Ts>
 inline int write(Device& out, Ts&&... args) {
-    static_assert(!std::is_base_of<io_tag, Device>::value, "no matching call for write");
+    static_assert(!std::is_base_of_v<io_tag, Device>, "no matching call for write");
     return write(typename Device::category{}, out, std::forward<Ts>(args)...);
 }
 

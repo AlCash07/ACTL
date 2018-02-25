@@ -47,7 +47,7 @@ template <class AssociativeContainer, bool Invertible = false,
 class accounting_property_map
     : public container_property_map<Invertible, AssociativeContainer, Key, Value, Value&, void>,
       public detail::vector_invert<const Key, Value, Invertible> {
-    static_assert(std::is_integral<Value>::value, "value type must be integral");
+    static_assert(std::is_integral_v<Value>, "value type must be integral");
 
 public:
     Value& operator[](const Key& key) {

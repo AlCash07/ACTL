@@ -18,8 +18,8 @@ struct text_io_tag   : io_tag {};
 
 template <class Device>
 struct io_traits {
-    static constexpr bool binary = std::is_base_of<binary_io_tag, typename Device::category>::value;
-    static constexpr bool text   = std::is_base_of<text_io_tag,   typename Device::category>::value;
+    static constexpr bool binary = std::is_base_of_v<binary_io_tag, typename Device::category>;
+    static constexpr bool text   = std::is_base_of_v<text_io_tag,   typename Device::category>;
 
     static_assert(!binary || !text, "device can't be binary and text at the same time");
 };

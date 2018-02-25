@@ -53,8 +53,7 @@ inline bool read(Device& in, char& arg) {
 }
 
 template <class Device, class T>
-inline std::enable_if_t<std::is_arithmetic<T>::value, bool> read(binary_io_tag, Device& in,
-                                                                 T& arg) {
+inline std::enable_if_t<std::is_arithmetic_v<T>, bool> read(binary_io_tag, Device& in, T& arg) {
     return in.read_string(reinterpret_cast<char*>(&arg), sizeof(T)) == sizeof(T);
 }
 
@@ -142,7 +141,7 @@ inline std::enable_if_t<is_unsigned_int<UInt>::value, bool> read(text_io_tag, De
 }
 
 template <class Device, class Int>
-inline std::enable_if_t<is_signed_int<Int>::value && !std::is_same<Int, char>::value, bool> read(
+inline std::enable_if_t<is_signed_int<Int>::value && !std::is_same_v<Int, char>, bool> read(
     text_io_tag, Device& in, Int& arg) {
     char c = detail::skip_characters(in);
     bool negative = c == '-';
@@ -154,8 +153,8 @@ inline std::enable_if_t<is_signed_int<Int>::value && !std::is_same<Int, char>::v
 }
 
 template <class Device, class Float>
-inline std::enable_if_t<std::is_floating_point<Float>::value, bool> read(text_io_tag, Device& in,
-                                                                         Float& arg) {
+inline std::enable_if_t<std::is_floating_point_v<Float>, bool> read(text_io_tag, Device& in,
+                                                                    Float& arg) {
     char c = detail::skip_characters(in);
     bool negative = c == '-';
     if (negative) c = in.read_char();
@@ -190,8 +189,8 @@ inline bool read(binary_io_tag, Device& in, std::string& arg) {
 }
 
 template <class Device, class T>
-inline std::enable_if_t<std::is_convertible<T, const char*>::value ||
-                        std::is_convertible<T, bool (*)(char)>::value, bool>
+inline std::enable_if_t<
+    std::is_convertible_v<T, const char*> || std::is_convertible_v<T, bool (*)(char)>, bool>
 read(text_io_tag, Device& in, T&& arg) {
     detail::skip_characters(in, std::forward<T>(arg));
     in.put_back();
@@ -268,7 +267,7 @@ inline std::enable_if_t<!is_non_const_iterator<T0>::value, bool> read(io_tag, De
 
 template <class Device, class... Ts>
 inline bool read(Device& in, Ts&&... args) {
-    static_assert(!std::is_base_of<io_tag, Device>::value, "no matching call for read");
+    static_assert(!std::is_base_of_v<io_tag, Device>, "no matching call for read");
     return read(typename Device::category{}, in, std::forward<Ts>(args)...);
 }
 

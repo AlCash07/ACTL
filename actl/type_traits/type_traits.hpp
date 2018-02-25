@@ -13,26 +13,18 @@
 
 namespace ac {
 
-// TODO: switch to std after C++17.
-template <typename... Ts> struct make_void { typedef void type; };
-template <typename... Ts> using void_t = typename make_void<Ts...>::type;
-
-// TODO: switch to std after C++17.
-template <bool B>
-using bool_constant = std::integral_constant<bool, B>;
-
 template <int N>
 using int_constant = std::integral_constant<int, N>;
 
 template <class T>
-struct is_signed_int : bool_constant<std::is_signed<T>::value && std::is_integral<T>::value> {};
+struct is_signed_int : std::bool_constant<std::is_signed_v<T> && std::is_integral_v<T>> {};
 
 template <class T>
-struct is_unsigned_int : bool_constant<std::is_unsigned<T>::value && std::is_integral<T>::value> {};
+struct is_unsigned_int : std::bool_constant<std::is_unsigned_v<T> && std::is_integral_v<T>> {};
 
 template <class T>
-struct is_non_const_reference : bool_constant<std::is_reference<T>::value &&
-                                              std::is_const<std::remove_reference_t<T>>::value> {};
+struct is_non_const_reference
+    : std::bool_constant<std::is_reference_v<T> && std::is_const_v<std::remove_reference_t<T>>> {};
 
 template <class T> struct remove_rvalue_reference      { using type = T; };
 template <class T> struct remove_rvalue_reference<T&&> { using type = T; };
