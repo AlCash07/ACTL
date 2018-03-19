@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <list>
 #include <set>
 #include <type_traits>
@@ -29,11 +30,11 @@ struct associative_tag : container_tag {};
 struct unique_associative_tag : associative_tag {};
 struct multiple_associative_tag : associative_tag {};
 
-template <class T>
+template <class C>
 struct container_traits;
 
-template <class T>
-struct container_traits<const T> : container_traits<T> {};
+template <class C>
+struct container_traits<const C> : container_traits<C> {};
 
 template <class T>
 struct container_traits<std::vector<T>> {
@@ -83,51 +84,99 @@ struct container_traits<std::unordered_multiset<T>> {
     using type = std::unordered_multiset<U>;
 };
 
+/* Container type traits */
+
+namespace detail {
+
+template <class CT, class = void>
+struct is_container_impl : std::false_type {};
+
+template <class CT>
+struct is_container_impl<CT, std::void_t<typename CT::category>> : std::true_type {};
+
+template <class C, class Tag, bool = true>
+struct has_container_tag_impl : std::is_base_of<Tag, typename container_traits<C>::category> {};
+
 template <class C, class Tag>
-struct has_tag : std::is_base_of<Tag, typename container_traits<C>::category> {};
+struct has_container_tag_impl<C, Tag, false> : std::false_type {};
 
-template <class C> struct is_sequence             : has_tag<C, sequence_tag> {};
-template <class C> struct is_random_access        : has_tag<C, random_access_tag> {};
-template <class C> struct is_associative          : has_tag<C, associative_tag> {};
-template <class C> struct is_unique_associative   : has_tag<C, unique_associative_tag> {};
-template <class C> struct is_multiple_associative : has_tag<C, multiple_associative_tag> {};
+}  // namespace detail
 
-/* Container descriptor : int for random access containers, iterator otherwise */
+template <class C>
+struct is_container : detail::is_container_impl<container_traits<C>> {};
+
+template <class C, class Tag>
+struct has_container_tag : detail::has_container_tag_impl<C, Tag, is_container<C>::value> {};
+
+template <class C> struct is_sequence             : has_container_tag<C, sequence_tag> {};
+template <class C> struct is_random_access        : has_container_tag<C, random_access_tag> {};
+template <class C> struct is_associative          : has_container_tag<C, associative_tag> {};
+template <class C> struct is_unique_associative   : has_container_tag<C, unique_associative_tag> {};
+template <class C> struct is_multiple_associative : has_container_tag<C, multiple_associative_tag> {
+};
+
+// Does erasure invalidate container iterators except the erased one.
+template <class C>
+struct is_stable : std::bool_constant<!is_random_access<C>::value> {};
+
+/* Container ID: int for random access containers, iterator otherwise. */
 
 template <class C, bool = is_random_access<C>::value>
-struct container_descriptor {
-    using type = typename C::iterator;
+struct container_id {
+    using type = typename C::const_iterator;
 };
 
 template <class C>
-struct container_descriptor<C, true> {
+struct container_id<C, true> {
     using type = int;
 };
 
 template <class C>
-using container_descriptor_t = typename container_descriptor<C>::type;
+using container_id_t = typename container_id<C>::type;
 
-// Does erasure invalidate container iterators and descriptors except the erased one.
-template <class C>
-struct is_stable : std::bool_constant<!is_random_access<C>::value> {};
+// ID key that can be used for comparison and hashing.
+constexpr auto get_id_key(int value) { return value; }
+
+template <class ID>
+constexpr inline auto get_id_key(ID id) {
+    return reinterpret_cast<std::uintptr_t>(&*id);
+}
 
 /* Generalized functions */
 
-// Access by descriptor
+// void_id: returns an invalid ID that is fixed for the given container.
 template <class C>
-inline typename std::conditional_t<std::is_const_v<C>, typename C::const_reference,
-                                   typename C::reference>
-get_reference(C& c, container_descriptor_t<C> d) {
+inline container_id_t<C> void_id(const C& c) {
     if constexpr (is_random_access<C>::value) {
-        return c[d];
+        return -1;
     } else {
-        return *d;
+        return c.end();
     }
 }
 
-// Push
+// get_reference: element access by ID.
+template <class C>
+inline typename C::const_reference get_reference(const C& c, container_id_t<C> id) {
+    if constexpr (is_random_access<C>::value) {
+        return c[id];
+    } else {
+        return *id;
+    }
+}
+
+template <class C>
+inline typename C::reference get_reference(C& c, container_id_t<C> id) {
+    if constexpr (is_random_access<C>::value) {
+        return c[id];
+    } else {
+        // const_cast is required because id is a const_iterator.
+        return const_cast<typename C::reference>(*id);
+    }
+}
+
+// push. Doesn't invalidate IDs.
 template <class C, class T>
-inline std::pair<container_descriptor_t<C>, bool> push(C& c, T&& v) {
+inline std::pair<container_id_t<C>, bool> push(C& c, T&& v) {
     if constexpr (is_associative<C>::value) {
         auto res = c.insert(std::forward<T>(v));
         if constexpr (is_unique_associative<C>::value) {
@@ -140,6 +189,31 @@ inline std::pair<container_descriptor_t<C>, bool> push(C& c, T&& v) {
         return {static_cast<int>(c.size()) - 1, true};
     } else {
         return {c.insert(c.end(), std::forward<T>(v)), true};
+    }
+}
+
+// erase by ID.
+template <class C>
+inline void erase(C& c, container_id_t<C> id) {
+    if constexpr (is_random_access<C>::value) {
+        c.erase(c.begin() + id);
+    } else {
+        c.erase(id);
+    }
+}
+
+// find by value.
+template <class C, class T>
+inline container_id_t<C> find(const C& c, const T& value) {
+    if constexpr (is_associative<C>::value) {
+        return c.find(value);
+    } else {
+        auto it = std::find(c.begin(), c.end(), value);
+        if constexpr (is_random_access<C>::value) {
+            return it == c.end() ? void_id(c) : static_cast<int>(it - c.begin());
+        } else {
+            return it;
+        }
     }
 }
 

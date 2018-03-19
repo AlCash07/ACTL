@@ -47,7 +47,7 @@ private:
  * Reference: http://talesofcpp.fusionfenix.com/post-18/episode-ten-when-size-does-matter
  */
 template <class T1, class T2>
-class compressed_pair : private detail::member<0, T1>, private detail::member<1, T2> {
+class compressed_pair : private detail::member<1, T1>, private detail::member<2, T2> {
 public:
     using first_type  = T1;
     using second_type = T2;
@@ -56,14 +56,14 @@ public:
 
     template <class U1, class U2>
     explicit constexpr compressed_pair(U1&& first, U2&& second)
-        : detail::member<0, T1>(std::forward<U1>(first)),
-          detail::member<1, T2>(std::forward<U2>(second)) {}
+        : detail::member<1, T1>(std::forward<U1>(first)),
+          detail::member<2, T2>(std::forward<U2>(second)) {}
 
-    constexpr T1&       first()       noexcept { return detail::member<0, T1>::get(); }
-    constexpr const T1& first() const noexcept { return detail::member<0, T1>::get(); }
+    constexpr T1&       first()       noexcept { return detail::member<1, T1>::get(); }
+    constexpr const T1& first() const noexcept { return detail::member<1, T1>::get(); }
 
-    constexpr T2&       second()       noexcept { return detail::member<1, T2>::get(); }
-    constexpr const T2& second() const noexcept { return detail::member<1, T2>::get(); }
+    constexpr T2&       second()       noexcept { return detail::member<2, T2>::get(); }
+    constexpr const T2& second() const noexcept { return detail::member<2, T2>::get(); }
 };
 
 template <class Device, class T1, class T2>

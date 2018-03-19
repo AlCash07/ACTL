@@ -34,4 +34,9 @@ inline constexpr T sqr(const T& x) {
     return x * x;
 }
 
+template <class T>
+inline constexpr T hash_combine(T lhs, T rhs) {
+    return lhs ^ ((lhs << 6) + (lhs >> 2) + 0x9e3779b9 + rhs);
+}
+
 }  // namespace ac
