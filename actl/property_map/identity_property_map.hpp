@@ -15,7 +15,7 @@ namespace ac {
  * Property map that simply casts the key. Fitting to be a default map.
  */
 template <class Key, class Value = Key>
-class identity_property_map : public creative_property_map<true, Key, Value> {
+class identity_property_map : public computed_property_map<true, Key, Value> {
 public:
     constexpr Value operator[](const Key& key) const { return static_cast<Value>(key); }
 

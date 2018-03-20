@@ -15,7 +15,7 @@ namespace ac {
  * Property map that shifts key domain by the given offset (with casting).
  */
 template <class Key, class Value = int>
-class shift_property_map : public creative_property_map<true, Key, Value> {
+class shift_property_map : public computed_property_map<true, Key, Value> {
 public:
     explicit constexpr shift_property_map(Key offset) : offset_{offset} {}
 
@@ -34,7 +34,7 @@ inline auto make_shift_property_map(Key offset) { return shift_property_map<Key,
  * Shift property map with offset known at compile-time.
  */
 template <class Key, Key Offset, class Value = Key>
-class static_shift_property_map : public creative_property_map<true, Key, Value> {
+class static_shift_property_map : public computed_property_map<true, Key, Value> {
 public:
     constexpr Value operator[](const Key& key) const { return static_cast<Value>(key - Offset); }
 

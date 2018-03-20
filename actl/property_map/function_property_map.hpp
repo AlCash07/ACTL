@@ -16,7 +16,7 @@ namespace ac {
  * Property map that applies given function to the key.
  */
 template <class Function, class Key, class Return = std::result_of_t<const Function(const Key&)>>
-class function_property_map : public creative_property_map<false, Key, Return> {
+class function_property_map : public computed_property_map<false, Key, Return> {
 public:
     explicit function_property_map(Function f = Function{}) : f_{f} {}
 

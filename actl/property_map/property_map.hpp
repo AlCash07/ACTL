@@ -7,7 +7,7 @@
  * Custom property maps must inherit from property_map_base, which is done more conveniently by
  * inheriting from one of:
  * - property_map, which defines all required nested types and static variables;
- * - creative_property_map, where value is assumed to be created on the fly by a function;
+ * - computed_property_map, where value is assumed to be computed on the fly by a function;
  * - container_property_map, which incapsulates a container (or a reference to container) and
  * provides traversal interface.
  *
@@ -49,7 +49,7 @@ struct property_map : property_map_base {
 };
 
 template <bool Invertible, class Key, class Ref>
-struct creative_property_map : property_map<false, Invertible, Key, std::decay_t<Ref>, Ref, Ref> {};
+struct computed_property_map : property_map<false, Invertible, Key, std::decay_t<Ref>, Ref, Ref> {};
 
 template <bool Invertible, class Container, class Key, class Value, class Ref, class CRef>
 class container_property_map : public property_map<true, Invertible, Key, Value, Ref, CRef> {
