@@ -174,34 +174,6 @@ inline typename C::reference get_reference(C& c, container_id_t<C> id) {
     }
 }
 
-// push. Doesn't invalidate IDs.
-template <class C, class T>
-inline std::pair<container_id_t<C>, bool> push(C& c, T&& v) {
-    if constexpr (is_associative<C>::value) {
-        auto res = c.insert(std::forward<T>(v));
-        if constexpr (is_unique_associative<C>::value) {
-            return res;
-        } else {
-            return {res, true};
-        }
-    } else if constexpr (is_random_access<C>::value) {
-        c.push_back(std::forward<T>(v));
-        return {static_cast<int>(c.size()) - 1, true};
-    } else {
-        return {c.insert(c.end(), std::forward<T>(v)), true};
-    }
-}
-
-// erase by ID.
-template <class C>
-inline void erase(C& c, container_id_t<C> id) {
-    if constexpr (is_random_access<C>::value) {
-        c.erase(c.begin() + id);
-    } else {
-        c.erase(id);
-    }
-}
-
 // find by value.
 template <class C, class T>
 inline container_id_t<C> find(const C& c, const T& value) {
@@ -214,6 +186,34 @@ inline container_id_t<C> find(const C& c, const T& value) {
         } else {
             return it;
         }
+    }
+}
+
+// emplace. Doesn't invalidate IDs.
+template <class C, class... Ts>
+inline std::pair<container_id_t<C>, bool> emplace(C& c, Ts&&... args) {
+    if constexpr (is_associative<C>::value) {
+        auto res = c.emplace(std::forward<Ts>(args)...);
+        if constexpr (is_unique_associative<C>::value) {
+            return res;
+        } else {
+            return {res, true};
+        }
+    } else if constexpr (is_random_access<C>::value) {
+        c.emplace_back(std::forward<Ts>(args)...);
+        return {static_cast<int>(c.size()) - 1, true};
+    } else {
+        return {c.emplace(c.end(), std::forward<Ts>(args)...), true};
+    }
+}
+
+// erase by ID.
+template <class C>
+inline void erase(C& c, container_id_t<C> id) {
+    if constexpr (is_random_access<C>::value) {
+        c.erase(c.begin() + id);
+    } else {
+        c.erase(id);
     }
 }
 
