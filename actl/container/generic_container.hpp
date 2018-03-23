@@ -1,5 +1,9 @@
 /***************************************************************************************************
- * Wrapper for standard containers with generic interface.
+ * generic_container is a wrapper for standard containers with generic interface.
+ * Instead of iterators, it operates with container ID, which is int for random access containers
+ * and const_iterator otherwise.
+ * The reasons to use int are: it isn't invalidated by push_back operation, and it's convenient to
+ * use as property map key.
  ***************************************************************************************************
  * Copyright 2018 Oleksandr Bacherikov.
  *
@@ -43,16 +47,33 @@ using generic_container_base =
 
 }  // namespace detail
 
-template <class C, class T = typename C::value_type, bool RA = is_random_access<C>::value>
-class generic_container : public detail::generic_container_base<C, typename C::const_iterator> {
-    using detail::generic_container_base<C, typename C::const_iterator>::data_;
-
+// This class is used to hide container operations when only property map interface is requested.
+template <class C, bool RA>
+class generic_container_property_map
+    : public detail::generic_container_base<C, typename C::const_iterator> {
 public:
-    using id          = typename C::const_iterator;
-    using id_iterator = detail::id_iterator<id>;
+    using id = typename C::const_iterator;
 
     typename C::reference       operator[](id id) { return const_cast<typename C::reference>(*id); }
     typename C::const_reference operator[](id id) const { return *id; }
+};
+
+template <class C>
+class generic_container_property_map<C, true> : public detail::generic_container_base<C, int> {
+public:
+    using id = int;
+
+    typename C::reference       operator[](id id) { return this->data_[id]; }
+    typename C::const_reference operator[](id id) const { return this->data_[id]; }
+};
+
+template <class C, class T = typename C::value_type, bool RA = is_random_access<C>::value>
+class generic_container : public generic_container_property_map<C, RA> {
+    using generic_container_property_map<C, RA>::data_;
+
+public:
+    using id          = typename generic_container_property_map<C, RA>::id;
+    using id_iterator = detail::id_iterator<id>;
 
     auto id_range() const {
         return make_range(id_iterator(data_.begin()), id_iterator(data_.end()));
@@ -64,7 +85,7 @@ public:
     int size() const { return static_cast<int>(data_.size()); }
 
     template <class U>
-    id find(const U& value) {
+    id find(const U& value) const {
         if constexpr (is_associative<C>::value) {
             return data_.find(value);
         } else {
@@ -90,15 +111,12 @@ public:
 };
 
 template <class C, class T>
-class generic_container<C, T, true> : public detail::generic_container_base<C, int> {
-    using detail::generic_container_base<C, int>::data_;
+class generic_container<C, T, true> : public generic_container_property_map<C, true> {
+    using generic_container_property_map<C, true>::data_;
 
 public:
-    using id          = int;
+    using id          = typename generic_container_property_map<C, true>::id;
     using id_iterator = integer_iterator<id>;
-
-    typename C::reference       operator[](id id) { return data_[id]; }
-    typename C::const_reference operator[](id id) const { return data_[id]; }
 
     auto id_range() const { return make_range(id_iterator(0), id_iterator(size())); }
 
@@ -146,8 +164,6 @@ public:
 protected:
     int n_;
 };
-
-/* Container ID: int for random access containers, iterator otherwise. */
 
 template <class C>
 using container_id_t = typename generic_container<C>::id;
