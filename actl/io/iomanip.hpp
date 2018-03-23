@@ -24,13 +24,13 @@ struct delimiter { const char* value; };
 
 }  // namespace detail
 
-static inline constexpr detail::base      set_base     (uint32_t    value = 10 ) { return {value}; }
-static inline constexpr detail::width     set_width    (uint32_t    value = 0  ) { return {value}; }
-static inline constexpr detail::fill      set_fill     (char        value = ' ') { return {value}; }
-static inline constexpr detail::precision set_precision(uint32_t    value = 9  ) { return {value}; }
-static inline constexpr detail::delimiter set_delimiter(const char* value = " ") { return {value}; }
+inline constexpr detail::base      set_base     (uint32_t    value = 10 ) { return {value}; }
+inline constexpr detail::width     set_width    (uint32_t    value = 0  ) { return {value}; }
+inline constexpr detail::fill      set_fill     (char        value = ' ') { return {value}; }
+inline constexpr detail::precision set_precision(uint32_t    value = 9  ) { return {value}; }
+inline constexpr detail::delimiter set_delimiter(const char* value = " ") { return {value}; }
 
-static inline bool read(text_io_tag, text_input_device& in, detail::base base) {
+inline bool read(text_io_tag, text_input_device& in, detail::base base) {
     in.set_base(base.value);
     return true;
 }

@@ -1,5 +1,5 @@
 /***************************************************************************************************
- * Traits and generalized functions for standard containers.
+ * Standard containers traits and categorization.
  ***************************************************************************************************
  * Copyright 2018 Oleksandr Bacherikov.
  *
@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <cstdint>
 #include <list>
 #include <set>
 #include <type_traits>
@@ -118,103 +117,5 @@ template <class C> struct is_multiple_associative : has_container_tag<C, multipl
 // Does erasure invalidate container iterators except the erased one.
 template <class C>
 struct is_stable : std::bool_constant<!is_random_access<C>::value> {};
-
-/* Container ID: int for random access containers, iterator otherwise. */
-
-template <class C, bool = is_random_access<C>::value>
-struct container_id {
-    using type = typename C::const_iterator;
-};
-
-template <class C>
-struct container_id<C, true> {
-    using type = int;
-};
-
-template <class C>
-using container_id_t = typename container_id<C>::type;
-
-// ID key that can be used for comparison and hashing.
-constexpr auto get_id_key(int value) { return value; }
-
-template <class ID>
-constexpr inline auto get_id_key(ID id) {
-    return reinterpret_cast<std::uintptr_t>(&*id);
-}
-
-/* Generalized functions */
-
-// void_id: returns an invalid ID that is fixed for the given container.
-template <class C>
-inline container_id_t<C> void_id(const C& c) {
-    if constexpr (is_random_access<C>::value) {
-        return -1;
-    } else {
-        return c.end();
-    }
-}
-
-// get_reference: element access by ID.
-template <class C>
-inline typename C::const_reference get_reference(const C& c, container_id_t<C> id) {
-    if constexpr (is_random_access<C>::value) {
-        return c[id];
-    } else {
-        return *id;
-    }
-}
-
-template <class C>
-inline typename C::reference get_reference(C& c, container_id_t<C> id) {
-    if constexpr (is_random_access<C>::value) {
-        return c[id];
-    } else {
-        // const_cast is required because id is a const_iterator.
-        return const_cast<typename C::reference>(*id);
-    }
-}
-
-// find by value.
-template <class C, class T>
-inline container_id_t<C> find(const C& c, const T& value) {
-    if constexpr (is_associative<C>::value) {
-        return c.find(value);
-    } else {
-        auto it = std::find(c.begin(), c.end(), value);
-        if constexpr (is_random_access<C>::value) {
-            return it == c.end() ? void_id(c) : static_cast<int>(it - c.begin());
-        } else {
-            return it;
-        }
-    }
-}
-
-// emplace. Doesn't invalidate IDs.
-template <class C, class... Ts>
-inline std::pair<container_id_t<C>, bool> emplace(C& c, Ts&&... args) {
-    if constexpr (is_associative<C>::value) {
-        auto res = c.emplace(std::forward<Ts>(args)...);
-        if constexpr (is_unique_associative<C>::value) {
-            return res;
-        } else {
-            return {res, true};
-        }
-    } else if constexpr (is_random_access<C>::value) {
-        c.emplace_back(std::forward<Ts>(args)...);
-        return {static_cast<int>(c.size()) - 1, true};
-    } else {
-        return {c.emplace(c.end(), std::forward<Ts>(args)...), true};
-    }
-}
-
-// erase by ID.
-template <class C>
-inline void erase(C& c, container_id_t<C> id) {
-    if constexpr (is_random_access<C>::value) {
-        c.erase(c.begin() + id);
-    } else {
-        c.erase(id);
-    }
-}
 
 }  // namespace ac

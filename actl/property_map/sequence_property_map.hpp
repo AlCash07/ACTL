@@ -25,16 +25,16 @@ template <class Range,
           class Value = typename Range::value_type,
           class Ref   = typename Range::reference>
 class range_property_map : public property_map<true, false, Key, Value, Ref, Ref> {
+public:
     static_assert(is_random_access_iterator<typename Range::iterator>::value,
                   "range must have random access");
 
-public:
     using iterator       = transition_iterator<typename Range::iterator>;
     using const_iterator = iterator;
 
     explicit range_property_map(Range range) : data_{range} {}
 
-    constexpr Ref operator[](const Key& key) const { return data_[key]; }
+    Ref operator[](const Key& key) const { return data_[key]; }
 
     iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
     iterator end()   const { return {data_.end(),   data_.begin(), data_.end()}; }
@@ -60,19 +60,19 @@ template <class SequenceContainer, class Key = int,
           class Ref       = typename Container::reference,
           class CRef      = typename Container::const_reference>
 class sequence_property_map : public property_map<true, false, Key, Value, Ref, CRef> {
+public:
     static_assert(is_random_access_iterator<typename Container::iterator>::value,
                   "container must have random access");
 
-public:
     using iterator       = transition_iterator<typename Container::iterator>;
     using const_iterator = transition_iterator<typename Container::const_iterator>;
 
     template <class... Ts>
-    explicit constexpr sequence_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
+    explicit sequence_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
 
-    constexpr Ref operator[](const Key& key) { return data_[key]; }
+    Ref operator[](const Key& key) { return data_[key]; }
 
-    constexpr CRef operator[](const Key& key) const { return data_[key]; }
+    CRef operator[](const Key& key) const { return data_[key]; }
 
     iterator begin() { return {data_.begin(), data_.begin(), data_.end()}; }
     iterator end()   { return {data_.end(),   data_.begin(), data_.end()}; }

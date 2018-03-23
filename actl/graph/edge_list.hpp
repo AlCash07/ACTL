@@ -7,9 +7,19 @@
 
 #pragma once
 
+#include <actl/graph/detail/edge_list.hpp>
+
 namespace ac {
 
-template <class T>
-class edge_list {};
+template <class Directed,
+          class EdgeContainer = std::vector<none>,
+          class VertexContainer = std::vector<none>>
+class edge_list {
+public:
+    using vertex_id = container_id_t<VertexContainer>;
+
+private:
+    generic_container<VertexContainer> vertices_;
+};
 
 }  // namespace ac
