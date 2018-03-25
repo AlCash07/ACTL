@@ -56,11 +56,9 @@ public:
         return pair.first->second;
     }
 
-    friend void clear(accounting_property_map& map) {
-        map.clear();
-        clear(static_cast<
-              container_property_map<Invertible, AssociativeContainer, Key, Value, Value&, void>&>(
-            map));
+    void clear() {
+        container_property_map<Invertible, AssociativeContainer, Key, Value, Value&, void>::clear();
+        detail::vector_invert<const Key, Value, Invertible>::clear();
     }
 };
 

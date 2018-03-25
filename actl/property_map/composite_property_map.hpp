@@ -40,13 +40,13 @@ public:
         return maps_.second()[maps_.first()[key]];
     }
 
+    void clear() {
+        maps_.first().clear();
+        maps_.second().clear();
+    }
+
 protected:
     compressed_pair<OM, IM> maps_;
-
-    friend void clear(composite_pm_base& map) {
-        clear(map.maps_.first());
-        clear(map.maps_.second());
-    }
 };
 
 // Class that adds invert method if possible.

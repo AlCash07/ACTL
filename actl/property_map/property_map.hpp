@@ -49,7 +49,9 @@ struct property_map : property_map_base {
 };
 
 template <bool Invertible, class Key, class Ref>
-struct computed_property_map : property_map<false, Invertible, Key, std::decay_t<Ref>, Ref, Ref> {};
+struct computed_property_map : property_map<false, Invertible, Key, std::decay_t<Ref>, Ref, Ref> {
+    void clear() {}
+};
 
 template <bool Invertible, class Container, class Key, class Value, class Ref, class CRef>
 class container_property_map : public property_map<true, Invertible, Key, Value, Ref, CRef> {
@@ -58,7 +60,7 @@ public:
     using const_iterator = typename remove_reference_t<Container>::const_iterator;
 
     template <class... Ts>
-    explicit constexpr container_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
+    explicit container_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
 
     iterator begin() { return data_.begin(); }
     iterator end()   { return data_.end(); }
@@ -66,13 +68,13 @@ public:
     const_iterator begin() const { return data_.begin(); }
     const_iterator end()   const { return data_.end(); }
 
+    void clear() { data_.clear(); }
+
+    void swap(container_property_map& other) { data_.swap(other.data_); }
+
 protected:
     Container data_;
-
-    friend void clear(container_property_map& map) { map.data_.clear(); }
 };
-
-void clear(property_map_base&) {}
 
 namespace detail {
 

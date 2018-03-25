@@ -39,10 +39,10 @@ public:
     iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
     iterator end()   const { return {data_.end(),   data_.begin(), data_.end()}; }
 
+    void clear() { fill(data_, Value{}); }
+
 private:
     Range data_;
-
-    friend void clear(range_property_map& map) { fill(map.data_, Value{}); }
 };
 
 template <class Range>
@@ -80,10 +80,10 @@ public:
     const_iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
     const_iterator end()   const { return {data_.end(),   data_.begin(), data_.end()}; }
 
+    void clear() { fill(data_, Value{}); }
+
 private:
     SequenceContainer data_;
-
-    friend void clear(sequence_property_map& map) { fill(map.data_, Value{}); }
 };
 
 template <class Container>

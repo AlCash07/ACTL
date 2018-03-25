@@ -40,7 +40,7 @@ struct container_traits<std::vector<T>> {
     using category = random_access_tag;
 
     template <class U>
-    using type = std::vector<U>;
+    using rebind = std::vector<U>;
 };
 
 template <class T>
@@ -48,7 +48,7 @@ struct container_traits<std::list<T>> {
     using category = sequence_tag;
 
     template <class U>
-    using type = std::list<U>;
+    using rebind = std::list<U>;
 };
 
 template <class T>
@@ -56,7 +56,7 @@ struct container_traits<std::set<T>> {
     using category = unique_associative_tag;
 
     template <class U>
-    using type = std::set<U>;
+    using rebind = std::set<U>;
 };
 
 template <class T>
@@ -64,7 +64,7 @@ struct container_traits<std::multiset<T>> {
     using category = multiple_associative_tag;
 
     template <class U>
-    using type = std::multiset<U>;
+    using rebind = std::multiset<U>;
 };
 
 template <class T>
@@ -72,7 +72,7 @@ struct container_traits<std::unordered_set<T>> {
     using category = unique_associative_tag;
 
     template <class U>
-    using type = std::unordered_set<U>;
+    using rebind = std::unordered_set<U>;
 };
 
 template <class T>
@@ -80,7 +80,7 @@ struct container_traits<std::unordered_multiset<T>> {
     using category = multiple_associative_tag;
 
     template <class U>
-    using type = std::unordered_multiset<U>;
+    using rebind = std::unordered_multiset<U>;
 };
 
 /* Container type traits */
@@ -114,8 +114,11 @@ template <class C> struct is_unique_associative   : has_container_tag<C, unique_
 template <class C> struct is_multiple_associative : has_container_tag<C, multiple_associative_tag> {
 };
 
+template <class C> inline constexpr bool is_random_access_v = is_random_access<C>::value;
+template <class C> inline constexpr bool is_associative_v   = is_associative<C>::value;
+
 // Does erasure invalidate container iterators except the erased one.
 template <class C>
-struct is_stable : std::bool_constant<!is_random_access<C>::value> {};
+struct is_stable : std::bool_constant<!is_random_access_v<C>> {};
 
 }  // namespace ac

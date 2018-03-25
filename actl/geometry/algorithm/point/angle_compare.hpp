@@ -14,7 +14,7 @@ namespace ac {
 template <class T, class P = use_default>
 class angle_compare {
 public:
-    constexpr explicit angle_compare(const point2d<T>& origin = point2d<T>())
+    explicit constexpr angle_compare(const point2d<T>& origin = point2d<T>())
         : origin_(origin), zero_(!origin) {}
 
     template <class T0, class T1>
