@@ -25,7 +25,6 @@
 
 #include <actl/type_traits/is_iterator.hpp>
 #include <actl/type_traits/type_traits.hpp>
-#include <iterator>
 
 namespace ac {
 
@@ -49,15 +48,18 @@ struct property_map : property_map_base {
 };
 
 template <bool Invertible, class Key, class Ref>
-struct computed_property_map : property_map<false, Invertible, Key, std::decay_t<Ref>, Ref, Ref> {
+struct computed_property_map
+    : property_map<false, Invertible, const Key, std::decay_t<Ref>, Ref, Ref> {
     void clear() {}
 };
 
 template <bool Invertible, class Container, class Key, class Value, class Ref, class CRef>
 class container_property_map : public property_map<true, Invertible, Key, Value, Ref, CRef> {
+    using C = std::remove_reference_t<Container>;
+
 public:
-    using iterator       = typename remove_reference_t<Container>::iterator;
-    using const_iterator = typename remove_reference_t<Container>::const_iterator;
+    using iterator       = typename C::iterator;
+    using const_iterator = typename C::const_iterator;
 
     template <class... Ts>
     explicit container_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}

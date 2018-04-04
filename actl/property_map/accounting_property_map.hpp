@@ -42,23 +42,23 @@ private:
  * encountered before. Can be invertible with small overhead.
  */
 template <class AssociativeContainer, bool Invertible = false,
-          class Key   = typename AssociativeContainer::key_type,
+          class Key   = const typename AssociativeContainer::key_type,
           class Value = typename AssociativeContainer::mapped_type>
 class accounting_property_map
-    : public container_property_map<Invertible, AssociativeContainer, Key, Value, Value&, void>,
-      public detail::vector_invert<const Key, Value, Invertible> {
+    : public container_property_map<Invertible, AssociativeContainer, Key, Value, Value, void>,
+      public detail::vector_invert<Key, Value, Invertible> {
     static_assert(std::is_integral_v<Value>, "value type must be integral");
 
 public:
-    Value& operator[](const Key& key) {
+    Value operator[](Key& key) {
         auto pair = this->data_.insert({key, static_cast<Value>(this->data_.size())});
         if (pair.second) this->push_back(&pair.first->first);
         return pair.first->second;
     }
 
     void clear() {
-        container_property_map<Invertible, AssociativeContainer, Key, Value, Value&, void>::clear();
-        detail::vector_invert<const Key, Value, Invertible>::clear();
+        container_property_map<Invertible, AssociativeContainer, Key, Value, Value, void>::clear();
+        detail::vector_invert<Key, Value, Invertible>::clear();
     }
 };
 

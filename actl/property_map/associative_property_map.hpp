@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/property_map/property_map.hpp>
+#include <type_traits>
 
 namespace ac {
 
@@ -15,17 +16,17 @@ namespace ac {
  * Associative property map with available const [] operator.
  */
 template <class AssociativeContainer,
-          class Key   = typename remove_reference_t<AssociativeContainer>::key_type,
-          class Value = typename remove_reference_t<AssociativeContainer>::mapped_type>
+          class Key   = const typename std::remove_reference_t<AssociativeContainer>::key_type,
+          class Value = typename std::remove_reference_t<AssociativeContainer>::mapped_type>
 class associative_property_map
     : public container_property_map<false, AssociativeContainer, Key, Value, Value&, Value> {
 public:
     using container_property_map<false, AssociativeContainer, Key, Value, Value&,
                                  Value>::container_property_map;
 
-    Value& operator[](const Key& key) { return this->data_[key]; }
+    Value& operator[](Key& key) { return this->data_[key]; }
 
-    Value operator[](const Key& key) const {
+    Value operator[](Key& key) const {
         auto it = this->data_.find(key);
         return it == this->data_.end() ? Value{} : it->second;
     }

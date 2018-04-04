@@ -19,8 +19,7 @@ class member_property_map : public property_map<false, false, Key, Member> {
 public:
     explicit constexpr member_property_map(Member Key::* ptr) : ptr_{ptr} {}
 
-    constexpr Member& operator[](Key& key) { return key.*ptr_; }
-
+    constexpr Member&       operator[](      Key& key) const { return key.*ptr_; }
     constexpr const Member& operator[](const Key& key) const { return key.*ptr_; }
 
 private:
@@ -38,8 +37,7 @@ inline auto make_member_property_map(Member Key::* ptr) {
 template <class Key, class Member, Member Key::* Ptr>
 class static_member_property_map : public property_map<false, false, Key, Member> {
 public:
-    constexpr Member& operator[](Key& key) { return key.*Ptr; }
-
+    constexpr       Member& operator[](      Key& key) const { return key.*Ptr; }
     constexpr const Member& operator[](const Key& key) const { return key.*Ptr; }
 };
 

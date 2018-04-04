@@ -11,8 +11,8 @@
 #include <actl/property_map/property_map.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/type_traits/is_iterator.hpp>
-#include <actl/type_traits/type_traits.hpp>
 #include <array>
+#include <type_traits>
 
 namespace ac {
 
@@ -24,7 +24,7 @@ template <class Range,
           class Key   = int,
           class Value = typename Range::value_type,
           class Ref   = typename Range::reference>
-class range_property_map : public property_map<true, false, Key, Value, Ref, Ref> {
+class range_property_map : public property_map<true, false, const Key, Value, Ref, Ref> {
 public:
     static_assert(is_random_access_iterator<typename Range::iterator>::value,
                   "range must have random access");
@@ -54,24 +54,24 @@ inline auto make_range_property_map(Range range) { return range_property_map<Ran
 /**
  * Range property map with underlying sequence container.
  */
-template <class SequenceContainer, class Key = int,
-          class Container = remove_reference_t<SequenceContainer>,
-          class Value     = typename Container::value_type,
-          class Ref       = typename Container::reference,
-          class CRef      = typename Container::const_reference>
-class sequence_property_map : public property_map<true, false, Key, Value, Ref, CRef> {
+template <class SequenceContainer,
+          class Key   = int,
+          class C     = std::remove_reference_t<SequenceContainer>,
+          class Value = typename C::value_type,
+          class Ref   = typename C::reference,
+          class CRef  = typename C::const_reference>
+class sequence_property_map : public property_map<true, false, const Key, Value, Ref, CRef> {
 public:
-    static_assert(is_random_access_iterator<typename Container::iterator>::value,
+    static_assert(is_random_access_iterator<typename C::iterator>::value,
                   "container must have random access");
 
-    using iterator       = transition_iterator<typename Container::iterator>;
-    using const_iterator = transition_iterator<typename Container::const_iterator>;
+    using iterator       = transition_iterator<typename C::iterator>;
+    using const_iterator = transition_iterator<typename C::const_iterator>;
 
     template <class... Ts>
     explicit sequence_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
 
-    Ref operator[](const Key& key) { return data_[key]; }
-
+    Ref  operator[](const Key& key)       { return data_[key]; }
     CRef operator[](const Key& key) const { return data_[key]; }
 
     iterator begin() { return {data_.begin(), data_.begin(), data_.end()}; }

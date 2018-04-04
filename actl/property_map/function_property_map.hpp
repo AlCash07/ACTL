@@ -15,12 +15,12 @@ namespace ac {
 /**
  * Property map that applies given function to the key.
  */
-template <class Function, class Key, class Return = std::result_of_t<const Function(const Key&)>>
-class function_property_map : public computed_property_map<false, Key, Return> {
+template <class Function, class Key, class Ref = std::result_of_t<const Function(const Key&)>>
+class function_property_map : public computed_property_map<false, Key, Ref> {
 public:
     explicit function_property_map(Function f = Function{}) : f_{f} {}
 
-    Return operator[](const Key& key) const { return f_(key); }
+    Ref operator[](const Key& key) const { return f_(key); }
 
 private:
     Function f_;
