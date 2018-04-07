@@ -32,10 +32,12 @@ private:
     using edge_container = typename traits::container;
 
 public:
-    using edge_id       = wrap_id<typename edge_container::id>;
-    using edge_iterator = wrap_id_iterator<typename edge_container::id_iterator>;
+    using edge_id       = typename detail::edge_id<edge_container, vertex_id>::type;
+    using edge_iterator = typename detail::edge_id<edge_container, vertex_id>::iterator;
 
-    explicit edge_list(int vertices_count = 0) : vertices_(vertices_count) {}
+    explicit edge_list() = default;
+
+    explicit edge_list(int vertices_count) : vertices_(vertices_count) {}
 
     /* Vertices operations */
 
@@ -62,18 +64,27 @@ public:
         return {edges.begin(), edges.end()};
     }
 
-    std::enable_if_t<std::is_same_v<Selector, two_vertices>, vertex_id> source(edge_id e) const {
+    template <class S = Selector, bool B = std::is_same_v<S, two_vertices>>
+    std::enable_if_t<B, vertex_id> source(edge_id e) const {
         return edges_[e].u;
     }
 
-    std::enable_if_t<std::is_same_v<Selector, two_vertices>, vertex_id> target(edge_id e) const {
+    template <class S = Selector, bool B = std::is_same_v<S, two_vertices>>
+    std::enable_if_t<B, vertex_id> target(edge_id e) const {
         return edges_[e].v;
     }
 
-    edge_id find_edge(vertex_id u, vertex_id v) const { return edges_.find(edge_vertices(u, v)); }
+    template <class S = Selector, bool B = std::is_same_v<S, two_vertices>>
+    std::enable_if_t<B, edge_id> find_edge(vertex_id u, vertex_id v) const {
+        return edges_.find(edge_vertices(u, v));
+    }
 
     template <class... Ts>
     std::pair<edge_id, bool> add_edge(vertex_id u, vertex_id v, Ts&&... args) {
+        if constexpr (is_random_access_v<VertexContainer>) {
+            vertex_id n = std::max(u, v);
+            if (n >= vertices_.size()) vertices_.resize(n + 1);
+        }
         if constexpr (std::is_same_v<Directed, undirected> && is_associative_v<EdgeContainer>) {
             if (u > v) std::swap(u, v);
         }
@@ -81,6 +92,15 @@ public:
     }
 
     /* Global operations */
+
+    //    typename vertex_container::property_map& operator[](vertex_property) { return vertices_; }
+    //    const typename vertex_container::property_map& operator[](vertex_property) const {
+    //        return vertices_;
+    //    }
+
+    //    auto operator[](edge_property) {
+    //        return detail::append_bundle_property_map(edges_);
+    //    }
 
     void clear() {
         vertices_.clear();

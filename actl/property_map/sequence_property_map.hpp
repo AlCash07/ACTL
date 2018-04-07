@@ -7,95 +7,87 @@
 
 #pragma once
 
-#include <actl/iterator/transition_iterator.hpp>
+#include <actl/assert.hpp>
+#include <actl/iterator/iterator_facade.hpp>
 #include <actl/property_map/property_map.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/type_traits/is_iterator.hpp>
 #include <array>
-#include <type_traits>
 
 namespace ac {
 
-/**
- * Property map from integer domain that returns range element with the key index.
- * Implements map traversal interface, skipping default values.
- */
-template <class Range,
-          class Key   = int,
-          class Value = typename Range::value_type,
-          class Ref   = typename Range::reference>
-class range_property_map : public property_map<true, false, const Key, Value, Ref, Ref> {
+namespace detail {
+
+template <class Sequence, class Key, class S = std::remove_reference_t<Sequence>,
+          class Value = typename S::value_type, class Ref = typename S::reference>
+class sequence_pm_base : public container_property_map<Sequence, Key, Value, Ref, false> {
+    using base_t = container_property_map<Sequence, Key, Value, Ref, false>;
+
 public:
-    static_assert(is_random_access_iterator<typename Range::iterator>::value,
-                  "range must have random access");
+    static_assert(is_random_access_iterator<typename S::iterator>::value,
+                  "sequence must be random access");
 
-    using iterator       = transition_iterator<typename Range::iterator>;
-    using const_iterator = iterator;
+    using base_t::base_t;
 
-    explicit range_property_map(Range range) : data_{range} {}
+    friend Ref get(sequence_pm_base& pm, Key key) {
+        ACTL_ASSERT(0 <= key && key < this->data_.size());
+        return pm.data_[key];
+    }
 
-    Ref operator[](const Key& key) const { return data_[key]; }
+    template <bool W = base_t::writeable>
+    friend std::enable_if_t<W> put(sequence_pm_base& pm, Key key, Value value) {
+        ACTL_ASSERT(0 <= key && key < this->data_.size());
+        pm.data_[key] = value;
+    }
 
-    iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
-    iterator end()   const { return {data_.end(),   data_.begin(), data_.end()}; }
-
-    void clear() { fill(data_, Value{}); }
-
-private:
-    Range data_;
+    template <bool W = base_t::writeable>
+    std::enable_if_t<W> clear() {
+        fill(this->data_, Value{});
+    }
 };
 
-template <class Range>
-inline auto make_range_property_map(Range range) { return range_property_map<Range>(range); }
-
-template <class Key, class Range>
-inline auto make_range_property_map(Range range) { return range_property_map<Range, Key>(range); }
-
-/**
- * Range property map with underlying sequence container.
- */
-template <class SequenceContainer,
-          class Key   = int,
-          class C     = std::remove_reference_t<SequenceContainer>,
-          class Value = typename C::value_type,
-          class Ref   = typename C::reference,
-          class CRef  = typename C::const_reference>
-class sequence_property_map : public property_map<true, false, const Key, Value, Ref, CRef> {
+template <class It, class V = std::pair<int, typename std::iterator_traits<It>::reference>>
+class sequence_iterator : public iterator_facade<sequence_iterator<It, V>, std::input_iterator_tag,
+                                                 V, V, const V*, void> {
 public:
-    static_assert(is_random_access_iterator<typename C::iterator>::value,
-                  "container must have random access");
-
-    using iterator       = transition_iterator<typename C::iterator>;
-    using const_iterator = transition_iterator<typename C::const_iterator>;
-
-    template <class... Ts>
-    explicit sequence_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
-
-    Ref  operator[](const Key& key)       { return data_[key]; }
-    CRef operator[](const Key& key) const { return data_[key]; }
-
-    iterator begin() { return {data_.begin(), data_.begin(), data_.end()}; }
-    iterator end()   { return {data_.end(),   data_.begin(), data_.end()}; }
-
-    const_iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
-    const_iterator end()   const { return {data_.end(),   data_.begin(), data_.end()}; }
-
-    void clear() { fill(data_, Value{}); }
+    sequence_iterator(It it, It begin) : it_{it}, begin_{begin} {}
 
 private:
-    SequenceContainer data_;
+    friend struct ac::iterator_core_access;
+
+    V dereference() const { return {static_cast<int>(it_ - begin_), *it_}; }
+
+    void increment() { ++it_; }
+
+    bool equals(const sequence_iterator& other) const { return it_ == other.it_; }
+
+    It it_;
+    It begin_;
 };
 
-template <class Container>
-inline auto make_sequence_property_map(Container&& container) {
-    return sequence_property_map<remove_rvalue_reference_t<Container>>(
-        std::forward<Container>(container));
-}
+}  // namespace detail
 
-template <class Key, class Container>
-inline auto make_sequence_property_map(Container&& container) {
-    return sequence_property_map<remove_rvalue_reference_t<Container>, Key>(
-        std::forward<Container>(container));
+/**
+ * Property map from integer domain that returns sequence element with the key index.
+ * Sequence is a fixed size, random access range or container.
+ */
+template <class Sequence, class Key = int>
+class sequence_property_map : public detail::sequence_pm_base<Sequence, Key> {
+    using base_t = detail::sequence_pm_base<Sequence, Key>;
+
+public:
+    using iterator = detail::sequence_iterator<typename base_t::iterator>;
+
+    using base_t::base_t;
+
+    iterator begin() { return {base_t::begin(), base_t::begin()}; }
+    iterator end()   { return {base_t::end(),   base_t::begin()}; }
+};
+
+template <class Key = int, class Sequence>
+inline auto make_sequence_property_map(Sequence&& sequence) {
+    return sequence_property_map<remove_rvalue_reference_t<Sequence>, Key>(
+        std::forward<Sequence>(sequence));
 }
 
 /**

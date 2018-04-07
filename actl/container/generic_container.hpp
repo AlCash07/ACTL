@@ -49,9 +49,8 @@ template <class Id>
 using id_key_t = typename id_key<Id>::type;
 
 template <class C>
-using generic_container_base =
-    container_property_map<false, C, container_id_t<C>, typename C::value_type,
-                           typename C::reference, typename C::const_reference>;
+using generic_container_base = container_property_map<C, container_id_t<C>, typename C::value_type,
+                                                      typename C::reference, false>;
 
 // This class is used to hide container operations when only property map interface is requested.
 template <class C>
@@ -89,7 +88,9 @@ public:
     using property_map = generic_container_property_map<C>;
     using property_map::data_;
 
-    explicit generic_container(int n = 0) {
+    explicit generic_container() = default;
+
+    explicit generic_container(int n) {
         for (int i = 0; i < n; ++i) emplace();
     }
 
@@ -136,7 +137,9 @@ public:
     using property_map = generic_container_property_map<C>;
     using property_map::data_;
 
-    explicit generic_container(int n = 0) : property_map(n) {}
+    explicit generic_container() = default;
+
+    explicit generic_container(int n) : property_map(n) {}
 
     range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(size())}; }
 
@@ -160,6 +163,8 @@ public:
         ACTL_ASSERT(0 <= id && id < size());
         data_.erase(data_.begin() + id);
     }
+
+    void resize(int n) { data_.resize(n); }
 };
 
 template <class C>
@@ -168,7 +173,7 @@ public:
     using id          = container_id_t<C>;
     using id_iterator = typename container_id<C>::iterator;
 
-    explicit generic_container(int n) : n_(n) {}
+    explicit generic_container(int n = 0) : n_(n) {}
 
     range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(size())}; }
 
@@ -182,6 +187,12 @@ public:
         ACTL_ASSERT(0 <= id && id < n_);
         --n_;
     }
+
+    void clear() { n_ = 0; }
+
+    void resize(int n) { n_ = n; }
+
+    void swap(generic_container& other) { std::swap(n_, other.n_); }
 
 protected:
     int n_;

@@ -24,12 +24,19 @@ struct is_unsigned_int : std::bool_constant<std::is_unsigned_v<T> && std::is_int
 
 template <class T>
 struct is_non_const_reference
-    : std::bool_constant<std::is_reference_v<T> && std::is_const_v<std::remove_reference_t<T>>> {};
+    : std::bool_constant<std::is_reference_v<T> && !std::is_const_v<std::remove_reference_t<T>>> {};
 
 template <class T> struct remove_rvalue_reference      { using type = T; };
 template <class T> struct remove_rvalue_reference<T&&> { using type = T; };
 
 template <class T>
 using remove_rvalue_reference_t = typename remove_rvalue_reference<T>::type;
+
+template <class From, class To, class = void>
+struct is_static_castable : std::false_type {};
+
+template <class From, class To>
+struct is_static_castable<From, To, std::void_t<decltype(static_cast<To>(std::declval<From>()))>>
+    : std::true_type {};
 
 }  // namespace ac

@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/property_map/property_map.hpp>
-#include <type_traits>
 #include <vector>
 
 namespace ac {
@@ -25,7 +24,7 @@ protected:
 template <class Key, class Value>
 class vector_invert<Key, Value, true> {
 public:
-    Key invert(Value value) const { return *keys_[value]; }
+    Key invert(Value value) { return *keys_[value]; }
 
 protected:
     void push_back(Key* ptr) { keys_.push_back(ptr); }
@@ -39,25 +38,25 @@ private:
 
 /**
  * Property map into integer domain that assigns next non-negative integer to every key not
- * encountered before. Can be invertible with small overhead.
+ * encountered before. Can be invertible with overhead of additional vector of pointers.
  */
 template <class AssociativeContainer, bool Invertible = false,
-          class Key   = const typename AssociativeContainer::key_type,
+          class Key   = typename AssociativeContainer::key_type,
           class Value = typename AssociativeContainer::mapped_type>
 class accounting_property_map
-    : public container_property_map<Invertible, AssociativeContainer, Key, Value, Value, void>,
+    : public container_property_map<AssociativeContainer, Key, Value, Value, Invertible, false>,
       public detail::vector_invert<Key, Value, Invertible> {
+public:
     static_assert(std::is_integral_v<Value>, "value type must be integral");
 
-public:
-    Value operator[](Key& key) {
-        auto pair = this->data_.insert({key, static_cast<Value>(this->data_.size())});
-        if (pair.second) this->push_back(&pair.first->first);
+    friend Value get(accounting_property_map& pm, Key key) {
+        auto pair = pm.data_.insert({key, static_cast<Value>(pm.data_.size())});
+        if (pair.second) pm.push_back(&pair.first->first);
         return pair.first->second;
     }
 
     void clear() {
-        container_property_map<Invertible, AssociativeContainer, Key, Value, Value, void>::clear();
+        this->data_.clear();
         detail::vector_invert<Key, Value, Invertible>::clear();
     }
 };

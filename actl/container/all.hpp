@@ -7,4 +7,5 @@
 
 #pragma once
 
+#include <actl/container/generic_container.hpp>
 #include <actl/container/ndarray.hpp>

@@ -15,13 +15,15 @@ namespace ac {
  * Property map that shifts key domain by the given offset (with casting).
  */
 template <class Key, class Value = int>
-class shift_property_map : public computed_property_map<true, Key, Value> {
+class shift_property_map : public property_map<Key, Value, Value, true> {
 public:
     explicit constexpr shift_property_map(Key offset) : offset_{offset} {}
 
-    constexpr Value operator[](const Key& key) const { return static_cast<Value>(key - offset_); }
+    friend constexpr Value get(shift_property_map& pm, Key key) {
+        return static_cast<Value>(key - pm.offset_);
+    }
 
-    constexpr Key invert(const Value& value) const { return static_cast<Key>(value) + offset_; }
+    constexpr Key invert(Value value) { return static_cast<Key>(value) + offset_; }
 
 private:
     const Key offset_;
@@ -34,11 +36,13 @@ inline auto make_shift_property_map(Key offset) { return shift_property_map<Key,
  * Shift property map with offset known at compile-time.
  */
 template <class Key, Key Offset, class Value = Key>
-class static_shift_property_map : public computed_property_map<true, Key, Value> {
+class static_shift_property_map : public property_map<Key, Value, Value, true> {
 public:
-    constexpr Value operator[](const Key& key) const { return static_cast<Value>(key - Offset); }
+    friend constexpr Value get(static_shift_property_map&, Key key) {
+        return static_cast<Value>(key - Offset);
+    }
 
-    constexpr Key invert(const Value& value) const { return static_cast<Key>(value) + Offset; }
+    constexpr Key invert(Value value) { return static_cast<Key>(value) + Offset; }
 };
 
 }  // namespace ac

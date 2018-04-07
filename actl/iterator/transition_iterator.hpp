@@ -16,15 +16,12 @@ namespace ac {
  * Iterator that stops only at non-default values (that convert to true) in the continuous memory,
  * treating it as a map from integer domain.
  */
+// TODO: pass a predicate that indicates empty values.
 template <class Iterator,
-          class Value = std::pair<const int, typename std::iterator_traits<Iterator>::reference>>
+          class Value = std::pair<int, typename std::iterator_traits<Iterator>::reference>>
 class transition_iterator
-    : public iterator_facade<transition_iterator<Iterator, Value>,
-                             std::input_iterator_tag,
-                             Value,
-                             Value,
-                             const Value*,
-                             typename std::iterator_traits<Iterator>::difference_type> {
+    : public iterator_facade<transition_iterator<Iterator, Value>, std::input_iterator_tag, Value,
+                             Value, const Value*, void> {
 public:
     transition_iterator() = default;
 
@@ -36,7 +33,7 @@ public:
 private:
     friend struct iterator_core_access;
 
-    Value dereference() const { return {static_cast<const int>(it_ - begin_), *it_}; }
+    Value dereference() const { return {static_cast<int>(it_ - begin_), *it_}; }
 
     void skip_empty() { for (; it_ != end_ && !*it_; ++it_); }
 

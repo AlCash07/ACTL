@@ -71,13 +71,9 @@ struct edge_vertices<Dir, two_vertices, VId> {
 
     std::pair<id_key_t<VId>, id_key_t<VId>> key() const { return {u, v}; }
 
-    friend bool operator < (const edge_vertices& lhs, const edge_vertices& rhs) {
-        return lhs.key() < rhs.key();
-    }
+    bool operator < (const edge_vertices& rhs) { return key() < rhs.key(); }
 
-    friend bool operator == (const edge_vertices& lhs, const edge_vertices& rhs) {
-        return lhs.u == rhs.u && lhs.v == rhs.v;
-    }
+    bool operator == (const edge_vertices& rhs) { return u == rhs.u && v == rhs.v; }
 };
 
 template <class Dir, class EC, class VId, class Selector>
@@ -94,10 +90,22 @@ template <class Dir, class EC, class VId>
 struct edge_list_traits<Dir, EC, VId, none> {
     using bundle    = typename EC::value_type;
     using vertices  = none;
-    using container = generic_container<std::vector<none>>;  // Only maintains edge count.
+    using container = generic_container<none, none, true>;  // Only maintains edge count.
 
     // Edge bundle is duplicated if graph is undirected or bidirectional, so it's immutable.
     using out_edge_bundle = std::conditional_t<std::is_same_v<Dir, directed>, bundle, const bundle>;
+};
+
+template <class EC, class VId>
+struct edge_id {
+    using type     = typename EC::id;
+    using iterator = typename EC::id_iterator;
+};
+
+template <class EC>
+struct edge_id<EC, typename EC::id> {
+    using type     = wrap_id<typename EC::id>;
+    using iterator = wrap_id_iterator<typename EC::id_iterator>;
 };
 
 }  // namespace ac::detail

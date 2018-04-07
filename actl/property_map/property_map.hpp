@@ -1,15 +1,16 @@
 /***************************************************************************************************
  * Property maps inspired by boost, but much more powerful.
- * Besides mapping with operator [], property maps can support:
+ * Besides access via get and put functions, property maps can support:
  * - inverse mapping (invert method);
- * - traversal of container maps (begin(), end() methods).
+ * - traversal of container maps (begin(), end() methods);
+ * - clear method (not formalized yet).
  *
  * Custom property maps must inherit from property_map_base, which is done more conveniently by
  * inheriting from one of:
- * - property_map, which defines all required nested types and static variables;
- * - computed_property_map, where value is assumed to be computed on the fly by a function;
- * - container_property_map, which incapsulates a container (or a reference to container) and
- * provides traversal interface.
+ * - property_map, which defines all required nested types and static variables; the last template
+ * parameters have suitable defaults for the case when mapped value is computed on the fly.
+ * - container_property_map, which incapsulates a container (or a reference to container,
+ * also can be constant) and provides traversal interface.
  *
  * property_traits is a helper class that defines nested types and static variables for custom
  * property maps as well as for random access iterators (which can be used as property maps from
@@ -30,49 +31,32 @@ namespace ac {
 
 struct property_map_base {};
 
-template <bool Traversible,
-          bool Invertible,
-          class Key,
-          class Value,
-          class Ref  = Value&,
-          class CRef = const Value&>
+template <class Key, class Value, class Ref, bool Invertible, bool Traversible = false,
+          bool Writeable = false>
 struct property_map : property_map_base {
-    using key_type        = Key;
-    using value_type      = Value;
-    using reference       = Ref;
-    using const_reference = CRef;
+    using key_type   = Key;
+    using value_type = Value;
+    using reference  = Ref;
 
-    static constexpr bool writeable   = is_non_const_reference<reference>::value;
-    static constexpr bool traversible = Traversible;
     static constexpr bool invertible  = Invertible;
+    static constexpr bool traversible = Traversible;
+    static constexpr bool writeable   = Writeable;
 };
 
-template <bool Invertible, class Key, class Ref>
-struct computed_property_map
-    : property_map<false, Invertible, const Key, std::decay_t<Ref>, Ref, Ref> {
-    void clear() {}
-};
-
-template <bool Invertible, class Container, class Key, class Value, class Ref, class CRef>
-class container_property_map : public property_map<true, Invertible, Key, Value, Ref, CRef> {
+template <class Container, class Key, class Value, class Ref, bool Invertible,
+          bool Writeable = !std::is_const_v<std::remove_reference_t<Container>>>
+class container_property_map : public property_map<Key, Value, Ref, Invertible, true, Writeable> {
     using C = std::remove_reference_t<Container>;
 
 public:
-    using iterator       = typename C::iterator;
-    using const_iterator = typename C::const_iterator;
+    using iterator =
+        std::conditional_t<Writeable, typename C::iterator, typename C::const_iterator>;
 
     template <class... Ts>
     explicit container_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
 
     iterator begin() { return data_.begin(); }
     iterator end()   { return data_.end(); }
-
-    const_iterator begin() const { return data_.begin(); }
-    const_iterator end()   const { return data_.end(); }
-
-    void clear() { data_.clear(); }
-
-    void swap(container_property_map& other) { data_.swap(other.data_); }
 
 protected:
     Container data_;
@@ -85,26 +69,25 @@ struct property_traits_impl {};
 
 template <class T>
 struct property_traits_impl<T, true, false> {
-    using key_type        = typename T::key_type;
-    using value_type      = typename T::value_type;
-    using reference       = typename T::reference;
-    using const_reference = typename T::const_reference;
+    using key_type   = typename T::key_type;
+    using value_type = typename T::value_type;
+    using reference  = typename T::reference;
 
-    static constexpr bool writeable   = T::writeable;
-    static constexpr bool traversible = T::traversible;
     static constexpr bool invertible  = T::invertible;
+    static constexpr bool traversible = T::traversible;
+    static constexpr bool writeable   = T::writeable;
 };
 
 template <class T>
 struct property_traits_impl<T, false, true> {
-    using key_type        = typename std::iterator_traits<T>::difference_type;
-    using value_type      = typename std::iterator_traits<T>::value_type;
-    using reference       = typename std::iterator_traits<T>::reference;
-    using const_reference = const reference;
+    using key_type   = int;
+    using value_type = typename std::iterator_traits<T>::value_type;
+    using reference  = typename std::iterator_traits<T>::reference;
 
-    static constexpr bool writeable   = is_non_const_reference<reference>::value;
-    static constexpr bool traversible = false;
+    // TODO: if invert is guaranteed to take the result of get then invertible is true.
     static constexpr bool invertible  = false;
+    static constexpr bool traversible = false;
+    static constexpr bool writeable   = is_non_const_reference<reference>::value;
 };
 
 }  // namespace detail
@@ -112,5 +95,18 @@ struct property_traits_impl<T, false, true> {
 template <class T>
 struct property_traits : detail::property_traits_impl<T, std::is_base_of_v<property_map_base, T>,
                                                       is_random_access_iterator<T>::value> {};
+
+template <class It>
+inline std::enable_if_t<is_random_access_iterator<It>::value,
+                        typename std::iterator_traits<It>::reference>
+get(It it, int key) {
+    return it[key];
+}
+
+template <class It>
+inline std::enable_if_t<is_random_access_iterator<It>::value> put(
+    It it, int key, typename std::iterator_traits<It>::value_type value) {
+    return it[key] = value;
+}
 
 }  // namespace ac

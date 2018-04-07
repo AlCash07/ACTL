@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/property_map/composite_property_map.hpp>
 #include <type_traits>
 
 namespace ac::detail {
@@ -15,6 +16,10 @@ namespace ac::detail {
 template <class T, class B, bool = std::is_empty_v<B> && !std::is_final_v<B>>
 class bundle_decorator : public T, private B {
 public:
+    using bundle_type = B;
+
+    bundle_decorator() = default;
+
     template <class T0, class... Ts>
     explicit constexpr bundle_decorator(T0&& arg0, Ts&&... args)
         : T(std::forward<T0>(arg0)), B(std::forward<Ts>(args)...) {}
@@ -26,6 +31,10 @@ public:
 template <class T, class B>
 class bundle_decorator<T, B, false> : public T {
 public:
+    using bundle_type = B;
+
+    bundle_decorator() = default;
+
     template <class T0, class... Ts>
     explicit constexpr bundle_decorator(T0&& arg0, Ts&&... args)
         : T(std::forward<T0>(arg0)), bundle_(std::forward<Ts>(args)...) {}
@@ -36,5 +45,18 @@ public:
 private:
     B bundle_;
 };
+
+// template <class Key, class B = typename Key::bundle_type>
+// class bundle_property_map : public property_map<false, false, Key, B> {
+// public:
+//    B&       operator[](      Key& key) const { return key.bundle(); }
+//    const B& operator[](const Key& key) const { return key.bundle(); }
+//};
+//
+// template <class PM>
+// inline auto append_bundle_property_map(PM&& map) {
+//    return make_composite_property_map(std::forward<PM>(map),
+//        bundle_property_map<typename property_traits<PM>::value_type>());
+//}
 
 }  // namespace ac::detail
