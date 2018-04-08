@@ -28,7 +28,7 @@ public:
 
     friend Member& get(member_property_map& mp, Key& key) { return key.*mp.ptr_; }
 
-    template <bool W = detail::member_pm_base<Key, Member>::writeable>
+    template <bool W = detail::member_pm_base<Key, Member>::writable>
     friend std::enable_if_t<W> put(member_property_map& mp, Key& key, Member value) {
         key.*mp.ptr_ = value;
     }
@@ -57,7 +57,7 @@ class static_member_property_map : public detail::member_pm_base<Key, Member> {
 public:
     friend Member& get(static_member_property_map& mp, Key& key) { return key.*Ptr; }
 
-    template <bool W = detail::member_pm_base<Key, Member>::writeable>
+    template <bool W = detail::member_pm_base<Key, Member>::writable>
     friend std::enable_if_t<W> put(static_member_property_map& mp, Key& key, Member value) {
         key.*Ptr = value;
     }

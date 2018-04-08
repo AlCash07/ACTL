@@ -28,12 +28,12 @@ public:
         return it == pm.data_.end() ? Value{} : it->second;
     }
 
-    template <bool W = base_t::writeable>
+    template <bool W = base_t::writable>
     friend std::enable_if_t<W> put(associative_property_map& pm, Key key, Value value) {
         pm.data_[key] = value;
     }
 
-    template <bool W = base_t::writeable>
+    template <bool W = base_t::writable>
     std::enable_if_t<W> clear() {
         this->data_.clear();
     }

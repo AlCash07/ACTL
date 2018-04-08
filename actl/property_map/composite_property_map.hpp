@@ -45,17 +45,17 @@ public:
 template <class PM1, class PM2, bool, bool, bool>
 class composite_pm_put : public composite_pm_base<PM1, PM2> {
 public:
-    static constexpr bool writeable = false;
+    static constexpr bool writable = false;
 
     using composite_pm_base<PM1, PM2>::composite_pm_base;
 };
 
-template <class PM1, class PM2, bool W, bool I>
-class composite_pm_put<PM1, PM2, W, true, I> : public composite_pm_base<PM1, PM2> {
+template <class PM1, class PM2, bool W, bool Inv>
+class composite_pm_put<PM1, PM2, W, true, Inv> : public composite_pm_base<PM1, PM2> {
     using base_t = composite_pm_base<PM1, PM2>;
 
 public:
-    static constexpr bool writeable = true;
+    static constexpr bool writable = true;
 
     using base_t::base_t;
 
@@ -70,7 +70,7 @@ class composite_pm_put<PM1, PM2, true, false, true> : public composite_pm_base<P
     using base_t = composite_pm_base<PM1, PM2>;
 
 public:
-    static constexpr bool writeable = true;
+    static constexpr bool writable = true;
 
     using base_t::base_t;
 
@@ -82,7 +82,7 @@ public:
 
 template <class PM1, class PM2>
 using composite_pm_put_t =
-    composite_pm_put<PM1, PM2, property_traits<PM1>::writeable, property_traits<PM2>::writeable,
+    composite_pm_put<PM1, PM2, property_traits<PM1>::writable, property_traits<PM2>::writable,
                      property_traits<PM2>::invertible>;
 
 // Class that adds invert method if possible.
@@ -115,9 +115,9 @@ using composite_pm_invert_t =
 
 // Class that adds begin/end methods if possible.
 template <class PM1, class PM2, bool, bool, bool>
-class composite_pm_traverse : public composite_pm_invert_t<PM1, PM2> {
+class composite_pm_iterate : public composite_pm_invert_t<PM1, PM2> {
 public:
-    static constexpr bool traversible = false;
+    static constexpr bool iterable = false;
 
     using composite_pm_invert_t<PM1, PM2>::composite_pm_invert_t;
 };
@@ -139,15 +139,15 @@ private:
     PM2& pm_;
 };
 
-template <class PM1, class PM2, bool T, bool I>
-class composite_pm_traverse<PM1, PM2, true, T, I> : public composite_pm_invert_t<PM1, PM2> {
+template <class PM1, class PM2, bool It, bool Inv>
+class composite_pm_iterate<PM1, PM2, true, It, Inv> : public composite_pm_invert_t<PM1, PM2> {
     using base_t = composite_pm_invert_t<PM1, PM2>;
 
 public:
     using iterator = pm_iterator<typename PM1::iterator, PM2, typename PM1::key_type,
                                  typename property_traits<PM2>::reference>;
 
-    static constexpr bool traversible = true;
+    static constexpr bool iterable = true;
 
     using base_t::base_t;
 
@@ -173,7 +173,7 @@ private:
 };
 
 template <class PM1, class PM2>
-class composite_pm_traverse<PM1, PM2, false, true, true> : public composite_pm_invert_t<PM1, PM2> {
+class composite_pm_iterate<PM1, PM2, false, true, true> : public composite_pm_invert_t<PM1, PM2> {
     using base_t = composite_pm_invert_t<PM1, PM2>;
 
 public:
@@ -181,7 +181,7 @@ public:
         pm_invert_iterator<typename PM2::iterator, PM1, typename property_traits<PM1>::key_type,
                            typename PM2::reference>;
 
-    static constexpr bool traversible = true;
+    static constexpr bool iterable = true;
 
     using base_t::base_t;
 
@@ -191,8 +191,8 @@ public:
 
 template <class PM1, class PM2>
 using composite_pm_t =
-    composite_pm_traverse<PM1, PM2, property_traits<PM1>::traversible,
-                          property_traits<PM2>::traversible, property_traits<PM1>::invertible>;
+    composite_pm_iterate<PM1, PM2, property_traits<PM1>::iterable, property_traits<PM2>::iterable,
+                         property_traits<PM1>::invertible>;
 
 }  // namespace detail
 

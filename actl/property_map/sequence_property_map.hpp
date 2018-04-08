@@ -34,13 +34,13 @@ public:
         return pm.data_[key];
     }
 
-    template <bool W = base_t::writeable>
+    template <bool W = base_t::writable>
     friend std::enable_if_t<W> put(sequence_pm_base& pm, Key key, Value value) {
         ACTL_ASSERT(0 <= key && key < this->data_.size());
         pm.data_[key] = value;
     }
 
-    template <bool W = base_t::writeable>
+    template <bool W = base_t::writable>
     std::enable_if_t<W> clear() {
         fill(this->data_, Value{});
     }

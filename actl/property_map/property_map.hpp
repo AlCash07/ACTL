@@ -31,26 +31,25 @@ namespace ac {
 
 struct property_map_base {};
 
-template <class Key, class Value, class Ref, bool Invertible, bool Traversible = false,
-          bool Writeable = false>
+template <class Key, class Value, class Ref, bool Invertible, bool Iterable = false,
+          bool Writable = false>
 struct property_map : property_map_base {
     using key_type   = Key;
     using value_type = Value;
     using reference  = Ref;
 
-    static constexpr bool invertible  = Invertible;
-    static constexpr bool traversible = Traversible;
-    static constexpr bool writeable   = Writeable;
+    static constexpr bool invertible = Invertible;
+    static constexpr bool iterable   = Iterable;
+    static constexpr bool writable   = Writable;
 };
 
 template <class Container, class Key, class Value, class Ref, bool Invertible,
-          bool Writeable = !std::is_const_v<std::remove_reference_t<Container>>>
-class container_property_map : public property_map<Key, Value, Ref, Invertible, true, Writeable> {
+          bool Writable = !std::is_const_v<std::remove_reference_t<Container>>>
+class container_property_map : public property_map<Key, Value, Ref, Invertible, true, Writable> {
     using C = std::remove_reference_t<Container>;
 
 public:
-    using iterator =
-        std::conditional_t<Writeable, typename C::iterator, typename C::const_iterator>;
+    using iterator = std::conditional_t<Writable, typename C::iterator, typename C::const_iterator>;
 
     template <class... Ts>
     explicit container_property_map(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
@@ -73,9 +72,9 @@ struct property_traits_impl<T, true, false> {
     using value_type = typename T::value_type;
     using reference  = typename T::reference;
 
-    static constexpr bool invertible  = T::invertible;
-    static constexpr bool traversible = T::traversible;
-    static constexpr bool writeable   = T::writeable;
+    static constexpr bool invertible = T::invertible;
+    static constexpr bool iterable   = T::iterable;
+    static constexpr bool writable   = T::writable;
 };
 
 template <class T>
@@ -85,9 +84,9 @@ struct property_traits_impl<T, false, true> {
     using reference  = typename std::iterator_traits<T>::reference;
 
     // TODO: if invert is guaranteed to take the result of get then invertible is true.
-    static constexpr bool invertible  = false;
-    static constexpr bool traversible = false;
-    static constexpr bool writeable   = is_non_const_reference<reference>::value;
+    static constexpr bool invertible = false;
+    static constexpr bool iterable   = false;
+    static constexpr bool writable   = is_non_const_reference<reference>::value;
 };
 
 }  // namespace detail
