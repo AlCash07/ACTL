@@ -27,8 +27,13 @@ template <class It>
 class range_base<It, std::forward_iterator_tag> : public std::iterator_traits<It> {
 public:
     using iterator  = It;
-    using size_type = std::size_t;
+    using size_type = int;
     // all other type aliases come from std::iterator_traits<It>
+
+    range_base() : begin_{}, end_{} {}
+
+    template <class It1>
+    range_base(It1 begin, It1 end) : begin_{begin}, end_{end} {}
 
     It begin() const { return begin_; }
 
@@ -36,7 +41,7 @@ public:
 
     bool empty() const { return begin_ == end_; }
 
-    bool operator()() const { return !empty(); }
+    explicit operator bool() const { return !empty(); }
 
     typename std::iterator_traits<It>::reference front() const {
         ACTL_ASSERT(!empty());
@@ -49,31 +54,20 @@ public:
     }
 
 protected:
-    range_base() : begin_{}, end_{} {}
-
-    template <class It1>
-    range_base(It1 begin, It1 end) : begin_{begin}, end_{end} {}
-
     It begin_;
     It end_;
 };
 
 template <class It>
 class range_base<It, std::input_iterator_tag> : public range_base<It, std::forward_iterator_tag> {
-protected:
-    range_base() = default;
-
-    template <class It1>
-    range_base(It1 first, It1 last) : range_base<It, std::forward_iterator_tag>(first, last) {}
+public:
+    using range_base<It, std::forward_iterator_tag>::range_base;
 };
 
 template <class It>
 class range_base<It, std::output_iterator_tag> : public range_base<It, std::forward_iterator_tag> {
-protected:
-    range_base() = default;
-
-    template <class It1>
-    range_base(It1 first, It1 last) : range_base<It, std::forward_iterator_tag>(first, last) {}
+public:
+    using range_base<It, std::forward_iterator_tag>::range_base;
 };
 
 template <class It>
@@ -82,6 +76,8 @@ class range_base<It, std::bidirectional_iterator_tag>
     using base_t = range_base<It, std::forward_iterator_tag>;
 
 public:
+    using base_t::base_t;
+
     typename base_t::reference back() const {
         ACTL_ASSERT(!this->empty());
         auto end = this->end_;
@@ -92,12 +88,6 @@ public:
         ACTL_ASSERT(!this->empty());
         --this->end_;
     }
-
-protected:
-    range_base() = default;
-
-    template <class It1>
-    range_base(It1 first, It1 last) : base_t(first, last) {}
 };
 
 template <class It>
@@ -108,19 +98,14 @@ class range_base<It, std::random_access_iterator_tag>
 public:
     using typename base_t::size_type;
 
+    using base_t::base_t;
+
     typename base_t::reference operator[](typename base_t::difference_type at) const {
-        ACTL_ASSERT(at >= 0);
-        ACTL_ASSERT(static_cast<size_type>(at) < size());
+        ACTL_ASSERT(0 <= at && static_cast<size_type>(at) < size());
         return this->begin_[at];
     }
 
     size_type size() const { return static_cast<size_type>(this->end_ - this->begin_); }
-
-protected:
-    range_base() = default;
-
-    template <class It1>
-    range_base(It1 first, It1 last) : base_t(first, last) {}
 };
 
 }  // namespace detail
@@ -130,10 +115,7 @@ class range : public detail::range_base<It, typename std::iterator_traits<It>::i
     using base_t = detail::range_base<It, typename std::iterator_traits<It>::iterator_category>;
 
 public:
-    range() = default;
-
-    template <class Iterator>
-    range(Iterator first, Iterator last) : base_t(first, last) {}
+    using base_t::base_t;
 };
 
 template <class Iterator>
