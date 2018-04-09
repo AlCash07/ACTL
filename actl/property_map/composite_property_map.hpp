@@ -125,17 +125,17 @@ public:
 template <class PM1, class PM2, bool It2, bool Inv2>
 class composite_pm_iterate<PM1, PM2, true, It2, Inv2> : public composite_pm_invert_t<PM1, PM2> {
     using base_t = composite_pm_invert_t<PM1, PM2>;
-    using it     = typename PM1::iterator;
-    using pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
+    using It     = typename PM1::iterator;
+    using Pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
 
 public:
     class iterator
-        : public iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default> {
-        iterator(const it& it, PM2& pm)
-            : iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default>(it),
+        : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
+        iterator(const It& it, PM2& pm)
+            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>(it),
               pm_{pm} {}
 
-        pair dereference() const { return {this->base()->first, get(pm_, this->base()->second)}; }
+        Pair dereference() const { return {this->base()->first, get(pm_, this->base()->second)}; }
 
         PM2& pm_;
 
@@ -154,17 +154,17 @@ public:
 template <class PM1, class PM2>
 class composite_pm_iterate<PM1, PM2, false, true, true> : public composite_pm_invert_t<PM1, PM2> {
     using base_t = composite_pm_invert_t<PM1, PM2>;
-    using it     = typename PM2::iterator;
-    using pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
+    using It     = typename PM2::iterator;
+    using Pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
 
 public:
     class iterator
-        : public iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default> {
-        iterator(const it& it, PM1& pm)
-            : iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default>(it),
+        : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
+        iterator(const It& it, PM1& pm)
+            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>(it),
               pm_{pm} {}
 
-        pair dereference() const { return {pm_.invert(this->base()->first), this->base()->second}; }
+        Pair dereference() const { return {pm_.invert(this->base()->first), this->base()->second}; }
 
         PM1& pm_;
 
