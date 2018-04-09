@@ -23,7 +23,7 @@ class associative_property_map
 public:
     using base_t::base_t;
 
-    friend Value get(associative_property_map& pm, Key key) {
+    friend Value get(const associative_property_map& pm, Key key) {
         auto it = pm.data_.find(key);
         return it == pm.data_.end() ? Value{} : it->second;
     }

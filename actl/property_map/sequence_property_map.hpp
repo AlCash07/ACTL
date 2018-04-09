@@ -29,7 +29,7 @@ public:
 
     using base_t::base_t;
 
-    friend Ref get(sequence_pm_base& pm, Key key) {
+    friend Ref get(const sequence_pm_base& pm, Key key) {
         ACTL_ASSERT(0 <= key && key < this->data_.size());
         return pm.data_[key];
     }

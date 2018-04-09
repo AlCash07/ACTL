@@ -26,7 +26,7 @@ class member_property_map : public detail::member_pm_base<Key, Member> {
 public:
     explicit constexpr member_property_map(Member Key::* ptr) : ptr_{ptr} {}
 
-    friend Member& get(member_property_map& mp, Key& key) { return key.*mp.ptr_; }
+    friend Member& get(const member_property_map& mp, Key& key) { return key.*mp.ptr_; }
 
     template <bool W = detail::member_pm_base<Key, Member>::writable>
     friend std::enable_if_t<W> put(member_property_map& mp, Key& key, Member value) {
@@ -55,10 +55,10 @@ inline auto make_const_member_property_map(Member Key::* ptr) {
 template <class Key, class Member, Member Key::* Ptr>
 class static_member_property_map : public detail::member_pm_base<Key, Member> {
 public:
-    friend Member& get(static_member_property_map& mp, Key& key) { return key.*Ptr; }
+    friend Member& get(const static_member_property_map&, Key& key) { return key.*Ptr; }
 
     template <bool W = detail::member_pm_base<Key, Member>::writable>
-    friend std::enable_if_t<W> put(static_member_property_map& mp, Key& key, Member value) {
+    friend std::enable_if_t<W> put(static_member_property_map&, Key& key, Member value) {
         key.*Ptr = value;
     }
 };

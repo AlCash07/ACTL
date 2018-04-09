@@ -108,4 +108,7 @@ inline std::enable_if_t<is_random_access_iterator<It>::value> put(
     return it[key] = value;
 }
 
-}  // namespace ac
+template <class PM>
+struct get_put_gen {};
+
+};  // namespace ac

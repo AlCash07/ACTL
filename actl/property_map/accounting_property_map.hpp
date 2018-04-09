@@ -24,7 +24,7 @@ protected:
 template <class Key, class Value>
 class vector_invert<Key, Value, true> {
 public:
-    Key invert(Value value) { return *keys_[value]; }
+    Key invert(Value value) const { return *keys_[value]; }
 
 protected:
     void push_back(Key* ptr) { keys_.push_back(ptr); }

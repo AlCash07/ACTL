@@ -103,7 +103,7 @@ public:
 
     using base_t::base_t;
 
-    constexpr typename base_t::key_type invert(typename base_t::value_type value) {
+    constexpr typename base_t::key_type invert(typename base_t::value_type value) const {
         return this->first().invert(this->second().invert(value));
     }
 };
@@ -122,30 +122,26 @@ public:
     using composite_pm_invert_t<PM1, PM2>::composite_pm_invert_t;
 };
 
-template <class It, class PM2, class Key, class Ref, class Pair = std::pair<Key, Ref>>
-class pm_iterator : public iterator_adaptor<pm_iterator<It, PM2, Key, Ref, Pair>, It, use_default,
-                                            Pair, Pair, Pair*, use_default> {
-public:
-    pm_iterator(const It& it, PM2& pm)
-        : iterator_adaptor<pm_iterator<It, PM2, Key, Ref, Pair>, It, use_default, Pair, Pair, Pair*,
-                           use_default>(it),
-          pm_{pm} {}
-
-private:
-    friend struct ac::iterator_core_access;
-
-    Pair dereference() const { return {this->base()->first, get(pm_, this->base()->second)}; }
-
-    PM2& pm_;
-};
-
-template <class PM1, class PM2, bool It, bool Inv>
-class composite_pm_iterate<PM1, PM2, true, It, Inv> : public composite_pm_invert_t<PM1, PM2> {
+template <class PM1, class PM2, bool It2, bool Inv2>
+class composite_pm_iterate<PM1, PM2, true, It2, Inv2> : public composite_pm_invert_t<PM1, PM2> {
     using base_t = composite_pm_invert_t<PM1, PM2>;
+    using it     = typename PM1::iterator;
+    using pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
 
 public:
-    using iterator = pm_iterator<typename PM1::iterator, PM2, typename PM1::key_type,
-                                 typename property_traits<PM2>::reference>;
+    class iterator
+        : public iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default> {
+        iterator(const it& it, PM2& pm)
+            : iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default>(it),
+              pm_{pm} {}
+
+        pair dereference() const { return {this->base()->first, get(pm_, this->base()->second)}; }
+
+        PM2& pm_;
+
+        friend class composite_pm_iterate;
+        friend struct ac::iterator_core_access;
+    };
 
     static constexpr bool iterable = true;
 
@@ -155,31 +151,26 @@ public:
     iterator end()   { return {this->first().end(),   this->second()}; }
 };
 
-template <class It, class PM1, class Key, class Ref, class Pair = std::pair<Key, Ref>>
-class pm_invert_iterator : public iterator_adaptor<pm_invert_iterator<It, PM1, Key, Ref, Pair>, It,
-                                                   use_default, Pair, Pair, Pair*, use_default> {
-public:
-    pm_invert_iterator(const It& it, PM1& pm)
-        : iterator_adaptor<pm_invert_iterator<It, PM1, Key, Ref, Pair>, It, use_default, Pair, Pair,
-                           Pair*, use_default>(it),
-          pm_{pm} {}
-
-private:
-    friend struct ac::iterator_core_access;
-
-    Pair dereference() const { return {pm_.invert(this->base()->first), this->base()->second}; }
-
-    PM1& pm_;
-};
-
 template <class PM1, class PM2>
 class composite_pm_iterate<PM1, PM2, false, true, true> : public composite_pm_invert_t<PM1, PM2> {
     using base_t = composite_pm_invert_t<PM1, PM2>;
+    using it     = typename PM2::iterator;
+    using pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
 
 public:
-    using iterator =
-        pm_invert_iterator<typename PM2::iterator, PM1, typename property_traits<PM1>::key_type,
-                           typename PM2::reference>;
+    class iterator
+        : public iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default> {
+        iterator(const it& it, PM1& pm)
+            : iterator_adaptor<iterator, it, use_default, pair, pair, pair*, use_default>(it),
+              pm_{pm} {}
+
+        pair dereference() const { return {pm_.invert(this->base()->first), this->base()->second}; }
+
+        PM1& pm_;
+
+        friend class composite_pm_iterate;
+        friend struct ac::iterator_core_access;
+    };
 
     static constexpr bool iterable = true;
 
