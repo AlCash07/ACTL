@@ -31,21 +31,25 @@ namespace ac {
 
 struct property_map_base {};
 
-template <class Key, class Value, class Ref, bool Invertible, bool Iterable = false,
-          bool Writable = false>
+template <class Key, class Value, class Ref, bool ConstGet, bool Writable, bool Invertible,
+          bool Iterable>
 struct property_map : property_map_base {
     using key_type   = Key;
     using value_type = Value;
     using reference  = Ref;
 
+    static constexpr bool const_get  = ConstGet;
+    static constexpr bool writable   = Writable;
     static constexpr bool invertible = Invertible;
     static constexpr bool iterable   = Iterable;
-    static constexpr bool writable   = Writable;
 };
+
+template <class Key, class Value, class Ref, bool Invertible>
+using computed_property_map = property_map<Key, Value, Ref, true, false, Invertible, false>;
 
 template <class Container, class Key, class Value, class Ref, bool Invertible,
           bool Writable = !std::is_const_v<std::remove_reference_t<Container>>>
-class container_property_map : public property_map<Key, Value, Ref, Invertible, true, Writable> {
+class container_property_map : public property_map<Key, Value, Ref, true, Invertible, true, Writable> {
     using C = std::remove_reference_t<Container>;
 
 public:
@@ -72,9 +76,10 @@ struct property_traits_impl<T, true, false> {
     using value_type = typename T::value_type;
     using reference  = typename T::reference;
 
+    static constexpr bool const_get  = T::const_get;
+    static constexpr bool writable   = T::writable;
     static constexpr bool invertible = T::invertible;
     static constexpr bool iterable   = T::iterable;
-    static constexpr bool writable   = T::writable;
 };
 
 template <class T>
@@ -83,10 +88,11 @@ struct property_traits_impl<T, false, true> {
     using value_type = typename std::iterator_traits<T>::value_type;
     using reference  = typename std::iterator_traits<T>::reference;
 
+    static constexpr bool const_get  = true;
+    static constexpr bool writable   = is_non_const_reference<reference>::value;
     // TODO: if invert is guaranteed to take the result of get then invertible is true.
     static constexpr bool invertible = false;
     static constexpr bool iterable   = false;
-    static constexpr bool writable   = is_non_const_reference<reference>::value;
 };
 
 }  // namespace detail
@@ -96,8 +102,7 @@ struct property_traits : detail::property_traits_impl<T, std::is_base_of_v<prope
                                                       is_random_access_iterator<T>::value> {};
 
 template <class It>
-inline std::enable_if_t<is_random_access_iterator<It>::value,
-                        typename std::iterator_traits<It>::reference>
+inline std::enable_if_t<is_random_access_iterator<It>::value, typename std::iterator_traits<It>::reference>
 get(It it, int key) {
     return it[key];
 }
@@ -108,7 +113,42 @@ inline std::enable_if_t<is_random_access_iterator<It>::value> put(
     return it[key] = value;
 }
 
-template <class PM>
-struct get_put_gen {};
+template <class PM, class Base, bool W = Base::writable>
+struct put_gen : Base {
+    using typename Base::key_type;
+    using typename Base::value_type;
 
-};  // namespace ac
+    friend constexpr void put(put_gen& pm, key_type key, value_type value) {
+        return static_cast<PM&>(pm).put(key, value);
+    }
+
+    friend constexpr void put(put_gen&& pm, key_type key, value_type value) {
+        return put(pm, key, value);
+    }
+};
+
+template <class PM, class Base>
+struct put_gen<PM, Base, false> : Base {};
+
+template <class PM, class Base, bool CG = Base::const_get>
+struct get_put_gen : put_gen<PM, Base> {
+    friend constexpr typename Base::reference get(const get_put_gen& pm, typename Base::key_type key) {
+        return static_cast<const PM&>(pm).get(key);
+    }
+};
+
+template <class PM, class Base>
+struct get_put_gen<PM, Base, false> : put_gen<PM, Base> {
+    using typename Base::key_type;
+    using typename Base::reference;
+
+    friend constexpr reference get(get_put_gen& pm, key_type key) {
+        return static_cast<PM&>(pm).get(key);
+    }
+
+    friend constexpr reference get(get_put_gen&& pm, key_type key) {
+        return get(pm, key);
+    }
+};
+
+}  // namespace ac
