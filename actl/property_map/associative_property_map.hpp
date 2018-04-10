@@ -14,29 +14,45 @@ namespace ac {
 /**
  * Associative property map that returns default value for keys not present in container.
  */
-template <class Container, class Key = typename std::remove_reference_t<Container>::key_type,
-          class Value = typename std::remove_reference_t<Container>::mapped_type>
-class associative_property_map
-    : public container_property_map<Container, Key, Value, Value, false> {
-    using base_t = container_property_map<Container, Key, Value, Value, false>;
+template <class AssociativeContainer>
+class associative_property_map : public property_map_base {
+    using C   = std::remove_reference_t<AssociativeContainer>;
+    using PMC = property_map_container<AssociativeContainer>;
 
 public:
-    using base_t::base_t;
+    using key_type   = typename C::key_type;
+    using value_type = typename C::mapped_type;
+    using reference  = value_type;
+    using iterator   = typename PMC::iterator;
 
-    friend Value get(const associative_property_map& pm, Key key) {
-        auto it = pm.data_.find(key);
-        return it == pm.data_.end() ? Value{} : it->second;
+    static constexpr bool invertible = false;
+    static constexpr bool iterable   = true;
+    static constexpr bool writable   = PMC::writable;
+
+    template <class... Ts>
+    explicit associative_property_map(Ts&&... args) : data_{{std::forward<Ts>(args)...}} {}
+
+    friend value_type get(const associative_property_map& pm, key_type key) {
+        auto it = pm.data_().find(key);
+        return it == pm.data_().end() ? value_type{} : it->second;
     }
 
-    template <bool W = base_t::writable>
-    friend std::enable_if_t<W> put(associative_property_map& pm, Key key, Value value) {
-        pm.data_[key] = value;
+    template <bool W = writable>
+    friend std::enable_if_t<W> put(const associative_property_map& pm, key_type key,
+                                   value_type value) {
+        pm.data_()[key] = value;
     }
 
-    template <bool W = base_t::writable>
+    iterator begin() const { return data_().begin(); }
+    iterator end()   const { return data_().end(); }
+
+    template <bool W = writable>
     std::enable_if_t<W> clear() {
-        this->data_.clear();
+        data_().clear();
     }
+
+private:
+    PMC data_;
 };
 
 template <class Container>

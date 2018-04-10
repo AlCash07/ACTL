@@ -48,6 +48,7 @@ template <>         struct id_key<int> { using type = int; };
 template <class Id>
 using id_key_t = typename id_key<Id>::type;
 
+#if 0
 template <class C>
 using generic_container_base = container_property_map<C, container_id_t<C>, typename C::value_type,
                                                       typename C::reference, false>;
@@ -79,14 +80,13 @@ public:
         }
     }
 };
+#endif
 
 template <class C, class T = typename C::value_type, bool RA = is_random_access_v<C>>
-class generic_container : public generic_container_property_map<C> {
+class generic_container {
 public:
     using id           = container_id_t<C>;
     using id_iterator  = typename container_id<C>::iterator;
-    using property_map = generic_container_property_map<C>;
-    using property_map::data_;
 
     explicit generic_container() = default;
 
@@ -127,19 +127,20 @@ public:
     }
 
     void erase(id id) { data_.erase(id); }
+
+private:
+    C data_;
 };
 
 template <class C, class T>
-class generic_container<C, T, true> : public generic_container_property_map<C> {
+class generic_container<C, T, true> {
 public:
     using id           = container_id_t<C>;
     using id_iterator  = typename container_id<C>::iterator;
-    using property_map = generic_container_property_map<C>;
-    using property_map::data_;
 
     explicit generic_container() = default;
 
-    explicit generic_container(int n) : property_map(n) {}
+    explicit generic_container(int n) : data_(n) {}
 
     range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(size())}; }
 
@@ -165,6 +166,9 @@ public:
     }
 
     void resize(int n) { data_.resize(n); }
+
+private:
+    C data_;
 };
 
 template <class C>
@@ -220,7 +224,7 @@ public:
         return reinterpret_cast<std::uintptr_t>(std::addressof(*this));
     }
 
-    friend class generic_container_property_map<C>;
+    //    friend class generic_container_property_map<C>;
     friend class generic_container<C>;
 };
 

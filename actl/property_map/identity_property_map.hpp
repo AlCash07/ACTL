@@ -18,7 +18,7 @@ template <class Key, class Value = Key>
 class identity_property_map
     : public property_map<Key, Value, Value, is_static_castable<Value, Key>::value> {
 public:
-    friend Value get(const identity_property_map&, Key key) { return static_cast<Value>(key); }
+    friend Value get(identity_property_map, Key key) { return static_cast<Value>(key); }
 
     constexpr Key invert(Value value) const { return static_cast<Key>(value); }
 };

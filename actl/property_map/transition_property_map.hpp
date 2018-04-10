@@ -18,14 +18,15 @@ namespace ac {
 template <class Sequence, class Key = int>
 class transition_property_map : public detail::sequence_pm_base<Sequence, Key> {
     using base_t = detail::sequence_pm_base<Sequence, Key>;
+    using base_t::data_;
 
 public:
-    using iterator = transition_iterator<typename base_t::iterator>;
+    using iterator = transition_iterator<typename base_t::iterator, Key>;
 
     using base_t::base_t;
 
-    iterator begin() { return {base_t::begin(), base_t::begin(), base_t::end()}; }
-    iterator end()   { return {base_t::end(),   base_t::begin(), base_t::end()}; }
+    iterator begin() const { return {data_().begin(), data_().begin(), data_().end()}; }
+    iterator end()   const { return {data_().end(), data_().begin(), data_().end()}; }
 };
 
 template <class Key = int, class Sequence>

@@ -16,7 +16,8 @@ namespace detail {
 template <class Key, class Member>
 using member_pm_base = property_map<Key&, Member, Member&, false, false,
                                     !std::is_const_v<Key> && !std::is_const_v<Member>>;
-}
+
+}  // namespace detail
 
 /**
  * Property map that fetches member from a class key.
@@ -26,11 +27,11 @@ class member_property_map : public detail::member_pm_base<Key, Member> {
 public:
     explicit constexpr member_property_map(Member Key::* ptr) : ptr_{ptr} {}
 
-    friend Member& get(const member_property_map& mp, Key& key) { return key.*mp.ptr_; }
+    friend Member& get(member_property_map pm, Key& key) { return key.*pm.ptr_; }
 
     template <bool W = detail::member_pm_base<Key, Member>::writable>
-    friend std::enable_if_t<W> put(member_property_map& mp, Key& key, Member value) {
-        key.*mp.ptr_ = value;
+    friend std::enable_if_t<W> put(member_property_map pm, Key& key, Member value) {
+        key.*pm.ptr_ = value;
     }
 
     // TODO: consider making this invertible. It's possible, but not standard-compliant.
@@ -55,10 +56,10 @@ inline auto make_const_member_property_map(Member Key::* ptr) {
 template <class Key, class Member, Member Key::* Ptr>
 class static_member_property_map : public detail::member_pm_base<Key, Member> {
 public:
-    friend Member& get(const static_member_property_map&, Key& key) { return key.*Ptr; }
+    friend Member& get(static_member_property_map, Key& key) { return key.*Ptr; }
 
     template <bool W = detail::member_pm_base<Key, Member>::writable>
-    friend std::enable_if_t<W> put(static_member_property_map&, Key& key, Member value) {
+    friend std::enable_if_t<W> put(static_member_property_map, Key& key, Member value) {
         key.*Ptr = value;
     }
 };

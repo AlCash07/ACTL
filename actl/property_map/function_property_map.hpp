@@ -20,7 +20,7 @@ class function_property_map : public property_map<Key, Value, Ref, false> {
 public:
     explicit function_property_map(Function f = Function{}) : f_{f} {}
 
-    friend Ref get(function_property_map& pm, Key key) { return pm.f_(key); }
+    friend Ref get(const function_property_map& pm, Key key) { return pm.f_(key); }
 
 private:
     Function f_;

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/property_map/composite_property_map.hpp>
-#include <type_traits>
+#include <actl/type_traits/type_traits.hpp>
 
 namespace ac::detail {
 
@@ -46,17 +46,23 @@ private:
     B bundle_;
 };
 
-// template <class Key, class B = typename Key::bundle_type>
-// class bundle_property_map : public property_map<false, false, Key, B> {
-// public:
-//    B&       operator[](      Key& key) const { return key.bundle(); }
-//    const B& operator[](const Key& key) const { return key.bundle(); }
-//};
-//
-// template <class PM>
-// inline auto append_bundle_property_map(PM&& map) {
-//    return make_composite_property_map(std::forward<PM>(map),
-//        bundle_property_map<typename property_traits<PM>::value_type>());
-//}
+template <class Key, class B = typename std::remove_reference_t<Key>::bundle_type,
+          bool W = !std::is_const_v<Key>>
+class bundle_property_map : public property_map<Key, B, add_const_if_t<!W, B&>, false, false, W> {
+    friend add_const_if_t<W, B&> get(const bundle_property_map& pm, Key key) {
+        return key.bundle();
+    }
+};
+
+template <class Key, class B>
+class bundle_property_map<Key, B, true> : public bundle_property_map<Key, B, false> {
+    friend void put(bundle_property_map& pm, Key key, B value) { key.bundle() = value; }
+};
+
+template <class PM>
+inline auto append_bundle_property_map(PM&& map) {
+    return make_composite_property_map(
+        std::forward<PM>(map), bundle_property_map<typename property_traits<PM>::value_type>());
+}
 
 }  // namespace ac::detail

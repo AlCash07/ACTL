@@ -18,51 +18,45 @@ namespace ac {
 
 namespace detail {
 
-template <class Sequence, class Key, class S = std::remove_reference_t<Sequence>,
-          class Value = typename S::value_type, class Ref = typename S::reference>
-class sequence_pm_base : public container_property_map<Sequence, Key, Value, Ref, false> {
-    using base_t = container_property_map<Sequence, Key, Value, Ref, false>;
+template <class Sequence, class Key>
+class sequence_pm_base : public property_map_base {
+    using S   = std::remove_reference_t<Sequence>;
+    using PMC = property_map_container<Sequence>;
 
 public:
     static_assert(is_random_access_iterator<typename S::iterator>::value,
                   "sequence must be random access");
 
-    using base_t::base_t;
+    using key_type   = Key;
+    using value_type = typename S::value_type;
+    using reference  = typename PMC::reference;
+    using iterator   = typename PMC::iterator;
 
-    friend Ref get(const sequence_pm_base& pm, Key key) {
+    static constexpr bool invertible = false;
+    static constexpr bool iterable   = true;
+    static constexpr bool writable   = PMC::writable;
+
+    template <class... Ts>
+    explicit sequence_pm_base(Ts&&... args) : data_{{std::forward<Ts>(args)...}} {}
+
+    friend reference get(const sequence_pm_base& pm, Key key) {
         ACTL_ASSERT(0 <= key && key < this->data_.size());
-        return pm.data_[key];
+        return pm.data_()[key];
     }
 
-    template <bool W = base_t::writable>
-    friend std::enable_if_t<W> put(sequence_pm_base& pm, Key key, Value value) {
-        ACTL_ASSERT(0 <= key && key < this->data_.size());
-        pm.data_[key] = value;
+    template <bool W = writable>
+    friend std::enable_if_t<W> put(const sequence_pm_base& pm, Key key, value_type value) {
+        ACTL_ASSERT(0 <= key && key < data_().size());
+        pm.data_()[key] = value;
     }
 
-    template <bool W = base_t::writable>
+    template <bool W = writable>
     std::enable_if_t<W> clear() {
-        fill(this->data_, Value{});
+        fill(data_(), value_type{});
     }
-};
 
-template <class It, class V = std::pair<int, typename std::iterator_traits<It>::reference>>
-class sequence_iterator : public iterator_facade<sequence_iterator<It, V>, std::input_iterator_tag,
-                                                 V, V, const V*, void> {
-public:
-    sequence_iterator(It it, It begin) : it_{it}, begin_{begin} {}
-
-private:
-    friend struct ac::iterator_core_access;
-
-    V dereference() const { return {static_cast<int>(it_ - begin_), *it_}; }
-
-    void increment() { ++it_; }
-
-    bool equals(const sequence_iterator& other) const { return it_ == other.it_; }
-
-    It it_;
-    It begin_;
+protected:
+    PMC data_;
 };
 
 }  // namespace detail
@@ -74,14 +68,30 @@ private:
 template <class Sequence, class Key = int>
 class sequence_property_map : public detail::sequence_pm_base<Sequence, Key> {
     using base_t = detail::sequence_pm_base<Sequence, Key>;
+    using It     = typename base_t::iterator;
+    using Pair   = std::pair<Key, typename base_t::reference>;
+    using base_t::data_;
 
 public:
-    using iterator = detail::sequence_iterator<typename base_t::iterator>;
+    class iterator : public iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*> {
+        iterator(It it, It begin)
+            : iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*>(it),
+              begin_{begin} {}
+
+        Pair dereference() const {
+            return {static_cast<Key>(this->base() - begin_), *this->base()};
+        }
+
+        It begin_;
+
+        friend class sequence_property_map;
+        friend struct ac::iterator_core_access;
+    };
 
     using base_t::base_t;
 
-    iterator begin() { return {base_t::begin(), base_t::begin()}; }
-    iterator end()   { return {base_t::end(),   base_t::begin()}; }
+    iterator begin() const { return {data_().begin(), data_().begin()}; }
+    iterator end()   const { return {data_().end(), data_().begin()}; }
 };
 
 template <class Key = int, class Sequence>

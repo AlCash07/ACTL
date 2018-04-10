@@ -38,7 +38,7 @@ inline auto make_shift_property_map(Key offset) { return shift_property_map<Key,
 template <class Key, Key Offset, class Value = Key>
 class static_shift_property_map : public property_map<Key, Value, Value, true> {
 public:
-    friend constexpr Value get(const static_shift_property_map&, Key key) {
+    friend constexpr Value get(static_shift_property_map, Key key) {
         return static_cast<Value>(key - Offset);
     }
 

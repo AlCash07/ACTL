@@ -20,7 +20,7 @@ namespace ac {
 
 namespace detail {
 
-// Base class containing the pms and implementing common methods.
+// Base class containing the property maps and implementing common methods.
 template <class PM1, class PM2>
 class composite_pm_base : public property_map_base, protected compressed_pair<PM1, PM2> {
     using base_t = compressed_pair<PM1, PM2>;
@@ -31,12 +31,12 @@ public:
                   "incompatible property maps");
 
     using key_type   = typename property_traits<PM1>::key_type;
-    using reference  = typename property_traits<PM2>::reference;
     using value_type = typename property_traits<PM2>::value_type;
+    using reference  = typename property_traits<PM2>::reference;
 
     using base_t::base_t;
 
-    friend constexpr reference get(composite_pm_base& pm, key_type key) {
+    friend constexpr reference get(const composite_pm_base& pm, key_type key) {
         return get(pm.second(), get(pm.first(), key));
     }
 };
@@ -50,8 +50,8 @@ public:
     using composite_pm_base<PM1, PM2>::composite_pm_base;
 };
 
-template <class PM1, class PM2, bool W, bool Inv>
-class composite_pm_put<PM1, PM2, W, true, Inv> : public composite_pm_base<PM1, PM2> {
+template <class PM1, class PM2, bool W1, bool Inv2>
+class composite_pm_put<PM1, PM2, W1, true, Inv2> : public composite_pm_base<PM1, PM2> {
     using base_t = composite_pm_base<PM1, PM2>;
 
 public:
@@ -59,7 +59,7 @@ public:
 
     using base_t::base_t;
 
-    friend constexpr void put(composite_pm_put& pm, typename base_t::key_type key,
+    friend constexpr void put(const composite_pm_put& pm, typename base_t::key_type key,
                               typename base_t::value_type value) {
         put(pm.second(), get(pm.first(), key), value);
     }
@@ -74,7 +74,7 @@ public:
 
     using base_t::base_t;
 
-    friend constexpr void put(composite_pm_put& pm, typename base_t::key_type key,
+    friend constexpr void put(const composite_pm_put& pm, typename base_t::key_type key,
                               typename base_t::value_type value) {
         put(pm.first(), key, pm.second().invert(value));
     }
@@ -131,13 +131,13 @@ class composite_pm_iterate<PM1, PM2, true, It2, Inv2> : public composite_pm_inve
 public:
     class iterator
         : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
-        iterator(const It& it, PM2& pm)
+        iterator(const It& it, const PM2& pm)
             : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>(it),
               pm_{pm} {}
 
         Pair dereference() const { return {this->base()->first, get(pm_, this->base()->second)}; }
 
-        PM2& pm_;
+        const PM2& pm_;
 
         friend class composite_pm_iterate;
         friend struct ac::iterator_core_access;
@@ -147,8 +147,8 @@ public:
 
     using base_t::base_t;
 
-    iterator begin() { return {this->first().begin(), this->second()}; }
-    iterator end()   { return {this->first().end(),   this->second()}; }
+    iterator begin() const { return {this->first().begin(), this->second()}; }
+    iterator end()   const { return {this->first().end(), this->second()}; }
 };
 
 template <class PM1, class PM2>
@@ -160,13 +160,13 @@ class composite_pm_iterate<PM1, PM2, false, true, true> : public composite_pm_in
 public:
     class iterator
         : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
-        iterator(const It& it, PM1& pm)
+        iterator(const It& it, const PM1& pm)
             : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>(it),
               pm_{pm} {}
 
         Pair dereference() const { return {pm_.invert(this->base()->first), this->base()->second}; }
 
-        PM1& pm_;
+        const PM1& pm_;
 
         friend class composite_pm_iterate;
         friend struct ac::iterator_core_access;
@@ -176,8 +176,8 @@ public:
 
     using base_t::base_t;
 
-    iterator begin() { return {this->second().begin(), this->first()}; }
-    iterator end()   { return {this->second().end(),   this->first()}; }
+    iterator begin() const { return {this->second().begin(), this->first()}; }
+    iterator end()   const { return {this->second().end(), this->first()}; }
 };
 
 template <class PM1, class PM2>
