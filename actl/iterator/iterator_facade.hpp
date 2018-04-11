@@ -52,7 +52,7 @@ template <class Ref, class Pointer>
 struct operator_arrow_dispatch {  // proxy references
     struct proxy {
         explicit proxy(const Ref& ref) : ref_{ref} {}
-        Ref* operator -> () { return std::addressof(ref_); }
+        Ref* operator->() { return std::addressof(ref_); }
         Ref ref_;
     };
 
@@ -78,14 +78,14 @@ class iterator_facade_base<It, std::output_iterator_tag, V, R, P, D>
     : public std::iterator<std::output_iterator_tag, V, D,
                            typename operator_arrow_dispatch<R, P>::type, R> {
 public:
-    R operator * () const { return iterator_core_access::dereference(derived()); }
+    R operator*() const { return iterator_core_access::dereference(derived()); }
 
-    It& operator ++ () {
+    It& operator++() {
         iterator_core_access::increment(derived());
         return derived();
     }
 
-    It operator ++ (int) {
+    It operator++(int) {
         It copy = derived();
         ++*this;
         return copy;
@@ -104,7 +104,7 @@ public:
     using iterator_category = std::input_iterator_tag;
     using typename iterator_facade_base<It, std::output_iterator_tag, V, R, P, D>::pointer;
 
-    pointer operator -> () const { return operator_arrow_dispatch<R, P>::apply(*this->derived()); }
+    pointer operator->() const { return operator_arrow_dispatch<R, P>::apply(*this->derived()); }
 };
 
 template <class It, class V, class R, class P, class D>
@@ -120,12 +120,12 @@ class iterator_facade_base<It, std::bidirectional_iterator_tag, V, R, P, D>
 public:
     using iterator_category = std::bidirectional_iterator_tag;
 
-    It& operator -- () {
+    It& operator--() {
         iterator_core_access::decrement(this->derived());
         return this->derived();
     }
 
-    It operator -- (int) {
+    It operator--(int) {
         It copy = this->derived();
         --*this;
         return copy;

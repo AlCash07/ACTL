@@ -20,15 +20,14 @@ namespace detail {
 
 template <class Sequence, class Key>
 class sequence_pm_base : public property_map_base {
-    using S   = std::remove_reference_t<Sequence>;
     using PMC = property_map_container<Sequence>;
 
 public:
-    static_assert(is_random_access_iterator<typename S::iterator>::value,
+    static_assert(is_random_access_iterator<typename PMC::iterator>::value,
                   "sequence must be random access");
 
     using key_type   = Key;
-    using value_type = typename S::value_type;
+    using value_type = typename std::remove_reference_t<Sequence>::value_type;
     using reference  = typename PMC::reference;
     using iterator   = typename PMC::iterator;
 
@@ -91,7 +90,7 @@ public:
     using base_t::base_t;
 
     iterator begin() const { return {data_().begin(), data_().begin()}; }
-    iterator end()   const { return {data_().end(), data_().begin()}; }
+    iterator end()   const { return {data_().end(),   data_().begin()}; }
 };
 
 template <class Key = int, class Sequence>

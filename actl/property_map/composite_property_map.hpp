@@ -148,7 +148,7 @@ public:
     using base_t::base_t;
 
     iterator begin() const { return {this->first().begin(), this->second()}; }
-    iterator end()   const { return {this->first().end(), this->second()}; }
+    iterator end()   const { return {this->first().end(),   this->second()}; }
 };
 
 template <class PM1, class PM2>
@@ -177,7 +177,7 @@ public:
     using base_t::base_t;
 
     iterator begin() const { return {this->second().begin(), this->first()}; }
-    iterator end()   const { return {this->second().end(), this->first()}; }
+    iterator end()   const { return {this->second().end(),   this->first()}; }
 };
 
 template <class PM1, class PM2>

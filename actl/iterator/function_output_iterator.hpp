@@ -31,13 +31,13 @@ public:
     }
 
 private:
-    friend struct iterator_core_access;
-
     const function_output_iterator& dereference() const { return *this; }
 
     void increment() {}
 
     UnaryFunction f_;
+
+    friend struct iterator_core_access;
 };
 
 template <class T = void, class UnaryFunction>

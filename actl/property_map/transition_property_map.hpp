@@ -26,7 +26,7 @@ public:
     using base_t::base_t;
 
     iterator begin() const { return {data_().begin(), data_().begin(), data_().end()}; }
-    iterator end()   const { return {data_().end(), data_().begin(), data_().end()}; }
+    iterator end()   const { return {data_().end(),   data_().begin(), data_().end()}; }
 };
 
 template <class Key = int, class Sequence>

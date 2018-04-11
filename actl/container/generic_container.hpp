@@ -215,9 +215,9 @@ public:
         explicit iterator(It it) : iterator_adaptor<iterator, It, use_default, Id, Id, Id*>(it) {}
 
     private:
-        friend struct ac::iterator_core_access;
-
         Id dereference() const { return this->base(); }
+
+        friend struct ac::iterator_core_access;
     };
 
     constexpr operator std::uintptr_t() const {
@@ -250,9 +250,9 @@ public:
         : iterator_adaptor<wrap_id_iterator<It, Id>, It, use_default, Id, Id, Id*>(it) {}
 
 private:
-    friend struct ac::iterator_core_access;
-
     Id dereference() const { return *this->base(); }
+
+    friend struct ac::iterator_core_access;
 };
 
 }  // namespace ac

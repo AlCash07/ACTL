@@ -27,8 +27,6 @@ public:
     explicit integer_iterator(Int value) : value_{value} {}
 
 private:
-    friend struct iterator_core_access;
-
     const Int& dereference() const { return value_; }
 
     void increment() { Increment ? ++value_ : --value_; }
@@ -42,6 +40,8 @@ private:
     Int distance_to(const integer_iterator& other) const { return other.value_ - value_; }
 
     Int value_;
+
+    friend struct iterator_core_access;
 };
 
 template <class Int>
@@ -58,8 +58,6 @@ public:
     explicit integer_iterator_with_step(Int value, Int step) : value_{value}, step_{step} {}
 
 private:
-    friend struct iterator_core_access;
-
     const Int& dereference() const { return value_; }
 
     void increment() { value_ += step_; }
@@ -70,6 +68,7 @@ private:
 
     bool equals(const integer_iterator_with_step& other) const { return value_ == other.value_; }
 
+    // TODO: if this operation is called often then it's better to avoid division.
     Int distance_to(const integer_iterator_with_step& other) const {
         ACTL_ASSERT(other.step_ == step_);
         ACTL_ASSERT((other.value_ - value_) % step_ == 0);
@@ -78,6 +77,8 @@ private:
 
     Int value_;
     Int step_;
+
+    friend struct iterator_core_access;
 };
 
 }  // namespace ac

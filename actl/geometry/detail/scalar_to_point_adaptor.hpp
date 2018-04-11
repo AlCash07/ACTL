@@ -29,11 +29,11 @@ public:
     operator It() const { return this->base(); }
 
 private:
-    friend struct ac::iterator_core_access;
-
     const scalar_to_point_adaptor& dereference() const { return *this; }
 
     const Line& line_;
+
+    friend struct ac::iterator_core_access;
 };
 
 template <class Line, class It>

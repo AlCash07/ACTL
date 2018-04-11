@@ -23,7 +23,7 @@ class transition_iterator
     : public iterator_facade<transition_iterator<Iterator, Diff, Value>, std::input_iterator_tag,
                              Value, Value, const Value*, void> {
 public:
-    transition_iterator() = default;
+    explicit transition_iterator() = default;
 
     transition_iterator(Iterator it, Iterator begin, Iterator end)
         : it_{it}, begin_{begin}, end_{end} {
@@ -31,8 +31,6 @@ public:
     }
 
 private:
-    friend struct iterator_core_access;
-
     Value dereference() const { return {static_cast<Diff>(it_ - begin_), *it_}; }
 
     void skip_empty() { for (; it_ != end_ && !*it_; ++it_); }
@@ -47,6 +45,8 @@ private:
     Iterator it_;
     Iterator begin_;
     Iterator end_;
+
+    friend struct iterator_core_access;
 };
 
 template <class Iterator>

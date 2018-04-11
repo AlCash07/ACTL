@@ -52,8 +52,6 @@ protected:
 private:
     using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, P, D>::type;
 
-    friend struct iterator_core_access;
-
     typename base_t::reference dereference() const { return *it_; }
 
     void increment() { ++it_; }
@@ -75,6 +73,8 @@ private:
     }
 
     It it_;
+
+    friend struct iterator_core_access;
 };
 
 }  // namespace ac
