@@ -15,7 +15,6 @@
 #include <actl/assert.hpp>
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/property_map/property_map.hpp>
 #include <actl/range/range.hpp>
 #include <actl/type/none.hpp>
 #include <actl/type_traits/container_traits.hpp>
@@ -27,66 +26,60 @@ namespace ac {
 template <class C>
 class iterator_id;
 
-template <class C, bool RA = is_random_access_v<C>>
-struct container_id {
-    using type     = iterator_id<C>;
-    using iterator = typename type::iterator;
-};
-
 template <class C>
-struct container_id<C, true> {
-    using type     = int;
-    using iterator = integer_iterator<type>;
-};
-
-template <class C>
-using container_id_t = typename container_id<C>::type;
-
-template <class Id> struct id_key      { using type = std::uintptr_t; };
-template <>         struct id_key<int> { using type = int; };
-
-template <class Id>
-using id_key_t = typename id_key<Id>::type;
-
-#if 0
-template <class C>
-using generic_container_base = container_property_map<C, container_id_t<C>, typename C::value_type,
-                                                      typename C::reference, false>;
-
-// This class is used to hide container operations when only property map interface is requested.
-template <class C>
-class generic_container_property_map : public generic_container_base<C> {
-    using base_t = generic_container_base<C>;
-
+class generic_container_base {
 public:
-    using id = container_id_t<C>;
+    using size_type              = int;
+    using difference_type        = int;
+    using value_type             = typename C::value_type;
+    using allocator_type         = typename C::allocator_type;
+    using reference              = typename C::reference;
+    using const_reference        = typename C::const_reference;
+    using pointer                = typename C::pointer;
+    using const_pointer          = typename C::const_pointer;
+    using iterator               = typename C::iterator;
+    using const_iterator         = typename C::const_iterator;
+    using reverse_iterator       = typename C::reverse_iterator;
+    using const_reverse_iterator = typename C::const_reverse_iterator;
 
-    using base_t::base_t;
+    bool empty() const { return data_.empty(); }
 
-    // const_cast is required because id is a const_iterator.
-    typename C::reference operator[](id id) {
-        if constexpr (is_random_access_v<C>) {
-            return this->data_[id];
-        } else {
-            return const_cast<typename C::reference>(*id);
-        }
-    }
+    size_type size() const { return static_cast<size_type>(data_.size()); }
 
-    typename C::const_reference operator[](id id) const {
-        if constexpr (is_random_access_v<C>) {
-            return this->data_[id];
-        } else {
-            return *id;
-        }
-    }
+    void clear() { data_.clear(); }
+
+    iterator begin() { return data_.begin(); }
+    iterator end()   { return data_.end(); }
+
+    const_iterator begin() const { return data_.begin(); }
+    const_iterator end()   const { return data_.end(); }
+
+    reverse_iterator rbegin() { return reverse_iterator(end()); }
+    reverse_iterator rend()   { return reverse_iterator(begin()); }
+
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+    const_reverse_iterator rend()   const { return const_reverse_iterator(begin()); }
+
+    const_iterator cbegin() const { return begin(); }
+    const_iterator cend()   const { return end(); }
+
+    const_reverse_iterator crbegin() const { return rbegin(); }
+    const_reverse_iterator crend()   const { return rend(); }
+
+protected:
+    template <class... Ts>
+    generic_container_base(Ts&&... args) : data_(std::forward<Ts>(args)...) {}
+
+    C data_;
 };
-#endif
 
 template <class C, class T = typename C::value_type, bool RA = is_random_access_v<C>>
-class generic_container {
+class generic_container : public generic_container_base<C> {
+    using generic_container_base<C>::data_;
+
 public:
-    using id           = container_id_t<C>;
-    using id_iterator  = typename container_id<C>::iterator;
+    using id          = iterator_id<C>;
+    using id_iterator = typename id::iterator;
 
     explicit generic_container() = default;
 
@@ -101,7 +94,12 @@ public:
     // Returns an invalid Id that is fixed for the given container.
     id null_id() const { return data_.end(); }
 
-    int size() const { return static_cast<int>(data_.size()); }
+    typename C::reference operator[](id it) {
+        // const_cast is required because id is a const_iterator.
+        return const_cast<typename C::reference>(*it);
+    }
+
+    typename C::const_reference operator[](id it) const { return *it; }
 
     template <class U>
     id find(const U& value) const {
@@ -126,27 +124,30 @@ public:
         }
     }
 
-    void erase(id id) { data_.erase(id); }
+    void erase(id it) { data_.erase(it); }
 
-private:
-    C data_;
+    void swap(generic_container& other) { data_.swap(other.data_); }
 };
 
 template <class C, class T>
-class generic_container<C, T, true> {
+class generic_container<C, T, true> : public generic_container_base<C> {
+    using generic_container_base<C>::data_;
+
 public:
-    using id           = container_id_t<C>;
-    using id_iterator  = typename container_id<C>::iterator;
+    using id          = int;
+    using id_iterator = integer_iterator<id>;
 
     explicit generic_container() = default;
 
-    explicit generic_container(int n) : data_(n) {}
+    explicit generic_container(int n) : generic_container_base<C>(n) {}
 
-    range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(size())}; }
+    range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(this->size())}; }
 
     id null_id() const { return -1; }
 
-    int size() const { return static_cast<int>(data_.size()); }
+    typename C::reference operator[](id i) { return data_[i]; }
+
+    typename C::const_reference operator[](id i) const { return data_[i]; }
 
     template <class U>
     id find(const U& value) {
@@ -157,25 +158,24 @@ public:
     template <class... Ts>
     std::pair<id, bool> emplace(Ts&&... args) {
         data_.emplace_back(std::forward<Ts>(args)...);
-        return {size() - 1, true};
+        return {this->size() - 1, true};
     }
 
-    void erase(id id) {
-        ACTL_ASSERT(0 <= id && id < size());
-        data_.erase(data_.begin() + id);
+    void erase(id i) {
+        ACTL_ASSERT(0 <= i && i < size());
+        data_.erase(data_.begin() + i);
     }
 
     void resize(int n) { data_.resize(n); }
 
-private:
-    C data_;
+    void swap(generic_container& other) { data_.swap(other.data_); }
 };
 
 template <class C>
 class generic_container<C, none, true> {
 public:
-    using id          = container_id_t<C>;
-    using id_iterator = typename container_id<C>::iterator;
+    using id          = int;
+    using id_iterator = integer_iterator<id>;
 
     explicit generic_container(int n = 0) : n_(n) {}
 
@@ -185,10 +185,12 @@ public:
 
     int size() const { return n_; }
 
+    bool empty() const { return size() == 0; }
+
     std::pair<id, bool> emplace() { return {n_++, true}; }
 
-    void erase(id id) {
-        ACTL_ASSERT(0 <= id && id < n_);
+    void erase(id i) {
+        ACTL_ASSERT(0 <= i && i < n_);
         --n_;
     }
 
@@ -201,6 +203,16 @@ public:
 protected:
     int n_;
 };
+
+template <class C>
+using container_id_t = typename generic_container<C>::id;
+
+// Id is implicitly convertible to this key type, and it can be used for comparison.
+template <class Id> struct id_key      { using type = std::uintptr_t; };
+template <>         struct id_key<int> { using type = int; };
+
+template <class Id>
+using id_key_t = typename id_key<Id>::type;
 
 template <class C>
 class iterator_id : public C::const_iterator {
@@ -224,7 +236,6 @@ public:
         return reinterpret_cast<std::uintptr_t>(std::addressof(*this));
     }
 
-    //    friend class generic_container_property_map<C>;
     friend class generic_container<C>;
 };
 

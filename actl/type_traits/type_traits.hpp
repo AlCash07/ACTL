@@ -32,6 +32,12 @@ template <class T> struct remove_rvalue_reference<T&&> { using type = T; };
 template <class T>
 using remove_rvalue_reference_t = typename remove_rvalue_reference<T>::type;
 
+template <bool B, class T>
+struct add_const_if : std::conditional<B, const T, T> {};
+
+template <bool B, class T>
+using add_const_if_t = typename add_const_if<B, T>::type;
+
 template <class From, class To, class = void>
 struct is_static_castable : std::false_type {};
 
