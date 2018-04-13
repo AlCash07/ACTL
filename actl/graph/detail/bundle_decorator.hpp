@@ -21,8 +21,7 @@ public:
     bundle_decorator() = default;
 
     template <class T0, class... Ts>
-    explicit constexpr bundle_decorator(T0&& arg0, Ts&&... args)
-        : T(std::forward<T0>(arg0)), B(std::forward<Ts>(args)...) {}
+    explicit constexpr bundle_decorator(T0&& arg0) : T(std::forward<T0>(arg0)) {}
 
     B&       bundle()       { return *this; }
     const B& bundle() const { return *this; }
@@ -46,23 +45,36 @@ private:
     B bundle_;
 };
 
-template <class Key, class B = typename std::remove_reference_t<Key>::bundle_type,
-          bool W = !std::is_const_v<Key>>
-class bundle_property_map : public property_map<Key, B, add_const_if_t<!W, B&>, false, false, W> {
-    friend add_const_if_t<W, B&> get(const bundle_property_map& pm, Key key) {
+template <class Key>
+struct bundle_pm_traits {
+    using T = std::remove_reference_t<Key>;
+    using B = typename T::bundle_type;
+
+    static constexpr bool writable = !is_const_v<T>;
+
+    using base = property_map<Key, B, add_const_if_t<!writable, B&>, false, false, writable>;
+};
+
+template <class Key, bool W = bundle_pm_traits<Key>::writable>
+class bundle_property_map : public bundle_pm_traits<Key>::base {
+    friend typename bundle_pm_traits<Key>::base::reference get(const bundle_property_map& pm,
+                                                               Key key) {
         return key.bundle();
     }
 };
 
-template <class Key, class B>
-class bundle_property_map<Key, B, true> : public bundle_property_map<Key, B, false> {
-    friend void put(bundle_property_map& pm, Key key, B value) { key.bundle() = value; }
+template <class Key>
+class bundle_property_map<Key, true> : public bundle_property_map<Key, false> {
+    friend void put(const bundle_property_map& pm, Key key,
+                    typename bundle_pm_traits<Key>::B value) {
+        key.bundle() = value;
+    }
 };
 
 template <class PM>
 inline auto append_bundle_property_map(PM&& map) {
     return make_composite_property_map(
-        std::forward<PM>(map), bundle_property_map<typename property_traits<PM>::value_type>());
+        std::forward<PM>(map), bundle_property_map<typename property_traits<PM>::reference>());
 }
 
 }  // namespace ac::detail

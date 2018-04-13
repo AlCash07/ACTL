@@ -71,9 +71,9 @@ struct edge_vertices<Dir, two_vertices, VId> {
 
     std::pair<id_key_t<VId>, id_key_t<VId>> key() const { return {u, v}; }
 
-    bool operator < (const edge_vertices& rhs) { return key() < rhs.key(); }
+    bool operator < (const edge_vertices& rhs) const { return key() < rhs.key(); }
 
-    bool operator == (const edge_vertices& rhs) { return u == rhs.u && v == rhs.v; }
+    bool operator == (const edge_vertices& rhs) const { return u == rhs.u && v == rhs.v; }
 };
 
 template <class Dir, class EC, class VId, class Selector>

@@ -242,12 +242,12 @@ public:
 // This wrapper can be used to avoid Id types collision.
 template <class Id>
 class wrap_id {
-    Id id;
+    Id id_;
 
 public:
-    explicit constexpr wrap_id(Id id) : id(id) {}
+    constexpr wrap_id(Id id) : id_(id) {}
 
-    constexpr operator Id() const { return id; }
+    constexpr operator Id() const { return id_; }
 };
 
 template <class Id>

@@ -21,7 +21,7 @@ struct edge_property {};
 struct one_vertex {};
 struct two_vertices {};
 
-/* Use graph[vertex_property()] or graph[edge_property()] to get graph bundled properties */
+/* Use graph[vertex_property{}] or graph[edge_property{}] to get graph bundled properties */
 
 struct vertex_property {};
 

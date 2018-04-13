@@ -7,55 +7,59 @@
 
 #pragma once
 
-#include <actl/graph/detail/edge_list.hpp>
+#include <actl/graph/detail/edge_list_traits.hpp>
+#include <actl/graph/vertex_list.hpp>
+#include <actl/property_map/generic_container_property_map.hpp>
 
 namespace ac {
 
-template <class Directed,
-          class EdgeContainer   = std::vector<none>,
-          class VertexContainer = std::vector<none>,
-          class Selector        = two_vertices>
-class edge_list {
+namespace detail {
+
+template <class Dir, class EC, class VC, class S, class T = typename EC::value_type>
+class edge_list_base : public edge_list_base<Dir, EC, VC, S, none> {
+    using base_t = edge_list_base<Dir, EC, VC, S, none>;
+
 public:
-    static constexpr bool is_directed   = std::is_same_v<Directed, directed>;
+    using edge_id = typename base_t::edge_id;
+
+    using base_t::base_t;
+    using base_t::operator[];
+
+    auto operator[](edge_property) {
+        return detail::append_bundle_property_map(
+            make_generic_container_property_map(this->edges_));
+    }
+
+    auto operator[](edge_property) const {
+        return detail::append_bundle_property_map(
+            make_generic_container_property_map(this->edges_));
+    }
+
+    T&       operator[](edge_id e)       { return get((*this)[edge_property{}], e); }
+    const T& operator[](edge_id e) const { return get((*this)[edge_property{}], e); }
+};
+
+template <class Dir, class EC, class VC, class S>
+class edge_list_base<Dir, EC, VC, S, none> : public vertex_list<VC> {
+    using base_t        = vertex_list<VC>;
+    using traits        = detail::edge_list_traits<Dir, EC, typename base_t::vertex_id, S>;
+    using edge_vertices = typename traits::vertices;
+
+public:
+    using vertex_id = typename base_t::vertex_id;
+
+    using edge_container = typename traits::container;
+    using edge_id        = typename detail::edge_id<edge_container, vertex_id>::type;
+    using edge_iterator  = typename detail::edge_id<edge_container, vertex_id>::iterator;
+
+    using directed_category = Dir;
+
+    static constexpr bool is_directed   = std::is_same_v<Dir, directed>;
     static constexpr bool is_undirected = !is_directed;
 
-    using directed_category = Directed;
+    explicit edge_list_base() = default;
 
-    using vertex_container = generic_container<VertexContainer>;
-    using vertex_id        = typename vertex_container::id;
-    using vertex_iterator  = typename vertex_container::id_iterator;
-
-private:
-    using traits         = detail::edge_list_traits<Directed, EdgeContainer, vertex_id, Selector>;
-    using edge_vertices  = typename traits::vertices;
-    using edge_container = typename traits::container;
-
-public:
-    using edge_id       = typename detail::edge_id<edge_container, vertex_id>::type;
-    using edge_iterator = typename detail::edge_id<edge_container, vertex_id>::iterator;
-
-    explicit edge_list() = default;
-
-    explicit edge_list(int vertices_count) : vertices_(vertices_count) {}
-
-    /* Vertices operations */
-
-    int vertices_count() const { return vertices_.size(); }
-
-    range<vertex_iterator> vertices() const { return vertices_.id_range(); }
-
-    vertex_id nth_vertex(int n) const {
-        ACTL_ASSERT(0 <= n && n < vertex_count());
-        return *std::next(vertices_.id_range().begin(), n);
-    }
-
-    template <class... Ts>
-    vertex_id add_vertex(Ts&&... args) {
-        return vertices_.emplace(std::forward<Ts>(args)...).first;
-    }
-
-    /* Edges operations */
+    explicit edge_list_base(int vertices_count) : base_t(vertices_count) {}
 
     int edges_count() const { return edges_.size(); }
 
@@ -64,57 +68,67 @@ public:
         return {edges.begin(), edges.end()};
     }
 
-    template <class S = Selector, bool B = std::is_same_v<S, two_vertices>>
-    std::enable_if_t<B, vertex_id> source(edge_id e) const {
-        return edges_[e].u;
-    }
-
-    template <class S = Selector, bool B = std::is_same_v<S, two_vertices>>
-    std::enable_if_t<B, vertex_id> target(edge_id e) const {
-        return edges_[e].v;
-    }
-
-    template <class S = Selector, bool B = std::is_same_v<S, two_vertices>>
-    std::enable_if_t<B, edge_id> find_edge(vertex_id u, vertex_id v) const {
-        return edges_.find(edge_vertices(u, v));
-    }
-
     template <class... Ts>
     std::pair<edge_id, bool> add_edge(vertex_id u, vertex_id v, Ts&&... args) {
-        if constexpr (is_random_access_v<VertexContainer>) {
+        if constexpr (is_random_access_v<VC>) {
             vertex_id n = std::max(u, v);
-            if (n >= vertices_.size()) vertices_.resize(n + 1);
+            if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
         }
-        if constexpr (std::is_same_v<Directed, undirected> && is_associative_v<EdgeContainer>) {
+        if constexpr (is_undirected && is_associative_v<EC>) {
             if (u > v) std::swap(u, v);
         }
         return edges_.emplace(edge_vertices(u, v), std::forward<Ts>(args)...);
     }
 
-    /* Global operations */
-
-    //    typename vertex_container::property_map& operator[](vertex_property) { return vertices_; }
-    //    const typename vertex_container::property_map& operator[](vertex_property) const {
-    //        return vertices_;
-    //    }
-
-    //    auto operator[](edge_property) {
-    //        return detail::append_bundle_property_map(edges_);
-    //    }
-
     void clear() {
-        vertices_.clear();
+        base_t::clear();
         edges_.clear();
     }
 
-    void swap(edge_list& other) {
-        vertices_.swap(other.vertices_);
+    void swap(edge_list_base& other) {
+        base_t::swap(other);
         edges_.swap(other.edges_);
     }
 
-private:
-    vertex_container vertices_;
-    edge_container   edges_;
+    using base_t::operator[];
+
+    none operator[](edge_id)       { return none{}; }
+    none operator[](edge_id) const { return none{}; }
+
+protected:
+    edge_container edges_;
 };
+
+template <class Dir, class EC, class VC, class S>
+class edge_list : public edge_list_base<Dir, EC, VC, S> {
+public:
+    using edge_list_base<Dir, EC, VC, S>::edge_list_base;
+};
+
+template <class Dir, class EC, class VC>
+class edge_list<Dir, EC, VC, two_vertices> : public edge_list_base<Dir, EC, VC, two_vertices> {
+    using base_t = edge_list_base<Dir, EC, VC, two_vertices>;
+
+public:
+    using vertex_id = typename base_t::vertex_id;
+    using edge_id   = typename base_t::edge_id;
+
+    using base_t::base_t;
+
+    vertex_id source(edge_id e) const { return this->edges_[e].u; }
+
+    vertex_id target(edge_id e) const { return this->edges_[e].v; }
+
+    edge_id find_edge(vertex_id u, vertex_id v) const {
+        return this->edges_.find(typename base_t::edge_vertices(u, v));
+    }
+};
+
+}  // namespace detail
+
+template <class Directed,
+          class EdgeContainer   = std::vector<none>,
+          class VertexContainer = std::vector<none>>
+using edge_list = detail::edge_list<Directed, EdgeContainer, VertexContainer, two_vertices>;
 
 }  // namespace ac
