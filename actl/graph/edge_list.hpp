@@ -80,6 +80,11 @@ public:
         return edges_.emplace(edge_vertices(u, v), std::forward<Ts>(args)...);
     }
 
+    void remove_edge(edge_id e) { edges_.erase(e); }
+
+    // TODO: implement using one pass over edges that will remove edges and decrease int IDs.
+    void remove_vertex(vertex_id v);
+
     void clear() {
         base_t::clear();
         edges_.clear();

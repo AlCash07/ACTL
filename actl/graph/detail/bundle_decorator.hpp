@@ -21,7 +21,8 @@ public:
     bundle_decorator() = default;
 
     template <class T0, class... Ts>
-    explicit constexpr bundle_decorator(T0&& arg0) : T(std::forward<T0>(arg0)) {}
+    explicit constexpr bundle_decorator(T0&& arg0, Ts&&... args)
+        : T(std::forward<T0>(arg0)), B(std::forward<Ts>(args)...) {}
 
     B&       bundle()       { return *this; }
     const B& bundle() const { return *this; }
@@ -78,3 +79,10 @@ inline auto append_bundle_property_map(PM&& map) {
 }
 
 }  // namespace ac::detail
+
+namespace std {
+
+template <class T, class B>
+struct hash<ac::detail::bundle_decorator<T, B>> : hash<T> {};
+
+}  // namespace std

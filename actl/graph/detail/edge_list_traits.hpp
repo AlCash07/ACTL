@@ -69,7 +69,7 @@ struct edge_vertices<Dir, two_vertices, VId> {
         }
     }
 
-    std::pair<id_key_t<VId>, id_key_t<VId>> key() const { return {u, v}; }
+    constexpr auto key() const { return make_pair(get_id_key(u), get_id_key(v)); }
 
     bool operator < (const edge_vertices& rhs) const { return key() < rhs.key(); }
 
@@ -116,7 +116,7 @@ template <class Dir, class VId>
 struct hash<ac::detail::edge_vertices<Dir, ac::two_vertices, VId>> {
     auto operator()(const ac::detail::edge_vertices<Dir, ac::two_vertices, VId>& src) const {
         auto key = src.key();
-        return ac::hash_combine(key.first, key.second);
+        return std::hash<ac::id_key_t<VId>>{}(ac::hash_combine(key.first, key.second));
     }
 };
 

@@ -31,16 +31,14 @@ class generic_container_base {
 public:
     using size_type              = int;
     using difference_type        = int;
-    using value_type             = typename C::value_type;
     using allocator_type         = typename C::allocator_type;
+    using value_type             = typename C::value_type;
     using reference              = typename C::reference;
     using const_reference        = typename C::const_reference;
     using pointer                = typename C::pointer;
     using const_pointer          = typename C::const_pointer;
     using iterator               = typename C::iterator;
     using const_iterator         = typename C::const_iterator;
-    using reverse_iterator       = typename C::reverse_iterator;
-    using const_reverse_iterator = typename C::const_reverse_iterator;
 
     bool empty() const { return data_.empty(); }
 
@@ -54,17 +52,8 @@ public:
     const_iterator begin() const { return data_.begin(); }
     const_iterator end()   const { return data_.end(); }
 
-    reverse_iterator rbegin() { return reverse_iterator(end()); }
-    reverse_iterator rend()   { return reverse_iterator(begin()); }
-
-    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
-    const_reverse_iterator rend()   const { return const_reverse_iterator(begin()); }
-
     const_iterator cbegin() const { return begin(); }
     const_iterator cend()   const { return end(); }
-
-    const_reverse_iterator crbegin() const { return rbegin(); }
-    const_reverse_iterator crend()   const { return rend(); }
 
 protected:
     template <class... Ts>
@@ -94,12 +83,12 @@ public:
     // Returns an invalid Id that is fixed for the given container.
     id null_id() const { return data_.end(); }
 
-    typename C::reference operator[](id it) {
-        // const_cast is required because id is a const_iterator.
-        return const_cast<typename C::reference>(*it);
+    typename C::reference operator[](id id) {
+        // const_cast is required because id contains a const_iterator.
+        return const_cast<typename C::reference>(*id.it_);
     }
 
-    typename C::const_reference operator[](id it) const { return *it; }
+    typename C::const_reference operator[](id id) const { return *id.it_; }
 
     template <class U>
     id find(const U& value) const {
@@ -120,11 +109,11 @@ public:
                 return {res, true};
             }
         } else {
-            return {data_.emplace(data_.end(), std::forward<Ts>(args)...), true};
+            return {id(data_.emplace(data_.end(), std::forward<Ts>(args)...)), true};
         }
     }
 
-    void erase(id it) { data_.erase(it); }
+    void erase(id id) { data_.erase(id.it_); }
 
     void swap(generic_container& other) { data_.swap(other.data_); }
 };
@@ -150,7 +139,7 @@ public:
     typename C::const_reference operator[](id i) const { return data_[i]; }
 
     template <class U>
-    id find(const U& value) {
+    id find(const U& value) const {
         auto it = std::find(data_.begin(), data_.end(), value);
         return it == data_.end() ? null_id() : static_cast<id>(it - data_.begin());
     }
@@ -177,7 +166,7 @@ public:
     using id          = int;
     using id_iterator = integer_iterator<id>;
 
-    explicit generic_container(int n = 0) : n_(n) {}
+    explicit generic_container(int n = 0) : n_{n} {}
 
     range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(size())}; }
 
@@ -205,6 +194,14 @@ protected:
 };
 
 template <class C>
+class generic_container<C, none, false> : public generic_container<C, none, true> {
+public:
+    using generic_container<C, none, true>::generic_container;
+
+    void swap(generic_container& other) { std::swap(this->n_, other.n_); }
+};
+
+template <class C>
 using container_id_t = typename generic_container<C>::id;
 
 // Id is implicitly convertible to this key type, and it can be used for comparison.
@@ -214,12 +211,16 @@ template <>         struct id_key<int> { using type = int; };
 template <class Id>
 using id_key_t = typename id_key<Id>::type;
 
+inline constexpr int get_id_key(int id) { return id; }
+
 template <class C>
-class iterator_id : public C::const_iterator {
+class iterator_id {
     using Id = iterator_id;
     using It = typename C::const_iterator;
 
-    constexpr iterator_id(It it) : It(it) {}
+    constexpr iterator_id(It it) : it_(it) {}
+
+    It it_;
 
 public:
     class iterator : public iterator_adaptor<iterator, It, use_default, Id, Id, Id*> {
@@ -232,9 +233,16 @@ public:
         friend struct ac::iterator_core_access;
     };
 
-    constexpr operator std::uintptr_t() const {
-        return reinterpret_cast<std::uintptr_t>(std::addressof(*this));
+    iterator_id& operator++() { ++it_; return *this; }
+    iterator_id& operator--() { --it_; return *this; }
+
+    friend constexpr std::uintptr_t get_id_key(iterator_id id) {
+        return reinterpret_cast<std::uintptr_t>(std::addressof(*id.it_));
     }
+
+    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
+
+    bool operator == (iterator_id rhs) const { return it_ == rhs.it_; }
 
     friend class generic_container<C>;
 };
@@ -271,7 +279,11 @@ private:
 namespace std {
 
 template <class C>
-struct hash<ac::iterator_id<C>> : hash<std::uintptr_t> {};
+struct hash<ac::iterator_id<C>> {
+    auto operator()(const ac::iterator_id<C>& id) const {
+        return std::hash<std::uintptr_t>{}(get_id_key(id));
+    }
+};
 
 template <class Id>
 struct hash<ac::wrap_id<Id>> : hash<Id> {};
