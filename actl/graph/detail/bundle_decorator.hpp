@@ -13,7 +13,8 @@
 namespace ac::detail {
 
 // Special compressed_pair that decorates T with bundled property B.
-template <class T, class B, bool = std::is_empty_v<B> && !std::is_final_v<B>>
+// MimicT indicates whether operation required by set and hash set are inherited from T or B.
+template <class T, class B, bool MimicT = true, bool = std::is_empty_v<B> && !std::is_final_v<B>>
 class bundle_decorator : public T, private B {
 public:
     using bundle_type = B;
@@ -28,8 +29,8 @@ public:
     const B& bundle() const { return *this; }
 };
 
-template <class T, class B>
-class bundle_decorator<T, B, false> : public T {
+template <class T, class B, bool MimicT>
+class bundle_decorator<T, B, MimicT, false> : public T {
 public:
     using bundle_type = B;
 
@@ -45,6 +46,18 @@ public:
 private:
     B bundle_;
 };
+
+template <class T, class B>
+inline bool operator < (const bundle_decorator<T, B, false>& lhs,
+                        const bundle_decorator<T, B, false>& rhs) {
+    return lhs.bundle() < rhs.bundle();
+}
+
+template <class T, class B>
+inline bool operator == (const bundle_decorator<T, B, false>& lhs,
+                         const bundle_decorator<T, B, false>& rhs) {
+    return lhs.bundle() == rhs.bundle();
+}
 
 template <class Key>
 struct bundle_pm_traits {
@@ -83,6 +96,13 @@ inline auto append_bundle_property_map(PM&& map) {
 namespace std {
 
 template <class T, class B>
-struct hash<ac::detail::bundle_decorator<T, B>> : hash<T> {};
+struct hash<ac::detail::bundle_decorator<T, B, true>> : hash<T> {};
+
+template <class T, class B>
+struct hash<ac::detail::bundle_decorator<T, B, false>> {
+    auto operator()(const ac::detail::bundle_decorator<T, B, false>& arg) const {
+        return std::hash<B>{}(arg.bundle());
+    }
+};
 
 }  // namespace std

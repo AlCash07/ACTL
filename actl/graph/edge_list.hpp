@@ -15,7 +15,7 @@ namespace ac {
 
 namespace detail {
 
-template <class Dir, class EC, class VC, class S, class T = typename EC::value_type>
+template <class Dir, class EC, class VC, class S, class T = value_type_t<EC>>
 class edge_list_base : public edge_list_base<Dir, EC, VC, S, none> {
     using base_t = edge_list_base<Dir, EC, VC, S, none>;
 
@@ -61,7 +61,7 @@ public:
 
     explicit edge_list_base(int vertices_count) : base_t(vertices_count) {}
 
-    int edges_count() const { return edges_.size(); }
+    int edge_count() const { return edges_.size(); }
 
     range<edge_iterator> edges() const {
         auto edges = edges_.id_range();
@@ -69,7 +69,7 @@ public:
     }
 
     template <class... Ts>
-    std::pair<edge_id, bool> add_edge(vertex_id u, vertex_id v, Ts&&... args) {
+    std::pair<edge_id, bool> try_add_edge(vertex_id u, vertex_id v, Ts&&... args) {
         if constexpr (is_random_access_v<VC>) {
             vertex_id n = std::max(u, v);
             if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
@@ -78,6 +78,11 @@ public:
             if (u > v) std::swap(u, v);
         }
         return edges_.emplace(edge_vertices(u, v), std::forward<Ts>(args)...);
+    }
+
+    template <class... Ts>
+    edge_id add_edge(vertex_id u, vertex_id v, Ts&&... args) {
+        return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
     void remove_edge(edge_id e) { edges_.erase(e); }
@@ -107,6 +112,8 @@ protected:
 template <class Dir, class EC, class VC, class S>
 class edge_list : public edge_list_base<Dir, EC, VC, S> {
 public:
+    static_assert(!is_associative_v<EC>, "associative edge list requires two vertices");
+
     using edge_list_base<Dir, EC, VC, S>::edge_list_base;
 };
 
@@ -133,7 +140,7 @@ public:
 
 template <class Directed,
           class EdgeContainer   = std::vector<none>,
-          class VertexContainer = std::vector<none>>
+          class VertexContainer = none>
 using edge_list = detail::edge_list<Directed, EdgeContainer, VertexContainer, two_vertices>;
 
 }  // namespace ac

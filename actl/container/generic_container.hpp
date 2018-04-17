@@ -16,7 +16,6 @@
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/range/range.hpp>
-#include <actl/type/none.hpp>
 #include <actl/type_traits/container_traits.hpp>
 #include <algorithm>
 #include <cstdint>
@@ -62,7 +61,7 @@ protected:
     C data_;
 };
 
-template <class C, class T = typename C::value_type, bool RA = is_random_access_v<C>>
+template <class C, class T = value_type_t<C>, bool RA = is_random_access_v<C>>
 class generic_container : public generic_container_base<C> {
     using generic_container_base<C>::data_;
 

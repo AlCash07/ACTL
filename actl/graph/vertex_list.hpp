@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <class VertexContainer = std::vector<none>, class T = typename VertexContainer::value_type>
+template <class VertexContainer = none, class T = value_type_t<VertexContainer>>
 class vertex_list : public vertex_list<VertexContainer, none> {
     using base_t = vertex_list<VertexContainer, none>;
 
@@ -43,7 +43,7 @@ public:
 
     explicit vertex_list(int n) : vertices_(n) {}
 
-    int vertices_count() const { return vertices_.size(); }
+    int vertex_count() const { return vertices_.size(); }
 
     range<vertex_iterator> vertices() const { return vertices_.id_range(); }
 
@@ -53,8 +53,13 @@ public:
     }
 
     template <class... Ts>
+    std::pair<vertex_id, bool> try_add_vertex(Ts&&... args) {
+        return vertices_.emplace(std::forward<Ts>(args)...);
+    }
+
+    template <class... Ts>
     vertex_id add_vertex(Ts&&... args) {
-        return vertices_.emplace(std::forward<Ts>(args)...).first;
+        return try_add_vertex(std::forward<Ts>(args)...).first;
     }
 
     void remove_vertex(vertex_id v) { vertices_.erase(v); }

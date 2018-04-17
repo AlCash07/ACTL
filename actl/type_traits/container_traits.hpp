@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <actl/type/none.hpp>
 #include <list>
 #include <set>
 #include <type_traits>
@@ -83,6 +84,12 @@ struct container_traits<std::unordered_multiset<T>> {
     using rebind = std::unordered_multiset<U>;
 };
 
+template <>
+struct container_traits<none> {
+    template <class>
+    using rebind = none;
+};
+
 /* Container type traits */
 
 namespace detail {
@@ -120,5 +127,11 @@ template <class C> inline constexpr bool is_associative_v   = is_associative<C>:
 // Does erasure invalidate container iterators except the erased one.
 template <class C>
 struct is_stable : std::bool_constant<!is_random_access_v<C>> {};
+
+template <class C> struct value_type       { using type = typename C::value_type; };
+template <>        struct value_type<none> { using type = none; };
+
+template <class C>
+using value_type_t = typename value_type<C>::type;
 
 }  // namespace ac
