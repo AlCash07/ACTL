@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functions.hpp>
 #include <type_traits>
 
 namespace ac {
@@ -77,3 +78,14 @@ inline int write(Device& output, const compressed_pair<T1, T2>& arg) {
 }
 
 }  // namespace ac
+
+namespace std {
+
+template <class T1, class T2>
+struct hash<ac::compressed_pair<T1, T2>> {
+    auto operator()(const ac::compressed_pair<T1, T2>& arg) const {
+        return ac::hash_combine(hash<T1>{}(arg.first()), hash<T2>{}(arg.second()));
+    }
+};
+
+}  // namespace std
