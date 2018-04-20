@@ -75,7 +75,7 @@ struct edge_vertices<Dir, two_vertices, VId> {
 
 template <class Dir, class EC, class VId, class Selector>
 struct edge_list_traits {
-    using bundle    = typename EC::value_type;
+    using bundle    = value_type_t<EC>;
     using vertices  = edge_vertices<Dir, Selector, VId>;
     using edge_data = bundle_decorator<vertices, bundle, true>;
     using container = generic_container<typename container_traits<EC>::template rebind<edge_data>>;
@@ -85,7 +85,7 @@ struct edge_list_traits {
 
 template <class Dir, class EC, class VId>
 struct edge_list_traits<Dir, EC, VId, none> {
-    using bundle    = typename EC::value_type;
+    using bundle    = value_type_t<EC>;
     using vertices  = none;
     using container = generic_container<none, none, true>;  // Only maintains edge count.
 

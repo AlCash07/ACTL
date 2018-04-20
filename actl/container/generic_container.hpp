@@ -252,7 +252,7 @@ class wrap_id {
     Id id_;
 
 public:
-    constexpr wrap_id(Id id) : id_(id) {}
+    explicit constexpr wrap_id(Id id) : id_(id) {}
 
     constexpr operator Id() const { return id_; }
 };

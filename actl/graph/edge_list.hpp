@@ -77,7 +77,8 @@ public:
         if constexpr (is_undirected && is_associative_v<EC>) {
             if (u > v) std::swap(u, v);
         }
-        return edges_.emplace(edge_vertices(u, v), std::forward<Ts>(args)...);
+        auto res = edges_.emplace(edge_vertices(u, v), std::forward<Ts>(args)...);
+        return {edge_id(res.first), res.second};
     }
 
     template <class... Ts>
@@ -99,11 +100,6 @@ public:
         base_t::swap(other);
         edges_.swap(other.edges_);
     }
-
-    using base_t::operator[];
-
-    none operator[](edge_id)       { return none{}; }
-    none operator[](edge_id) const { return none{}; }
 
 protected:
     edge_container edges_;
@@ -132,7 +128,7 @@ public:
     vertex_id target(edge_id e) const { return this->edges_[e].v; }
 
     edge_id find_edge(vertex_id u, vertex_id v) const {
-        return this->edges_.find(typename base_t::edge_vertices(u, v));
+        return edge_id(this->edges_.find(typename base_t::edge_vertices(u, v)));
     }
 };
 
