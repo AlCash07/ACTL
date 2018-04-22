@@ -34,10 +34,11 @@ public:
 
 template <class VC>
 class vertex_list<VC, none> {
-public:
     using vertex_container = generic_container<VC>;
-    using vertex_id        = typename vertex_container::id;
-    using vertex_iterator  = typename vertex_container::id_iterator;
+
+public:
+    using vertex_id       = typename vertex_container::id;
+    using vertex_iterator = typename vertex_container::id_iterator;
 
     explicit vertex_list() = default;
 
@@ -67,9 +68,6 @@ public:
     void clear() { vertices_.clear(); }
 
     void swap(vertex_list& other) { vertices_.swap(other.vertices_); }
-
-    none operator[](vertex_id)       { return none{}; }
-    none operator[](vertex_id) const { return none{}; }
 
 protected:
     vertex_container vertices_;
