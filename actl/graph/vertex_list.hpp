@@ -24,6 +24,7 @@ public:
     auto operator[](vertex_property) {
         return make_generic_container_property_map(this->vertices_);
     }
+
     auto operator[](vertex_property) const {
         return make_generic_container_property_map(this->vertices_);
     }
@@ -68,6 +69,9 @@ public:
     void clear() { vertices_.clear(); }
 
     void swap(vertex_list& other) { vertices_.swap(other.vertices_); }
+
+    none operator[](vertex_id)       { return none{}; }
+    none operator[](vertex_id) const { return none{}; }
 
 protected:
     vertex_container vertices_;

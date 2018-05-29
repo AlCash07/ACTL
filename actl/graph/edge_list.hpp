@@ -52,8 +52,9 @@ public:
 
     using directed_category = Dir;
 
-    static constexpr bool is_directed   = std::is_same_v<Dir, directed>;
-    static constexpr bool is_undirected = !is_directed;
+    static constexpr bool is_undirected         = std::is_same_v<Dir, undirected>;
+    static constexpr bool is_directed           = !is_undirected;
+    static constexpr bool allows_parallel_edges = !is_unique_associative<EC>::value;
 
     explicit edge_list_base() = default;
 
@@ -63,6 +64,8 @@ public:
         auto edges = edges_.id_range();
         return {edge_iterator(edges.begin()), edge_iterator(edges.end())};
     }
+
+    edge_id null_edge() const { return edges_.null_id(); }
 
     template <class... Ts>
     std::pair<edge_id, bool> try_add_edge(VId u, VId v, Ts&&... args) {
@@ -83,6 +86,9 @@ public:
     void clear() { edges_.clear(); }
 
     void swap(edge_list_base& other) { edges_.swap(other.edges_); }
+
+    none operator[](edge_id)       { return none{}; }
+    none operator[](edge_id) const { return none{}; }
 
 protected:
     edge_container edges_;

@@ -239,9 +239,10 @@ public:
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.it_));
     }
 
-    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
-
     bool operator == (iterator_id rhs) const { return it_ == rhs.it_; }
+    bool operator != (iterator_id rhs) const { return it_ != rhs.it_; }
+
+    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
 
     friend class generic_container<C>;
 };
@@ -254,6 +255,7 @@ class wrap_id {
 public:
     explicit constexpr wrap_id(Id id) : id_(id) {}
 
+    constexpr operator Id&() { return id_; }
     constexpr operator Id() const { return id_; }
 };
 

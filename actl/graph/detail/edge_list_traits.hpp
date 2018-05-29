@@ -79,8 +79,6 @@ struct edge_list_traits {
     using vertices  = edge_vertices<Dir, VId, Selector>;
     using edge_data = bundle_decorator<vertices, bundle, true>;
     using container = generic_container<typename container_traits<EC>::template rebind<edge_data>>;
-
-    using out_edge_bundle = typename container::id;
 };
 
 template <class Dir, class VId, class EC>
@@ -88,9 +86,6 @@ struct edge_list_traits<Dir, VId, EC, none> {
     using bundle    = value_type_t<EC>;
     using vertices  = none;
     using container = generic_container<none, none, true>;  // Only maintains edge count.
-
-    // Edge bundle is duplicated if graph is undirected or bidirectional, so it's immutable.
-    using out_edge_bundle = std::conditional_t<std::is_same_v<Dir, directed>, bundle, const bundle>;
 };
 
 template <class VId, class EC, bool DiffId>
