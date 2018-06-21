@@ -82,16 +82,18 @@ public:
     }
 
     inline int write_value(const char* begin) {
-        int delimiter_length = separate_ ? write_delimiter() : 0;
-        return delimiter_length + write_string(begin, static_cast<size_t>(get_end() - begin), true);
+        int chars_written = separate_ ? write_delimiter() : 0;
+        chars_written += write_string(begin, static_cast<size_t>(get_end() - begin));
+        separate_ = true;
+        return chars_written;
     }
 
-    inline int write_string(const char* arg, size_t length, bool value, bool check_width = true) {
-        separate_ = value;
+    inline int write_string(const char* arg, size_t length, bool check_width = true) {
+        separate_ = false;
         const int count = static_cast<int>(length);
         int chars_written = count;
         if (EXPECT_FALSE(check_width && count < width_)) {
-            struct fill_iterator : iterator<std::input_iterator_tag, char> {
+            struct fill_iterator : std::iterator<std::input_iterator_tag, char> {
                 fill_iterator(char fill) : fill{fill} {}
                 char operator * () const { return fill; }
                 void operator ++ () const {}
@@ -104,7 +106,7 @@ public:
     }
 
     inline int write_delimiter() {
-        return write_string(delimiter_.c_str(), delimiter_.size(), false, false);
+        return write_string(delimiter_.c_str(), delimiter_.size(), false);
     }
 
 private:

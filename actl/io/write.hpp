@@ -122,29 +122,24 @@ inline int write(binary_io_tag, Device& out, const std::string& arg) {
 
 template <class Device>
 inline int write(text_io_tag, Device& out, const std::string& arg) {
-    return out.write_string(arg.data(), arg.size(), false);
+    return out.write_string(arg.data(), arg.size());
 }
 
 template <class Device, class... Ts>
-inline int write(text_io_tag, Device& out, const char* arg, Ts&&... args) {
-    return out.write_string(arg, std::strlen(arg), false) + write(out, std::forward<Ts>(args)...);
-}
-
-template <class Device, int N, class... Ts>
-inline int write(text_io_tag, Device& out, char (&arg)[N], Ts&&... args) {
-    return out.write_string(arg, std::strlen(arg), false) + write(out, std::forward<Ts>(args)...);
+inline int write(text_io_tag, Device& out, const char* arg, const Ts&... args) {
+    return out.write_string(arg, std::strlen(arg)) + write(out, args...);
 }
 
 template <class Device, class T, class... Ts>
-inline int write(binary_io_tag, Device& out, const range<T>& arg, Ts&&... args) {
+inline int write(binary_io_tag, Device& out, const range<T>& arg, const Ts&... args) {
     int chars_written = 0;
     for (const auto& element : arg)
         chars_written += write(out, element);
-    return chars_written + write(out, std::forward<Ts>(args)...);
+    return chars_written + write(out, args...);
 }
 
 template <class Device, class T, class... Ts>
-inline int write(text_io_tag, Device& out, const range<T>& arg, Ts&&... args) {
+inline int write(text_io_tag, Device& out, const range<T>& arg, const Ts&... args) {
     int chars_written = 0;
     bool is_first = true;
     for (const auto& i : arg) {
@@ -152,35 +147,34 @@ inline int write(text_io_tag, Device& out, const range<T>& arg, Ts&&... args) {
         is_first = false;
         chars_written += write(out, i);
     }
-    return chars_written + write(out, std::forward<Ts>(args)...);
+    return chars_written + write(out, args...);
 }
 
 /* General forwarding */
 
 template <class Device, class T0, class T1, class... Ts>
-inline std::enable_if_t<is_iterator<T0>::value, int> write(io_tag, Device& out, T0&& arg0,
-                                                           T1&& arg1, Ts&&... args) {
-    return write(out, make_range(std::forward<T0>(arg0), std::forward<T1>(arg1)),
-                 std::forward<Ts>(args)...);
+inline std::enable_if_t<is_iterator<T0>::value && !std::is_convertible_v<T0, const char*>, int>
+write(io_tag, Device& out, const T0& arg0, const T1& arg1, const Ts&... args) {
+    return write(out, make_range(arg0, arg1), args...);
 }
 
 template <class Device, class T0, class T1, class... Ts>
 inline std::enable_if_t<!is_iterator<T0>::value, int> write(io_tag, Device& out, const T0& arg0,
-                                                            T1&& arg1, Ts&&... args) {
+                                                            const T1& arg1, const Ts&... args) {
     int chars_written = write(out, arg0);
-    return chars_written + write(out, std::forward<T1>(arg1), std::forward<Ts>(args)...);
+    return chars_written + write(out, arg1, args...);
 }
 
 template <class Device, class... Ts>
-inline int write(Device& out, Ts&&... args) {
+inline int write(Device& out, const Ts&... args) {
     static_assert(!std::is_base_of_v<io_tag, Device>, "no matching call for write");
-    return write(typename Device::category{}, out, std::forward<Ts>(args)...);
+    return write(typename Device::category{}, out, args...);
 }
 
 template <class Device, class... Ts>
-inline int writeln(Device& out, Ts&&... args) {
+inline int writeln(Device& out, const Ts&... args) {
     static_assert(io_traits<Device>::text, "text device expected");
-    return write(out, std::forward<Ts>(args)..., '\n');
+    return write(out, args..., '\n');
 }
 
 }  // namespace ac
