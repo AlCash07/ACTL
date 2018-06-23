@@ -36,8 +36,8 @@ struct adj_list_traits {
     using vertex_id = typename vertices_base::vertex_id;
 
     using edges = detail::edge_list_base<
-        std::conditional_t<std::is_same_v<Dir, bidirectional>, undirected, Dir>, vertex_id,
-        typename container_traits<EC>::template rebind<value_type_t<OEC>>, edge_selector, false>;
+        Dir, vertex_id, typename container_traits<EC>::template rebind<value_type_t<OEC>>,
+        edge_selector, false>;
 
     // Out edge must contain target vertex as key in associative container.
     using out_edge_selector =
@@ -67,4 +67,25 @@ public:
               std::forward<Ts>(args)...) {}
 };
 
+template <class VId, class OEId, class S>
+struct full_edge_id {
+    VId  u;
+    OEId out_edge;
+    OEId in_edge;
+};
+
+template <class VId, class OEId>
+struct full_edge_id<VId, OEId, directed> {
+    VId  u;
+    OEId out_edge;
+};
+
 }  // namespace ac::detail
+
+namespace std {
+
+template <class Dir, class OEC, class EC, class VC>
+struct hash<ac::detail::adj_list_vertex_data<Dir, OEC, EC, VC>>
+    : hash<typename ac::detail::adj_list_traits<Dir, OEC, EC, VC>::vertex_data> {};
+
+}

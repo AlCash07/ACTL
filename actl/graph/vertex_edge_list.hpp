@@ -42,7 +42,7 @@ public:
     }
 
     // TODO: implement using one pass over edges that will remove edges and decrease int IDs.
-    void remove_vertex(vertex_id v);
+    void remove_vertex(vertex_id u);
 
     void clear() {
         vbase_t::clear();

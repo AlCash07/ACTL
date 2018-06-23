@@ -51,7 +51,7 @@ struct edge_vertices<Dir, VId, two_vertices> {
     edge_vertices(VId u, VId v) : u(u), v(v) {}
 
     VId dst(VId src) const {
-        if constexpr (!std::is_same_v<Dir, undirected>) {
+        if constexpr (std::is_same_v<Dir, directed>) {
             return v;
         } else {
             return other(src);

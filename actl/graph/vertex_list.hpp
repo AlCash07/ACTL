@@ -29,8 +29,8 @@ public:
         return make_generic_container_property_map(this->vertices_);
     }
 
-    T&       operator[](vertex_id v)       { return get((*this)[vertex_property{}], v); }
-    const T& operator[](vertex_id v) const { return get((*this)[vertex_property{}], v); }
+    T&       operator[](vertex_id u)       { return get((*this)[vertex_property{}], u); }
+    const T& operator[](vertex_id u) const { return get((*this)[vertex_property{}], u); }
 };
 
 template <class VC>
@@ -64,7 +64,7 @@ public:
         return try_add_vertex(std::forward<Ts>(args)...).first;
     }
 
-    void remove_vertex(vertex_id v) { vertices_.erase(v); }
+    void remove_vertex(vertex_id u) { vertices_.erase(u); }
 
     void clear() { vertices_.clear(); }
 
