@@ -14,19 +14,19 @@ namespace ac {
 /**
  * N-dimensional sphere.
  */
-template <int N, class T>
+template <class T, int N = 3>
 struct sphere {
-    point<N, T> center;
+    point<T, N> center;
     T           radius;
 
     explicit constexpr sphere() = default;
 
     template <class T1, class T2>
-    explicit constexpr sphere(const point<N, T1>& center, const T2& radius)
+    explicit constexpr sphere(const point<T1, N>& center, const T2& radius)
         : center(center), radius{static_cast<T>(radius)} {}
 
     template <class T1>
-    explicit constexpr sphere(const sphere<N, T1>& other) { (*this) = other; }
+    explicit constexpr sphere(const sphere<T1, N>& other) { (*this) = other; }
 
     explicit constexpr operator bool() const { return radius > T{0}; }
 
@@ -37,7 +37,7 @@ struct sphere {
     }
 
     template <class T1>
-    constexpr sphere& operator = (const sphere<N, T1>& other) {
+    constexpr sphere& operator = (const sphere<T1, N>& other) {
         center = other.center;
         radius = static_cast<T>(other.radius);
         return *this;
@@ -45,23 +45,23 @@ struct sphere {
 };
 
 template <int N, class T>
-struct geometry_traits<sphere<N, T>> : geometry_traits_base<sphere_tag, point<N, T>> {};
+struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T, N>> {};
 
-template <int N, class T1, class T2>
-inline constexpr auto make_sphere(const point<N, T1>& center, const T2& radius) {
-    return sphere<N, geometry::scalar_t<T1, T2>>(center, radius);
+template <int N, class T0, class T1>
+inline constexpr auto make_sphere(const point<T0, N>& center, const T1& radius) {
+    return sphere<geometry::scalar_t<T0, T1>, N>(center, radius);
 }
 
 template <int N, class T>
-inline void swap(sphere<N, T>& lhs, sphere<N, T>& rhs) { lhs.swap(rhs); }
+inline void swap(sphere<T, N>& lhs, sphere<T, N>& rhs) { lhs.swap(rhs); }
 
 template <class Device, int N, class T>
-inline bool read(Device& in, sphere<N, T>& arg) {
+inline bool read(Device& in, sphere<T, N>& arg) {
     return read(in, arg.center, arg.radius);
 }
 
 template <class Device, int N, class T>
-inline int write(Device& out, const sphere<N, T>& arg) {
+inline int write(Device& out, const sphere<T, N>& arg) {
     return write(out, arg.center, arg.radius);
 }
 

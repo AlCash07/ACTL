@@ -16,16 +16,16 @@ template <class R = use_default, class IntersectPolicy = intersect_line_line<>>
 struct circumcenter_policy : IntersectPolicy {};
 
 template <class R, class IP, class T0, class T1, class T2>
-inline auto circumcenter(const circumcenter_policy<R, IP>& policy, const point2d<T0>& a,
-                         const point2d<T1>& b, const point2d<T2>& c) {
-    point2d<geometry::ratio_t<R, T0, T1, T2>> res;
+inline auto circumcenter(const circumcenter_policy<R, IP>& policy, const point<T0>& a,
+                         const point<T1>& b, const point<T2>& c) {
+    point<geometry::ratio_t<R, T0, T1, T2>> res;
     intersect(policy, make_line(a + b, perpendicular(a - b), true),
               make_line(a + c, perpendicular(a - c), true), &res);
     return res / 2;
 }
 
 template <class T0, class T1, class T2>
-inline auto circumcenter(const point2d<T0>& a, const point2d<T1>& b, const point2d<T2>& c) {
+inline auto circumcenter(const point<T0>& a, const point<T1>& b, const point<T2>& c) {
     return circumcenter(circumcenter_policy<>(), a, b, c);
 }
 

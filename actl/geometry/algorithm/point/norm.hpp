@@ -20,17 +20,17 @@ template <class P = use_default, class S = use_default>
 struct standard_norm : geometry::policy {};
 
 template <class P, int N, class T>
-inline auto norm(comparable_norm<P>, const point<N, T>& point) {
+inline auto norm(comparable_norm<P>, const point<T, N>& point) {
     return deferred_sqrt(abs<P>(point));
 }
 
 template <class P, class S, int N, class T>
-inline auto norm(standard_norm<P, S>, const point<N, T>& point) {
+inline auto norm(standard_norm<P, S>, const point<T, N>& point) {
     return (geometry::sqrt_t<S, T>)norm(comparable_norm<P>(), point);
 }
 
 template <int N, class T>
-inline auto norm(const point<N, T>& point) {
+inline auto norm(const point<T, N>& point) {
     return norm(standard_norm<>(), point);
 }
 

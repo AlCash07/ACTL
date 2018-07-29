@@ -16,14 +16,13 @@ namespace ac {
  * Returns -1 if rotation rhs <- lhs is counter-clockwise, 0 if collinear, +1 if clockwise.
  */
 template <class AP, class T0, class T1>
-inline constexpr int ccw(const ccw_policy<AP>& policy, const point2d<T0>& lhs,
-                         const point2d<T1>& rhs) {
+inline constexpr int ccw(const ccw_policy<AP>& policy, const point<T0>& lhs, const point<T1>& rhs) {
     return sgn(area(policy, rhs, lhs));
 }
 
 template <class AP, class T0, class T1, class T2>
-inline constexpr int ccw(const ccw_policy<AP>& policy, const point2d<T0>& lhs,
-                         const point2d<T1>& rhs, const point2d<T2>& origin) {
+inline constexpr int ccw(const ccw_policy<AP>& policy, const point<T0>& lhs, const point<T1>& rhs,
+                         const point<T2>& origin) {
     return ccw(policy, lhs - origin, rhs - origin);
 }
 

@@ -11,7 +11,7 @@
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/type_traits/output_type.hpp>
 
-namespace ac { namespace detail {
+namespace ac::detail {
 
 template <class Line, class It,
           class T = geometry::scalar_t<typename std::iterator_traits<It>::value_type>>
@@ -49,4 +49,4 @@ inline auto adapt_iterator(const Line& line, Iterator it) {
     return adapt_iterator(line, it, geometry::tag_t<output_type_t<Iterator>>());
 }
 
-}}  // namespace ac::detail
+}  // namespace ac::detail

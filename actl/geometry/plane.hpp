@@ -15,23 +15,23 @@ namespace ac {
  * Plane with equation in the form: dot(normal, x) = d.
  * In 2D represents a line.
  */
-template <int N, class T>
+template <class T, int N = 3>
 struct plane {
-    point<N, T> normal;  // normal vector
+    point<T, N> normal;  // normal vector
     T           d;       // distance from origin to the plane times the normal norm
 
     explicit constexpr plane() = default;
 
     template <class T1, class T2>
-    explicit constexpr plane(const point<N, T1>& normal, const T2& d)
+    explicit constexpr plane(const point<T1, N>& normal, const T2& d)
         : normal(normal), d{static_cast<T>(d)} {}
 
     template <class T1, class T2>
-    explicit constexpr plane(const point<N, T1>& normal, const point<N, T2>& point)
+    explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& point)
         : plane(normal, dot(normal, point)) {}
 
     template <class T1>
-    explicit constexpr plane(const plane<N, T1>& other) { (*this) = other; }
+    explicit constexpr plane(const plane<T1, N>& other) { (*this) = other; }
 
     explicit constexpr operator bool() const { return normal; }
 
@@ -42,7 +42,7 @@ struct plane {
     }
 
     template <class T1>
-    constexpr plane& operator = (const plane<N, T1>& other) {
+    constexpr plane& operator = (const plane<T1, N>& other) {
         normal = other.normal;
         d = static_cast<T>(other.d);
         return *this;
@@ -50,29 +50,29 @@ struct plane {
 
     // Oriented distance from @p point to the plane times the normal norm.
     template <class P = use_default, class T1>
-    constexpr auto operator()(const point<N, T1>& point) const {
+    constexpr auto operator()(const point<T1, N>& point) const {
         return dot<P>(normal, point) - d;
     };
 };
 
 template <int N, class T>
-struct geometry_traits<plane<N, T>> : geometry_traits_base<plane_tag, point<N, T>> {};
+struct geometry_traits<plane<T, N>> : geometry_traits_base<plane_tag, point<T, N>> {};
 
 template <int N, class... Ts>
-using plane_type = plane<N, geometry::scalar_t<Ts...>>;
+using plane_type = plane<geometry::scalar_t<Ts...>, N>;
 
 template <int N, class T0, class T1>
-inline constexpr auto make_plane(const point<N, T0>& normal, const T1& d) {
+inline constexpr auto make_plane(const point<T0, N>& normal, const T1& d) {
     return plane_type<N, T0, T1>(normal, d);
 }
 
 template <int N, class T0, class T1>
-inline constexpr auto make_plane(const point<N, T0>& normal, const point<N, T1>& point) {
+inline constexpr auto make_plane(const point<T0, N>& normal, const point<T1, N>& point) {
     return plane_type<N, T0, T1>(normal, point);
 }
 
 template <class T0, class T1>
-inline constexpr auto make_plane2d(const point2d<T0>& a, const point2d<T1>& b) {
+inline constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b) {
     return plane_type<2, T0, T1>(perpendicular(b - a), a);
 }
 
@@ -83,15 +83,15 @@ inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
 }
 
 template <int N, class T>
-inline void swap(plane<N, T>& lhs, plane<N, T>& rhs) { lhs.swap(rhs); }
+inline void swap(plane<T, N>& lhs, plane<T, N>& rhs) { lhs.swap(rhs); }
 
 template <class Device, int N, class T>
-inline bool read(Device& in, plane<N, T>& arg) {
+inline bool read(Device& in, plane<T, N>& arg) {
     return read(in, arg.normal, arg.d);
 }
 
 template <class Device, int N, class T>
-inline int write(Device& out, const plane<N, T>& arg) {
+inline int write(Device& out, const plane<T, N>& arg) {
     return write(out, arg.normal, arg.d);
 }
 

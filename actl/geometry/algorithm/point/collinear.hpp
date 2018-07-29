@@ -19,14 +19,14 @@ template <class P = use_default>
 using comparable_collinear = collinear_policy<comparable_area_points<P>>;
 
 template <class AP, class T0, class T1>
-inline constexpr bool collinear(const collinear_policy<AP>& policy, const point2d<T0>& lhs,
-                                const point2d<T1>& rhs) {
+inline constexpr bool collinear(const collinear_policy<AP>& policy, const point<T0>& lhs,
+                                const point<T1>& rhs) {
     return sgn(area(policy, lhs, rhs)) == 0;
 }
 
 template <class AP, int N, class T0, class T1>
-inline bool collinear(const collinear_policy<AP>& policy, const point<N, T0>& lhs,
-                      const point<N, T1>& rhs) {
+inline bool collinear(const collinear_policy<AP>& policy, const point<T0, N>& lhs,
+                      const point<T1, N>& rhs) {
     int i = 0;
     for (; i < N && lhs[i] == T0{0}; ++i) {
         if (rhs[i] != T1{0}) return false;
@@ -39,7 +39,7 @@ inline bool collinear(const collinear_policy<AP>& policy, const point<N, T0>& lh
 }
 
 template <int N, class T0, class T1>
-inline constexpr bool collinear(const point<N, T0>& lhs, const point<N, T1>& rhs) {
+inline constexpr bool collinear(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return collinear(comparable_collinear<>(), lhs, rhs);
 }
 

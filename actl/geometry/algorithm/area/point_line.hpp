@@ -13,7 +13,7 @@
 namespace ac {
 
 template <class Policy, int N, class T0, class T1, class K>
-inline auto area(const Policy& policy, const point<N, T0>& point, const line<N, T1, K>& line) {
+inline auto area(const Policy& policy, const point<T0, N>& point, const line<T1, N, K>& line) {
     return area(policy, point - line.start, line.slope);
 }
 

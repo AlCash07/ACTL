@@ -10,7 +10,7 @@
 #include <actl/geometry/traits/geometry_traits.hpp>
 #include <actl/type_traits/type_traits.hpp>
 
-namespace ac { namespace geometry {
+namespace ac::geometry {
 
 // Never change the order of existing IDs! However, new ones can be inserted anywhere.
 enum : int {
@@ -49,4 +49,4 @@ template <> struct id<convex_monotone_polygon_tag> : int_constant<convex_monoton
 template <class T0, class T1, class R = void>
 using enable_if_swap_t = std::enable_if_t<id<T1>::value < id<T0>::value, R>;
 
-}}  // namespace ac::geometry
+}  // namespace ac::geometry

@@ -17,12 +17,12 @@ template <class P = use_default, class R = use_default>
 struct project_plane : geometry::policy {};
 
 template <class P, class R, int N, class T0, class T1, class X = geometry::ratio_t<R, T0, T1>>
-inline auto project(project_plane<P, R>, const point<N, T0>& src, const plane<N, T1>& dst) {
+inline auto project(project_plane<P, R>, const point<T0, N>& src, const plane<T1, N>& dst) {
     return src - dst.normal * static_cast<X>(dst.template operator()<P>(src)) / abs<P>(dst.normal);
 }
 
 template <int N, class T0, class T1>
-inline auto project(use_default, const point<N, T0>& src, const plane<N, T1>& dst) {
+inline auto project(use_default, const point<T0, N>& src, const plane<T1, N>& dst) {
     return project(project_plane<>(), src, dst);
 }
 

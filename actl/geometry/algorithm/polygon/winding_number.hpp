@@ -23,7 +23,7 @@ struct winding_number_policy : CcwPolicy {};
  * http://geomalgorithms.com/a03-_inclusion.html
  */
 template <class CP, class T0, class T1>
-inline int winding_number(const winding_number_policy<CP>& policy, const point2d<T0>& point,
+inline int winding_number(const winding_number_policy<CP>& policy, const point<T0>& point,
                           const polygon<T1>& polygon) {
     static constexpr int boundary = std::numeric_limits<int>::max();
     if (polygon.empty()) return 0;
@@ -50,7 +50,7 @@ inline int winding_number(const winding_number_policy<CP>& policy, const point2d
 }
 
 template <class T0, class T1>
-inline int winding_number(const point2d<T0>& point, const polygon<T1>& polygon) {
+inline int winding_number(const point<T0>& point, const polygon<T1>& polygon) {
     return winding_number(winding_number_policy<>(), point, polygon);
 }
 

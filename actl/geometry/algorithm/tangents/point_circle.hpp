@@ -24,7 +24,7 @@ struct tangents_point_circle_point : within_sphere<P> {
 };
 
 template <class P, class T0, class T1, class OutputIterator>
-inline auto tangents(const tangents_point_circle_scalar<P>& policy, const point2d<T0>& point,
+inline auto tangents(const tangents_point_circle_scalar<P>& policy, const point<T0>& point,
                      const circle<T1>& circle, OutputIterator dst) {
     using O = geometry::scalar_t<output_type_t<OutputIterator>>;
     auto center_vector = circle.center - point;
@@ -44,7 +44,7 @@ inline auto tangents(const tangents_point_circle_scalar<P>& policy, const point2
 }
 
 template <class P, class T0, class T1, class OutputIterator>
-inline auto tangents(const tangents_point_circle_point<P>& policy, const point2d<T0>& point,
+inline auto tangents(const tangents_point_circle_point<P>& policy, const point<T0>& point,
                      const circle<T1>& circle, OutputIterator dst) {
     using O = geometry::scalar_t<output_type_t<OutputIterator>>;
     auto center_vector = circle.center - point;
@@ -64,13 +64,13 @@ inline auto tangents(const tangents_point_circle_point<P>& policy, const point2d
 namespace detail {
 
 template <class T0, class T1, class OutputIterator>
-inline auto tangents(const point2d<T0>& point, const circle<T1>& circle, OutputIterator dst,
+inline auto tangents(const point<T0>& point, const circle<T1>& circle, OutputIterator dst,
                      scalar_tag) {
     return tangents(tangents_point_circle_scalar<>(), point, circle, dst);
 }
 
 template <class T0, class T1, class OutputIterator>
-inline auto tangents(const point2d<T0>& point, const circle<T1>& circle, OutputIterator dst,
+inline auto tangents(const point<T0>& point, const circle<T1>& circle, OutputIterator dst,
                      point_tag) {
     return tangents(tangents_point_circle_point<>(), point, circle, dst);
 }
@@ -78,7 +78,7 @@ inline auto tangents(const point2d<T0>& point, const circle<T1>& circle, OutputI
 }  // namespace detail
 
 template <class T0, class T1, class OutputIterator>
-inline auto tangents(use_default, const point2d<T0>& point, const circle<T1>& circle,
+inline auto tangents(use_default, const point<T0>& point, const circle<T1>& circle,
                      OutputIterator dst) {
     return detail::tangents(point, circle, dst, geometry::tag_t<output_type_t<OutputIterator>>());
 }

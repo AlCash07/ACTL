@@ -21,7 +21,7 @@ struct within_triangle : CcwPolicy {};
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
  */
 template <class CP, class T0, class T1>
-inline int within(const within_triangle<CP>& policy, const point2d<T0>& point,
+inline int within(const within_triangle<CP>& policy, const point<T0>& point,
                   const polygon<T1>& triangle) {
     ACTL_ASSERT(triangle.size() == 3);
     int signs[3];

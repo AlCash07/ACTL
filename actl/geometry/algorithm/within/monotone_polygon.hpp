@@ -20,7 +20,7 @@ struct within_monotone_polygon : CcwPolicy {};
  * O(log N).
  */
 template <class CP, class T0, class T1>
-inline int within(const within_monotone_polygon<CP>& policy, const point2d<T0>& point,
+inline int within(const within_monotone_polygon<CP>& policy, const point<T0>& point,
                   const monotone_polygon<T1>& polygon) {
     if (polygon.empty()) return 1;
     if (polygon.size() == 1) return point == polygon[0] ? 0 : 1;
@@ -34,7 +34,7 @@ inline int within(const within_monotone_polygon<CP>& policy, const point2d<T0>& 
 }
 
 template <class T0, class T1>
-inline int within(use_default, const point2d<T0>& point, const monotone_polygon<T1>& polygon) {
+inline int within(use_default, const point<T0>& point, const monotone_polygon<T1>& polygon) {
     return within(within_monotone_polygon<>(), point, polygon);
 }
 

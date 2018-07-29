@@ -15,7 +15,7 @@ namespace ac {
  * Point inclusion test, returns -1 if inside, 0 if on the border, 1 if outside.
  */
 template <int N, class T0, class T1>
-inline int within(const point<N, T0>& lhs, const T1& rhs) {
+inline int within(const point<T0, N>& lhs, const T1& rhs) {
     return within(use_default(), lhs, rhs);
 }
 

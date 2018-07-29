@@ -36,7 +36,7 @@ using standard_general_cross_line_line = general_cross_line_line<standard_area_p
 namespace detail {
 
 template <class T0, class K0, class T1, class K1, class T2>
-inline bool cross_test(const line<2, T0, K0>& lhs, const line<2, T1, K1>& rhs,
+inline bool cross_test(const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs,
                        T2 tarea, T2 larea, T2 rarea) {
     if (tarea < T2{0}) {
         tarea = -tarea;
@@ -48,8 +48,8 @@ inline bool cross_test(const line<2, T0, K0>& lhs, const line<2, T1, K1>& rhs,
 
 template <class R = use_default, class AP, class T0, class K0, class T1, class K1,
           class X = geometry::ratio_t<R, T0, T1>>
-inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<2, T0, K0>& lhs,
-                                                  const line<2, T1, K1>& rhs) {
+inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<T0, 2, K0>& lhs,
+                                                  const line<T1, 2, K1>& rhs) {
     auto tarea = area(policy, rhs.slope, lhs.slope);
     if (tarea == 0) return {false, X{}};
     auto larea = area(policy, lhs.start, rhs);
@@ -59,35 +59,35 @@ inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<2
 
 template <class R = use_default, class AP, class T0, class K0, class T1, class K1,
           class X = geometry::ratio_t<R, T0, T1>>
-inline std::pair<bool, any_line<2, X>> intersect_lines(const AP& policy, const line<2, T0, K0>& lhs,
-                                                       const line<2, T1, K1>& rhs) {
+inline std::pair<bool, any_line<X, 2>> intersect_lines(const AP& policy, const line<T0, 2, K0>& lhs,
+                                                       const line<T1, 2, K1>& rhs) {
     auto tarea = area(policy, rhs.slope, lhs.slope);
     auto larea = area(policy, lhs.start, rhs);
     if (tarea == 0) {
-        if (larea != 0) return {false, any_line<2, X>()};
+        if (larea != 0) return {false, any_line<X, 2>()};
         return common_line<X>(lhs, rhs);
     }
     if (!cross_test(lhs, rhs, tarea, larea, area(policy, rhs.start, lhs)))
-        return {false, any_line<2, X>()};
-    return {true, any_line<2, X>(lhs(static_cast<X>(larea) / tarea), point<2, X>(), true)};
+        return {false, any_line<X, 2>()};
+    return {true, any_line<X, 2>(lhs(static_cast<X>(larea) / tarea), point<X>(), true)};
 }
 
 }  // namespace detail
 
 template <class AP, class T0, class K0, class T1, class K1>
-inline bool crosses(const cross_line_line<AP> policy, const line<2, T0, K0>& lhs,
-                    const line<2, T1, K1>& rhs) {
+inline bool crosses(const cross_line_line<AP> policy, const line<T0, 2, K0>& lhs,
+                    const line<T1, 2, K1>& rhs) {
     return detail::intersect_lines(policy, lhs, rhs).first;
 }
 
 template <class AP, class T0, class K0, class T1, class K1>
-inline bool crosses(const general_cross_line_line<AP> policy, const line<2, T0, K0>& lhs,
-                    const line<2, T1, K1>& rhs) {
+inline bool crosses(const general_cross_line_line<AP> policy, const line<T0, 2, K0>& lhs,
+                    const line<T1, 2, K1>& rhs) {
     return detail::intersect_lines_general(policy, lhs, rhs).first;
 }
 
 template <class T0, class K0, class T1, class K1>
-inline bool crosses(use_default, const line<2, T0, K0>& lhs, const line<2, T1, K1>& rhs) {
+inline bool crosses(use_default, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) {
     return crosses(comparable_cross_line_line<>(), lhs, rhs);
 }
 

@@ -28,7 +28,7 @@ namespace detail {
  */
 template <class P, class AP, class T0, class K, class T1, class It>
 inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
-                      const line<2, T0, K>& line, const simple_polygon<T1>& polygon, It dst) {
+                      const line<T0, 2, K>& line, const simple_polygon<T1>& polygon, It dst) {
     using O = geometry::scalar_t<output_type_t<It>>;
     project_line_scalar<P, O> project_policy;
     ACTL_ASSERT(line);
@@ -58,13 +58,13 @@ inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
 
 template <class P, class AP, class T0, class K, class T1, class OutputIterator>
 inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
-                      const line<2, T0, K>& line, const simple_polygon<T1>& polygon,
+                      const line<T0, 2, K>& line, const simple_polygon<T1>& polygon,
                       OutputIterator dst) {
     return detail::intersect(policy, line, polygon, detail::adapt_iterator(line, dst));
 }
 
 template <class T0, class K, class T1, class OutputIterator>
-inline auto intersect(use_default, const line<2, T0, K>& line, const simple_polygon<T1>& polygon,
+inline auto intersect(use_default, const line<T0, 2, K>& line, const simple_polygon<T1>& polygon,
                       OutputIterator dst) {
     return intersect(intersect_line_simple_polygon<>(), line, polygon, dst);
 }

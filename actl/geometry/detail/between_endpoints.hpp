@@ -9,14 +9,14 @@
 
 #include <actl/geometry/detail/line_test.hpp>
 
-namespace ac { namespace detail {
+namespace ac::detail {
 
 template <class P, int N, class T0, class T1, class K>
-inline bool between_endpoints(const point<N, T0>& point, const line<N, T1, K>& line) {
+inline bool between_endpoints(const point<T0, N>& point, const line<T1, N, K>& line) {
     if (line.end_kind() == endpoint::free)
         return endpoint_test(line.start_kind(), dot<P>(point - line.start, line.slope));
     if (line.kind == line_kind::open_closed_segment && point == line.start) return false;
     return endpoint_test(line.end_kind(), dot<P>(line.start - point, point - line.end()));
 }
 
-}}  // namespace ac::detail
+}  // namespace ac::detail

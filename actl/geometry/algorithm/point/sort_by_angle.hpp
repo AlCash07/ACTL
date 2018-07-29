@@ -20,7 +20,7 @@ struct sort_by_angle_policy : geometry::policy {};
  * Sorts 2d points by polar angle from 0 to 2 * pi. Points at origin go first.
  */
 template <class P, class T0, class T1>
-void sort_by_angle(sort_by_angle_policy<P>, multi_point<T0>& points, const point2d<T1>& origin) {
+void sort_by_angle(sort_by_angle_policy<P>, multi_point<T0>& points, const point<T1>& origin) {
     auto first = points.begin(), last = points.end();
     static_assert(geometry_traits<multi_point<T0>>::dimension == 2, "incompatible dimension");
     using reference = typename multi_point<T0>::reference;
@@ -33,7 +33,7 @@ void sort_by_angle(sort_by_angle_policy<P>, multi_point<T0>& points, const point
 }
 
 template <class T0, class T1>
-inline auto sort_by_angle(multi_point<T0>& dst, const point2d<T1>& origin) {
+inline auto sort_by_angle(multi_point<T0>& dst, const point<T1>& origin) {
     return sort_by_angle(sort_by_angle_policy<>(), dst, origin);
 }
 

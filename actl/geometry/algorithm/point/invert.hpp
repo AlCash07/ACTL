@@ -18,19 +18,19 @@ template <class P = use_default, class R = use_default>
 struct invert_policy : geometry::policy {};
 
 template <class P, class R, int N, class T0, class T1, class X = geometry::ratio_t<R, T0, T1>>
-inline point<N, X> invert(invert_policy<P, R>, const point<N, T0>& src, const T1& radius) {
+inline point<X, N> invert(invert_policy<P, R>, const point<T0, N>& src, const T1& radius) {
     if (!src) return {};
     return src * sqr(static_cast<X>(radius)) / abs<P>(src);
 }
 
 template <class P, class R, class S, int N, class T0, class T1, class T2>
-inline auto invert(const invert_policy<P, R>& policy, const point<N, T0>& src, const T1& radius,
-                   const point<N, T2>& origin) {
+inline auto invert(const invert_policy<P, R>& policy, const point<T0, N>& src, const T1& radius,
+                   const point<T2, N>& origin) {
     return origin + invert(policy, src - origin, radius);
 }
 
 template <int N, class T, class... Ts>
-inline auto invert(const point<N, T>& point, const Ts&... args) {
+inline auto invert(const point<T, N>& point, const Ts&... args) {
     return invert(invert_policy<>(), point, args...);
 }
 

@@ -20,8 +20,8 @@ struct intersect_line_sphere : AreaPolicy {};
 namespace detail {
 
 template <class P, class AP, int N, class T0, class K, class T1, class It>
-inline auto intersect(const intersect_line_sphere<P, AP>& policy, const line<N, T0, K>& line,
-                      const sphere<N, T1>& sphere, It dst) {
+inline auto intersect(const intersect_line_sphere<P, AP>& policy, const line<T0, N, K>& line,
+                      const sphere<T1, N>& sphere, It dst) {
     using O = geometry::scalar_t<output_type_t<It>>;
     auto slope_abs = abs<P>(line.slope);
     auto delta = slope_abs * sqr(static_cast<geometry::product_t<P, T0, T1>>(sphere.radius)) -
@@ -45,13 +45,13 @@ inline auto intersect(const intersect_line_sphere<P, AP>& policy, const line<N, 
 }  // namespace detail
 
 template <class P, int N, class T0, class K, class T1, class OutputIterator>
-inline OutputIterator intersect(const intersect_line_sphere<P>& policy, const line<N, T0, K>& line,
-                                const sphere<N, T1>& sphere, OutputIterator dst) {
+inline OutputIterator intersect(const intersect_line_sphere<P>& policy, const line<T0, N, K>& line,
+                                const sphere<T1, N>& sphere, OutputIterator dst) {
     return detail::intersect(policy, line, sphere, detail::adapt_iterator(line, dst));
 }
 
 template <int N, class T0, class K, class T1, class OutputIterator>
-inline auto intersect(use_default, const line<N, T0, K>& line, const sphere<N, T1>& sphere,
+inline auto intersect(use_default, const line<T0, N, K>& line, const sphere<T1, N>& sphere,
                       OutputIterator dst) {
     return intersect(intersect_line_sphere<>(), line, sphere, dst);
 }

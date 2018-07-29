@@ -86,24 +86,24 @@ inline int write(Device& out, const any_kind& arg) {
 /**
  * N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
  */
-template <int N, class T, class Kind = line_kind::static_kind<line_kind::free>>
+template <class T, int N = 2, class Kind = line_kind::static_kind<line_kind::free>>
 struct line : public Kind {
-    point<N, T> start;
-    point<N, T> slope;
+    point<T, N> start;
+    point<T, N> slope;
 
     explicit constexpr line() = default;
 
     template <class T1, class T2>
-    explicit constexpr line(const point<N, T1>& a, const point<N, T2>& b, bool slope = false)
-        : start(a), slope(slope ? point<N, T>(a) : point<N, T>(b - a)) {}
+    explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool slope = false)
+        : start(a), slope(slope ? point<T, N>(a) : point<T, N>(b - a)) {}
 
     template <class T1, class T2>
-    explicit constexpr line(const point<N, T1>& a, const point<N, T2>& b, uint8_t kind,
+    explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, uint8_t kind,
                             bool slope = false)
-        : Kind(kind), start(a), slope(slope ? point<N, T>(a) : point<N, T>(b - a)) {}
+        : Kind(kind), start(a), slope(slope ? point<T, N>(a) : point<T, N>(b - a)) {}
 
     template <class T1, class K1>
-    explicit constexpr line(const line<N, T1, K1>& other) { (*this) = other; }
+    explicit constexpr line(const line<T1, N, K1>& other) { (*this) = other; }
 
     constexpr operator bool() const { return slope; }
 
@@ -115,14 +115,14 @@ struct line : public Kind {
     }
 
     template <class T1, class K1>
-    constexpr line& operator = (const line<N, T1, K1>& other) {
+    constexpr line& operator = (const line<T1, N, K1>& other) {
         start = other.start;
         slope = other.slope;
         static_cast<Kind&>(*this) = other.kind();
         return *this;
     }
 
-    constexpr point<N, T> end() const { return start + slope; }
+    constexpr point<T, N> end() const { return start + slope; }
 
     constexpr uint8_t start_kind() const { return endpoint::start(this->kind()); }
     constexpr uint8_t end_kind()   const { return endpoint::end(this->kind()); }
@@ -133,57 +133,57 @@ struct line : public Kind {
     }
 };
 
-template <int N, class T>
-using ray = line<N, T, line_kind::static_kind<line_kind::closed_ray>>;
+template <class T, int N = 2>
+using ray = line<T, N, line_kind::static_kind<line_kind::closed_ray>>;
 
-template <int N, class T>
-using segment = line<N, T, line_kind::static_kind<line_kind::closed_segment>>;
+template <class T, int N = 2>
+using segment = line<T, N, line_kind::static_kind<line_kind::closed_segment>>;
 
-template <int N, class T>
-using any_line = line<N, T, line_kind::any_kind>;
+template <class T, int N = 2>
+using any_line = line<T, N, line_kind::any_kind>;
 
 template <int N, class T, class K>
-struct geometry_traits<line<N, T, K>> : geometry_traits_base<line_tag, point<N, T>> {};
+struct geometry_traits<line<T, N, K>> : geometry_traits_base<line_tag, point<T, N>> {};
 
 template <int N, class T0, class T1>
-inline constexpr auto make_line(const point<N, T0>& a, const point<N, T1>& b, bool slope = false) {
-    return line<N, geometry::scalar_t<T0, T1>>(a, b, slope);
+inline constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool slope = false) {
+    return line<geometry::scalar_t<T0, T1>, N>(a, b, slope);
 }
 
 template <int N, class T0, class T1>
-inline constexpr auto make_ray(const point<N, T0>& a, const point<N, T1>& b, bool slope = false) {
-    return ray<N, geometry::scalar_t<T0, T1>>(a, b, slope);
+inline constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool slope = false) {
+    return ray<geometry::scalar_t<T0, T1>, N>(a, b, slope);
 }
 
 template <int N, class T0, class T1>
-inline constexpr auto make_segment(const point<N, T0>& a, const point<N, T1>& b,
+inline constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b,
                                    bool slope = false) {
-    return segment<N, geometry::scalar_t<T0, T1>>(a, b, slope);
+    return segment<geometry::scalar_t<T0, T1>, N>(a, b, slope);
 }
 
 template <int N, class T0, class T1>
-inline constexpr auto make_any_line(const point<N, T0>& a, const point<N, T1>& b,
+inline constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
                                     uint8_t kind = line_kind::free, bool slope = false) {
-    return any_line<N, geometry::scalar_t<T0, T1>>(a, b, kind, slope);
+    return any_line<geometry::scalar_t<T0, T1>, N>(a, b, kind, slope);
 }
 
-template <int N, class T0, class T1, class Line = any_line<N, geometry::scalar_t<T0, T1>>>
-inline constexpr Line make_any_line(const point<N, T0>& a, uint8_t akind,
-                                    const point<N, T1>& b, uint8_t bkind) {
+template <int N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
+inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
+                                    const point<T1, N>& b, uint8_t bkind) {
     if (akind < bkind) return make_any_line(b, bkind, a, akind);
     return Line(a, b, endpoint::combine(akind, bkind));
 }
 
-template <int N, class T, class K>
-inline void swap(line<N, T, K>& lhs, line<N, T, K>& rhs) { lhs.swap(rhs); }
+template <class T, class K, int N>
+inline void swap(line<T, N, K>& lhs, line<T, N, K>& rhs) { lhs.swap(rhs); }
 
-template <class Device, int N, class T, class K>
-inline bool read(Device& in, line<N, T, K>& arg) {
+template <class Device, class T, class K, int N>
+inline bool read(Device& in, line<T, N, K>& arg) {
     return read(in, arg.start, arg.slope, static_cast<K&>(arg));
 }
 
-template <class Device, int N, class T, class K>
-inline int write(Device& out, const line<N, T, K>& arg) {
+template <class Device, class T, class K, int N>
+inline int write(Device& out, const line<T, N, K>& arg) {
     return write(out, arg.start, arg.slope, static_cast<const K&>(arg));
 }
 

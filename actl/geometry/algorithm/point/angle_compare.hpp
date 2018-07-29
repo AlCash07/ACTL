@@ -14,22 +14,22 @@ namespace ac {
 template <class T, class P = use_default>
 class angle_compare {
 public:
-    explicit constexpr angle_compare(const point2d<T>& origin = point2d<T>())
+    explicit constexpr angle_compare(const point<T>& origin = point<T>())
         : origin_(origin), zero_(!origin) {}
 
     template <class T0, class T1>
-    bool operator()(const point2d<T0>& lhs, const point2d<T1>& rhs) const {
+    bool operator()(const point<T0>& lhs, const point<T1>& rhs) const {
         comparable_area_points<P> policy;
         return (zero_ ? area(policy, lhs, rhs) : area(policy, lhs, rhs, origin_)) > 0;
     }
 
 private:
-    const point2d<T> origin_;
+    const point<T> origin_;
     const bool zero_;
 };
 
 template <class P = use_default, class T>
-inline auto make_angle_compare(const point2d<T>& origin) {
+inline auto make_angle_compare(const point<T>& origin) {
     return angle_compare<T, P>(origin);
 }
 

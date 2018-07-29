@@ -18,7 +18,7 @@ struct within_simple_polygon : WindingPolicy {};
  * O(N).
  */
 template <class CP, class T0, class T1>
-inline int within(const within_simple_polygon<CP>& policy, const point2d<T0>& point,
+inline int within(const within_simple_polygon<CP>& policy, const point<T0>& point,
                   const simple_polygon<T1>& polygon) {
     switch (winding_number(policy, point, polygon)) {
         case std::numeric_limits<int>::max(): return 0;
@@ -28,7 +28,7 @@ inline int within(const within_simple_polygon<CP>& policy, const point2d<T0>& po
 }
 
 template <class T0, class T1>
-inline int within(use_default, const point2d<T0>& point, const simple_polygon<T1>& polygon) {
+inline int within(use_default, const point<T0>& point, const simple_polygon<T1>& polygon) {
     return within(within_simple_polygon<>(), point, polygon);
 }
 

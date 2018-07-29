@@ -11,7 +11,7 @@
 #include <actl/type/square_root.hpp>
 #include <actl/type/use_default.hpp>
 
-namespace ac { namespace geometry {
+namespace ac::geometry {
 
 template <class P, class... Ts>
 using product_t = deduce_type_t<P, scalar_t<Ts...>>;
@@ -25,4 +25,4 @@ using ratio_t = deduce_type_t<R, sqrt_t<use_default, Ts...>>;
 template <class P, class... Ts>
 using comparable_sqrt_t = square_root<product_t<P, Ts...>>;
 
-}}  // namespace ac::geometry
+}  // namespace ac::geometry

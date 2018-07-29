@@ -10,7 +10,7 @@
 #include <actl/type/use_default.hpp>
 #include <actl/type_traits/type_traits.hpp>
 
-namespace ac { namespace geometry {
+namespace ac::geometry {
 
 struct policy {};
 
@@ -21,4 +21,4 @@ struct is_policy
 template <class T, class R = void>
 using disable_if_policy_t = std::enable_if_t<!is_policy<std::decay_t<T>>::value, R>;
 
-}}  // namespace ac::geometry
+}  // namespace ac::geometry

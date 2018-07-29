@@ -13,8 +13,8 @@
 namespace ac {
 
 template <class AP, class T0, class T1, class K>
-inline constexpr int ccw(const ccw_policy<AP>& policy, const point2d<T0>& point,
-                         const line<2, T1, K>& line) {
+inline constexpr int ccw(const ccw_policy<AP>& policy, const point<T0>& point,
+                         const line<T1, 2, K>& line) {
     return ccw(policy, point - line.start, line.slope);
 }
 

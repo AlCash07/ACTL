@@ -13,10 +13,10 @@ namespace ac {
 
 namespace detail {
 
-template <int N, class T>
-class point_xyz : public point_xy<N, T> {
+template <class T, int N>
+class point_xyz : public point_xy<T, N> {
 public:
-    using point_xy<N, T>::point_xy;
+    using point_xy<T, N>::point_xy;
 
     constexpr T& z() { return (*this)[2]; }
 
@@ -29,16 +29,17 @@ public:
  * 3-dimensional point specialization.
  */
 template <class T>
-class point<3, T> : public detail::point_xyz<3, T> {
+class point<T, 3> : public detail::point_xyz<T, 3> {
 public:
-    using detail::point_xyz<3, T>::point_xyz;
+    using detail::point_xyz<T, 3>::point_xyz;
 };
 
 template <class T>
-using point3d = point<3, T>;
+using point3d = point<T, 3>;
 
 template <class P = use_default, class T0, class T1>
-inline constexpr point_type<3, T0, T1> cross(const point3d<T0>& lhs, const point3d<T1>& rhs) {
+inline constexpr point<geometry::scalar_t<T0, T1>, 3> cross(const point3d<T0>& lhs,
+                                                            const point3d<T1>& rhs) {
     point3d<deduce_type_t<P, T0>> lhs1 = lhs;
     return make_point(lhs1[1] * rhs[2] - lhs1[2] * rhs[1],
                       lhs1[2] * rhs[0] - lhs1[0] * rhs[2],

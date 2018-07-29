@@ -44,7 +44,7 @@ inline auto intersect(intersect_circle_circle_point<P>, const circle<T0>& lhs,
     auto sgn1 = sgn(sqr(lradius + rradius), centers_dist);
     if (sgn0 < 0 || sgn1 < 0) return dst;
     auto a = static_cast<O>(sqr(lradius) - sqr(rradius)) / centers_dist;
-    point2d<O> projection = lhs.center + centers_vector * (a + 1) / 2;
+    point<O> projection = lhs.center + centers_vector * (a + 1) / 2;
     if (sgn0 == 0 || sgn1 == 0) {
         *dst++ = projection;
     } else {

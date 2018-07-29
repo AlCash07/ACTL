@@ -25,13 +25,13 @@ namespace detail {
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 271.
  */
 template <class AP, class T0, class K, class T1, class It>
-inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const line<2, T0, K>& line,
+inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const line<T0, 2, K>& line,
                       const convex_polygon<T1>& polygon, It dst) {
     ACTL_ASSERT(line);
     auto right = polygon.cyclic(
-        extreme_vertex(policy, polygon, [&line](const point2d<T1>&) { return line.slope; }));
+        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return line.slope; }));
     auto left = polygon.cyclic(
-        extreme_vertex(policy, polygon, [&line](const point2d<T1>&) { return -line.slope; }));
+        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return -line.slope; }));
     auto vertex_sgn = [&](auto it) { return ccw(policy, *it, line); };
     int right_sgn = vertex_sgn(right), left_sgn = vertex_sgn(left);
     if (left_sgn < 0 || 0 < right_sgn) return dst;
@@ -50,13 +50,13 @@ inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const lin
 }  // namespace detail
 
 template <class AP, class T0, class K, class T1, class OutputIterator>
-inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const line<2, T0, K>& line,
+inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const line<T0, 2, K>& line,
                       const convex_polygon<T1>& polygon, OutputIterator dst) {
     return detail::intersect(policy, line, polygon, detail::adapt_iterator(line, dst));
 }
 
 template <class T0, class K, class T1, class OutputIterator>
-inline auto intersect(use_default, const line<2, T0, K>& line, const convex_polygon<T1>& polygon,
+inline auto intersect(use_default, const line<T0, 2, K>& line, const convex_polygon<T1>& polygon,
                       OutputIterator dst) {
     return intersect(intersect_line_convex_polygon<>(), line, polygon, dst);
 }

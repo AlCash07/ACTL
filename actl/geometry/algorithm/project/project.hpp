@@ -12,7 +12,7 @@
 namespace ac {
 
 template <int N, class T0, class T1>
-inline auto project(const point<N, T0>& src, const T1& dst) {
+inline auto project(const point<T0, N>& src, const T1& dst) {
     return project(use_default(), src, dst);
 }
 

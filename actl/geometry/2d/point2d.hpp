@@ -14,10 +14,10 @@ namespace ac {
 
 namespace detail {
 
-template <int N, class T>
-class point_xy : public point_base<N, T> {
+template <class T, int N>
+class point_xy : public point_base<T, N> {
 public:
-    using point_base<N, T>::point_base;
+    using point_base<T, N>::point_base;
 
     constexpr T& x() { return (*this)[0]; }
     constexpr T& y() { return (*this)[1]; }
@@ -32,16 +32,16 @@ public:
  * 2-dimensional point specialization.
  */
 template <class T>
-class point<2, T> : public detail::point_xy<2, T> {
+class point<T, 2> : public detail::point_xy<T, 2> {
 public:
-    using detail::point_xy<2, T>::point_xy;
+    using detail::point_xy<T, 2>::point_xy;
 };
 
 template <class T>
-using point2d = point<2, T>;
+using point2d = point<T, 2>;
 
 template <class T0, class T1>
-inline constexpr bool y_compare(const point2d<T0>& lhs, const point2d<T1>& rhs) {
+inline constexpr bool y_compare(const point<T0>& lhs, const point<T1>& rhs) {
     return lhs[1] < rhs[1] || (lhs[1] == rhs[1] && lhs[0] < rhs[0]);
 }
 
@@ -49,7 +49,7 @@ inline constexpr bool y_compare(const point2d<T0>& lhs, const point2d<T1>& rhs) 
  * Point @p src rotated by pi/2 counter-clockwise.
  */
 template <class T>
-inline constexpr point2d<T> perpendicular(const point2d<T>& src) {
+inline constexpr point<T> perpendicular(const point<T>& src) {
     return make_point(-src[1], src[0]);
 }
 

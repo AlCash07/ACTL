@@ -16,12 +16,12 @@ template <class WithinPolicy>
 struct crosses_point : WithinPolicy {};
 
 template <class WP, int N, class T0, class T1>
-inline bool crosses(const crosses_point<WP>& policy, const point<N, T0>& lhs, const T1& rhs) {
+inline bool crosses(const crosses_point<WP>& policy, const point<T0, N>& lhs, const T1& rhs) {
     return within(policy, lhs, rhs) == 0;
 }
 
 template <int N, class T0, class T1>
-inline bool crosses(use_default, const point<N, T0>& lhs, const T1& rhs) {
+inline bool crosses(use_default, const point<T0, N>& lhs, const T1& rhs) {
     return within(use_default(), lhs, rhs) == 0;
 }
 
