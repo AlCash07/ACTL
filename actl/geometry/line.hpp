@@ -174,15 +174,15 @@ inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
     return Line(a, b, endpoint::combine(akind, bkind));
 }
 
-template <class T, class K, int N>
+template <int N, class T, class K>
 inline void swap(line<T, N, K>& lhs, line<T, N, K>& rhs) { lhs.swap(rhs); }
 
-template <class Device, class T, class K, int N>
+template <class Device, int N, class T, class K>
 inline bool read(Device& in, line<T, N, K>& arg) {
     return read(in, arg.start, arg.slope, static_cast<K&>(arg));
 }
 
-template <class Device, class T, class K, int N>
+template <class Device, int N, class T, class K>
 inline int write(Device& out, const line<T, N, K>& arg) {
     return write(out, arg.start, arg.slope, static_cast<const K&>(arg));
 }
