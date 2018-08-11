@@ -31,17 +31,17 @@ struct edge_vertices<directed, VId, one_vertex> {
 
 template <class Dir, class VId>
 struct edge_vertices<Dir, VId, one_vertex> {
-    static_assert(std::is_same_v<VId, int>,
-                  "undirected and bidirectional graphs are incompatible with one_vertex edge"
-                  "selector and non-int vertex id");
+    VId x;
 
-    int x;
+    edge_vertices(VId u, VId v) : x(u ^ v) {
+        static_assert(std::is_same_v<VId, int>,
+                      "undirected and bidirectional graphs are incompatible with one_vertex edge "
+                      "selector and non-int vertex id");
+    }
 
-    edge_vertices(int u, int v) : x(u ^ v) {}
+    VId dst(VId src) const { return src ^ x; }
 
-    int dst(int src) const { return src ^ x; }
-
-    int other(int src) const { return dst(src); }
+    VId other(VId src) const { return dst(src); }
 };
 
 template <class Dir, class VId>

@@ -35,7 +35,10 @@ public:
 
 template <class VC>
 class vertex_list<VC, none> {
+protected:
     using vertex_container = generic_container<VC>;
+
+    vertex_container vertices_;
 
 public:
     using vertex_id       = typename vertex_container::id;
@@ -51,7 +54,7 @@ public:
 
     vertex_id nth_vertex(int n) const {
         ACTL_ASSERT(0 <= n && n < vertex_count());
-        return *std::next(vertices_.id_range().begin(), n);
+        return *std::next(vertices_.id_begin(), n);
     }
 
     template <class... Ts>
@@ -72,9 +75,6 @@ public:
 
     none operator[](vertex_id)       { return none{}; }
     none operator[](vertex_id) const { return none{}; }
-
-protected:
-    vertex_container vertices_;
 };
 
 }  // namespace ac

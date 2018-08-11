@@ -24,13 +24,11 @@ public:
     using base_t::base_t;
 
     auto operator[](edge_property) {
-        return detail::append_bundle_property_map(
-            make_generic_container_property_map(this->edges_));
+        return append_bundle_property_map(make_generic_container_property_map(this->edges_));
     }
 
     auto operator[](edge_property) const {
-        return detail::append_bundle_property_map(
-            make_generic_container_property_map(this->edges_));
+        return append_bundle_property_map(make_generic_container_property_map(this->edges_));
     }
 
     T&       operator[](edge_id e)       { return get((*this)[edge_property{}], e); }
@@ -39,16 +37,17 @@ public:
 
 template <class Dir, class VId, class EC, class S, bool DiffId>
 class edge_list_base<Dir, VId, EC, S, DiffId, none> {
-    using traits         = detail::edge_list_traits<Dir, VId, EC, S>;
+    using traits         = edge_list_traits<Dir, VId, EC, S>;
     using edge_vertices  = typename traits::vertices;
     using edge_container = typename traits::container;
+    using edge_id_impl   = edge_id<VId, edge_container, DiffId>;
 
 public:
     static_assert(std::is_same_v<S, two_vertices> || !is_associative_v<EC>,
                   "associative edge list requires two vertices");
 
-    using edge_id       = typename detail::edge_id<VId, edge_container, DiffId>::type;
-    using edge_iterator = typename detail::edge_id<VId, edge_container, DiffId>::iterator;
+    using edge_id       = typename edge_id_impl::type;
+    using edge_iterator = typename edge_id_impl::iterator;
 
     using directed_category = Dir;
 

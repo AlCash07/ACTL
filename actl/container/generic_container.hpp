@@ -28,16 +28,16 @@ class iterator_id;
 template <class C>
 class generic_container_base {
 public:
-    using size_type              = int;
-    using difference_type        = int;
-    using allocator_type         = typename C::allocator_type;
-    using value_type             = typename C::value_type;
-    using reference              = typename C::reference;
-    using const_reference        = typename C::const_reference;
-    using pointer                = typename C::pointer;
-    using const_pointer          = typename C::const_pointer;
-    using iterator               = typename C::iterator;
-    using const_iterator         = typename C::const_iterator;
+    using size_type       = int;
+    using difference_type = int;
+    using allocator_type  = typename C::allocator_type;
+    using value_type      = typename C::value_type;
+    using reference       = typename C::reference;
+    using const_reference = typename C::const_reference;
+    using pointer         = typename C::pointer;
+    using const_pointer   = typename C::const_pointer;
+    using iterator        = typename C::iterator;
+    using const_iterator  = typename C::const_iterator;
 
     bool empty() const { return data_.empty(); }
 
@@ -75,9 +75,10 @@ public:
         for (int i = 0; i < n; ++i) emplace();
     }
 
-    range<id_iterator> id_range() const {
-        return {id_iterator(data_.begin()), id_iterator(data_.end())};
-    }
+    id_iterator id_begin() const { return data_.begin(); }
+    id_iterator id_end()   const { return data_.end(); }
+
+    range<id_iterator> id_range() const { return {id_begin(), id_end()}; }
 
     // Returns an invalid Id that is fixed for the given container.
     id null_id() const { return data_.end(); }
@@ -129,7 +130,10 @@ public:
 
     explicit generic_container(int n) : generic_container_base<C>(n) {}
 
-    range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(this->size())}; }
+    id_iterator id_begin() const { return id_iterator(0); }
+    id_iterator id_end()   const { return id_iterator(this->size()); }
+
+    range<id_iterator> id_range() const { return {id_begin(), id_end()}; }
 
     id null_id() const { return -1; }
 
@@ -167,7 +171,10 @@ public:
 
     explicit generic_container(int n = 0) : n_{n} {}
 
-    range<id_iterator> id_range() const { return {id_iterator(0), id_iterator(size())}; }
+    id_iterator id_begin() const { return id_iterator(0); }
+    id_iterator id_end()   const { return id_iterator(size()); }
+
+    range<id_iterator> id_range() const { return {id_begin(), id_end()}; }
 
     id null_id() const { return -1; }
 
@@ -175,7 +182,10 @@ public:
 
     bool empty() const { return size() == 0; }
 
-    std::pair<id, bool> emplace() { return {n_++, true}; }
+    template <class... Ts>
+    std::pair<id, bool> emplace(Ts&&...) {
+        return {n_++, true};
+    }
 
     void erase(id i) {
         ACTL_ASSERT(0 <= i && i < n_);
@@ -214,6 +224,8 @@ inline constexpr int get_id_key(int id) { return id; }
 
 template <class C>
 class iterator_id {
+    friend class generic_container<C>;
+
     using Id = iterator_id;
     using It = typename C::const_iterator;
 
@@ -232,22 +244,21 @@ public:
         friend struct ac::iterator_core_access;
     };
 
+    constexpr iterator_id() = default;
+
     iterator_id& operator++() { ++it_; return *this; }
     iterator_id& operator--() { --it_; return *this; }
+
+    bool operator == (iterator_id rhs) const { return it_ == rhs.it_; }
+    bool operator != (iterator_id rhs) const { return it_ != rhs.it_; }
+    bool operator <  (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
 
     friend constexpr std::uintptr_t get_id_key(iterator_id id) {
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.it_));
     }
-
-    bool operator == (iterator_id rhs) const { return it_ == rhs.it_; }
-    bool operator != (iterator_id rhs) const { return it_ != rhs.it_; }
-
-    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
-
-    friend class generic_container<C>;
 };
 
-// This wrapper can be used to avoid Id types collision.
+// This wrapper can be used to avoid Id types collision or wrap int in a class to inherit from it.
 template <class Id>
 class wrap_id {
     Id id_;
