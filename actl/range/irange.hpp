@@ -21,7 +21,7 @@ namespace ac {
 template <class Int>
 inline auto irange(Int first, Int last) {
     auto begin = integer_iterator<Int>(first);
-    if (first > last) return make_range(begin, begin);
+    if (first >= last) return make_range(begin, begin);
     return make_range(begin, integer_iterator<Int>(last));
 }
 
@@ -37,7 +37,7 @@ inline auto irange(Int last) { return irange(Int{}, last); }
 template <class Int>
 inline auto drange(Int first, Int last) {
     auto begin = integer_iterator<Int, false>(first);
-    if (first < last) return make_range(begin, begin);
+    if (first <= last) return make_range(begin, begin);
     return make_range(begin, integer_iterator<Int, false>(last - 1));
 }
 
@@ -54,7 +54,7 @@ template <class Int, class StepType>
 inline auto irange(Int first, Int last, StepType step) {
     ACTL_ASSERT(step != 0);
     auto begin = integer_iterator_with_step<Int>(first, step);
-    if (step > 0 ? (last < first) : (last > first)) return make_range(begin, begin);
+    if (step > 0 ? (last <= first) : (last >= first)) return make_range(begin, begin);
     Int step_count = (last - first - (step > 0)) / step + 1;
     return make_range(begin, integer_iterator_with_step<Int>(first + step * step_count, step));
 }
