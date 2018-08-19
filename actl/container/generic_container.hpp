@@ -13,9 +13,8 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/range/range.hpp>
+#include <actl/range/irange.hpp>
 #include <actl/type_traits/container_traits.hpp>
 #include <algorithm>
 #include <cstdint>
@@ -75,10 +74,10 @@ public:
         for (int i = 0; i < n; ++i) emplace();
     }
 
-    id_iterator id_begin() const { return data_.begin(); }
-    id_iterator id_end()   const { return data_.end(); }
+    id begin_id() const { return data_.begin(); }
+    id end_id()   const { return data_.end(); }
 
-    range<id_iterator> id_range() const { return {id_begin(), id_end()}; }
+    range<id_iterator> id_range() const { return {id_iterator(begin_id()), id_iterator(end_id())}; }
 
     // Returns an invalid Id that is fixed for the given container.
     id null_id() const { return data_.end(); }
@@ -130,10 +129,10 @@ public:
 
     explicit generic_container(int n) : generic_container_base<C>(n) {}
 
-    id_iterator id_begin() const { return id_iterator(0); }
-    id_iterator id_end()   const { return id_iterator(this->size()); }
+    id begin_id() const { return 0; }
+    id end_id()   const { return this->size(); }
 
-    range<id_iterator> id_range() const { return {id_begin(), id_end()}; }
+    range<id_iterator> id_range() const { return irange(begin_id(), end_id()); }
 
     id null_id() const { return -1; }
 
@@ -171,10 +170,10 @@ public:
 
     explicit generic_container(int n = 0) : n_{n} {}
 
-    id_iterator id_begin() const { return id_iterator(0); }
-    id_iterator id_end()   const { return id_iterator(size()); }
+    id begin_id() const { return 0; }
+    id end_id()   const { return size(); }
 
-    range<id_iterator> id_range() const { return {id_begin(), id_end()}; }
+    range<id_iterator> id_range() const { return irange(begin_id(), end_id()); }
 
     id null_id() const { return -1; }
 
@@ -258,34 +257,6 @@ public:
     }
 };
 
-// This wrapper can be used to avoid Id types collision or wrap int in a class to inherit from it.
-template <class Id>
-class wrap_id {
-    Id id_;
-
-public:
-    explicit constexpr wrap_id(Id id) : id_(id) {}
-
-    constexpr operator Id&() { return id_; }
-    constexpr operator Id() const { return id_; }
-};
-
-template <class Id>
-struct id_key<wrap_id<Id>> : id_key<Id> {};
-
-template <class It, class Id = wrap_id<typename std::iterator_traits<It>::value_type>>
-class wrap_id_iterator
-    : public iterator_adaptor<wrap_id_iterator<It, Id>, It, use_default, Id, Id, Id*> {
-public:
-    explicit wrap_id_iterator(It it)
-        : iterator_adaptor<wrap_id_iterator<It, Id>, It, use_default, Id, Id, Id*>(it) {}
-
-private:
-    Id dereference() const { return *this->base(); }
-
-    friend struct ac::iterator_core_access;
-};
-
 }  // namespace ac
 
 namespace std {
@@ -296,8 +267,5 @@ struct hash<ac::iterator_id<C>> {
         return std::hash<std::uintptr_t>{}(get_id_key(id));
     }
 };
-
-template <class Id>
-struct hash<ac::wrap_id<Id>> : hash<Id> {};
 
 }  // namespace std
