@@ -14,7 +14,7 @@ namespace ac::detail {
 template <class V, class E, bool CompareSrc = false>
 class edge {
 public:
-    explicit edge(E e) : e_(e) {}
+    explicit edge() = default;
 
     explicit edge(V u, V v, E e) : u_(u), v_(v), e_(e) {}
 

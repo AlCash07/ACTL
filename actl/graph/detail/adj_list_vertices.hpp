@@ -18,20 +18,20 @@ class adj_list_vertices : public adj_list_vertices<Dir, OEC, EC, VC, none> {
     using base_t = adj_list_vertices<Dir, OEC, EC, VC, none>;
 
 public:
-    using vertex_id = typename base_t::vertex_id;
+    using vertex = typename base_t::vertex;
 
     using base_t::base_t;
 
     auto operator[](vertex_property) {
-        return append_bundle_property_map(make_generic_container_property_map(this->vertices_));
+        return get_second(make_generic_container_property_map(this->vertices_));
     }
 
     auto operator[](vertex_property) const {
-        return append_bundle_property_map(make_generic_container_property_map(this->vertices_));
+        return get_second(make_generic_container_property_map(this->vertices_));
     }
 
-    T&       operator[](vertex_id v)       { return get((*this)[vertex_property{}], v); }
-    const T& operator[](vertex_id v) const { return get((*this)[vertex_property{}], v); }
+    T&       operator[](vertex v)       { return get((*this)[vertex_property{}], v); }
+    const T& operator[](vertex v) const { return get((*this)[vertex_property{}], v); }
 };
 
 template <class Dir, class OEC, class EC, class VC>

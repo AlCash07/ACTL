@@ -13,14 +13,14 @@
 
 namespace ac::detail {
 
-template <class Dir, class OEC>
+template <class Dir, class OEC, class IEC>
 struct vertex_edges {
     OEC out_edges;
 };
 
-template <class OEC>
-struct vertex_edges<bidirectional, OEC> : vertex_edges<directed, OEC> {
-    OEC in_edges;
+template <class OEC, class IEC>
+struct vertex_edges<bidirectional, OEC, IEC> : vertex_edges<directed, OEC, IEC> {
+    IEC in_edges;
 };
 
 template <class Dir, class OEC, class EC, class VC>
@@ -33,11 +33,11 @@ struct adj_list_traits {
     using vertices = vertex_list<
         typename container_traits<VC>::template rebind<adj_list_vertex_data<Dir, OEC, EC, VC>>>;
 
-    using vertex_id = typename vertices::vertex_id;
+    using vertex = typename vertices::vertex;
 
-    using edges = edge_list_base<Dir, vertex_id,
+    using edges = edge_list_impl<Dir, vertex,
                                  typename container_traits<EC>::template rebind<value_type_t<OEC>>,
-                                 edge_selector, std::is_same_v<edge_selector, two_vertices>>;
+                                 edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
     using out_edge_selector =
@@ -45,23 +45,34 @@ struct adj_list_traits {
                                                      std::is_same_v<edge_selector, two_vertices>),
                            edge_property, edge_selector>;
 
-    using out_edge_vertex = std::conditional_t<std::is_same_v<out_edge_selector, edge_property>,
-                                               wrap_id<vertex_id>, none>;
+    using out_edge_vertex =
+        std::conditional_t<std::is_same_v<out_edge_selector, edge_property>, vertex, none>;
 
     using edge_bundle = value_type_t<OEC>;
 
     using out_edge_bundle = std::conditional_t<
         !std::is_same_v<edge_selector, none>, typename edges::edge_id,
-        // Edge bundle is duplicated if graph is undirected or bidirectional, so it's immutable.
-        std::conditional_t<std::is_same_v<Dir, directed>, edge_bundle, const edge_bundle>>;
+        // Edge bundle is duplicated if graph is undirected, so it's immutable.
+        std::conditional_t<std::is_same_v<Dir, undirected>, const edge_bundle, edge_bundle>>;
 
-    using out_edge_data = bundle_decorator<out_edge_vertex, out_edge_bundle>;
+    using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
     using out_edge_container =
         generic_container<typename container_traits<OEC>::template rebind<out_edge_data>>;
 
-    using vertex_edges = vertex_edges<Dir, out_edge_container>;
-    using vertex_data  = bundle_decorator<vertex_edges, value_type_t<VC>, false>;
+    // In bidirectional graph with none edge_selector in_edge points to out_edge.
+    using in_edge_bundle =
+        std::conditional_t<std::is_same_v<edge_selector, none> &&
+                               std::is_same_v<Dir, bidirectional>,
+                           typename out_edge_container::id, typename edges::edge_id>;
+
+    using in_edge_data = mimic_pair<out_edge_vertex, in_edge_bundle, 1>;
+
+    using in_edge_container =
+        generic_container<typename container_traits<OEC>::template rebind<in_edge_data>>;
+
+    using vertex_edges = vertex_edges<Dir, out_edge_container, in_edge_container>;
+    using vertex_data  = mimic_pair<vertex_edges, value_type_t<VC>, 2>;
 };
 
 template <class Dir, class OEC, class EC, class VC>
@@ -74,46 +85,17 @@ public:
               std::forward<Ts>(args)...) {}
 };
 
-template <class S, class VId, class EId>
-struct adj_list_edge_id {};
-
-template <class VId, class EId>
-struct adj_list_edge_id<two_vertices, VId, EId> {
-    using type = EId;
+template <class V, class OE, class S>
+struct full_edge {
+    V  u;
+    OE e_out;
+    OE e_in;
 };
 
-template <class VId, class EId>
-struct adj_list_edge_id<one_vertex, VId, EId> {
-    struct type {
-        VId u;
-        EId e;
-
-        constexpr operator EId() const { return e; }
-    };
-};
-
-template <class VId, class EId>
-struct adj_list_edge_id<edge_property, VId, EId> {
-    struct type {
-        VId u;
-        VId v;
-        EId e;
-
-        constexpr operator EId() const { return e; }
-    };
-};
-
-template <class VId, class OEId, class S>
-struct full_edge_id {
-    VId  u;
-    OEId e_out;
-    OEId e_in;
-};
-
-template <class VId, class OEId>
-struct full_edge_id<VId, OEId, directed> {
-    VId  u;
-    OEId e_out;
+template <class V, class OE>
+struct full_edge<V, OE, directed> {
+    V  u;
+    OE e_out;
 };
 
 }  // namespace ac::detail

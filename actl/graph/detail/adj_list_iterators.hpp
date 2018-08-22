@@ -7,69 +7,95 @@
 
 #pragma once
 
+#include <actl/graph/selectors.hpp>
 #include <actl/iterator/iterator_facade.hpp>
 #include <actl/type/none.hpp>
 
 namespace ac::detail {
 
-template <class AdjList, class EId = typename AdjList::edge_id>
-class adj_list_out_edge_it : public iterator_facade<adj_list_out_edge_it<AdjList, EId>,
-                                                    std::input_iterator_tag, EId, EId> {
+template <class It>
+class reverse_edge_it : public iterator_adaptor<reverse_edge_it<It>, It> {
+public:
+    explicit reverse_edge_it(It it) : iterator_adaptor<reverse_edge_it<It>, It>(it) {}
+
+private:
+    friend struct ac::iterator_core_access;
+
+    auto dereference() const {
+        auto edge = *this->base();
+        return typename It::value_type(edge.target(), edge.source(), edge);
+    }
+};
+
+template <class AdjList, class It, class E = typename AdjList::edge>
+class adj_list_out_edge_it
+    : public iterator_facade<adj_list_out_edge_it<AdjList, It, E>, std::input_iterator_tag, E, E> {
     friend AdjList;
     friend struct ac::iterator_core_access;
 
-    adj_list_out_edge_it(typename AdjList::vertex_id u, typename AdjList::out_it it)
-        : u_(u), it_(it) {}
+    adj_list_out_edge_it(const AdjList* al, typename AdjList::vertex u, It it)
+        : al_(al), u_(u), it_(it) {}
 
-    EId dereference() const { return AdjList::get_edge_id(u_, *it_); }
+    E dereference() const { return al_->get_edge(u_, *it_); }
 
     void increment() { ++it_; }
 
     bool equals(const adj_list_out_edge_it& other) const { return it_ == other.it_; }
 
-    typename AdjList::vertex_id u_;
-    typename AdjList::out_it    it_;
+    const AdjList*           al_;
+    typename AdjList::vertex u_;
+    It                       it_;
 };
 
-template <class AdjList, class EId = typename AdjList::edge_id>
+template <class AdjList, class E = typename AdjList::edge>
 class adj_list_edge_it
-    : public iterator_facade<adj_list_edge_it<AdjList, EId>, std::input_iterator_tag, EId, EId> {
+    : public iterator_facade<adj_list_edge_it<AdjList, E>, std::input_iterator_tag, E, E> {
     friend AdjList;
     friend struct ac::iterator_core_access;
 
     adj_list_edge_it(const AdjList* al, bool begin) : al_(al) {
         if (begin) {
-            u_  = al_->vertices_.id_begin();
-            it_ = al_->out_begin(*u_);
+            u_  = al_->vertices_.begin_id();
+            it_ = al_->out_begin(u_);
             skip_empty();
         } else {
-            u_ = al_->vertices_.id_end();
+            u_ = al_->vertices_.end_id();
         }
     }
 
-    EId dereference() const { return AdjList::get_edge_id(*u_, *it_); }
+    E dereference() const { return al_->get_edge(u_, *it_); }
 
     void skip_empty() {
-        while (u_ != al_->vertices_.id_end() && it_ == al_->out_end(*u_)) {
+        while (u_ != al_->vertices_.end_id() && it_ == al_->out_end(u_)) {
             ++u_;
-            it_ = al_->out_begin(*u_);
+            it_ = al_->out_begin(u_);
         }
     }
 
     void increment() {
-        if (u_ != al_->vertices_.id_end()) {
+        if (u_ != al_->vertices_.end_id()) {
             ++it_;
             skip_empty();
         }
     }
 
     bool equals(const adj_list_edge_it& other) const {
-        return u_ == other.u_ && (u_ == al_->vertices_.id_end() || it_ == other.it_);
+        return u_ == other.u_ && (u_ == al_->vertices_.end_id() || it_ == other.it_);
     }
 
-    const AdjList*                    al_;
-    typename AdjList::vertex_iterator u_;
-    typename AdjList::out_it          it_;
+    const AdjList*           al_;
+    typename AdjList::vertex u_;
+    typename AdjList::out_it it_;
+};
+
+template <class AL, class S = typename AL::edge_selector>
+struct edge_it {
+    using type = adj_list_edge_it<AL>;
+};
+
+template <class AL>
+struct edge_it<AL, two_vertices> {
+    using type = typename AL::traits::edges::edge_iterator;
 };
 
 }  // namespace ac::detail
