@@ -22,27 +22,27 @@ class vertex_edge_list
     using ebase_t = edge_list<Directed, container_id_t<VertexContainer>, EdgeContainer>;
 
 public:
-    using vertex_id = typename vbase_t::vertex_id;
-    using edge_id   = typename ebase_t::edge_id;
+    using vertex = typename vbase_t::vertex;
+    using edge   = typename ebase_t::edge;
 
     using vbase_t::vbase_t;
 
     template <class... Ts>
-    std::pair<edge_id, bool> try_add_edge(vertex_id u, vertex_id v, Ts&&... args) {
+    std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_random_access_v<VertexContainer>) {
-            vertex_id n = std::max(u, v);
+            vertex n = std::max(u, v);
             if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
         }
         return ebase_t::try_add_edge(u, v, std::forward<Ts>(args)...);
     }
 
     template <class... Ts>
-    edge_id add_edge(vertex_id u, vertex_id v, Ts&&... args) {
+    edge add_edge(vertex u, vertex v, Ts&&... args) {
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
     // TODO: implement using one pass over edges that will remove edges and decrease int IDs.
-    void remove_vertex(vertex_id v);
+    void remove_vertex(vertex u);
 
     void clear() {
         vbase_t::clear();

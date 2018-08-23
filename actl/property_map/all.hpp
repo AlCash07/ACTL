@@ -16,4 +16,4 @@
 #include <actl/property_map/member_property_map.hpp>
 #include <actl/property_map/sequence_property_map.hpp>
 #include <actl/property_map/shift_property_map.hpp>
-#include <actl/property_map/transition_property_map.hpp>
+#include <actl/property_map/void_property_map.hpp>

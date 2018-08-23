@@ -31,12 +31,6 @@ public:
         return pm.data_[key];
     }
 
-    template <bool W = writable>
-    friend std::enable_if_t<W> put(const generic_container_property_map& pm, key_type key,
-                                   value_type value) {
-        pm.data_[key] = value;
-    }
-
 private:
     GenericContainer& data_;
 };

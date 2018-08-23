@@ -13,6 +13,10 @@
 
 namespace ac {
 
+// TODO: use std::remove_cvref_t when C++20 is out.
+template <class T>
+using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
 template <int N>
 using int_constant = std::integral_constant<int, N>;
 

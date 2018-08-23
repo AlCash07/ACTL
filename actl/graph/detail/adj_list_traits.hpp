@@ -13,14 +13,14 @@
 
 namespace ac::detail {
 
-template <class Dir, class OEC>
+template <class Dir, class OEC, class IEC>
 struct vertex_edges {
     OEC out_edges;
 };
 
-template <class OEC>
-struct vertex_edges<bidirectional, OEC> : vertex_edges<directed, OEC> {
-    OEC in_edges;
+template <class OEC, class IEC>
+struct vertex_edges<bidirectional, OEC, IEC> : vertex_edges<directed, OEC, IEC> {
+    IEC in_edges;
 };
 
 template <class Dir, class OEC, class EC, class VC>
@@ -30,31 +30,43 @@ template <class Dir, class OEC, class EC, class VC>
 struct adj_list_traits {
     using edge_selector = value_type_t<EC>;
 
-    using vertices_base = vertex_list<
+    using vertex_list = vertex_list<
         typename container_traits<VC>::template rebind<adj_list_vertex_data<Dir, OEC, EC, VC>>>;
 
-    using vertex_id = typename vertices_base::vertex_id;
+    using vertex = typename vertex_list::vertex;
 
-    using edges = detail::edge_list_base<
-        std::conditional_t<std::is_same_v<Dir, bidirectional>, undirected, Dir>, vertex_id,
-        typename container_traits<EC>::template rebind<value_type_t<OEC>>, edge_selector, false>;
+    using edge_list =
+        edge_list_impl<Dir, vertex,
+                       typename container_traits<EC>::template rebind<value_type_t<OEC>>,
+                       edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
-    using out_edge_selector =
-        std::conditional_t<is_associative_v<OEC> && (std::is_same_v<edge_selector, one_vertex> ||
-                                                     std::is_same_v<edge_selector, two_vertices>),
-                           edge_property, edge_selector>;
+    using out_edge_vertex =
+        std::conditional_t<is_associative_v<OEC> || std::is_same_v<edge_selector, edge_property> ||
+                               std::is_same_v<edge_selector, none>,
+                           vertex, none>;
 
-    using out_edge_data =
-        bundle_decorator<std::conditional_t<std::is_same_v<out_edge_selector, edge_property>, none,
-                                            wrap_id<vertex_id>>,
-                         typename edges::edge_id>;
+    using out_edge_bundle = std::conditional_t<!std::is_same_v<edge_selector, none>,
+                                               typename edge_list::edge_id, value_type_t<OEC>>;
+
+    using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
     using out_edge_container =
         generic_container<typename container_traits<OEC>::template rebind<out_edge_data>>;
 
-    using vertex_edges = vertex_edges<Dir, out_edge_container>;
-    using vertex_data  = bundle_decorator<vertex_edges, value_type_t<VC>, false>;
+    // In bidirectional graph with none edge_selector in_edge points to out_edge.
+    using in_edge_bundle =
+        std::conditional_t<std::is_same_v<edge_selector, none> &&
+                               std::is_same_v<Dir, bidirectional>,
+                           typename out_edge_container::id, typename edge_list::edge_id>;
+
+    using in_edge_data = mimic_pair<out_edge_vertex, in_edge_bundle, 1>;
+
+    using in_edge_container =
+        generic_container<typename container_traits<OEC>::template rebind<in_edge_data>>;
+
+    using vertex_edges = vertex_edges<Dir, out_edge_container, in_edge_container>;
+    using vertex_data  = mimic_pair<vertex_edges, value_type_t<VC>, 2>;
 };
 
 template <class Dir, class OEC, class EC, class VC>
@@ -67,4 +79,25 @@ public:
               std::forward<Ts>(args)...) {}
 };
 
+template <class V, class OE, class S>
+struct full_edge {
+    V  u;
+    OE e_out;
+    OE e_in;
+};
+
+template <class V, class OE>
+struct full_edge<V, OE, directed> {
+    V  u;
+    OE e_out;
+};
+
 }  // namespace ac::detail
+
+namespace std {
+
+template <class Dir, class OEC, class EC, class VC>
+struct hash<ac::detail::adj_list_vertex_data<Dir, OEC, EC, VC>>
+    : hash<typename ac::detail::adj_list_traits<Dir, OEC, EC, VC>::vertex_data> {};
+
+}  // namespace std
