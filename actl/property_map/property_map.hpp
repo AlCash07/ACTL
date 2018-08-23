@@ -119,7 +119,7 @@ get(It it, int key) {
 // Default put implementation.
 template <class PM>
 inline std::enable_if_t<property_traits<PM>::writable> put(
-    PM pm, typename property_traits<PM>::key_type key,
+    const PM& pm, typename property_traits<PM>::key_type key,
     typename property_traits<PM>::value_type value) {
     get(pm, key) = value;
 }

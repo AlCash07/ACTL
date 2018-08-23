@@ -80,7 +80,7 @@ public:
     range<id_iterator> id_range() const { return {id_iterator(begin_id()), id_iterator(end_id())}; }
 
     // Returns an invalid Id that is fixed for the given container.
-    id null_id() const { return data_.end(); }
+    id null_id() const { return end_id(); }
 
     typename C::reference operator[](id id) {
         // const_cast is required because id contains a const_iterator.
@@ -235,7 +235,8 @@ class iterator_id {
 public:
     class iterator : public iterator_adaptor<iterator, It, use_default, Id, Id, Id*> {
     public:
-        explicit iterator(It it) : iterator_adaptor<iterator, It, use_default, Id, Id, Id*>(it) {}
+        explicit iterator(Id id = {})
+            : iterator_adaptor<iterator, It, use_default, Id, Id, Id*>(id.it_) {}
 
     private:
         Id dereference() const { return this->base(); }
@@ -248,9 +249,9 @@ public:
     iterator_id& operator++() { ++it_; return *this; }
     iterator_id& operator--() { --it_; return *this; }
 
+    bool operator <  (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
     bool operator == (iterator_id rhs) const { return it_ == rhs.it_; }
     bool operator != (iterator_id rhs) const { return it_ != rhs.it_; }
-    bool operator <  (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
 
     friend constexpr std::uintptr_t get_id_key(iterator_id id) {
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.it_));

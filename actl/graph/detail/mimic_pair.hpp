@@ -15,29 +15,23 @@ namespace ac::detail {
 
 // Special compressed_pair that mimics either T1 or T2 (defined by index I) for the operations
 // required by set and hash set.
-// Inheritance is private so that comparison operators use type conversion operator, not the
-// operators for compressed_pair.
 template <class T1, class T2, int I>
-class mimic_pair : private compressed_pair<T1, T2> {
+class mimic_pair : public compressed_pair<T1, T2> {
     using base_t = compressed_pair<T1, T2>;
 
 public:
-    static_assert(I == 1 || I == 2);
-    using type = std::conditional<I == 1, T1, T2>;
-
-    using second_type = typename base_t::second_type;
-
     using base_t::base_t;
-    using base_t::first;
-    using base_t::second;
 
-    constexpr operator const type&() const {
+    constexpr auto key() const {
         if constexpr (I == 1) {
-            return first();
+            return this->first();
         } else {
-            return second();
+            return this->second();
         }
     }
+
+    bool operator <  (const mimic_pair& rhs) const { return key() < rhs.key(); }
+    bool operator == (const mimic_pair& rhs) const { return key() == rhs.key(); }
 };
 
 template <class Key>
@@ -76,7 +70,11 @@ inline auto get_second(PM&& map) {
 namespace std {
 
 template <class T1, class T2, int I>
-struct hash<ac::detail::mimic_pair<T1, T2, I>>
-    : hash<typename ac::detail::mimic_pair<T1, T2, I>::type> {};
+struct hash<ac::detail::mimic_pair<T1, T2, I>> {
+    auto operator()(const ac::detail::mimic_pair<T1, T2, I>& arg) const {
+        const auto& key = arg.key();
+        return hash<ac::remove_cvref_t<decltype(key)>>{}(key);
+    }
+};
 
 }  // namespace std

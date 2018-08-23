@@ -65,22 +65,33 @@ class adj_list_edge_it
 
     E dereference() const { return al_->get_edge(u_, *it_); }
 
+    bool is_end() const { return u_ == al_->vertices_.end_id(); }
+
     void skip_empty() {
-        while (u_ != al_->vertices_.end_id() && it_ == al_->out_end(u_)) {
+        while (!is_end() && it_ == al_->out_end(u_)) {
             ++u_;
             it_ = al_->out_begin(u_);
         }
     }
 
-    void increment() {
-        if (u_ != al_->vertices_.end_id()) {
-            ++it_;
-            skip_empty();
+    bool is_reverse_edge() const {
+        if constexpr (AdjList::is_undirected) {
+            return dereference().target() < u_;
+        } else {
+            return false;
         }
     }
 
+    void increment() {
+        if (is_end()) return;
+        do {
+            ++it_;
+            skip_empty();
+        } while (!is_end() && is_reverse_edge());
+    }
+
     bool equals(const adj_list_edge_it& other) const {
-        return u_ == other.u_ && (u_ == al_->vertices_.end_id() || it_ == other.it_);
+        return u_ == other.u_ && (is_end() || it_ == other.it_);
     }
 
     const AdjList*           al_;

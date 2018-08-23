@@ -40,20 +40,13 @@ struct adj_list_traits {
                                  edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
-    using out_edge_selector =
-        std::conditional_t<is_associative_v<OEC> && (std::is_same_v<edge_selector, one_vertex> ||
-                                                     std::is_same_v<edge_selector, two_vertices>),
-                           edge_property, edge_selector>;
-
     using out_edge_vertex =
-        std::conditional_t<std::is_same_v<out_edge_selector, edge_property>, vertex, none>;
+        std::conditional_t<is_associative_v<OEC> || std::is_same_v<edge_selector, edge_property> ||
+                               std::is_same_v<edge_selector, none>,
+                           vertex, none>;
 
-    using edge_bundle = value_type_t<OEC>;
-
-    using out_edge_bundle = std::conditional_t<
-        !std::is_same_v<edge_selector, none>, typename edges::edge_id,
-        // Edge bundle is duplicated if graph is undirected, so it's immutable.
-        std::conditional_t<std::is_same_v<Dir, undirected>, const edge_bundle, edge_bundle>>;
+    using out_edge_bundle = std::conditional_t<!std::is_same_v<edge_selector, none>,
+                                               typename edges::edge_id, value_type_t<OEC>>;
 
     using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
@@ -106,4 +99,4 @@ template <class Dir, class OEC, class EC, class VC>
 struct hash<ac::detail::adj_list_vertex_data<Dir, OEC, EC, VC>>
     : hash<typename ac::detail::adj_list_traits<Dir, OEC, EC, VC>::vertex_data> {};
 
-}
+}  // namespace std

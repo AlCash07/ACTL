@@ -56,10 +56,10 @@ protected:
 
     edge get_edge(vertex u, const typename traits::out_edge_data& oed) const {
         auto e = oed.second();
-        if constexpr (std::is_same_v<typename traits::out_edge_selector, edge_property>) {
-            return edge(u, oed.first(), e);
-        } else {
+        if constexpr (std::is_same_v<typename traits::out_edge_data::first_type, none>) {
             return edges_.get_edge(u, e);
+        } else {
+            return edge(u, oed.first(), e);
         }
     }
 
@@ -94,21 +94,34 @@ public:
 template <class Dir, class OEC, class EC, class VC, class T>
 class adj_list_edges<Dir, OEC, EC, VC, none, T>
     : public adj_list_edges<Dir, OEC, EC, VC, none, none> {
-    using base_t = adj_list_edges<Dir, OEC, EC, VC, none, none>;
+    using base_t    = adj_list_edges<Dir, OEC, EC, VC, none, none>;
+    using reference = add_const_if_t<base_t::is_undirected, T&>;
 
 public:
     using edge = typename base_t::edge;
 
+    template <bool Const, class Ref = add_const_if_t<Const, reference>>
+    class edge_property_map : public property_map<edge, T, Ref, false, false, !Const> {
+        using vertices_ref = add_const_if_t<Const, typename base_t::vertex_container&>;
+
+        vertices_ref vertices_;
+
+    public:
+        edge_property_map(vertices_ref& vertices) : vertices_{vertices} {}
+
+        friend Ref get(const edge_property_map& pm, edge key) {
+            return pm.vertices_[key.source()].first().out_edges[key].second();
+        }
+    };
+
     using base_t::base_t;
     using base_t::operator[];
 
-    // fix
-    //    auto operator[](edge_property) { return this->edges_[edge_property{}]; }
-    //
-    //    auto operator[](edge_property) const { return this->edges_[edge_property{}]; }
+    edge_property_map<false> operator[](edge_property) { return {this->vertices_}; }
+    edge_property_map<true>  operator[](edge_property) const { return {this->vertices_}; }
 
-    T&       operator[](edge e)       { return get((*this)[edge_property{}], e); }
-    const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
+    reference operator[](edge e)       { return get((*this)[edge_property{}], e); }
+    const T&  operator[](edge e) const { return get((*this)[edge_property{}], e); }
 };
 
 template <class Dir, class OEC, class EC, class VC>
@@ -173,10 +186,11 @@ public:
     using edge_selector     = value_type_t<EC>;
     using edge_iterator     = typename detail::edge_it<adjacency_list>::type;
     using out_edge_iterator = detail::adj_list_out_edge_it<adjacency_list, typename base_t::out_it>;
-    using in_edge_iterator  = std::conditional_t<
-        std::is_same_v<edge_selector, none> && base_t::is_bidirectional,
-        detail::adj_list_out_edge_it<adjacency_list, typename traits::in_edge_container::iterator>,
-        detail::reverse_edge_it<out_edge_iterator>>;
+    using in_edge_iterator =
+        std::conditional_t<std::is_same_v<edge_selector, none> && base_t::is_bidirectional,
+                           detail::adj_list_out_edge_it<
+                               adjacency_list, typename traits::in_edge_container::const_iterator>,
+                           detail::reverse_edge_it<out_edge_iterator>>;
 
     using base_t::base_t;
 
