@@ -9,8 +9,8 @@
 
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
-#include <actl/graph/detail/none_property_map.hpp>
 #include <actl/property_map/generic_container_property_map.hpp>
+#include <actl/property_map/void_property_map.hpp>
 
 namespace ac {
 
@@ -52,7 +52,7 @@ public:
 
     using edge_id = typename edge_container::id;
     using vertex  = V;
-    using edge    = detail::edge<V, edge_id>;
+    using edge    = edge<V, edge_id>;
 
     using directed_category = Dir;
 
@@ -84,10 +84,9 @@ public:
 
     void swap(edge_list_edges& other) { edges_.swap(other.edges_); }
 
-    detail::none_property_map<edge> operator[](edge_property) const { return {}; }
+    void_property_map<edge> operator[](edge_property) const { return {}; }
 
-    none operator[](edge)       { return none{}; }
-    none operator[](edge) const { return none{}; }
+    void operator[](edge) const {}
 };
 
 template <class Dir, class V, class EC, class S>

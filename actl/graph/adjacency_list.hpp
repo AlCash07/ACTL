@@ -70,6 +70,7 @@ public:
                   "use std::list instead of associative container for adjacency list");
 
     using base_t::base_t;
+    using base_t::operator[];
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
@@ -87,6 +88,10 @@ public:
         }
         return {edge(u, v, e), true};
     }
+
+    void_property_map<edge> operator[](edge_property) const { return {}; }
+
+    void operator[](edge) const {}
 };
 
 /* Adjacency list without edge container */
@@ -117,7 +122,7 @@ public:
     using base_t::base_t;
     using base_t::operator[];
 
-    edge_property_map<false> operator[](edge_property) { return {this->vertices_}; }
+    edge_property_map<false> operator[](edge_property)       { return {this->vertices_}; }
     edge_property_map<true>  operator[](edge_property) const { return {this->vertices_}; }
 
     reference operator[](edge e)       { return get((*this)[edge_property{}], e); }
@@ -150,6 +155,7 @@ protected:
 
 public:
     using base_t::base_t;
+    using base_t::operator[];
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
@@ -166,6 +172,10 @@ public:
         }
         return {edge(u, v, out_edge), true};
     }
+
+    void_property_map<edge> operator[](edge_property) const { return {}; }
+
+    void operator[](edge) const {}
 };
 
 }  // namespace detail

@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <actl/graph/detail/none_property_map.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/property_map/generic_container_property_map.hpp>
+#include <actl/property_map/void_property_map.hpp>
 
 namespace ac {
 
@@ -76,10 +76,9 @@ public:
 
     void swap(vertex_list& other) { vertices_.swap(other.vertices_); }
 
-    detail::none_property_map<vertex> operator[](vertex_property) const { return {}; }
+    void_property_map<vertex> operator[](vertex_property) const { return {}; }
 
-    none operator[](vertex)       { return none{}; }
-    none operator[](vertex) const { return none{}; }
+    void operator[](vertex) const {}
 };
 
 }  // namespace ac

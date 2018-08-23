@@ -8,13 +8,14 @@
 #pragma once
 
 #include <actl/property_map/property_map.hpp>
-#include <actl/type/none.hpp>
 
-namespace ac::detail {
+namespace ac {
 
-template <class Key>
-class none_property_map : public property_map<Key, none, none, false> {
-    friend none get(const none_property_map& pm, Key key) { return none(); }
+template <class Key, class Value = void>
+class void_property_map : public property_map<Key, Value, Value, false> {
+    friend Value get(void_property_map, Key) { return Value{}; }
+
+    friend void put(void_property_map, Key, Value) {}
 };
 
-}  // namespace ac::detail
+}  // namespace ac
