@@ -9,7 +9,6 @@
 
 #include <actl/graph/selectors.hpp>
 #include <actl/iterator/iterator_facade.hpp>
-#include <actl/type/none.hpp>
 
 namespace ac::detail {
 

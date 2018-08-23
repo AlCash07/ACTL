@@ -48,7 +48,7 @@ protected:
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
     using out_it = typename traits::out_edge_container::const_iterator;
     using vertex = typename base_t::vertex;
-    using edge   = typename traits::edges::edge;
+    using edge   = typename traits::edge_list::edge;
     using base_t::vertices_;
 
     out_it out_begin(vertex u) const { return vertices_[u].first().out_edges.begin(); }
@@ -63,7 +63,7 @@ protected:
         }
     }
 
-    typename traits::edges edges_;
+    typename traits::edge_list edge_list_;
 
 public:
     static_assert(!is_associative_v<EC>,
@@ -74,13 +74,13 @@ public:
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
-        typename traits::edges::edge_id e;
+        typename traits::edge_list::edge_id e;
         auto& u_edges = vertices_[u].first().out_edges;
         auto[out_edge, ok] = u_edges.emplace(v, e);
         if (!ok) {
             return {edge(), false};
         }
-        u_edges[out_edge].second() = e = edges_.add_edge(u, v, std::forward<Ts>(args)...);
+        u_edges[out_edge].second() = e = edge_list_.add_edge(u, v, std::forward<Ts>(args)...);
         if constexpr (base_t::is_undirected) {
             vertices_[v].first().out_edges.emplace(u, e);
         } else if constexpr (base_t::is_bidirectional) {
@@ -151,7 +151,7 @@ protected:
         return edge(ied.first(), u, ied.second());
     }
 
-    typename traits::edges edges_;
+    typename traits::edge_list edge_list_;
 
 public:
     using base_t::base_t;
@@ -164,7 +164,7 @@ public:
         if (!ok) {
             return {edge(), false};
         }
-        edges_.add_edge(u, v);
+        edge_list_.add_edge(u, v);
         if constexpr (base_t::is_undirected) {
             vertices_[v].first().out_edges.emplace(u, std::forward<Ts>(args)...);
         } else if constexpr (base_t::is_bidirectional) {
@@ -180,11 +180,13 @@ public:
 
 }  // namespace detail
 
+/* Common functionality */
+
 template <class Dir, class OEC, class EC, class VC>
 class adjacency_list : public detail::adj_list_edges<Dir, OEC, EC, VC> {
     using base_t = detail::adj_list_edges<Dir, OEC, EC, VC>;
     using traits = typename base_t::traits;
-    using base_t::edges_;
+    using base_t::edge_list_;
 
     template <class AL, class S>
     friend struct detail::edge_it;
@@ -204,11 +206,11 @@ public:
 
     using base_t::base_t;
 
-    int edge_count() const { return edges_.edge_count(); }
+    int edge_count() const { return edge_list_.edge_count(); }
 
     range<edge_iterator> edges() const {
         if constexpr (std::is_same_v<edge_selector, two_vertices>) {
-            return edges_.edges();
+            return edge_list_.edges();
         } else {
             return {edge_iterator(this, true), edge_iterator(this, false)};
         }
@@ -248,12 +250,12 @@ public:
 
     void clear() {
         base_t::clear();
-        edges_.clear();
+        edge_list_.clear();
     }
 
     void swap(adjacency_list& other) {
         detail::adj_list_vertices<Dir, OEC, EC, VC>::swap(other);
-        edges_.swap(other.edges_);
+        edge_list_.swap(other.edge_list_);
     }
 
     friend edge_iterator;
