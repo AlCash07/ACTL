@@ -111,15 +111,17 @@ struct property_map_container<Container, C, false> : detail::pm_container<Contai
 
 template <class It>
 inline std::enable_if_t<is_random_access_iterator<It>::value,
-                        typename std::iterator_traits<It>::reference>
+                        typename property_traits<It>::reference>
 get(It it, int key) {
     return it[key];
 }
 
-template <class It>
-inline std::enable_if_t<is_random_access_iterator<It>::value> put(
-    It it, int key, typename std::iterator_traits<It>::value_type value) {
-    return it[key] = value;
+// Default put implementation.
+template <class PM>
+inline std::enable_if_t<property_traits<PM>::writable> put(
+    PM pm, typename property_traits<PM>::key_type key,
+    typename property_traits<PM>::value_type value) {
+    get(pm, key) = value;
 }
 
 }  // namespace ac

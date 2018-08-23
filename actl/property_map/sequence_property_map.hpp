@@ -39,14 +39,8 @@ public:
     explicit sequence_pm_base(Ts&&... args) : data_{{std::forward<Ts>(args)...}} {}
 
     friend reference get(const sequence_pm_base& pm, Key key) {
-        ACTL_ASSERT(0 <= key && key < this->data_.size());
-        return pm.data_()[key];
-    }
-
-    template <bool W = writable>
-    friend std::enable_if_t<W> put(const sequence_pm_base& pm, Key key, value_type value) {
         ACTL_ASSERT(0 <= key && key < data_().size());
-        pm.data_()[key] = value;
+        return pm.data_()[key];
     }
 
     template <bool W = writable>
