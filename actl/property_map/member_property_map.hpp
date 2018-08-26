@@ -48,10 +48,23 @@ inline auto make_const_member_property_map(Member Key::* ptr) {
 /**
  * Member property map with member mapping known at compile-time.
  */
-template <class Key, class Member, Member Key::* Ptr>
-class static_member_property_map : public detail::member_pm_base<Key, Member> {
+template <auto Ptr>
+class static_member_property_map;
+
+template <class Key, class Member, Member Key::*Ptr>
+class static_member_property_map<Ptr> : public detail::member_pm_base<Key, Member> {
 public:
     friend Member& get(static_member_property_map, Key& key) { return key.*Ptr; }
+};
+
+template <auto Ptr>
+class static_const_member_property_map;
+
+template <class Key, class Member, Member Key::*Ptr>
+class static_const_member_property_map<Ptr>
+    : public detail::member_pm_base<const Key, const Member> {
+public:
+    friend const Member& get(static_const_member_property_map, const Key& key) { return key.*Ptr; }
 };
 
 }  // namespace ac
