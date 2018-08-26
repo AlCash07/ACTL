@@ -7,9 +7,8 @@
 
 #pragma once
 
-#include <actl/graph/adjacency_list.hpp>
-#include <actl/graph/adjacency_matrix.hpp>
-#include <actl/graph/component/all.hpp>
-#include <actl/graph/events.hpp>
-#include <actl/graph/traversal/all.hpp>
-#include <actl/graph/vertex_edge_list.hpp>
+#include <actl/graph/component/color_maintainer.hpp>
+#include <actl/graph/component/distance_recorder.hpp>
+#include <actl/graph/component/predecessor_edge_recorder.hpp>
+#include <actl/graph/component/predecessor_recorder.hpp>
+#include <actl/graph/component/time_stamper.hpp>
