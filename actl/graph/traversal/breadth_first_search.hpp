@@ -7,5 +7,7 @@
 
 #pragma once
 
+#include <actl/graph/events.hpp>
+
 namespace ac {
 }
