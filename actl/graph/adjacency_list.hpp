@@ -33,9 +33,9 @@ public:
     using base_t::base_t;
     using base_t::operator[];
 
-    auto operator[](edge_property) { return this->edges_[edge_property{}]; }
+    auto operator[](edge_property) { return this->edge_list_[edge_property{}]; }
 
-    auto operator[](edge_property) const { return this->edges_[edge_property{}]; }
+    auto operator[](edge_property) const { return this->edge_list_[edge_property{}]; }
 
     T&       operator[](edge e)       { return get((*this)[edge_property{}], e); }
     const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
@@ -57,7 +57,7 @@ protected:
     edge get_edge(vertex u, const typename traits::out_edge_data& oed) const {
         auto e = oed.second();
         if constexpr (std::is_same_v<typename traits::out_edge_data::first_type, none>) {
-            return edges_.get_edge(u, e);
+            return edge_list_.get_edge(u, e);
         } else {
             return edge(u, oed.first(), e);
         }
