@@ -125,7 +125,7 @@ struct line : public Kind {
     constexpr point<T, N> end() const { return start + slope; }
 
     constexpr uint8_t start_kind() const { return endpoint::start(this->kind()); }
-    constexpr uint8_t end_kind()   const { return endpoint::end(this->kind()); }
+    constexpr uint8_t end_kind() const { return endpoint::end(this->kind()); }
 
     template <class T1>
     constexpr auto operator()(const T1& t) const {

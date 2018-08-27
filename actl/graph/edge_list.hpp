@@ -33,7 +33,7 @@ public:
         return get_second(make_generic_container_property_map(this->edges_));
     }
 
-    T&       operator[](edge e)       { return get((*this)[edge_property{}], e); }
+    T&       operator[](edge e) { return get((*this)[edge_property{}], e); }
     const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
 };
 

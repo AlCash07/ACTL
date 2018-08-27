@@ -4,6 +4,7 @@ BasedOnStyle: Google
 AccessModifierOffset: -4
 AlignConsecutiveAssignments:  true
 AlignConsecutiveDeclarations: true
+BreakConstructorInitializers: BeforeComma
 ColumnLimit: 100
 CompactNamespaces: true
 DerivePointerAlignment: false

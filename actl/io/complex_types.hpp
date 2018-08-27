@@ -21,7 +21,9 @@
 namespace ac {
 
 template <class Device, class T1, class T2>
-inline bool read(Device& in, std::pair<T1, T2>& arg) { return read(in, arg.first, arg.second); }
+inline bool read(Device& in, std::pair<T1, T2>& arg) {
+    return read(in, arg.first, arg.second);
+}
 
 template <class Device, class T>
 inline bool read(Device& in, std::complex<T>& arg) {

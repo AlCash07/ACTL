@@ -57,7 +57,7 @@ public:
     }
 
     iterator begin() const { return data_.begin(); }
-    iterator end()   const { return data_.end(); }
+    iterator end() const { return data_.end(); }
 
     void clear() {
         this->data_.clear();

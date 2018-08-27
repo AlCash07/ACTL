@@ -9,7 +9,7 @@
 
 #include <cmath>
 
-namespace ac { namespace math {
+namespace ac::math {
 
 #define MATH_ADL1(name)            \
     template <class T>             \
@@ -33,4 +33,4 @@ MATH_ADL2(atan2)
 #undef MATH_ADL1
 #undef MATH_ADL2
 
-}}  // namespace ac::math
+}  // namespace ac::math

@@ -41,7 +41,7 @@ public:
     template <class T1>
     explicit constexpr point_base(point<T1, N>&& other) { (*this) = other; }
 
-    constexpr T*       data()       { return coordinates_; }
+    constexpr T*       data() { return coordinates_; }
     constexpr const T* data() const { return coordinates_; }
 
     constexpr T& operator[](int index) {

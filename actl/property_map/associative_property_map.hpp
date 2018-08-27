@@ -44,7 +44,7 @@ public:
     }
 
     iterator begin() const { return data_().begin(); }
-    iterator end()   const { return data_().end(); }
+    iterator end() const { return data_().end(); }
 
     template <bool W = writable>
     std::enable_if_t<W> clear() {

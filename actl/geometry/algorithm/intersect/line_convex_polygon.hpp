@@ -38,8 +38,11 @@ inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const lin
     auto intersect_chain = [&](auto first, auto last, int first_sgn, It dst) {
         while (first + 1 != last) {
             auto middle = first + (last - first) / 2;
-            if (vertex_sgn(middle) == first_sgn) first = middle;
-            else last = middle;
+            if (vertex_sgn(middle) == first_sgn) {
+                first = middle;
+            } else {
+                last = middle;
+            }
         }
         return intersect(policy.intersect_policy, line, make_line(*first, *last), dst);
     };

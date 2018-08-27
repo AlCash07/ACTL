@@ -37,7 +37,7 @@ public:
 
     auto operator[](edge_property) const { return this->edge_list_[edge_property{}]; }
 
-    T&       operator[](edge e)       { return get((*this)[edge_property{}], e); }
+    T&       operator[](edge e) { return get((*this)[edge_property{}], e); }
     const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
 };
 
@@ -52,7 +52,7 @@ protected:
     using base_t::vertices_;
 
     out_it out_begin(vertex u) const { return vertices_[u].first().out_edges.begin(); }
-    out_it out_end(vertex u)   const { return vertices_[u].first().out_edges.end(); }
+    out_it out_end(vertex u) const { return vertices_[u].first().out_edges.end(); }
 
     edge get_edge(vertex u, const typename traits::out_edge_data& oed) const {
         auto e = oed.second();
@@ -122,10 +122,10 @@ public:
     using base_t::base_t;
     using base_t::operator[];
 
-    edge_property_map<false> operator[](edge_property)       { return {this->vertices_}; }
+    edge_property_map<false> operator[](edge_property) { return {this->vertices_}; }
     edge_property_map<true>  operator[](edge_property) const { return {this->vertices_}; }
 
-    reference operator[](edge e)       { return get((*this)[edge_property{}], e); }
+    reference operator[](edge e) { return get((*this)[edge_property{}], e); }
     const T&  operator[](edge e) const { return get((*this)[edge_property{}], e); }
 };
 
@@ -141,7 +141,7 @@ protected:
     using base_t::vertices_;
 
     out_it out_begin(vertex u) const { return vertices_[u].first().out_edges.id_range().begin(); }
-    out_it out_end(vertex u)   const { return vertices_[u].first().out_edges.id_range().end(); }
+    out_it out_end(vertex u) const { return vertices_[u].first().out_edges.id_range().end(); }
 
     edge get_edge(vertex u, out_id oe) const {
         return edge(u, vertices_[u].first().out_edges[oe].first(), oe);
@@ -228,7 +228,7 @@ public:
             return {in_edge_iterator(out.begin()), in_edge_iterator(out.end())};
         } else {
             auto in_begin = this->vertices_[u].first().in_edges.begin();
-            auto in_end = this->vertices_[u].first().in_edges.end();
+            auto in_end   = this->vertices_[u].first().in_edges.end();
             if constexpr (std::is_same_v<edge_selector, none>) {
                 return {in_edge_iterator(this, u, in_begin), in_edge_iterator(this, u, in_end)};
             } else {

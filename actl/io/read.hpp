@@ -103,7 +103,9 @@ inline char skip_characters(Device& in, UnaryPredicate is_skipped) {
 }
 
 template <class Device>
-inline char skip_characters(Device& in) { return skip_characters(in, is_space); }
+inline char skip_characters(Device& in) {
+    return skip_characters(in, is_space);
+}
 
 template <class Device>
 inline char skip_characters(Device& in, const char* arg) {
@@ -225,7 +227,9 @@ inline bool read(text_io_tag, Device& in, std::string& arg, Terminator&& termina
 }
 
 template <class Device>
-inline bool read(text_io_tag, Device& in, std::string& arg) { return read(in, arg, ""); }
+inline bool read(text_io_tag, Device& in, std::string& arg) {
+    return read(in, arg, "");
+}
 
 /* Ranges */
 
@@ -247,7 +251,9 @@ inline bool read(text_io_tag, Device& in, const range<char*>& arg, Terminator te
 }
 
 template <class Device>
-inline bool read(text_io_tag, Device& in, const range<char*>& arg) { return read(in, arg, ""); }
+inline bool read(text_io_tag, Device& in, const range<char*>& arg) {
+    return read(in, arg, "");
+}
 
 /* General forwarding */
 

@@ -27,8 +27,11 @@ public:
 private:
     void increment() {
         ACTL_ASSERT(limit_ > 0);
-        if (--limit_ > 0) ++this->base();
-        else this->base() = Iterator{};
+        if (--limit_ > 0) {
+            ++this->base();
+        } else {
+            this->base() = Iterator{};
+        }
     }
 
     int limit_;

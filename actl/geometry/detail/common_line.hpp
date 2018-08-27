@@ -16,11 +16,17 @@ namespace ac::detail {
 template <template <class> class Less, class T>
 inline auto max_endpoint(const std::pair<T, uint8_t>& lhs, const std::pair<T, uint8_t>& rhs) {
     if (lhs.second == endpoint::free) {
-        if (rhs.second != endpoint::free) return rhs;
-        else return Less<T>()(lhs.first, rhs.first) ? lhs : rhs;
+        if (rhs.second != endpoint::free) {
+            return rhs;
+        } else {
+            return Less<T>()(lhs.first, rhs.first) ? lhs : rhs;
+        }
     } else {
-        if (rhs.second == endpoint::free) return lhs;
-        else return Less<std::pair<T, uint8_t>>()(lhs, rhs) ? rhs : lhs;
+        if (rhs.second == endpoint::free) {
+            return lhs;
+        } else {
+            return Less<std::pair<T, uint8_t>>()(lhs, rhs) ? rhs : lhs;
+        }
     }
 }
 

@@ -25,7 +25,7 @@ public:
 
 private:
     const point<T> origin_;
-    const bool zero_;
+    const bool     zero_;
 };
 
 template <class P = use_default, class T>

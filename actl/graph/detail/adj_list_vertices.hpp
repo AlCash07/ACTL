@@ -30,7 +30,7 @@ public:
         return get_second(make_generic_container_property_map(this->vertices_));
     }
 
-    T&       operator[](vertex v)       { return get((*this)[vertex_property{}], v); }
+    T&       operator[](vertex v) { return get((*this)[vertex_property{}], v); }
     const T& operator[](vertex v) const { return get((*this)[vertex_property{}], v); }
 };
 

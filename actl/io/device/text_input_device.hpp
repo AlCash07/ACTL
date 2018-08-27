@@ -18,7 +18,7 @@ public:
 
     // Base for integer and floating point numbers.
     uint32_t get_base() const { return base_; }
-    void set_base(uint32_t value) {
+    void     set_base(uint32_t value) {
         ACTL_ASSERT(2 <= value && value <= 36);
         base_ = value;
     }

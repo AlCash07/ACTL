@@ -22,7 +22,7 @@ public:
 
     // Minimum width of a single element to write (except char).
     uint32_t get_width() const { return width_; }
-    void set_width(uint32_t value) { width_ = value; }
+    void     set_width(uint32_t value) { width_ = value; }
 
     // Character prepended to an element until set width is reached.
     char get_fill() const { return fill_; }
@@ -30,7 +30,7 @@ public:
 
     // Base for integer and floating point numbers.
     uint32_t get_base() const { return base_; }
-    void set_base(uint32_t value) {
+    void     set_base(uint32_t value) {
         ACTL_ASSERT(2 <= value && value <= 36);
         base_ = value;
         compute_base_power();
@@ -38,14 +38,14 @@ public:
 
     // Number of digits after the decimal point.
     uint32_t get_precision() const { return precision_; }
-    void set_precision(uint32_t value) {
+    void     set_precision(uint32_t value) {
         precision_ = value;
         compute_base_power();
     }
 
     // Delimiter automatically inserted between elements that are not strings or characters.
     const char* get_delimiter() const { return delimiter_.data(); }
-    void set_delimiter(const char* value) { delimiter_ = value; }
+    void        set_delimiter(const char* value) { delimiter_ = value; }
 
     unsigned long long get_base_power() const { return base_power_; }
 

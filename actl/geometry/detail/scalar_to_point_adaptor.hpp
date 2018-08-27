@@ -21,8 +21,8 @@ class scalar_to_point_adaptor
 public:
     explicit scalar_to_point_adaptor(const Line& line, It it)
         : iterator_adaptor<scalar_to_point_adaptor<Line, It>, It, use_default, T,
-                           const scalar_to_point_adaptor<Line, It>&, T*>(it),
-          line_{line} {}
+                           const scalar_to_point_adaptor<Line, It>&, T*>(it)
+        , line_{line} {}
 
     void operator = (const T& value) const { *this->base() = line_(value); }
 

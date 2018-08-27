@@ -30,7 +30,9 @@ private:
 };
 
 template <class Key, class Value = int>
-inline auto make_shift_property_map(Key offset) { return shift_property_map<Key, Value>{offset}; }
+inline auto make_shift_property_map(Key offset) {
+    return shift_property_map<Key, Value>{offset};
+}
 
 /**
  * Shift property map with offset known at compile-time.

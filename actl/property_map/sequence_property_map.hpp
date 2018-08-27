@@ -68,8 +68,8 @@ class sequence_property_map : public detail::sequence_pm_base<Sequence, Key> {
 public:
     class iterator : public iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*> {
         iterator(It it, It begin)
-            : iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*>(it),
-              begin_{begin} {}
+            : iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*>(it)
+            , begin_{begin} {}
 
         Pair dereference() const {
             return {static_cast<Key>(this->base() - begin_), *this->base()};
@@ -84,7 +84,7 @@ public:
     using base_t::base_t;
 
     iterator begin() const { return {data_().begin(), data_().begin()}; }
-    iterator end()   const { return {data_().end(),   data_().begin()}; }
+    iterator end() const { return {data_().end(), data_().begin()}; }
 };
 
 template <class Key = int, class Sequence>

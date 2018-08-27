@@ -29,7 +29,9 @@ inline auto irange(Int first, Int last) {
  * Increasing range from 0 to @p last (not inclusive).
  */
 template <class Int>
-inline auto irange(Int last) { return irange(Int{}, last); }
+inline auto irange(Int last) {
+    return irange(Int{}, last);
+}
 
 /**
  * Decreasing range from @p first to @p last (inclusive).
@@ -45,7 +47,9 @@ inline auto drange(Int first, Int last) {
  * Decreasing range from @p first to 0 (inclusive).
  */
 template <class Int>
-inline auto drange(Int first) { return drange(first, Int{}); }
+inline auto drange(Int first) {
+    return drange(first, Int{});
+}
 
 /**
  * Range with given @p step from @p first to @p last (inclusive if @p step is negative).

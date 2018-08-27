@@ -16,10 +16,10 @@ template <bool Binary, uint32_t BufferSize = 1 << 11>
 class input_file final : public input_device_base_t<Binary> {
 public:
     input_file(std::FILE* file = stdin, bool line_buffered = true, bool take_ownership = false)
-        : input_device_base_t<Binary>(buffer_, buffer_),
-          file_{file},
-          line_buffered_{line_buffered},
-          owner_{take_ownership} {}
+        : input_device_base_t<Binary>(buffer_, buffer_)
+        , file_{file}
+        , line_buffered_{line_buffered}
+        , owner_{take_ownership} {}
 
     input_file(const char* file_name)
         : input_file(std::fopen(file_name, Binary ? "rb" : "r"), false, true) {}
@@ -45,7 +45,7 @@ private:
     std::FILE* file_;
     const bool line_buffered_;
     const bool owner_;
-    char buffer_[BufferSize];
+    char       buffer_[BufferSize];
 };
 
 using binary_input_file = input_file<true>;

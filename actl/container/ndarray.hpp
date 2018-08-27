@@ -80,7 +80,7 @@ public:
 
     ndarray_container(int size) {}
 
-    T*       data()       { return data_.data(); }
+    T*       data() { return data_.data(); }
     const T* data() const { return data_.data(); }
 
     void swap(ndarray_container& other) { std::swap(data_, other.data_); }
@@ -96,7 +96,7 @@ public:
 
     ndarray_container(int size) : data_(new T[size]) {}
 
-    T*       data()       { return data_.get(); }
+    T*       data() { return data_.get(); }
     const T* data() const { return data_.get(); }
 
     void swap(ndarray_container& other) { std::swap(data_, other.data_); }
@@ -110,7 +110,7 @@ private:
 template <int N, class Data>
 class ndarray_data : public ndarray_container<Data> {
     using base_t = ndarray_container<Data>;
-    using T = typename base_t::value_type;
+    using T      = typename base_t::value_type;
 
 public:
     ndarray_data(int size) : base_t(size) {}
@@ -157,7 +157,7 @@ public:
 
     void swap(ndarray_data& other) { std::swap(data_, other.data_); }
 
-    T*       data()       { return data_; }
+    T*       data() { return data_; }
     const T* data() const { return data_; }
 
 private:
@@ -273,7 +273,7 @@ public:
 
     explicit ndarray_shape(T value) : base_t(1) { *this->data() = value; }
 
-    constexpr operator T&      ()       { return *this->data(); }
+    constexpr operator T&() { return *this->data(); }
     constexpr operator const T&() const { return *this->data(); }
 };
 
@@ -381,22 +381,22 @@ public:
     void clear() { fill(T{}); }
 
     iterator begin() { return this->data(); }
-    iterator end()   { return begin() + this->size(); }
+    iterator end() { return begin() + this->size(); }
 
     const_iterator begin() const { return this->data(); }
-    const_iterator end()   const { return begin() + this->size(); }
+    const_iterator end() const { return begin() + this->size(); }
 
     reverse_iterator rbegin() { return reverse_iterator(end()); }
-    reverse_iterator rend()   { return reverse_iterator(begin()); }
+    reverse_iterator rend() { return reverse_iterator(begin()); }
 
     const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
-    const_reverse_iterator rend()   const { return const_reverse_iterator(begin()); }
+    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
     const_iterator cbegin() const { return begin(); }
-    const_iterator cend()   const { return end(); }
+    const_iterator cend() const { return end(); }
 
     const_reverse_iterator crbegin() const { return rbegin(); }
-    const_reverse_iterator crend()   const { return rend(); }
+    const_reverse_iterator crend() const { return rend(); }
 
     bool empty() const { return this->size() == 0; }
 

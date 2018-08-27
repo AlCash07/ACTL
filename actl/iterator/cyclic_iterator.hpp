@@ -9,8 +9,8 @@
 
 #include <actl/assert.hpp>
 #include <actl/functions.hpp>
-#include <actl/macros.hpp>
 #include <actl/iterator/iterator_facade.hpp>
+#include <actl/macros.hpp>
 
 namespace ac {
 

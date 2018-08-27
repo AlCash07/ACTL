@@ -30,7 +30,7 @@ public:
         }
     }
 
-    bool operator <  (const mimic_pair& rhs) const { return key() < rhs.key(); }
+    bool operator < (const mimic_pair& rhs) const { return key() < rhs.key(); }
     bool operator == (const mimic_pair& rhs) const { return key() == rhs.key(); }
 };
 

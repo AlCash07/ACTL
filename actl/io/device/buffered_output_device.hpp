@@ -56,8 +56,11 @@ protected:
     int write_string_impl(InputIterator arg, int count) {
         int chars_written = count;
         if (EXPECT_TRUE(tail_ + count < buffer_ + BufferSize)) {
-            if (count == 1) *tail_++ = *arg;
-            else tail_ = std::copy_n(arg, count, tail_);
+            if (count == 1) {
+                *tail_++ = *arg;
+            } else {
+                tail_ = std::copy_n(arg, count, tail_);
+            }
         } else {
             int chunk_size = static_cast<int>(buffer_ + BufferSize - tail_);
             for (;; chunk_size = BufferSize) {

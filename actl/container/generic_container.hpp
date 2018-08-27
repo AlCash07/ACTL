@@ -45,13 +45,13 @@ public:
     void clear() { data_.clear(); }
 
     iterator begin() { return data_.begin(); }
-    iterator end()   { return data_.end(); }
+    iterator end() { return data_.end(); }
 
     const_iterator begin() const { return data_.begin(); }
-    const_iterator end()   const { return data_.end(); }
+    const_iterator end() const { return data_.end(); }
 
     const_iterator cbegin() const { return begin(); }
-    const_iterator cend()   const { return end(); }
+    const_iterator cend() const { return end(); }
 
 protected:
     template <class... Ts>
@@ -75,7 +75,7 @@ public:
     }
 
     id begin_id() const { return data_.begin(); }
-    id end_id()   const { return data_.end(); }
+    id end_id() const { return data_.end(); }
 
     range<id_iterator> id_range() const { return {id_iterator(begin_id()), id_iterator(end_id())}; }
 
@@ -130,7 +130,7 @@ public:
     explicit generic_container(int n) : generic_container_base<C>(n) {}
 
     id begin_id() const { return 0; }
-    id end_id()   const { return this->size(); }
+    id end_id() const { return this->size(); }
 
     range<id_iterator> id_range() const { return irange(begin_id(), end_id()); }
 
@@ -171,7 +171,7 @@ public:
     explicit generic_container(int n = 0) : n_{n} {}
 
     id begin_id() const { return 0; }
-    id end_id()   const { return size(); }
+    id end_id() const { return size(); }
 
     range<id_iterator> id_range() const { return irange(begin_id(), end_id()); }
 
@@ -246,10 +246,17 @@ public:
 
     constexpr iterator_id() = default;
 
-    iterator_id& operator++() { ++it_; return *this; }
-    iterator_id& operator--() { --it_; return *this; }
+    iterator_id& operator++() {
+        ++it_;
+        return *this;
+    }
 
-    bool operator <  (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
+    iterator_id& operator--() {
+        --it_;
+        return *this;
+    }
+
+    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
     bool operator == (iterator_id rhs) const { return it_ == rhs.it_; }
     bool operator != (iterator_id rhs) const { return it_ != rhs.it_; }
 

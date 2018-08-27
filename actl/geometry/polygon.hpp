@@ -33,7 +33,7 @@ public:
         return const_cyclic_iterator(it, this->begin(), this->end());
     }
 
-    auto cyclic_begin()       { return cyclic(this->begin()); }
+    auto cyclic_begin() { return cyclic(this->begin()); }
     auto cyclic_begin() const { return cyclic(this->begin()); }
 };
 
