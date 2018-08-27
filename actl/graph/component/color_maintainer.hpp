@@ -16,7 +16,7 @@ namespace ac {
 enum class colors : uint8_t { white, gray, black };
 
 template <class Map>
-struct color_maintainer : component {
+struct color_maintainer {
     static_assert(std::is_same_v<typename property_traits<Map>::value_type, colors>);
 
     using vertex = typename property_traits<Map>::key_type;
@@ -34,7 +34,7 @@ struct color_maintainer : component {
 
 template <class Map>
 inline color_maintainer<Map> maintain_colors(Map color) {
-    return {{}, color};
+    return {color};
 }
 
 }  // namespace ac

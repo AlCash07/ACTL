@@ -25,9 +25,9 @@ public:
     using size_type       = typename Vector::size_type;
     static_assert(std::is_same_v<T, value_type>, "");
 
-    bool empty() const { return vector_.empty(); }
+    bool empty() const { return begin_ == vector_.size(); }
 
-    size_type size() const { return vector_.size(); }
+    size_type size() const { return vector_.size() - begin_; }
 
     reference       top() { return vector_[begin_]; }
     const_reference top() const { return vector_[begin_]; }

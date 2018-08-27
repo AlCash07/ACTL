@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Map>
-struct distance_recorder : component {
+struct distance_recorder {
     Map distance;
 
     void operator()(on_vertex_start, typename property_traits<Map>::key_type u) const {
@@ -27,13 +27,13 @@ struct distance_recorder : component {
 
 template <class Map>
 inline distance_recorder<Map> record_distance(Map distance) {
-    return {{}, distance};
+    return {distance};
 }
 
 template <class Map, class T>
 inline vertex_initializer<&distance_recorder<Map>::distance> record_distance(Map distance,
                                                                              T   value) {
-    return {{{}, distance}, value};
+    return {{distance}, value};
 }
 
 }  // namespace ac

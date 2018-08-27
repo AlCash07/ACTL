@@ -7,38 +7,30 @@
 
 #pragma once
 
+#include <actl/traits/type_traits.hpp>
 #include <tuple>
-#include <utility>
 
 namespace ac {
-
-/**
- * Base class for algorithm component. Inherited classes should overload operator() for the
- * appropriate arguments.
- */
-struct component {
-    struct not_implemented {};
-
-    template <class... Ts>
-    constexpr not_implemented operator()(Ts...) const { return {}; }
-};
-
 namespace detail {
 
 template <size_t I, class Tuple, class... Ts>
 inline auto exec_one(const Tuple& components, Ts&&... args) {
     static_assert(I < std::tuple_size_v<Tuple>, "no component with requested overload");
-    auto result = std::get<I>(components)(std::forward<Ts>(args)...);
-    if constexpr (std::is_same_v<decltype(result), component::not_implemented>) {
-        return exec_one<I + 1>(components, std::forward<Ts>(args)...);
+    if constexpr (is_invocable_v<std::tuple_element_t<I, Tuple>, Ts...>) {
+        return std::get<I>(components)(std::forward<Ts>(args)...);
     } else {
-        return result;
+        return exec_one<I + 1>(components, std::forward<Ts>(args)...);
     }
 }
 
-template <size_t... Is, class Tuple, class... Ts>
-inline void exec_all(std::index_sequence<Is...>, const Tuple& components, Ts&&... args) {
-    (std::get<Is>(components)(std::forward<Ts>(args)...), ...);
+template <size_t I, class Tuple, class... Ts>
+inline void exec_all(const Tuple& components, Ts&&... args) {
+    if constexpr (is_invocable_v<std::tuple_element_t<I, Tuple>, Ts...>) {
+        std::get<I>(components)(std::forward<Ts>(args)...);
+    }
+    if constexpr (I + 1 < std::tuple_size_v<Tuple>) {
+        exec_all<I + 1>(components, std::forward<Ts>(args)...);
+    }
 }
 
 }  // namespace detail
@@ -54,8 +46,7 @@ inline auto execute_one(const Tuple& components, Ts&&... args) {
 
 template <class Tuple, class... Ts>
 inline void execute_all(const Tuple& components, Ts&&... args) {
-    detail::exec_all(std::make_index_sequence<std::tuple_size_v<Tuple>>(), components,
-                     std::forward<Ts>(args)...);
+    detail::exec_all<0>(components, std::forward<Ts>(args)...);
 }
 
 }  // namespace ac

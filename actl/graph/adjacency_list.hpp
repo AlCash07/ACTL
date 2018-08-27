@@ -63,17 +63,8 @@ protected:
         }
     }
 
-    typename traits::edge_list edge_list_;
-
-public:
-    static_assert(!is_associative_v<EC>,
-                  "use std::list instead of associative container for adjacency list");
-
-    using base_t::base_t;
-    using base_t::operator[];
-
     template <class... Ts>
-    std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
+    std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         typename traits::edge_list::edge_id e;
         auto& u_edges = vertices_[u].first().out_edges;
         auto[out_edge, ok] = u_edges.emplace(v, e);
@@ -88,6 +79,15 @@ public:
         }
         return {edge(u, v, e), true};
     }
+
+    typename traits::edge_list edge_list_;
+
+public:
+    static_assert(!is_associative_v<EC>,
+                  "use std::list instead of associative container for adjacency list");
+
+    using base_t::base_t;
+    using base_t::operator[];
 
     void_property_map<edge> operator[](edge_property) const { return {}; }
 
@@ -151,14 +151,8 @@ protected:
         return edge(ied.first(), u, ied.second());
     }
 
-    typename traits::edge_list edge_list_;
-
-public:
-    using base_t::base_t;
-    using base_t::operator[];
-
     template <class... Ts>
-    std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
+    std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         auto& u_edges = vertices_[u].first().out_edges;
         auto[out_edge, ok] = u_edges.emplace(v, std::forward<Ts>(args)...);
         if (!ok) {
@@ -172,6 +166,12 @@ public:
         }
         return {edge(u, v, out_edge), true};
     }
+
+    typename traits::edge_list edge_list_;
+
+public:
+    using base_t::base_t;
+    using base_t::operator[];
 
     void_property_map<edge> operator[](edge_property) const { return {}; }
 
@@ -239,8 +239,17 @@ public:
     }
 
     template <class... Ts>
+    std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
+        if constexpr (is_random_access_v<VC>) {
+            vertex n = std::max(u, v);
+            if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
+        }
+        return this->try_add_edge_impl(u, v, std::forward<Ts>(args)...);
+    }
+
+    template <class... Ts>
     edge add_edge(vertex u, vertex v, Ts&&... args) {
-        return this->try_add_edge(u, v, std::forward<Ts>(args)...).first;
+        return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
     template <class... Ts, bool UA = is_unique_associative<VC>::value, class T = value_type_t<VC>>

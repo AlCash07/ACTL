@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Map>
-struct predecessor_edge_recorder : component {
+struct predecessor_edge_recorder {
     Map predecessor_edge;
 
     template <class E>
@@ -28,7 +28,7 @@ struct predecessor_edge_recorder : component {
 
 template <class Map>
 inline predecessor_edge_recorder<Map> record_predecessor_edge(Map predecessor_edge) {
-    return {{}, predecessor_edge};
+    return {predecessor_edge};
 }
 
 }  // namespace ac

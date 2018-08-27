@@ -13,6 +13,17 @@
 
 namespace ac {
 
+// TODO: use std::is_invocable what C++17 is fully supported.
+template <class, class = void>
+struct is_invocable : std::false_type {};
+
+template <class F, class... Ts>
+struct is_invocable<F(Ts...), void_t<decltype(std::declval<F>()(std::declval<Ts>()...))>>
+    : std::true_type {};
+
+template <class F, class... Ts>
+inline constexpr bool is_invocable_v = is_invocable<F(Ts...)>::value;
+
 // TODO: use std::remove_cvref_t when C++20 is out.
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;

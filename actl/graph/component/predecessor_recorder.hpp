@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Map>
-struct predecessor_recorder : component {
+struct predecessor_recorder {
     Map predecessor;
 
     void operator()(on_vertex_start, typename property_traits<Map>::key_type u) const {
@@ -38,7 +38,7 @@ inline predecessor_recorder<Map> record_predecessor(Map predecessor) {
 template <class Map, class T>
 inline vertex_initializer<&predecessor_recorder<Map>::predecessor> record_predecessor(
     Map predecessor, T value) {
-    return {{{}, predecessor}, value};
+    return {{predecessor}, value};
 }
 
 }  // namespace ac
