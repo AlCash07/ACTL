@@ -11,7 +11,7 @@
 #include <actl/iterator/iterator_facade.hpp>
 #include <actl/property_map/property_map.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/type_traits/is_iterator.hpp>
+#include <actl/traits/is_iterator.hpp>
 #include <array>
 
 namespace ac {

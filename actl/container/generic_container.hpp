@@ -15,7 +15,7 @@
 #include <actl/assert.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/range/irange.hpp>
-#include <actl/type_traits/container_traits.hpp>
+#include <actl/traits/container_traits.hpp>
 #include <algorithm>
 #include <cstdint>
 

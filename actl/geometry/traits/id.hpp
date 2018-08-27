@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/geometry/traits/geometry_traits.hpp>
-#include <actl/type_traits/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac::geometry {
 

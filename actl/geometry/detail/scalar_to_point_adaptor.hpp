@@ -9,7 +9,7 @@
 
 #include <actl/geometry/line.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/type_traits/output_type.hpp>
+#include <actl/traits/output_type.hpp>
 
 namespace ac::detail {
 

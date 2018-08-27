@@ -19,7 +19,7 @@
 
 #include <actl/io/io_traits.hpp>
 #include <actl/range/range.hpp>
-#include <actl/type_traits/is_iterator.hpp>
+#include <actl/traits/is_iterator.hpp>
 #include <cmath>
 #include <string>
 

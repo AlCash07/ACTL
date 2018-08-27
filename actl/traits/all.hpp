@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/type_traits/ctype.hpp>
-#include <actl/type_traits/is_iterator.hpp>
-#include <actl/type_traits/output_type.hpp>
-#include <actl/type_traits/type_traits.hpp>
+#include <actl/traits/ctype.hpp>
+#include <actl/traits/is_iterator.hpp>
+#include <actl/traits/output_type.hpp>
+#include <actl/traits/type_traits.hpp>

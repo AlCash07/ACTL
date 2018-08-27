@@ -12,7 +12,7 @@
 #include <actl/geometry/traits/aliases.hpp>
 #include <actl/geometry/traits/policy.hpp>
 #include <actl/math.hpp>
-#include <actl/type_traits/output_type.hpp>
+#include <actl/traits/output_type.hpp>
 
 namespace ac {
 

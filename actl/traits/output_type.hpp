@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <actl/type_traits/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <iterator>
 
 namespace ac {

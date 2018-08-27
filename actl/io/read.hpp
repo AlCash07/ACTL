@@ -28,9 +28,9 @@
 #include <actl/io/io_traits.hpp>
 #include <actl/macros.hpp>
 #include <actl/range/range.hpp>
-#include <actl/type_traits/ctype.hpp>
-#include <actl/type_traits/is_iterator.hpp>
-#include <actl/type_traits/type_traits.hpp>
+#include <actl/traits/ctype.hpp>
+#include <actl/traits/is_iterator.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <cstring>
 #include <string>
 

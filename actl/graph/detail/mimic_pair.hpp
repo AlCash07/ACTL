@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/property_map/composite_property_map.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/type/compressed_pair.hpp>
-#include <actl/type_traits/type_traits.hpp>
 
 namespace ac::detail {
 
