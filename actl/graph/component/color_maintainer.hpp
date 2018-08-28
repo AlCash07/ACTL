@@ -9,7 +9,7 @@
 
 #include <actl/graph/events.hpp>
 #include <actl/property_map/property_map.hpp>
-#include <actl/type/component.hpp>
+#include <actl/type/algorithm.hpp>
 
 namespace ac {
 
