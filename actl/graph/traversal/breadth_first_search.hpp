@@ -9,6 +9,7 @@
 
 #include <actl/graph/events.hpp>
 #include <actl/type/algorithm.hpp>
+#include <queue>
 
 namespace ac {
 
@@ -21,12 +22,13 @@ class bfs : public algorithm<Components...> {
 public:
     using base_t::base_t;
 
-    template <class Graph, class Source, class Queue>
-    void operator()(const Graph& graph, const Source& source, Queue&& q) {
+    template <class Graph, class Source, class VertexQueue = std::queue<typename Graph::vertex>>
+    void operator()(const Graph& graph, const Source& source, VertexQueue&& queue = {}) {
         using vertex = typename Graph::vertex;
         for (vertex u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
-        auto start = [this, &q](vertex s) {
-            q.push(s);
+        while (!queue.empty()) queue.pop();
+        auto start = [this, &queue](vertex s) {
+            queue.push(s);
             execute_all(on_vertex_start{}, s);
             execute_all(on_vertex_discover{}, s);
         };
@@ -35,9 +37,9 @@ public:
         } else {
             for (vertex s : source) start(s);
         }
-        while (!q.empty()) {
-            vertex u = q.top();
-            q.pop();
+        while (!queue.empty()) {
+            vertex u = queue.front();
+            queue.pop();
             execute_all(on_vertex_examine{}, u);
             for (auto e : graph.out_edges(u)) {
                 vertex v = e.target();
@@ -45,7 +47,7 @@ public:
                 if (base_t::execute_one(is_vertex_discovered{}, v)) {
                     execute_all(on_non_tree_edge{}, e);
                 } else {
-                    q.push(v);
+                    queue.push(v);
                     execute_all(on_tree_edge{}, e);
                     execute_all(on_vertex_discover{}, v);
                 }
@@ -57,7 +59,7 @@ public:
 
 template <class... Components>
 inline auto breadth_first_search(Components&&... components) {
-    return bfs<Components...>{std::forward<Components>(components)...};
+    return bfs<Components...>(std::forward<Components>(components)...);
 }
 
 }  // namespace ac

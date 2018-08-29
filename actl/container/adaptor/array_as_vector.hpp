@@ -42,8 +42,8 @@ public:
 
     reference       front() { return *begin(); }
     const_reference front() const { return *begin(); }
-    reference       back() { return *end(); }
-    const_reference back() const { return *end(); }
+    reference       back() { return *(end() - 1); }
+    const_reference back() const { return *(end() - 1); }
 
     value_type*       data() noexcept { return array_.data(); }
     const value_type* data() const noexcept { return array_.data(); }
@@ -54,16 +54,15 @@ public:
     template <class... Ts>
     void emplace(Ts&&... args) {
         ACTL_ASSERT(end_ < N);
-        array_[end_] = T{std::forward<Ts>(args)...};
-        ++end_;
+        *end_++ = T{std::forward<Ts>(args)...};
     }
 
     void pop_back() {
-        ACTL_ASSERT(end_ > 0);
+        ACTL_ASSERT(end_ != array_.begin());
         --end_;
     }
 
-    void clear() noexcept { end_ = 0; }
+    void clear() noexcept { end_ = array_.begin(); }
 
 protected:
     Array    array_;

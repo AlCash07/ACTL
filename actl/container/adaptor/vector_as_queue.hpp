@@ -25,12 +25,13 @@ public:
     using size_type       = typename Vector::size_type;
     static_assert(std::is_same_v<T, value_type>, "");
 
-    bool empty() const { return begin_ == vector_.size(); }
-
+    bool      empty() const { return begin_ == vector_.size(); }
     size_type size() const { return vector_.size() - begin_; }
 
-    reference       top() { return vector_[begin_]; }
-    const_reference top() const { return vector_[begin_]; }
+    reference       front() { return vector_[begin_]; }
+    const_reference front() const { return vector_[begin_]; }
+    reference       back() { return vector_.back(); }
+    const_reference back() const { return vector_.back(); }
 
     void push(const T& value) { emplace(value); }
     void push(T&& value) { emplace(std::move(value)); }
