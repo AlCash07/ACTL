@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/graph/component/color_maintainer.hpp>
-#include <actl/graph/component/distance_recorder.hpp>
-#include <actl/graph/component/predecessor_edge_recorder.hpp>
-#include <actl/graph/component/predecessor_recorder.hpp>
-#include <actl/graph/component/time_stamper.hpp>
+#include <actl/graph/connectivity/articulation_points.hpp>
+#include <actl/graph/connectivity/bridges.hpp>
+#include <actl/graph/connectivity/connected_components.hpp>
+#include <actl/graph/connectivity/kosaraju_strong_components.hpp>
+#include <actl/graph/connectivity/tarjan_strong_components.hpp>

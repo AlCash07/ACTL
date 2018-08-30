@@ -53,7 +53,8 @@ protected:
     }
 
 public:
-    explicit algorithm(Components... components) : components_(components...) {}
+    explicit algorithm(Components&&... components)
+        : components_(std::forward<Components>(components)...) {}
 };
 
 }  // namespace ac

@@ -7,10 +7,7 @@
 
 #pragma once
 
-#include <actl/graph/adjacency_list.hpp>
-#include <actl/graph/adjacency_matrix.hpp>
-#include <actl/graph/connectivity/all.hpp>
-#include <actl/graph/events.hpp>
-#include <actl/graph/shortest_paths/all.hpp>
-#include <actl/graph/traversal/all.hpp>
-#include <actl/graph/vertex_edge_list.hpp>
+#include <actl/graph/shortest_paths/bellman_ford_shortest_paths.hpp>
+#include <actl/graph/shortest_paths/dijkstra_shortest_paths_dense.hpp>
+#include <actl/graph/shortest_paths/dijkstra_shortest_paths_sparse.hpp>
+#include <actl/graph/shortest_paths/floyd_warshall_all_shortest_paths.hpp>

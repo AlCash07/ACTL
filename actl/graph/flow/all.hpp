@@ -7,10 +7,4 @@
 
 #pragma once
 
-#include <actl/graph/adjacency_list.hpp>
-#include <actl/graph/adjacency_matrix.hpp>
-#include <actl/graph/connectivity/all.hpp>
-#include <actl/graph/events.hpp>
-#include <actl/graph/shortest_paths/all.hpp>
-#include <actl/graph/traversal/all.hpp>
-#include <actl/graph/vertex_edge_list.hpp>
+#include <actl/graph/flow/>

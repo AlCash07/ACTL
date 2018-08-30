@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/graph/component/vertex_initializer.hpp>
+#include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
