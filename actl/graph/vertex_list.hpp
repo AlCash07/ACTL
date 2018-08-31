@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/graph/selectors.hpp>
+#include <actl/property_map/dummy_property_map.hpp>
 #include <actl/property_map/generic_container_property_map.hpp>
-#include <actl/property_map/void_property_map.hpp>
 
 namespace ac {
 
@@ -72,7 +72,7 @@ public:
 
     void swap(vertex_list& other) { vertices_.swap(other.vertices_); }
 
-    void_property_map<vertex> operator[](vertex_property) const { return {}; }
+    dummy_property_map<vertex> operator[](vertex_property) const { return {}; }
 
     void operator[](vertex) const {}
 

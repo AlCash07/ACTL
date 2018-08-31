@@ -91,7 +91,7 @@ public:
     using base_t::base_t;
     using base_t::operator[];
 
-    void_property_map<edge> operator[](edge_property) const { return {}; }
+    dummy_property_map<edge> operator[](edge_property) const { return {}; }
 
     void operator[](edge) const {}
 };
@@ -177,7 +177,7 @@ public:
     using base_t::base_t;
     using base_t::operator[];
 
-    void_property_map<edge> operator[](edge_property) const { return {}; }
+    dummy_property_map<edge> operator[](edge_property) const { return {}; }
 
     void operator[](edge) const {}
 };

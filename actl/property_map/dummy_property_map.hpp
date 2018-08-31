@@ -12,10 +12,10 @@
 namespace ac {
 
 template <class Key, class Value = void>
-class void_property_map : public property_map<Key, Value, Value, false> {
-    friend Value get(void_property_map, Key) { return Value{}; }
+class dummy_property_map : public property_map<Key, Value, Value, false> {
+    friend Value get(dummy_property_map, Key) { return Value{}; }
 
-    friend void put(void_property_map, Key, Value) {}
+    friend void put(dummy_property_map, Key, Value) {}
 };
 
 }  // namespace ac

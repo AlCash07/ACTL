@@ -9,8 +9,8 @@
 
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
+#include <actl/property_map/dummy_property_map.hpp>
 #include <actl/property_map/generic_container_property_map.hpp>
-#include <actl/property_map/void_property_map.hpp>
 
 namespace ac {
 
@@ -82,7 +82,7 @@ public:
 
     void swap(edge_list_edges& other) { edges_.swap(other.edges_); }
 
-    void_property_map<edge> operator[](edge_property) const { return {}; }
+    dummy_property_map<edge> operator[](edge_property) const { return {}; }
 
     void operator[](edge) const {}
 
