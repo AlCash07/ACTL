@@ -7,33 +7,36 @@
 
 #pragma once
 
+#include <actl/graph/default_property_map.hpp>
 #include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
 template <class Map>
-struct distance_recorder {
-    Map distance;
-
+struct distance_recorder : property_map_wrapper_t<Map> {
     void operator()(on_vertex_start, typename property_traits<Map>::key_type u) const {
-        put(distance, u, 0);
+        put(*this, u, 0);
     }
 
     template <class E>
     void operator()(on_tree_edge, E e) const {
-        put(distance, e.target(), get(distance, e.source()) + 1);
+        put(*this, e.target(), get(*this, e.source()) + 1);
     }
 };
 
 template <class Map>
-inline distance_recorder<Map> record_distance(Map distance) {
+inline distance_recorder<Map> make_distance_recorder(Map distance) {
     return {distance};
 }
 
 template <class Map, class T>
-inline vertex_initializer<&distance_recorder<Map>::distance> record_distance(Map distance,
-                                                                             T   value) {
-    return {{distance}, value};
+inline vertex_initializer<distance_recorder<Map>> make_distance_recorder(Map&& distance, T value) {
+    return {{std::forward<Map>(distance)}, value};
+}
+
+template <class Graph>
+inline auto default_distance_recorder(const Graph& graph) {
+    return make_distance_recorder(default_vertex_property_map<int>(graph), -1);
 }
 
 }  // namespace ac

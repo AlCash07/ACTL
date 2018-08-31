@@ -7,21 +7,20 @@
 
 #pragma once
 
+#include <actl/graph/default_property_map.hpp>
 #include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
 template <class Map>
-struct predecessor_recorder {
-    Map predecessor;
-
+struct predecessor_recorder : property_map_wrapper_t<Map> {
     void operator()(on_vertex_start, typename property_traits<Map>::key_type u) const {
-        put(predecessor, u, u);
+        put(*this, u, u);
     }
 
     template <class E>
     void operator()(on_tree_edge, E e) const {
-        put(predecessor, e.target(), e.source());
+        put(*this, e.target(), e.source());
     }
 
     template <class E>
@@ -31,14 +30,20 @@ struct predecessor_recorder {
 };
 
 template <class Map>
-inline predecessor_recorder<Map> record_predecessor(Map predecessor) {
-    return {predecessor};
+inline predecessor_recorder<Map> make_predecessor_recorder(Map&& predecessor) {
+    return {std::forward<Map>(predecessor)};
 }
 
 template <class Map, class T>
-inline vertex_initializer<&predecessor_recorder<Map>::predecessor> record_predecessor(
-    Map predecessor, T value) {
-    return {{predecessor}, value};
+inline vertex_initializer<predecessor_recorder<Map>> make_predecessor_recorder(Map&& predecessor,
+                                                                               T     value) {
+    return {{std::forward<Map>(predecessor)}, value};
+}
+
+template <class Graph>
+inline auto default_predecessor_recorder(const Graph& graph) {
+    return make_predecessor_recorder(default_vertex_property_map<typename Graph::vertex>(graph),
+                                     graph.null_vertex());
 }
 
 }  // namespace ac

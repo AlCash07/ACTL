@@ -42,17 +42,15 @@ class edge_list_edges<Dir, V, EC, S, none> {
 protected:
     using traits         = edge_list_traits<Dir, V, EC, S>;
     using edge_vertices  = typename traits::vertices;
-    using edge_container = typename traits::container;
-
-    edge_container edges_;
 
 public:
     static_assert(std::is_same_v<S, two_vertices> || !is_associative_v<EC>,
                   "associative edge list requires two vertices");
 
-    using edge_id = typename edge_container::id;
-    using vertex  = V;
-    using edge    = edge<V, edge_id>;
+    using edge_container = typename traits::container;
+    using edge_id        = typename edge_container::id;
+    using vertex         = V;
+    using edge           = edge<V, edge_id>;
 
     using directed_category = Dir;
 
@@ -87,6 +85,9 @@ public:
     void_property_map<edge> operator[](edge_property) const { return {}; }
 
     void operator[](edge) const {}
+
+protected:
+    edge_container edges_;
 };
 
 template <class Dir, class V, class EC, class S>

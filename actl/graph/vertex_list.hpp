@@ -36,14 +36,10 @@ public:
 
 template <class VC>
 class vertex_list<VC, none> {
-protected:
-    using vertex_container = generic_container<VC>;
-
-    vertex_container vertices_;
-
 public:
-    using vertex          = typename vertex_container::id;
-    using vertex_iterator = typename vertex_container::id_iterator;
+    using vertex_container = generic_container<VC>;
+    using vertex           = typename vertex_container::id;
+    using vertex_iterator  = typename vertex_container::id_iterator;
 
     explicit vertex_list() = default;
 
@@ -79,6 +75,9 @@ public:
     void_property_map<vertex> operator[](vertex_property) const { return {}; }
 
     void operator[](vertex) const {}
+
+protected:
+    vertex_container vertices_;
 };
 
 }  // namespace ac

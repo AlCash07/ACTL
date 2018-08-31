@@ -210,6 +210,9 @@ public:
 };
 
 template <class C>
+struct container_traits<generic_container<C>> : container_traits<C> {};
+
+template <class C>
 using container_id_t = typename generic_container<C>::id;
 
 // Id is implicitly convertible to this key type, and it can be used for comparison.

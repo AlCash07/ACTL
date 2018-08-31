@@ -38,10 +38,12 @@ public:
     template <class... Ts>
     explicit sequence_pm_base(Ts&&... args) : data_{{std::forward<Ts>(args)...}} {}
 
-    friend reference get(const sequence_pm_base& pm, Key key) {
+    reference operator[](Key key) const {
         ACTL_ASSERT(0 <= key && key < data_().size());
-        return pm.data_()[key];
+        return data_()[key];
     }
+
+    friend reference get(const sequence_pm_base& pm, Key key) { return pm[key]; }
 
     template <bool W = writable>
     std::enable_if_t<W> clear() {

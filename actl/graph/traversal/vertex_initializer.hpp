@@ -12,20 +12,16 @@
 
 namespace ac {
 
-template <auto Ptr>
-struct vertex_initializer;
-
-template <class Base, class Member, Member Base::*Ptr>
-struct vertex_initializer<Ptr> : Base {
-    using vertex = typename property_traits<Member>::key_type;
-
-    typename property_traits<Member>::value_type value;
+template <class Base>
+struct vertex_initializer : Base {
+    typename Base::value_type value;
 
     using Base::operator();
 
-    void operator()(on_vertex_initialize, vertex u) const { put(this->*Ptr, u, value); }
-
-    bool operator()(is_vertex_discovered, vertex u) const { return get(this->*Ptr, u) != value; }
+    void operator()(on_vertex_initialize, typename Base::key_type u) const { put(*this, u, value); }
+    bool operator()(is_vertex_discovered, typename Base::key_type u) const {
+        return get(*this, u) != value;
+    }
 };
 
 }  // namespace ac

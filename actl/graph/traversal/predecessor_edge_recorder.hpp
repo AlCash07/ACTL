@@ -7,17 +7,16 @@
 
 #pragma once
 
+#include <actl/graph/default_property_map.hpp>
 #include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
 template <class Map>
-struct predecessor_edge_recorder {
-    Map predecessor_edge;
-
+struct predecessor_edge_recorder : property_map_wrapper_t<Map> {
     template <class E>
     void operator()(on_tree_edge, E e) const {
-        put(predecessor_edge, e.target(), e);
+        put(*this, e.target(), e);
     }
 
     template <class E>
@@ -27,8 +26,13 @@ struct predecessor_edge_recorder {
 };
 
 template <class Map>
-inline predecessor_edge_recorder<Map> record_predecessor_edge(Map predecessor_edge) {
-    return {predecessor_edge};
+inline predecessor_edge_recorder<Map> make_predecessor_edge_recorder(Map&& predecessor_edge) {
+    return {std::forward<Map>(predecessor_edge)};
+}
+
+template <class Graph>
+inline auto default_predecessor_edge_recorder(const Graph& graph) {
+    return make_predecessor_edge_recorder(default_vertex_property_map<typename Graph::edge>(graph));
 }
 
 }  // namespace ac

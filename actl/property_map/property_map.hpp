@@ -44,33 +44,46 @@ struct property_map : property_map_base {
     static constexpr bool writable   = Writable;
 };
 
-namespace detail {
+template <class It>
+class iterator_property_map : public property_map_base {
+    It it_;
 
-template <class T, bool Map = false, bool Iterator = false>
-struct property_traits_impl {};
+public:
+    static_assert(is_random_access_iterator<It>::value);
 
-template <class T>
-struct property_traits_impl<T, true, false> {
-    using key_type   = typename T::key_type;
-    using value_type = typename T::value_type;
-    using reference  = typename T::reference;
-
-    static constexpr bool invertible = T::invertible;
-    static constexpr bool iterable   = T::iterable;
-    static constexpr bool writable   = T::writable;
-};
-
-template <class T>
-struct property_traits_impl<T, false, true> {
     using key_type   = int;
-    using value_type = typename std::iterator_traits<T>::value_type;
-    using reference  = typename std::iterator_traits<T>::reference;
+    using value_type = typename std::iterator_traits<It>::value_type;
+    using reference  = typename std::iterator_traits<It>::reference;
+    using wrapper    = iterator_property_map<It>;
 
-    // TODO: if invert is guaranteed to take the result of get then invertible is true.
+    // TODO: if invert is guaranteed to take the result of get then invertible can be true.
     static constexpr bool invertible = false;
     static constexpr bool iterable   = false;
     static constexpr bool writable   = is_non_const_reference<reference>::value;
+
+    constexpr iterator_property_map(It it) : it_(it) {}
+
+    constexpr operator It() const { return it_; }
+
+    friend reference get(const iterator_property_map& pm, key_type key) { return pm[key]; }
 };
+
+namespace detail {
+
+template <class PM, bool IsMap = true>
+struct property_traits_impl {
+    using key_type   = typename PM::key_type;
+    using value_type = typename PM::value_type;
+    using reference  = typename PM::reference;
+    using wrapper    = PM;
+
+    static constexpr bool invertible = PM::invertible;
+    static constexpr bool iterable   = PM::iterable;
+    static constexpr bool writable   = PM::writable;
+};
+
+template <class It>
+struct property_traits_impl<It, false> : property_traits_impl<iterator_property_map<It>> {};
 
 template <class C, bool Mutable>
 struct pm_container {
@@ -88,9 +101,13 @@ struct pm_container<C, false> {
 
 }  // namespace detail
 
-template <class T>
-struct property_traits : detail::property_traits_impl<T, std::is_base_of_v<property_map_base, T>,
-                                                      is_random_access_iterator<T>::value> {};
+template <class PM>
+struct property_traits
+    : detail::property_traits_impl<PM, std::is_base_of_v<property_map_base, PM>> {};
+
+// This type can be used as base class.
+template <class PM>
+using property_map_wrapper_t = typename property_traits<PM>::wrapper;
 
 template <class Container, class C = std::remove_reference_t<Container>,
           bool M = !std::is_const_v<C>>

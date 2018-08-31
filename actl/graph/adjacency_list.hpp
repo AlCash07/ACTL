@@ -86,6 +86,8 @@ public:
     static_assert(!is_associative_v<EC>,
                   "use std::list instead of associative container for adjacency list");
 
+    using edge_container = typename traits::edge_list::edge_container;
+
     using base_t::base_t;
     using base_t::operator[];
 
@@ -170,6 +172,8 @@ protected:
     typename traits::edge_list edge_list_;
 
 public:
+    using edge_container = none;
+
     using base_t::base_t;
     using base_t::operator[];
 
@@ -207,6 +211,8 @@ public:
     using base_t::base_t;
 
     int edge_count() const { return edge_list_.edge_count(); }
+
+    int degree(vertex u) const { return out_edges(u).size(); }
 
     range<edge_iterator> edges() const {
         if constexpr (std::is_same_v<edge_selector, two_vertices>) {
