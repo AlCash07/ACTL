@@ -23,9 +23,9 @@ struct inorder_printer {
 
     using vertex = output_type_t<VertexOutputIterator>;
 
-    void operator()(on_vertex_initialize, vertex u) const { put(state, u, -1); }
-    void operator()(on_vertex_discover, vertex u) const { put(state, u, 0); }
-    bool operator()(is_vertex_discovered, vertex u) const { return get(state, u) != -1; }
+    void operator()(on_vertex_initialize, vertex u) { put(state, u, -1); }
+    void operator()(on_vertex_discover, vertex u) { put(state, u, 0); }
+    bool operator()(is_vertex_discovered, vertex u) { return get(state, u) != -1; }
 
     template <class E>
     void operator()(on_tree_edge, E e) {

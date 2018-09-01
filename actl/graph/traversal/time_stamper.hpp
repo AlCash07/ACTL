@@ -17,7 +17,7 @@ template <class Map, class T = typename property_traits<Map>::value_type>
 struct time_stamper : property_map_wrapper_t<Map> {
     T time;
 
-    void operator()(on_vertex_examine, typename property_traits<Map>::key_type u) const {
+    void operator()(on_vertex_examine, typename property_traits<Map>::key_type u) {
         put(*this, u, time);
         ++time;
     }
@@ -29,7 +29,7 @@ struct in_out_time_stamper : time_stamper<Map, T> {
 
     using time_stamper<Map, T>::operator();
 
-    void operator()(on_vertex_finish, typename property_traits<Map>::key_type u) const {
+    void operator()(on_vertex_finish, typename property_traits<Map>::key_type u) {
         put(out_time, u, time);
     }
 };

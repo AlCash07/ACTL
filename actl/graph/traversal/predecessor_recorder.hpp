@@ -14,17 +14,17 @@ namespace ac {
 
 template <class Map>
 struct predecessor_recorder : property_map_wrapper_t<Map> {
-    void operator()(on_vertex_start, typename property_traits<Map>::key_type u) const {
+    void operator()(on_vertex_start, typename property_traits<Map>::key_type u) {
         put(*this, u, u);
     }
 
     template <class E>
-    void operator()(on_tree_edge, E e) const {
+    void operator()(on_tree_edge, E e) {
         put(*this, e.target(), e.source());
     }
 
     template <class E>
-    void operator()(on_edge_relaxed, E e) const {
+    void operator()(on_edge_relaxed, E e) {
         operator()(on_tree_edge{}, e);
     }
 };

@@ -15,12 +15,12 @@ namespace ac {
 template <class Map>
 struct predecessor_edge_recorder : property_map_wrapper_t<Map> {
     template <class E>
-    void operator()(on_tree_edge, E e) const {
+    void operator()(on_tree_edge, E e) {
         put(*this, e.target(), e);
     }
 
     template <class E>
-    void operator()(on_edge_relaxed, E e) const {
+    void operator()(on_edge_relaxed, E e) {
         operator()(on_tree_edge{}, e);
     }
 };

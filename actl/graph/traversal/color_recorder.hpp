@@ -20,10 +20,10 @@ struct color_recorder : property_map_wrapper_t<Map> {
 
     using vertex = typename property_traits<Map>::key_type;
 
-    void operator()(on_vertex_initialize, vertex u) const { put(*this, u, colors::white); }
-    bool operator()(is_vertex_discovered, vertex u) const { return get(*this, u) != colors::white; }
-    void operator()(on_vertex_discover, vertex u) const { put(*this, u, colors::gray); }
-    void operator()(on_vertex_finish, vertex u) const { put(*this, u, colors::black); }
+    void operator()(on_vertex_initialize, vertex u) { put(*this, u, colors::white); }
+    bool operator()(is_vertex_discovered, vertex u) { return get(*this, u) != colors::white; }
+    void operator()(on_vertex_discover, vertex u) { put(*this, u, colors::gray); }
+    void operator()(on_vertex_finish, vertex u) { put(*this, u, colors::black); }
 };
 
 template <class Map>

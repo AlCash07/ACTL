@@ -18,8 +18,8 @@ struct vertex_initializer : Base {
 
     using Base::operator();
 
-    void operator()(on_vertex_initialize, typename Base::key_type u) const { put(*this, u, value); }
-    bool operator()(is_vertex_discovered, typename Base::key_type u) const {
+    void operator()(on_vertex_initialize, typename Base::key_type u) { put(*this, u, value); }
+    bool operator()(is_vertex_discovered, typename Base::key_type u) {
         return get(*this, u) != value;
     }
 };

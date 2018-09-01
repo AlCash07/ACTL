@@ -18,9 +18,9 @@ struct discovered_flag : property_map_wrapper_t<Map> {
     static_assert(std::is_same_v<typename property_traits<Map>::value_type, bool>);
     using vertex = typename property_traits<Map>::key_type;
 
-    void operator()(on_vertex_initialize, vertex u) const { put(*this, u, false); }
-    void operator()(on_vertex_discover, vertex u) const { put(*this, u, true); }
-    bool operator()(is_vertex_discovered, vertex u) const { return get(*this, u); }
+    void operator()(on_vertex_initialize, vertex u) { put(*this, u, false); }
+    void operator()(on_vertex_discover, vertex u) { put(*this, u, true); }
+    bool operator()(is_vertex_discovered, vertex u) { return get(*this, u); }
 };
 
 template <class Map>
