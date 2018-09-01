@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/graph/traversal/breadth_first_search.hpp>
-#include <actl/graph/traversal/color_maintainer.hpp>
+#include <actl/graph/traversal/color_recorder.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/graph/traversal/distance_recorder.hpp>
 #include <actl/graph/traversal/order.hpp>

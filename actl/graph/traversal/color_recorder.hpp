@@ -15,7 +15,7 @@ namespace ac {
 enum class colors : uint8_t { white, gray, black };
 
 template <class Map>
-struct color_maintainer : property_map_wrapper_t<Map> {
+struct color_recorder : property_map_wrapper_t<Map> {
     static_assert(std::is_same_v<typename property_traits<Map>::value_type, colors>);
 
     using vertex = typename property_traits<Map>::key_type;
@@ -27,13 +27,13 @@ struct color_maintainer : property_map_wrapper_t<Map> {
 };
 
 template <class Map>
-inline color_maintainer<Map> make_color_maintainer(Map&& color) {
+inline color_recorder<Map> make_color_recorder(Map&& color) {
     return {std::forward<Map>(color)};
 }
 
 template <class Graph>
-inline auto default_color_maintainer(const Graph& graph) {
-    return make_color_maintainer(default_vertex_property_map<colors>(graph));
+inline auto default_color_recorder(const Graph& graph) {
+    return make_color_recorder(default_vertex_property_map<colors>(graph));
 }
 
 }  // namespace ac
