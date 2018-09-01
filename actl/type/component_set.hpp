@@ -13,17 +13,17 @@
 namespace ac {
 
 template <class... Components>
-class algorithm {
+class component_set {
     using tuple_t = std::tuple<Components...>;
     tuple_t components_;
 
     template <size_t I, class... Ts>
-    auto exec_one(Ts&&... args) {
+    auto exec_first(Ts&&... args) {
         static_assert(I < sizeof...(Components), "no component with requested overload");
         if constexpr (is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
             return std::get<I>(components_)(std::forward<Ts>(args)...);
         } else {
-            return exec_one<I + 1>(std::forward<Ts>(args)...);
+            return exec_first<I + 1>(std::forward<Ts>(args)...);
         }
     }
 
@@ -43,8 +43,8 @@ protected:
      * its output.
      */
     template <class... Ts>
-    auto execute_one(Ts&&... args) {
-        return exec_one<0>(std::forward<Ts>(args)...);
+    auto execute_first(Ts&&... args) {
+        return exec_first<0>(std::forward<Ts>(args)...);
     }
 
     template <class... Ts>
@@ -53,7 +53,7 @@ protected:
     }
 
 public:
-    explicit algorithm(Components&&... components)
+    explicit component_set(Components&&... components)
         : components_(std::forward<Components>(components)...) {}
 };
 

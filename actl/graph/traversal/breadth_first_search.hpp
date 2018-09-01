@@ -8,15 +8,15 @@
 #pragma once
 
 #include <actl/graph/events.hpp>
-#include <actl/type/algorithm.hpp>
+#include <actl/type/component_set.hpp>
 #include <queue>
 
 namespace ac {
 
 // TODO: rename into breadth_first_search when C++17 is fully supported.
 template <class... Components>
-class bfs : public algorithm<Components...> {
-    using base_t = algorithm<Components...>;
+class bfs : public component_set<Components...> {
+    using base_t = component_set<Components...>;
     using base_t::execute_all;
 
 public:
@@ -44,7 +44,7 @@ public:
             for (auto e : graph.out_edges(u)) {
                 vertex v = e.target();
                 execute_all(on_edge_examine{}, e);
-                if (base_t::execute_one(is_vertex_discovered{}, v)) {
+                if (base_t::execute_first(is_vertex_discovered{}, v)) {
                     execute_all(on_non_tree_edge{}, e);
                 } else {
                     queue.push(v);

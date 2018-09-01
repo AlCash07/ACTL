@@ -8,14 +8,14 @@
 #pragma once
 
 #include <actl/graph/events.hpp>
-#include <actl/type/algorithm.hpp>
+#include <actl/type/component_set.hpp>
 #include <stack>
 
 namespace ac {
 
 template <class... Components>
-class dfs : public algorithm<Components...> {
-    using base_t = algorithm<Components...>;
+class dfs : public component_set<Components...> {
+    using base_t = component_set<Components...>;
     using base_t::execute_all;
 
     // Recursive implementation to demonstrate dfs logic better.
@@ -25,7 +25,7 @@ class dfs : public algorithm<Components...> {
         for (auto e : graph.out_edges(u)) {
             V v = e.target();
             execute_all(on_edge_examine{}, e);
-            if (base_t::execute_one(is_vertex_discovered{}, v)) {
+            if (base_t::execute_first(is_vertex_discovered{}, v)) {
                 execute_all(on_non_tree_edge{}, e);
             } else {
                 execute_all(on_tree_edge{}, e);
@@ -59,7 +59,7 @@ class dfs : public algorithm<Components...> {
                 }
                 execute_all(on_edge_examine{}, *it);
                 V v = it->target();
-                if (base_t::execute_one(is_vertex_discovered{}, v)) {
+                if (base_t::execute_first(is_vertex_discovered{}, v)) {
                     execute_all(on_non_tree_edge{}, *it);
                     execute_all(on_edge_finish{}, *it);
                 } else {
@@ -89,7 +89,7 @@ public:
         const Graph& graph, OutEdgeIteratorStack&& stack = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {
-            if (!base_t::execute_one(is_vertex_discovered{}, s))
+            if (!base_t::execute_first(is_vertex_discovered{}, s))
                 impl(graph, s, std::forward<OutEdgeIteratorStack>(stack));
         }
     }

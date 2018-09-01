@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/type/algorithm.hpp>
+#include <actl/type/component_set.hpp>
 #include <actl/type/compressed_pair.hpp>
 #include <actl/type/none.hpp>
 #include <actl/type/square_root.hpp>
