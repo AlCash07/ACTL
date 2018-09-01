@@ -40,10 +40,10 @@ class dfs : public component_set<Components...> {
     void impl(const Graph& graph, V u, Stack&& stack) {
         while (!stack.empty()) stack.pop();
         execute_all(on_vertex_start{}, u);
-        stack.push(graph.out_edges(u).begin());
+        auto it = graph.out_edges(u).begin();
+        stack.push({u, it.id()});
         while (!stack.empty()) {
-            typename Graph::out_edge_iterator& it = stack.top();
-            u = it.source();
+            u = stack.top().first;
             if (it == graph.out_edges(u).begin()) {
                 execute_all(on_vertex_discover{}, u);
                 execute_all(on_vertex_examine{}, u);
@@ -52,8 +52,10 @@ class dfs : public component_set<Components...> {
                 if (it == end) {
                     stack.pop();
                     if (!stack.empty()) {
-                        execute_all(on_edge_finish{}, *stack.top());
-                        ++stack.top();
+                        it = typename Graph::out_edge_iterator(&graph, stack.top().first,
+                                                               stack.top().second);
+                        execute_all(on_edge_finish{}, *it);
+                        ++it;
                     }
                     execute_all(on_vertex_finish{}, u);
                     break;
@@ -65,7 +67,9 @@ class dfs : public component_set<Components...> {
                     execute_all(on_edge_finish{}, *it);
                 } else {
                     execute_all(on_tree_edge{}, *it);
-                    stack.push(graph.out_edges(v).begin());
+                    stack.top().second = it.id();
+                    it = graph.out_edges(v).begin();
+                    stack.push({v, it.id()});
                     break;
                 }
             }
@@ -73,10 +77,12 @@ class dfs : public component_set<Components...> {
     }
 
 public:
+    template <class Graph>
+    using stack_value_t = std::pair<typename Graph::vertex, typename Graph::out_edge_id>;
+
     using base_t::base_t;
 
-    template <class Graph,
-              class OutEdgeIteratorStack = std::stack<typename Graph::out_edge_iterator>>
+    template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>>
     void operator()(const Graph& graph, typename Graph::vertex s,
                     OutEdgeIteratorStack&& stack = {}) {
         using vertex = typename Graph::vertex;
@@ -84,8 +90,7 @@ public:
         impl(graph, s, std::forward<OutEdgeIteratorStack>(stack));
     }
 
-    template <class Graph,
-              class OutEdgeIteratorStack = std::stack<typename Graph::out_edge_iterator>>
+    template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>>
     std::enable_if_t<!std::is_same_v<remove_cvref_t<OutEdgeIteratorStack>, typename Graph::vertex>>
     operator()(const Graph& graph, OutEdgeIteratorStack&& stack = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);

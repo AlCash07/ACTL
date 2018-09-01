@@ -31,10 +31,7 @@ class adj_list_out_edge_it
     : public iterator_facade<adj_list_out_edge_it<AdjList, It, E>, std::input_iterator_tag, E, E> {
     using vertex = typename AdjList::vertex;
 
-    friend AdjList;
     friend struct ac::iterator_core_access;
-
-    adj_list_out_edge_it(const AdjList* al, vertex u, It it) : al_(al), u_(u), it_(it) {}
 
     E dereference() const { return al_->get_edge(u_, *it_); }
 
@@ -42,33 +39,22 @@ class adj_list_out_edge_it
 
     bool equals(const adj_list_out_edge_it& other) const { return it_ == other.it_; }
 
-    // TODO: if AdjList pointer is removed, dfs stack usage will be more efficient, but instead of
-    // more convenient edge.source() one will have to write graph.source(edge).
     const AdjList* al_;
     vertex         u_;
     It             it_;
 
 public:
-    adj_list_out_edge_it() = default;
+    explicit adj_list_out_edge_it() = default;
 
-    vertex source() const { return u_; }  // This method was added to get source from end iterator.
+    explicit adj_list_out_edge_it(const AdjList* al, vertex u, It it) : al_(al), u_(u), it_(it) {}
+
+    It id() const { return it_; }
 };
 
 template <class AdjList, class E = typename AdjList::edge>
 class adj_list_edge_it
     : public iterator_facade<adj_list_edge_it<AdjList, E>, std::input_iterator_tag, E, E> {
-    friend AdjList;
     friend struct ac::iterator_core_access;
-
-    adj_list_edge_it(const AdjList* al, bool begin) : al_(al) {
-        if (begin) {
-            u_  = al_->vertices_.begin_id();
-            it_ = al_->out_begin(u_);
-            skip_empty();
-        } else {
-            u_ = al_->vertices_.end_id();
-        }
-    }
 
     E dereference() const { return al_->get_edge(u_, *it_); }
 
@@ -106,7 +92,17 @@ class adj_list_edge_it
     typename AdjList::out_it it_;
 
 public:
-    adj_list_edge_it() = default;
+    explicit adj_list_edge_it() = default;
+
+    explicit adj_list_edge_it(const AdjList* al, bool begin) : al_(al) {
+        if (begin) {
+            u_  = al_->vertices_.begin_id();
+            it_ = al_->out_begin(u_);
+            skip_empty();
+        } else {
+            u_ = al_->vertices_.end_id();
+        }
+    }
 };
 
 template <class AL, class S = typename AL::edge_selector>

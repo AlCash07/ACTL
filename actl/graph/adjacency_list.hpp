@@ -201,7 +201,8 @@ public:
 
     using edge_selector     = value_type_t<EC>;
     using edge_iterator     = typename detail::edge_it<adjacency_list>::type;
-    using out_edge_iterator = detail::adj_list_out_edge_it<adjacency_list, typename base_t::out_it>;
+    using out_edge_id       = typename base_t::out_it;
+    using out_edge_iterator = detail::adj_list_out_edge_it<adjacency_list, out_edge_id>;
     using in_edge_iterator =
         std::conditional_t<std::is_same_v<edge_selector, none> && base_t::is_bidirectional,
                            detail::adj_list_out_edge_it<
