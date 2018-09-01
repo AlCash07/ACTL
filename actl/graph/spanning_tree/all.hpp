@@ -7,4 +7,4 @@
 
 #pragma once
 
-#include <actl/graph/max_matching/>
+#include <actl/graph/spanning_tree/>
