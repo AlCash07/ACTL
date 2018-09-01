@@ -32,7 +32,10 @@ public:
         while (!queue.empty()) queue.pop();
         auto enqueue = [&](vertex u) {
             execute_all(on_vertex_discover{}, u);
-            if (terminator(u)) return false;
+            if (terminator(u)) {
+                execute_all(on_search_finish{});
+                return false;
+            }
             queue.push(u);
             return true;
         };
@@ -61,6 +64,7 @@ public:
             }
             execute_all(on_vertex_finish{}, u);
         }
+        execute_all(on_search_finish{});
     }
 };
 

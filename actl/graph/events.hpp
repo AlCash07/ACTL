@@ -11,6 +11,8 @@
 
 namespace ac {
 
+struct on_search_finish {};
+
 struct on_vertex_initialize {};
 struct on_vertex_start {};
 struct on_vertex_discover {};

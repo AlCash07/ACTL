@@ -59,7 +59,10 @@ public:
             if (it == graph.out_edges(u).begin()) {
                 execute_all(on_vertex_discover{}, u);
                 execute_all(on_vertex_examine{}, u);
-                if (terminator(u)) return;
+                if (terminator(u)) {
+                    execute_all(on_search_finish{});
+                    return;
+                }
             }
             for (auto end = graph.out_edges(u).end();; ++it) {
                 if (it == end) {
@@ -87,6 +90,7 @@ public:
                 }
             }
         }
+        execute_all(on_search_finish{});
     }
 
     template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>,
