@@ -18,7 +18,7 @@ template <class, class = void>
 struct is_invocable : std::false_type {};
 
 template <class F, class... Ts>
-struct is_invocable<F(Ts...), void_t<decltype(std::declval<F>()(std::declval<Ts>()...))>>
+struct is_invocable<F(Ts...), std::void_t<decltype(std::declval<F>()(std::declval<Ts>()...))>>
     : std::true_type {};
 
 template <class F, class... Ts>
