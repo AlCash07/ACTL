@@ -7,44 +7,70 @@
 
 #pragma once
 
-#include <actl/graph/events.hpp>
+#include <actl/graph/traversal/depth_first_search.hpp>
+#include <actl/graph/traversal/discovered_flag.hpp>
 #include <actl/traits/output_type.hpp>
 
 namespace ac {
 
-// Because the graph isn't always a binary tree, the vertex is being output not only between each
-// pair of out edges but also before and after them.
-template <class VertexOutputIterator>
+// For binary tree, the output is standard. Otherwise, a vertex is printer between each pair of
+// children or once after them if there are less than 2 children.
+// The output has from n (for binary tree) to 2 n - 3 (for star graph) vertices.
+template <class VertexOutputIterator, class VertexStateMap>
 struct inorder_printer {
     VertexOutputIterator it;
+    VertexStateMap       state;
+
+    using vertex = output_type_t<VertexOutputIterator>;
+
+    void operator()(on_vertex_initialize, vertex u) const { put(state, u, -1); }
+    void operator()(on_vertex_discover, vertex u) const { put(state, u, 0); }
+    bool operator()(is_vertex_discovered, vertex u) const { return get(state, u) != -1; }
 
     template <class E>
-    void operator()(on_tree_edge, E e) { *it++ = e.source(); }
+    void operator()(on_tree_edge, E e) {
+        vertex u = e.source();
+        auto current = get(state, u);
+        if (current > 0) *it++= u;
+        if (current < 2) put(state, u, current + 1);
+    }
 
-    void operator()(on_vertex_finish, output_type_t<VertexOutputIterator> u) { *it++ = u; }
+    void operator()(on_vertex_finish, vertex u) {
+        if (get(state, u) < 2) *it++ = u;
+    }
 };
 
-template <class VertexOutputIterator>
-struct postorder_printer {
+template <class Event, class VertexOutputIterator>
+struct vertex_printer {
     VertexOutputIterator it;
 
-    void operator()(on_vertex_finish, output_type_t<VertexOutputIterator> u) { *it++ = u; }
+    void operator()(Event, output_type_t<VertexOutputIterator> u) { *it++ = u; }
 };
 
-template <class VertexOutputIterator>
-struct preorder_printer {
-    VertexOutputIterator it;
-
-    void operator()(on_vertex_examine, output_type_t<VertexOutputIterator> u) { *it++ = u; }
-};
-
-template <class VertexOutputIterator>
-inline inorder_printer<VertexOutputIterator> inorder(VertexOutputIterator it) { return {it}; }
-
-template <class VertexOutputIterator>
-inline preorder_printer<VertexOutputIterator> preorder(VertexOutputIterator it) { return {it}; }
-
-template <class VertexOutputIterator>
-inline postorder_printer<VertexOutputIterator> postorder(VertexOutputIterator it) { return {it}; }
-
+template <class Graph, class VertexOutputIterator>
+inline void print_inorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
+    auto state = default_vertex_property_map<char>(graph);
+    depth_first_search(
+        inorder_printer<VertexOutputIterator, decltype(state)>{it, std::move(state)})(graph, s);
 }
+
+template <class Graph, class VertexOutputIterator>
+inline void print_postorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
+    depth_first_search(vertex_printer<on_vertex_finish, VertexOutputIterator>{it},
+                       default_discovered_flag(graph))(graph, s);
+}
+
+template <class Graph, class VertexOutputIterator>
+inline void print_preorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
+    depth_first_search(vertex_printer<on_vertex_examine, VertexOutputIterator>{it},
+                       default_discovered_flag(graph))(graph, s);
+}
+
+// Outputs topological sort of the DAG in reverse order.
+template <class Graph, class VertexOutputIterator>
+inline void topological_sort(const Graph& graph, VertexOutputIterator it) {
+    depth_first_search(vertex_printer<on_vertex_finish, VertexOutputIterator>{it},
+                       default_discovered_flag(graph))(graph);
+}
+
+}  // namespace ac

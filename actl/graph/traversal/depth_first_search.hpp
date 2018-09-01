@@ -55,6 +55,7 @@ class dfs : public component_set<Components...> {
                         execute_all(on_edge_finish{}, *stack.top());
                         ++stack.top();
                     }
+                    execute_all(on_vertex_finish{}, u);
                     break;
                 }
                 execute_all(on_edge_examine{}, *it);
@@ -85,8 +86,8 @@ public:
 
     template <class Graph,
               class OutEdgeIteratorStack = std::stack<typename Graph::out_edge_iterator>>
-    std::enable_if_t<!std::is_same_v<OutEdgeIteratorStack, typename Graph::vertex>> operator()(
-        const Graph& graph, OutEdgeIteratorStack&& stack = {}) {
+    std::enable_if_t<!std::is_same_v<remove_cvref_t<OutEdgeIteratorStack>, typename Graph::vertex>>
+    operator()(const Graph& graph, OutEdgeIteratorStack&& stack = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {
             if (!base_t::execute_first(is_vertex_discovered{}, s))

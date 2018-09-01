@@ -15,7 +15,7 @@ namespace ac {
 
 template <class Map>
 struct discovered_flag : property_map_wrapper_t<Map> {
-    static_assert(std::is_same_v<typename property_traits<Map>::key_type, bool>);
+    static_assert(std::is_same_v<typename property_traits<Map>::value_type, bool>);
     using vertex = typename property_traits<Map>::key_type;
 
     void operator()(on_vertex_initialize, vertex u) const { put(*this, u, false); }
@@ -26,6 +26,11 @@ struct discovered_flag : property_map_wrapper_t<Map> {
 template <class Map>
 inline discovered_flag<Map> make_discovered_flag(Map&& discovered) {
     return {std::forward<Map>(discovered)};
+}
+
+template <class Graph>
+inline auto default_discovered_flag(const Graph& graph) {
+    return make_discovered_flag(default_vertex_property_map<bool>(graph));
 }
 
 }  // namespace ac
