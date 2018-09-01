@@ -32,11 +32,11 @@ public:
     using category = text_io_tag;
 
     template <class UnaryPredicate>
-    int read_string(char* arg, int limit, UnaryPredicate is_terminator) {
+    int read_string(char* arg, int limit, UnaryPredicate terminator) {
         --limit;  // Reserve space for null character.
         int chars_read =
-            read_string_impl(arg, limit, [is_terminator](const char* first, const char* last) {
-                return std::find_if(first, last, is_terminator);
+            read_string_impl(arg, limit, [terminator](const char* first, const char* last) {
+                return std::find_if(first, last, terminator);
             });
         arg[chars_read] = '\0';
         return chars_read;

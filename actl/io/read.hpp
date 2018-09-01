@@ -130,8 +130,8 @@ inline int read_string(Device& in, char* arg, int limit, const char* terminators
 }
 
 template <class Device, class UnaryPredicate>
-inline int read_string(Device& in, char* arg, int limit, UnaryPredicate is_terminator) {
-    return in.read_string(arg, limit, is_terminator);
+inline int read_string(Device& in, char* arg, int limit, UnaryPredicate terminator) {
+    return in.read_string(arg, limit, terminator);
 }
 
 }  // namespace detail
