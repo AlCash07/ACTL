@@ -8,4 +8,4 @@
 #pragma once
 
 namespace ac {
-}
+}  // namespace ac
