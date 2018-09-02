@@ -5,6 +5,6 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/cp/test.hpp>
+#include <actl/test.hpp>
 
 int main(int argc, const char* argv[]) { return ac::tests::run(argc, argv); }

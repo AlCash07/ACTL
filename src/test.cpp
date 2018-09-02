@@ -1,20 +1,20 @@
 #include <actl/cp/lexical_cast.hpp>
-#include <actl/cp/test.hpp>
+#include <actl/functions.hpp>
 #include <actl/string/split.hpp>
 #include <actl/string/trim.hpp>
+#include <actl/test.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <actl/util/stopwatch.hpp>
-
-#include <iomanip>
-#include <regex>
 #include <cmath>
+#include <iomanip>
 #include <map>
+#include <regex>
 
 namespace ac::tests {
 
 namespace detail {
 
-static const char* repeat_key = "repeat";
+static const char* repeat_key     = "repeat";
 static const char* time_limit_key = "time_limit";
 
 inline std::vector<std::string> split_va_args(const std::string& va_args_str) {
@@ -49,17 +49,17 @@ bool test_base::run() {
     try {
         default_random random(args());
         auto args = split_va_args(this->args());
-        for (auto& v : args) {
-            v = trim(v);
+        for (auto& arg : args) {
+            arg = trim(arg);
         }
         auto name = args.empty() ? "" : args[0];
         if (name.size() > 2 && name.front() == '"' && name.back() == '"')
             name = name.substr(1, name.size() - 2);
         std::map<std::string, std::pair<std::string, std::string>> params;
         for (size_t i = 1; i < args.size(); ++i) {
-            auto kv = split(args[i], '=');
-            if (kv.size() != 2) continue;
-            params[trim(kv[0])] = {trim(kv[1]), args[i]};
+            auto key_value = split(args[i], '=');
+            if (key_value.size() != 2) continue;
+            params[trim(key_value[0])] = {trim(key_value[1]), args[i]};
         }
         std::cerr << name << ": ";
         auto try_get_param = [&params, this](const char* key, auto& value) -> bool {
@@ -80,12 +80,12 @@ bool test_base::run() {
         try_get_param(time_limit_key, time_limit);
         if (!params.empty()) {
             std::string unknown_params;
-            for (auto& kv : params) {
+            for (auto& key_value : params) {
                 if (!unknown_params.empty()) unknown_params += ", ";
-                unknown_params += kv.second.second;
+                unknown_params += key_value.second.second;
             }
-            throw "unknown param" + ((params.size() > 1 ? "s: " : ": ") + unknown_params) + 
-                    "; line = " + to_string(line());
+            throw "unknown param" + ((params.size() > 1 ? "s: " : ": ") + unknown_params) +
+                "; line = " + to_string(line());
         }
         stopwatch.start();
         for (int k = 0; k < repeat; ++k) {
@@ -95,12 +95,13 @@ bool test_base::run() {
         if (elapsed_seconds > time_limit) {
             throw "time limit exceeded; line = " + to_string(line());
         }
-        std::cerr << "passed [ET = " << std::fixed << std::setprecision(3) << elapsed_seconds << "s]" << std::endl;
+        std::cerr << "passed [ET = " << std::fixed << std::setprecision(3)
+                  << elapsed_seconds << "s]" << std::endl;
         return true;
     } catch (const std::string& fail_message) {
         double elapsed_seconds = stopwatch.seconds();
-        std::cerr << "failed: " << fail_message 
-                    << " [ET = " << std::fixed << std::setprecision(3) << elapsed_seconds << "s]" << std::endl;
+        std::cerr << "failed: " << fail_message << " [ET = " << std::fixed << std::setprecision(3)
+                  << elapsed_seconds << "s]" << std::endl;
         return false;
     }
 }
@@ -114,7 +115,9 @@ std::vector<test_base*>& all_tests() {
 
 int run(int argc, const char* argv[]) {
     using namespace detail;
-    std::function<bool(const std::string&)> filter = [](const std::string&) -> bool { return true; };
+    std::function<bool(const std::string&)> filter = [](const std::string&) -> bool {
+        return true;
+    };
     if (argc > 1) {
         std::string regex_str;
         for (int i = 1; i < argc; ++i) {
@@ -123,7 +126,7 @@ int run(int argc, const char* argv[]) {
             regex_str += argv[i];
             regex_str += ")";
         }
-        filter = [regex = std::regex(regex_str)](const std::string& s) -> bool {
+        filter = [regex = std::regex(regex_str)](const std::string& s) {
             return std::regex_search(s, regex);
         };
     }
@@ -149,34 +152,34 @@ int run(int argc, const char* argv[]) {
         return run(1, argv);
     }
     std::string common_prefix = tests_per_file.begin()->first;
-    int common_prefix_size = (int)common_prefix.size();
+    size_t common_prefix_size = common_prefix.size();
     for (auto file_and_tests : tests_per_file) {
         const auto& filename = file_and_tests.first;
-        common_prefix_size = std::min(common_prefix_size, (int)filename.size());
-        for (int i = 0; i < common_prefix_size; ++i)
+        smin(common_prefix_size, filename.size());
+        for (size_t i = 0; i < common_prefix_size; ++i)
             if (filename[i] != common_prefix[i]) {
                 common_prefix_size = i;
                 break;
             }
     }
-    int num_ok = 0;
+    int failed = 0;
     for (auto file_and_tests : tests_per_file) {
         auto filename = file_and_tests.first.substr(common_prefix_size);
         const auto& tests = file_and_tests.second;
         if (!filename.empty()) {
             std::cerr << "--- " << filename << " ---" << std::endl;
         }
-        for (auto tc_ptr : tests) {
-            num_ok += tc_ptr->run();
+        for (auto test_ptr : tests) {
+            failed += static_cast<int>(!test_ptr->run());
         }
         std::cerr << std::endl;
     }
-    if (num_ok == total) {
+    if (failed == 0) {
         std::cerr << "Passed all tests." << std::endl;
     } else {
-        std::cerr << "Failed " << total - num_ok << "/" << total << " tests." << std::endl;
+        std::cerr << "Failed " << failed << "/" << total << " tests." << std::endl;
     }
-    return 0;
+    return failed;
 }
 
 }  // namespace ac::tests

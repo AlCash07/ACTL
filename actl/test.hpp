@@ -12,20 +12,20 @@
 #include <actl/random/random.hpp>
 #include <iostream>
 
-#define TEST_IMPL(cn, as)                                          \
+#define TEST_IMPL(name, va_args)                                   \
     namespace {                                                    \
-    struct cn : ac::tests::detail::test_base {                     \
+    struct name : ac::tests::detail::test_base {                   \
         const char* filename() const override { return __FILE__; } \
         int         line() const override { return __LINE__; }     \
-        const char* args() const override { return as; }           \
+        const char* args() const override { return va_args; }      \
         void        body(ac::default_random&) const override;      \
-        cn() { ac::tests::detail::all_tests().push_back(this); }   \
-        static cn initializer;                                     \
-    } cn::initializer;                                             \
+        name() { ac::tests::detail::all_tests().push_back(this); } \
+        static name initializer;                                   \
+    } name::initializer;                                           \
     }                                                              \
-    inline void cn::body(ac::default_random& random) const
+    inline void name::body(ac::default_random& random) const
 
-#define TEST(...)        TEST_IMPL(CONCATENATE(_tesT_, __COUNTER__), #__VA_ARGS__)
+#define TEST(...) TEST_IMPL(CONCATENATE(_test_, __COUNTER__), #__VA_ARGS__)
 
 #define ASSERT_EQUAL     ac::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
 #define ASSERT_NOT_EQUAL ac::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
@@ -59,7 +59,7 @@ struct assert_impl {
 
     template <bool Equal>
     inline void check(double expected, double actual, double eps) const {
-        double num = std::abs(expected - actual);
+        double num   = std::abs(expected - actual);
         double denom = std::max(std::max(std::abs(expected), std::abs(actual)), 1.0);
         if ((num <= eps * denom) == Equal) return;
         std::stringstream ss;
@@ -76,9 +76,11 @@ struct assert_impl {
 
 template <class F>
 inline void assert_throws(const char* filename, int line, const F& f) {
-    bool ok = true;
-    try { f(); ok = false; } catch(...) {}
-    if (ok) return;
+    try {
+        f();
+    } catch (...) {
+        return;
+    }
     std::stringstream ss;
     ss << "expected exception";
     ss << "; line = " << line;
@@ -90,7 +92,7 @@ struct test_base {
     virtual int line() const = 0;
     virtual const char* args() const = 0;
     virtual void body(default_random& random) const = 0;
-    
+
     bool run();
 };
 

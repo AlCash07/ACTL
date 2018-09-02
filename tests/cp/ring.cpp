@@ -6,8 +6,8 @@
  **************************************************************************************************/
 
 #include <actl/cp/ring.hpp>
-#include <actl/cp/test.hpp>
 #include <actl/random/random.hpp>
+#include <actl/test.hpp>
 
 using namespace ac;
 

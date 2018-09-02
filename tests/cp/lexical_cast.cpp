@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/cp/lexical_cast.hpp>
-#include <actl/cp/test.hpp>
+#include <actl/test.hpp>
 
 using namespace ac;
 

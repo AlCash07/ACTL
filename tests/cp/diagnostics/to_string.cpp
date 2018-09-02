@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/cp/diagnostics/to_string.hpp>
-#include <actl/cp/test.hpp>
+#include <actl/test.hpp>
 #include <set>
 
 using namespace ac;
