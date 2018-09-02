@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <type_traits>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
@@ -58,10 +58,10 @@ template <class T>
 using base_tag_t = typename base_tag<T>::type;
 
 template <class T>
-using tag_t = typename geometry_traits<std::decay_t<T>>::tag;
+using tag_t = typename geometry_traits<remove_cvref_t<T>>::tag;
 
 template <class... Ts>
-using scalar_t = std::common_type_t<typename geometry_traits<std::decay_t<Ts>>::scalar...>;
+using scalar_t = std::common_type_t<typename geometry_traits<remove_cvref_t<Ts>>::scalar...>;
 
 }  // namespace geometry
 

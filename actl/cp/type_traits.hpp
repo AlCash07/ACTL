@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/traits/type_traits.hpp>
 #include <iterator>
-#include <type_traits>
 
 namespace ac {
 
@@ -181,7 +181,7 @@ MAKE_IS_TYPE_TRAIT(is_string);
 
 template <class T>
 static constexpr type_kind type_kind_of = 
-    std::is_same<std::decay_t<T>, bool>::value ? type_kind::boolean :
+    std::is_same<remove_cvref_t<T>, bool>::value ? type_kind::boolean :
     std::is_floating_point<T>::value ? type_kind::floating_point :
     std::is_signed<T>::value ? type_kind::signed_integer :
     std::is_unsigned<T>::value ? type_kind::unsigned_integer :

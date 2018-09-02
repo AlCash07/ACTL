@@ -2,6 +2,7 @@
 #include <actl/cp/test.hpp>
 #include <actl/string/split.hpp>
 #include <actl/string/trim.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/stopwatch.hpp>
 
 #include <iomanip>
@@ -65,7 +66,7 @@ bool test_base::run() {
             auto it = params.find(key);
             if (it == params.end()) return false;
             try {
-                value = lexical_cast<std::decay_t<decltype(value)>>(it->second.first);
+                value = lexical_cast<remove_cvref_t<decltype(value)>>(it->second.first);
             } catch (...) {
                 throw "param " + to_string(key) + " has invalid value " +
                     to_string(it->second.first) + "; line = " + to_string(line());

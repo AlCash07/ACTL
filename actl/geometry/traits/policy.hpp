@@ -19,6 +19,6 @@ struct is_policy
     : std::bool_constant<std::is_same_v<use_default, T> || std::is_base_of_v<policy, T>> {};
 
 template <class T, class R = void>
-using disable_if_policy_t = std::enable_if_t<!is_policy<std::decay_t<T>>::value, R>;
+using disable_if_policy_t = std::enable_if_t<!is_policy<remove_cvref_t<T>>::value, R>;
 
 }  // namespace ac::geometry
