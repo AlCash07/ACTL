@@ -32,10 +32,10 @@ template <int N>
 using int_constant = std::integral_constant<int, N>;
 
 template <class T>
-struct is_signed_int : std::bool_constant<std::is_signed_v<T> && std::is_integral_v<T>> {};
+using is_signed_int = std::conjunction<std::is_signed<T>, std::is_integral<T>>;
 
 template <class T>
-struct is_unsigned_int : std::bool_constant<std::is_unsigned_v<T> && std::is_integral_v<T>> {};
+using is_unsigned_int = std::conjunction<std::is_unsigned<T>, std::is_integral<T>>;
 
 template <class T>
 struct is_non_const_reference
