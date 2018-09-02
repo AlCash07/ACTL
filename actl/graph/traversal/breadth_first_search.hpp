@@ -26,13 +26,13 @@ public:
     template <class Graph, class Source, class VertexQueue = std::queue<typename Graph::vertex>,
               class VertexPredicate = always_false>
     void operator()(const Graph& graph, const Source& source, VertexQueue&& queue = {},
-                    VertexPredicate terminator = {}) {
+                    VertexPredicate is_terminator = {}) {
         using vertex = typename Graph::vertex;
         for (vertex u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         while (!queue.empty()) queue.pop();
         auto enqueue = [&](vertex u) {
             execute_all(on_vertex_discover{}, u);
-            if (terminator(u)) {
+            if (is_terminator(u)) {
                 execute_all(on_search_finish{});
                 return false;
             }

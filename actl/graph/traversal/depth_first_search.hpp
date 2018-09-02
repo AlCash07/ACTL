@@ -21,10 +21,10 @@ class dfs : public component_set<Components...> {
 
     // Recursive implementation to demonstrate dfs logic clearer.
     template <class Graph, class VertexPredicate>
-    void recurse(const Graph& graph, typename Graph::vertex u, VertexPredicate terminator) {
+    void recurse(const Graph& graph, typename Graph::vertex u, VertexPredicate is_terminator) {
         execute_all(on_vertex_discover{}, u);
         execute_all(on_vertex_examine{}, u);
-        if (terminator(u)) return;
+        if (is_terminator(u)) return;
         for (auto e : graph.out_edges(u)) {
             auto v = e.target();
             execute_all(on_edge_examine{}, e);
@@ -32,7 +32,7 @@ class dfs : public component_set<Components...> {
                 execute_all(on_non_tree_edge{}, e);
             } else {
                 execute_all(on_tree_edge{}, e);
-                recurse(graph, v, terminator);
+                recurse(graph, v, is_terminator);
             }
             execute_all(on_edge_finish{}, e);
         }
@@ -49,7 +49,7 @@ public:
     template <class Graph, class Stack = std::stack<stack_value_t<Graph>>,
               class VertexPredicate = always_false>
     void visit(const Graph& graph, typename Graph::vertex u, Stack&& stack = {},
-               VertexPredicate terminator = {}) {
+               VertexPredicate is_terminator = {}) {
         while (!stack.empty()) stack.pop();
         execute_all(on_vertex_start{}, u);
         auto it = graph.out_edges(u).begin();
@@ -59,7 +59,7 @@ public:
             if (it == graph.out_edges(u).begin()) {
                 execute_all(on_vertex_discover{}, u);
                 execute_all(on_vertex_examine{}, u);
-                if (terminator(u)) {
+                if (is_terminator(u)) {
                     execute_all(on_search_finish{});
                     return;
                 }
@@ -96,7 +96,7 @@ public:
     template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>,
               class VertexPredicate = always_false>
     void operator()(const Graph& graph, typename Graph::vertex s, OutEdgeIteratorStack&& stack = {},
-                    VertexPredicate terminator = {}) {
+                    VertexPredicate is_terminator = {}) {
         for (typename Graph::vertex u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         visit(graph, s, std::forward<OutEdgeIteratorStack>(stack));
     }
@@ -105,7 +105,7 @@ public:
               class VertexPredicate = always_false>
     std::enable_if_t<!std::is_same_v<remove_cvref_t<OutEdgeIteratorStack>, typename Graph::vertex>>
     operator()(const Graph& graph, OutEdgeIteratorStack&& stack = {},
-               VertexPredicate terminator = {}) {
+               VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {
             if (!base_t::execute_first(is_vertex_discovered{}, s))

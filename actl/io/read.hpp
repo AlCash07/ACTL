@@ -130,8 +130,8 @@ inline int read_string(Device& in, char* arg, int limit, const char* terminators
 }
 
 template <class Device, class UnaryPredicate>
-inline int read_string(Device& in, char* arg, int limit, UnaryPredicate terminator) {
-    return in.read_string(arg, limit, terminator);
+inline int read_string(Device& in, char* arg, int limit, UnaryPredicate is_terminator) {
+    return in.read_string(arg, limit, is_terminator);
 }
 
 }  // namespace detail
@@ -242,7 +242,7 @@ inline bool read(io_tag, Device& in, const range<T>& arg, Ts&&... args) {
 };
 
 template <class Device, class Terminator, class... Ts>
-inline bool read(text_io_tag, Device& in, const range<char*>& arg, Terminator terminator,
+inline bool read(text_io_tag, Device& in, const range<char*>& arg, Terminator&& terminator,
                  Ts&&... args) {
     detail::skip_characters(in, terminator);
     in.put_back();
