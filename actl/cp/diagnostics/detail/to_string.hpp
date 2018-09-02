@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sstream>
-#include <cp/type_traits.hpp>
+#include <actl/cp/type_traits.hpp>
 
 namespace cp { namespace diagnostics { namespace detail {
 

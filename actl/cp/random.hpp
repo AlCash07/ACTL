@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cp/random/rng_decorator.hpp>
-#include <cp/random/xoroshiro128cplus.hpp>
+#include <actl/cp/random/rng_decorator.hpp>
+#include <actl/cp/random/xoroshiro128cplus.hpp>
 
 namespace cp {
 
