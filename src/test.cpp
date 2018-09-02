@@ -44,7 +44,7 @@ inline std::vector<std::string> split_va_args(const std::string& va_args_str) {
 }
 
 bool test_base::run() {
-    using diagnostics::detail::to_string;
+    using diagnostics::to_string;
     ac::stopwatch stopwatch;
     try {
         default_random random(args());
@@ -143,7 +143,7 @@ int run(int argc, const char* argv[]) {
         std::cerr << "warning: ignoring command line arguments ";
         for (int i = 1; i < argc; ++i) {
             if (i > 1) std::cerr << ", ";
-            std::cerr << diagnostics::detail::to_string(argv[i]);
+            std::cerr << diagnostics::to_string(argv[i]);
         }
         std::cerr << "." << std::endl << std::endl;
         return run(1, argv);

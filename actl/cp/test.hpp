@@ -7,10 +7,9 @@
 
 #pragma once
 
-#include <actl/cp/diagnostics/detail/to_string.hpp>
+#include <actl/cp/diagnostics/to_string.hpp>
 #include <actl/macros.hpp>
 #include <actl/random/random.hpp>
-
 #include <iostream>
 
 #define TEST_IMPL(cn, as)                                          \
@@ -52,8 +51,8 @@ struct assert_impl {
 #pragma clang diagnostic pop
         std::stringstream ss;
         if (!Equal) ss << "not ";
-        ss << "expected = " << diagnostics::detail::to_string(expected)
-           << ", actual = " << diagnostics::detail::to_string(actual);
+        ss << "expected = " << diagnostics::to_string(expected)
+           << ", actual = " << diagnostics::to_string(actual);
         ss << "; line = " << line;
         throw ss.str();
     }

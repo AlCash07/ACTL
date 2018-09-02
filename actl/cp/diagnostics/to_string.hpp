@@ -10,7 +10,7 @@
 #include <sstream>
 #include <actl/cp/type_traits.hpp>
 
-namespace ac { namespace diagnostics { namespace detail {
+namespace ac::diagnostics {
 
 template <class T>
 inline std::string to_string(const T& value);
@@ -148,7 +148,7 @@ struct to_string_impl<std::nullptr_t, type_kind::unknown> {
 
 template <class T>
 inline std::string to_string(const T& value) {
-    return detail::to_string_impl<T, type_kind_of<T>>::doit(value);
+    return to_string_impl<T, type_kind_of<T>>::doit(value);
 }
 
-}}}  // namespace ac::diagnostics::detail
+}  // namespace ac::diagnostics

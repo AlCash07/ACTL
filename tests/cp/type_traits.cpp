@@ -14,13 +14,13 @@
 #include <unordered_map>
 #include <unordered_set>
 
-TEST("is_container") {
+TEST("cp::is_container") {
     ASSERT_TRUE(ac::is_container_v<std::vector<int>>);
     ASSERT_TRUE(ac::is_container_v<std::array<int, 10>>);
     ASSERT_TRUE(ac::is_container_v<int[10]>);
 }
 
-TEST("is_associative_container") {
+TEST("cp::is_associative_container") {
     ASSERT_TRUE(ac::is_associative_container_v<std::set<int>>);
     ASSERT_TRUE(ac::is_associative_container_v<std::set<int>>);
     ASSERT_TRUE(ac::is_associative_container_v<std::map<int, int>>);
@@ -29,7 +29,7 @@ TEST("is_associative_container") {
     ASSERT_FALSE(ac::is_associative_container_v<int[10]>);
 }
 
-TEST("is_sequence_container") {
+TEST("cp::is_sequence_container") {
     ASSERT_TRUE(ac::is_sequence_container_v<std::array<int, 10>>);
     ASSERT_TRUE(ac::is_sequence_container_v<std::vector<int>>);
     ASSERT_FALSE(ac::is_sequence_container_v<std::set<int>>);
@@ -37,23 +37,23 @@ TEST("is_sequence_container") {
     ASSERT_FALSE(ac::is_sequence_container_v<std::map<int, int>>);
 }
 
-TEST("is_map") {
+TEST("cp::is_map") {
     ASSERT_FALSE(ac::is_map_v<std::set<int>>);
     ASSERT_TRUE(ac::is_map_v<std::map<int, int>>);
 }
 
-TEST("is_set") {
+TEST("cp::is_set") {
     ASSERT_TRUE(ac::is_set_v<std::set<int>>);
     ASSERT_FALSE(ac::is_set_v<std::map<int, int>>);
 }
 
-TEST("is_array") {
+TEST("cp::is_array") {
     ASSERT_TRUE(ac::is_array_v<int[10]>);
     ASSERT_TRUE(ac::is_array_v<std::array<int, 10>>);
     ASSERT_FALSE(ac::is_array_v<std::vector<int>>);
 }
 
-TEST("is_string") {
+TEST("cp::is_string") {
     ASSERT_TRUE(ac::is_string_v<std::string>);
     ASSERT_TRUE(ac::is_string_v<const char[10]>);
     ASSERT_TRUE(ac::is_string_v<const char[]>);
@@ -62,7 +62,7 @@ TEST("is_string") {
     ASSERT_TRUE(ac::is_string_v<char*>);
 }
 
-TEST("type_kind_of") {
+TEST("cp::type_kind_of") {
     using namespace ac;
     ASSERT_EQUAL(type_kind::boolean, type_kind_of<bool>);
     ASSERT_EQUAL(type_kind::signed_integer, type_kind_of<int>);
