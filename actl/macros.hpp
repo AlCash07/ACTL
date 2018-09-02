@@ -7,6 +7,9 @@
 
 #pragma once
 
+#define CONCATENATE_IMPL(x, y) x##y
+#define CONCATENATE(x, y) CONCATENATE_IMPL(x, y)
+
 #if __GNUG__
 
 #define EXPECT_TRUE(condition) __builtin_expect((condition), true)

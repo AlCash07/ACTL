@@ -9,7 +9,7 @@
 
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
-#include <actl/type/component_set.hpp>
+#include <actl/util/component_set.hpp>
 #include <queue>
 
 namespace ac {

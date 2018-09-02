@@ -1,29 +1,53 @@
-#include <actl/cp/test.hpp>
 #include <actl/cp/lexical_cast.hpp>
-#include <actl/cp/string/split.hpp>
-#include <actl/cp/string/trim.hpp>
-#include <actl/cp/diagnostics/detail/split_va_args.hpp>
-#include <actl/cp/utility.hpp>
-#include <actl/cp/time.hpp>
+#include <actl/cp/test.hpp>
+#include <actl/string/split.hpp>
+#include <actl/string/trim.hpp>
+#include <actl/util/stopwatch.hpp>
 
 #include <iomanip>
 #include <regex>
 #include <cmath>
 #include <map>
 
-namespace cp { namespace tests {
+namespace ac::tests {
 
 namespace detail {
 
 static const char* repeat_key = "repeat";
 static const char* time_limit_key = "time_limit";
 
+inline std::vector<std::string> split_va_args(const std::string& va_args_str) {
+    return split(va_args_str, [depth = int{}, quote = bool{}, last = char{}](char c) mutable {
+        std::swap(last, c);
+        switch (last) {
+            case ',': {
+                return depth == 0 && !quote;
+            }
+            case '"': {
+                if (!quote || c != '\\') {
+                    quote = !quote;
+                }
+                return false;
+            }
+            case '(': {
+                depth += !quote;
+                return false;
+            }
+            case ')': {
+                depth -= !quote;
+                return false;
+            }
+        }
+        return false;
+    });
+}
+
 bool test_base::run() {
     using diagnostics::detail::to_string;
-    cp::stopwatch stopwatch;
+    ac::stopwatch stopwatch;
     try {
         default_random random(args());
-        auto args = diagnostics::detail::split_va_args(this->args());
+        auto args = split_va_args(this->args());
         for (auto& v : args) {
             v = trim(v);
         }
@@ -40,9 +64,11 @@ bool test_base::run() {
         auto try_get_param = [&params, this](const char* key, auto& value) -> bool {
             auto it = params.find(key);
             if (it == params.end()) return false;
-            if (!TRY_ASSIGN(value, lexical_cast<std::decay_t<decltype(value)>>(it->second.first))) {
-                throw "param " + to_string(key) + " has invalid value " + to_string(it->second.first) +
-                        "; line = " + to_string(line());
+            try {
+                value = lexical_cast<std::decay_t<decltype(value)>>(it->second.first);
+            } catch (...) {
+                throw "param " + to_string(key) + " has invalid value " +
+                    to_string(it->second.first) + "; line = " + to_string(line());
             }
             params.erase(it);
             return true;
@@ -152,4 +178,4 @@ int run(int argc, const char* argv[]) {
     return 0;
 }
 
-}}  // namespace tests::cp
+}  // namespace ac::tests

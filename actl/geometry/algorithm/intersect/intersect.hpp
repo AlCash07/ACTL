@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/geometry/traits/id.hpp>
-#include <actl/type/use_default.hpp>
+#include <actl/util/use_default.hpp>
 
 namespace ac {
 

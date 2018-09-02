@@ -1,34 +1,41 @@
+/***************************************************************************************************
+ * Copyright 2018 Roman Rizvanov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
 #pragma once
 
 #include <actl/cp/diagnostics/detail/to_string.hpp>
-#include <actl/cp/random.hpp>
+#include <actl/macros.hpp>
+#include <actl/random/random.hpp>
 
 #include <iostream>
 
-#define CONCATENATE_IMPL(x, y)  x##y
-#define CONCATENATE(x, y)       CONCATENATE_IMPL(x, y)
+#define TEST_IMPL(cn, as)                                          \
+    namespace {                                                    \
+    struct cn : ac::tests::detail::test_base {                     \
+        const char* filename() const override { return __FILE__; } \
+        int         line() const override { return __LINE__; }     \
+        const char* args() const override { return as; }           \
+        void        body(ac::default_random&) const override;      \
+        cn() { ac::tests::detail::all_tests().push_back(this); }   \
+        static cn initializer;                                     \
+    } cn::initializer;                                             \
+    }                                                              \
+    inline void cn::body(ac::default_random& random) const
 
-#define TEST_IMPL(cn, as)                                           \
-    namespace {                                                     \
-	struct cn : cp::tests::detail::test_base {                      \
-        const char* filename() const override { return __FILE__; }  \
-        int line() const override { return __LINE__; }              \
-        const char* args() const override { return as; }            \
-        void body(cp::default_random&) const override;              \
-        cn() { cp::tests::detail::all_tests().push_back(this); }    \
-        static cn initializer;                                      \
-    } cn::initializer; }                                            \
-    inline void cn::body(cp::default_random& random) const
+#define TEST(...)        TEST_IMPL(CONCATENATE(_tesT_, __COUNTER__), #__VA_ARGS__)
 
-#define TEST(...)                   TEST_IMPL(CONCATENATE(_tesT_, __COUNTER__), #__VA_ARGS__)
+#define ASSERT_EQUAL     ac::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
+#define ASSERT_NOT_EQUAL ac::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
+#define ASSERT_TRUE      ac::tests::detail::assert_impl(__FILE__, __LINE__).check_true
+#define ASSERT_FALSE     ac::tests::detail::assert_impl(__FILE__, __LINE__).check_false
+#define ASSERT_THROWS(expression) \
+    ac::tests::detail::assert_throws(__FILE__, __LINE__, [&] { (void)(expression); })
 
-#define ASSERT_EQUAL                cp::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
-#define ASSERT_NOT_EQUAL            cp::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
-#define ASSERT_TRUE                 cp::tests::detail::assert_impl(__FILE__, __LINE__).check_true
-#define ASSERT_FALSE                cp::tests::detail::assert_impl(__FILE__, __LINE__).check_false
-#define ASSERT_THROWS(expression)   cp::tests::detail::assert_throws(__FILE__, __LINE__, [&]{ (void)(expression); })
-
-namespace cp { namespace tests {
+namespace ac::tests {
 
 namespace detail {
 
@@ -94,4 +101,4 @@ std::vector<test_base*>& all_tests();
 
 int run(int argc, const char* argv[]);
 
-}}  // namespace cp::tests
+}  // namespace ac::tests

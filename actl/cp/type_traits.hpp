@@ -1,9 +1,16 @@
+/***************************************************************************************************
+ * Copyright 2018 Roman Rizvanov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
 #pragma once
 
 #include <iterator>
 #include <type_traits>
 
-namespace cp {
+namespace ac {
 
 enum class type_kind {
     boolean,                // bool
@@ -44,7 +51,7 @@ template <class T>
 std::false_type is_container_impl(...);
 
 template <class T>
-using is_container = static_or<decltype(is_container_impl<T>(0)), std::is_array<T>>;
+using is_container = std::disjunction<decltype(is_container_impl<T>(0)), std::is_array<T>>;
 
 // is_associative_container
 
@@ -186,4 +193,4 @@ static constexpr type_kind type_kind_of =
     is_set_v<T> ? type_kind::set :
     is_map_v<T> ? type_kind::map : type_kind::unknown;
 
-}  // namespace cp
+}  // namespace ac

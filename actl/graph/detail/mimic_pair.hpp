@@ -9,7 +9,7 @@
 
 #include <actl/property_map/composite_property_map.hpp>
 #include <actl/traits/type_traits.hpp>
-#include <actl/type/compressed_pair.hpp>
+#include <actl/util/compressed_pair.hpp>
 
 namespace ac::detail {
 

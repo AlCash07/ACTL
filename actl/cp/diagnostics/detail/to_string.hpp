@@ -1,9 +1,16 @@
+/***************************************************************************************************
+ * Copyright 2018 Roman Rizvanov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
 #pragma once
 
 #include <sstream>
 #include <actl/cp/type_traits.hpp>
 
-namespace cp { namespace diagnostics { namespace detail {
+namespace ac { namespace diagnostics { namespace detail {
 
 template <class T>
 inline std::string to_string(const T& value);
@@ -144,4 +151,4 @@ inline std::string to_string(const T& value) {
     return detail::to_string_impl<T, type_kind_of<T>>::doit(value);
 }
 
-}}}  // namespace cp::diagnostics::detail
+}}}  // namespace ac::diagnostics::detail

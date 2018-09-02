@@ -10,7 +10,7 @@
 #include <actl/assert.hpp>
 #include <actl/geometry/traits/geometry_traits.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/type/use_default.hpp>
+#include <actl/util/use_default.hpp>
 #include <initializer_list>
 
 namespace ac {

@@ -1,10 +1,17 @@
+/***************************************************************************************************
+ * Copyright 2018 Roman Rizvanov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
 #pragma once
 
 #include <type_traits>
 #include <iostream>
 #include <cstdint>
 
-namespace cp {
+namespace ac {
 
 template <class Z, bool Static = false>
 struct quotient_ring_base {
@@ -172,4 +179,4 @@ struct ring_element : Ring {
 template <uint64_t Mod>
 using int_modulo = ring_element<static_quotient_ring<Mod>>;
 
-}  // namespace cp
+}  // namespace ac

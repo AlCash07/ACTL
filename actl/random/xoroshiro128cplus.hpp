@@ -1,11 +1,18 @@
+/***************************************************************************************************
+ * Copyright 2018 Roman Rizvanov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
 #pragma once
 
-namespace cp {
+namespace ac {
 
 /**
  * Variation of Xoroshiro128+ random engine that passes TestU01 and PractRAND tests.
  * Speed on Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz: 0.38 cycles/byte.
- */ 
+ */
 struct xoroshiro128cplus {
     using result_type = uint64_t;
 
@@ -36,4 +43,4 @@ length= 2 terabytes (2^41 bytes), time= 26444 seconds
   no anomalies in 297 test result(s)
 */
 
-}  // namespace cp
+}  // namespace ac

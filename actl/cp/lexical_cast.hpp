@@ -1,9 +1,16 @@
+/***************************************************************************************************
+ * Copyright 2018 Roman Rizvanov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
 #pragma once
 
 #include <sstream>
 #include <string>
 
-namespace cp {
+namespace ac {
 
 namespace detail {
 
@@ -41,7 +48,7 @@ struct lexical_cast_impl<T, char*> {
 
 template <class T, class U>
 inline T lexical_cast(const U& value) {
-    return cp::detail::lexical_cast_impl<T, std::decay_t<U>>::doit(value);
+    return ac::detail::lexical_cast_impl<T, std::decay_t<U>>::doit(value);
 }
 
-}  // namespace cp
+}  // namespace ac

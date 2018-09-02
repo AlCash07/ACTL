@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/geometry/traits/geometry_traits.hpp>
-#include <actl/type/square_root.hpp>
-#include <actl/type/use_default.hpp>
+#include <actl/util/square_root.hpp>
+#include <actl/util/use_default.hpp>
 
 namespace ac::geometry {
 
