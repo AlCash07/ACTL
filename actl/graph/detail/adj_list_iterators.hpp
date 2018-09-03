@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 
@@ -58,7 +59,7 @@ class adj_list_edge_it
 
     E dereference() const { return al_->get_edge(u_, *it_); }
 
-    bool is_end() const { return u_ == al_->vertices_.end_id(); }
+    bool is_end() const { return u_ == end_id(al_->vertices_); }
 
     void skip_empty() {
         while (!is_end() && it_ == al_->out_end(u_)) {
@@ -96,11 +97,11 @@ public:
 
     explicit adj_list_edge_it(const AdjList* al, bool begin) : al_(al) {
         if (begin) {
-            u_  = al_->vertices_.begin_id();
+            u_  = begin_id(al_->vertices_);
             it_ = al_->out_begin(u_);
             skip_empty();
         } else {
-            u_ = al_->vertices_.end_id();
+            u_ = end_id(al_->vertices_);
         }
     }
 };

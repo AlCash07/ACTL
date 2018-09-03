@@ -17,9 +17,9 @@ template <class Directed,
           class VertexContainer = none>
 class vertex_edge_list
     : public vertex_list<VertexContainer>,
-      public edge_list<Directed, container_id_t<VertexContainer>, EdgeContainer> {
+      public edge_list<Directed, container_id<VertexContainer>, EdgeContainer> {
     using vbase_t = vertex_list<VertexContainer>;
-    using ebase_t = edge_list<Directed, container_id_t<VertexContainer>, EdgeContainer>;
+    using ebase_t = edge_list<Directed, container_id<VertexContainer>, EdgeContainer>;
 
 public:
     using vertex = typename vbase_t::vertex;

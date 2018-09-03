@@ -67,15 +67,15 @@ protected:
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         typename traits::edge_list::edge_id e;
         auto& u_edges = vertices_[u].first().out_edges;
-        auto[out_edge, ok] = u_edges.emplace(v, e);
+        auto[out_edge, ok] = emplace(u_edges, v, e);
         if (!ok) {
             return {edge(), false};
         }
         u_edges[out_edge].second() = e = edge_list_.add_edge(u, v, std::forward<Ts>(args)...);
         if constexpr (base_t::is_undirected) {
-            vertices_[v].first().out_edges.emplace(u, e);
+            emplace(vertices_[v].first().out_edges, u, e);
         } else if constexpr (base_t::is_bidirectional) {
-            vertices_[v].first().in_edges.emplace(u, e);
+            emplace(vertices_[v].first().in_edges, u, e);
         }
         return {edge(u, v, e), true};
     }
@@ -136,14 +136,14 @@ class adj_list_edges<Dir, OEC, EC, VC, none, none> : public adj_list_vertices<Di
 protected:
     using base_t = adj_list_vertices<Dir, OEC, EC, VC>;
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
-    using out_id = typename traits::out_edge_container::id;
-    using out_it = typename traits::out_edge_container::id_iterator;
+    using out_id = container_id<typename traits::out_edge_container>;
+    using out_it = container_id_iterator<typename traits::out_edge_container>;
     using vertex = typename base_t::vertex;
     using edge   = edge<vertex, out_id, true>;
     using base_t::vertices_;
 
-    out_it out_begin(vertex u) const { return vertices_[u].first().out_edges.id_range().begin(); }
-    out_it out_end(vertex u) const { return vertices_[u].first().out_edges.id_range().end(); }
+    out_it out_begin(vertex u) const { return id_range(vertices_[u].first().out_edges).begin(); }
+    out_it out_end(vertex u) const { return id_range(vertices_[u].first().out_edges).end(); }
 
     edge get_edge(vertex u, out_id oe) const {
         return edge(u, vertices_[u].first().out_edges[oe].first(), oe);
@@ -156,15 +156,15 @@ protected:
     template <class... Ts>
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         auto& u_edges = vertices_[u].first().out_edges;
-        auto[out_edge, ok] = u_edges.emplace(v, std::forward<Ts>(args)...);
+        auto[out_edge, ok] = emplace(u_edges, v, std::forward<Ts>(args)...);
         if (!ok) {
             return {edge(), false};
         }
         edge_list_.add_edge(u, v);
         if constexpr (base_t::is_undirected) {
-            vertices_[v].first().out_edges.emplace(u, std::forward<Ts>(args)...);
+            emplace(vertices_[v].first().out_edges, u, std::forward<Ts>(args)...);
         } else if constexpr (base_t::is_bidirectional) {
-            vertices_[v].first().in_edges.emplace(u, out_edge);
+            emplace(vertices_[v].first().in_edges, u, out_edge);
         }
         return {edge(u, v, out_edge), true};
     }

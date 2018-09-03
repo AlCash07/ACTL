@@ -11,6 +11,7 @@
 #include <actl/graph/detail/edge_list_traits.hpp>
 #include <actl/property_map/dummy_property_map.hpp>
 #include <actl/property_map/generic_container_property_map.hpp>
+#include <actl/container/dummy_container.hpp>
 
 namespace ac {
 
@@ -116,7 +117,7 @@ public:
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
 
-        using ec_id = typename base_t::edge_container::id;
+        using ec_id = container_id<typename base_t::edge_container>;
 
         edge_iterator(const edge_list_impl* el, ec_id id) : el_(el), id_(id) {}
 
@@ -134,17 +135,17 @@ public:
     };
 
     range<edge_iterator> edges() const {
-        return {edge_iterator(this, edges_.begin_id()), edge_iterator(this, edges_.end_id())};
+        return {edge_iterator(this, begin_id(edges_)), edge_iterator(this, end_id(edges_))};
     }
 
     edge find_edge(vertex u, vertex v) const {
         if constexpr (base_t::is_undirected) {
             if (get_id_key(u) > get_id_key(u)) std::swap(u, v);
         }
-        return edge(u, v, edges_.find(typename base_t::edge_vertices(u, v)));
+        return edge(u, v, find(edges_, typename base_t::edge_vertices(u, v)));
     }
 
-    void remove_edge(edge e) { edges_.erase(e); }
+    void remove_edge(edge e) { erase(edges_, e); }
 
     void swap(edge_list_impl& other) { base_t::swap(other); }
 };

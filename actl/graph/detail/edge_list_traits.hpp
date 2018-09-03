@@ -7,10 +7,11 @@
 
 #pragma once
 
-#include <actl/container/generic_container.hpp>
+#include <actl/container/container_id.hpp>
 #include <actl/functions.hpp>
 #include <actl/graph/detail/mimic_pair.hpp>
 #include <actl/graph/selectors.hpp>
+#include <actl/container/dummy_container.hpp>
 #include <utility>
 
 namespace ac::detail {
@@ -68,14 +69,14 @@ struct edge_list_traits {
     using bundle    = value_type_t<EC>;
     using vertices  = edge_vertices<Dir, V, Selector>;
     using edge_data = mimic_pair<vertices, bundle, 1>;
-    using container = generic_container<typename container_traits<EC>::template rebind<edge_data>>;
+    using container = typename container_traits<EC>::template rebind<edge_data>;
 };
 
 template <class Dir, class V, class EC>
 struct edge_list_traits<Dir, V, EC, none> {
     using bundle    = value_type_t<EC>;
     using vertices  = none;
-    using container = generic_container<none, none, true>;  // Only maintains edge count.
+    using container = dummy_container;
 };
 
 }  // namespace ac::detail

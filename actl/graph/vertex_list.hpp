@@ -10,6 +10,7 @@
 #include <actl/graph/selectors.hpp>
 #include <actl/property_map/dummy_property_map.hpp>
 #include <actl/property_map/generic_container_property_map.hpp>
+#include <actl/container/dummy_container.hpp>
 
 namespace ac {
 
@@ -37,7 +38,7 @@ public:
 template <class VC>
 class vertex_list<VC, none> {
 public:
-    using vertex_container = generic_container<VC>;
+    using vertex_container = container_id<VC>;
     using vertex           = typename vertex_container::id;
     using vertex_iterator  = typename vertex_container::id_iterator;
 
@@ -47,18 +48,18 @@ public:
 
     int vertex_count() const { return vertices_.size(); }
 
-    range<vertex_iterator> vertices() const { return vertices_.id_range(); }
+    range<vertex_iterator> vertices() const { return id_range(vertices_); }
 
-    vertex null_vertex() const { return vertices_.null_id(); }
+    vertex null_vertex() const { return null_id(vertices_); }
 
     vertex nth_vertex(int n) const {
         ACTL_ASSERT(0 <= n && n < vertex_count());
-        return *std::next(vertices_.id_range().begin(), n);
+        return *std::next(id_range(vertices_).begin(), n);
     }
 
     template <class... Ts>
     std::pair<vertex, bool> try_add_vertex(Ts&&... args) {
-        return vertices_.emplace(std::forward<Ts>(args)...);
+        return emplace(vertices_, std::forward<Ts>(args)...);
     }
 
     template <class... Ts>
@@ -66,7 +67,7 @@ public:
         return try_add_vertex(std::forward<Ts>(args)...).first;
     }
 
-    void remove_vertex(vertex u) { vertices_.erase(u); }
+    void remove_vertex(vertex u) { erase(vertices_, u); }
 
     void clear() { vertices_.clear(); }
 

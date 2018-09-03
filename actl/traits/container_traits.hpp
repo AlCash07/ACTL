@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/util/none.hpp>
+#include <array>
 #include <list>
 #include <map>
 #include <set>
@@ -35,8 +35,21 @@ struct multiple_associative_tag : associative_tag {};
 template <class C>
 struct container_traits;
 
-template <class C>
-struct container_traits<const C> : container_traits<C> {};
+template <class T, size_t N>
+struct container_traits<T[N]> {
+    using category = random_access_tag;
+
+    template <class U>
+    using rebind = U[N];
+};
+
+template <class T, size_t N>
+struct container_traits<std::array<T, N>> {
+    using category = random_access_tag;
+
+    template <class U>
+    using rebind = std::array<U, N>;
+};
 
 template <class T>
 struct container_traits<std::vector<T>> {
@@ -86,10 +99,20 @@ struct container_traits<std::unordered_multiset<T>> {
     using rebind = std::unordered_multiset<U>;
 };
 
-template <>
-struct container_traits<none> {
-    template <class>
-    using rebind = none;
+template <class K, class T>
+struct container_traits<std::map<K, T>> {
+    using category = unique_associative_tag;
+
+    template <class U, class V>
+    using rebind = std::map<U, V>;
+};
+
+template <class K, class T>
+struct container_traits<std::unordered_map<K, T>> {
+    using category = unique_associative_tag;
+
+    template <class U, class V>
+    using rebind = std::unordered_map<U, V>;
 };
 
 /* Container type traits */
@@ -133,8 +156,7 @@ template <class C> inline constexpr bool is_associative_v   = is_associative<C>:
 template <class C>
 struct is_stable : std::bool_constant<!is_random_access_v<C>> {};
 
-template <class C> struct value_type       { using type = typename C::value_type; };
-template <>        struct value_type<none> { using type = none; };
+template <class C> struct value_type { using type = typename C::value_type; };
 
 template <class C>
 using value_type_t = typename value_type<C>::type;

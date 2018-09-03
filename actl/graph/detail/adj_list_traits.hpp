@@ -52,18 +52,18 @@ struct adj_list_traits {
     using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
     using out_edge_container =
-        generic_container<typename container_traits<OEC>::template rebind<out_edge_data>>;
+        typename container_traits<OEC>::template rebind<out_edge_data>;
 
     // In bidirectional graph with none edge_selector in_edge points to out_edge.
     using in_edge_bundle =
         std::conditional_t<std::is_same_v<edge_selector, none> &&
                                std::is_same_v<Dir, bidirectional>,
-                           typename out_edge_container::id, typename edge_list::edge_id>;
+                           container_id<out_edge_container>, typename edge_list::edge_id>;
 
     using in_edge_data = mimic_pair<out_edge_vertex, in_edge_bundle, 1>;
 
     using in_edge_container =
-        generic_container<typename container_traits<OEC>::template rebind<in_edge_data>>;
+        typename container_traits<OEC>::template rebind<in_edge_data>;
 
     using vertex_edges = vertex_edges<Dir, out_edge_container, in_edge_container>;
     using vertex_data  = mimic_pair<vertex_edges, value_type_t<VC>, 2>;
