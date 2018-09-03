@@ -12,41 +12,41 @@
 using namespace ac;
 
 TEST("abs") {
-    ASSERT_EQUAL(abs(0), 0);
+    ASSERT_EQUAL(0, abs(0));
     constexpr auto int_max = std::numeric_limits<int>::max();
-    ASSERT_EQUAL(abs(int_max), int_max);
-    ASSERT_EQUAL(abs(-int_max), int_max);
+    ASSERT_EQUAL(int_max, abs(int_max));
+    ASSERT_EQUAL(int_max, abs(-int_max));
     constexpr auto uint_max = std::numeric_limits<unsigned int>::max();
-    ASSERT_EQUAL(abs(uint_max), uint_max);
+    ASSERT_EQUAL(uint_max, abs(uint_max));
 }
 
 TEST("sgn") {
-    ASSERT_EQUAL(sgn(std::numeric_limits<int>::max()), 1);
-    ASSERT_EQUAL(sgn(std::numeric_limits<int>::min()), -1);
-    ASSERT_EQUAL(sgn(std::numeric_limits<unsigned int>::max()), 1);
-    ASSERT_EQUAL(sgn(0), 0);
-    ASSERT_EQUAL(sgn(0, -1), 1);
-    ASSERT_EQUAL(sgn(0u, 1u), -1);
+    ASSERT_EQUAL(1, sgn(std::numeric_limits<int>::max()));
+    ASSERT_EQUAL(-1, sgn(std::numeric_limits<int>::min()));
+    ASSERT_EQUAL(1, sgn(std::numeric_limits<unsigned int>::max()));
+    ASSERT_EQUAL(0, sgn(0));
+    ASSERT_EQUAL(1, sgn(0, -1));
+    ASSERT_EQUAL(-1, sgn(0u, 1u));
 }
 
 TEST("smax") {
     int x = 4;
-    ASSERT_EQUAL(smax(x, 5), 5);
-    ASSERT_EQUAL(x, 5);
-    ASSERT_EQUAL(smax(x, 3), 5);
-    ASSERT_EQUAL(x, 5);
+    ASSERT_EQUAL(5, smax(x, 5));
+    ASSERT_EQUAL(5, x);
+    ASSERT_EQUAL(5, smax(x, 3));
+    ASSERT_EQUAL(5, x);
 }
 
 TEST("smin") {
     int x = 4;
-    ASSERT_EQUAL(smin(x, 5), 4);
-    ASSERT_EQUAL(x, 4);
-    ASSERT_EQUAL(smin(x, 3), 3);
-    ASSERT_EQUAL(x, 3);
+    ASSERT_EQUAL(4, smin(x, 5));
+    ASSERT_EQUAL(4, x);
+    ASSERT_EQUAL(3, smin(x, 3));
+    ASSERT_EQUAL(3, x);
 }
 
 TEST("sqr") {
-    ASSERT_EQUAL(sqr(0), 0);
-    ASSERT_EQUAL(sqr(2), 4);
-    ASSERT_EQUAL(sqr(-2), 4);
+    ASSERT_EQUAL(0, sqr(0));
+    ASSERT_EQUAL(4, sqr(2));
+    ASSERT_EQUAL(4, sqr(-2));
 }
