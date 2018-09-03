@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/traits/container_traits.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <iterator>
 
@@ -44,14 +45,14 @@ using static_xor = std::integral_constant<bool, Lhs::value != Rhs::value>;
 
 // is_container
 
-template <class T, class = decltype(std::begin(std::declval<T>())), class = decltype(std::end(std::declval<T>()))>
-std::true_type is_container_impl(int);
-
-template <class T>
-std::false_type is_container_impl(...);
-
-template <class T>
-using is_container = std::disjunction<decltype(is_container_impl<T>(0)), std::is_array<T>>;
+//template <class T, class = decltype(std::begin(std::declval<T>())), class = decltype(std::end(std::declval<T>()))>
+//std::true_type is_container_impl(int);
+//
+//template <class T>
+//std::false_type is_container_impl(...);
+//
+//template <class T>
+//using is_container = std::disjunction<decltype(is_container_impl<T>(0)), std::is_array<T>>;
 
 // is_associative_container
 
@@ -167,7 +168,7 @@ static constexpr type_kind general_type_kind_v = general_type_kind<kind>::value;
     template <class T> using trait = detail::trait<std::remove_cv_t<std::remove_reference_t<T>>>; \
     template <class T> static constexpr auto trait##_v = trait<T>::value
 
-MAKE_IS_TYPE_TRAIT(is_container);
+//MAKE_IS_TYPE_TRAIT(is_container);
 MAKE_IS_TYPE_TRAIT(is_associative_container);
 MAKE_IS_TYPE_TRAIT(is_sequence_container);
 MAKE_IS_TYPE_TRAIT(is_map);

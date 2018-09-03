@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/functions.hpp>
+#include <functional>
 
 namespace ac::detail {
 

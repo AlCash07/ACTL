@@ -11,8 +11,10 @@
 
 #include <actl/util/none.hpp>
 #include <list>
+#include <map>
 #include <set>
 #include <type_traits>
+#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -110,6 +112,9 @@ struct has_container_tag_impl<C, Tag, false> : std::false_type {};
 
 template <class C>
 struct is_container : detail::is_container_impl<container_traits<C>> {};
+
+template <class C>
+inline constexpr bool is_container_v = is_container<C>::value;
 
 template <class C, class Tag>
 struct has_container_tag : detail::has_container_tag_impl<C, Tag, is_container<C>::value> {};

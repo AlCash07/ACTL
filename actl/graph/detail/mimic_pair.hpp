@@ -39,7 +39,7 @@ struct second_pm_traits {
     using T = std::remove_reference_t<Key>;
     using B = typename T::second_type;
 
-    static constexpr bool writable = !is_const_v<T>;
+    static constexpr bool writable = !std::is_const_v<T>;
 
     using base = property_map<Key, B, add_const_if_t<!writable, B&>, false, false, writable>;
 };

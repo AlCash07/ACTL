@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/iterator/iterator_facade.hpp>
+#include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/property_map/property_map.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/traits/is_iterator.hpp>

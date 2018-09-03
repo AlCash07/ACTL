@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/graph/selectors.hpp>
-#include <actl/iterator/iterator_facade.hpp>
+#include <actl/iterator/iterator_adaptor.hpp>
 
 namespace ac::detail {
 
