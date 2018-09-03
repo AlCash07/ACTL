@@ -25,7 +25,7 @@
     }                                                              \
     inline void name::body(ac::default_random& random) const
 
-#define TEST(...) TEST_IMPL(CONCATENATE(_test_, __COUNTER__), #__VA_ARGS__)
+#define TEST(...) TEST_IMPL(CONCATENATE(_tesT_, __COUNTER__), #__VA_ARGS__)
 
 #define ASSERT_EQUAL     ac::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
 #define ASSERT_NOT_EQUAL ac::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
@@ -41,10 +41,11 @@ namespace detail {
 struct assert_impl {
     const char* filename;
     int line;
+
     assert_impl(const char* filename, int line) : filename(filename), line(line) {}
 
-    template <bool Equal, class T1, class T2>
-    inline void check(const T1& expected, const T2& actual) const {
+    template <bool Equal, class T0, class T1>
+    inline void check(const T0& expected, const T1& actual) const {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-compare"
         if ((expected == actual) == Equal) return;
@@ -57,14 +58,15 @@ struct assert_impl {
         throw ss.str();
     }
 
-    template <bool Equal>
-    inline void check(double expected, double actual, double eps) const {
-        double num   = std::abs(expected - actual);
-        double denom = std::max(std::max(std::abs(expected), std::abs(actual)), 1.0);
-        if ((num <= eps * denom) == Equal) return;
+    template <bool Equal, class T, class = std::enable_if_t<std::is_floating_point_v<T>>>
+    inline void check(T expected, T actual, T eps) const {
+        T numerator   = std::abs(expected - actual);
+        T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
+        if ((numerator <= eps * denominator) == Equal) return;
         std::stringstream ss;
         if (!Equal) ss << "not ";
-        ss << "expected = " << expected << ", actual = " << actual << ", error = " << num / denom;
+        ss << "expected = " << expected << ", actual = " << actual
+           << ", error = " << numerator / denominator;
         ss << "; line = " << line;
         throw ss.str();
     }
@@ -74,8 +76,8 @@ struct assert_impl {
     inline void check_false(bool condition) const { check<true>(false, condition); }
 };
 
-template <class F>
-inline void assert_throws(const char* filename, int line, const F& f) {
+template <class Function>
+inline void assert_throws(const char* filename, int line, const Function& f) {
     try {
         f();
     } catch (...) {

@@ -13,7 +13,7 @@
 
 namespace ac {
 
-// TODO: use std::is_invocable what C++17 is fully supported.
+// TODO: use std::is_invocable when C++17 is fully supported.
 template <class, class = void>
 struct is_invocable : std::false_type {};
 
