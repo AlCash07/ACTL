@@ -29,7 +29,7 @@ public:
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
-        if constexpr (is_random_access_v<VertexContainer>) {
+        if constexpr (is_random_access_container_v<VertexContainer>) {
             vertex n = std::max(u, v);
             if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
         }

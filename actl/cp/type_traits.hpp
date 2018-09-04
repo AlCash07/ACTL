@@ -43,28 +43,6 @@ using static_or = std::integral_constant<bool, Lhs::value || Rhs::value>;
 template <class Lhs, class Rhs>
 using static_xor = std::integral_constant<bool, Lhs::value != Rhs::value>;
 
-// is_container
-
-//template <class T, class = decltype(std::begin(std::declval<T>())), class = decltype(std::end(std::declval<T>()))>
-//std::true_type is_container_impl(int);
-//
-//template <class T>
-//std::false_type is_container_impl(...);
-//
-//template <class T>
-//using is_container = std::disjunction<decltype(is_container_impl<T>(0)), std::is_array<T>>;
-
-// is_associative_container
-
-template <class T, class = typename T::key_type, class = typename T::value_type>
-std::true_type is_associative_container_impl(int);
-
-template <class T>
-std::false_type is_associative_container_impl(...);
-
-template <class T>
-using is_associative_container = static_and<is_container<T>, decltype(is_associative_container_impl<T>(0))>;
-
 // is_array
 
 template <class T, typename T::size_type = T().size()>
@@ -81,25 +59,6 @@ struct is_array_impl<T[N]> : std::true_type {};
 
 template <class T>
 using is_array = static_or<is_array_impl<T>, decltype(has_static_size<T>(0))>;
-
-// is_map
-
-template <class T, class = typename T::mapped_type>
-std::true_type is_map_impl(int);
-
-template <class T>
-std::false_type is_map_impl(...);
-
-template <class T>
-using is_map = static_and<is_associative_container<T>, decltype(is_map_impl<T>(0))>;
-
-template <class T>
-using is_set = static_xor<is_associative_container<T>, is_map<T>>;
-
-// is_sequence_container
-
-template <class T>
-using is_sequence_container = static_xor<is_container<T>, is_associative_container<T>>;
 
 // is_pair
 
@@ -168,11 +127,6 @@ static constexpr type_kind general_type_kind_v = general_type_kind<kind>::value;
     template <class T> using trait = detail::trait<std::remove_cv_t<std::remove_reference_t<T>>>; \
     template <class T> static constexpr auto trait##_v = trait<T>::value
 
-//MAKE_IS_TYPE_TRAIT(is_container);
-MAKE_IS_TYPE_TRAIT(is_associative_container);
-MAKE_IS_TYPE_TRAIT(is_sequence_container);
-MAKE_IS_TYPE_TRAIT(is_map);
-MAKE_IS_TYPE_TRAIT(is_set);
 MAKE_IS_TYPE_TRAIT(is_array);
 MAKE_IS_TYPE_TRAIT(is_pair);
 MAKE_IS_TYPE_TRAIT(is_tuple);
@@ -191,7 +145,7 @@ static constexpr type_kind type_kind_of =
     is_array_v<T> ? type_kind::array :
     is_string_v<T> ? type_kind::string :
     is_sequence_container_v<T> ? type_kind::sequence_container :
-    is_set_v<T> ? type_kind::set :
-    is_map_v<T> ? type_kind::map : type_kind::unknown;
+    is_simple_associative_container_v<T> ? type_kind::set :
+    is_pair_associative_container_v<T> ? type_kind::map : type_kind::unknown;
 
 }  // namespace ac

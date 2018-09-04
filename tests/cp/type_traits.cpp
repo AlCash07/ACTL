@@ -5,47 +5,9 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/container/std/all.hpp>
 #include <actl/cp/type_traits.hpp>
 #include <actl/test.hpp>
-
-#include <array>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-
-TEST("cp::is_container") {
-    ASSERT_TRUE(ac::is_container_v<std::vector<int>>);
-    ASSERT_TRUE(ac::is_container_v<std::array<int, 10>>);
-    ASSERT_TRUE(ac::is_container_v<int[10]>);
-}
-
-TEST("cp::is_associative_container") {
-    ASSERT_TRUE(ac::is_associative_container_v<std::set<int>>);
-    ASSERT_TRUE(ac::is_associative_container_v<std::set<int>>);
-    ASSERT_TRUE(ac::is_associative_container_v<std::map<int, int>>);
-    ASSERT_FALSE(ac::is_associative_container_v<std::vector<int>>);
-    ASSERT_FALSE(ac::is_associative_container_v<std::array<int, 10>>);
-    ASSERT_FALSE(ac::is_associative_container_v<int[10]>);
-}
-
-TEST("cp::is_sequence_container") {
-    ASSERT_TRUE(ac::is_sequence_container_v<std::array<int, 10>>);
-    ASSERT_TRUE(ac::is_sequence_container_v<std::vector<int>>);
-    ASSERT_FALSE(ac::is_sequence_container_v<std::set<int>>);
-    ASSERT_FALSE(ac::is_sequence_container_v<std::set<int>>);
-    ASSERT_FALSE(ac::is_sequence_container_v<std::map<int, int>>);
-}
-
-TEST("cp::is_map") {
-    ASSERT_FALSE(ac::is_map_v<std::set<int>>);
-    ASSERT_TRUE(ac::is_map_v<std::map<int, int>>);
-}
-
-TEST("cp::is_set") {
-    ASSERT_TRUE(ac::is_set_v<std::set<int>>);
-    ASSERT_FALSE(ac::is_set_v<std::map<int, int>>);
-}
 
 TEST("cp::is_array") {
     ASSERT_TRUE(ac::is_array_v<int[10]>);

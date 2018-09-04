@@ -29,7 +29,7 @@ public:
     explicit generic_container_property_map(Ts&&... args) : data_{{std::forward<Ts>(args)...}} {}
 
     friend reference get(const generic_container_property_map& pm, key_type key) {
-        if constexpr (is_random_access_v<Container>) {
+        if constexpr (is_random_access_container_v<Container>) {
             return pm.data_()[key];
         } else {
             // const_cast is required because id contains a const_iterator.

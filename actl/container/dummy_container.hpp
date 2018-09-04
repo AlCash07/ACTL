@@ -49,9 +49,9 @@ protected:
 
 template <>
 struct container_traits<none> {
-    using tag = random_access_tag;
+    using tag = random_access_container_tag;
 
-    template <class U>
+    template <class T>
     using rebind = dummy_container;
 };
 

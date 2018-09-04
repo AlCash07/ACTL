@@ -30,29 +30,25 @@ template <class Dir, class OEC, class EC, class VC>
 struct adj_list_traits {
     using edge_selector = value_type_t<EC>;
 
-    using vertex_list = vertex_list<
-        typename container_traits<VC>::template rebind<adj_list_vertex_data<Dir, OEC, EC, VC>>>;
+    using vertex_list = vertex_list<rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
 
     using vertex = typename vertex_list::vertex;
 
     using edge_list =
-        edge_list_impl<Dir, vertex,
-                       typename container_traits<EC>::template rebind<value_type_t<OEC>>,
-                       edge_selector>;
+        edge_list_impl<Dir, vertex, rebind_container_t<EC, value_type_t<OEC>>, edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
-    using out_edge_vertex =
-        std::conditional_t<is_associative_v<OEC> || std::is_same_v<edge_selector, edge_property> ||
-                               std::is_same_v<edge_selector, none>,
-                           vertex, none>;
+    using out_edge_vertex = std::conditional_t<is_associative_container_v<OEC> ||
+                                                   std::is_same_v<edge_selector, edge_property> ||
+                                                   std::is_same_v<edge_selector, none>,
+                                               vertex, none>;
 
     using out_edge_bundle = std::conditional_t<!std::is_same_v<edge_selector, none>,
                                                typename edge_list::edge_id, value_type_t<OEC>>;
 
     using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
-    using out_edge_container =
-        typename container_traits<OEC>::template rebind<out_edge_data>;
+    using out_edge_container = rebind_container_t<OEC, out_edge_data>;
 
     // In bidirectional graph with none edge_selector in_edge points to out_edge.
     using in_edge_bundle =
@@ -62,8 +58,7 @@ struct adj_list_traits {
 
     using in_edge_data = mimic_pair<out_edge_vertex, in_edge_bundle, 1>;
 
-    using in_edge_container =
-        typename container_traits<OEC>::template rebind<in_edge_data>;
+    using in_edge_container = rebind_container_t<OEC, in_edge_data>;
 
     using vertex_edges = vertex_edges<Dir, out_edge_container, in_edge_container>;
     using vertex_data  = mimic_pair<vertex_edges, value_type_t<VC>, 2>;

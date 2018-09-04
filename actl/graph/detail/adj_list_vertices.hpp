@@ -45,7 +45,7 @@ public:
     static constexpr bool is_undirected         = std::is_same_v<Dir, undirected>;
     static constexpr bool is_directed           = !is_undirected;
     static constexpr bool is_bidirectional      = std::is_same_v<Dir, bidirectional>;
-    static constexpr bool allows_parallel_edges = !is_unique_associative<OEC>::value;
+    static constexpr bool allows_parallel_edges = !is_unique_associative_container_v<OEC>;
 
     using base_t::base_t;
 };

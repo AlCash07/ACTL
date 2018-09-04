@@ -18,7 +18,7 @@
 
 namespace ac {
 
-template <class C, bool = is_container<C>::value, bool = is_random_access_v<C>>
+template <class C, bool = is_container_v<C>, bool = is_random_access_container_v<C>>
 struct container_id_traits;
 
 template <class It>

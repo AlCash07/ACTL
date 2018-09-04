@@ -10,4 +10,16 @@
 
 using namespace ac;
 
-TEST("") {}
+TEST("array::category") {
+    using C = int[2];
+    ASSERT_TRUE(is_sequence_container_v<C>);
+    ASSERT_TRUE(is_random_access_container_v<C>);
+    ASSERT_FALSE(is_associative_container_v<C>);
+}
+
+TEST("is_container") {
+    ASSERT_FALSE(is_container_v<int>);
+    ASSERT_FALSE(is_container_v<int*>);
+    ASSERT_FALSE(is_container_v<int[]>);
+    ASSERT_TRUE(is_container_v<int[2]>);
+}

@@ -83,7 +83,7 @@ protected:
     typename traits::edge_list edge_list_;
 
 public:
-    static_assert(!is_associative_v<EC>,
+    static_assert(!is_associative_container_v<EC>,
                   "use std::list instead of associative container for adjacency list");
 
     using edge_container = typename traits::edge_list::edge_container;
@@ -247,7 +247,7 @@ public:
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
-        if constexpr (is_random_access_v<VC>) {
+        if constexpr (is_random_access_container_v<VC>) {
             vertex n = std::max(u, v);
             if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
         }
@@ -259,7 +259,8 @@ public:
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    template <class... Ts, bool UA = is_unique_associative<VC>::value, class T = value_type_t<VC>>
+    template <class... Ts, bool UA = is_unique_associative_container_v<VC>,
+              class T = value_type_t<VC>>
     std::enable_if_t<UA, edge> add_edge(const T& u, const T& v, Ts&&... args) {
         return add_edge(add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);
     }

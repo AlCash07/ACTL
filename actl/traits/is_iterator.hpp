@@ -18,16 +18,16 @@ namespace ac {
 namespace detail {
 
 template <class T, class = void>
-struct is_iterator_impl : std::false_type {};
+struct is_iterator : std::false_type {};
 
 template <class T>
-struct is_iterator_impl<T, std::void_t<typename std::iterator_traits<T>::iterator_category>>
+struct is_iterator<T, std::void_t<typename std::iterator_traits<T>::iterator_category>>
     : std::true_type {};
 
 }  // namespace detail
 
 template <class T>
-inline constexpr bool is_iterator_v = detail::is_iterator_impl<T>::value;
+inline constexpr bool is_iterator_v = detail::is_iterator<T>::value;
 
 namespace detail {
 
@@ -38,10 +38,10 @@ template <class T>
 struct is_const_pointer<const T*> : std::true_type {};
 
 template <class T, bool = is_iterator_v<T>>
-struct is_const_iterator_impl : is_const_pointer<typename std::iterator_traits<T>::pointer> {};
+struct is_const_iterator : is_const_pointer<typename std::iterator_traits<T>::pointer> {};
 
 template <class T>
-struct is_const_iterator_impl<T, false> : std::false_type {};
+struct is_const_iterator<T, false> : std::false_type {};
 
 template <class T, class Category, bool = is_iterator_v<T>>
 struct has_iterator_category
@@ -53,7 +53,7 @@ struct has_iterator_category<T, Category, false> : std::false_type {};
 }  // namespace detail
 
 template <class T>
-inline constexpr bool is_const_iterator_v = detail::is_const_iterator_impl<T>::value;
+inline constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 
 template <class T>
 inline constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
