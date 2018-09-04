@@ -12,7 +12,7 @@
 
 using namespace ac;
 
-TEST("member_access") {
+TEST("compressed_pair::member_access") {
     compressed_pair<int, std::string> p(2, 3, 'a');
     ASSERT_EQUAL(2, p.first());
     ASSERT_EQUAL("aaa", p.second());
@@ -26,14 +26,14 @@ TEST("member_access") {
 
 using pii = compressed_pair<int, int>;
 
-TEST("equal") {
+TEST("compressed_pair::equal") {
     ASSERT_TRUE(pii(0, 1) == pii(0, 1));
     ASSERT_FALSE(pii(0, 1) == pii(0, 0));
     ASSERT_FALSE(pii(0, 1) == pii(1, 1));
     ASSERT_FALSE(pii(0, 1) == pii(1, 0));
 }
 
-TEST("less") {
+TEST("compressed_pair::less") {
     ASSERT_FALSE(pii(0, 0) < pii(0, 0));
     ASSERT_TRUE(pii(0, 0) < pii(0, 1));
     ASSERT_TRUE(pii(0, 1) < pii(1, 0));
@@ -42,7 +42,7 @@ TEST("less") {
 
 struct fin final : none {};
 
-TEST("sizeof") {
+TEST("compressed_pair::sizeof") {
     ASSERT_EQUAL(2 * sizeof(int), sizeof(compressed_pair<int, int>));
     // TODO: investigate why the following size isn't 1.
     ASSERT_TRUE(2 >= sizeof(compressed_pair<none, none>));
