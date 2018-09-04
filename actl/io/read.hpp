@@ -142,9 +142,8 @@ inline std::enable_if_t<is_unsigned_int_v<UInt>, bool> read(text_io_tag, Device&
 }
 
 template <class Device, class Int>
-inline std::enable_if_t<is_signed_int_v<Int> && !std::is_same_v<Int, char>, bool> read(text_io_tag,
-                                                                                       Device& in,
-                                                                                       Int& arg) {
+inline std::enable_if_t<is_signed_int_v<Int> && !std::is_same_v<Int, char>, bool>
+read(text_io_tag, Device& in, Int& arg) {
     char c = detail::skip_characters(in);
     bool negative = c == '-';
     if (negative) c = in.read_char();
@@ -258,15 +257,15 @@ inline bool read(text_io_tag, Device& in, const range<char*>& arg) {
 /* General forwarding */
 
 template <class Device, class T0, class T1, class... Ts>
-inline std::enable_if_t<is_non_const_iterator<T0>::value, bool> read(io_tag, Device& in, T0&& arg0,
-                                                                     T1&& arg1, Ts&&... args) {
+inline std::enable_if_t<is_non_const_iterator_v<T0>, bool> read(io_tag, Device& in, T0&& arg0,
+                                                                T1&& arg1, Ts&&... args) {
     return read(in, make_range(std::forward<T0>(arg0), std::forward<T1>(arg1)),
                 std::forward<Ts>(args)...);
 }
 
 template <class Device, class T0, class T1, class... Ts>
-inline std::enable_if_t<!is_non_const_iterator<T0>::value, bool> read(io_tag, Device& in, T0&& arg0,
-                                                                      T1&& arg1, Ts&&... args) {
+inline std::enable_if_t<!is_non_const_iterator_v<T0>, bool> read(io_tag, Device& in, T0&& arg0,
+                                                                 T1&& arg1, Ts&&... args) {
     return read(in, std::forward<T0>(arg0)) &&
            read(in, std::forward<T1>(arg1), std::forward<Ts>(args)...);
 }

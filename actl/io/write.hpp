@@ -153,14 +153,15 @@ inline int write(text_io_tag, Device& out, const range<T>& arg, const Ts&... arg
 /* General forwarding */
 
 template <class Device, class T0, class T1, class... Ts>
-inline std::enable_if_t<is_iterator<T0>::value && !std::is_convertible_v<T0, const char*>, int>
+inline std::enable_if_t<
+    (std::is_array_v<T0> || is_iterator_v<T0>)&&!std::is_convertible_v<T0, const char*>, int>
 write(io_tag, Device& out, const T0& arg0, const T1& arg1, const Ts&... args) {
     return write(out, make_range(arg0, arg1), args...);
 }
 
 template <class Device, class T0, class T1, class... Ts>
-inline std::enable_if_t<!is_iterator<T0>::value, int> write(io_tag, Device& out, const T0& arg0,
-                                                            const T1& arg1, const Ts&... args) {
+inline std::enable_if_t<!(std::is_array_v<T0> || is_iterator_v<T0>), int>
+write(io_tag, Device& out, const T0& arg0, const T1& arg1, const Ts&... args) {
     int chars_written = write(out, arg0);
     return chars_written + write(out, arg1, args...);
 }

@@ -15,70 +15,67 @@
 
 namespace ac {
 
-template <class T>
-using dereference_t = decltype(*std::declval<T>());
-
 namespace detail {
 
 template <class T, class = void>
 struct is_iterator_impl : std::false_type {};
 
 template <class T>
-struct is_iterator_impl<T, std::void_t<dereference_t<T>>> : std::true_type {};
-
-template <class T, bool = false>
-struct is_const_iterator_impl : std::false_type {};
-
-template <class T>
-struct is_const_iterator_impl<T, true> : std::is_const<std::remove_reference_t<dereference_t<T>>> {
-};
-
-template <class T, class = void>
-struct has_iterator_category_impl : std::false_type {};
-
-template <class T>
-struct has_iterator_category_impl<T, std::void_t<typename T::iterator_category>> : std::true_type {
-};
+struct is_iterator_impl<T, std::void_t<typename std::iterator_traits<T>::iterator_category>>
+    : std::true_type {};
 
 }  // namespace detail
 
 template <class T>
-struct is_iterator : detail::is_iterator_impl<T> {};
-
-template <class T>
-struct is_const_iterator : detail::is_const_iterator_impl<T, is_iterator<T>::value> {};
-
-template <class T>
-struct is_non_const_iterator
-    : std::bool_constant<is_iterator<T>::value && !is_const_iterator<T>::value> {};
-
-template <class T>
-struct has_iterator_category : detail::has_iterator_category_impl<std::iterator_traits<T>> {};
+inline constexpr bool is_iterator_v = detail::is_iterator_impl<T>::value;
 
 namespace detail {
 
-template <class T, class Category, bool = ac::has_iterator_category<T>::value>
-struct is_xxx_iterator
+template <class T>
+struct is_const_pointer : std::false_type {};
+
+template <class T>
+struct is_const_pointer<const T*> : std::true_type {};
+
+template <class T, bool = is_iterator_v<T>>
+struct is_const_iterator_impl : is_const_pointer<typename std::iterator_traits<T>::pointer> {};
+
+template <class T>
+struct is_const_iterator_impl<T, false> : std::false_type {};
+
+template <class T, class Category, bool = is_iterator_v<T>>
+struct has_iterator_category
     : std::is_same<Category, typename std::iterator_traits<T>::iterator_category> {};
 
 template <class T, class Category>
-struct is_xxx_iterator<T, Category, false> : std::false_type {};
+struct has_iterator_category<T, Category, false> : std::false_type {};
 
 }  // namespace detail
 
 template <class T>
-struct is_input_iterator : detail::is_xxx_iterator<T, std::input_iterator_tag> {};
+inline constexpr bool is_const_iterator_v = detail::is_const_iterator_impl<T>::value;
 
 template <class T>
-struct is_output_iterator : detail::is_xxx_iterator<T, std::output_iterator_tag> {};
+inline constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
 
 template <class T>
-struct is_forward_iterator : detail::is_xxx_iterator<T, std::forward_iterator_tag> {};
+inline constexpr bool is_input_iterator_v =
+    detail::has_iterator_category<T, std::input_iterator_tag>::value;
 
 template <class T>
-struct is_bidirectional_iterator : detail::is_xxx_iterator<T, std::bidirectional_iterator_tag> {};
+inline constexpr bool is_output_iterator_v =
+    detail::has_iterator_category<T, std::output_iterator_tag>::value;
 
 template <class T>
-struct is_random_access_iterator : detail::is_xxx_iterator<T, std::random_access_iterator_tag> {};
+inline constexpr bool is_forward_iterator_v =
+    detail::has_iterator_category<T, std::forward_iterator_tag>::value;
+
+template <class T>
+inline constexpr bool is_bidirectional_iterator_v =
+    detail::has_iterator_category<T, std::bidirectional_iterator_tag>::value;
+
+template <class T>
+inline constexpr bool is_random_access_iterator_v =
+    detail::has_iterator_category<T, std::random_access_iterator_tag>::value;
 
 }  // namespace ac

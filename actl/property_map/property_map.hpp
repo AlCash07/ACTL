@@ -49,7 +49,7 @@ class iterator_property_map : public property_map_base {
     It it_;
 
 public:
-    static_assert(is_random_access_iterator<It>::value);
+    static_assert(is_random_access_iterator_v<It>);
 
     using key_type   = int;
     using value_type = typename std::iterator_traits<It>::value_type;
@@ -127,8 +127,7 @@ struct property_map_container<Container, C, false> : detail::pm_container<Contai
 };
 
 template <class It>
-inline std::enable_if_t<is_random_access_iterator<It>::value,
-                        typename property_traits<It>::reference>
+inline std::enable_if_t<is_random_access_iterator_v<It>, typename property_traits<It>::reference>
 get(It it, int key) {
     return it[key];
 }

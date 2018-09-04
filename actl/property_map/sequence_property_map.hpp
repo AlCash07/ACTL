@@ -23,7 +23,7 @@ class sequence_pm_base : public property_map_base {
     using PMC = property_map_container<Sequence>;
 
 public:
-    static_assert(is_random_access_iterator<typename PMC::iterator>::value,
+    static_assert(is_random_access_iterator_v<typename PMC::iterator>,
                   "sequence must be random access");
 
     using key_type   = Key;
