@@ -12,9 +12,10 @@ using namespace ac;
 
 TEST("ctype::correctness") {
     for (char c = std::numeric_limits<char>::min(); c != std::numeric_limits<char>::max(); ++c) {
-        ASSERT_EQUAL(isdigit(c), is_digit(c));
-        ASSERT_EQUAL(islower(c), is_lower(c));
-        ASSERT_EQUAL(isupper(c), is_upper(c));
-        ASSERT_EQUAL(isspace(c), is_space(c));
+        auto uc = static_cast<unsigned char>(c);
+        ASSERT_EQUAL(isdigit(uc) != 0, is_digit(c));
+        ASSERT_EQUAL(islower(uc) != 0, is_lower(c));
+        ASSERT_EQUAL(isupper(uc) != 0, is_upper(c));
+        ASSERT_EQUAL(isspace(uc) != 0, is_space(c));
     }
 }
