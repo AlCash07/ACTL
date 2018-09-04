@@ -137,14 +137,14 @@ inline int read_string(Device& in, char* arg, int limit, UnaryPredicate is_termi
 }  // namespace detail
 
 template <class Device, class UInt>
-inline std::enable_if_t<is_unsigned_int<UInt>::value, bool> read(text_io_tag, Device& in,
-                                                                 UInt& arg) {
+inline std::enable_if_t<is_unsigned_int_v<UInt>, bool> read(text_io_tag, Device& in, UInt& arg) {
     return detail::read_unsigned_int(in, arg, detail::skip_characters(in)) > 0;
 }
 
 template <class Device, class Int>
-inline std::enable_if_t<is_signed_int<Int>::value && !std::is_same_v<Int, char>, bool> read(
-    text_io_tag, Device& in, Int& arg) {
+inline std::enable_if_t<is_signed_int_v<Int> && !std::is_same_v<Int, char>, bool> read(text_io_tag,
+                                                                                       Device& in,
+                                                                                       Int& arg) {
     char c = detail::skip_characters(in);
     bool negative = c == '-';
     if (negative) c = in.read_char();

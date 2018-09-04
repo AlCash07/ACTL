@@ -64,13 +64,12 @@ inline char* write_unsigned_int(Device& out, UInt arg, char* last) {
 }  // namespace detail
 
 template <class Device, class UInt>
-inline std::enable_if_t<is_unsigned_int<UInt>::value, int> write(text_io_tag, Device& out,
-                                                                 UInt arg) {
+inline std::enable_if_t<is_unsigned_int_v<UInt>, int> write(text_io_tag, Device& out, UInt arg) {
     return out.write_value(detail::write_unsigned_int(out, arg, out.get_end()));
 }
 
 template <class Device, class Int>
-inline std::enable_if_t<is_signed_int<Int>::value, int> write(text_io_tag, Device& out, Int arg) {
+inline std::enable_if_t<is_signed_int_v<Int>, int> write(text_io_tag, Device& out, Int arg) {
     char* last = out.get_end();
     auto unsigned_arg = static_cast<std::make_unsigned_t<Int>>(arg);
     if (arg < 0) {

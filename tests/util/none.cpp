@@ -13,11 +13,11 @@ using namespace ac;
 
 TEST("none::is_empty") { ASSERT_TRUE(std::is_empty_v<none>); }
 
-template <class T, class E>
+template <class E, class T>
 inline constexpr bool test_replace_void_v = std::is_same_v<E, replace_void_t<T>>;
 
 TEST("replace_void") {
     ASSERT_TRUE(test_replace_void_v<int, int>);
-    ASSERT_TRUE(test_replace_void_v<void, none>);
-    ASSERT_TRUE(test_replace_void_v<const void, const none>);
+    ASSERT_TRUE(test_replace_void_v<none, void>);
+    ASSERT_TRUE(test_replace_void_v<const none, const void>);
 }

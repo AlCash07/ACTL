@@ -13,6 +13,15 @@
 
 namespace ac {
 
+template <bool B, class T>
+struct add_const_if : std::conditional<B, const T, T> {};
+
+template <bool B, class T>
+using add_const_if_t = typename add_const_if<B, T>::type;
+
+template <int N>
+using int_constant = std::integral_constant<int, N>;
+
 // TODO: use std::is_invocable when C++17 is fully supported.
 template <class, class = void>
 struct is_invocable : std::false_type {};
@@ -24,34 +33,15 @@ struct is_invocable<F(Ts...), std::void_t<decltype(std::declval<F>()(std::declva
 template <class F, class... Ts>
 inline constexpr bool is_invocable_v = is_invocable<F(Ts...)>::value;
 
-// TODO: use std::remove_cvref_t when C++20 is out.
 template <class T>
-using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
-template <int N>
-using int_constant = std::integral_constant<int, N>;
+inline constexpr bool is_non_const_reference_v =
+    std::is_reference_v<T> && !std::is_const_v<std::remove_reference_t<T>>;
 
 template <class T>
-using is_signed_int = std::conjunction<std::is_signed<T>, std::is_integral<T>>;
+inline constexpr bool is_signed_int_v = std::is_signed_v<T> && std::is_integral_v<T>;
 
 template <class T>
-using is_unsigned_int = std::conjunction<std::is_unsigned<T>, std::is_integral<T>>;
-
-template <class T>
-struct is_non_const_reference
-    : std::bool_constant<std::is_reference_v<T> && !std::is_const_v<std::remove_reference_t<T>>> {};
-
-template <class T> struct remove_rvalue_reference      { using type = T; };
-template <class T> struct remove_rvalue_reference<T&&> { using type = T; };
-
-template <class T>
-using remove_rvalue_reference_t = typename remove_rvalue_reference<T>::type;
-
-template <bool B, class T>
-struct add_const_if : std::conditional<B, const T, T> {};
-
-template <bool B, class T>
-using add_const_if_t = typename add_const_if<B, T>::type;
+inline constexpr bool is_unsigned_int_v = std::is_unsigned_v<T> && std::is_integral_v<T>;
 
 template <class From, class To, class = void>
 struct is_static_castable : std::false_type {};
@@ -59,5 +49,18 @@ struct is_static_castable : std::false_type {};
 template <class From, class To>
 struct is_static_castable<From, To, std::void_t<decltype(static_cast<To>(std::declval<From>()))>>
     : std::true_type {};
+
+template <class From, class To>
+inline constexpr bool is_static_castable_v = is_static_castable<From, To>::value;
+
+// TODO: use std::remove_cvref_t when C++20 is out.
+template <class T>
+using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+template <class T> struct remove_rvalue_reference      { using type = T; };
+template <class T> struct remove_rvalue_reference<T&&> { using type = T; };
+
+template <class T>
+using remove_rvalue_reference_t = typename remove_rvalue_reference<T>::type;
 
 }  // namespace ac

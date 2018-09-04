@@ -16,7 +16,7 @@ namespace ac {
  */
 template <class Key, class Value = Key>
 class identity_property_map
-    : public property_map<Key, Value, Value, is_static_castable<Value, Key>::value> {
+    : public property_map<Key, Value, Value, is_static_castable_v<Value, Key>> {
 public:
     friend Value get(identity_property_map, Key key) { return static_cast<Value>(key); }
 

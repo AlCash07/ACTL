@@ -10,4 +10,7 @@
 
 using namespace ac;
 
-TEST("") {}
+TEST("deduce_type") {
+    ASSERT_TRUE(std::is_same_v<double, deduce_type_t<double, int>>);
+    ASSERT_TRUE(std::is_same_v<int, deduce_type_t<use_default, int>>);
+}

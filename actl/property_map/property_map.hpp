@@ -59,7 +59,7 @@ public:
     // TODO: if invert is guaranteed to take the result of get then invertible can be true.
     static constexpr bool invertible = false;
     static constexpr bool iterable   = false;
-    static constexpr bool writable   = is_non_const_reference<reference>::value;
+    static constexpr bool writable   = is_non_const_reference_v<reference>;
 
     constexpr iterator_property_map(It it) : it_(it) {}
 

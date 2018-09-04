@@ -17,7 +17,7 @@ namespace ac {
 struct use_default {};
 
 template <class T, class Default>
-struct deduce_type : std::conditional<std::is_same_v<T, use_default>, Default, T> {};
+using deduce_type = std::conditional<std::is_same_v<T, use_default>, Default, T>;
 
 template <class T, class Default>
 using deduce_type_t = typename deduce_type<T, Default>::type;
