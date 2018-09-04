@@ -7,7 +7,14 @@
 
 #include <actl/test.hpp>
 #include <actl/traits/output_type.hpp>
+#include <deque>
 
 using namespace ac;
 
-TEST("") {}
+TEST("output_type") {
+    ASSERT_TRUE(std::is_same_v<int, output_type_t<int*>>);
+    ASSERT_TRUE(std::is_same_v<int, output_type_t<std::ostream_iterator<int>>>);
+    ASSERT_TRUE(std::is_same_v<int, output_type_t<std::back_insert_iterator<std::deque<int>>>>);
+    ASSERT_TRUE(std::is_same_v<int, output_type_t<std::front_insert_iterator<std::deque<int>>>>);
+    ASSERT_TRUE(std::is_same_v<int, output_type_t<std::insert_iterator<std::deque<int>>>>);
+}

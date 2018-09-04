@@ -10,14 +10,14 @@
 
 using namespace ac;
 
-struct functor {
-    void operator()(int, double) {}
-};
-
 TEST("add_const_if") {
     ASSERT_TRUE(std::is_same_v<int, add_const_if_t<false, int>>);
     ASSERT_TRUE(std::is_same_v<const int, add_const_if_t<true, int>>);
 }
+
+struct functor {
+    void operator()(int, double) {}
+};
 
 TEST("is_invocable") {
     ASSERT_TRUE(is_invocable_v<functor, int, double>);
