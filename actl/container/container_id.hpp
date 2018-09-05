@@ -13,8 +13,6 @@
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/range/range.hpp>
 #include <actl/traits/container_traits.hpp>
-#include <actl/traits/type_traits.hpp>
-#include <algorithm>
 #include <cstdint>
 
 namespace ac {
