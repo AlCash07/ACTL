@@ -22,10 +22,10 @@ endforeach()
 set(${OUTPUT} ${FILES} PARENT_SCOPE)
 endfunction(get_files)
 
-include_directories(.)
+include_directories(include)
 # make includes show up in IDE
-get_files(HEADER_FILES actl hpp)
-add_custom_target(actl SOURCES ${HEADER_FILES})
+get_files(HEADER_FILES include hpp)
+add_custom_target(include SOURCES ${HEADER_FILES})
 
 get_files(SRC_FILES src cpp)
 add_library(src ${SRC_FILES})
