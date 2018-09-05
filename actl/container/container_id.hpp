@@ -9,8 +9,9 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/functions.hpp>
+#include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/range/irange.hpp>
+#include <actl/range/range.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <algorithm>
@@ -22,13 +23,20 @@ template <class C, bool = is_container_v<C>, bool = is_random_access_container_v
 struct container_id_traits;
 
 template <class It>
-class iterator_id : public It {};
+class iterator_id : public iterator_adaptor<iterator_id<It>, It> {
+public:
+    explicit iterator_id(It it) : iterator_adaptor<iterator_id<It>, It>(it) {}
+
+    friend constexpr std::uintptr_t get_id_key(iterator_id id) {
+        return reinterpret_cast<std::uintptr_t>(std::addressof(*id));
+    }
+
+    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
+};
 
 template <class C>
 struct container_id_traits<C, true, false> {
-    using It = typename C::const_iterator;
-
-    using id = iterator_id<It>;
+    using id = iterator_id<typename C::const_iterator>;
 
     class iterator : public iterator_adaptor<iterator, id, use_default, id, id, id*> {
     public:
@@ -40,58 +48,76 @@ struct container_id_traits<C, true, false> {
 
         id dereference() const { return this->base(); }
     };
-
-    friend id iterator_to_id(const C&, It it) { return it; }
-    friend It id_to_iterator(const C&, id id) { return id; }
-
-    friend constexpr std::uintptr_t get_id_key(id id) {
-        return reinterpret_cast<std::uintptr_t>(std::addressof(*id));
-    }
-
-    friend bool operator < (id lhs, id rhs) { return get_id_key(lhs) < get_id_key(rhs); }
-
-    friend id begin_id(const C& container) { return id(container.begin()); }
-    friend id end_id(const C& container) { return id(container.end()); }
-    // Returns an invalid Id that is fixed for the given container.
-    friend id null_id(const C& container) { return end_id(container); }
 };
 
 template <class C>
 struct container_id_traits<C, true, true> {
     using id       = int;
     using iterator = integer_iterator<id>;
-
-    friend id iterator_to_id(const C& container, typename C::const_iterator it) {
-        return static_cast<int>(it - container.begin());
-    }
-
-    friend typename C::const_iterator id_to_iterator(const C& container, id id) {
-        ACTL_ASSERT(0 <= id && id < container.size());
-        return container.begin() + id;
-    }
-
-    friend constexpr int get_id_key(int id) { return id; }
-
-    friend id begin_id(const C&) { return 0; }
-    friend id end_id(const C& container) { return static_cast<int>(container.size()); }
-    friend id null_id(const C&) { return -1; }
 };
 
-constexpr int get_id_key(int id) { return id; }
-
 /**
- * Container Id is int for random access containers and const_iterator otherwise.
+ * Container Id is int for random access containers and wrapped const_iterator otherwise.
  * Such Id isn't invalidated by emplace operation and can be used as map or hash map key.
  */
 template <class C>
-using container_id = typename container_id_traits<remove_cvref_t<C>>::id;
+using container_id = typename container_id_traits<C>::id;
 
 template <class C>
-using container_id_iterator = typename container_id_traits<remove_cvref_t<C>>::iterator;
+using container_id_iterator = typename container_id_traits<C>::iterator;
 
 // This key can be used for id comparison.
 template <class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
+
+inline constexpr int get_id_key(int id) { return id; }
+
+template <class C>
+inline container_id<C> iterator_to_id(const C& container, typename C::const_iterator it) {
+    if constexpr (is_random_access_container_v<C>) {
+        return static_cast<int>(it - container.begin());
+    } else {
+        return container_id<C>(it);
+    }
+}
+
+template <class C>
+inline typename C::const_iterator id_to_iterator(const C& container, const container_id<C>& id) {
+    if constexpr (is_random_access_container_v<C>) {
+        ACTL_ASSERT(0 <= id && id < container.size());
+        return container.begin() + id;
+    } else {
+        return id.base();
+    }
+}
+
+template <class C>
+inline container_id<C> begin_id(const C& container) {
+    if constexpr (is_random_access_container_v<C>) {
+        return 0;
+    } else {
+        return container_id<C>(container.begin());
+    }
+}
+
+template <class C>
+inline container_id<C> end_id(const C& container) {
+    if constexpr (is_random_access_container_v<C>) {
+        return static_cast<int>(container.size());
+    } else {
+        return container_id<C>(container.end());
+    }
+}
+
+// Returns an invalid Id that is fixed for the given container.
+template <class C>
+inline container_id<C> null_id(const C& container) {
+    if constexpr (is_random_access_container_v<C>) {
+        return -1;
+    } else {
+        return end_id(container);
+    }
+}
 
 template <class C>
 inline auto id_range(const C& container) {
@@ -99,7 +125,7 @@ inline auto id_range(const C& container) {
     return make_range(iterator(begin_id(container)), iterator(end_id(container)));
 }
 
-/* Functions with id */
+/* Generic container functions with id */
 
 template <class C, class... Ts>
 inline std::pair<container_id<C>, bool> id_emplace(C& container, Ts&&... args) {
@@ -124,7 +150,7 @@ namespace std {
 template <class It>
 struct hash<ac::iterator_id<It>> {
     auto operator()(ac::iterator_id<It> id) const {
-        return std::hash<std::uintptr_t>{}(ac::get_id_key(id));
+        return std::hash<std::uintptr_t>{}(get_id_key(id));
     }
 };
 
