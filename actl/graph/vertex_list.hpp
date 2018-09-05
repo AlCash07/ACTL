@@ -38,7 +38,7 @@ public:
 template <class VC>
 class vertex_list<VC, none> {
 public:
-    using vertex_container = container_id<VC>;
+    using vertex_container = rebind_container_t<VC, value_type_t<VC>>;  // to handle none
     using vertex           = typename vertex_container::id;
     using vertex_iterator  = typename vertex_container::id_iterator;
 

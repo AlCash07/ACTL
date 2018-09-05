@@ -9,14 +9,13 @@
 
 #pragma once
 
+#include <actl/container/dummy_container.hpp>
 #include <type_traits>
 
 namespace ac {
 
-template <class C>
-struct value_type {
-    using type = typename C::value_type;
-};
+template <class C> struct value_type       { using type = typename C::value_type; };
+template <>        struct value_type<none> { using type = none; };
 
 template <class C>
 using value_type_t = typename value_type<C>::type;
@@ -49,11 +48,32 @@ struct container_traits<T[N]> {
     using rebind = U[N];
 };
 
+template <>
+struct container_traits<none> {
+    template <class>
+    using rebind = dummy_container;
+};
+
+template <>
+struct container_traits<dummy_container> : container_traits<none> {
+    using tag = random_access_container_tag;
+};
+
 template <class A, class T>
 using rebind_allocator_t = typename A::template rebind<T>::other;
 
 template <class C, class... Ts>
-using rebind_container_t = typename container_traits<C>::template rebind<Ts...>;
+struct rebind_container {
+    using type = typename container_traits<C>::template rebind<Ts...>;
+};
+
+template <class C>
+struct rebind_container<C, none> {
+    using type = dummy_container;
+};
+
+template <class C, class... Ts>
+using rebind_container_t = typename rebind_container<C, Ts...>::type;
 
 namespace detail {
 

@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/traits/container_traits.hpp>
 #include <actl/util/none.hpp>
 #include <utility>
 
@@ -46,18 +45,5 @@ public:
 protected:
     int n_;
 };
-
-template <>
-struct container_traits<none> {
-    template <class T>
-    using rebind = dummy_container;
-};
-
-template <>
-struct container_traits<dummy_container> : container_traits<none> {
-    using tag = random_access_container_tag;
-};
-
-template <> struct value_type<none> { using type = none; };
 
 }  // namespace ac
