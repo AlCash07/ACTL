@@ -14,7 +14,7 @@
 namespace ac {
 
 /**
- * Container that has no data but maintains size like a vector with empty elements.
+ * Container with no data that maintains size like a vector with empty elements.
  */
 class dummy_container {
 public:
@@ -49,16 +49,15 @@ protected:
 
 template <>
 struct container_traits<none> {
-    using tag = random_access_container_tag;
-
     template <class T>
     using rebind = dummy_container;
 };
 
 template <>
-struct container_traits<dummy_container> : container_traits<none> {};
+struct container_traits<dummy_container> : container_traits<none> {
+    using tag = random_access_container_tag;
+};
 
 template <> struct value_type<none> { using type = none; };
-template <> struct value_type<dummy_container> : value_type<none> {};
 
 }  // namespace ac
