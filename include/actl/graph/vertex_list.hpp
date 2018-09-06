@@ -10,7 +10,6 @@
 #include <actl/graph/selectors.hpp>
 #include <actl/property_map/dummy_property_map.hpp>
 #include <actl/property_map/generic_container_property_map.hpp>
-#include <actl/container/dummy_container.hpp>
 
 namespace ac {
 
@@ -39,8 +38,8 @@ template <class VC>
 class vertex_list<VC, none> {
 public:
     using vertex_container = rebind_container_t<VC, value_type_t<VC>>;  // to handle none
-    using vertex           = typename vertex_container::id;
-    using vertex_iterator  = typename vertex_container::id_iterator;
+    using vertex           = container_id<vertex_container>;
+    using vertex_iterator  = container_id_iterator<vertex_container>;
 
     explicit vertex_list() = default;
 
@@ -59,7 +58,7 @@ public:
 
     template <class... Ts>
     std::pair<vertex, bool> try_add_vertex(Ts&&... args) {
-        return emplace(vertices_, std::forward<Ts>(args)...);
+        return id_emplace(vertices_, std::forward<Ts>(args)...);
     }
 
     template <class... Ts>
@@ -67,7 +66,7 @@ public:
         return try_add_vertex(std::forward<Ts>(args)...).first;
     }
 
-    void remove_vertex(vertex u) { erase(vertices_, u); }
+    void remove_vertex(vertex u) { id_erase(vertices_, u); }
 
     void clear() { vertices_.clear(); }
 

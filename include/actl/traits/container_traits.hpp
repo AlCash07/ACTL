@@ -56,7 +56,7 @@ struct container_traits<none> {
 
 template <>
 struct container_traits<dummy_container> : container_traits<none> {
-    using tag = random_access_container_tag;
+    using category = random_access_container_tag;
 };
 
 template <class A, class T>

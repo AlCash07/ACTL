@@ -25,6 +25,8 @@ class iterator_id : public iterator_adaptor<iterator_id<It>, It> {
 public:
     explicit iterator_id(It it) : iterator_adaptor<iterator_id<It>, It>(it) {}
 
+    It get_iterator() const { return this->base(); }
+
     friend constexpr std::uintptr_t get_id_key(iterator_id id) {
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id));
     }

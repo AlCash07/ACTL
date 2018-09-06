@@ -5,19 +5,28 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#pragma once
-
-#include <actl/property_map/property_map.hpp>
-#include <actl/util/none.hpp>
+#include <string>
+#include <utility>
 
 namespace ac {
 
-template <class Key, class Value = void>
-class dummy_property_map : public property_map<Key, Value, Value, false> {
-    friend Value get(dummy_property_map, Key) { return Value{}; }
+struct bundle {
+    int i;
+    std::string s;
 
-    template <class T>
-    friend void put(dummy_property_map, Key, T) {}
+    explicit bundle(int i, std::string s) : i(i), s(s) {};
+
+    bool operator < (const bundle& rhs) const { return i < rhs.i; }
+    bool operator == (const bundle& rhs) const { return i == rhs.i; }
 };
 
 }  // namespace ac
+
+namespace std {
+
+template <>
+struct hash<ac::bundle> {
+    auto operator()(const ac::bundle& arg) const { return hash<int>{}(arg.i); }
+};
+
+}  // namespace std

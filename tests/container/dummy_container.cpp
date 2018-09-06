@@ -12,7 +12,7 @@ using namespace ac;
 
 TEST("dummy_container") {
     dummy_container c(3);
-    c.emplace(1);
+    c.emplace_back(1);
     ASSERT_EQUAL(4, c.size());
     c.erase(0);
     c.erase(1);

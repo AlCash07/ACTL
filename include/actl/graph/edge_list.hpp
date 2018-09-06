@@ -49,7 +49,7 @@ public:
                   "associative edge list requires two vertices");
 
     using edge_container = typename traits::container;
-    using edge_id        = typename edge_container::id;
+    using edge_id        = container_id<edge_container>;
     using vertex         = V;
     using edge           = edge<V, edge_id>;
 
@@ -68,7 +68,7 @@ public:
         if constexpr (is_undirected) {
             if (get_id_key(u) > get_id_key(u)) std::swap(u, v);
         }
-        auto res = edges_.emplace(edge_vertices(u, v), std::forward<Ts>(args)...);
+        auto res = id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
         return {edge(u, v, res.first), res.second};
     }
 
@@ -142,7 +142,7 @@ public:
         if constexpr (base_t::is_undirected) {
             if (get_id_key(u) > get_id_key(u)) std::swap(u, v);
         }
-        return edge(u, v, find(edges_, typename base_t::edge_vertices(u, v)));
+        return edge(u, v, id_find(edges_, typename base_t::edge_vertices(u, v)));
     }
 
     void remove_edge(edge e) { erase(edges_, e); }

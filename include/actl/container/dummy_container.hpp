@@ -21,17 +21,24 @@ public:
     using value_type      = none;
     using reference       = none;
     using const_reference = none;
+    using iterator        = int;
+    using const_iterator  = int;
 
-    explicit dummy_container(int n = 0) : n_{n} {}
+    explicit constexpr dummy_container(int n = 0) : n_{n} {}
 
-    int size() const { return n_; }
+    constexpr int size() const { return n_; }
 
-    bool empty() const { return size() == 0; }
+    constexpr bool empty() const { return size() == 0; }
+
+    constexpr int begin() const { return 0; }
+    constexpr int end() const { return size(); }
 
     none operator[](int) const { return none{}; }
 
     template <class... Ts>
-    void emplace(Ts...) { ++n_; }
+    void emplace_back(Ts...) {
+        ++n_;
+    }
 
     template <class T>
     void erase(T) { --n_; }

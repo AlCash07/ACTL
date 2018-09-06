@@ -15,10 +15,11 @@ namespace ac {
 template <class Container>
 class generic_container_property_map : public property_map_base {
     using PMC = property_map_container<Container>;
+    using C   = remove_cvref_t<Container>;
 
 public:
-    using key_type   = typename Container::id;
-    using value_type = typename Container::value_type;
+    using key_type   = container_id<C>;
+    using value_type = typename C::value_type;
     using reference  = typename PMC::reference;
 
     static constexpr bool invertible = false;
@@ -29,10 +30,11 @@ public:
     explicit generic_container_property_map(Ts&&... args) : data_{{std::forward<Ts>(args)...}} {}
 
     friend reference get(const generic_container_property_map& pm, key_type key) {
-        if constexpr (is_random_access_container_v<Container>) {
+        if constexpr (is_random_access_container_v<C>) {
             return pm.data_()[key];
         } else {
             // const_cast is required because id contains a const_iterator.
+            // TODO: this cast allows modification of set key, which may lead to bugs.
             return const_cast<reference>(*key.get_iterator());
         }
     }
