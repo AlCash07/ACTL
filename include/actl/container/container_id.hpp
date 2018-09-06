@@ -9,6 +9,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/functions.hpp>
+#include <actl/hash.hpp>
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/range/range.hpp>
@@ -56,6 +57,8 @@ struct container_id_traits<C, true, true> {
     using iterator = integer_iterator<id>;
 };
 
+inline constexpr int get_id_key(int id) { return id; }
+
 /**
  * Container Id is int for random access containers and wrapped const_iterator otherwise.
  * Such Id isn't invalidated by emplace operation and can be used as map or hash map key.
@@ -69,8 +72,6 @@ using container_id_iterator = typename container_id_traits<C>::iterator;
 // This key can be used for id comparison.
 template <class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
-
-inline constexpr int get_id_key(int id) { return id; }
 
 template <class C>
 inline container_id<C> iterator_to_id(const C& container, typename C::const_iterator it) {
@@ -149,9 +150,7 @@ namespace std {
 
 template <class It>
 struct hash<ac::iterator_id<It>> {
-    auto operator()(ac::iterator_id<It> id) const {
-        return std::hash<std::uintptr_t>{}(get_id_key(id));
-    }
+    auto operator()(ac::iterator_id<It> id) const { return ac::hash(get_id_key(id)); }
 };
 
 }  // namespace std

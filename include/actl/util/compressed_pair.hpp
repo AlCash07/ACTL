@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
-#include <type_traits>
+#include <actl/hash.hpp>
 
 namespace ac {
 
@@ -90,7 +89,7 @@ namespace std {
 template <class T1, class T2>
 struct hash<ac::compressed_pair<T1, T2>> {
     auto operator()(const ac::compressed_pair<T1, T2>& arg) const {
-        return ac::hash_combine(hash<T1>{}(arg.first()), hash<T2>{}(arg.second()));
+        return ac::hash(arg.first(), arg.second());
     }
 };
 

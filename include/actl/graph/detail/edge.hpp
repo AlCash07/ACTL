@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
-#include <functional>
+#include <actl/hash.hpp>
 
 namespace ac::detail {
 
@@ -53,7 +52,7 @@ namespace std {
 template <class V, class E>
 struct hash<ac::detail::edge<V, E, true>> {
     auto operator()(const ac::detail::edge<V, E, true>& edge) const {
-        return ac::hash_combine(std::hash<V>{}(edge.source()), std::hash<E>{}(edge));
+        return ac::hash(edge.source(), (E)edge);
     }
 };
 

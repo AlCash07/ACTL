@@ -8,10 +8,10 @@
 #pragma once
 
 #include <actl/container/container_id.hpp>
-#include <actl/functions.hpp>
+#include <actl/container/dummy_container.hpp>
 #include <actl/graph/detail/mimic_pair.hpp>
 #include <actl/graph/selectors.hpp>
-#include <actl/container/dummy_container.hpp>
+#include <actl/hash.hpp>
 #include <utility>
 
 namespace ac::detail {
@@ -84,10 +84,9 @@ struct edge_list_traits<Dir, V, EC, none> {
 namespace std {
 
 template <class Dir, class V>
-struct hash<ac::detail::edge_vertices<Dir, ac::two_vertices, V>> {
-    auto operator()(const ac::detail::edge_vertices<Dir, ac::two_vertices, V>& arg) const {
-        auto key = arg.key();
-        return std::hash<ac::id_key_t<V>>{}(ac::hash_combine(key.first, key.second));
+struct hash<ac::detail::edge_vertices<Dir, V, ac::two_vertices>> {
+    auto operator()(const ac::detail::edge_vertices<Dir, V, ac::two_vertices>& arg) const {
+        return ac::hash(arg.key());
     }
 };
 

@@ -72,8 +72,7 @@ namespace std {
 template <class T1, class T2, int I>
 struct hash<ac::detail::mimic_pair<T1, T2, I>> {
     auto operator()(const ac::detail::mimic_pair<T1, T2, I>& arg) const {
-        const auto& key = arg.key();
-        return hash<ac::remove_cvref_t<decltype(key)>>{}(key);
+        return ac::hash(arg.key());
     }
 };
 
