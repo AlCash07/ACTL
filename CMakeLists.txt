@@ -30,7 +30,7 @@ add_custom_target(include SOURCES ${HEADER_FILES})
 get_files(SRC_FILES src cpp)
 add_library(src ${SRC_FILES})
 
-get_files(TEST_FILES tests cpp)
+get_files(TEST_FILES tests *)
 add_executable(tests ${TEST_FILES})
 target_link_libraries(tests src)
 
