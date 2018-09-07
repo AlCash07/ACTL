@@ -33,3 +33,6 @@ struct container_traits<std::multiset<T, C, A>> {
 };
 
 }  // namespace ac
+
+SPECIALIZE_STD_RANGE_HASH(std::set)
+SPECIALIZE_STD_RANGE_HASH(std::multiset)

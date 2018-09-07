@@ -72,6 +72,11 @@ inline bool operator < (const compressed_pair<T1, T2>& lhs, const compressed_pai
     return lhs.first() < rhs.first() || (lhs.first() == rhs.first() && lhs.second() < rhs.second());
 }
 
+template <class T1, class T2>
+inline size_t hash_value(const compressed_pair<T1, T2>& arg) {
+    return hash_value(arg.first(), arg.second());
+}
+
 template <class Device, class T1, class T2>
 inline bool read(Device& input, compressed_pair<T1, T2>& arg) {
     return read(input, arg.first(), arg.second());
@@ -84,13 +89,4 @@ inline int write(Device& output, const compressed_pair<T1, T2>& arg) {
 
 }  // namespace ac
 
-namespace std {
-
-template <class T1, class T2>
-struct hash<ac::compressed_pair<T1, T2>> {
-    auto operator()(const ac::compressed_pair<T1, T2>& arg) const {
-        return ac::hash(arg.first(), arg.second());
-    }
-};
-
-}  // namespace std
+SPECIALIZE_STD_VALUE_HASH(ac::compressed_pair)

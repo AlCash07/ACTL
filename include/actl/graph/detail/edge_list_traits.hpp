@@ -86,7 +86,7 @@ namespace std {
 template <class Dir, class V>
 struct hash<ac::detail::edge_vertices<Dir, V, ac::two_vertices>> {
     auto operator()(const ac::detail::edge_vertices<Dir, V, ac::two_vertices>& arg) const {
-        return ac::hash(arg.key());
+        return ac::hash_value(arg.key());
     }
 };
 

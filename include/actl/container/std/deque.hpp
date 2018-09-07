@@ -21,3 +21,5 @@ struct container_traits<std::deque<T, A>> {
 };
 
 }  // namespace ac
+
+SPECIALIZE_STD_RANGE_HASH(std::deque)

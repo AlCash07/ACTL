@@ -40,3 +40,9 @@ TEST("has_iterator_category") {
     ASSERT_TRUE(is_bidirectional_iterator_v<std::list<int>::iterator>);
     ASSERT_TRUE(is_random_access_iterator_v<std::vector<int>::iterator>);
 }
+
+TEST("is_range") {
+    ASSERT_FALSE(is_range_v<int>);
+    ASSERT_TRUE(is_range_v<int[4]>);
+    ASSERT_TRUE(is_range_v<std::vector<int>>);
+}

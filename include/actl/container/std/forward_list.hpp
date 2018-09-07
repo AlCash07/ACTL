@@ -21,3 +21,5 @@ struct container_traits<std::forward_list<T, A>> {
 };
 
 }  // namespace ac
+
+SPECIALIZE_STD_RANGE_HASH(std::forward_list)

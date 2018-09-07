@@ -21,3 +21,5 @@ struct container_traits<std::list<T, A>> {
 };
 
 }  // namespace ac
+
+SPECIALIZE_STD_RANGE_HASH(std::list)

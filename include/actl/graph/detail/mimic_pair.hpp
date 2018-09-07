@@ -44,18 +44,11 @@ struct second_pm_traits {
     using base = property_map<Key, B, add_const_if_t<!writable, B&>, false, false, writable>;
 };
 
-template <class Key, bool W = second_pm_traits<Key>::writable>
+template <class Key>
 class second_property_map : public second_pm_traits<Key>::base {
     friend typename second_pm_traits<Key>::base::reference get(const second_property_map&,
                                                                Key key) {
         return key.second();
-    }
-};
-
-template <class Key>
-class second_property_map<Key, true> : public second_property_map<Key, false> {
-    friend void put(const second_property_map&, Key key, typename second_pm_traits<Key>::B value) {
-        key.second() = value;
     }
 };
 
@@ -72,7 +65,7 @@ namespace std {
 template <class T1, class T2, int I>
 struct hash<ac::detail::mimic_pair<T1, T2, I>> {
     auto operator()(const ac::detail::mimic_pair<T1, T2, I>& arg) const {
-        return ac::hash(arg.key());
+        return ac::hash_value(arg.key());
     }
 };
 

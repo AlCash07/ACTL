@@ -35,6 +35,11 @@ public:
     bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
 };
 
+template <class It>
+inline size_t hash_value(const iterator_id<It>& id) {
+    return hash_value(get_id_key(id));
+}
+
 template <class C>
 struct container_id_traits<C, true, false> {
     using id = iterator_id<typename C::const_iterator>;
@@ -146,11 +151,4 @@ inline container_id<C> id_find(C& container, const T& value) {
 
 }  // namespace ac
 
-namespace std {
-
-template <class It>
-struct hash<ac::iterator_id<It>> {
-    auto operator()(ac::iterator_id<It> id) const { return ac::hash(get_id_key(id)); }
-};
-
-}  // namespace std
+SPECIALIZE_STD_VALUE_HASH(ac::iterator_id)

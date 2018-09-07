@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/hash.hpp>
 #include <actl/util/none.hpp>
 #include <utility>
 
@@ -54,3 +55,14 @@ protected:
 };
 
 }  // namespace ac
+
+namespace std {
+
+template <>
+struct hash<ac::dummy_container> {
+    constexpr size_t operator()(const ac::dummy_container& arg) const {
+        return ac::hash_value(arg.size());
+    }
+};
+
+}  // namespace std

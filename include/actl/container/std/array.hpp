@@ -21,3 +21,12 @@ struct container_traits<std::array<T, N>> {
 };
 
 }  // namespace ac
+
+namespace std {
+
+template <class T, size_t N>
+struct hash<std::array<T, N>> {
+    constexpr size_t operator()(const std::array<T, N>& arg) const { return ac::hash_range(arg); }
+};
+
+}  // namespace std

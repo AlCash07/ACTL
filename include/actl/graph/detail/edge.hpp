@@ -52,7 +52,7 @@ namespace std {
 template <class V, class E>
 struct hash<ac::detail::edge<V, E, true>> {
     auto operator()(const ac::detail::edge<V, E, true>& edge) const {
-        return ac::hash(edge.source(), (E)edge);
+        return ac::hash_value(edge.source(), (E)edge);
     }
 };
 

@@ -35,3 +35,6 @@ struct container_traits<std::multimap<K, T, C, A>> {
 };
 
 }  // namespace ac
+
+SPECIALIZE_STD_RANGE_HASH(std::map)
+SPECIALIZE_STD_RANGE_HASH(std::multimap)
