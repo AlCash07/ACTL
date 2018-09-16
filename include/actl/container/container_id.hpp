@@ -131,6 +131,26 @@ inline auto id_range(const C& container) {
     return make_range(iterator(begin_id(container)), iterator(end_id(container)));
 }
 
+template <class C>
+inline typename C::reference id_at(C& container, container_id<C> id) {
+    if constexpr (is_random_access_container_v<C>) {
+        return container[id];
+    } else {
+        // const_cast is required because id contains a const_iterator.
+        // TODO: this cast allows modification of set key, which may lead to bugs.
+        return const_cast<typename C::reference>(*id.get_iterator());
+    }
+}
+
+template <class C>
+inline typename C::const_reference id_at(const C& container, container_id<C> id) {
+    if constexpr (is_random_access_container_v<C>) {
+        return container[id];
+    } else {
+        return *id.get_iterator();
+    }
+}
+
 /* Generic container functions with id */
 
 template <class C, class... Ts>
@@ -145,7 +165,7 @@ inline void id_erase(C& container, container_id<C> id) {
 }
 
 template <class C, class T>
-inline container_id<C> id_find(C& container, const T& value) {
+inline container_id<C> id_find(const C& container, const T& value) {
     return iterator_to_id(container, find(container, value));
 }
 

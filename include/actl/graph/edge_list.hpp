@@ -66,7 +66,7 @@ public:
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_undirected) {
-            if (get_id_key(u) > get_id_key(u)) std::swap(u, v);
+            if (get_id_key(u) > get_id_key(v)) std::swap(u, v);
         }
         auto res = id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
         return {edge(u, v, res.first), res.second};
@@ -122,7 +122,7 @@ public:
         edge_iterator(const edge_list_impl* el, ec_id id) : el_(el), id_(id) {}
 
         edge dereference() const {
-            auto& vertices = el_->edges_[id_].first();
+            auto& vertices = id_at(el_->edges_, id_).first();
             return edge(vertices.u, vertices.v, id_);
         }
 
@@ -140,12 +140,12 @@ public:
 
     edge find_edge(vertex u, vertex v) const {
         if constexpr (base_t::is_undirected) {
-            if (get_id_key(u) > get_id_key(u)) std::swap(u, v);
+            if (get_id_key(u) > get_id_key(v)) std::swap(u, v);
         }
         return edge(u, v, id_find(edges_, typename base_t::edge_vertices(u, v)));
     }
 
-    void remove_edge(edge e) { erase(edges_, e); }
+    void remove_edge(edge e) { id_erase(edges_, e); }
 
     void swap(edge_list_impl& other) { base_t::swap(other); }
 };

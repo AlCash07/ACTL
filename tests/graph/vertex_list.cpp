@@ -13,7 +13,7 @@
 
 using namespace ac;
 
-TEST("vertex_list<none>") {
+TEST("vertex_list::none") {
     vertex_list<> graph(3);
     ASSERT_EQUAL(std::make_pair(3, true), graph.try_add_vertex());
     ASSERT_EQUAL(4, graph.add_vertex());
@@ -42,23 +42,23 @@ void test_vertex_list() {
     vs.push_back(graph.add_vertex(2, "v2"));
     ASSERT_EQUAL(3, graph.vertex_count());
     auto[v3, ok] = graph.try_add_vertex(1, "v3");
-    ASSERT_EQUAL(ok, !is_unique_associative_container_v<VC>);
+    ASSERT_EQUAL(!is_unique_associative_container_v<VC>, ok);
     if (ok) vs.push_back(v3);
     auto pm = graph[vertex_property{}];
-    graph[vs[2]].s = "v22";
-    put(pm, vs[0], bundle(0, "v00"));
-    ASSERT_EQUAL(graph[vs[0]].s, "v00");
-    ASSERT_EQUAL(get(pm, vs[2]).s, "v22");
+    graph[vs[2]].s = "v2a";
+    put(pm, vs[0], bundle(0, "v0a"));
+    ASSERT_EQUAL("v0a", graph[vs[0]].s);
+    ASSERT_EQUAL("v2a", get(pm, vs[2]).s);
     auto v_range = graph.vertices();
-    std::vector<V> us(v_range.begin(), v_range.end());
+    std::vector<V> vs1(v_range.begin(), v_range.end());
     sort(vs);
-    sort(us);
-    ASSERT_EQUAL(vs, us);
+    sort(vs1);
+    ASSERT_EQUAL(vs, vs1);
     graph.remove_vertex(vs[1]);
     ASSERT_EQUAL(2 + ok, graph.vertex_count());
 }
 
-TEST("vertex_list") {
+TEST("vertex_list::bundle") {
     test_vertex_list<std::vector<bundle>>();
     test_vertex_list<std::list<bundle>>();
     test_vertex_list<std::set<bundle>>();

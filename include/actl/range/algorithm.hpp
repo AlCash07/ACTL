@@ -19,11 +19,6 @@ inline Function for_each(Range& dst, Function f) {
 }
 
 template <class Range, class T>
-inline typename Range::iterator find(const Range& src, const T& value) {
-    return std::find(src.begin(), src.end(), value);
-}
-
-template <class Range, class T>
 inline typename Range::difference_type count(const Range& src, const T& value) {
     return std::count(src.begin(), src.end(), value);
 }
