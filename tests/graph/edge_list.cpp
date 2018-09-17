@@ -42,6 +42,7 @@ void test_edge_list() {
     graph[es[2]].s = "e21a";
     put(pm, es[0], bundle(0, "e01b"));
     ASSERT_EQUAL("e01b", graph[es[0]].s);
+    ASSERT_EQUAL("e02", graph[es[1]].s);
     ASSERT_EQUAL("e21a", get(pm, es[2]).s);
     auto e_range = graph.edges();
     std::vector<E> es1(e_range.begin(), e_range.end());
