@@ -29,7 +29,8 @@ void test_edge_list() {
     edge_list<Dir, int, EC> graph;
     std::vector<E> es;
     es.push_back(graph.add_edge(0, 1, 0, "e01"));
-    es.push_back(graph.add_edge(0, 2, 1, "e02"));
+    auto e02 = graph.add_edge(0, 2, 1, "e02");
+    es.push_back(e02);
     es.push_back(graph.add_edge(2, 1, 2, "e21"));
     auto[e01, ok01] = graph.try_add_edge(0, 1, 3, "e01a");
     ASSERT_EQUAL(!is_unique_associative_container_v<EC>, ok01);
@@ -47,10 +48,11 @@ void test_edge_list() {
     sort(es);
     sort(es1);
     ASSERT_EQUAL(es, es1);
-    auto e02 = graph.find_edge(0, 2);
-    ASSERT_EQUAL(0, e02.source());
-    ASSERT_EQUAL(2, e02.target());
-    graph.remove_edge(es[1]);
+    auto e02f = graph.find_edge(0, 2);
+    ASSERT_EQUAL(0, e02f.source());
+    ASSERT_EQUAL(2, e02f.target());
+    ASSERT_EQUAL(e02, e02f);
+    graph.remove_edge(e02);
     ASSERT_EQUAL(2 + ok01 + ok10, graph.edge_count());
 }
 

@@ -41,8 +41,8 @@ public:
 template <class Dir, class V, class EC, class S>
 class edge_list_edges<Dir, V, EC, S, none> {
 protected:
-    using traits         = edge_list_traits<Dir, V, EC, S>;
-    using edge_vertices  = typename traits::vertices;
+    using traits        = edge_list_traits<Dir, V, EC, S>;
+    using edge_vertices = typename traits::vertices;
 
 public:
     static_assert(std::is_same_v<S, two_vertices> || !is_associative_container_v<EC>,
@@ -133,6 +133,8 @@ public:
         const edge_list_impl* el_;
         ec_id id_;
     };
+
+    const auto& get_edges() const { return this->edges_; }
 
     range<edge_iterator> edges() const {
         return {edge_iterator(this, begin_id(edges_)), edge_iterator(this, end_id(edges_))};

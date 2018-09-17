@@ -14,30 +14,27 @@ namespace ac::detail {
 template <class V, class E, bool CompareSrc = false>
 class edge {
 public:
-    explicit edge() = default;
+    using id_type = std::conditional_t<CompareSrc, std::pair<V, E>, E>;
 
-    explicit edge(V u, V v, E e) : u_(u), v_(v), e_(e) {}
+    explicit constexpr edge() = default;
 
-    V source() const { return u_; }
-    V target() const { return v_; }
+    explicit constexpr edge(V u, V v, E e) : u_(u), v_(v), e_(e) {}
 
-    constexpr operator E() const { return e_; }
+    constexpr V source() const { return u_; }
+    constexpr V target() const { return v_; }
 
-    bool operator < (const edge& other) const {
+    constexpr id_type id() const {
         if constexpr (CompareSrc) {
-            if (u_ != other.u_) return u_ < other.u_;
+            return std::make_pair(u_, e_);
         }
-        return e_ < other.e_;
+        return e_;
     }
 
-    bool operator == (const edge& other) const {
-        if constexpr (CompareSrc) {
-            if (u_ != other.u_) return false;
-        }
-        return e_ == other.e_;
-    }
+    constexpr operator id_type() const { return id(); }
 
-    bool operator != (const edge& other) const { return !(operator == (other)); }
+    bool operator < (const edge& rhs) const { return id() < rhs.id(); }
+    bool operator == (const edge& rhs) const { return id() == rhs.id(); }
+    bool operator != (const edge& rhs) const { return id() != rhs.id(); }
 
 private:
     V u_;
@@ -49,14 +46,7 @@ private:
 
 namespace std {
 
-template <class V, class E>
-struct hash<ac::detail::edge<V, E, true>> {
-    auto operator()(const ac::detail::edge<V, E, true>& edge) const {
-        return ac::hash_value(edge.source(), (E)edge);
-    }
-};
-
-template <class V, class E>
-struct hash<ac::detail::edge<V, E, false>> : hash<E> {};
+template <class V, class E, bool CS>
+struct hash<ac::detail::edge<V, E, CS>> : hash<typename ac::detail::edge<V, E, CS>::id_type> {};
 
 }  // namespace std
