@@ -43,6 +43,7 @@ public:
 
     explicit vertex_list() = default;
 
+    template <class T = vertex_container, class = std::enable_if_t<is_random_access_container_v<T>>>
     explicit vertex_list(int n) : vertices_(n) {}
 
     int vertex_count() const { return vertices_.size(); }

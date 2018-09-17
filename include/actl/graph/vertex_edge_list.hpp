@@ -44,7 +44,7 @@ public:
     template <class... Ts, bool UA = is_unique_associative_container_v<VertexContainer>,
               class T = value_type_t<VertexContainer>>
     std::enable_if_t<UA, edge> add_edge(const T& u, const T& v, Ts&&... args) {
-        return add_edge(add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);
+        return add_edge(this->add_vertex(u), this->add_vertex(v), std::forward<Ts>(args)...);
     }
 
     // TODO: implement using one pass over edges that will remove edges and decrease int IDs.
