@@ -10,6 +10,7 @@
 #include <actl/cp/diagnostics/to_string.hpp>
 #include <actl/macros.hpp>
 #include <actl/random/random.hpp>
+#include <actl/range/algorithm.hpp>
 #include <iostream>
 
 #define TEST_IMPL(name, va_args)                                   \
@@ -27,10 +28,11 @@
 
 #define TEST(...) TEST_IMPL(CONCATENATE(_tesT_, __COUNTER__), #__VA_ARGS__)
 
-#define ASSERT_EQUAL     ac::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
-#define ASSERT_NOT_EQUAL ac::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
-#define ASSERT_TRUE      ac::tests::detail::assert_impl(__FILE__, __LINE__).check_true
-#define ASSERT_FALSE     ac::tests::detail::assert_impl(__FILE__, __LINE__).check_false
+#define ASSERT_EQUAL      ac::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
+#define ASSERT_NOT_EQUAL  ac::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
+#define ASSERT_TRUE       ac::tests::detail::assert_impl(__FILE__, __LINE__).check_true
+#define ASSERT_FALSE      ac::tests::detail::assert_impl(__FILE__, __LINE__).check_false
+#define ASSERT_EQUAL_SETS ac::tests::detail::assert_impl(__FILE__, __LINE__).check_sets
 #define ASSERT_THROWS(expression) \
     ac::tests::detail::assert_throws(__FILE__, __LINE__, [&] { (void)(expression); })
 
@@ -74,6 +76,18 @@ struct assert_impl {
     inline void check_true(bool condition) const { check<true>(true, condition); }
 
     inline void check_false(bool condition) const { check<true>(false, condition); }
+
+    template <class T0, class T1>
+    inline void check_sets(T0 expected, T1 actual) const {
+        sort(expected);
+        sort(actual);
+        if (equal(expected, actual)) return;
+        std::stringstream ss;
+        ss << "expected = " << diagnostics::to_string(expected)
+           << ", actual = " << diagnostics::to_string(actual);
+        ss << "; line = " << line;
+        throw ss.str();
+    }
 };
 
 template <class Function>

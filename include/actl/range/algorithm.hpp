@@ -23,6 +23,16 @@ inline typename Range::difference_type count(const Range& src, const T& value) {
     return std::count(src.begin(), src.end(), value);
 }
 
+template <class Range0, class Range1>
+inline bool equal(const Range0& lhs, const Range1& rhs) {
+    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+}
+
+template <class Range0, class Range1, class BinaryPredicate>
+inline bool equal(const Range0& lhs, const Range1& rhs, BinaryPredicate pred) {
+    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), pred);
+}
+
 template <class Range, class OutputIterator>
 inline OutputIterator copy(const Range& src, OutputIterator dst) {
     return std::copy(src.begin(), src.end(), dst);

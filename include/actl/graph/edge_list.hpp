@@ -66,7 +66,7 @@ public:
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_undirected) {
-            if (get_id_key(u) > get_id_key(v)) std::swap(u, v);
+            if (v < u) std::swap(u, v);
         }
         auto res = id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
         return {edge(u, v, res.first), res.second};
@@ -77,7 +77,9 @@ public:
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    edge get_edge(vertex u, edge_id e) const { return edge(u, edges_[e].first().other(u), e); }
+    edge get_edge(vertex u, edge_id e) const {
+        return edge(u, id_at(edges_, e).first().other(u), e);
+    }
 
     void clear() { edges_.clear(); }
 
@@ -140,7 +142,7 @@ public:
 
     edge find_edge(vertex u, vertex v) const {
         if constexpr (base_t::is_undirected) {
-            if (get_id_key(u) > get_id_key(v)) std::swap(u, v);
+            if (v < u) std::swap(u, v);
         }
         return edge(u, v, id_find(edges_, typename base_t::edge_vertices(u, v)));
     }

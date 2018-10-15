@@ -23,7 +23,7 @@ private:
 
     auto dereference() const {
         auto edge = *this->base();
-        return typename It::value_type(edge.target(), edge.source(), edge);
+        return typename It::value_type(edge.target(), edge.source(), edge.bundle());
     }
 };
 
@@ -61,13 +61,6 @@ class adj_list_edge_it
 
     bool is_end() const { return u_ == end_id(al_->vertices_); }
 
-    void skip_empty() {
-        while (!is_end() && it_ == al_->out_end(u_)) {
-            ++u_;
-            it_ = al_->out_begin(u_);
-        }
-    }
-
     bool is_reverse_edge() const {
         if constexpr (AdjList::is_undirected) {
             return dereference().target() < u_;
@@ -76,12 +69,25 @@ class adj_list_edge_it
         }
     }
 
+    void skip_empty() {
+        while (!is_end()) {
+            if (it_ == al_->out_end(u_)) {
+                ++u_;
+                it_ = al_->out_begin(u_);
+            } else {
+                if (is_reverse_edge()) {
+                    ++it_;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
     void increment() {
         if (is_end()) return;
-        do {
-            ++it_;
-            skip_empty();
-        } while (!is_end() && is_reverse_edge());
+        ++it_;
+        skip_empty();
     }
 
     bool equals(const adj_list_edge_it& other) const {

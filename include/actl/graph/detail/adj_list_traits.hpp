@@ -38,10 +38,11 @@ struct adj_list_traits {
         edge_list_impl<Dir, vertex, rebind_container_t<EC, value_type_t<OEC>>, edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
-    using out_edge_vertex = std::conditional_t<is_associative_container_v<OEC> ||
-                                                   std::is_same_v<edge_selector, edge_property> ||
-                                                   std::is_same_v<edge_selector, none>,
-                                               vertex, none>;
+    static constexpr bool has_out_vertex = is_associative_container_v<OEC> ||
+                                           std::is_same_v<edge_selector, edge_property> ||
+                                           std::is_same_v<edge_selector, none>;
+
+    using out_edge_vertex = std::conditional_t<has_out_vertex, vertex, none>;
 
     using out_edge_bundle = std::conditional_t<!std::is_same_v<edge_selector, none>,
                                                typename edges::edge_id, value_type_t<OEC>>;

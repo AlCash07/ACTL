@@ -49,10 +49,10 @@ protected:
     using out_it = typename traits::out_edge_container::const_iterator;
     using vertex = typename base_t::vertex;
     using edge   = typename traits::edges::edge;
-    using base_t::vertices_;
+    using base_t::outs;
 
-    out_it out_begin(vertex u) const { return id_at(vertices_, u).first().out_edges.begin(); }
-    out_it out_end(vertex u) const { return id_at(vertices_, u).first().out_edges.end(); }
+    out_it out_begin(vertex u) const { return outs(u).begin(); }
+    out_it out_end(vertex u) const { return outs(u).end(); }
 
     edge get_edge(vertex u, const typename traits::out_edge_data& oed) const {
         auto e = oed.second();
@@ -63,19 +63,24 @@ protected:
         }
     }
 
+    edge get_edge(vertex u, container_id<typename traits::out_edge_container> oe) const {
+        return get_edge(u, id_at(outs(u), oe));
+    }
+
     template <class... Ts>
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         typename traits::edges::edge_id e;
-        auto& u_edges = id_at(vertices_, u).first().out_edges;
+        auto& u_edges = outs(u);
         auto[out_edge, ok] = id_emplace(u_edges, v, e);
         if (!ok) {
             return {edge(), false};
         }
-        u_edges[out_edge].second() = e = edge_list_.add_edge(u, v, std::forward<Ts>(args)...);
+        e = edge_list_.add_edge(u, v, std::forward<Ts>(args)...);
+        id_at(u_edges, out_edge).second() = e;
         if constexpr (base_t::is_undirected) {
-            id_emplace(id_at(vertices_, v).first().out_edges, u, e);
+            if (u != v) id_emplace(outs(v), u, e);
         } else if constexpr (base_t::is_bidirectional) {
-            id_emplace(id_at(vertices_, v).first().in_edges, u, e);
+            id_emplace(this->ins(v), u, e);
         }
         return {edge(u, v, e), true};
     }
@@ -116,8 +121,8 @@ public:
     public:
         edge_property_map(vertices_ref& vertices) : vertices_{vertices} {}
 
-        friend Ref get(const edge_property_map& pm, edge key) {
-            return id_at(id_at(pm.vertices_, key.source()).first().out_edges, key).second();
+        friend Ref get(const edge_property_map& pm, edge e) {
+            return id_at(id_at(pm.vertices_, e.source()).first().out_edges, e.bundle()).second();
         }
     };
 
@@ -140,17 +145,12 @@ protected:
     using out_it = container_id_iterator<typename traits::out_edge_container>;
     using vertex = typename base_t::vertex;
     using edge   = edge<vertex, out_id, true>;
-    using base_t::vertices_;
+    using base_t::outs;
 
-    out_it out_begin(vertex u) const {
-        return id_range(id_at(vertices_, u).first().out_edges).begin();
-    }
+    out_it out_begin(vertex u) const { return id_range(outs(u)).begin(); }
+    out_it out_end(vertex u) const { return id_range(outs(u)).end(); }
 
-    out_it out_end(vertex u) const { return id_range(id_at(vertices_, u).first().out_edges).end(); }
-
-    edge get_edge(vertex u, out_id oe) const {
-        return edge(u, id_at(id_at(vertices_, u).first().out_edges, oe).first(), oe);
-    }
+    edge get_edge(vertex u, out_id oe) const { return edge(u, id_at(outs(u), oe).first(), oe); }
 
     edge get_edge(vertex u, const typename traits::in_edge_data& ied) const {
         return edge(ied.first(), u, ied.second());
@@ -158,16 +158,16 @@ protected:
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
-        auto& u_edges = id_at(vertices_, u).first().out_edges;
+        auto& u_edges = outs(u);
         auto[out_edge, ok] = id_emplace(u_edges, v, std::forward<Ts>(args)...);
         if (!ok) {
             return {edge(), false};
         }
         edge_list_.add_edge(u, v);
         if constexpr (base_t::is_undirected) {
-            id_emplace(id_at(vertices_, v).first().out_edges, u, std::forward<Ts>(args)...);
+            if (u != v) id_emplace(outs(v), u, std::forward<Ts>(args)...);
         } else if constexpr (base_t::is_bidirectional) {
-            id_emplace(id_at(vertices_, v).first().in_edges, u, out_edge);
+            id_emplace(this->ins(v), u, out_edge);
         }
         return {edge(u, v, out_edge), true};
     }
@@ -237,8 +237,8 @@ public:
             auto out = out_edges(u);
             return {in_edge_iterator(out.begin()), in_edge_iterator(out.end())};
         } else {
-            auto in_begin = id_at(this->vertices_, u).first().in_edges.begin();
-            auto in_end   = id_at(this->vertices_, u).first().in_edges.end();
+            auto in_begin = this->ins(u).begin();
+            auto in_end   = this->ins(u).end();
             if constexpr (std::is_same_v<edge_selector, none>) {
                 return {in_edge_iterator(this, u, in_begin), in_edge_iterator(this, u, in_end)};
             } else {
@@ -266,6 +266,17 @@ public:
               class T = value_type_t<VC>>
     std::enable_if_t<UA, edge> add_edge(const T& u, const T& v, Ts&&... args) {
         return add_edge(add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);
+    }
+
+    edge find_edge(vertex u, vertex v) const {
+        if constexpr (traits::has_out_vertex) {
+            return this->get_edge(u, id_find(this->outs(u), v));
+        } else {
+            for (auto oe : out_edges(u)) {
+                if (oe.target() == v) return oe;
+            }
+            return edge();
+        }
     }
 
     void clear() {

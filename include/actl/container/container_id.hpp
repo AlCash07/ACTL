@@ -24,7 +24,7 @@ struct container_id_traits;
 template <class It>
 class iterator_id : public iterator_adaptor<iterator_id<It>, It> {
 public:
-    explicit iterator_id(It it) : iterator_adaptor<iterator_id<It>, It>(it) {}
+    explicit iterator_id(It it = It{}) : iterator_adaptor<iterator_id<It>, It>(it) {}
 
     It get_iterator() const { return this->base(); }
 
@@ -46,7 +46,7 @@ struct container_id_traits<C, true, false> {
 
     class iterator : public iterator_adaptor<iterator, id, use_default, id, id, id*> {
     public:
-        explicit iterator(id value = {})
+        explicit iterator(id value = id{})
             : iterator_adaptor<iterator, id, use_default, id, id, id*>(value) {}
 
     private:

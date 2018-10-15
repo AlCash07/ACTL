@@ -20,6 +20,8 @@ class mimic_pair : public compressed_pair<T1, T2> {
     using base_t = compressed_pair<T1, T2>;
 
 public:
+    static_assert(I == 1 || I == 2);
+
     using base_t::base_t;
 
     constexpr auto key() const {

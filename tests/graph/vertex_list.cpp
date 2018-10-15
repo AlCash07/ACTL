@@ -7,9 +7,7 @@
 
 #include <actl/container/std/all.hpp>
 #include <actl/graph/vertex_list.hpp>
-#include <actl/range/algorithm.hpp>
-#include <actl/test.hpp>
-#include "bundle.hpp"
+#include "test_vertices.hpp"
 
 using namespace ac;
 
@@ -34,29 +32,10 @@ TEST("vertex_list::none") {
 
 template <class VC>
 void test_vertex_list() {
-    using V = typename vertex_list<VC>::vertex;
     vertex_list<VC> graph;
-    std::vector<V> vs;
-    vs.push_back(graph.add_vertex(0, "v0"));
-    vs.push_back(graph.add_vertex(1, "v1"));
-    vs.push_back(graph.add_vertex(2, "v2"));
-    ASSERT_EQUAL(3, graph.vertex_count());
-    auto[v3, ok] = graph.try_add_vertex(1, "v3");
-    ASSERT_EQUAL(!is_unique_associative_container_v<VC>, ok);
-    if (ok) vs.push_back(v3);
-    auto pm = graph[vertex_property{}];
-    graph[vs[2]].s = "v2a";
-    put(pm, vs[0], bundle(0, "v0a"));
-    ASSERT_EQUAL("v0a", graph[vs[0]].s);
-    ASSERT_EQUAL("v1", graph[vs[1]].s);
-    ASSERT_EQUAL("v2a", get(pm, vs[2]).s);
-    auto v_range = graph.vertices();
-    std::vector<V> vs1(v_range.begin(), v_range.end());
-    sort(vs);
-    sort(vs1);
-    ASSERT_EQUAL(vs, vs1);
+    auto vs = test_vertices(graph);
     graph.remove_vertex(vs[1]);
-    ASSERT_EQUAL(2 + ok, graph.vertex_count());
+    ASSERT_EQUAL(vs.size() - 1, graph.vertex_count());
 }
 
 TEST("vertex_list::bundle") {

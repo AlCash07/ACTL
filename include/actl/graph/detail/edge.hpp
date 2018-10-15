@@ -11,35 +11,38 @@
 
 namespace ac::detail {
 
-template <class V, class E, bool CompareSrc = false>
+template <class V, class B, bool CompareSrc = false>
 class edge {
 public:
-    using id_type = std::conditional_t<CompareSrc, std::pair<V, E>, E>;
+    using vertex  = V;
+    using id_type = std::conditional_t<CompareSrc, std::pair<V, B>, B>;
 
     explicit constexpr edge() = default;
-
-    explicit constexpr edge(V u, V v, E e) : u_(u), v_(v), e_(e) {}
+    explicit constexpr edge(V u, V v, B b) : u_(u), v_(v), b_(b) {}
 
     constexpr V source() const { return u_; }
     constexpr V target() const { return v_; }
+    constexpr B bundle() const { return b_; }
 
     constexpr id_type id() const {
         if constexpr (CompareSrc) {
-            return std::make_pair(u_, e_);
+            return std::make_pair(u_, b_);
+        } else {
+            return b_;
         }
-        return e_;
     }
 
     constexpr operator id_type() const { return id(); }
 
     bool operator < (const edge& rhs) const { return id() < rhs.id(); }
+    // TODO: for undirected and bidirectional graphs edge isn't equal to its reverse.
     bool operator == (const edge& rhs) const { return id() == rhs.id(); }
     bool operator != (const edge& rhs) const { return id() != rhs.id(); }
 
 private:
     V u_;
     V v_;
-    E e_;
+    B b_;
 };
 
 }  // namespace ac::detail
