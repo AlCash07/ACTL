@@ -5,9 +5,55 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/container/std/all.hpp>
 #include <actl/graph/adjacency_list.hpp>
 #include <actl/test.hpp>
+#include "bundle.hpp"
 
 using namespace ac;
 
-TEST("") {}
+TEST("adjacency_list::none") {
+    adjacency_list<directed> graph(2);
+    graph.add_edge(0, 2);
+    graph.add_vertex();
+    ASSERT_EQUAL(4, graph.vertex_count());
+    ASSERT_EQUAL(1, graph.edge_count());
+}
+
+template <class Dir, class OEC, class EC, class VC>
+void test_adjacency_list() {
+    adjacency_list<Dir, OEC, EC, VC> graph;
+}
+
+template <class Dir, class OEC, class EC>
+void test_adjacency_list3() {
+    test_adjacency_list<Dir, OEC, EC, std::list<bundle>>();
+    test_adjacency_list<Dir, OEC, EC, std::vector<bundle>>();
+    test_adjacency_list<Dir, OEC, EC, std::set<bundle>>();
+//    test_adjacency_list<Dir, OEC, EC, std::unordered_multiset<bundle>>();
+}
+
+template <class Dir, class OEC>
+void test_adjacency_list2() {
+    test_adjacency_list3<Dir, OEC, none>();
+    test_adjacency_list3<Dir, OEC, std::list<edge_property>>();
+    test_adjacency_list3<Dir, OEC, std::list<one_vertex>>();
+    test_adjacency_list3<Dir, OEC, std::list<two_vertices>>();
+    test_adjacency_list3<Dir, OEC, std::vector<edge_property>>();
+    test_adjacency_list3<Dir, OEC, std::vector<one_vertex>>();
+    test_adjacency_list3<Dir, OEC, std::vector<two_vertices>>();
+}
+
+template <class Dir>
+void test_adjacency_list1() {
+    test_adjacency_list2<Dir, std::list<bundle>>();
+    test_adjacency_list2<Dir, std::vector<bundle>>();
+    test_adjacency_list2<Dir, std::set<bundle>>();
+    test_adjacency_list2<Dir, std::unordered_multiset<bundle>>();
+}
+
+TEST("adjacency_list::bundle") {
+    test_adjacency_list1<directed>();
+    test_adjacency_list1<undirected>();
+    test_adjacency_list1<bidirectional>();
+}

@@ -28,13 +28,13 @@ class adj_list_vertex_data;
 
 template <class Dir, class OEC, class EC, class VC>
 struct adj_list_traits {
+    using vertices = vertex_list<rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
+
+    using vertex = typename vertices::vertex;
+
     using edge_selector = value_type_t<EC>;
 
-    using vertex_list = vertex_list<rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
-
-    using vertex = typename vertex_list::vertex;
-
-    using edge_list =
+    using edges =
         edge_list_impl<Dir, vertex, rebind_container_t<EC, value_type_t<OEC>>, edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
@@ -44,7 +44,7 @@ struct adj_list_traits {
                                                vertex, none>;
 
     using out_edge_bundle = std::conditional_t<!std::is_same_v<edge_selector, none>,
-                                               typename edge_list::edge_id, value_type_t<OEC>>;
+                                               typename edges::edge_id, value_type_t<OEC>>;
 
     using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
@@ -54,7 +54,7 @@ struct adj_list_traits {
     using in_edge_bundle =
         std::conditional_t<std::is_same_v<edge_selector, none> &&
                                std::is_same_v<Dir, bidirectional>,
-                           container_id<out_edge_container>, typename edge_list::edge_id>;
+                           container_id<out_edge_container>, typename edges::edge_id>;
 
     using in_edge_data = mimic_pair<out_edge_vertex, in_edge_bundle, 1>;
 

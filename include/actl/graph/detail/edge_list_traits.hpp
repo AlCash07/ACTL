@@ -12,7 +12,6 @@
 #include <actl/graph/detail/mimic_pair.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/hash.hpp>
-#include <utility>
 
 namespace ac::detail {
 
