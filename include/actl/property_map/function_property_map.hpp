@@ -15,7 +15,7 @@ namespace ac {
  * Property map that applies given function to the key.
  */
 template <class Function, class Key, class Ref = std::result_of_t<const Function(Key)>,
-          class Value = std::remove_cv_t<std::remove_reference_t<Ref>>>
+          class Value = remove_cvref_t<Ref>>
 class function_property_map : public property_map<Key, Value, Ref, false> {
 public:
     explicit function_property_map(Function f = Function{}) : f_{f} {}
@@ -26,6 +26,7 @@ private:
     Function f_;
 };
 
+// TODO: deduce key type from function signature.
 template <class Key, class Function>
 inline auto make_function_property_map(Function f) {
     return function_property_map<Function, Key>(f);
