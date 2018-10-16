@@ -19,17 +19,12 @@ inline void test_accounting_pm() {
     ASSERT_EQUAL(0, get(apm, "a"));
     ASSERT_EQUAL(2, get(apm, "p"));
     ASSERT_EQUAL(1, get(apm, "s"));
-    std::vector<std::string> s{"a", "s", "p"};
-    std::vector<bool> used(3);
-    for (auto[key, value] : apm) {
-        ASSERT_TRUE(0 <= value && value < 3 && !used[value]);
-        used[value] = true;
-        ASSERT_EQUAL(s[value], key);
-    }
-    ASSERT_EQUAL(std::vector<bool>{true, true, true}, used);
+    using C = std::vector<std::pair<std::string, int>>;
+    C expected{{"a", 0}, {"s", 1}, {"p", 2}};
+    ASSERT_EQUAL_SETS(expected, C(apm.begin(), apm.end()));
     if constexpr (Invertible) {
         for (int i = 0; i < 3; ++i) {
-            ASSERT_EQUAL(s[i], apm.invert(i));
+            ASSERT_EQUAL(expected[i].first, apm.invert(i));
         }
     }
 }
