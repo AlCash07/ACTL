@@ -17,8 +17,8 @@ namespace detail {
 template <class Key, class Value, bool Invertible = false>
 class vector_invert {
 protected:
-    void push_back(Key*) {}
-    void clear_vector() {}
+    void push_back(const Key*) const {}
+    void clear_vector() const {}
 };
 
 template <class Key, class Value>
@@ -27,11 +27,11 @@ public:
     Key invert(Value value) const { return *keys_[value]; }
 
 protected:
-    void push_back(Key* ptr) { keys_.push_back(ptr); }
-    void clear_vector() { keys_.clear(); }
+    void push_back(const Key* ptr) const { keys_.push_back(ptr); }
+    void clear_vector() const { keys_.clear(); }
 
 private:
-    std::vector<Key*> keys_;
+    mutable std::vector<const Key*> keys_;
 };
 
 }  // namespace detail
