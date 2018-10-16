@@ -8,16 +8,17 @@
 #pragma once
 
 #include <actl/property_map/property_map.hpp>
-#include <actl/util/none.hpp>
 
 namespace ac {
 
+// Value is void by default to produce compilation error where get result is used.
 template <class Key, class Value = void>
-class dummy_property_map : public property_map<Key, Value, Value, false> {
-    friend Value get(dummy_property_map, Key) { return Value{}; }
-
-    template <class T>
-    friend void put(dummy_property_map, Key, T) {}
+class dummy_property_map
+    : public property_map<Key, Value, Value, false, false, std::is_same_v<Value, void>> {
+    friend Value get(dummy_property_map, Key) { return Value(); }
 };
+
+template <class K, class V>
+inline void put(dummy_property_map<K, V>, K, V) {}
 
 }  // namespace ac
