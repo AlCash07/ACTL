@@ -20,11 +20,23 @@ namespace ac {
 
 namespace detail {
 
-// Base class containing the property maps and implementing common methods.
 template <class PM1, class PM2>
-class composite_pm_base : public property_map_base, protected compressed_pair<PM1, PM2> {
+class cpm_base : public property_map_base, protected compressed_pair<PM1, PM2> {
     using base_t = compressed_pair<PM1, PM2>;
 
+public:
+    using base_t::base_t;
+};
+
+// This type is used to avoid multiple inheritance from property_map_base.
+template <class PM1, class PM2>
+using cpm_base_t =
+    std::conditional_t<std::is_base_of_v<property_map_base, compressed_pair<PM1, PM2>>,
+                       compressed_pair<PM1, PM2>, cpm_base<PM1, PM2>>;
+
+// Base class containing the property maps and implementing common methods.
+template <class PM1, class PM2>
+class composite_pm_base : public cpm_base_t<PM1, PM2> {
 public:
     static_assert(std::is_convertible_v<typename property_traits<PM1>::reference,
                                         typename property_traits<PM2>::key_type>,
@@ -34,7 +46,7 @@ public:
     using value_type = typename property_traits<PM2>::value_type;
     using reference  = typename property_traits<PM2>::reference;
 
-    using base_t::base_t;
+    using cpm_base_t<PM1, PM2>::cpm_base_t;
 
     friend constexpr reference get(const composite_pm_base& pm, key_type key) {
         return get(pm.second(), get(pm.first(), key));
