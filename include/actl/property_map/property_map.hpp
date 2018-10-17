@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <actl/traits/is_iterator.hpp>
+#include <actl/traits/iterator_traits.hpp>
 #include <actl/traits/type_traits.hpp>
 
 namespace ac {

@@ -53,6 +53,11 @@ TEST("is_static_castable") {
     ASSERT_FALSE(is_static_castable_v<double, const char*>);
 }
 
+TEST("nth_type") {
+    ASSERT_TRUE(std::is_same_v<int, nth_type_t<0, int, float>>);
+    ASSERT_TRUE(std::is_same_v<float, nth_type_t<1, int, float>>);
+}
+
 TEST("remove_cvref") { ASSERT_TRUE(std::is_same_v<int, remove_cvref_t<volatile const int&>>); }
 
 TEST("remove_rvalue_reference") {

@@ -8,15 +8,16 @@
 #pragma once
 
 #include <actl/property_map/property_map.hpp>
+#include <actl/traits/function_traits.hpp>
 
 namespace ac {
 
 /**
  * Property map that applies given function to the key.
  */
-template <class Function, class Key, class Ref = std::result_of_t<const Function(Key)>,
-          class Value = remove_cvref_t<Ref>>
-class function_property_map : public property_map<Key, Value, Ref, false> {
+template <class Function, class Key = argument_type_t<Function, 0>,
+          class Ref = return_type_t<Function>>
+class function_property_map : public property_map<Key, remove_cvref_t<Ref>, Ref, false> {
 public:
     explicit function_property_map(Function f = Function{}) : f_{f} {}
 
@@ -26,10 +27,9 @@ private:
     Function f_;
 };
 
-// TODO: deduce key type from function signature.
-template <class Key, class Function>
+template <class Function>
 inline auto make_function_property_map(Function f) {
-    return function_property_map<Function, Key>(f);
+    return function_property_map<Function>(f);
 }
 
 }  // namespace ac

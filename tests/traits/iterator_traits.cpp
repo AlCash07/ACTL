@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/test.hpp>
-#include <actl/traits/is_iterator.hpp>
+#include <actl/traits/iterator_traits.hpp>
 #include <forward_list>
 #include <iterator>
 #include <list>

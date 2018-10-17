@@ -53,6 +53,22 @@ struct is_static_castable<From, To, std::void_t<decltype(static_cast<To>(std::de
 template <class From, class To>
 inline constexpr bool is_static_castable_v = is_static_castable<From, To>::value;
 
+template <size_t N, class... Ts>
+struct nth_type;
+
+template <size_t N, class... Ts>
+using nth_type_t = typename nth_type<N, Ts...>::type;
+
+template <class T0, class... Ts>
+struct nth_type<0, T0, Ts...> {
+    using type = T0;
+};
+
+template <size_t N, class T0, class... T>
+struct nth_type<N, T0, T...> {
+    using type = nth_type_t<N - 1, T...>;
+};
+
 // TODO: use std::remove_cvref_t when C++20 is out.
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;

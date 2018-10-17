@@ -29,7 +29,7 @@
 #include <actl/macros.hpp>
 #include <actl/range/range.hpp>
 #include <actl/traits/ctype.hpp>
-#include <actl/traits/is_iterator.hpp>
+#include <actl/traits/iterator_traits.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <cstring>
 #include <string>
