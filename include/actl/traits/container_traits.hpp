@@ -24,7 +24,10 @@ struct value_type<T[N]> {
     using type = T;
 };
 
-template <>        struct value_type<none> { using type = none; };
+template <>
+struct value_type<none> {
+    using type = none;
+};
 
 template <class C>
 using value_type_t = typename value_type<C>::type;
