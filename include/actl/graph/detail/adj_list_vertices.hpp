@@ -18,7 +18,7 @@ class adj_list_vertices : public adj_list_vertices<Dir, OEC, EC, VC, none> {
     using base_t = adj_list_vertices<Dir, OEC, EC, VC, none>;
 
 public:
-    using vertex = typename base_t::vertex;
+    using typename base_t::vertex;
 
     using base_t::base_t;
 
@@ -40,7 +40,7 @@ class adj_list_vertices<Dir, OEC, EC, VC, none>
     using base_t = typename adj_list_traits<Dir, OEC, EC, VC>::vertices;
 
 public:
-    using vertex = typename base_t::vertex;
+    using typename base_t::vertex;
 
     using directed_category = Dir;
 

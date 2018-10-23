@@ -22,8 +22,8 @@ class vertex_edge_list
     using ebase_t = edge_list<Directed, container_id<VertexContainer>, EdgeContainer>;
 
 public:
-    using vertex = typename vbase_t::vertex;
-    using edge   = typename ebase_t::edge;
+    using typename vbase_t::vertex;
+    using typename ebase_t::edge;
 
     using vbase_t::vbase_t;
 

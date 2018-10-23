@@ -18,7 +18,7 @@ class vertex_list : public vertex_list<VertexContainer, none> {
     using base_t = vertex_list<VertexContainer, none>;
 
 public:
-    using vertex = typename base_t::vertex;
+    using typename base_t::vertex;
 
     using base_t::base_t;
 

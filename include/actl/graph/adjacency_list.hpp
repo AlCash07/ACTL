@@ -28,7 +28,7 @@ class adj_list_edges : public adj_list_edges<Dir, OEC, EC, VC, S, none> {
     using base_t = adj_list_edges<Dir, OEC, EC, VC, S, none>;
 
 public:
-    using edge = typename base_t::edge;
+    using typename base_t::edge;
 
     using base_t::base_t;
     using base_t::operator[];
@@ -47,8 +47,8 @@ protected:
     using base_t = adj_list_vertices<Dir, OEC, EC, VC>;
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
     using out_it = typename traits::out_edge_container::const_iterator;
-    using vertex = typename base_t::vertex;
     using edge   = typename traits::edges::edge;
+    using typename base_t::vertex;
     using base_t::outs;
 
     out_it out_begin(vertex u) const { return outs(u).begin(); }
@@ -110,7 +110,7 @@ class adj_list_edges<Dir, OEC, EC, VC, none, T>
     using reference = add_const_if_t<base_t::is_undirected, T&>;
 
 public:
-    using edge = typename base_t::edge;
+    using typename base_t::edge;
 
     template <bool Const, class Ref = add_const_if_t<Const, reference>>
     class edge_property_map : public property_map<edge, T, Ref, false, false, !Const> {
@@ -143,7 +143,7 @@ protected:
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
     using out_id = container_id<typename traits::out_edge_container>;
     using out_it = container_id_iterator<typename traits::out_edge_container>;
-    using vertex = typename base_t::vertex;
+    using typename base_t::vertex;
     using edge   = edge<vertex, out_id, true>;
     using base_t::outs;
 
@@ -192,15 +192,15 @@ public:
 template <class Dir, class OEC, class EC, class VC>
 class adjacency_list : public detail::adj_list_edges<Dir, OEC, EC, VC> {
     using base_t = detail::adj_list_edges<Dir, OEC, EC, VC>;
-    using traits = typename base_t::traits;
+    using typename base_t::traits;
     using base_t::edge_list_;
 
     template <class AL, class S>
     friend struct detail::edge_it;
 
 public:
-    using vertex = typename base_t::vertex;
-    using edge   = typename base_t::edge;
+    using typename base_t::vertex;
+    using typename base_t::edge;
 
     using edge_selector     = value_type_t<EC>;
     using edge_iterator     = typename detail::edge_it<adjacency_list>::type;
