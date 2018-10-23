@@ -23,6 +23,7 @@ public:
     using reference  = typename PMC::reference;
 
     static constexpr bool invertible = false;
+    // TODO: make this iterable.
     static constexpr bool iterable   = false;
     static constexpr bool writable   = PMC::writable;
 

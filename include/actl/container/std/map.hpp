@@ -13,25 +13,14 @@
 namespace ac {
 
 template <class K, class T, class C, class A>
-struct container_traits<std::map<K, T, C, A>> {
-    struct category : virtual sorted_associative_container_tag,
-                      virtual pair_associative_container_tag,
-                      virtual unique_associative_container_tag {};
-
-    template <class K1, class T1, class C1 = std::less<K1>,
-              class A1 = rebind_allocator_t<A, std::pair<const K1, T1>>>
-    using rebind = std::map<K1, T1, C1, A1>;
-};
+struct container_category<std::map<K, T, C, A>> : virtual sorted_associative_container_tag,
+                                                  virtual pair_associative_container_tag,
+                                                  virtual unique_associative_container_tag {};
 
 template <class K, class T, class C, class A>
-struct container_traits<std::multimap<K, T, C, A>> {
-    struct category : virtual sorted_associative_container_tag,
-                      virtual pair_associative_container_tag,
-                      virtual multiple_associative_container_tag {};
-
-    template <class K1, class T1, class C1 = std::less<K1>,
-              class A1 = rebind_allocator_t<A, std::pair<const K1, T1>>>
-    using rebind = std::multimap<K1, T1, C1, A1>;
+struct container_category<std::multimap<K, T, C, A>> : virtual sorted_associative_container_tag,
+                                                       virtual pair_associative_container_tag,
+                                                       virtual multiple_associative_container_tag {
 };
 
 }  // namespace ac

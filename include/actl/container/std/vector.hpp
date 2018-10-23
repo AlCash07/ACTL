@@ -13,12 +13,7 @@
 namespace ac {
 
 template <class T, class A>
-struct container_traits<std::vector<T, A>> {
-    using category = random_access_container_tag;
-
-    template <class T1, class A1 = rebind_allocator_t<A, T1>>
-    using rebind = std::vector<T1, A1>;
-};
+struct container_category<std::vector<T, A>> : random_access_container_tag {};
 
 }  // namespace ac
 

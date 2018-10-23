@@ -13,12 +13,7 @@
 namespace ac {
 
 template <class T, class A>
-struct container_traits<std::list<T, A>> {
-    using category = sequence_container_tag;
-
-    template <class T1, class A1 = rebind_allocator_t<A, T1>>
-    using rebind = std::list<T1, A1>;
-};
+struct container_category<std::list<T, A>> : sequence_container_tag {};
 
 }  // namespace ac
 

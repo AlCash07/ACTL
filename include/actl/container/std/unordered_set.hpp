@@ -13,23 +13,11 @@
 namespace ac {
 
 template <class T, class H, class E, class A>
-struct container_traits<std::unordered_set<T, H, E, A>> {
-    struct category : virtual simple_associative_container_tag,
-                      virtual unique_associative_container_tag {};
-
-    template <class T1, class H1 = std::hash<T1>, class E1 = std::equal_to<T1>,
-              class A1 = rebind_allocator_t<A, T1>>
-    using rebind = std::unordered_set<T1, H1, E1, A1>;
-};
+struct container_category<std::unordered_set<T, H, E, A>>
+    : virtual simple_associative_container_tag, virtual unique_associative_container_tag {};
 
 template <class T, class H, class E, class A>
-struct container_traits<std::unordered_multiset<T, H, E, A>> {
-    struct category : virtual simple_associative_container_tag,
-                      virtual multiple_associative_container_tag {};
-
-    template <class T1, class H1 = std::hash<T1>, class E1 = std::equal_to<T1>,
-              class A1 = rebind_allocator_t<A, T1>>
-    using rebind = std::unordered_multiset<T1, H1, E1, A1>;
-};
+struct container_category<std::unordered_multiset<T, H, E, A>>
+    : virtual simple_associative_container_tag, virtual multiple_associative_container_tag {};
 
 }  // namespace ac

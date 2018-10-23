@@ -13,11 +13,11 @@
 namespace ac {
 
 template <class T, size_t N>
-struct container_traits<std::array<T, N>> {
-    using category = random_access_container_tag;
+struct container_category<std::array<T, N>> : random_access_container_tag {};
 
-    template <class T1>
-    using rebind = std::array<T1, N>;
+template <class T, size_t N, class To>
+struct rebind<std::array<T, N>, To> {
+    using type = std::array<To, N>;
 };
 
 }  // namespace ac

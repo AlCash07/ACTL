@@ -10,11 +10,20 @@
 #pragma once
 
 #include <actl/container/dummy_container.hpp>
-#include <type_traits>
+#include <actl/traits/rebind.hpp>
 
 namespace ac {
 
-template <class C> struct value_type       { using type = typename C::value_type; };
+template <class C>
+struct value_type {
+    using type = typename C::value_type;
+};
+
+template <class T, size_t N>
+struct value_type<T[N]> {
+    using type = T;
+};
+
 template <>        struct value_type<none> { using type = none; };
 
 template <class C>
@@ -38,65 +47,19 @@ struct simple_associative_container_tag : virtual associative_container_tag {};
 struct pair_associative_container_tag : virtual associative_container_tag {};
 
 template <class C>
-struct container_traits;
+struct container_category : none {};
 
 template <class T, size_t N>
-struct container_traits<T[N]> {
-    using category = random_access_container_tag;
-
-    template <class U>
-    using rebind = U[N];
-};
+struct container_category<T[N]> : random_access_container_tag {};
 
 template <>
-struct container_traits<none> {
-    template <class>
-    using rebind = dummy_container;
-};
-
-template <>
-struct container_traits<dummy_container> : container_traits<none> {
-    using category = random_access_container_tag;
-};
-
-template <class A, class T>
-using rebind_allocator_t = typename A::template rebind<T>::other;
-
-template <class C, class... Ts>
-struct rebind_container {
-    using type = typename container_traits<C>::template rebind<Ts...>;
-};
+struct container_category<dummy_container> : random_access_container_tag {};
 
 template <class C>
-struct rebind_container<C, none> {
-    using type = dummy_container;
-};
-
-template <class C, class... Ts>
-using rebind_container_t = typename rebind_container<C, Ts...>::type;
-
-namespace detail {
-
-template <class C, class = void>
-struct is_container : std::false_type {};
-
-template <class C>
-struct is_container<C, std::void_t<typename container_traits<C>::category>> : std::true_type {};
-
-template <class C, class Tag, bool = true>
-struct has_container_tag : std::is_base_of<Tag, typename container_traits<C>::category> {};
+inline constexpr bool is_container_v = !std::is_base_of<none, container_category<C>>::value;
 
 template <class C, class Tag>
-struct has_container_tag<C, Tag, false> : std::false_type {};
-
-}  // namespace detail
-
-template <class C>
-inline constexpr bool is_container_v = detail::is_container<C>::value;
-
-template <class C, class Tag>
-inline constexpr bool has_container_tag_v =
-    detail::has_container_tag<C, Tag, is_container_v<C>>::value;
+inline constexpr bool has_container_tag_v = std::is_base_of_v<Tag, container_category<C>>;
 
 template <class C>
 inline constexpr bool is_sequence_container_v = has_container_tag_v<C, sequence_container_tag>;
@@ -128,5 +91,9 @@ inline constexpr bool is_simple_associative_container_v =
 template <class C>
 inline constexpr bool is_pair_associative_container_v =
     has_container_tag_v<C, pair_associative_container_tag>;
+
+template <class C, class To>
+using rebind_container_t = std::conditional_t<std::is_same_v<C, none> || std::is_same_v<To, none>,
+                                              dummy_container, rebind_t<C, To>>;
 
 }  // namespace ac
