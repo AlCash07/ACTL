@@ -14,7 +14,7 @@
  * they are read until the range size is reached or termination character is found
  * (can be one of the characters in a given string or defined by predicate, isspace by default)
  * - char (&)[N], terminator
- * - range<char>, terminator
+ * - iterator_range<char>, terminator
  * - string&, terminator
  ***************************************************************************************************
  * Copyright 2017 Oleksandr Bacherikov.
@@ -27,7 +27,7 @@
 
 #include <actl/io/io_traits.hpp>
 #include <actl/macros.hpp>
-#include <actl/range/range.hpp>
+#include <actl/range/iterator_range.hpp>
 #include <actl/traits/ctype.hpp>
 #include <actl/traits/iterator_traits.hpp>
 #include <actl/traits/type_traits.hpp>
@@ -233,7 +233,7 @@ inline bool read(text_io_tag, Device& in, std::string& arg) {
 /* Ranges */
 
 template <class Device, class T, class... Ts>
-inline bool read(io_tag, Device& in, const range<T>& arg, Ts&&... args) {
+inline bool read(io_tag, Device& in, const iterator_range<T>& arg, Ts&&... args) {
     for (auto& element : arg) {
         if (!read(in, element)) return false;
     }
@@ -241,7 +241,7 @@ inline bool read(io_tag, Device& in, const range<T>& arg, Ts&&... args) {
 };
 
 template <class Device, class Terminator, class... Ts>
-inline bool read(text_io_tag, Device& in, const range<char*>& arg, Terminator&& terminator,
+inline bool read(text_io_tag, Device& in, const iterator_range<char*>& arg, Terminator&& terminator,
                  Ts&&... args) {
     detail::skip_characters(in, terminator);
     in.put_back();
@@ -250,7 +250,7 @@ inline bool read(text_io_tag, Device& in, const range<char*>& arg, Terminator&& 
 }
 
 template <class Device>
-inline bool read(text_io_tag, Device& in, const range<char*>& arg) {
+inline bool read(text_io_tag, Device& in, const iterator_range<char*>& arg) {
     return read(in, arg, "");
 }
 

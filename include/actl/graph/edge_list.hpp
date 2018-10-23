@@ -136,7 +136,7 @@ public:
         ec_id id_;
     };
 
-    range<edge_iterator> edges() const {
+    iterator_range<edge_iterator> edges() const {
         return {edge_iterator(this, begin_id(edges_)), edge_iterator(this, end_id(edges_))};
     }
 

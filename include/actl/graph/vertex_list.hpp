@@ -48,7 +48,7 @@ public:
 
     int vertex_count() const { return vertices_.size(); }
 
-    range<vertex_iterator> vertices() const { return id_range(vertices_); }
+    iterator_range<vertex_iterator> vertices() const { return id_range(vertices_); }
 
     vertex null_vertex() const { return null_id(vertices_); }
 

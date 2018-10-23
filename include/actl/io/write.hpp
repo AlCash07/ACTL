@@ -18,7 +18,7 @@
 #pragma once
 
 #include <actl/io/io_traits.hpp>
-#include <actl/range/range.hpp>
+#include <actl/range/iterator_range.hpp>
 #include <actl/traits/iterator_traits.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <cmath>
@@ -131,7 +131,7 @@ inline int write(text_io_tag, Device& out, const char* arg, const Ts&... args) {
 }
 
 template <class Device, class T, class... Ts>
-inline int write(binary_io_tag, Device& out, const range<T>& arg, const Ts&... args) {
+inline int write(binary_io_tag, Device& out, const iterator_range<T>& arg, const Ts&... args) {
     int chars_written = 0;
     for (const auto& element : arg)
         chars_written += write(out, element);
@@ -139,7 +139,7 @@ inline int write(binary_io_tag, Device& out, const range<T>& arg, const Ts&... a
 }
 
 template <class Device, class T, class... Ts>
-inline int write(text_io_tag, Device& out, const range<T>& arg, const Ts&... args) {
+inline int write(text_io_tag, Device& out, const iterator_range<T>& arg, const Ts&... args) {
     int chars_written = 0;
     bool is_first = true;
     for (const auto& i : arg) {

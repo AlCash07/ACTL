@@ -218,7 +218,7 @@ public:
 
     int degree(vertex u) const { return out_edges(u).size(); }
 
-    range<edge_iterator> edges() const {
+    iterator_range<edge_iterator> edges() const {
         if constexpr (std::is_same_v<edge_selector, two_vertices>) {
             return edge_list_.edges();
         } else {
@@ -226,13 +226,13 @@ public:
         }
     }
 
-    range<out_edge_iterator> out_edges(vertex u) const {
+    iterator_range<out_edge_iterator> out_edges(vertex u) const {
         return {out_edge_iterator(this, u, this->out_begin(u)),
                 out_edge_iterator(this, u, this->out_end(u))};
     }
 
     template <bool D = std::is_same_v<Dir, directed>>
-    std::enable_if_t<!D, range<in_edge_iterator>> in_edges(vertex u) const {
+    std::enable_if_t<!D, iterator_range<in_edge_iterator>> in_edges(vertex u) const {
         if constexpr (base_t::is_undirected) {
             auto out = out_edges(u);
             return {in_edge_iterator(out.begin()), in_edge_iterator(out.end())};

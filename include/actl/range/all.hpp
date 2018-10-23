@@ -9,6 +9,6 @@
 
 #include <actl/range/algorithm.hpp>
 #include <actl/range/irange.hpp>
+#include <actl/range/iterator_range.hpp>
 #include <actl/range/limited_input_range.hpp>
-#include <actl/range/range.hpp>
 #include <actl/range/transition_range.hpp>
