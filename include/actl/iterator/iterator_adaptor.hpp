@@ -28,13 +28,14 @@ namespace detail {
 
 template <class Derived, class It, class C, class V, class R, class P, class D>
 struct iterator_adaptor_base {
-    using type =
-        iterator_facade<Derived,
-                        deduce_type_t<C, typename std::iterator_traits<It>::iterator_category>,
-                        deduce_type_t<V, typename std::iterator_traits<It>::value_type>,
-                        deduce_type_t<R, typename std::iterator_traits<It>::reference>,
-                        deduce_type_t<P, typename std::iterator_traits<It>::pointer>,
-                        deduce_type_t<D, typename std::iterator_traits<It>::difference_type>>;
+    using traits = std::iterator_traits<It>;
+
+    using type = iterator_facade<Derived,
+                                 deduce_type_t<C, typename traits::iterator_category>,
+                                 deduce_type_t<V, typename traits::value_type>,
+                                 deduce_type_t<R, typename traits::reference>,
+                                 deduce_type_t<P, typename traits::pointer>,
+                                 deduce_type_t<D, typename traits::difference_type>>;
 };
 
 }  // namespace detail
