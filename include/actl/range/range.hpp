@@ -30,7 +30,7 @@ public:
     using size_type = int;
     // all other type aliases come from std::iterator_traits<It>
 
-    range_base() : begin_{}, end_{} {}
+    range_base() = default;
 
     template <class It1>
     range_base(It1 begin, It1 end) : begin_{begin}, end_{end} {}
@@ -46,11 +46,6 @@ public:
     typename std::iterator_traits<It>::reference front() const {
         ACTL_ASSERT(!empty());
         return *begin_;
-    }
-
-    void drop_front() {
-        ACTL_ASSERT(!empty());
-        ++begin_;
     }
 
 protected:
@@ -82,11 +77,6 @@ public:
         ACTL_ASSERT(!this->empty());
         auto end = this->end_;
         return *--end;
-    }
-
-    void drop_back() {
-        ACTL_ASSERT(!this->empty());
-        --this->end_;
     }
 };
 
