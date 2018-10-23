@@ -70,11 +70,11 @@ struct operator_arrow_dispatch<T&, Pointer> {  // "real" references
 
 template <class Iterator, class Category, class Value, class Reference, class Pointer,
           class Distance>
-class iterator_facade_base;
+class it_facade;
 
 // TODO: inheritance from iterator is deprecated, remove it.
 template <class It, class V, class R, class P, class D>
-class iterator_facade_base<It, std::output_iterator_tag, V, R, P, D>
+class it_facade<It, std::output_iterator_tag, V, R, P, D>
     : public std::iterator<std::output_iterator_tag, V, D,
                            typename operator_arrow_dispatch<R, P>::type, R> {
 public:
@@ -98,28 +98,22 @@ protected:
 };
 
 template <class It, class V, class R, class P, class D>
-class iterator_facade_base<It, std::input_iterator_tag, V, R, P, D>
-    : public iterator_facade_base<It, std::output_iterator_tag, V, R, P, D> {
+class it_facade<It, std::input_iterator_tag, V, R, P, D>
+    : public it_facade<It, std::output_iterator_tag, V, R, P, D> {
 public:
-    using iterator_category = std::input_iterator_tag;
-    using typename iterator_facade_base<It, std::output_iterator_tag, V, R, P, D>::pointer;
+    using typename it_facade<It, std::output_iterator_tag, V, R, P, D>::pointer;
 
     pointer operator->() const { return operator_arrow_dispatch<R, P>::apply(*this->derived()); }
 };
 
 template <class It, class V, class R, class P, class D>
-class iterator_facade_base<It, std::forward_iterator_tag, V, R, P, D>
-    : public iterator_facade_base<It, std::input_iterator_tag, V, R, P, D> {
-public:
-    using iterator_category = std::forward_iterator_tag;
-};
+class it_facade<It, std::forward_iterator_tag, V, R, P, D>
+    : public it_facade<It, std::input_iterator_tag, V, R, P, D> {};
 
 template <class It, class V, class R, class P, class D>
-class iterator_facade_base<It, std::bidirectional_iterator_tag, V, R, P, D>
-    : public iterator_facade_base<It, std::forward_iterator_tag, V, R, P, D> {
+class it_facade<It, std::bidirectional_iterator_tag, V, R, P, D>
+    : public it_facade<It, std::forward_iterator_tag, V, R, P, D> {
 public:
-    using iterator_category = std::bidirectional_iterator_tag;
-
     It& operator--() {
         iterator_core_access::decrement(this->derived());
         return this->derived();
@@ -133,11 +127,9 @@ public:
 };
 
 template <class It, class V, class R, class P, class D>
-class iterator_facade_base<It, std::random_access_iterator_tag, V, R, P, D>
-    : public iterator_facade_base<It, std::bidirectional_iterator_tag, V, R, P, D> {
+class it_facade<It, std::random_access_iterator_tag, V, R, P, D>
+    : public it_facade<It, std::bidirectional_iterator_tag, V, R, P, D> {
 public:
-    using iterator_category = std::random_access_iterator_tag;
-
     R operator[](D n) const { return *(this->derived() + n); }
 
     It& operator += (D n) {
@@ -158,7 +150,10 @@ public:
 }  // namespace detail
 
 template <class It, class C, class V, class R, class P, class D>
-class iterator_facade : public detail::iterator_facade_base<It, C, V, R, P, D> {};
+class iterator_facade : public detail::it_facade<It, C, V, R, P, D> {
+public:
+    using iterator_category = C;
+};
 
 #define ITERATOR_OPERATOR(type, op, expr)                                    \
     template <class It, class C, class V, class R, class P, class D>         \
