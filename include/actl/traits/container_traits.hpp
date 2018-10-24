@@ -59,7 +59,7 @@ template <>
 struct container_category<dummy_container> : random_access_container_tag {};
 
 template <class C>
-inline constexpr bool is_container_v = !std::is_base_of<none, container_category<C>>::value;
+inline constexpr bool is_container_v = !std::is_base_of_v<none, container_category<C>>;
 
 template <class C, class Tag>
 inline constexpr bool has_container_tag_v = std::is_base_of_v<Tag, container_category<C>>;
