@@ -11,7 +11,7 @@
 
 using namespace ac;
 
-TEST("vertex_list::none") {
+TEST("none") {
     vertex_list<> graph(3);
     ASSERT_EQUAL(std::make_pair(3, true), graph.try_add_vertex());
     ASSERT_EQUAL(4, graph.add_vertex());
@@ -38,7 +38,7 @@ void test_vertex_list() {
     ASSERT_EQUAL(vs.size() - 1, graph.vertex_count());
 }
 
-TEST("vertex_list::bundle") {
+TEST("bundle") {
     test_vertex_list<std::vector<bundle>>();
     test_vertex_list<std::list<bundle>>();
     test_vertex_list<std::set<bundle>>();

@@ -10,7 +10,7 @@
 
 using namespace ac;
 
-TEST("std::unordered_set::category") {
+TEST("category") {
     using C = std::unordered_set<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
@@ -21,7 +21,7 @@ TEST("std::unordered_set::category") {
     ASSERT_FALSE(is_pair_associative_container_v<C>);
 }
 
-TEST("std::unordered_multiset::category") {
+TEST("category") {
     using C = std::unordered_multiset<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);

@@ -25,7 +25,7 @@ void compare_sorted(const std::vector<int>& expected, std::vector<int> actual) {
     ASSERT_EQUAL(expected, actual);
 }
 
-TEST("container::functions::list") {
+TEST("list") {
     std::list<int> c;
     for (auto x : xs) {
         auto res = emplace(c, x);
@@ -39,7 +39,7 @@ TEST("container::functions::list") {
     ASSERT_EQUAL(xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST("container::functions::set") {
+TEST("set") {
     std::set<int> c;
     for (size_t i = 0; i < xs.size(); ++i) {
         auto res = emplace(c, xs[i]);
@@ -53,7 +53,7 @@ TEST("container::functions::set") {
     ASSERT_EQUAL(unique_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST("container::functions::multiset") {
+TEST("multiset") {
     std::multiset<int> c;
     for (auto x : xs) {
         auto resms = emplace(c, x);
@@ -67,7 +67,7 @@ TEST("container::functions::multiset") {
     ASSERT_EQUAL(sorted_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST("container::functions::unordered_set") {
+TEST("unordered_set") {
     std::unordered_set<int> c;
     for (size_t i = 0; i < xs.size(); ++i) {
         auto res = emplace(c, xs[i]);
@@ -81,7 +81,7 @@ TEST("container::functions::unordered_set") {
     compare_sorted(unique_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST("container::functions::unordered_multiset") {
+TEST("unordered_multiset") {
     std::unordered_multiset<int> c;
     for (auto x : xs) {
         auto res = emplace(c, x);
@@ -95,7 +95,7 @@ TEST("container::functions::unordered_multiset") {
     compare_sorted(sorted_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST("container::functions::vector") {
+TEST("vector") {
     std::vector<int> c;
     for (auto x : xs) {
         auto res = emplace(c, x);

@@ -10,7 +10,7 @@
 
 using namespace ac;
 
-TEST("ctype::correctness") {
+TEST("correctness") {
     for (char c = std::numeric_limits<char>::min(); c != std::numeric_limits<char>::max(); ++c) {
         auto uc = static_cast<unsigned char>(c);
         ASSERT_EQUAL(isdigit(uc) != 0, is_digit(c));

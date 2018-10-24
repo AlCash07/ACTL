@@ -21,15 +21,15 @@ struct R {
     using rebind = A;
 };
 
-TEST("rebind::member_rebind") { ASSERT_TRUE(std::is_same_v<A, rebind_t<R<A>, B>>); }
+TEST("member_rebind") { ASSERT_TRUE(std::is_same_v<A, rebind_t<R<A>, B>>); }
 
-TEST("rebind::inner") {
+TEST("inner") {
     ASSERT_TRUE(
         std::is_same_v<std::tuple<B, B, A, R<B>>, rebind_t<std::tuple<A, A, R<A>, R<B>>, B>>);
 }
 
-TEST("rebind::array") { ASSERT_TRUE(std::is_same_v<B[2], rebind_t<A[2], B>>); }
+TEST("array") { ASSERT_TRUE(std::is_same_v<B[2], rebind_t<A[2], B>>); }
 
-TEST("rebind::unordered_set") {
+TEST("unordered_set") {
     ASSERT_TRUE(std::is_same_v<std::unordered_set<int>, rebind_t<std::unordered_set<float>, int>>);
 }

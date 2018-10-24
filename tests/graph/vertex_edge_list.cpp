@@ -11,7 +11,7 @@
 
 using namespace ac;
 
-TEST("vertex_edge_list::vector") {
+TEST("vector") {
     vertex_edge_list<directed, std::vector<std::string>, std::vector<std::string>> graph(2);
     auto e = graph.add_edge(0, 2, "e02");
     ASSERT_EQUAL(3, graph.vertex_count());
@@ -25,7 +25,7 @@ TEST("vertex_edge_list::vector") {
     ASSERT_EQUAL(0, graph.edge_count());
 }
 
-TEST("vertex_edge_list::set") {
+TEST("set") {
     vertex_edge_list<directed, std::vector<std::string>, std::set<std::string>> graph;
     auto e = graph.add_edge("v0", "v2", "e02");
     ASSERT_EQUAL(2, graph.vertex_count());

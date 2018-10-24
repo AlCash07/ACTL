@@ -10,7 +10,7 @@
 
 using namespace ac;
 
-TEST("std::array::category") {
+TEST("category") {
     using C = std::array<int, 2>;
     ASSERT_TRUE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_random_access_container_v<C>);

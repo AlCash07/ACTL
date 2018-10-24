@@ -10,13 +10,13 @@
 
 using namespace ac;
 
-TEST("dummy_property_map::int") {
+TEST("int") {
     dummy_property_map<int, int> dpm;
     put(dpm, 2, 2);
     ASSERT_EQUAL(0, get(dpm, 2));
 }
 
-TEST("dummy_property_map::void") {
+TEST("void") {
     dummy_property_map<int> dpm;
     get(dpm, 1);
 }

@@ -10,7 +10,7 @@
 
 using namespace ac;
 
-TEST("std::forward_list::category") {
+TEST("category") {
     using C = std::forward_list<int>;
     ASSERT_TRUE(is_sequence_container_v<C>);
     ASSERT_FALSE(is_random_access_container_v<C>);

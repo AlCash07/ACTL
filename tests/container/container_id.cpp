@@ -11,7 +11,7 @@
 
 using namespace ac;
 
-TEST("container_id::vector") {
+TEST("vector") {
     using vid = container_id<std::vector<int>>;
     ASSERT_TRUE(std::is_same_v<int, vid>);
     std::vector<int> c = {0, 2, 4};
@@ -23,7 +23,7 @@ TEST("container_id::vector") {
     ASSERT_EQUAL(std::vector<int>{0, 4}, c);
 }
 
-TEST("container_id::set") {
+TEST("set") {
     std::set<int> c = {0, 2, 4};
     int i = 0;
     for (auto id : id_range(c)) {

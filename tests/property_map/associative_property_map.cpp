@@ -34,16 +34,16 @@ inline void test_associative_pm(Map&& map) {
     ASSERT_EQUAL_SETS(expected, C(apm.begin(), apm.end()));
 }
 
-TEST("associative_property_map::reference") {
+TEST("reference") {
     auto map = get_map();
     test_associative_pm<true>(map);
     ASSERT_EQUAL(4, map.size());
     ASSERT_EQUAL(2, map[3]);
 }
 
-TEST("associative_property_map::const_reference") {
+TEST("const_reference") {
     const auto map = get_map();
     test_associative_pm<false>(map);
 }
 
-TEST("associative_property_map::rvalue_reference") { test_associative_pm<true>(get_map()); }
+TEST("rvalue_reference") { test_associative_pm<true>(get_map()); }

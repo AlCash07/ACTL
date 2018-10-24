@@ -10,7 +10,7 @@
 
 using namespace ac;
 
-TEST("dummy_container") {
+TEST("basic") {
     dummy_container c(3);
     c.emplace_back(1);
     ASSERT_EQUAL(4, c.size());

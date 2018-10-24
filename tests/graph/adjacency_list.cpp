@@ -12,7 +12,7 @@
 
 using namespace ac;
 
-TEST("adjacency_list::none") {
+TEST("none") {
     adjacency_list<directed> graph(2);
     graph.add_edge(0, 2);
     graph.add_vertex();
@@ -52,7 +52,7 @@ void test_adjacency_list1() {
     test_adjacency_list2<Dir, std::vector<bundle>>();
 }
 
-TEST("adjacency_list::bundle") {
+TEST("bundle") {
     test_adjacency_list1<directed>();
     test_adjacency_list1<undirected>();
     test_adjacency_list1<bidirectional>();

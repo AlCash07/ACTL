@@ -10,7 +10,7 @@
 
 using namespace ac;
 
-TEST("std::unordered_map::category") {
+TEST("category") {
     using C = std::unordered_map<int, int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
@@ -21,7 +21,7 @@ TEST("std::unordered_map::category") {
     ASSERT_TRUE(is_pair_associative_container_v<C>);
 }
 
-TEST("std::unordered_multimap::category") {
+TEST("category") {
     using C = std::unordered_multimap<int, int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);

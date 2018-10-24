@@ -11,7 +11,7 @@
 
 using namespace ac;
 
-TEST("none::is_empty") { ASSERT_TRUE(std::is_empty_v<none>); }
+TEST("is_empty") { ASSERT_TRUE(std::is_empty_v<none>); }
 
 template <class E, class T>
 inline constexpr bool test_replace_void_v = std::is_same_v<E, replace_void_t<T>>;

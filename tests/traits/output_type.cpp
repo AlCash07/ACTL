@@ -11,7 +11,7 @@
 
 using namespace ac;
 
-TEST("output_type") {
+TEST("correctness") {
     ASSERT_TRUE(std::is_same_v<int, output_type_t<int*>>);
     ASSERT_TRUE(std::is_same_v<int, output_type_t<std::ostream_iterator<int>>>);
     ASSERT_TRUE(std::is_same_v<int, output_type_t<std::back_insert_iterator<std::deque<int>>>>);

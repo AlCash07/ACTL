@@ -11,13 +11,13 @@
 
 using namespace ac;
 
-TEST("function_property_map::free_function") {
+TEST("free_function") {
     auto fpm = make_function_property_map(std::strlen);
     ASSERT_EQUAL(0, get(fpm, ""));
     ASSERT_EQUAL(3, get(fpm, "fpm"));
 }
 
-TEST("function_property_map::lambda") {
+TEST("lambda") {
     int count = 0;
     auto fpm = make_function_property_map([&count](int) { return count++; });
     ASSERT_EQUAL(0, get(fpm, 0));

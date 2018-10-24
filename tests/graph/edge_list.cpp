@@ -11,7 +11,7 @@
 
 using namespace ac;
 
-TEST("edge_list::none") {
+TEST("none") {
     edge_list<directed, int> graph;
     auto e = graph.add_edge(2, 3);
     ASSERT_EQUAL(2, e.source());
@@ -27,7 +27,7 @@ void test_edge_list() {
     test_edges(graph, 0, 1, 2);
 }
 
-TEST("edge_list::bundle") {
+TEST("bundle") {
     test_edge_list<directed, std::vector<bundle>>();
     test_edge_list<undirected, std::vector<bundle>>();
     test_edge_list<directed, std::set<bundle>>();

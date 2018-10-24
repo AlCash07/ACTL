@@ -29,6 +29,6 @@ inline void test_accounting_pm() {
     }
 }
 
-TEST("accounting_property_map::non-invertible") { test_accounting_pm<false>(); }
+TEST("non-invertible") { test_accounting_pm<false>(); }
 
-TEST("accounting_property_map::invertible") { test_accounting_pm<true>(); }
+TEST("invertible") { test_accounting_pm<true>(); }

@@ -31,13 +31,13 @@ public:
     using base_t::execute_all;
 };
 
-TEST("component_set::execute_first") {
+TEST("execute_first") {
     component_set_test<const_op<bool, 1>, const_op<bool, 2>, const_op<std::string, 3>> c;
     ASSERT_EQUAL(1, c.execute_first(true));
     ASSERT_EQUAL(3, c.execute_first(std::string("3")));
 }
 
-TEST("component_set::execute_all") {
+TEST("execute_all") {
     component_set_test<increment, increment, increment> c({1}, {2}, {4});
     int x = 0;
     c.execute_all(x);
