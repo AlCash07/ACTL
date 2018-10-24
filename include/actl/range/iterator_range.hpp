@@ -24,7 +24,7 @@ public:
     It begin() const { return begin_; }
     It end() const { return end_; }
 
-protected:
+private:
     It begin_;
     It end_;
 };
