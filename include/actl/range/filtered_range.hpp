@@ -26,8 +26,8 @@ public:
 
     explicit filtered_range(Range range, Predicate pred) : data_(range, pred) {}
 
-    iterator begin() const { return {original().begin(), this}; }
-    iterator end() const { return {original().end(), this}; }
+    iterator begin() const { return {original().begin(), *this}; }
+    iterator end() const { return {original().end(), *this}; }
 
     const Range& original() const { return data_.first(); }
 
@@ -50,17 +50,19 @@ using filter_iterator_base =
 template <class R, class P>
 class filter_iterator : public detail::filter_iterator_base<R, P> {
     using base_t = detail::filter_iterator_base<R, P>;
-    using It     = typename remove_cvref_t<R>::iterator;
     using base_t::base;
 
 public:
-    filter_iterator(It it, const filtered_range<R, P>* ptr) : base_t(it), ptr_(ptr) { find_next(); }
+    filter_iterator(typename remove_cvref_t<R>::iterator it, const filtered_range<R, P>& range)
+        : base_t(it), range_(range) {
+        find_next();
+    }
 
 private:
     friend struct iterator_core_access;
 
     void find_next() {
-        while (base() != ptr_->original().end() && !ptr_->evaluate(*base())) ++base();
+        while (base() != range_.original().end() && !range_.evaluate(*base())) ++base();
     }
 
     void increment() {
@@ -71,10 +73,10 @@ private:
     void decrement() {
         do {
             --base();
-        } while (!ptr_->evaluate(*base()));
+        } while (!range_.evaluate(*base()));
     }
 
-    const filtered_range<R, P>* ptr_;
+    const filtered_range<R, P>& range_;
 };
 
 template <class Range, class Predicate>
