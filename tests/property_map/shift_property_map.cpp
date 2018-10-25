@@ -10,4 +10,13 @@
 
 using namespace ac;
 
-TEST("") {}
+template <class SPM>
+inline void test_lowercase(SPM spm) {
+    ASSERT_EQUAL(1, get(spm, 'b'));
+    ASSERT_EQUAL('c', spm.invert(2));
+}
+
+TEST("lowercase") {
+    test_lowercase(make_shift_property_map<int>('a'));
+    test_lowercase(static_shift_property_map<'a', int>());
+}

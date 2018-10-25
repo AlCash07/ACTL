@@ -8,13 +8,14 @@
 #pragma once
 
 #include <actl/property_map/property_map.hpp>
+#include <actl/util/use_default.hpp>
 
 namespace ac {
 
 /**
  * Property map that shifts key domain by the given offset (with casting).
  */
-template <class Key, class Value = int>
+template <class Key, class Value = Key>
 class shift_property_map : public property_map<Key, Value, Value, true> {
 public:
     explicit constexpr shift_property_map(Key offset) : offset_{offset} {}
@@ -29,16 +30,18 @@ private:
     const Key offset_;
 };
 
-template <class Key, class Value = int>
+template <class Value = use_default, class Key>
 inline auto make_shift_property_map(Key offset) {
-    return shift_property_map<Key, Value>{offset};
+    return shift_property_map<Key, deduce_type_t<Value, Key>>(offset);
 }
 
 /**
  * Shift property map with offset known at compile-time.
  */
-template <class Key, Key Offset, class Value = Key>
-class static_shift_property_map : public property_map<Key, Value, Value, true> {
+template <auto Offset, class Value = decltype(Offset)>
+class static_shift_property_map : public property_map<decltype(Offset), Value, Value, true> {
+    using Key = decltype(Offset);
+
 public:
     friend constexpr Value get(static_shift_property_map, Key key) {
         return static_cast<Value>(key - Offset);
