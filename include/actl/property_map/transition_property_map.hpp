@@ -25,13 +25,13 @@ public:
 
     using base_t::base_t;
 
-    iterator begin() const { return {data_().begin(), data_().begin(), data_().end()}; }
-    iterator end() const { return {data_().end(), data_().begin(), data_().end()}; }
+    iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
+    iterator end() const { return {data_.end(), data_.begin(), data_.end()}; }
 };
 
 template <class Key = int, class Sequence>
 inline auto make_transition_property_map(Sequence&& sequence) {
-    return transition_property_map<remove_rvalue_reference_t<Sequence>, Key>(
+    return transition_property_map<remove_rvalue_ref_t<Sequence>, Key>(
         std::forward<Sequence>(sequence));
 }
 

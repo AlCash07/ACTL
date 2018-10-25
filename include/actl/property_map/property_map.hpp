@@ -13,9 +13,6 @@
  * property_traits is a helper class that defines nested types and static variables for custom
  * property maps as well as for random access iterators (which can be used as property maps from
  * integer domain).
- *
- * If a property map incapsulates a container or a reference container, use property_map_container
- * wrapper to deal with constness.
  ***************************************************************************************************
  * Copyright 2017 Oleksandr Bacherikov.
  *
@@ -59,7 +56,7 @@ public:
     // TODO: if invert is guaranteed to take the result of get then invertible can be true.
     static constexpr bool invertible = false;
     static constexpr bool iterable   = false;
-    static constexpr bool writable   = is_non_const_reference_v<reference>;
+    static constexpr bool writable   = std::is_assignable_v<reference, value_type>;
 
     constexpr iterator_property_map(It it) : it_(it) {}
 
@@ -85,20 +82,6 @@ struct property_traits_impl {
 template <class It>
 struct property_traits_impl<It, false> : property_traits_impl<iterator_property_map<It>> {};
 
-template <class C, bool Mutable>
-struct pm_container {
-    C& operator()() const { return data_; }
-
-    mutable C data_;
-};
-
-template <class C>
-struct pm_container<C, false> {
-    C& operator()() const { return data_; }
-
-    C data_;
-};
-
 }  // namespace detail
 
 template <class PM>
@@ -108,23 +91,6 @@ struct property_traits
 // This type can be used as base class.
 template <class PM>
 using property_map_wrapper_t = typename property_traits<PM>::wrapper;
-
-template <class Container, class C = std::remove_reference_t<Container>,
-          bool M = !std::is_const_v<C>>
-struct property_map_container : detail::pm_container<Container, !std::is_reference_v<Container>> {
-    using reference = typename C::reference;
-    using iterator  = typename C::iterator;
-
-    static constexpr bool writable = true;
-};
-
-template <class Container, class C>
-struct property_map_container<Container, C, false> : detail::pm_container<Container, false> {
-    using reference = typename C::const_reference;
-    using iterator  = typename C::const_iterator;
-
-    static constexpr bool writable = false;
-};
 
 template <class It>
 inline std::enable_if_t<is_random_access_iterator_v<It>, typename property_traits<It>::reference>

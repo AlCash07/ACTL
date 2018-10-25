@@ -26,12 +26,6 @@ TEST("is_invocable") {
     ASSERT_FALSE(is_invocable_v<functor, int, double, int>);
 }
 
-TEST("is_non_const_reference") {
-    ASSERT_FALSE(is_non_const_reference_v<int>);
-    ASSERT_TRUE(is_non_const_reference_v<int&>);
-    ASSERT_FALSE(is_non_const_reference_v<const int&>);
-}
-
 TEST("is_signed_int") {
     ASSERT_FALSE(is_signed_int_v<bool>);
     ASSERT_TRUE(is_signed_int_v<char>);
@@ -60,8 +54,8 @@ TEST("nth_type") {
 
 TEST("remove_cvref") { ASSERT_TRUE(std::is_same_v<int, remove_cvref_t<volatile const int&>>); }
 
-TEST("remove_rvalue_reference") {
-    ASSERT_TRUE(std::is_same_v<int, remove_rvalue_reference_t<int>>);
-    ASSERT_TRUE(std::is_same_v<int&, remove_rvalue_reference_t<int&>>);
-    ASSERT_TRUE(std::is_same_v<int, remove_rvalue_reference_t<int&&>>);
+TEST("remove_rvalue_ref") {
+    ASSERT_TRUE(std::is_same_v<int, remove_rvalue_ref_t<int>>);
+    ASSERT_TRUE(std::is_same_v<int&, remove_rvalue_ref_t<int&>>);
+    ASSERT_TRUE(std::is_same_v<int, remove_rvalue_ref_t<int&&>>);
 }

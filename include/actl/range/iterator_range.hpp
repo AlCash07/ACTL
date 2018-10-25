@@ -39,14 +39,4 @@ inline auto make_range(Iterator first, Int n) {
     return iterator_range<Iterator>(first, std::next(first, n));
 }
 
-template <class Container>
-inline auto make_range(Container& container) {
-    return make_range(container.begin(), container.end());
-}
-
-template <class Container>
-inline auto make_crange(Container& container) {
-    return make_range(container.cbegin(), container.cend());
-}
-
 }  // namespace ac

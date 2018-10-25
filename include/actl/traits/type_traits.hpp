@@ -34,10 +34,6 @@ template <class F, class... Ts>
 inline constexpr bool is_invocable_v = is_invocable<F(Ts...)>::value;
 
 template <class T>
-inline constexpr bool is_non_const_reference_v =
-    std::is_reference_v<T> && !std::is_const_v<std::remove_reference_t<T>>;
-
-template <class T>
 inline constexpr bool is_signed_int_v = std::is_signed_v<T> && std::is_integral_v<T>;
 
 template <class T>
@@ -73,10 +69,10 @@ struct nth_type<N, T0, T...> {
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
-template <class T> struct remove_rvalue_reference      { using type = T; };
-template <class T> struct remove_rvalue_reference<T&&> { using type = T; };
+template <class T> struct remove_rvalue_ref      { using type = T; };
+template <class T> struct remove_rvalue_ref<T&&> { using type = T; };
 
 template <class T>
-using remove_rvalue_reference_t = typename remove_rvalue_reference<T>::type;
+using remove_rvalue_ref_t = typename remove_rvalue_ref<T>::type;
 
 }  // namespace ac

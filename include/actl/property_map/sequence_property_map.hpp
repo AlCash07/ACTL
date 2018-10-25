@@ -11,6 +11,7 @@
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/property_map/property_map.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/range/container_range.hpp>
 #include <actl/traits/iterator_traits.hpp>
 #include <array>
 
@@ -19,39 +20,29 @@ namespace ac {
 namespace detail {
 
 template <class Sequence, class Key>
-class sequence_pm_base : public property_map_base {
-    using PMC = property_map_container<Sequence>;
+class sequence_pm_base : public property_map_base, public container_range<Sequence> {
+    using base_t = container_range<Sequence>;
 
 public:
-    static_assert(is_random_access_iterator_v<typename PMC::iterator>,
+    static_assert(is_random_access_iterator_v<typename base_t::iterator>,
                   "sequence must be random access");
 
     using key_type   = Key;
-    using value_type = typename std::remove_reference_t<Sequence>::value_type;
-    using reference  = typename PMC::reference;
-    using iterator   = typename PMC::iterator;
 
     static constexpr bool invertible = false;
     static constexpr bool iterable   = true;
-    static constexpr bool writable   = PMC::writable;
 
-    template <class... Ts>
-    explicit sequence_pm_base(Ts&&... args) : data_{{std::forward<Ts>(args)...}} {}
+    using base_t::base_t;
 
-    reference operator[](Key key) const {
-        ACTL_ASSERT(0 <= key && key < data_().size());
-        return data_()[key];
+    friend typename base_t::reference get(const sequence_pm_base& pm, Key key) {
+        ACTL_ASSERT(0 <= key && key < pm.data_.size());
+        return pm.data_[key];
     }
 
-    friend reference get(const sequence_pm_base& pm, Key key) { return pm[key]; }
-
-    template <bool W = writable>
+    template <bool W = base_t::writable>
     std::enable_if_t<W> clear() {
-        fill(data_(), value_type{});
+        fill(this->data_, typename base_t::value_type{});
     }
-
-protected:
-    PMC data_;
 };
 
 }  // namespace detail
@@ -85,13 +76,13 @@ public:
 
     using base_t::base_t;
 
-    iterator begin() const { return {data_().begin(), data_().begin()}; }
-    iterator end() const { return {data_().end(), data_().begin()}; }
+    iterator begin() const { return {data_.begin(), data_.begin()}; }
+    iterator end() const { return {data_.end(), data_.begin()}; }
 };
 
 template <class Key = int, class Sequence>
 inline auto make_sequence_property_map(Sequence&& sequence) {
-    return sequence_property_map<remove_rvalue_reference_t<Sequence>, Key>(
+    return sequence_property_map<remove_rvalue_ref_t<Sequence>, Key>(
         std::forward<Sequence>(sequence));
 }
 

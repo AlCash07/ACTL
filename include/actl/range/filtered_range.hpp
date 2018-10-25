@@ -81,7 +81,7 @@ private:
 
 template <class Range, class Predicate>
 inline auto filter_range(Range&& range, Predicate pred) {
-    return filtered_range<Range, Predicate>(range, pred);
+    return filtered_range<remove_rvalue_ref_t<Range>, Predicate>(std::forward<Range>(range), pred);
 }
 
 }  // namespace ac
