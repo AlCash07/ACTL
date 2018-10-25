@@ -7,11 +7,11 @@
 
 #pragma once
 
+#include <actl/container/dummy_container.hpp>
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
+#include <actl/property_map/container_property_map.hpp>
 #include <actl/property_map/dummy_property_map.hpp>
-#include <actl/property_map/generic_container_property_map.hpp>
-#include <actl/container/dummy_container.hpp>
 
 namespace ac {
 
@@ -26,12 +26,10 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](edge_property) {
-        return get_second(make_generic_container_property_map(this->edges_));
-    }
+    auto operator[](edge_property) { return get_second(make_container_property_map(this->edges_)); }
 
     auto operator[](edge_property) const {
-        return get_second(make_generic_container_property_map(this->edges_));
+        return get_second(make_container_property_map(this->edges_));
     }
 
     T&       operator[](edge e) { return get((*this)[edge_property{}], e); }

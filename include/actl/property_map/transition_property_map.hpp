@@ -7,35 +7,64 @@
 
 #pragma once
 
-#include <actl/iterator/transition_iterator.hpp>
-#include <actl/property_map/sequence_property_map.hpp>
+#include <actl/property_map/container_property_map.hpp>
+#include <actl/range/filtered_range.hpp>
+#include <actl/util/compressed_pair.hpp>
 
 namespace ac {
 
-/**
- * Sequence property map with traversal interface that skips default values.
- */
-template <class Sequence, class Key = int>
-class transition_property_map : public detail::sequence_pm_base<Sequence, Key> {
-    using base_t = detail::sequence_pm_base<Sequence, Key>;
-    using base_t::data_;
-
-public:
-    using iterator = transition_iterator<typename base_t::iterator, Key>;
-
-    using base_t::base_t;
-
-    iterator begin() const { return {data_.begin(), data_.begin(), data_.end()}; }
-    iterator end() const { return {data_.end(), data_.begin(), data_.end()}; }
+struct to_bool {
+    template <class T>
+    constexpr bool operator()(const T& x) {
+        return static_cast<bool>(x);
+    }
 };
 
-template <class Key = int, class Sequence>
-inline auto make_transition_property_map(Sequence&& sequence) {
-    return transition_property_map<remove_rvalue_ref_t<Sequence>, Key>(
-        std::forward<Sequence>(sequence));
+template <class Pred>
+struct test_second : public ebo<Pred> {
+    using ebo<Pred>::ebo;
+
+    template <class Pair>
+    constexpr bool operator()(const Pair& x) {
+        return this->get()(x.second);
+    }
+};
+
+/**
+ * Container property map with traversal interface that skips values not satisfying predicate.
+ */
+template <class Container, class Predicate>
+class transition_property_map
+    : public property_map_base,
+      public filtered_range<container_property_map<Container>, test_second<Predicate>> {
+    using CPM = container_property_map<Container>;
+    using TSP = test_second<Predicate>;
+
+public:
+    template <class C>
+    explicit transition_property_map(C&& cont, Predicate pred)
+        : filtered_range<CPM, TSP>(CPM(std::forward<C>(cont)), TSP(pred)) {}
+
+    friend typename CPM::reference get(const transition_property_map& pm,
+                                       typename CPM::key_type         key) {
+        return get(pm.original(), key);
+    }
+};
+
+template <class Container, class Predicate = to_bool>
+inline auto make_transition_property_map(Container&& container, Predicate pred = {}) {
+    return transition_property_map<remove_rvalue_ref_t<Container>, Predicate>(
+        std::forward<Container>(container), pred);
 }
 
-template <class T, int N, class Key = int>
-using transition_array_property_map = transition_property_map<std::array<T, N>, Key>;
+template <class C, class P>
+struct property_traits<transition_property_map<C, P>> : property_traits<container_property_map<C>> {
+};
+
+/**
+ * Transition property map with underlying fixed-size array.
+ */
+template <class T, int N, class Predicate>
+using transition_array_property_map = transition_property_map<std::array<T, N>, Predicate>;
 
 }  // namespace ac

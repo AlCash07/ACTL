@@ -10,9 +10,9 @@
 #include <actl/property_map/accounting_property_map.hpp>
 #include <actl/property_map/associative_property_map.hpp>
 #include <actl/property_map/composite_property_map.hpp>
+#include <actl/property_map/container_property_map.hpp>
 #include <actl/property_map/dummy_property_map.hpp>
 #include <actl/property_map/function_property_map.hpp>
-#include <actl/property_map/generic_container_property_map.hpp>
 #include <actl/property_map/identity_property_map.hpp>
 #include <actl/property_map/member_property_map.hpp>
 #include <actl/property_map/shift_property_map.hpp>

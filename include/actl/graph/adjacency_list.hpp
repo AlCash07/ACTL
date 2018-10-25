@@ -34,7 +34,6 @@ public:
     using base_t::operator[];
 
     auto operator[](edge_property) { return this->edge_list_[edge_property{}]; }
-
     auto operator[](edge_property) const { return this->edge_list_[edge_property{}]; }
 
     T&       operator[](edge e) { return get((*this)[edge_property{}], e); }

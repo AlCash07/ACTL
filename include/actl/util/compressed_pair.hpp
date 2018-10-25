@@ -13,7 +13,7 @@ namespace ac {
 
 template <class T, bool = std::is_empty_v<T> && !std::is_final_v<T>>
 class ebo : private T {
-protected:
+public:
     template <class... Ts>
     constexpr explicit ebo(Ts&&... args) : T(std::forward<Ts>(args)...) {}
 
@@ -23,7 +23,7 @@ protected:
 
 template <class T>
 class ebo<T, false> {
-protected:
+public:
     template <class... Ts>
     constexpr explicit ebo(Ts&&... args) : value_(std::forward<Ts>(args)...) {}
 

@@ -23,11 +23,11 @@ public:
     using base_t::base_t;
 
     auto operator[](vertex_property) {
-        return get_second(make_generic_container_property_map(this->vertices_));
+        return get_second(make_container_property_map(this->vertices_));
     }
 
     auto operator[](vertex_property) const {
-        return get_second(make_generic_container_property_map(this->vertices_));
+        return get_second(make_container_property_map(this->vertices_));
     }
 
     T&       operator[](vertex v) { return get((*this)[vertex_property{}], v); }

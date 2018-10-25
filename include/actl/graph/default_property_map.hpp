@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/property_map/associative_property_map.hpp>
-#include <actl/property_map/sequence_property_map.hpp>
+#include <actl/property_map/container_property_map.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <map>
 #include <vector>
@@ -18,7 +18,7 @@ namespace ac {
 template <class T, class Graph>
 inline auto default_vertex_property_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::vertex_container>) {
-        return make_sequence_property_map(std::vector<T>(graph.vertex_count()));
+        return make_container_property_map(std::vector<T>(graph.vertex_count()));
     } else {
         return make_associative_property_map(std::map<typename Graph::vertex, T>());
     }
@@ -27,7 +27,7 @@ inline auto default_vertex_property_map(const Graph& graph) {
 template <class T, class Graph>
 inline auto default_edge_property_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::edge_container>) {
-        return make_sequence_property_map(std::vector<T>(graph.edge_count()));
+        return make_container_property_map(std::vector<T>(graph.edge_count()));
     } else {
         return make_associative_property_map(std::map<typename Graph::edge, T>());
     }

@@ -71,8 +71,7 @@ struct second_pm_traits {
 
 template <class Key>
 class second_property_map : public second_pm_traits<Key>::base {
-    friend typename second_pm_traits<Key>::base::reference get(const second_property_map&,
-                                                               Key key) {
+    friend typename second_pm_traits<Key>::base::reference get(second_property_map, Key key) {
         return key.second();
     }
 };
