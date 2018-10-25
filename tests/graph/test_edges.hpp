@@ -68,7 +68,7 @@ inline void test_edges(Graph& graph, V v0, V v1, V v2) {
     ASSERT_EQUAL_SETS(get_ends<Graph::is_directed>(es),
                       get_ends<Graph::is_directed>(std::vector<E>(e_range.begin(), e_range.end())));
     auto e02 = graph.find_edge(v0, v2);
-    ASSERT_EQUAL_SETS(std::vector<V>{v0, v2}, std::vector<V>{e02.source(), e02.target()});
+    ASSERT_EQUAL_SETS(std::vector<V>{v0, v2}, {e02.source(), e02.target()});
     ASSERT_EQUAL(es[1], e02);
     if constexpr (TestAdjacency) {
         std::map<V, std::vector<V>> outs, ins;

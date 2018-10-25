@@ -31,7 +31,7 @@ inline void test_associative_pm(Map&& map) {
         put(apm, 3, 2);
         ASSERT_EQUAL(2, get(apm, 3));
     }
-    ASSERT_EQUAL_SETS(expected, C(apm.begin(), apm.end()));
+    ASSERT_EQUAL_SETS(expected, {apm.begin(), apm.end()});
 }
 
 TEST("reference") {

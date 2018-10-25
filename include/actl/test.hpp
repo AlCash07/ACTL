@@ -77,8 +77,8 @@ struct assert_impl {
 
     inline void check_false(bool condition) const { check<true>(false, condition); }
 
-    template <class T0, class T1>
-    inline void check_sets(T0 expected, T1 actual) const {
+    template <class T>
+    inline void check_sets(std::vector<T> expected, std::vector<T> actual) const {
         sort(expected);
         sort(actual);
         if (equal(expected, actual)) return;

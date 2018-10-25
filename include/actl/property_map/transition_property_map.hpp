@@ -15,7 +15,7 @@ namespace ac {
 
 struct to_bool {
     template <class T>
-    constexpr bool operator()(const T& x) {
+    constexpr bool operator()(const T& x) const {
         return static_cast<bool>(x);
     }
 };
@@ -25,7 +25,7 @@ struct test_second : public ebo<Pred> {
     using ebo<Pred>::ebo;
 
     template <class Pair>
-    constexpr bool operator()(const Pair& x) {
+    constexpr bool operator()(const Pair& x) const {
         return this->get()(x.second);
     }
 };

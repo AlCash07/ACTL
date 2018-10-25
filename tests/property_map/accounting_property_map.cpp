@@ -21,7 +21,7 @@ inline void test_accounting_pm() {
     ASSERT_EQUAL(1, get(apm, "s"));
     using C = std::vector<std::pair<std::string, int>>;
     C expected{{"a", 0}, {"s", 1}, {"p", 2}};
-    ASSERT_EQUAL_SETS(expected, C(apm.begin(), apm.end()));
+    ASSERT_EQUAL_SETS(expected, {apm.begin(), apm.end()});
     if constexpr (Invertible) {
         for (int i = 0; i < 3; ++i) {
             ASSERT_EQUAL(expected[i].first, apm.invert(i));

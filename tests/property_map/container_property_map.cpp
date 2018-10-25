@@ -13,10 +13,13 @@
 using namespace ac;
 
 TEST("const_set&") {
-    const std::set<int> s{1, 4, 5};
+    const std::set<int> s{1, 5};
     auto cpm = make_container_property_map(s);
-    ASSERT_EQUAL(1, get(cpm, iterator_to_id(s, s.begin())));
-    ASSERT_EQUAL(5, get(cpm, iterator_to_id(s, --s.end())));
+    auto i0 = iterator_to_id(s, s.begin());
+    auto i1 = iterator_to_id(s, --s.end());
+    ASSERT_EQUAL(5, get(cpm, i1));
+    using C = std::vector<std::pair<container_id<std::set<int>>, int>>;
+    ASSERT_EQUAL(C{{i0, 1}, {i1, 5}}, C(cpm.begin(), cpm.end()));
 }
 
 TEST("vector&") {
@@ -33,4 +36,6 @@ TEST("vector&&") {
     ASSERT_EQUAL(2, get(cpm, 1));
     put(cpm, 2, 6);
     ASSERT_EQUAL(6, get(cpm, 2));
+    using C = std::vector<std::pair<int, int>>;
+    ASSERT_EQUAL(C{{0, 3}, {1, 2}, {2, 6}}, C(cpm.begin(), cpm.end()));
 }
