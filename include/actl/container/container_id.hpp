@@ -79,62 +79,62 @@ template <class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
 template <class C>
-inline container_id<C> iterator_to_id(const C& container, typename C::const_iterator it) {
+inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator it) {
     if constexpr (is_random_access_container_v<C>) {
-        return static_cast<int>(it - container.begin());
+        return static_cast<int>(it - cont.begin());
     } else {
         return container_id<C>(it);
     }
 }
 
 template <class C>
-inline typename C::const_iterator id_to_iterator(const C& container, const container_id<C>& id) {
+inline typename C::const_iterator id_to_iterator(const C& cont, const container_id<C>& id) {
     if constexpr (is_random_access_container_v<C>) {
-        ACTL_ASSERT(0 <= id && id < container.size());
-        return container.begin() + id;
+        ACTL_ASSERT(0 <= id && id < cont.size());
+        return cont.begin() + id;
     } else {
         return id.base();
     }
 }
 
 template <class C>
-inline container_id<C> begin_id(const C& container) {
+inline container_id<C> begin_id(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return 0;
     } else {
-        return container_id<C>(container.begin());
+        return container_id<C>(cont.begin());
     }
 }
 
 template <class C>
-inline container_id<C> end_id(const C& container) {
+inline container_id<C> end_id(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
-        return static_cast<int>(container.size());
+        return static_cast<int>(cont.size());
     } else {
-        return container_id<C>(container.end());
+        return container_id<C>(cont.end());
     }
 }
 
 // Returns an invalid Id that is fixed for the given container.
 template <class C>
-inline container_id<C> null_id(const C& container) {
+inline container_id<C> null_id(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return -1;
     } else {
-        return end_id(container);
+        return end_id(cont);
     }
 }
 
 template <class C>
-inline auto id_range(const C& container) {
+inline auto id_range(const C& cont) {
     using iterator = container_id_iterator<C>;
-    return make_range(iterator(begin_id(container)), iterator(end_id(container)));
+    return make_range(iterator(begin_id(cont)), iterator(end_id(cont)));
 }
 
 template <class C>
-inline typename C::reference id_at(C& container, container_id<C> id) {
+inline typename C::reference id_at(C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
-        return container[id];
+        return cont[id];
     } else {
         // const_cast is required because id contains a const_iterator.
         // TODO: this cast allows modification of set key, which may lead to bugs.
@@ -143,9 +143,9 @@ inline typename C::reference id_at(C& container, container_id<C> id) {
 }
 
 template <class C>
-inline typename C::const_reference id_at(const C& container, container_id<C> id) {
+inline typename C::const_reference id_at(const C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
-        return container[id];
+        return cont[id];
     } else {
         return *id.get_iterator();
     }
@@ -154,19 +154,19 @@ inline typename C::const_reference id_at(const C& container, container_id<C> id)
 /* Generic container functions with id */
 
 template <class C, class... Ts>
-inline std::pair<container_id<C>, bool> id_emplace(C& container, Ts&&... args) {
-    auto res = emplace(container, std::forward<Ts>(args)...);
-    return {iterator_to_id(container, res.first), res.second};
+inline std::pair<container_id<C>, bool> id_emplace(C& cont, Ts&&... args) {
+    auto res = emplace(cont, std::forward<Ts>(args)...);
+    return {iterator_to_id(cont, res.first), res.second};
 }
 
 template <class C>
-inline void id_erase(C& container, container_id<C> id) {
-    container.erase(id_to_iterator(container, id));
+inline void id_erase(C& cont, container_id<C> id) {
+    cont.erase(id_to_iterator(cont, id));
 }
 
 template <class C, class T>
-inline container_id<C> id_find(const C& container, const T& value) {
-    return iterator_to_id(container, find(container, value));
+inline container_id<C> id_find(const C& cont, const T& value) {
+    return iterator_to_id(cont, find(cont, value));
 }
 
 }  // namespace ac

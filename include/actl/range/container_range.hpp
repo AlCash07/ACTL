@@ -55,13 +55,13 @@ public:
 };
 
 template <class Container>
-inline auto make_range(Container&& container) {
-    return container_range<remove_rvalue_ref_t<Container>>(std::forward<Container>(container));
+inline auto make_range(Container&& cont) {
+    return container_range<remove_rvalue_ref_t<Container>>(std::forward<Container>(cont));
 }
 
 template <class Container>
-inline auto make_crange(const Container& container) {
-    return make_range(container);
+inline auto make_crange(const Container& cont) {
+    return make_range(cont);
 }
 
 }  // namespace ac

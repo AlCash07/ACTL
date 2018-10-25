@@ -52,9 +52,9 @@ public:
 };
 
 template <class Container, class Predicate = to_bool>
-inline auto make_transition_property_map(Container&& container, Predicate pred = {}) {
+inline auto make_transition_property_map(Container&& cont, Predicate pred = {}) {
     return transition_property_map<remove_rvalue_ref_t<Container>, Predicate>(
-        std::forward<Container>(container), pred);
+        std::forward<Container>(cont), pred);
 }
 
 template <class C, class P>

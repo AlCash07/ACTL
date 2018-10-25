@@ -62,9 +62,8 @@ public:
 };
 
 template <class Container>
-inline auto make_container_property_map(Container&& container) {
-    return container_property_map<remove_rvalue_ref_t<Container>>(
-        std::forward<Container>(container));
+inline auto make_container_property_map(Container&& cont) {
+    return container_property_map<remove_rvalue_ref_t<Container>>(std::forward<Container>(cont));
 }
 
 }  // namespace ac
