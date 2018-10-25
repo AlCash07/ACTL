@@ -11,29 +11,34 @@
 
 namespace ac {
 
-namespace detail {
-
-template <int I, class T, bool = std::is_empty_v<T> && !std::is_final_v<T>>
-class member : private T {
+template <class T, bool = std::is_empty_v<T> && !std::is_final_v<T>>
+class ebo : private T {
 protected:
     template <class... Ts>
-    constexpr member(Ts&&... args) : T(std::forward<Ts>(args)...) {}
+    constexpr explicit ebo(Ts&&... args) : T(std::forward<Ts>(args)...) {}
 
     constexpr T&       get() noexcept { return *this; }
     constexpr const T& get() const noexcept { return *this; }
 };
 
-template <int I, class T>
-class member<I, T, false> {
+template <class T>
+class ebo<T, false> {
 protected:
     template <class... Ts>
-    constexpr member(Ts&&... args) : value_(std::forward<Ts>(args)...) {}
+    constexpr explicit ebo(Ts&&... args) : value_(std::forward<Ts>(args)...) {}
 
     constexpr T&       get() noexcept { return value_; }
     constexpr const T& get() const noexcept { return value_; }
 
 private:
     T value_;
+};
+
+namespace detail {
+
+template <int I, class T>
+struct member : ebo<T> {
+    using ebo<T>::ebo;
 };
 
 }  // namespace detail
