@@ -21,7 +21,7 @@ namespace ac {
 namespace detail {
 
 template <class PM1, class PM2>
-class cpm_base : public property_map_base, protected compressed_pair<PM1, PM2> {
+class composite_pm_base : public property_map_base, protected compressed_pair<PM1, PM2> {
     using base_t = compressed_pair<PM1, PM2>;
 
 public:
@@ -30,13 +30,13 @@ public:
 
 // This type is used to avoid multiple inheritance from property_map_base.
 template <class PM1, class PM2>
-using cpm_base_t =
+using composite_pm_base_t =
     std::conditional_t<std::is_base_of_v<property_map_base, compressed_pair<PM1, PM2>>,
-                       compressed_pair<PM1, PM2>, cpm_base<PM1, PM2>>;
+                       compressed_pair<PM1, PM2>, composite_pm_base<PM1, PM2>>;
 
 // Class that adds typedefs and get function.
 template <class PM1, class PM2>
-class cpm_get : public cpm_base_t<PM1, PM2> {
+class composite_pm_get : public composite_pm_base_t<PM1, PM2> {
 public:
     static_assert(std::is_convertible_v<typename property_traits<PM1>::reference,
                                         typename property_traits<PM2>::key_type>,
@@ -46,68 +46,69 @@ public:
     using value_type = typename property_traits<PM2>::value_type;
     using reference  = typename property_traits<PM2>::reference;
 
-    using cpm_base_t<PM1, PM2>::cpm_base_t;
+    using composite_pm_base_t<PM1, PM2>::composite_pm_base_t;
 
-    friend constexpr reference get(const cpm_get& pm, key_type key) {
+    friend constexpr reference get(const composite_pm_get& pm, key_type key) {
         return get(pm.second(), get(pm.first(), key));
     }
 };
 
 // Class that adds put function if possible.
 template <class PM1, class PM2, bool, bool, bool>
-class cpm_put : public cpm_get<PM1, PM2> {
+class composite_pm_put : public composite_pm_get<PM1, PM2> {
 public:
     static constexpr bool writable = false;
 
-    using cpm_get<PM1, PM2>::cpm_get;
+    using composite_pm_get<PM1, PM2>::composite_pm_get;
 };
 
 template <class PM1, class PM2, bool W1, bool Inv2>
-class cpm_put<PM1, PM2, W1, true, Inv2> : public cpm_get<PM1, PM2> {
-    using base_t = cpm_get<PM1, PM2>;
+class composite_pm_put<PM1, PM2, W1, true, Inv2> : public composite_pm_get<PM1, PM2> {
+    using base_t = composite_pm_get<PM1, PM2>;
 
 public:
     static constexpr bool writable = true;
 
     using base_t::base_t;
 
-    friend constexpr void put(const cpm_put& pm, typename base_t::key_type key,
+    friend constexpr void put(const composite_pm_put& pm, typename base_t::key_type key,
                               typename base_t::value_type value) {
         put(pm.second(), get(pm.first(), key), value);
     }
 };
 
 template <class PM1, class PM2>
-class cpm_put<PM1, PM2, true, false, true> : public cpm_get<PM1, PM2> {
-    using base_t = cpm_get<PM1, PM2>;
+class composite_pm_put<PM1, PM2, true, false, true> : public composite_pm_get<PM1, PM2> {
+    using base_t = composite_pm_get<PM1, PM2>;
 
 public:
     static constexpr bool writable = true;
 
     using base_t::base_t;
 
-    friend constexpr void put(const cpm_put& pm, typename base_t::key_type key,
+    friend constexpr void put(const composite_pm_put& pm, typename base_t::key_type key,
                               typename base_t::value_type value) {
         put(pm.first(), key, pm.second().invert(value));
     }
 };
 
 template <class PM1, class PM2>
-using cpm_put_t = cpm_put<PM1, PM2, property_traits<PM1>::writable, property_traits<PM2>::writable,
-                          property_traits<PM2>::invertible>;
+using composite_pm_put_t =
+    composite_pm_put<PM1, PM2, property_traits<PM1>::writable, property_traits<PM2>::writable,
+                     property_traits<PM2>::invertible>;
 
 // Class that adds invert method if possible.
 template <class PM1, class PM2, bool>
-class cpm_invert : public cpm_put_t<PM1, PM2> {
+class composite_pm_invert : public composite_pm_put_t<PM1, PM2> {
 public:
     static constexpr bool invertible = false;
 
-    using cpm_put_t<PM1, PM2>::cpm_put_t;
+    using composite_pm_put_t<PM1, PM2>::composite_pm_put_t;
 };
 
 template <class PM1, class PM2>
-class cpm_invert<PM1, PM2, true> : public cpm_put_t<PM1, PM2> {
-    using base_t = cpm_put_t<PM1, PM2>;
+class composite_pm_invert<PM1, PM2, true> : public composite_pm_put_t<PM1, PM2> {
+    using base_t = composite_pm_put_t<PM1, PM2>;
 
 public:
     static constexpr bool invertible = true;
@@ -120,21 +121,22 @@ public:
 };
 
 template <class PM1, class PM2>
-using cpm_invert_t =
-    cpm_invert<PM1, PM2, property_traits<PM1>::invertible && property_traits<PM2>::invertible>;
+using composite_pm_invert_t =
+    composite_pm_invert<PM1, PM2,
+                        property_traits<PM1>::invertible && property_traits<PM2>::invertible>;
 
 // Class that adds begin/end methods if possible.
 template <class PM1, class PM2, bool, bool, bool>
-class cpm_iterate : public cpm_invert_t<PM1, PM2> {
+class composite_pm_iterate : public composite_pm_invert_t<PM1, PM2> {
 public:
     static constexpr bool iterable = false;
 
-    using cpm_invert_t<PM1, PM2>::cpm_invert_t;
+    using composite_pm_invert_t<PM1, PM2>::composite_pm_invert_t;
 };
 
 template <class PM1, class PM2, bool It2, bool Inv2>
-class cpm_iterate<PM1, PM2, true, It2, Inv2> : public cpm_invert_t<PM1, PM2> {
-    using base_t = cpm_invert_t<PM1, PM2>;
+class composite_pm_iterate<PM1, PM2, true, It2, Inv2> : public composite_pm_invert_t<PM1, PM2> {
+    using base_t = composite_pm_invert_t<PM1, PM2>;
     using It     = typename PM1::iterator;
     using Pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
 
@@ -149,7 +151,7 @@ public:
 
         const PM2& pm_;
 
-        friend class cpm_iterate;
+        friend class composite_pm_iterate;
         friend struct ac::iterator_core_access;
     };
 
@@ -162,8 +164,8 @@ public:
 };
 
 template <class PM1, class PM2>
-class cpm_iterate<PM1, PM2, false, true, true> : public cpm_invert_t<PM1, PM2> {
-    using base_t = cpm_invert_t<PM1, PM2>;
+class composite_pm_iterate<PM1, PM2, false, true, true> : public composite_pm_invert_t<PM1, PM2> {
+    using base_t = composite_pm_invert_t<PM1, PM2>;
     using It     = typename PM2::iterator;
     using Pair   = std::pair<typename base_t::key_type, typename base_t::reference>;
 
@@ -178,7 +180,7 @@ public:
 
         const PM1& pm_;
 
-        friend class cpm_iterate;
+        friend class composite_pm_iterate;
         friend struct ac::iterator_core_access;
     };
 
@@ -191,8 +193,9 @@ public:
 };
 
 template <class PM1, class PM2>
-using cpm_t = cpm_iterate<PM1, PM2, property_traits<PM1>::iterable, property_traits<PM2>::iterable,
-                          property_traits<PM1>::invertible>;
+using composite_pm_t =
+    composite_pm_iterate<PM1, PM2, property_traits<PM1>::iterable, property_traits<PM2>::iterable,
+                         property_traits<PM1>::invertible>;
 
 }  // namespace detail
 
@@ -201,11 +204,16 @@ class composite_property_map
     : public composite_property_map<composite_property_map<PM1, PM2>, PMs...> {};
 
 template <class PM1, class PM2>
-class composite_property_map<PM1, PM2> : public detail::cpm_t<PM1, PM2> {
-    using base_t = detail::cpm_t<PM1, PM2>;
+class composite_property_map<PM1, PM2> : public detail::composite_pm_t<PM1, PM2> {
+    using base_t = detail::composite_pm_t<PM1, PM2>;
 
 public:
     using base_t::base_t;
+
+    friend constexpr void put(const composite_property_map& pm, typename base_t::key_type key,
+                              typename base_t::value_type value) {
+        put((const detail::composite_pm_put_t<PM1, PM2>&)pm, key, value);
+    }
 };
 
 template <class PM>
