@@ -42,7 +42,7 @@ struct property_map : property_map_base {
 };
 
 template <class It>
-class iterator_property_map : public property_map_base {
+class iterator_property_map : property_map_base {
     It it_;
 
 public:

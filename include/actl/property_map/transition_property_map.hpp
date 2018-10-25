@@ -35,7 +35,7 @@ struct test_second : public ebo<Pred> {
  */
 template <class Container, class Predicate>
 class transition_property_map
-    : public property_map_base,
+    : property_map_base,
       public filtered_range<container_property_map<Container>, test_second<Predicate>> {
     using CPM = container_property_map<Container>;
     using TSP = test_second<Predicate>;

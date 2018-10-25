@@ -21,7 +21,7 @@ namespace ac {
 namespace detail {
 
 template <class PM1, class PM2>
-class composite_pm_base : public property_map_base, protected compressed_pair<PM1, PM2> {
+class composite_pm_base : property_map_base, protected compressed_pair<PM1, PM2> {
     using base_t = compressed_pair<PM1, PM2>;
 
 public:

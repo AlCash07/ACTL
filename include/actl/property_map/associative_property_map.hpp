@@ -17,8 +17,7 @@ namespace ac {
  * Associative property map that returns default value for keys not present in container.
  */
 template <class AssociativeContainer>
-class associative_property_map : public property_map_base,
-                                 public container_range<AssociativeContainer> {
+class associative_property_map : property_map_base, public container_range<AssociativeContainer> {
     using base_t = container_range<AssociativeContainer>;
     using C      = remove_cvref_t<AssociativeContainer>;
 
