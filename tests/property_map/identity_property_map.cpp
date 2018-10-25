@@ -10,4 +10,23 @@
 
 using namespace ac;
 
-TEST("") {}
+TEST("int") {
+    identity_property_map<int, long long> ipm;
+    ASSERT_EQUAL(1LL, get(ipm, 1));
+    ASSERT_EQUAL(3, ipm.invert(3LL));
+}
+
+struct A {
+    int a;
+};
+
+struct B : A {
+    int b;
+};
+
+TEST("reference") {
+    B x{{0}, 0};
+    identity_property_map<B&, A&> ipm;
+    get(ipm, x).a = 2;
+    ASSERT_EQUAL(2, x.a);
+}
