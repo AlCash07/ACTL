@@ -8,6 +8,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIR})
 project("ACTL")
 set(CMAKE_CXX_STANDARD 17)
 
+add_definitions(-DACTL_DEBUG)
+
 function(get_files OUTPUT PATH EXTENSION)
 get_filename_component(FULL_PATH ${PATH} ABSOLUTE)
 file(GLOB_RECURSE FILES ${PATH}/*.${EXTENSION})
