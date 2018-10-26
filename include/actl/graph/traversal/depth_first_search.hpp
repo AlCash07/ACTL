@@ -98,7 +98,7 @@ public:
     void operator()(const Graph& graph, typename Graph::vertex s, OutEdgeIteratorStack&& stack = {},
                     VertexPredicate is_terminator = {}) {
         for (typename Graph::vertex u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
-        visit(graph, s, std::forward<OutEdgeIteratorStack>(stack));
+        visit(graph, s, std::forward<OutEdgeIteratorStack>(stack), is_terminator);
     }
 
     template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>,
@@ -109,7 +109,7 @@ public:
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {
             if (!base_t::execute_first(is_vertex_discovered{}, s))
-                visit(graph, s, std::forward<OutEdgeIteratorStack>(stack));
+                visit(graph, s, std::forward<OutEdgeIteratorStack>(stack), is_terminator);
         }
     }
 };

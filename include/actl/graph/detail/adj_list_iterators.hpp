@@ -73,7 +73,7 @@ class adj_list_edge_it
         while (!is_end()) {
             if (it_ == al_->out_end(u_)) {
                 ++u_;
-                it_ = al_->out_begin(u_);
+                if (!is_end()) it_ = al_->out_begin(u_);
             } else {
                 if (is_reverse_edge()) {
                     ++it_;

@@ -35,7 +35,7 @@ void test_vertex_list() {
     vertex_list<VC> graph;
     auto vs = test_vertices(graph);
     graph.remove_vertex(vs[1]);
-    ASSERT_EQUAL(vs.size() - 1, graph.vertex_count());
+    ASSERT_EQUAL((int)vs.size() - 1, graph.vertex_count());
 }
 
 TEST("bundle") {

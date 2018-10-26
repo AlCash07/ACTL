@@ -31,7 +31,7 @@ public:
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_random_access_container_v<VertexContainer>) {
             vertex n = std::max(u, v);
-            if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
+            if (n >= this->vertex_count()) this->resize(n + 1);
         }
         return ebase_t::try_add_edge(u, v, std::forward<Ts>(args)...);
     }

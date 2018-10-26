@@ -28,7 +28,7 @@ class ndarray_base;
 
 template <int...>
 struct static_array {
-    int operator[](int i) const {
+    int operator[](int) const {
         ACTL_ASSERT(false);
         return -1;
     }
@@ -78,7 +78,7 @@ class ndarray_container<std::array<T, Size>> {
 public:
     using value_type = T;
 
-    ndarray_container(int size) {}
+    ndarray_container(int) {}
 
     T*       data() { return data_.data(); }
     const T* data() const { return data_.data(); }
@@ -372,7 +372,7 @@ public:
     using reverse_iterator       = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-    static constexpr const int rank() { return N; }
+    static constexpr int rank() { return N; }
 
     using base_t::base_t;
 

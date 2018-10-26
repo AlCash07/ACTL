@@ -36,12 +36,23 @@ public:
     using vertex           = container_id<vertex_container>;
     using vertex_iterator  = container_id_iterator<vertex_container>;
 
+private:
+    static constexpr bool RA = is_random_access_container_v<vertex_container>;
+
+public:
     explicit vertex_list() = default;
 
-    template <class T = vertex_container, class = std::enable_if_t<is_random_access_container_v<T>>>
-    explicit vertex_list(int n) : vertices_(n) {}
+    template <bool B = RA, class = std::enable_if_t<B>>
+    explicit vertex_list(int n) {
+        resize(n);
+    }
 
-    int vertex_count() const { return vertices_.size(); }
+    int vertex_count() const { return static_cast<int>(vertices_.size()); }
+
+    template <bool B = RA, class = std::enable_if_t<B>>
+    void resize(int n) {
+        vertices_.resize(static_cast<typename vertex_container::size_type>(n));
+    }
 
     iterator_range<vertex_iterator> vertices() const { return id_range(vertices_); }
 

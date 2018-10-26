@@ -251,7 +251,7 @@ public:
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_random_access_container_v<VC>) {
             vertex n = std::max(u, v);
-            if (n >= this->vertices_.size()) this->vertices_.resize(n + 1);
+            if (n >= this->vertex_count()) this->resize(n + 1);
         }
         return this->try_add_edge_impl(u, v, std::forward<Ts>(args)...);
     }

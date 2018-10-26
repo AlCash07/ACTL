@@ -24,7 +24,7 @@
         static name initializer;                                   \
     } name::initializer;                                           \
     }                                                              \
-    inline void name::body(ac::default_random& random) const
+    inline void name::body([[maybe_unused]] ac::default_random& random) const
 
 #define TEST(...) TEST_IMPL(CONCATENATE(_tesT_, __COUNTER__), #__VA_ARGS__)
 
@@ -48,10 +48,7 @@ struct assert_impl {
 
     template <bool Equal, class T0, class T1>
     inline void check(const T0& expected, const T1& actual) const {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wsign-compare"
         if ((expected == actual) == Equal) return;
-#pragma clang diagnostic pop
         std::stringstream ss;
         if (!Equal) ss << "not ";
         ss << "expected = " << diagnostics::to_string(expected)
@@ -91,7 +88,7 @@ struct assert_impl {
 };
 
 template <class Function>
-inline void assert_throws(const char* filename, int line, const Function& f) {
+inline void assert_throws(const char*, int line, const Function& f) {
     try {
         f();
     } catch (...) {

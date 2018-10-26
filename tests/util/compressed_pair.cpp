@@ -8,12 +8,11 @@
 #include <actl/test.hpp>
 #include <actl/util/compressed_pair.hpp>
 #include <actl/util/none.hpp>
-#include <cstdint>
 
 using namespace ac;
 
 TEST("member_access") {
-    compressed_pair<int, std::string> p(2, 3, 'a');
+    compressed_pair<int, std::string> p(2, 3u, 'a');
     ASSERT_EQUAL(2, p.first());
     ASSERT_EQUAL("aaa", p.second());
     p.first() = 4;

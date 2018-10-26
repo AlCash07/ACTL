@@ -27,7 +27,9 @@
 namespace ac {
 
 template <class Device>
-inline int write(Device& out) { return 0; }
+inline int write(Device&) {
+    return 0;
+}
 
 /* Arithmetic types */
 

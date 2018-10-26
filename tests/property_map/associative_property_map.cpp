@@ -37,7 +37,7 @@ inline void test_associative_pm(Map&& map) {
 TEST("reference") {
     auto map = get_map();
     test_associative_pm<true>(map);
-    ASSERT_EQUAL(4, map.size());
+    ASSERT_EQUAL(4u, map.size());
     ASSERT_EQUAL(2, map[3]);
 }
 

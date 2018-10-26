@@ -16,7 +16,9 @@ namespace endpoint {
 
 enum : uint8_t { free = 0, closed = 1, open = 2 };
 
-inline constexpr uint8_t combine(uint8_t start, uint8_t end) { return start | end << 2; }
+inline constexpr uint8_t combine(uint8_t start, uint8_t end) {
+    return static_cast<uint8_t>(start | end << 2);
+}
 inline constexpr uint8_t start(uint8_t combined) { return static_cast<uint8_t>(combined & 3); }
 inline constexpr uint8_t end(uint8_t combined) { return static_cast<uint8_t>(combined >> 2); }
 

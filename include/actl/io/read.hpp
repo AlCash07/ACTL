@@ -37,7 +37,9 @@
 namespace ac {
 
 template <class Device>
-inline bool read(Device& in) { return true; }
+inline bool read(Device&) {
+    return true;
+}
 
 /* Arithmetic types */
 
@@ -217,7 +219,8 @@ inline bool read(text_io_tag, Device& in, std::string& arg, Terminator&& termina
     uint32_t length = std::max(16u, static_cast<uint32_t>(arg.capacity()));
     for (uint32_t last = 0;; length = last += length) {
         arg.resize(last + length);
-        int chars_read = detail::read_string(in, &arg[last], length + 1, terminator);
+        uint32_t chars_read =
+            static_cast<uint32_t>(detail::read_string(in, &arg[last], length + 1, terminator));
         if (chars_read < length) {
             arg.resize(last + chars_read);
             return read(in, std::forward<Ts>(args)...);

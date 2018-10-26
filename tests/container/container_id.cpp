@@ -16,7 +16,7 @@ TEST("vector") {
     ASSERT_TRUE(std::is_same_v<int, vid>);
     std::vector<int> c = {0, 2, 4};
     for (auto id : id_range(c)) {
-        ASSERT_EQUAL(2 * id, c[id]);
+        ASSERT_EQUAL(2 * id, c[(unsigned)id]);
     }
     auto id = begin_id(c);
     id_erase(c, ++id);
@@ -39,16 +39,16 @@ TEST("id_key") {
     std::set<int> c = {0, 2, 4};
     std::set<sid> s;
     s.insert(begin_id(c));
-    ASSERT_EQUAL(1, s.size());
+    ASSERT_EQUAL(1u, s.size());
     s.insert(end_id(c));
-    ASSERT_EQUAL(2, s.size());
+    ASSERT_EQUAL(2u, s.size());
     s.insert(begin_id(c));
-    ASSERT_EQUAL(2, s.size());
+    ASSERT_EQUAL(2u, s.size());
     std::unordered_set<sid> us;
     us.insert(begin_id(c));
-    ASSERT_EQUAL(1, us.size());
+    ASSERT_EQUAL(1u, us.size());
     us.insert(end_id(c));
-    ASSERT_EQUAL(2, us.size());
+    ASSERT_EQUAL(2u, us.size());
     us.insert(begin_id(c));
-    ASSERT_EQUAL(2, us.size());
+    ASSERT_EQUAL(2u, us.size());
 }

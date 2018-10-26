@@ -24,7 +24,7 @@ inline void test_accounting_pm() {
     ASSERT_EQUAL_SETS(expected, {pm.begin(), pm.end()});
     if constexpr (Invertible) {
         for (int i = 0; i < 3; ++i) {
-            ASSERT_EQUAL(expected[i].first, pm.invert(i));
+            ASSERT_EQUAL(expected[(unsigned)i].first, pm.invert(i));
         }
     }
 }

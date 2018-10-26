@@ -13,8 +13,8 @@ using namespace ac;
 
 TEST("free_function") {
     auto pm = make_function_property_map(std::strlen);
-    ASSERT_EQUAL(0, get(pm, ""));
-    ASSERT_EQUAL(2, get(pm, "pm"));
+    ASSERT_EQUAL(0u, get(pm, ""));
+    ASSERT_EQUAL(2u, get(pm, "pm"));
 }
 
 TEST("lambda") {

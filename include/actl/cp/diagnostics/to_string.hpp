@@ -35,7 +35,7 @@ inline std::enable_if_t<can_be_stringified_v<T>, std::string> to_string_impl_imp
 }
 
 template <class T>
-inline std::enable_if_t<!can_be_stringified_v<T>, std::string> to_string_impl_impl(const T& value) {
+inline std::enable_if_t<!can_be_stringified_v<T>, std::string> to_string_impl_impl(const T&) {
     return "<unknown-type>";
 }
 
@@ -127,7 +127,7 @@ struct to_string_impl<std::tuple<Ts...>, type_kind::tuple> {
     static std::string doit(const std::tuple<Ts...>& value, std::integer_sequence<int, Indices...>) {
         std::string tupleStr[] = {to_string(std::get<Indices>(value))...};
         std::string res(1, '(');
-        for (int i = 0; i < sizeof...(Indices); ++i) {
+        for (size_t i = 0; i < sizeof...(Indices); ++i) {
             if (i) res += ", ";
             res += tupleStr[i];
         }

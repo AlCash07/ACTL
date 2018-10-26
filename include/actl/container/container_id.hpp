@@ -79,25 +79,6 @@ template <class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
 template <class C>
-inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator it) {
-    if constexpr (is_random_access_container_v<C>) {
-        return static_cast<int>(it - cont.begin());
-    } else {
-        return container_id<C>(it);
-    }
-}
-
-template <class C>
-inline typename C::const_iterator id_to_iterator(const C& cont, const container_id<C>& id) {
-    if constexpr (is_random_access_container_v<C>) {
-        ACTL_ASSERT(0 <= id && id < cont.size());
-        return cont.begin() + id;
-    } else {
-        return id.base();
-    }
-}
-
-template <class C>
 inline container_id<C> begin_id(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return 0;
@@ -109,7 +90,7 @@ inline container_id<C> begin_id(const C& cont) {
 template <class C>
 inline container_id<C> end_id(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
-        return static_cast<int>(cont.size());
+        return static_cast<container_id<C>>(cont.size());
     } else {
         return container_id<C>(cont.end());
     }
@@ -132,9 +113,28 @@ inline auto id_range(const C& cont) {
 }
 
 template <class C>
+inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator it) {
+    if constexpr (is_random_access_container_v<C>) {
+        return static_cast<container_id<C>>(it - cont.begin());
+    } else {
+        return container_id<C>(it);
+    }
+}
+
+template <class C>
+inline typename C::const_iterator id_to_iterator(const C& cont, const container_id<C>& id) {
+    if constexpr (is_random_access_container_v<C>) {
+        ACTL_ASSERT(0 <= id && id < end_id(cont));
+        return cont.begin() + id;
+    } else {
+        return id.base();
+    }
+}
+
+template <class C>
 inline typename C::reference id_at(C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
-        return cont[id];
+        return cont[static_cast<typename C::size_type>(id)];
     } else {
         // const_cast is required because id contains a const_iterator.
         // TODO: this cast allows modification of set key, which may lead to bugs.
@@ -145,7 +145,7 @@ inline typename C::reference id_at(C& cont, container_id<C> id) {
 template <class C>
 inline typename C::const_reference id_at(const C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
-        return cont[id];
+        return cont[static_cast<typename C::size_type>(id)];
     } else {
         return *id.get_iterator();
     }
