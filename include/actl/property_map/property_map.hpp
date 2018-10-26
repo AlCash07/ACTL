@@ -94,7 +94,7 @@ using property_map_wrapper_t = typename property_traits<PM>::wrapper;
 
 template <class It>
 inline std::enable_if_t<is_random_access_iterator_v<It>, typename property_traits<It>::reference>
-get(It it, int key) {
+get(const It& it, int key) {  // const It& disallows conversion from array to pointer.
     return it[key];
 }
 
