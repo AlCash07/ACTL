@@ -19,19 +19,19 @@ inline std::map<int, int> get_map() { return {kv.begin(), kv.end()}; }
 
 template <bool Writable, class Map>
 inline void test_associative_pm(Map&& map) {
-    auto apm = make_associative_property_map(std::forward<Map>(map));
+    auto pm = make_associative_property_map(std::forward<Map>(map));
     for (auto[key, value] : kv) {
-        ASSERT_EQUAL(value, get(apm, key));
+        ASSERT_EQUAL(value, get(pm, key));
     }
-    ASSERT_EQUAL(0, get(apm, 0));
-    ASSERT_EQUAL(0, get(apm, 3));
+    ASSERT_EQUAL(0, get(pm, 0));
+    ASSERT_EQUAL(0, get(pm, 3));
     C expected = kv;
     if constexpr (Writable) {
         expected.emplace_back(3, 2);
-        put(apm, 3, 2);
-        ASSERT_EQUAL(2, get(apm, 3));
+        put(pm, 3, 2);
+        ASSERT_EQUAL(2, get(pm, 3));
     }
-    ASSERT_EQUAL_SETS(expected, {apm.begin(), apm.end()});
+    ASSERT_EQUAL_SETS(expected, {pm.begin(), pm.end()});
 }
 
 TEST("reference") {

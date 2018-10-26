@@ -10,10 +10,10 @@
 
 using namespace ac;
 
-template <class SPM>
-inline void test_lowercase(SPM spm) {
-    ASSERT_EQUAL(1, get(spm, 'b'));
-    ASSERT_EQUAL('c', spm.invert(2));
+template <class PM>
+inline void test_lowercase(PM pm) {
+    ASSERT_EQUAL(1, get(pm, 'b'));
+    ASSERT_EQUAL('c', pm.invert(2));
 }
 
 TEST("lowercase") {

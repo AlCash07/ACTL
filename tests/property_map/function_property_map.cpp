@@ -12,15 +12,15 @@
 using namespace ac;
 
 TEST("free_function") {
-    auto fpm = make_function_property_map(std::strlen);
-    ASSERT_EQUAL(0, get(fpm, ""));
-    ASSERT_EQUAL(3, get(fpm, "fpm"));
+    auto pm = make_function_property_map(std::strlen);
+    ASSERT_EQUAL(0, get(pm, ""));
+    ASSERT_EQUAL(2, get(pm, "pm"));
 }
 
 TEST("lambda") {
     int count = 0;
-    auto fpm = make_function_property_map([&count](int) { return count++; });
-    ASSERT_EQUAL(0, get(fpm, 0));
-    ASSERT_EQUAL(1, get(fpm, 0));
+    auto pm = make_function_property_map([&count](int) { return count++; });
+    ASSERT_EQUAL(0, get(pm, 0));
+    ASSERT_EQUAL(1, get(pm, 0));
     ASSERT_EQUAL(2, count);
 }

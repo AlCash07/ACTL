@@ -12,16 +12,18 @@
 using namespace ac;
 
 TEST("to_bool") {
-    auto tpm = make_transition_property_map(std::vector<int>{3, 2, 0, 6});
-    ASSERT_EQUAL(3, get(tpm, 0));
-    put(tpm, 1, 0);
-    ASSERT_EQUAL_SETS(std::vector<std::pair<int, int>>{{0, 3}, {3, 6}}, {tpm.begin(), tpm.end()});
+    auto pm = make_transition_property_map(std::vector<int>{3, 2, 0, 6});
+    ASSERT_EQUAL(3, get(pm, 0));
+    put(pm, 1, 0);
+    using C = std::vector<std::pair<int, int>>;
+    ASSERT_EQUAL(C{{0, 3}, {3, 6}}, C(pm.begin(), pm.end()));
 }
 
 TEST("lambda") {
     int  x0;
-    auto tpm =
+    auto pm =
         make_transition_property_map(std::vector<int>{3, 2, 6}, [&x0](int x) { return x != x0; });
     x0 = 3;
-    ASSERT_EQUAL_SETS(std::vector<std::pair<int, int>>{{1, 2}, {2, 6}}, {tpm.begin(), tpm.end()});
+    using C = std::vector<std::pair<int, int>>;
+    ASSERT_EQUAL_SETS(C{{1, 2}, {2, 6}}, C(pm.begin(), pm.end()));
 }

@@ -11,9 +11,9 @@
 using namespace ac;
 
 TEST("int") {
-    identity_property_map<int, long long> ipm;
-    ASSERT_EQUAL(1LL, get(ipm, 1));
-    ASSERT_EQUAL(3, ipm.invert(3LL));
+    identity_property_map<int, long long> pm;
+    ASSERT_EQUAL(1LL, get(pm, 1));
+    ASSERT_EQUAL(3, pm.invert(3LL));
 }
 
 struct A {
@@ -26,7 +26,7 @@ struct B : A {
 
 TEST("reference") {
     B x{{0}, 0};
-    identity_property_map<B&, A&> ipm;
-    get(ipm, x).a = 2;
+    identity_property_map<B&, A&> pm;
+    get(pm, x).a = 2;
     ASSERT_EQUAL(2, x.a);
 }
