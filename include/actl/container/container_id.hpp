@@ -26,8 +26,6 @@ class iterator_id : public iterator_adaptor<iterator_id<It>, It> {
 public:
     explicit iterator_id(It it = It{}) : iterator_adaptor<iterator_id<It>, It>(it) {}
 
-    It get_iterator() const { return this->base(); }
-
     friend constexpr std::uintptr_t get_id_key(iterator_id id) {
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id));
     }
@@ -122,7 +120,7 @@ inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator 
 }
 
 template <class C>
-inline typename C::const_iterator id_to_iterator(const C& cont, const container_id<C>& id) {
+inline typename C::const_iterator id_to_iterator(const C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
         ACTL_ASSERT(0 <= id && id < end_id(cont));
         return cont.begin() + id;
@@ -138,7 +136,7 @@ inline typename C::reference id_at(C& cont, container_id<C> id) {
     } else {
         // const_cast is required because id contains a const_iterator.
         // TODO: this cast allows modification of set key, which may lead to bugs.
-        return const_cast<typename C::reference>(*id.get_iterator());
+        return const_cast<typename C::reference>(*id.base());
     }
 }
 
@@ -147,7 +145,7 @@ inline typename C::const_reference id_at(const C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
         return cont[static_cast<typename C::size_type>(id)];
     } else {
-        return *id.get_iterator();
+        return *id.base();
     }
 }
 

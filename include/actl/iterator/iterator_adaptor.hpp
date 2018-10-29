@@ -48,9 +48,11 @@ public:
     const It& base() const { return it_; }
 
 protected:
-    It& base() { return it_; }
+    It& base_ref() { return it_; }
 
 private:
+    friend struct iterator_core_access;
+
     using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, P, D>::type;
 
     typename base_t::reference dereference() const { return *it_; }
@@ -74,8 +76,6 @@ private:
     }
 
     It it_;
-
-    friend struct iterator_core_access;
 };
 
 }  // namespace ac

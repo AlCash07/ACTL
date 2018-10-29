@@ -24,7 +24,7 @@ public:
                            const scalar_to_point_adaptor<Line, It>&, T*>(it)
         , line_{line} {}
 
-    void operator = (const T& value) const { *this->base() = line_(value); }
+    void operator = (const T& value) const { *this->base_ref() = line_(value); }
 
     operator It() const { return this->base(); }
 

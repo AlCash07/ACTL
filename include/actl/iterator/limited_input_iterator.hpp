@@ -28,9 +28,9 @@ private:
     void increment() {
         ACTL_ASSERT(limit_ > 0);
         if (--limit_ > 0) {
-            ++this->base();
+            ++this->base_ref();
         } else {
-            this->base() = Iterator{};
+            this->base_ref() = Iterator{};
         }
     }
 
