@@ -30,6 +30,6 @@ inline std::vector<V> test_vertices(Graph& graph) {
     ASSERT_EQUAL("v1", graph[vs[1]].s);
     ASSERT_EQUAL("v2a", get(pm, vs[2]).s);
     auto v_range = graph.vertices();
-    ASSERT_EQUAL_SETS(vs, {v_range.begin(), v_range.end()});
+    ASSERT_EQUAL_SETS(vs, std::vector<V>(v_range.begin(), v_range.end()));
     return vs;
 }

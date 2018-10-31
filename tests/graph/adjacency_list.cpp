@@ -27,29 +27,16 @@ void test_adjacency_list() {
     test_edges<true>(graph, vs[0], vs[1], vs[2]);
 }
 
-template <class Dir, class OEC, class EC>
-void test_adjacency_list3() {
-    test_adjacency_list<Dir, OEC, EC, std::vector<bundle>>();
-    if constexpr (std::is_same_v<Dir, directed> || !std::is_same_v<value_type_t<EC>, one_vertex>) {
-        test_adjacency_list<Dir, OEC, EC, std::set<bundle>>();
-        // TODO: fix the use of undeclared type as a template parameter and uncomment this line.
-        // test_adjacency_list<Dir, OEC, EC, std::unordered_multiset<bundle>>();
-    }
-}
-
-template <class Dir, class OEC>
-void test_adjacency_list2() {
-    test_adjacency_list3<Dir, OEC, none>();
-    test_adjacency_list3<Dir, OEC, std::list<edge_property>>();
-    test_adjacency_list3<Dir, OEC, std::vector<one_vertex>>();
-    test_adjacency_list3<Dir, OEC, std::vector<two_vertices>>();
-}
-
 template <class Dir>
 void test_adjacency_list1() {
-    test_adjacency_list2<Dir, std::set<bundle>>();
-    test_adjacency_list2<Dir, std::unordered_multiset<bundle>>();
-    test_adjacency_list2<Dir, std::vector<bundle>>();
+    test_adjacency_list<Dir, std::set<bundle>, none, std::vector<bundle>>();
+    test_adjacency_list<Dir, std::unordered_multiset<bundle>, std::list<edge_property>,
+                        std::set<bundle>>();
+    test_adjacency_list<Dir, std::unordered_multiset<bundle>, std::vector<one_vertex>,
+                        std::vector<bundle>>();
+    // TODO: fix the use of undeclared type as a template parameter and uncomment this line.
+    // test_adjacency_list<Dir, std::vector<bundle>, std::vector<two_vertices>,
+    // std::unordered_multiset<bundle>>();
 }
 
 TEST("bundle") {

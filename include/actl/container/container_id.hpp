@@ -22,15 +22,24 @@ template <class C, bool = is_container_v<C>, bool = is_random_access_container_v
 struct container_id_traits;
 
 template <class It>
-class iterator_id : public iterator_adaptor<iterator_id<It>, It> {
+class iterator_id : public iterator_adaptor<iterator_id<It>, It, use_default, iterator_id<It>,
+                                            iterator_id<It>, iterator_id<It>*> {
+    using id = iterator_id;
+
 public:
-    explicit iterator_id(It it = It{}) : iterator_adaptor<iterator_id<It>, It>(it) {}
+    explicit iterator_id(It it = It{})
+        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>(it) {}
 
     friend constexpr std::uintptr_t get_id_key(iterator_id id) {
-        return reinterpret_cast<std::uintptr_t>(std::addressof(*id));
+        return reinterpret_cast<std::uintptr_t>(std::addressof(*id.base()));
     }
 
     bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
+
+private:
+    friend struct iterator_core_access;
+
+    iterator_id dereference() const { return *this; }
 };
 
 template <class It>
@@ -40,18 +49,8 @@ inline size_t hash_value(const iterator_id<It>& id) {
 
 template <class C>
 struct container_id_traits<C, true, false> {
-    using id = iterator_id<typename C::const_iterator>;
-
-    class iterator : public iterator_adaptor<iterator, id, use_default, id, id, id*> {
-    public:
-        explicit iterator(id value = id{})
-            : iterator_adaptor<iterator, id, use_default, id, id, id*>(value) {}
-
-    private:
-        friend struct ac::iterator_core_access;
-
-        id dereference() const { return this->base(); }
-    };
+    using id       = iterator_id<typename C::const_iterator>;
+    using iterator = id;
 };
 
 template <class C>

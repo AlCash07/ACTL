@@ -27,7 +27,7 @@ TEST("set") {
     std::set<int> c = {0, 2, 4};
     int i = 0;
     for (auto id : id_range(c)) {
-        ASSERT_EQUAL(2 * i, *id);
+        ASSERT_EQUAL(2 * i, id_at(c, id));
         ++i;
     }
     id_erase(c, ++begin_id(c));
