@@ -58,7 +58,7 @@ public:
     static constexpr bool iterable   = false;
     static constexpr bool writable   = std::is_assignable_v<reference, value_type>;
 
-    constexpr iterator_property_map(It it) : it_(it) {}
+    constexpr iterator_property_map(It it) : it_{it} {}
 
     constexpr operator It() const { return it_; }
 
@@ -88,7 +88,7 @@ template <class PM>
 struct property_traits
     : detail::property_traits_impl<PM, std::is_base_of_v<property_map_base, PM>> {};
 
-// This type can be used as base class.
+// This type can be used as base class even when PM is a pointer.
 template <class PM>
 using property_map_wrapper_t = typename property_traits<PM>::wrapper;
 
