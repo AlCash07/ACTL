@@ -76,7 +76,7 @@ template <class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
 template <class C>
-inline container_id<C> begin_id(const C& cont) {
+inline container_id<C> id_begin(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return 0;
     } else {
@@ -85,7 +85,7 @@ inline container_id<C> begin_id(const C& cont) {
 }
 
 template <class C>
-inline container_id<C> end_id(const C& cont) {
+inline container_id<C> id_end(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return static_cast<container_id<C>>(cont.size());
     } else {
@@ -95,18 +95,18 @@ inline container_id<C> end_id(const C& cont) {
 
 // Returns an invalid Id that is fixed for the given container.
 template <class C>
-inline container_id<C> null_id(const C& cont) {
+inline container_id<C> id_null(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return -1;
     } else {
-        return end_id(cont);
+        return id_end(cont);
     }
 }
 
 template <class C>
 inline auto id_range(const C& cont) {
     using iterator = container_id_iterator<C>;
-    return make_range(iterator(begin_id(cont)), iterator(end_id(cont)));
+    return make_range(iterator(id_begin(cont)), iterator(id_end(cont)));
 }
 
 template <class C>
@@ -121,7 +121,7 @@ inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator 
 template <class C>
 inline typename C::const_iterator id_to_iterator(const C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
-        ACTL_ASSERT(0 <= id && id < end_id(cont));
+        ACTL_ASSERT(0 <= id && id < id_end(cont));
         return cont.begin() + id;
     } else {
         return id.base();

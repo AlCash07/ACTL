@@ -59,7 +59,7 @@ class adj_list_edge_it
 
     E dereference() const { return al_->get_edge(u_, *it_); }
 
-    bool is_end() const { return u_ == end_id(al_->vertices_); }
+    bool is_end() const { return u_ == id_end(al_->vertices_); }
 
     bool is_reverse_edge() const {
         if constexpr (AdjList::is_undirected) {
@@ -103,11 +103,11 @@ public:
 
     explicit adj_list_edge_it(const AdjList* al, bool begin) : al_(al) {
         if (begin) {
-            u_  = begin_id(al_->vertices_);
+            u_  = id_begin(al_->vertices_);
             it_ = al_->out_begin(u_);
             skip_empty();
         } else {
-            u_ = end_id(al_->vertices_);
+            u_ = id_end(al_->vertices_);
         }
     }
 };

@@ -135,7 +135,7 @@ public:
     };
 
     iterator_range<edge_iterator> edges() const {
-        return {edge_iterator(this, begin_id(edges_)), edge_iterator(this, end_id(edges_))};
+        return {edge_iterator(this, id_begin(edges_)), edge_iterator(this, id_end(edges_))};
     }
 
     edge find_edge(vertex u, vertex v) const {

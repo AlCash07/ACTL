@@ -18,7 +18,7 @@ TEST("vector") {
     for (auto id : id_range(c)) {
         ASSERT_EQUAL(2 * id, c[(unsigned)id]);
     }
-    auto id = begin_id(c);
+    auto id = id_begin(c);
     id_erase(c, ++id);
     ASSERT_EQUAL(std::vector<int>{0, 4}, c);
 }
@@ -30,7 +30,7 @@ TEST("set") {
         ASSERT_EQUAL(2 * i, id_at(c, id));
         ++i;
     }
-    id_erase(c, ++begin_id(c));
+    id_erase(c, ++id_begin(c));
     ASSERT_EQUAL(std::set<int>{0, 4}, c);
 }
 
@@ -38,17 +38,17 @@ TEST("id_key") {
     using sid = container_id<std::set<int>>;
     std::set<int> c = {0, 2, 4};
     std::set<sid> s;
-    s.insert(begin_id(c));
+    s.insert(id_begin(c));
     ASSERT_EQUAL(1u, s.size());
-    s.insert(end_id(c));
+    s.insert(id_end(c));
     ASSERT_EQUAL(2u, s.size());
-    s.insert(begin_id(c));
+    s.insert(id_begin(c));
     ASSERT_EQUAL(2u, s.size());
     std::unordered_set<sid> us;
-    us.insert(begin_id(c));
+    us.insert(id_begin(c));
     ASSERT_EQUAL(1u, us.size());
-    us.insert(end_id(c));
+    us.insert(id_end(c));
     ASSERT_EQUAL(2u, us.size());
-    us.insert(begin_id(c));
+    us.insert(id_begin(c));
     ASSERT_EQUAL(2u, us.size());
 }

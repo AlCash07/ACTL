@@ -56,7 +56,7 @@ public:
 
     iterator_range<vertex_iterator> vertices() const { return id_range(vertices_); }
 
-    vertex null_vertex() const { return null_id(vertices_); }
+    vertex null_vertex() const { return id_null(vertices_); }
 
     vertex nth_vertex(int n) const {
         ACTL_ASSERT(0 <= n && n < vertex_count());
