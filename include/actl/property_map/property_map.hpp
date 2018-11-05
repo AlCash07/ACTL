@@ -63,9 +63,7 @@ public:
 
     constexpr iterator_property_map(It it) : it_{it} {}
 
-    constexpr operator It() const { return it_; }
-
-    friend reference get(const iterator_property_map& pm, key_type key) { return pm[key]; }
+    friend reference get(const iterator_property_map& pm, key_type key) { return pm.it_[key]; }
 };
 
 namespace detail {
@@ -101,11 +99,10 @@ get(const It& it, int key) {  // const It& disallows conversion from array to po
     return it[key];
 }
 
-// Default put implementation.
 template <class It>
 inline std::enable_if_t<is_random_access_iterator_v<It> && property_traits<It>::writable> put(
-    const It& pm, int key, typename property_traits<It>::value_type value) {
-    get(pm, key) = value;
+    const It& it, int key, typename property_traits<It>::value_type value) {
+    it[key] = value;
 }
 
 template <class PM>

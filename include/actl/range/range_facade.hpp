@@ -18,11 +18,16 @@ namespace ac {
 namespace detail {
 
 template <class R, class It, class C = typename std::iterator_traits<It>::iterator_category>
-class range_facade : public std::iterator_traits<It> {
+class range_facade {
+    using traits = std::iterator_traits<It>;
+
 public:
-    using iterator  = It;
-    using size_type = int;
-    // all other type aliases come from std::iterator_traits<It>
+    using value_type      = typename traits::value_type;
+    using reference       = typename traits::reference;
+    using pointer         = typename traits::pointer;
+    using difference_type = typename traits::difference_type;
+    using iterator        = It;
+    using size_type       = int;
 
     bool empty() const { return first() == last(); }
 
