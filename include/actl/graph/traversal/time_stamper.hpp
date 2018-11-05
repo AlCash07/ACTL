@@ -15,7 +15,7 @@ namespace ac {
 // T can be a reference to share global time.
 template <class Map, class T = typename property_traits<Map>::value_type>
 struct time_stamper : property_map_wrapper_t<Map> {
-    T time = T{};
+    T time = {};
 
     void operator()(on_vertex_examine, typename property_traits<Map>::key_type u) {
         put(*this, u, time);
