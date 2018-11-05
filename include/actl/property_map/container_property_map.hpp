@@ -16,7 +16,8 @@
 namespace ac {
 
 template <class Container>
-class container_property_map : property_map_base, public container_range<Container> {
+class container_property_map : public put_helper<container_property_map<Container>>,
+                               public container_range<Container> {
     using base_t = container_range<Container>;
     using base_t::data_;
 

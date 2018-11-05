@@ -112,7 +112,8 @@ public:
     using typename base_t::edge;
 
     template <bool Const, class Ref = add_const_if_t<Const, reference>>
-    class edge_property_map : public property_map<edge, T, Ref, false, false, !Const> {
+    class edge_property_map : public property_map<edge, T, Ref, false, false, !Const>,
+                              public put_helper<edge_property_map<Const, Ref>> {
         using vertices_ref = add_const_if_t<Const, typename base_t::vertex_container&>;
 
         vertices_ref vertices_;

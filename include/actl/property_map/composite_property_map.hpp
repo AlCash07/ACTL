@@ -209,12 +209,6 @@ class composite_property_map<PM1, PM2> : public detail::composite_pm_t<PM1, PM2>
 
 public:
     using base_t::base_t;
-
-    // This put is needed to be a better match than default.
-    friend constexpr void put(const composite_property_map& pm, typename base_t::key_type key,
-                              typename base_t::value_type value) {
-        put((const detail::composite_pm_put_t<PM1, PM2>&)pm, key, value);
-    }
 };
 
 template <class PM>

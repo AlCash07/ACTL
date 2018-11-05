@@ -41,8 +41,12 @@ struct property_map : property_map_base {
     static constexpr bool writable   = Writable;
 };
 
+// Inherit from this class to generate put(pm, key, value) { get(pm, key) = value; }.
+template <class PM>
+struct put_helper : property_map_base {};
+
 template <class It>
-class iterator_property_map : property_map_base {
+class iterator_property_map : public put_helper<iterator_property_map<It>> {
     It it_;
 
 public:
@@ -51,7 +55,6 @@ public:
     using key_type   = int;
     using value_type = typename std::iterator_traits<It>::value_type;
     using reference  = typename std::iterator_traits<It>::reference;
-    using wrapper    = iterator_property_map<It>;
 
     // TODO: if invert is guaranteed to take the result of get then invertible can be true.
     static constexpr bool invertible = false;
@@ -99,11 +102,17 @@ get(const It& it, int key) {  // const It& disallows conversion from array to po
 }
 
 // Default put implementation.
+template <class It>
+inline std::enable_if_t<is_random_access_iterator_v<It> && property_traits<It>::writable> put(
+    const It& pm, int key, typename property_traits<It>::value_type value) {
+    get(pm, key) = value;
+}
+
 template <class PM>
 inline std::enable_if_t<property_traits<PM>::writable> put(
-    const PM& pm, typename property_traits<PM>::key_type key,
+    const put_helper<PM>& pm, typename property_traits<PM>::key_type key,
     typename property_traits<PM>::value_type value) {
-    get(pm, key) = value;
+    get(static_cast<const PM&>(pm), key) = value;
 }
 
 }  // namespace ac
