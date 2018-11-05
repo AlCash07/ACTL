@@ -32,8 +32,8 @@ inline color_recorder<Map> make_color_recorder(Map&& color) {
 }
 
 template <class Graph>
-inline auto default_color_recorder(const Graph& graph) {
-    return make_color_recorder(default_vertex_property_map<colors>(graph));
+inline auto make_default_color_recorder(const Graph& graph) {
+    return make_color_recorder(make_default_vertex_property_map<colors>(graph));
 }
 
 }  // namespace ac

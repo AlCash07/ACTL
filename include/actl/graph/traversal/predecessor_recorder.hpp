@@ -41,9 +41,9 @@ inline vertex_initializer<predecessor_recorder<Map>> make_predecessor_recorder(M
 }
 
 template <class Graph>
-inline auto default_predecessor_recorder(const Graph& graph) {
-    return make_predecessor_recorder(default_vertex_property_map<typename Graph::vertex>(graph),
-                                     graph.null_vertex());
+inline auto make_default_predecessor_recorder(const Graph& graph) {
+    return make_predecessor_recorder(
+        make_default_vertex_property_map<typename Graph::vertex>(graph), graph.null_vertex());
 }
 
 }  // namespace ac

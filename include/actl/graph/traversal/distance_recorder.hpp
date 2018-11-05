@@ -36,7 +36,7 @@ inline vertex_initializer<distance_recorder<Map>> make_distance_recorder(Map&& d
 
 template <class Graph>
 inline auto default_distance_recorder(const Graph& graph) {
-    return make_distance_recorder(default_vertex_property_map<int>(graph), -1);
+    return make_distance_recorder(make_default_vertex_property_map<int>(graph), -1);
 }
 
 }  // namespace ac

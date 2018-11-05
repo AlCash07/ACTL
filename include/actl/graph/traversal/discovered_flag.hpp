@@ -29,8 +29,8 @@ inline discovered_flag<Map> make_discovered_flag(Map&& discovered) {
 }
 
 template <class Graph>
-inline auto default_discovered_flag(const Graph& graph) {
-    return make_discovered_flag(default_vertex_property_map<bool>(graph));
+inline auto make_default_discovered_flag(const Graph& graph) {
+    return make_discovered_flag(make_default_vertex_property_map<bool>(graph));
 }
 
 }  // namespace ac

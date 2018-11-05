@@ -31,8 +31,9 @@ inline predecessor_edge_recorder<Map> make_predecessor_edge_recorder(Map&& prede
 }
 
 template <class Graph>
-inline auto default_predecessor_edge_recorder(const Graph& graph) {
-    return make_predecessor_edge_recorder(default_vertex_property_map<typename Graph::edge>(graph));
+inline auto make_default_predecessor_edge_recorder(const Graph& graph) {
+    return make_predecessor_edge_recorder(
+        make_default_vertex_property_map<typename Graph::edge>(graph));
 }
 
 }  // namespace ac
