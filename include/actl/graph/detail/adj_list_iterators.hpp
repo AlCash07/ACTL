@@ -119,7 +119,7 @@ struct edge_it {
 
 template <class AL>
 struct edge_it<AL, two_vertices> {
-    using type = typename AL::traits::edges::edge_iterator;
+    using type = typename AL::traits::edges::template edge_iterator<typename AL::edge>;
 };
 
 }  // namespace ac::detail

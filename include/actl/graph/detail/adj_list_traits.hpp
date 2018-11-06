@@ -28,9 +28,7 @@ class adj_list_vertex_data;
 
 template <class Dir, class OEC, class EC, class VC>
 struct adj_list_traits {
-    using vertices = vertex_list<rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
-
-    using vertex = typename vertices::vertex;
+    using vertex = std::conditional_t<is_random_access_container_v<VC>, int, void*>;
 
     using edge_selector = value_type_t<EC>;
 
@@ -63,16 +61,28 @@ struct adj_list_traits {
 
     using vertex_edges = vertex_edges<Dir, out_edge_container, in_edge_container>;
     using vertex_data  = mimic_pair<vertex_edges, value_type_t<VC>, 2>;
+
+    using vertices = vertex_list<rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
+
+    // vertices::vertex cannot be used as an element inside vertices because it would result in
+    // incomplete type inside stl container which is undefined behaviour.
+    // One solution would be to store iterators on heap and maintain pointers to them, however this
+    // is ugly and adds heap allocation and dereferencing overhead.
+    // Here we operate based on assumption that iterators for supported containers are just wrapped
+    // pointers (and it's true for all the major stl implementations), so they can be reinterpreted
+    // as void*.
+    static_assert(std::is_same_v<vertex, int> ||
+                  sizeof(typename vertices::vertex) == sizeof(void*));
 };
 
 template <class Dir, class OEC, class EC, class VC>
 class adj_list_vertex_data : public adj_list_traits<Dir, OEC, EC, VC>::vertex_data {
+    using traits = adj_list_traits<Dir, OEC, EC, VC>;
+
 public:
     template <class... Ts>
     explicit adj_list_vertex_data(Ts&&... args)
-        : adj_list_traits<Dir, OEC, EC, VC>::vertex_data(
-              typename adj_list_traits<Dir, OEC, EC, VC>::vertex_edges(),
-              std::forward<Ts>(args)...) {}
+        : traits::vertex_data(typename traits::vertex_edges(), std::forward<Ts>(args)...) {}
 };
 
 template <class V, class OE, class S>

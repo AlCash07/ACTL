@@ -75,9 +75,7 @@ public:
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    edge get_edge(vertex u, edge_id e) const {
-        return edge(u, id_at(edges_, e).first().other(u), e);
-    }
+    vertex get_target(vertex u, edge_id e) const { return id_at(edges_, e).first().other(u); }
 
     void clear() { edges_.clear(); }
 
@@ -112,30 +110,33 @@ public:
 
     using base_t::base_t;
 
-    class edge_iterator
-        : public iterator_facade<edge_iterator, std::input_iterator_tag, edge, edge> {
+    template <class E>
+    class edge_iterator : public iterator_facade<edge_iterator<E>, std::input_iterator_tag, E, E> {
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
 
         using ec_id = container_id<typename base_t::edge_container>;
 
-        edge_iterator(const edge_list_impl* el, ec_id id) : el_(el), id_(id) {}
+        edge_iterator(const edge_list_impl& el, ec_id id) : el_(el), id_(id) {}
 
-        edge dereference() const {
-            auto& vertices = id_at(el_->edges_, id_).first();
-            return edge(vertices.u, vertices.v, id_);
+        E dereference() const {
+            auto& vertices = id_at(el_.edges_, id_).first();
+            using V1 = typename E::vertex;
+            return E(V1(vertices.u), V1(vertices.v), id_);
         }
 
         void increment() { ++id_; }
 
         bool equals(const edge_iterator& other) const { return id_ == other.id_; }
 
-        const edge_list_impl* el_;
+        const edge_list_impl& el_;
         ec_id id_;
     };
 
-    iterator_range<edge_iterator> edges() const {
-        return {edge_iterator(this, id_begin(edges_)), edge_iterator(this, id_end(edges_))};
+    // E template parameter is needed for adjacency_list where vertices aren't stored directly.
+    template <class E = edge>
+    iterator_range<edge_iterator<E>> edges() const {
+        return {edge_iterator<E>(*this, id_begin(edges_)), edge_iterator<E>(*this, id_end(edges_))};
     }
 
     edge find_edge(vertex u, vertex v) const {
