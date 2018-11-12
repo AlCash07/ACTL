@@ -1,0 +1,26 @@
+/***************************************************************************************************
+ * Copyright 2018 Oleksandr Bacherikov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
+#pragma once
+
+#include <cstring>
+#include <type_traits>
+
+namespace ac {
+
+// C++20 version requires std::is_trivially_constructible_v<To>.
+template <class To, class From>
+inline std::enable_if_t<sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> &&
+                            std::is_trivially_copyable_v<To> && std::is_trivially_copyable_v<From>,
+                        To>
+bit_cast(const From& src) noexcept {
+    To dst;
+    std::memcpy(&dst, &src, sizeof(To));
+    return dst;
+}
+
+}  // namespace ac

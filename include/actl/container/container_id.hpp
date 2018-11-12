@@ -14,8 +14,8 @@
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/range/iterator_range.hpp>
 #include <actl/traits/container_traits.hpp>
+#include <actl/util/bit.hpp>
 #include <cstdint>
-#include <cstring>
 
 namespace ac {
 
@@ -27,18 +27,12 @@ class iterator_id : public iterator_adaptor<iterator_id<It>, It, use_default, it
                                             iterator_id<It>, iterator_id<It>*> {
     using id = iterator_id;
 
-    static It raw_to_it(void* raw) {
-        It it;
-        std::memcpy(&it, &raw, sizeof(void*));
-        return it;
-    }
-
 public:
     explicit iterator_id(It it = It{})
         : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>(it) {}
 
     explicit iterator_id(void* raw)
-        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>(raw_to_it(raw)) {
+        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>(bit_cast<It>(raw)) {
         // TODO: implement more general logic in case this condition fails (very unlikely).
         static_assert(sizeof(It) == sizeof(void*));
     }
@@ -78,9 +72,7 @@ inline constexpr int id_to_raw(int id) { return id; }
 
 template <class It>
 inline void* id_to_raw(iterator_id<It> id) {
-    void* raw{};
-    std::memcpy(&raw, &id, sizeof(void*));
-    return raw;
+    return bit_cast<void*>(id);
 }
 
 /**
