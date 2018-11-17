@@ -22,7 +22,7 @@ inline bool crosses(const crosses_point<WP>& policy, const point<T0, N>& lhs, co
 
 template <int N, class T0, class T1>
 inline bool crosses(use_default, const point<T0, N>& lhs, const T1& rhs) {
-    return within(use_default(), lhs, rhs) == 0;
+    return within(use_default{}, lhs, rhs) == 0;
 }
 
 }  // namespace ac

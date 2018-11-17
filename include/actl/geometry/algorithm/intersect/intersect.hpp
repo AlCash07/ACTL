@@ -20,7 +20,7 @@ inline auto intersect(const Policy& policy, const T0& lhs, const T1& rhs, Output
 
 template <class T0, class T1, class OutputIterator>
 inline auto intersect(const T0& lhs, const T1& rhs, OutputIterator dst) {
-    return intersect(use_default(), lhs, rhs, dst);
+    return intersect(use_default{}, lhs, rhs, dst);
 }
 
 }  // namespace ac

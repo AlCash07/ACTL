@@ -14,7 +14,7 @@ namespace ac {
 
 template <class T>
 inline auto convex_hull(multi_point<T>& points) {
-    return convex_hull(use_default(), points);
+    return convex_hull(use_default{}, points);
 }
 
 }  // namespace ac

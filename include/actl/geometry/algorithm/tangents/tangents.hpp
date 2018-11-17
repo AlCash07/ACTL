@@ -20,7 +20,7 @@ inline auto tangents(const Policy& policy, const T0& lhs, const T1& rhs, OutputI
 
 template <class T0, class T1, class OutputIterator>
 inline auto tangents(const T0& lhs, const T1& rhs, OutputIterator dst) {
-    return tangents(use_default(), lhs, rhs, dst);
+    return tangents(use_default{}, lhs, rhs, dst);
 }
 
 }  // namespace ac

@@ -21,7 +21,7 @@ inline auto nearest(const Policy& policy, const T0& lhs, const T1& rhs) {
 
 template <class T, class... Ts, class = geometry::disable_if_policy_t<T>>
 inline auto nearest(const T& arg, const Ts&... args) {
-    return nearest(use_default(), arg, args...);
+    return nearest(use_default{}, arg, args...);
 }
 
 }  // namespace ac

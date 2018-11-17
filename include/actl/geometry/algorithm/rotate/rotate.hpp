@@ -13,7 +13,7 @@ namespace ac {
 
 template <int N, class T, class... Ts>
 inline auto rotate(const point<T, N>& point, const Ts&... args) {
-    return rotate(use_default(), point, args...);
+    return rotate(use_default{}, point, args...);
 }
 
 }  // namespace ac

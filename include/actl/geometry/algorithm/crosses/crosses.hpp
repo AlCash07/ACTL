@@ -19,7 +19,7 @@ inline bool crosses(const Policy& policy, const T0& lhs, const T1& rhs) {
 
 template <class T0, class T1>
 inline bool crosses(const T0& lhs, const T1& rhs) {
-    return crosses(use_default(), rhs, lhs);
+    return crosses(use_default{}, rhs, lhs);
 }
 
 }  // namespace ac

@@ -18,7 +18,7 @@ inline auto reflect(const Policy& policy, const point<T0, N>& src, const T1& dst
 
 template <int N, class T0, class T1>
 inline auto reflect(const point<T0, N>& src, const T1& dst) {
-    return reflect(use_default(), src, dst);
+    return reflect(use_default{}, src, dst);
 }
 
 }  // namespace ac
