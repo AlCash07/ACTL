@@ -111,34 +111,34 @@ struct ring_element : Ring {
         , value(value)
     {}
 
-    constexpr ring_element& operator += (const ring_element& other) {
-        mod_add(value, other.value, ring());
+    constexpr ring_element& operator += (const ring_element& rhs) {
+        mod_add(value, rhs.value, ring());
         return *this;
     }
     
-    constexpr ring_element& operator -= (const ring_element& other) {
-        mod_sub(value, other.value, ring());
+    constexpr ring_element& operator -= (const ring_element& rhs) {
+        mod_sub(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element& operator *= (const ring_element& other) {
-        value = mod_mul(value, other.value, ring());
+    constexpr ring_element& operator *= (const ring_element& rhs) {
+        value = mod_mul(value, rhs.value, ring());
         return *this;
     }    
 
-    constexpr ring_element& operator /= (const ring_element& other) {
-        value = mod_div(value, other.value, ring());
+    constexpr ring_element& operator /= (const ring_element& rhs) {
+        value = mod_div(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element operator - (const ring_element& other) const {
+    constexpr ring_element operator - (const ring_element& rhs) const {
         auto r = *this;
-        return r -= other;
+        return r -= rhs;
     }
 
-    constexpr ring_element operator + (const ring_element& other) const {
+    constexpr ring_element operator + (const ring_element& rhs) const {
         auto r = *this;
-        return r += other;
+        return r += rhs;
     }
 
     constexpr ring_element operator - () const {
@@ -147,20 +147,20 @@ struct ring_element : Ring {
         return ring_element(r, ring());
     }
 
-    constexpr ring_element operator * (ring_element other) const {
-        return ring_element(mod_mul(value, other.value, ring()), ring());
+    constexpr ring_element operator * (ring_element rhs) const {
+        return ring_element(mod_mul(value, rhs.value, ring()), ring());
     }
 
-    constexpr ring_element operator / (ring_element other) const {
-        return ring_element(mod_div(value, other.value, ring()), ring());
+    constexpr ring_element operator / (ring_element rhs) const {
+        return ring_element(mod_div(value, rhs.value, ring()), ring());
     }
 
-    constexpr bool operator == (const ring_element& other) const {
-        return value == other.value;
+    constexpr bool operator == (const ring_element& rhs) const {
+        return value == rhs.value;
     }
 
-    constexpr bool operator != (const ring_element& other) const {
-        return value != other.value;
+    constexpr bool operator != (const ring_element& rhs) const {
+        return value != rhs.value;
     }
 
     friend std::istream& operator >> (std::istream& in, ring_element& x) {

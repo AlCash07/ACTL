@@ -35,9 +35,9 @@ private:
 
     void advance(Int n) { Increment ? value_ += n : value_ -= n; }
 
-    bool equals(const integer_iterator& other) const { return value_ == other.value_; }
+    bool equals(const integer_iterator& rhs) const { return value_ == rhs.value_; }
 
-    Int distance_to(const integer_iterator& other) const { return other.value_ - value_; }
+    Int distance_to(const integer_iterator& rhs) const { return rhs.value_ - value_; }
 
     Int value_;
 
@@ -66,13 +66,13 @@ private:
 
     void advance(Int n) { value_ += n * step_; }
 
-    bool equals(const integer_iterator_with_step& other) const { return value_ == other.value_; }
+    bool equals(const integer_iterator_with_step& rhs) const { return value_ == rhs.value_; }
 
     // TODO: if this operation is called often then it's better to avoid division.
-    Int distance_to(const integer_iterator_with_step& other) const {
-        ACTL_ASSERT(other.step_ == step_);
-        ACTL_ASSERT((other.value_ - value_) % step_ == 0);
-        return (other.value_ - value_) / step_;
+    Int distance_to(const integer_iterator_with_step& rhs) const {
+        ACTL_ASSERT(rhs.step_ == step_);
+        ACTL_ASSERT((rhs.value_ - value_) % step_ == 0);
+        return (rhs.value_ - value_) / step_;
     }
 
     Int value_;

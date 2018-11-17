@@ -52,11 +52,11 @@ private:
         }
     }
 
-    bool equals(const cyclic_iterator& other) const { return it_ == other.it_; }
+    bool equals(const cyclic_iterator& rhs) const { return it_ == rhs.it_; }
 
     typename std::iterator_traits<Iterator>::difference_type distance_to(
-        const cyclic_iterator& other) const {
-        auto distance = other.it_ - it_;
+        const cyclic_iterator& rhs) const {
+        auto distance = rhs.it_ - it_;
         return distance >= 0 ? distance : distance + (end_ - begin_);
     }
 

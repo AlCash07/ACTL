@@ -31,20 +31,20 @@ struct plane {
         : plane(normal, dot(normal, point)) {}
 
     template <class T1>
-    explicit constexpr plane(const plane<T1, N>& other) { (*this) = other; }
+    explicit constexpr plane(const plane<T1, N>& rhs) { (*this) = rhs; }
 
     explicit constexpr operator bool() const { return normal; }
 
-    void swap(plane& other) {
+    void swap(plane& rhs) {
         using std::swap;
-        swap(normal, other.normal);
-        swap(d, other.d);
+        swap(normal, rhs.normal);
+        swap(d, rhs.d);
     }
 
     template <class T1>
-    constexpr plane& operator = (const plane<T1, N>& other) {
-        normal = other.normal;
-        d = static_cast<T>(other.d);
+    constexpr plane& operator = (const plane<T1, N>& rhs) {
+        normal = rhs.normal;
+        d = static_cast<T>(rhs.d);
         return *this;
     }
 

@@ -41,7 +41,7 @@ private:
         if (!read(*device_, value_)) device_ = nullptr;
     }
 
-    bool equals(const input_device_iterator& other) const { return device_ == other.device_; }
+    bool equals(const input_device_iterator& rhs) const { return device_ == rhs.device_; }
 
     Device* device_;
     T value_;

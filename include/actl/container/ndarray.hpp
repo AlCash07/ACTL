@@ -83,7 +83,7 @@ public:
     T*       data() { return data_.data(); }
     const T* data() const { return data_.data(); }
 
-    void swap(ndarray_container& other) { std::swap(data_, other.data_); }
+    void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
 
 private:
     std::array<T, Size> data_;
@@ -99,7 +99,7 @@ public:
     T*       data() { return data_.get(); }
     const T* data() const { return data_.get(); }
 
-    void swap(ndarray_container& other) { std::swap(data_, other.data_); }
+    void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
 
 private:
     std::unique_ptr<T> data_;
@@ -127,7 +127,7 @@ public:
         initialize<0>(this->data(), ilist, strides);
     }
 
-    void swap(ndarray_data& other) { base_t::swap(other); }
+    void swap(ndarray_data& rhs) { base_t::swap(rhs); }
 
 private:
     template <int I, class Strides>
@@ -155,7 +155,7 @@ public:
 
     ndarray_data(int, T* data) : data_(data) {}
 
-    void swap(ndarray_data& other) { std::swap(data_, other.data_); }
+    void swap(ndarray_data& rhs) { std::swap(data_, rhs.data_); }
 
     T*       data() { return data_; }
     const T* data() const { return data_; }
@@ -182,9 +182,9 @@ public:
     explicit ndarray_shape(nd_initializer_list_t<T, N> ilist)
         : base_t(compute_size(ilist), ilist, strides()) {}
 
-    void swap(ndarray_shape& other) {
-        base_t::swap(other);
-        std::swap(strides_, other.strides_);
+    void swap(ndarray_shape& rhs) {
+        base_t::swap(rhs);
+        std::swap(strides_, rhs.strides_);
     }
 
     const int* strides() const { return strides_.data(); }
@@ -237,9 +237,9 @@ public:
     explicit ndarray_shape(const int* strides, T* data)
         : base_t(strides[0], data), strides_(strides) {}
 
-    void swap(ndarray_shape& other) {
-        base_t::swap(other);
-        std::swap(strides_, other.strides_);
+    void swap(ndarray_shape& rhs) {
+        base_t::swap(rhs);
+        std::swap(strides_, rhs.strides_);
     }
 
     const int* strides() const { return strides_; }
@@ -505,9 +505,9 @@ public:
     using base_t::base_t;
 
     template <class Data, class Dimensions>
-    ndarray_view& operator = (const detail::ndarray_base<N, Data, Dimensions>& other) {
-        ACTL_ASSERT(this->size() == other.size());
-        copy(*this, other.begin());
+    ndarray_view& operator = (const detail::ndarray_base<N, Data, Dimensions>& rhs) {
+        ACTL_ASSERT(this->size() == rhs.size());
+        copy(*this, rhs.begin());
         return *this;
     }
 };

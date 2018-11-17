@@ -79,7 +79,7 @@ public:
 
     void clear() { edges_.clear(); }
 
-    void swap(edge_list_edges& other) { edges_.swap(other.edges_); }
+    void swap(edge_list_edges& rhs) { edges_.swap(rhs.edges_); }
 
     dummy_property_map<edge> operator[](edge_property) const { return {}; }
 
@@ -96,7 +96,7 @@ class edge_list_impl : public edge_list_edges<Dir, V, EC, S> {
 public:
     using base_t::base_t;
 
-    void swap(edge_list_impl& other) { base_t::swap(other); }
+    void swap(edge_list_impl& rhs) { base_t::swap(rhs); }
 };
 
 template <class Dir, class V, class EC>
@@ -127,7 +127,7 @@ public:
 
         void increment() { ++id_; }
 
-        bool equals(const edge_iterator& other) const { return id_ == other.id_; }
+        bool equals(const edge_iterator& rhs) const { return id_ == rhs.id_; }
 
         const edge_list_impl& el_;
         ec_id id_;
@@ -148,7 +148,7 @@ public:
 
     void remove_edge(edge e) { id_erase(edges_, e); }
 
-    void swap(edge_list_impl& other) { base_t::swap(other); }
+    void swap(edge_list_impl& rhs) { base_t::swap(rhs); }
 };
 
 }  // namespace detail

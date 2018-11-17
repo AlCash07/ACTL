@@ -26,20 +26,20 @@ struct sphere {
         : center(center), radius{static_cast<T>(radius)} {}
 
     template <class T1>
-    explicit constexpr sphere(const sphere<T1, N>& other) { (*this) = other; }
+    explicit constexpr sphere(const sphere<T1, N>& rhs) { (*this) = rhs; }
 
     explicit constexpr operator bool() const { return radius > T{0}; }
 
-    void swap(sphere& other) {
+    void swap(sphere& rhs) {
         using std::swap;
-        swap(center, other.center);
-        swap(radius, other.radius);
+        swap(center, rhs.center);
+        swap(radius, rhs.radius);
     }
 
     template <class T1>
-    constexpr sphere& operator = (const sphere<T1, N>& other) {
-        center = other.center;
-        radius = static_cast<T>(other.radius);
+    constexpr sphere& operator = (const sphere<T1, N>& rhs) {
+        center = rhs.center;
+        radius = static_cast<T>(rhs.radius);
         return *this;
     }
 };

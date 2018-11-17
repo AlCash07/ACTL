@@ -105,22 +105,22 @@ struct line : public Kind {
         : Kind(kind), start(a), vector(vector ? point<T, N>(a) : point<T, N>(b - a)) {}
 
     template <class T1, class K1>
-    explicit constexpr line(const line<T1, N, K1>& other) { (*this) = other; }
+    explicit constexpr line(const line<T1, N, K1>& rhs) { (*this) = rhs; }
 
     constexpr operator bool() const { return vector; }
 
-    void swap(line& other) {
+    void swap(line& rhs) {
         using std::swap;
-        swap(start, other.start);
-        swap(vector, other.vector);
-        swap(static_cast<Kind&>(*this), other);
+        swap(start, rhs.start);
+        swap(vector, rhs.vector);
+        swap(static_cast<Kind&>(*this), rhs);
     }
 
     template <class T1, class K1>
-    constexpr line& operator = (const line<T1, N, K1>& other) {
-        start = other.start;
-        vector = other.vector;
-        static_cast<Kind&>(*this) = other.kind();
+    constexpr line& operator = (const line<T1, N, K1>& rhs) {
+        start = rhs.start;
+        vector = rhs.vector;
+        static_cast<Kind&>(*this) = rhs.kind();
         return *this;
     }
 

@@ -77,7 +77,7 @@ public:
 
     void clear() { vertices_.clear(); }
 
-    void swap(vertex_list& other) { vertices_.swap(other.vertices_); }
+    void swap(vertex_list& rhs) { vertices_.swap(rhs.vertices_); }
 
     dummy_property_map<vertex> operator[](vertex_property) const { return {}; }
 

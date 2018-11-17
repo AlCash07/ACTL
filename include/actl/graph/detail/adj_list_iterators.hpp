@@ -38,7 +38,7 @@ class adj_list_out_edge_it
 
     void increment() { ++it_; }
 
-    bool equals(const adj_list_out_edge_it& other) const { return it_ == other.it_; }
+    bool equals(const adj_list_out_edge_it& rhs) const { return it_ == rhs.it_; }
 
     const AdjList* al_;
     vertex         u_;
@@ -90,8 +90,8 @@ class adj_list_edge_it
         skip_empty();
     }
 
-    bool equals(const adj_list_edge_it& other) const {
-        return u_ == other.u_ && (is_end() || it_ == other.it_);
+    bool equals(const adj_list_edge_it& rhs) const {
+        return u_ == rhs.u_ && (is_end() || it_ == rhs.it_);
     }
 
     const AdjList*           al_;

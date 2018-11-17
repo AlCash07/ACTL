@@ -65,14 +65,14 @@ private:
     void advance(T n) { it_ += n; }
 
     template <class Derived1, class It1, class C1, class V1, class R1, class P1, class D1>
-    bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& other) const {
-        return it_ == other.base();
+    bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& rhs) const {
+        return it_ == rhs.base();
     }
 
     template <class Derived1, class It1, class C1, class V1, class R1, class P1, class D1>
     typename base_t::difference_type distance_to(
-        const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& other) const {
-        return other.base() - it_;
+        const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& rhs) const {
+        return rhs.base() - it_;
     }
 
     It it_;

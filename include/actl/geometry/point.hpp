@@ -36,10 +36,10 @@ public:
     }
 
     template <class T1>
-    explicit constexpr point_base(const point<T1, N>& other) { (*this) = other; }
+    explicit constexpr point_base(const point<T1, N>& rhs) { (*this) = rhs; }
 
     template <class T1>
-    explicit constexpr point_base(point<T1, N>&& other) { (*this) = other; }
+    explicit constexpr point_base(point<T1, N>&& rhs) { (*this) = rhs; }
 
     constexpr T*       data() { return coordinates_; }
     constexpr const T* data() const { return coordinates_; }
@@ -64,25 +64,25 @@ public:
         return false;
     }
 
-    void swap(point_base& other) {
+    void swap(point_base& rhs) {
         using std::swap;
         for (int i = 0; i < N; ++i)
-            swap(data()[i], other[i]);
+            swap(data()[i], rhs[i]);
     }
 
     template <class T1>
-    constexpr point_base& operator = (const point_base<T1, N>& other) {
-        return apply([](T& dst, const T1& src) { dst = static_cast<T>(src); }, other);
+    constexpr point_base& operator = (const point_base<T1, N>& rhs) {
+        return apply([](T& dst, const T1& src) { dst = static_cast<T>(src); }, rhs);
     }
 
     template <class T1>
-    constexpr point_base& operator += (const point_base<T1, N>& other) {
-        return apply([](T& dst, const T1& src) { dst += src; }, other);
+    constexpr point_base& operator += (const point_base<T1, N>& rhs) {
+        return apply([](T& dst, const T1& src) { dst += src; }, rhs);
     }
 
     template <class T1>
-    constexpr point_base& operator -= (const point_base<T1, N>& other) {
-        return apply([](T& dst, const T1& src) { dst -= src; }, other);
+    constexpr point_base& operator -= (const point_base<T1, N>& rhs) {
+        return apply([](T& dst, const T1& src) { dst -= src; }, rhs);
     }
 
     template <class T1>

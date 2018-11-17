@@ -55,9 +55,9 @@ public:
         ebase_t::clear();
     }
 
-    void swap(vertex_edge_list& other) {
-        vbase_t::swap(other);
-        ebase_t::swap(other);
+    void swap(vertex_edge_list& rhs) {
+        vbase_t::swap(rhs);
+        ebase_t::swap(rhs);
     }
 };
 

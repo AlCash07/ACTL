@@ -48,7 +48,7 @@ public:
 
     void resize(int n) { n_ = n; }
 
-    void swap(dummy_container& other) { std::swap(n_, other.n_); }
+    void swap(dummy_container& rhs) { std::swap(n_, rhs.n_); }
 
 protected:
     int n_;
