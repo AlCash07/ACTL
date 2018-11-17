@@ -29,11 +29,11 @@ inline int within(const within_triangle<CP>& policy, const point<T0>& point,
     for (int i = 0; i < 3; ++i, ++it) {
         signs[i] = ccw(policy, point, it[1], it[0]);
     }
-    if (signs[0] == signs[1] && signs[1] == signs[2]) return -1;
+    if (signs[0] == signs[1] && signs[1] == signs[2]) return 2;
     for (int i = 0; i < 3; ++i) {
-        if (signs[i] * signs[i + 1 == 3 ? 0 : i + 1] == -1) return 1;
+        if (signs[i] * signs[i + 1 == 3 ? 0 : i + 1] == -1) return 0;
     }
-    return 0;
+    return 1;
 }
 
 }  // namespace ac

@@ -29,7 +29,7 @@ inline auto tangents(const tangents_point_circle_scalar<P>& policy, const point<
     using O = geometry::scalar_t<output_type_t<OutputIterator>>;
     auto center_vector = circle.center - point;
     switch (within(policy, point, circle)) {
-        case 1: {
+        case 0: {
             auto center_angle = angle(standard_angle<O, O>(), center_vector);
             auto offset = math::atan2(static_cast<O>(circle.radius),
                                       norm(standard_norm<O, O>(), center_vector));
@@ -37,7 +37,7 @@ inline auto tangents(const tangents_point_circle_scalar<P>& policy, const point<
             *dst++ = center_angle + offset;
             break;
         }
-        case 0:
+        case 1:
             *dst++ = angle(standard_angle<O, O>(), perpendicular(center_vector));
     }
     return dst;
@@ -49,13 +49,13 @@ inline auto tangents(const tangents_point_circle_point<P>& policy, const point<T
     using O = geometry::scalar_t<output_type_t<OutputIterator>>;
     auto center_vector = circle.center - point;
     switch (within(policy, point, circle)) {
-        case 1: {
+        case 0: {
             auto dist = math::sqrt(norm(standard_norm<O, O>(), center_vector) +
                                    sqr(static_cast<O>(circle.radius)));
             intersect(policy.intersect_policy, make_circle(point, dist), circle, dst);
             break;
         }
-        case 0:
+        case 1:
             *dst++ = point;
     }
     return dst;

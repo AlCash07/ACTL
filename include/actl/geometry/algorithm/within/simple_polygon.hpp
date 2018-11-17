@@ -21,9 +21,9 @@ template <class CP, class T0, class T1>
 inline int within(const within_simple_polygon<CP>& policy, const point<T0>& point,
                   const simple_polygon<T1>& polygon) {
     switch (winding_number(policy, point, polygon)) {
-        case std::numeric_limits<int>::max(): return 0;
-        case 0: return 1;
-        default: return -1;
+        case 0: return 0;
+        case std::numeric_limits<int>::max(): return 1;
+        default: return 2;
     }
 }
 

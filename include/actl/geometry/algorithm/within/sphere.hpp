@@ -18,7 +18,7 @@ struct within_sphere : comparable_distance_point_point<P> {};
 template <class P, int N, class T0, class T1>
 inline int within(const within_sphere<P>& policy, const point<T0, N>& point,
                   const sphere<T1, N>& sphere) {
-    return sgn(distance(policy, point, sphere.center), sphere.radius);
+    return 1 - sgn(distance(policy, point, sphere.center), sphere.radius);
 }
 
 template <int N, class T0, class T1>

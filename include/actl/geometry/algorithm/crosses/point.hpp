@@ -17,12 +17,12 @@ struct crosses_point : WithinPolicy {};
 
 template <class WP, int N, class T0, class T1>
 inline bool crosses(const crosses_point<WP>& policy, const point<T0, N>& lhs, const T1& rhs) {
-    return within(policy, lhs, rhs) == 0;
+    return within(policy, lhs, rhs) == 1;
 }
 
 template <int N, class T0, class T1>
 inline bool crosses(use_default, const point<T0, N>& lhs, const T1& rhs) {
-    return within(use_default{}, lhs, rhs) == 0;
+    return within(use_default{}, lhs, rhs) == 1;
 }
 
 }  // namespace ac
