@@ -91,47 +91,47 @@ inline int write(Device& out, const any_kind& arg) {
 template <class T, int N = 2, class Kind = line_kind::static_kind<line_kind::free>>
 struct line : public Kind {
     point<T, N> start;
-    point<T, N> slope;
+    point<T, N> vector;
 
     explicit constexpr line() = default;
 
     template <class T1, class T2>
-    explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool slope = false)
-        : start(a), slope(slope ? point<T, N>(a) : point<T, N>(b - a)) {}
+    explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
+        : start(a), vector(vector ? point<T, N>(a) : point<T, N>(b - a)) {}
 
     template <class T1, class T2>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, uint8_t kind,
-                            bool slope = false)
-        : Kind(kind), start(a), slope(slope ? point<T, N>(a) : point<T, N>(b - a)) {}
+                            bool vector = false)
+        : Kind(kind), start(a), vector(vector ? point<T, N>(a) : point<T, N>(b - a)) {}
 
     template <class T1, class K1>
     explicit constexpr line(const line<T1, N, K1>& other) { (*this) = other; }
 
-    constexpr operator bool() const { return slope; }
+    constexpr operator bool() const { return vector; }
 
     void swap(line& other) {
         using std::swap;
         swap(start, other.start);
-        swap(slope, other.slope);
+        swap(vector, other.vector);
         swap(static_cast<Kind&>(*this), other);
     }
 
     template <class T1, class K1>
     constexpr line& operator = (const line<T1, N, K1>& other) {
         start = other.start;
-        slope = other.slope;
+        vector = other.vector;
         static_cast<Kind&>(*this) = other.kind();
         return *this;
     }
 
-    constexpr point<T, N> end() const { return start + slope; }
+    constexpr point<T, N> end() const { return start + vector; }
 
     constexpr uint8_t start_kind() const { return endpoint::start(this->kind()); }
     constexpr uint8_t end_kind() const { return endpoint::end(this->kind()); }
 
     template <class T1>
     constexpr auto operator()(const T1& t) const {
-        return start + t * slope;
+        return start + t * vector;
     }
 };
 
@@ -148,25 +148,25 @@ template <int N, class T, class K>
 struct geometry_traits<line<T, N, K>> : geometry_traits_base<line_tag, point<T, N>> {};
 
 template <int N, class T0, class T1>
-inline constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool slope = false) {
-    return line<geometry::scalar_t<T0, T1>, N>(a, b, slope);
+inline constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
+    return line<geometry::scalar_t<T0, T1>, N>(a, b, vector);
 }
 
 template <int N, class T0, class T1>
-inline constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool slope = false) {
-    return ray<geometry::scalar_t<T0, T1>, N>(a, b, slope);
+inline constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
+    return ray<geometry::scalar_t<T0, T1>, N>(a, b, vector);
 }
 
 template <int N, class T0, class T1>
 inline constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b,
-                                   bool slope = false) {
-    return segment<geometry::scalar_t<T0, T1>, N>(a, b, slope);
+                                   bool vector = false) {
+    return segment<geometry::scalar_t<T0, T1>, N>(a, b, vector);
 }
 
 template <int N, class T0, class T1>
 inline constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
-                                    uint8_t kind = line_kind::free, bool slope = false) {
-    return any_line<geometry::scalar_t<T0, T1>, N>(a, b, kind, slope);
+                                    uint8_t kind = line_kind::free, bool vector = false) {
+    return any_line<geometry::scalar_t<T0, T1>, N>(a, b, kind, vector);
 }
 
 template <int N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
@@ -181,12 +181,12 @@ inline void swap(line<T, N, K>& lhs, line<T, N, K>& rhs) { lhs.swap(rhs); }
 
 template <class Device, int N, class T, class K>
 inline bool read(Device& in, line<T, N, K>& arg) {
-    return read(in, arg.start, arg.slope, static_cast<K&>(arg));
+    return read(in, arg.start, arg.vector, static_cast<K&>(arg));
 }
 
 template <class Device, int N, class T, class K>
 inline int write(Device& out, const line<T, N, K>& arg) {
-    return write(out, arg.start, arg.slope, static_cast<const K&>(arg));
+    return write(out, arg.start, arg.vector, static_cast<const K&>(arg));
 }
 
 }  // namespace ac

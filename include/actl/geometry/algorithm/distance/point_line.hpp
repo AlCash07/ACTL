@@ -23,12 +23,12 @@ struct distance_point_line : deduce_type_t<NormPolicy, standard_norm<P>> {
 template <class P, class R, class NP, class AP, int N, class T0, class T1, class K>
 inline auto distance(distance_point_line<P, R, NP, AP> policy, const point<T0, N>& point,
                      const line<T1, N, K>& line) {
-    if (line.start_kind() != endpoint::free && dot<P>(point - line.start, line.slope) <= 0)
+    if (line.start_kind() != endpoint::free && dot<P>(point - line.start, line.vector) <= 0)
         return norm(policy, point - line.start);
-    if (line.end_kind() != endpoint::free && dot<P>(point - line.end(), line.slope) >= 0)
+    if (line.end_kind() != endpoint::free && dot<P>(point - line.end(), line.vector) >= 0)
         return norm(policy, point - line.end());
     return static_cast<geometry::ratio_t<R, T0, T1>>(abs(area(policy.area_policy, point, line))) /
-           norm(policy, line.slope);
+           norm(policy, line.vector);
 }
 
 template <int N, class T0, class T1, class K>

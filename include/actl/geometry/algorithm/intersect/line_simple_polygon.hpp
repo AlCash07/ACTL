@@ -40,9 +40,9 @@ inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
         if (i_sgn == 0) {
             bool ok = false;
             if (prev_sgn == 0) {
-                ok = next_sgn == sgn(dot<P>(i[0] - i[-1], line.slope));
+                ok = next_sgn == sgn(dot<P>(i[0] - i[-1], line.vector));
             } else if (next_sgn == 0) {
-                ok = prev_sgn == sgn(dot<P>(i[1] - i[0], line.slope));
+                ok = prev_sgn == sgn(dot<P>(i[1] - i[0], line.vector));
             } else {
                 ok = next_sgn != prev_sgn;
             }

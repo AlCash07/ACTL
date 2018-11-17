@@ -29,9 +29,9 @@ inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const lin
                       const convex_polygon<T1>& polygon, It dst) {
     ACTL_ASSERT(line);
     auto right = polygon.cyclic(
-        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return line.slope; }));
+        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return line.vector; }));
     auto left = polygon.cyclic(
-        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return -line.slope; }));
+        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return -line.vector; }));
     auto vertex_sgn = [&](auto it) { return ccw(policy, *it, line); };
     int right_sgn = vertex_sgn(right), left_sgn = vertex_sgn(left);
     if (left_sgn < 0 || 0 < right_sgn) return dst;

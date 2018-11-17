@@ -50,7 +50,7 @@ template <class R = use_default, class AP, class T0, class K0, class T1, class K
           class X = geometry::ratio_t<R, T0, T1>>
 inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<T0, 2, K0>& lhs,
                                                   const line<T1, 2, K1>& rhs) {
-    auto tarea = area(policy, rhs.slope, lhs.slope);
+    auto tarea = area(policy, rhs.vector, lhs.vector);
     if (tarea == 0) return {false, X{}};
     auto larea = area(policy, lhs.start, rhs);
     if (!cross_test(lhs, rhs, tarea, larea, area(policy, rhs.start, lhs))) return {false, X{}};
@@ -61,7 +61,7 @@ template <class R = use_default, class AP, class T0, class K0, class T1, class K
           class X = geometry::ratio_t<R, T0, T1>>
 inline std::pair<bool, any_line<X, 2>> intersect_lines(const AP& policy, const line<T0, 2, K0>& lhs,
                                                        const line<T1, 2, K1>& rhs) {
-    auto tarea = area(policy, rhs.slope, lhs.slope);
+    auto tarea = area(policy, rhs.vector, lhs.vector);
     auto larea = area(policy, lhs.start, rhs);
     if (tarea == 0) {
         if (larea != 0) return {false, any_line<X, 2>()};
