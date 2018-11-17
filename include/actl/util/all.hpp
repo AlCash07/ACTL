@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/util/bit.hpp>
 #include <actl/util/component_set.hpp>
 #include <actl/util/compressed_pair.hpp>
 #include <actl/util/none.hpp>
