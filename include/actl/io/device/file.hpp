@@ -13,7 +13,7 @@
 
 namespace ac::io {
 
-template <mode_t Mode, bool Read = in_v<Mode>>
+template <mode_t Mode, bool = in_v<Mode>>
 class freader : public base<Mode> {
     static constexpr const char* mode_str[14] = {
         "r", "rb", "w", "wb", "w+", "w+b", "a", "ab", "a+", "a+b", "a", "ab", "r+", "r+b",
@@ -26,7 +26,6 @@ public:
         : freader(std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true) {}
 
     ~freader() {
-        if constexpr (out_v<Mode>) flush();
         if (own_) std::fclose(file_);
     }
 
@@ -57,7 +56,7 @@ public:
     }
 };
 
-template <mode_t Mode, bool Write = out_v<Mode>>
+template <mode_t Mode, bool = out_v<Mode>>
 class fwriter : public freader<Mode> {
 public:
     using freader<Mode>::freader;
