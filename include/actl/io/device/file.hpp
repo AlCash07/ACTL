@@ -46,6 +46,8 @@ public:
         return static_cast<char>(c == EOF ? '\0' : c);
     }
 
+    void unget() { std::fseek(this->file_, -1, SEEK_CUR); }
+
     int read(char* dst, int count) {
         *dst = '\0';
         if constexpr (line_buffered_v<Mode>) {
@@ -70,19 +72,7 @@ public:
     bool put(char c) { return std::fputc(c, this->file_) != EOF; }
 
     int write(const char* src, int count) {
-        if constexpr (line_buffered_v<Mode>) {
-            int last = count;
-            while (0 < last && src[last - 1] != '\n') --last;
-            size_t chars_written = 0;
-            if (0 < last) {
-                chars_written += std::fwrite(src, 1, last, this->file_);
-                std::fflush(this->file_);
-            }
-            chars_written += std::fwrite(src + last, 1, count - last, this->file_);
-            return static_cast<int>(chars_written);
-        } else {
-            static_cast<int>(std::fwrite(src, 1, count, this->file_));
-        }
+        static_cast<int>(std::fwrite(src, 1, static_cast<size_t>(count), this->file_));
     }
 
     void flush() { std::fflush(this->file_); }

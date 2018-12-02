@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/assert.hpp>
 #include <actl/functions.hpp>
 #include <actl/io/io.hpp>
 #include <cstring>
@@ -29,6 +30,11 @@ public:
     bool eof() const { return ptr_ == end_; }
 
     char get() { return eof() ? '\0' : *ptr_++; }
+
+    void unget() {
+        ACTL_ASSERT(begin_ != ptr_);
+        --ptr_;
+    }
 
     int read(char* dst, int count) {
         smin(count, static_cast<int>(end_ - ptr_));
