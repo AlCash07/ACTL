@@ -68,29 +68,29 @@ struct nd_initializer_list<T, 0> { using type = T; };
 template <class T, int N>
 using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
 
-/* NDArray container class, supports std::array and std::unique_ptr as data. */
+/* NDArray container class, supports array and std::unique_ptr as data. */
 
 template <class Data>
 class ndarray_container;
 
 template <class T, int Size>
-class ndarray_container<std::array<T, Size>> {
+class ndarray_container<T[Size]> {
 public:
     using value_type = T;
 
     ndarray_container(int) {}
 
-    T*       data() { return data_.data(); }
-    const T* data() const { return data_.data(); }
+    T*       data() { return data_; }
+    const T* data() const { return data_; }
 
     void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
 
 private:
-    std::array<T, Size> data_;
+    T data_[Size];
 };
 
 template <class T>
-class ndarray_container<std::unique_ptr<T>> {
+class ndarray_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
 
@@ -102,7 +102,7 @@ public:
     void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
 
 private:
-    std::unique_ptr<T> data_;
+    std::unique_ptr<T[]> data_;
 };
 
 /* NDArray data class, supports container or pointer as data. */
@@ -468,7 +468,7 @@ struct ndarray_size<D0, Ds...> : int_constant<D0 * ndarray_size<Ds...>::value> {
 
 template <class T, int... Ds>
 using ndarray_base_static =
-    ndarray_base<sizeof...(Ds), std::array<T, ndarray_size<Ds...>::value>, static_array<Ds...>>;
+    ndarray_base<sizeof...(Ds), T[ndarray_size<Ds...>::value], static_array<Ds...>>;
 
 }  // namespace detail
 
@@ -476,8 +476,8 @@ using ndarray_base_static =
  * N-dimensional array.
  */
 template <class T, int N>
-class ndarray : public detail::ndarray_base<N, std::unique_ptr<T>> {
-    using base_t = detail::ndarray_base<N, std::unique_ptr<T>>;
+class ndarray : public detail::ndarray_base<N, std::unique_ptr<T[]>> {
+    using base_t = detail::ndarray_base<N, std::unique_ptr<T[]>>;
 
 public:
     using base_t::base_t;
