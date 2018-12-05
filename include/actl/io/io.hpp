@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include <actl/io/util/formatter.hpp>
-#include <type_traits>
+#include <cstdint>
 
 namespace ac::io {
 
@@ -29,10 +28,8 @@ inline constexpr bool out_v = (Mode & (out | app)) > 0;
 template <mode_t Mode>
 inline constexpr bool line_buffered_v = (Mode & line_buffered) > 0;
 
-struct empty {};
-
 template <mode_t Mode>
-struct base : std::conditional_t<0 < (Mode & bin), empty, formatter> {
+struct base {
     static_assert(in_v<Mode> || out_v<Mode>, "invalid mode");
 
     static constexpr mode_t mode = Mode;
