@@ -8,14 +8,14 @@
 #pragma once
 
 #include <actl/io/io.hpp>
-#include <actl/macros.hpp>
-#include <cstdint>
 
 namespace ac::io {
 
-template <class Device, bool = in_v<Device::mode>>
+template <class Device, bool = is_in<Device::mode>>
 class unbuffered_reader : public Device {
 public:
+    static_assert(!is_line_buffered<Device::mode>);
+
     using Device::Device;
 };
 
@@ -37,7 +37,7 @@ public:
     }
 };
 
-template <class Device, bool = out_v<Device::mode>>
+template <class Device, bool = is_out<Device::mode>>
 class unbuffered : public unbuffered_reader<Device> {
 public:
     using unbuffered_reader<Device>::unbuffered_reader;

@@ -14,7 +14,7 @@
 
 namespace ac::io {
 
-template <class Device, int BufferSize = 1 << 10, bool Read = in_v<Device::mode>>
+template <class Device, int BufferSize = 1 << 10, bool Read = is_in<Device::mode>>
 class buffered_reader : public Device {
 public:
     using Device::Device;
@@ -95,7 +95,7 @@ public:
     }
 };
 
-template <class Device, int BS = 1 << 10, bool = out_v<Device::mode>>
+template <class Device, int BS = 1 << 10, bool = is_out<Device::mode>>
 class buffered : public buffered_reader<Device, BS> {
 public:
     using buffered_reader<Device, BS>::buffered_reader;
@@ -149,7 +149,7 @@ public:
     }
 
     int write(const char* src, int count) {
-        if constexpr (line_buffered_v<Mode>) {
+        if constexpr (is_line_buffered<Mode>) {
             int last = count;
             while (0 < last && src[last - 1] != '\n') --last;
             if (0 < last) {

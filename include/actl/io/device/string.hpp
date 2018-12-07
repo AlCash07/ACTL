@@ -9,60 +9,75 @@
 
 #include <actl/assert.hpp>
 #include <actl/functions.hpp>
-#include <actl/io/io.hpp>
+#include <actl/io/util/unbuffered.hpp>
 #include <cstring>
 #include <string>
 
 namespace ac::io {
 
-template <mode_t Mode, bool = in_v<Mode>, bool = out_v<Mode>>
-class string;
-
-template <mode_t Mode>
-class string<Mode, true, false> : public base<Mode> {
+template <mode_t Mode, bool = is_out<Mode>>
+class out_string : public base<Mode> {
 public:
-    explicit string(const char* begin, const char* end) : begin_{begin}, ptr_{begin}, end_{end} {}
-
-    explicit string(const char* s) : string(s, s + std::strlen(s)) {}
-
-    explicit string(const std::string& s) : string(s.data(), s.data() + s.size()) {}
-
-    bool eof() const { return ptr_ == end_; }
-
-    char get() { return eof() ? '\0' : *ptr_++; }
-
-    void unget() {
-        ACTL_ASSERT(begin_ != ptr_);
-        --ptr_;
-    }
-
-    int read(char* dst, int count) {
-        smin(count, static_cast<int>(end_ - ptr_));
-        std::memcpy(dst, ptr_, static_cast<size_t>(count));
-        ptr_ += count;
-    }
+    explicit out_string(const std::string& s) : s_{s} {}
 
 protected:
-    const char* begin_;
-    const char* ptr_;
-    const char* end_;
+    const std::string& s_;
 };
 
 template <mode_t Mode>
-class string<Mode, false, true> : public base<Mode> {
+class out_string<Mode, true> : public base<Mode> {
 public:
-    explicit string(std::string& s) : str_(s) {
-        if constexpr (0 < (Mode & out)) s.clear();
+    static_assert((Mode & app) > 0, "only append is supported now");
+
+    explicit out_string(std::string& s) : s_{s} {
+        if constexpr (trunc == (Mode & trunc)) s.clear();
     }
 
-    bool put(char c) { str_ += c; }
+    bool put(char c) { s_ += c; }
 
-    int write(const char* src, int count) { str_.append(src, static_cast<size_t>(count)); }
+    int write(const char* src, int count) { s_.append(src, static_cast<size_t>(count)); }
 
     void flush() {}
 
 protected:
-    std::string& str_;
+    std::string& s_;
 };
+
+template <mode_t Mode, bool = is_in<Mode>>
+class in_string : public out_string<Mode> {
+public:
+    using out_string<Mode>::out_string;
+};
+
+template <mode_t Mode>
+class in_string<Mode, true> : public out_string<Mode> {
+    using base_t = out_string<Mode>;
+    using base_t::s_;
+
+public:
+    using base_t::base_t;
+
+    bool eof() const { return static_cast<size_t>(pos_) == s_.size(); }
+
+    char get() { return eof() ? char{} : s_[pos_]++; }
+
+    void unget() {
+        ACTL_ASSERT(pos_ > 0);
+        --pos_;
+    }
+
+    int read(char* dst, int count) {
+        smin(count, static_cast<int>(s_.size() - pos_));
+        std::memcpy(dst, s_.data() + pos_, static_cast<size_t>(count));
+        pos_ += count;
+        return count;
+    }
+
+protected:
+    int pos_ = 0;
+};
+
+template <mode_t Mode>
+using string = unbuffered<in_string<Mode>>;
 
 }  // namespace ac::io

@@ -93,10 +93,10 @@ public:
     void base(uint8_t value) { base_ = value; }
 
     width_t precision() const { return precision_; }
-    void precision(uint8_t value) { precision_ = value; }
+    void precision(width_t value) { precision_ = value; }
 
     width_t width() const { return width_; }
-    void width(uint8_t value) { width_ = value; }
+    void width(width_t value) { width_ = value; }
 
     char fill() const { return fill_; }
     void fill(char value) { fill_ = value; }

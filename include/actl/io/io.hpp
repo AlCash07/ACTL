@@ -20,17 +20,17 @@ inline constexpr mode_t line_buffered = 0x10;
 inline constexpr mode_t trunc = in | out | app;
 
 template <mode_t Mode>
-inline constexpr bool in_v = (Mode & in) > 0;
+inline constexpr bool is_in = (Mode & in) > 0;
 
 template <mode_t Mode>
-inline constexpr bool out_v = (Mode & (out | app)) > 0;
+inline constexpr bool is_out = (Mode & (out | app)) > 0;
 
 template <mode_t Mode>
-inline constexpr bool line_buffered_v = (Mode & line_buffered) > 0;
+inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
 
 template <mode_t Mode>
 struct base {
-    static_assert(in_v<Mode> || out_v<Mode>, "invalid mode");
+    static_assert(is_in<Mode> || is_out<Mode>, "invalid mode");
 
     static constexpr mode_t mode = Mode;
 };

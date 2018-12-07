@@ -13,23 +13,23 @@
 
 namespace ac::io {
 
-template <mode_t Mode, bool = in_v<Mode>>
-class freader : public base<Mode> {
+template <mode_t Mode, bool = is_in<Mode>>
+class in_file : public base<Mode> {
     static constexpr const char* mode_str[14] = {
         "r", "rb", "w", "wb", "w+", "w+b", "a", "ab", "a+", "a+b", "a", "ab", "r+", "r+b",
     };
 
 public:
-    explicit freader(std::FILE* file, bool own = false) : file_{file}, own_{own} {}
+    explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} {}
 
-    explicit freader(const char* filename)
-        : freader(std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true) {}
+    explicit in_file(const char* filename)
+        : in_file(std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true) {}
 
-    ~freader() {
+    ~in_file() {
         if (own_) std::fclose(file_);
     }
 
-    bool eof() const { return std::feof(file_); }
+    bool eof() const { return std::feof(file_) != 0; }
 
 protected:
     std::FILE* file_;
@@ -37,9 +37,9 @@ protected:
 };
 
 template <mode_t Mode>
-class freader<Mode, true> : public freader<Mode, false> {
+class in_file<Mode, true> : public in_file<Mode, false> {
 public:
-    using freader<Mode, false>::freader;
+    using in_file<Mode, false>::in_file;
 
     char get() {
         auto c = std::fgetc(this->file_);
@@ -49,53 +49,33 @@ public:
     void unget() { std::fseek(this->file_, -1, SEEK_CUR); }
 
     int read(char* dst, int count) {
-        *dst = '\0';
-        if constexpr (line_buffered_v<Mode>) {
+        *dst = char{};
+        if constexpr (is_line_buffered<Mode>) {
             return std::fgets(dst, count, this->file_) ? static_cast<int>(std::strlen(dst)) : 0;
         } else {
-            return static_cast<int>(std::fread(dst, 1, count, this->file_));
+            return static_cast<int>(std::fread(dst, 1, static_cast<size_t>(count), this->file_));
         }
     }
 };
 
-template <mode_t Mode, bool = out_v<Mode>>
-class fwriter : public freader<Mode> {
+template <mode_t Mode, bool = is_out<Mode>>
+class file : public in_file<Mode> {
 public:
-    using freader<Mode>::freader;
+    using in_file<Mode>::in_file;
 };
 
 template <mode_t Mode>
-class fwriter<Mode, true> : public fwriter<Mode, false> {
+class file<Mode, true> : public in_file<Mode> {
 public:
-    using fwriter<Mode, false>::fwriter;
+    using in_file<Mode>::in_file;
 
     bool put(char c) { return std::fputc(c, this->file_) != EOF; }
 
     int write(const char* src, int count) {
-        static_cast<int>(std::fwrite(src, 1, static_cast<size_t>(count), this->file_));
+        return static_cast<int>(std::fwrite(src, 1, static_cast<size_t>(count), this->file_));
     }
 
     void flush() { std::fflush(this->file_); }
-};
-
-template <mode_t Mode = 0>
-class input_file : public freader<Mode | in> {
-    using base_t = freader<Mode | in>;
-
-public:
-    using base_t::base_t;
-
-    explicit input_file() : base_t(stdin) {}
-};
-
-template <mode_t Mode = 0>
-class output_file : public fwriter<Mode | (out_v<Mode> ? 0 : out)> {
-    using base_t = fwriter<Mode | (out_v<Mode> ? 0 : out)>;
-
-public:
-    using base_t::base_t;
-
-    explicit output_file() : base_t(stdout) {}
 };
 
 }  // namespace ac::io
