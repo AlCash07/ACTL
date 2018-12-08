@@ -13,7 +13,7 @@
 
 namespace ac::io {
 
-using flag_t  = uint32_t;
+using flag_t = uint32_t;
 using width_t = uint32_t;
 
 namespace flags {
@@ -107,10 +107,8 @@ public:
     }
 
 protected:
-    using sf = static_format<>;
-
-    flag_t flags_ = sf::flags();
-    uint8_t base_ = sf::base();
+    flag_t flags_ = static_format<>::flags();
+    uint8_t base_ = static_format<>::base();
 };
 
 template <mode_t Mode>
