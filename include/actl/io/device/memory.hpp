@@ -16,6 +16,7 @@ namespace ac::io {
 
 template <mode_t Mode, bool = is_out<Mode>>
 class out_memory : public base<Mode> {
+public:
     explicit out_memory(const char* begin, const char* end)
         : begin_{begin}, ptr_{begin}, end_{end} {
         ACTL_ASSERT(begin < end);

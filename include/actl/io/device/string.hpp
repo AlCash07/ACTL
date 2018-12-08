@@ -33,9 +33,15 @@ public:
         if constexpr (trunc == (Mode & trunc)) s.clear();
     }
 
-    bool put(char c) { s_ += c; }
+    bool put(char c) {
+        s_ += c;
+        return true;
+    }
 
-    int write(const char* src, int count) { s_.append(src, static_cast<size_t>(count)); }
+    int write(const char* src, int count) {
+        s_.append(src, static_cast<size_t>(count));
+        return count;
+    }
 
     void flush() {}
 
@@ -61,7 +67,7 @@ public:
 
     bool eof() const { return static_cast<size_t>(pos_) == s_.size(); }
 
-    char get() { return eof() ? char{} : s_[pos_]++; }
+    char get() { return eof() ? char{} : s_[static_cast<size_t>(pos_++)]; }
 
     void unget() {
         ACTL_ASSERT(pos_ > 0);
@@ -69,7 +75,7 @@ public:
     }
 
     int read(char* dst, int count) {
-        smin(count, static_cast<int>(s_.size() - pos_));
+        smin(count, static_cast<int>(s_.size()) - pos_);
         std::memcpy(dst, s_.data() + pos_, static_cast<size_t>(count));
         pos_ += count;
         return count;

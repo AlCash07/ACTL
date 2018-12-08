@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/device/input_file.hpp>
-#include <actl/io/device/input_string.hpp>
-#include <actl/io/device/output_file.hpp>
-#include <actl/io/device/output_string.hpp>
+#include <actl/io/device/file.hpp>
+#include <actl/io/device/memory.hpp>
+#include <actl/io/device/stream.hpp>
+#include <actl/io/device/string.hpp>
