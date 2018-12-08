@@ -51,8 +51,10 @@ public:
 
 template <mode_t Mode>
 class in_string<Mode, true> : public out_string<Mode> {
+protected:
     using base_t = out_string<Mode>;
     using base_t::s_;
+    int pos_ = 0;
 
 public:
     using base_t::base_t;
@@ -72,9 +74,6 @@ public:
         pos_ += count;
         return count;
     }
-
-protected:
-    int pos_ = 0;
 };
 
 template <mode_t Mode>

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/assert.hpp>
 #include <actl/io/base.hpp>
 #include <string>
 
@@ -91,7 +92,10 @@ public:
     }
 
     uint8_t base() const { return base_; }
-    void base(uint8_t value) { base_ = value; }
+    void base(uint8_t value) {
+        ACTL_ASSERT(value != 1 && value < 36);
+        base_ = value;
+    }
 
 protected:
     using sf = static_format<>;

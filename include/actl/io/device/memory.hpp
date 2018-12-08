@@ -63,6 +63,7 @@ public:
 
 template <mode_t Mode>
 class in_memory<Mode, true> : public out_memory<Mode> {
+protected:
     using base_t = out_memory<Mode>;
     using base_t::end_;
     using base_t::ptr_;
