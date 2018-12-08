@@ -2,8 +2,8 @@
 Language: Cpp
 BasedOnStyle: Google
 AccessModifierOffset: -4
-AlignConsecutiveAssignments:  true
-AlignConsecutiveDeclarations: true
+#AlignConsecutiveAssignments:  true
+#AlignConsecutiveDeclarations: true
 BreakConstructorInitializers: BeforeComma
 ColumnLimit: 100
 CompactNamespaces: true
