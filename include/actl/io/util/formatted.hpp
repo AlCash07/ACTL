@@ -116,6 +116,9 @@ public:
     char fill() const { return fill_; }
     void fill(char value) { fill_ = value; }
 
+    bool separate() const { return separate_; }
+    void separate(bool value) { separate_ = value; }
+
     const char* delimiter() const { return delimiter_.data(); }
     void delimiter(const char* value) { delimiter_ = value; }
 
@@ -125,6 +128,7 @@ protected:
     width_t precision_ = sf::precision();
     width_t width_ = sf::width();
     char fill_ = sf::fill();
+    bool separate_ = false;
     std::string delimiter_ = sf::delimiter();
 };
 
