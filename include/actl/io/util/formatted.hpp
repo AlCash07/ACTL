@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <cstdint>
+#include <actl/io/base.hpp>
 #include <string>
 
 namespace ac::io {
@@ -75,6 +75,7 @@ public:
     static constexpr const char* delimiter() { return Delimiter; }
 };
 
+template <mode_t Mode, bool = is_out<Mode>>
 class format {
 public:
     flag_t flags() const { return flags_; }
@@ -92,6 +93,16 @@ public:
     uint8_t base() const { return base_; }
     void base(uint8_t value) { base_ = value; }
 
+protected:
+    using sf = static_format<>;
+
+    flag_t  flags_ = sf::flags();
+    uint8_t base_  = sf::base();
+};
+
+template <mode_t Mode>
+class format<Mode, true> : public format<Mode, false> {
+public:
     width_t precision() const { return precision_; }
     void precision(width_t value) { precision_ = value; }
 
@@ -107,15 +118,13 @@ public:
 protected:
     using sf = static_format<>;
 
-    flag_t flags_ = sf::flags();
     width_t precision_ = sf::precision();
     width_t width_ = sf::width();
-    uint8_t base_ = sf::base();
     char fill_ = sf::fill();
     std::string delimiter_ = sf::delimiter();
 };
 
-template <class Device, class Format = format>
+template <class Device, class Format = format<Device::mode>>
 class formatted : public Device, public Format {
 public:
     using Device::Device;

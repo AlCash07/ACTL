@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/io.hpp>
+#include <actl/io/util/buffered.hpp>
 #include <cstdio>
 #include <cstring>
 
@@ -20,7 +20,9 @@ class in_file : public base<Mode> {
     };
 
 public:
-    explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} {}
+    explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} {
+        ACTL_ASSERT(file);
+    }
 
     explicit in_file(const char* filename)
         : in_file(std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true) {}
