@@ -26,7 +26,7 @@
     }                                                              \
     inline void name::body([[maybe_unused]] ac::default_random& random) const
 
-#define TEST(...) TEST_IMPL(CONCATENATE(_tesT_, __COUNTER__), #__VA_ARGS__)
+#define TEST(...) TEST_IMPL(CONCAT(_tesT_, __COUNTER__), #__VA_ARGS__)
 
 #define ASSERT_EQUAL      ac::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
 #define ASSERT_NOT_EQUAL  ac::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
