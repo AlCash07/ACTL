@@ -30,18 +30,17 @@ public:
         s_.setf(bits[flag]);
     }
 
+    void unsetf(flag_t flag) { s_.unsetf(bits[flag]); }
+
     void setf(flag_t flag, flag_t group) {
         ACTL_ASSERT(bits[flag] != 0);
         s_.setf(bits[flag], g[group]);
     }
 
-    void unsetf(flag_t flag) { s_.unsetf(bits[flag]); }
-
     uint8_t base() const {
-        using Stream::flags;
-        if ((flags() & ios::dec) != 0) return 10;
-        if ((flags() & ios::hex) != 0) return 16;
-        if ((flags() & ios::oct) != 0) return 8;
+        if ((s_.flags() & ios::dec) != 0) return 10;
+        if ((s_.flags() & ios::hex) != 0) return 16;
+        if ((s_.flags() & ios::oct) != 0) return 8;
         return 0;
     }
 
@@ -131,7 +130,9 @@ public:
     char fill() const { return s_.fill(); }
     void fill(char value) { s_.fill(value); }
 
-    constexpr const char* delimiter() { return ""; }
+    constexpr bool separate() { return false; }
+
+    constexpr const char* delimiter() const { return ""; }
 
     bool put(char c) {
         s_.put(c);

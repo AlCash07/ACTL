@@ -74,6 +74,15 @@ public:
     static constexpr char fill() { return Fill; }
 
     static constexpr const char* delimiter() { return Delimiter; }
+
+    bool separate() {
+        bool res = separate_;
+        separate_ = false;
+        return res;
+    }
+
+protected:
+    bool separate_ = false;
 };
 
 template <mode_t Mode, bool = is_out<Mode>>
@@ -116,8 +125,11 @@ public:
     char fill() const { return fill_; }
     void fill(char value) { fill_ = value; }
 
-    bool separate() const { return separate_; }
-    void separate(bool value) { separate_ = value; }
+    bool separate() {
+        bool res = separate_;
+        separate_ = false;
+        return res;
+    }
 
     const char* delimiter() const { return delimiter_.data(); }
     void delimiter(const char* value) { delimiter_ = value; }
