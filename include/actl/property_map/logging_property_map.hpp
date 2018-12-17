@@ -10,8 +10,6 @@
 #include <actl/property_map/property_map.hpp>
 #include <utility>
 
-#include <iostream>
-
 namespace ac {
 
 /**
