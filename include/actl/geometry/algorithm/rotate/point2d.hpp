@@ -18,11 +18,10 @@ template <class S = use_default>
 struct rotate_point2d : geometry::policy {};
 
 template <class S, class T0, class T1, class X = geometry::sqrt_t<S, T0, T1>>
-inline auto rotate(rotate_point2d<S>, const point<T0>& point, const T1& angle) {
+inline auto rotate(rotate_point2d<S>, const point<T0>& p, const T1& angle) {
     auto sin = math::sin(static_cast<X>(angle));
     auto cos = math::cos(static_cast<X>(angle));
-    return make_point(cos * point[0] - sin * point[1],
-                      sin * point[0] + cos * point[1]);
+    return point(cos * p[0] - sin * p[1], sin * p[0] + cos * p[1]);
 }
 
 template <class S, class T0, class T1, class T2>
@@ -32,8 +31,8 @@ inline auto rotate(rotate_point2d<S> policy, const point<T0>& point, const T1& a
 }
 
 template <class T0, class... Ts>
-inline auto rotate(use_default, const point<T0>& point, const Ts&... args) {
-    return rotate(rotate_point2d<>(), point, args...);
+inline auto rotate(use_default, const point<T0>& p, const Ts&... args) {
+    return rotate(rotate_point2d<>(), p, args...);
 }
 
 }  // namespace ac

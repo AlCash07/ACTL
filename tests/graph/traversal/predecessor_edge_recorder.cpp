@@ -18,8 +18,8 @@ TEST("bfs") {
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());
-    breadth_first_search(make_predecessor_edge_recorder(pred.data()),
-                         make_default_discovered_flag(graph))(graph, 0);
+    breadth_first_search(predecessor_edge_recorder(pred.data()), default_discovered_flag(graph))(
+        graph, 0);
     ASSERT_EQUAL(
         std::vector<E>{E(), graph.find_edge(0, 1), graph.find_edge(1, 2), graph.find_edge(0, 3),
                        graph.find_edge(3, 4), graph.find_edge(3, 5)},
@@ -30,8 +30,8 @@ TEST("dfs") {
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());
-    depth_first_search(make_predecessor_edge_recorder(pred.data()),
-                       make_default_discovered_flag(graph))(graph, 0);
+    depth_first_search(predecessor_edge_recorder(pred.data()), default_discovered_flag(graph))(
+        graph, 0);
     ASSERT_EQUAL(
         std::vector<E>{E(), graph.find_edge(0, 1), graph.find_edge(1, 2), graph.find_edge(2, 3),
                        graph.find_edge(3, 4), graph.find_edge(4, 5)},

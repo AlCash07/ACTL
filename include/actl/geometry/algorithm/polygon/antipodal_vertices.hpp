@@ -25,7 +25,7 @@ inline auto antipodal_vertices(const antipodal_vertices_policy<CP>& policy,
                                const convex_polygon<T>& polygon, OutputIterator dst) {
     for (auto i = polygon.begin(), j = i + 1; j != polygon.end(); ++i) {
         for (; j != polygon.end(); ++j) {
-            *dst++ = std::make_pair(i, j);
+            *dst++ = std::pair(i, j);
             if (ccw(policy, i[1] - i[0], polygon.cyclic(j)[1] - j[0]) >= 0) break;
         }
     }

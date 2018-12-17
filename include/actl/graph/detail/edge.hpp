@@ -26,7 +26,7 @@ public:
 
     constexpr id_type id() const {
         if constexpr (CompareSrc) {
-            return std::make_pair(u_, b_);
+            return std::pair(u_, b_);
         } else {
             return b_;
         }

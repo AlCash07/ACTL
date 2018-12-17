@@ -42,7 +42,7 @@ class transition_property_map
 
 public:
     template <class C>
-    explicit transition_property_map(C&& cont, Predicate pred)
+    explicit transition_property_map(C&& cont, Predicate pred = {})
         : filtered_range<CPM, TSP>(CPM(std::forward<C>(cont)), TSP(pred)) {}
 
     friend typename CPM::reference get(const transition_property_map& pm,
@@ -51,11 +51,8 @@ public:
     }
 };
 
-template <class Container, class Predicate = to_bool>
-inline auto make_transition_property_map(Container&& cont, Predicate pred = {}) {
-    return transition_property_map<remove_rvalue_ref_t<Container>, Predicate>(
-        std::forward<Container>(cont), pred);
-}
+template <class C, class P = to_bool>
+transition_property_map(C&&, P = {}) -> transition_property_map<remove_rvalue_ref_t<C>, P>;
 
 template <class C, class P>
 struct property_traits<transition_property_map<C, P>> : property_traits<container_property_map<C>> {

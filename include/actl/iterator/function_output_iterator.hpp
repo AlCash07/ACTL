@@ -8,27 +8,26 @@
 #pragma once
 
 #include <actl/iterator/iterator_facade.hpp>
+#include <actl/traits/function_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
 /**
  * Iterator that applies a function to each assigned value.
  */
-template <class T, class UnaryFunction>
+template <class UnaryFunction, class T = argument_type_t<UnaryFunction, 0>>
 class function_output_iterator
-    : public iterator_facade<function_output_iterator<T, UnaryFunction>,
+    : public iterator_facade<function_output_iterator<UnaryFunction, T>,
                              std::output_iterator_tag,
-                             T,
-                             const function_output_iterator<T, UnaryFunction>&,
-                             T*,
+                             remove_cvref_t<T>,
+                             const function_output_iterator<UnaryFunction, T>&,
+                             remove_cvref_t<T>*,
                              void> {
 public:
-    explicit function_output_iterator(const UnaryFunction& f = UnaryFunction{}) : f_{f} {}
+    explicit function_output_iterator(const UnaryFunction& f = {}) : f_{f} {}
 
-    template <class T1>
-    void operator = (const T1& value) const {
-        f_(value);
-    }
+    void operator = (T arg) const { f_(arg); }
 
 private:
     const function_output_iterator& dereference() const { return *this; }
@@ -39,10 +38,5 @@ private:
 
     friend struct iterator_core_access;
 };
-
-template <class T = void, class UnaryFunction>
-inline auto make_function_output_iterator(const UnaryFunction& f) {
-    return function_output_iterator<T, UnaryFunction>(f);
-}
 
 }  // namespace ac

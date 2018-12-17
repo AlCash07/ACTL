@@ -15,6 +15,8 @@ namespace ac {
 // T can be a reference to share global time.
 template <class Map, class T = typename property_traits<Map>::value_type>
 struct time_stamper : property_map_wrapper_t<Map> {
+    time_stamper(Map&& pm) : property_map_wrapper_t<Map>(std::move(pm)) {}
+
     T time = {};
 
     void operator()(on_vertex_examine, typename property_traits<Map>::key_type u) {
@@ -34,11 +36,6 @@ struct in_out_time_stamper : time_stamper<Map, T> {
     }
 };
 
-template <class Map>
-inline time_stamper<Map> make_time_stamper(Map in_time) {
-    return {std::forward<Map>(in_time)};
-}
-
 template <class Map, class T>
 inline vertex_initializer<time_stamper<Map>> make_time_stamper(Map&& in_time, T value) {
     return {{std::forward<Map>(in_time)}, value};
@@ -57,8 +54,8 @@ inline vertex_initializer<in_out_time_stamper<Map>> make_in_out_time_stamper(Map
 }
 
 template <class Graph>
-inline auto make_default_time_stamper(const Graph& graph) {
-    return make_time_stamper(make_default_vertex_property_map<int>(graph), -1);
+inline auto default_time_stamper(const Graph& graph) {
+    return make_time_stamper(default_vertex_property_map<int>(graph), -1);
 }
 
 }  // namespace ac

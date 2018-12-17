@@ -20,8 +20,8 @@ using Log = std::vector<std::pair<int, colors>>;
 TEST("bfs") {
     auto graph = sample_undirected_graph();
     Log  log;
-    auto cr = make_color_recorder(make_logging_property_map(
-        make_default_vertex_property_map<colors>(graph), std::back_inserter(log)));
+    auto cr = color_recorder(
+        logging_property_map(default_vertex_property_map<colors>(graph), std::back_inserter(log)));
     breadth_first_search(cr)(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},
@@ -47,8 +47,8 @@ TEST("bfs") {
 TEST("dfs") {
     auto graph = sample_undirected_graph();
     Log  log;
-    auto cr = make_color_recorder(make_logging_property_map(
-        make_default_vertex_property_map<colors>(graph), std::back_inserter(log)));
+    auto cr = color_recorder(
+        logging_property_map(default_vertex_property_map<colors>(graph), std::back_inserter(log)));
     depth_first_search(cr)(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},

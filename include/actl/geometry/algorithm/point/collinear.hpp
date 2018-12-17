@@ -32,7 +32,7 @@ inline bool collinear(const collinear_policy<AP>& policy, const point<T0, N>& lh
         if (rhs[i] != T1{0}) return false;
     }
     for (int j = i + 1; j < N; ++j) {
-        if (!collinear(policy, make_point(lhs[i], lhs[j]), make_point(rhs[i], rhs[j])))
+        if (!collinear(policy, point(lhs[i], lhs[j]), point(rhs[i], rhs[j])))
             return false;
     }
     return true;

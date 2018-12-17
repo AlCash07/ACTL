@@ -67,9 +67,4 @@ private:
     friend struct iterator_core_access;
 };
 
-template <class Iterator>
-inline auto make_cyclic_iterator(Iterator it, Iterator begin, Iterator end) {
-    return cyclic_iterator<Iterator>(it, begin, end);
-}
-
 }  // namespace ac

@@ -22,8 +22,8 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](vertex_property) { return make_container_property_map(this->vertices_); }
-    auto operator[](vertex_property) const { return make_container_property_map(this->vertices_); }
+    auto operator[](vertex_property) { return container_property_map(this->vertices_); }
+    auto operator[](vertex_property) const { return container_property_map(this->vertices_); }
 
     T&       operator[](vertex u) { return get((*this)[vertex_property{}], u); }
     const T& operator[](vertex u) const { return get((*this)[vertex_property{}], u); }

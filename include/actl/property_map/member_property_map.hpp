@@ -36,12 +36,7 @@ private:
 };
 
 template <class Key, class Member>
-inline auto make_member_property_map(Member Key::* ptr) {
-    return member_property_map<Key, Member>(ptr);
-}
-
-template <class Key, class Member>
-inline auto make_const_member_property_map(Member Key::* ptr) {
+inline auto const_member_property_map(Member Key::* ptr) {
     return member_property_map<const Key, const Member>(ptr);
 }
 

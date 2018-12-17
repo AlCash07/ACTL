@@ -44,13 +44,11 @@ struct sphere {
     }
 };
 
+template <int N, class T0, class T1>
+sphere(const point<T0, N>&, const T1&) -> sphere<geometry::scalar_t<T0, T1>, N>;
+
 template <int N, class T>
 struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T, N>> {};
-
-template <int N, class T0, class T1>
-inline constexpr auto make_sphere(const point<T0, N>& center, const T1& radius) {
-    return sphere<geometry::scalar_t<T0, T1>, N>(center, radius);
-}
 
 template <int N, class T>
 inline void swap(sphere<T, N>& lhs, sphere<T, N>& rhs) { lhs.swap(rhs); }

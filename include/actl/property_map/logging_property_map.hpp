@@ -10,6 +10,8 @@
 #include <actl/property_map/property_map.hpp>
 #include <utility>
 
+#include <iostream>
+
 namespace ac {
 
 /**
@@ -22,19 +24,13 @@ class logging_property_map : public property_map_wrapper_t<PM> {
     mutable OutputIterator it_;
 
 public:
-    explicit logging_property_map(PM&& pm, OutputIterator it)
-        : base_t(std::forward<PM>(pm)), it_{it} {}
+    explicit logging_property_map(PM&& pm, OutputIterator it) : base_t(std::move(pm)), it_{it} {}
 
     friend void put(const logging_property_map& pm, typename base_t::key_type key,
         typename base_t::value_type value) {
-        *pm.it_++ = std::make_pair(key, value);
+        *pm.it_++ = std::pair(key, value);
         put(static_cast<const base_t&>(pm), key, value);
     }
 };
-
-template <class PM, class OutputIterator>
-inline auto make_logging_property_map(PM&& pm, OutputIterator it) {
-    return logging_property_map<PM, OutputIterator>(std::forward<PM>(pm), it);
-}
 
 }  // namespace ac

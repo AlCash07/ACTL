@@ -49,7 +49,7 @@ struct vertex_printer {
 
 template <class Graph, class VertexOutputIterator>
 inline void print_inorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
-    auto state = make_default_vertex_property_map<char>(graph);
+    auto state = default_vertex_property_map<char>(graph);
     depth_first_search(
         inorder_printer<VertexOutputIterator, decltype(state)>{it, std::move(state)})(graph, s);
 }
@@ -57,13 +57,13 @@ inline void print_inorder(const Graph& graph, typename Graph::vertex s, VertexOu
 template <class Graph, class VertexOutputIterator>
 inline void print_postorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
     depth_first_search(vertex_printer<on_vertex_finish, VertexOutputIterator>{it},
-                       make_default_discovered_flag(graph))(graph, s);
+                       default_discovered_flag(graph))(graph, s);
 }
 
 template <class Graph, class VertexOutputIterator>
 inline void print_preorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
     depth_first_search(vertex_printer<on_vertex_examine, VertexOutputIterator>{it},
-                       make_default_discovered_flag(graph))(graph, s);
+                       default_discovered_flag(graph))(graph, s);
 }
 
 /**
@@ -72,7 +72,7 @@ inline void print_preorder(const Graph& graph, typename Graph::vertex s, VertexO
 template <class Graph, class VertexOutputIterator>
 inline void topological_sort(const Graph& graph, VertexOutputIterator it) {
     depth_first_search(vertex_printer<on_vertex_finish, VertexOutputIterator>{it},
-                       make_default_discovered_flag(graph))(graph);
+                       default_discovered_flag(graph))(graph);
 }
 
 }  // namespace ac

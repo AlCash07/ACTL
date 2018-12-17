@@ -211,16 +211,7 @@ public:
     using base_t::base_t;
 };
 
-template <class PM>
-inline PM make_composite_property_map(PM&& pm) {
-    return pm;
-}
-
-template <class PM1, class PM2, class... PMs>
-inline auto make_composite_property_map(PM1&& pm1, PM2&& pm2, PMs&&... pms) {
-    return make_composite_property_map(
-        composite_property_map<PM1, PM2>(std::forward<PM1>(pm1), std::forward<PM2>(pm2)),
-        std::forward<PMs>(pms)...);
-}
+template <class... PMs>
+composite_property_map(PMs&&...) -> composite_property_map<PMs...>;
 
 }  // namespace ac

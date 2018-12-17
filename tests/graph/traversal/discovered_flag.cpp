@@ -19,9 +19,9 @@ using Log = std::vector<std::pair<int, bool>>;
 
 TEST("bfs") {
     auto graph = sample_undirected_graph();
-    Log  log;
-    auto df = make_discovered_flag(make_logging_property_map(
-        make_default_vertex_property_map<bool>(graph), std::back_inserter(log)));
+    Log log;
+    auto df = discovered_flag(
+        logging_property_map(default_vertex_property_map<bool>(graph), std::back_inserter(log)));
     breadth_first_search(df)(graph, 0);
     ASSERT_EQUAL(Log{{0, false},
                      {1, false},
@@ -40,9 +40,9 @@ TEST("bfs") {
 
 TEST("dfs") {
     auto graph = sample_undirected_graph();
-    Log  log;
-    auto df = make_discovered_flag(make_logging_property_map(
-        make_default_vertex_property_map<bool>(graph), std::back_inserter(log)));
+    Log log;
+    auto df = discovered_flag(
+        logging_property_map(default_vertex_property_map<bool>(graph), std::back_inserter(log)));
     depth_first_search(df)(graph, 0);
     ASSERT_EQUAL(Log{{0, false},
                      {1, false},

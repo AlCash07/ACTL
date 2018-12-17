@@ -25,9 +25,9 @@ TEST("static") {
 
 TEST("non-static") {
     A x{0};
-    auto pm = make_member_property_map(&A::a);
+    auto pm = member_property_map(&A::a);
     get(pm, x) = 2;
     ASSERT_EQUAL(2, x.a);
-    auto cpm = make_const_member_property_map(&A::a);
+    auto cpm = const_member_property_map(&A::a);
     ASSERT_EQUAL(2, get(cpm, x));
 }

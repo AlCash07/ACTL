@@ -55,21 +55,17 @@ struct plane {
     };
 };
 
+template <int N, class T0, class T1>
+plane(const point<T0, N>&, const T1&) -> plane<geometry::scalar_t<T0, T1>, N>;
+
+template <int N, class T0, class T1>
+plane(const point<T0, N>&, const point<T1, N>&) -> plane<geometry::scalar_t<T0, T1>, N>;
+
 template <int N, class T>
 struct geometry_traits<plane<T, N>> : geometry_traits_base<plane_tag, point<T, N>> {};
 
 template <int N, class... Ts>
 using plane_type = plane<geometry::scalar_t<Ts...>, N>;
-
-template <int N, class T0, class T1>
-inline constexpr auto make_plane(const point<T0, N>& normal, const T1& d) {
-    return plane_type<N, T0, T1>(normal, d);
-}
-
-template <int N, class T0, class T1>
-inline constexpr auto make_plane(const point<T0, N>& normal, const point<T1, N>& point) {
-    return plane_type<N, T0, T1>(normal, point);
-}
 
 template <class T0, class T1>
 inline constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b) {

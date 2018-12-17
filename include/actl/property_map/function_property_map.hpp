@@ -27,9 +27,4 @@ private:
     Function f_;
 };
 
-template <class Function>
-inline auto make_function_property_map(Function f) {
-    return function_property_map<Function>(f);
-}
-
 }  // namespace ac

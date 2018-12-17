@@ -17,16 +17,13 @@ template <class Map>
 struct connected_component_recorder : property_map_wrapper_t<Map> {
     using vertex = typename property_traits<Map>::key_type;
 
-    typename property_traits<Map>::value_type count = {};
+    connected_component_recorder(Map&& pm) : property_map_wrapper_t<Map>(std::move(pm)) {}
 
     void operator()(on_vertex_discover, vertex u) { put(*this, u, count); }
     void operator()(on_search_finish) { ++count; }
-};
 
-template <class Map>
-inline connected_component_recorder<Map> make_connected_component_recorder(Map component) {
-    return {component};
-}
+    typename property_traits<Map>::value_type count = {};
+};
 
 template <class Map, class T>
 inline vertex_initializer<connected_component_recorder<Map>> make_connected_component_recorder(
@@ -35,8 +32,8 @@ inline vertex_initializer<connected_component_recorder<Map>> make_connected_comp
 }
 
 template <class Graph>
-inline auto make_default_connected_component_recorder(const Graph& graph) {
-    return make_connected_component_recorder(make_default_vertex_property_map<int>(graph), -1);
+inline auto default_connected_component_recorder(const Graph& graph) {
+    return make_connected_component_recorder(default_vertex_property_map<int>(graph), -1);
 }
 
 }  // namespace ac

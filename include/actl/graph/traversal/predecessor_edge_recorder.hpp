@@ -14,6 +14,8 @@ namespace ac {
 
 template <class Map>
 struct predecessor_edge_recorder : property_map_wrapper_t<Map> {
+    predecessor_edge_recorder(Map&& pm) : property_map_wrapper_t<Map>(std::move(pm)) {}
+
     template <class E>
     void operator()(on_tree_edge, E e) {
         put(*this, e.target(), e);
@@ -25,15 +27,9 @@ struct predecessor_edge_recorder : property_map_wrapper_t<Map> {
     }
 };
 
-template <class Map>
-inline predecessor_edge_recorder<Map> make_predecessor_edge_recorder(Map&& predecessor_edge) {
-    return {std::forward<Map>(predecessor_edge)};
-}
-
 template <class Graph>
-inline auto make_default_predecessor_edge_recorder(const Graph& graph) {
-    return make_predecessor_edge_recorder(
-        make_default_vertex_property_map<typename Graph::edge>(graph));
+inline auto default_predecessor_edge_recorder(const Graph& graph) {
+    return predecessor_edge_recorder(default_vertex_property_map<typename Graph::edge>(graph));
 }
 
 }  // namespace ac

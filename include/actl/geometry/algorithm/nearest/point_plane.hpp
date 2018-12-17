@@ -18,7 +18,7 @@ struct nearest_point_plane : ProjectPolicy {};
 template <class P, class R, int N, class T0, class T1>
 inline auto nearest(const nearest_point_plane<P, R>& policy, const point<T0, N>& point,
                     const plane<T1, N>& plane) {
-    return std::make_pair(point, project(policy, point, plane));
+    return std::pair(point, project(policy, point, plane));
 }
 
 template <int N, class T0, class T1>

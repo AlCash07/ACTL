@@ -29,7 +29,7 @@ inline auto max_distance(const max_distance_policy<DP, AP>& policy,
     auto update_res = [&](auto pair) {
         smax(res, distance(policy.distance_policy, *pair.first, *pair.second));
     };
-    antipodal_vertices(policy, polygon, make_function_output_iterator(update_res));
+    antipodal_vertices(policy, polygon, function_output_iterator(update_res));
     return res;
 }
 

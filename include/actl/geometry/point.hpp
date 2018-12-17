@@ -28,7 +28,7 @@ template <class T, int N>
 class point_base {
 public:
     template <class... Ts>
-    explicit constexpr point_base(Ts&&... values) : coordinates_{std::forward<Ts>(values)...} {}
+    explicit constexpr point_base(Ts&&... values) : coordinates_{T(std::forward<Ts>(values))...} {}
 
     constexpr point_base(std::initializer_list<T> values) {
         ACTL_ASSERT(values.size() == N);
@@ -106,6 +106,9 @@ private:
     T coordinates_[N];
 };
 
+template <class... Ts>
+point(Ts&&...) -> point<geometry::scalar_t<Ts...>, sizeof...(Ts)>;
+
 template <class T, int N>
 class point : public point_base<T, N> {
 public:
@@ -119,11 +122,6 @@ struct geometry_traits<point<T, N>> {
     using point  = point<T, N>;
     static constexpr int dimension = N;
 };
-
-template <class... Ts>
-inline constexpr auto make_point(Ts&&... values) {
-    return point<geometry::scalar_t<Ts...>, sizeof...(Ts)>(std::forward<Ts>(values)...);
-}
 
 template <int N, class T>
 inline void swap(point<T, N>& lhs, point<T, N>& rhs) { lhs.swap(rhs); }

@@ -39,9 +39,4 @@ private:
     friend struct iterator_core_access;
 };
 
-template <class Iterator>
-inline auto make_limited_input_iterator(Iterator it, int limit) {
-    return limited_input_iterator<Iterator>(it, limit);
-}
-
 }  // namespace ac

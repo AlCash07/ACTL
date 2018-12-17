@@ -62,9 +62,7 @@ public:
     iterator end() const { return {data_.end(), data_}; }
 };
 
-template <class Container>
-inline auto make_container_property_map(Container&& cont) {
-    return container_property_map<remove_rvalue_ref_t<Container>>(std::forward<Container>(cont));
-}
+template <class C>
+container_property_map(C&&) -> container_property_map<remove_rvalue_ref_t<C>>;
 
 }  // namespace ac

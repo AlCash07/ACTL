@@ -48,9 +48,7 @@ public:
     }
 };
 
-template <class Container>
-inline auto make_associative_property_map(Container&& cont) {
-    return associative_property_map<remove_rvalue_ref_t<Container>>(std::forward<Container>(cont));
-}
+template <class AC>
+associative_property_map(AC&&) -> associative_property_map<remove_rvalue_ref_t<AC>>;
 
 }  // namespace ac

@@ -22,7 +22,7 @@ struct tangents_point_convex_polygon : ExtremeVertexPolicy {};
 template <class EVP, class T0, class T1>
 inline auto tangents(const tangents_point_convex_polygon<EVP>& policy, const point<T0>& point,
                      const polygon<T1>& polygon) {
-    return std::make_pair(
+    return std::pair(
         extreme_vertex(policy, polygon, [&point](const auto& query) { return query - point; }),
         extreme_vertex(policy, polygon, [&point](const auto& query) { return point - query; }));
 }

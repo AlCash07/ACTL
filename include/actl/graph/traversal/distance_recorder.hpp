@@ -14,6 +14,8 @@ namespace ac {
 
 template <class Map>
 struct distance_recorder : property_map_wrapper_t<Map> {
+    distance_recorder(Map&& pm) : property_map_wrapper_t<Map>(std::move(pm)) {}
+
     void operator()(on_vertex_start, typename property_traits<Map>::key_type u) {
         put(*this, u, 0);
     }
@@ -24,11 +26,6 @@ struct distance_recorder : property_map_wrapper_t<Map> {
     }
 };
 
-template <class Map>
-inline distance_recorder<Map> make_distance_recorder(Map distance) {
-    return {distance};
-}
-
 template <class Map, class T>
 inline vertex_initializer<distance_recorder<Map>> make_distance_recorder(Map&& distance, T value) {
     return {{std::forward<Map>(distance)}, value};
@@ -36,7 +33,7 @@ inline vertex_initializer<distance_recorder<Map>> make_distance_recorder(Map&& d
 
 template <class Graph>
 inline auto default_distance_recorder(const Graph& graph) {
-    return make_distance_recorder(make_default_vertex_property_map<int>(graph), -1);
+    return make_distance_recorder(default_vertex_property_map<int>(graph), -1);
 }
 
 }  // namespace ac

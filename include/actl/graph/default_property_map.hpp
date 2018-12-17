@@ -16,21 +16,20 @@
 namespace ac {
 
 template <class T, class Graph>
-inline auto make_default_vertex_property_map(const Graph& graph) {
+inline auto default_vertex_property_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::vertex_container>) {
-        return make_container_property_map(
-            std::vector<T>(static_cast<size_t>(graph.vertex_count())));
+        return container_property_map(std::vector<T>(static_cast<size_t>(graph.vertex_count())));
     } else {
-        return make_associative_property_map(std::map<typename Graph::vertex, T>());
+        return associative_property_map(std::map<typename Graph::vertex, T>());
     }
 }
 
 template <class T, class Graph>
-inline auto make_default_edge_property_map(const Graph& graph) {
+inline auto default_edge_property_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::edge_container>) {
-        return make_container_property_map(std::vector<T>(static_cast<size_t>(graph.edge_count())));
+        return container_property_map(std::vector<T>(static_cast<size_t>(graph.edge_count())));
     } else {
-        return make_associative_property_map(std::map<typename Graph::edge, T>());
+        return associative_property_map(std::map<typename Graph::edge, T>());
     }
 }
 

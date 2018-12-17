@@ -22,7 +22,7 @@ inline bool crosses(const crosses_plane_plane<CP>& policy, const plane<T0, N>& l
     if (!collinear(policy, lhs.normal, rhs.normal)) return true;
     int i = 0;
     while (lhs.normal[i] == T0{0}) ++i;
-    return collinear(policy, make_point(lhs.normal[i], lhs.d), make_point(rhs.normal[i], rhs.d));
+    return collinear(policy, point(lhs.normal[i], lhs.d), point(rhs.normal[i], rhs.d));
 }
 
 template <int N, class T0, class T1>

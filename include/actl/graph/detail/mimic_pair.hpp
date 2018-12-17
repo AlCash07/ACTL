@@ -79,8 +79,8 @@ class second_property_map : public put_helper<second_property_map<Key>>,
 
 template <class PM>
 inline auto get_second(PM&& map) {
-    return make_composite_property_map(
-        std::forward<PM>(map), second_property_map<typename property_traits<PM>::reference>());
+    return composite_property_map(std::forward<PM>(map),
+                                  second_property_map<typename property_traits<PM>::reference>());
 }
 
 }  // namespace ac::detail
