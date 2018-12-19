@@ -11,6 +11,9 @@
 
 namespace ac::io {
 
+struct binary {};
+struct text {};
+
 using mode_t = uint8_t;
 inline constexpr mode_t bin = 0x01;
 inline constexpr mode_t in  = 0x02;
@@ -18,6 +21,9 @@ inline constexpr mode_t out = 0x04;
 inline constexpr mode_t app = 0x08;
 inline constexpr mode_t line_buffered = 0x10;
 inline constexpr mode_t trunc = in | out | app;
+
+template <mode_t Mode>
+inline constexpr bool is_bin = (Mode & bin) > 0;
 
 template <mode_t Mode>
 inline constexpr bool is_in = (Mode & in) > 0;

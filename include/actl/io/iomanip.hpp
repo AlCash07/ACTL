@@ -20,11 +20,11 @@ template <flag_t group, flag_t flag>
 struct setg {};
 
 // boolean as string or int
-constexpr setf<flags::boolalpha, true>  boolalpha{};
+constexpr setf<flags::boolalpha, true> boolalpha{};
 constexpr setf<flags::boolalpha, false> noboolalpha{};
 
 // prepend integer number base prefix
-constexpr setf<flags::showbase, true>  showbase{};
+constexpr setf<flags::showbase, true> showbase{};
 constexpr setf<flags::showbase, false> noshowbase{};
 
 // integer and real numbers base
@@ -37,21 +37,21 @@ constexpr setbase hex(16);
 constexpr setbase oct(8);
 
 // prepend + before positive integer and real numbers
-constexpr setf<flags::showpos, true>  showpos{};
+constexpr setf<flags::showpos, true> showpos{};
 constexpr setf<flags::showpos, false> noshowpos{};
 
 // case for special characters in integer and real numbers representation
-constexpr setf<flags::uppercase, true>  uppercase{};
+constexpr setf<flags::uppercase, true> uppercase{};
 constexpr setf<flags::uppercase, false> nouppercase{};
 
 // real numbers formatted
-constexpr setg<groups::floatfield, 0>                 defaultfloat{};
-constexpr setg<groups::floatfield, flags::fixed>      fixed{};
+constexpr setg<groups::floatfield, 0> defaultfloat{};
+constexpr setg<groups::floatfield, flags::fixed> fixed{};
 constexpr setg<groups::floatfield, flags::scientific> scientific{};
-constexpr setg<groups::floatfield, flags::hexfloat>   hexfloat{};
+constexpr setg<groups::floatfield, flags::hexfloat> hexfloat{};
 
 // always show decimal point
-constexpr setf<flags::showpoint, true>  showpoint{};
+constexpr setf<flags::showpoint, true> showpoint{};
 constexpr setf<flags::showpoint, false> noshowpoint{};
 
 // number of digits after the decimal point
@@ -73,13 +73,13 @@ struct setfill {
 };
 
 // adjustment
-constexpr setg<groups::adjustfield, flags::left>     left{};
-constexpr setg<groups::adjustfield, flags::right>    right{};
-constexpr setg<groups::adjustfield, flags::center>   center{};
+constexpr setg<groups::adjustfield, flags::left> left{};
+constexpr setg<groups::adjustfield, flags::right> right{};
+constexpr setg<groups::adjustfield, flags::center> center{};
 constexpr setg<groups::adjustfield, flags::internal> internal{};
 
 // skip whitespace before each input unit
-constexpr setf<flags::skipws, true>  skipws{};
+constexpr setf<flags::skipws, true> skipws{};
 constexpr setf<flags::skipws, false> noskipws{};
 
 // units delimiter, inserted between consecutive non-string and non-char output units
@@ -89,58 +89,58 @@ struct setdelimiter {
 };
 
 // flush after each unit
-constexpr setf<flags::unitbuf, true>  unitbuf{};
+constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
 
 // enclose containers in brackets, don't output their size
-constexpr setf<flags::brackets, true>  brackets{};
+constexpr setf<flags::brackets, true> brackets{};
 constexpr setf<flags::brackets, false> nobrackets{};
 
 // actions
-struct endl_t  {} constexpr endl{};  // put '\n' and flush
-struct ends_t  {} constexpr ends{};  // put '\0'
+struct endl_t {} constexpr endl{};  // put '\n' and flush
+struct ends_t {} constexpr ends{};  // put '\0'
 struct flush_t {} constexpr flush{};
-struct ws_t    {} constexpr ws{};  // skip whitespace
+struct ws_t {} constexpr ws{};  // skip whitespace
 
 template <class Device, flag_t flag, bool value>
-inline bool read(Device& dr, setf<flag, value>) {
+inline bool read(io::text, Device& rd, setf<flag, value>) {
     if constexpr (value) {
-        dr.setf(flag);
+        rd.setf(flag);
     } else {
-        dr.unseft(flag);
+        rd.unsetf(flag);
     }
     return true;
 }
 
 template <class Device, flag_t flag, bool value>
-inline int write(Device& dw, setf<flag, value>) {
-    read(dw, setf<flag, value>{});
+inline int write(io::text, Device& wd, setf<flag, value>) {
+    read(wd, setf<flag, value>{});
     return 0;
 }
 
 template <class Device, flag_t group, flag_t flag>
-inline bool read(Device& dr, setg<group, flag>) {
-    dr.setf(flag, group);
+inline bool read(io::text, Device& rd, setg<group, flag>) {
+    rd.setf(flag, group);
     return true;
 }
 
 template <class Device, flag_t group, flag_t flag>
-inline int write(Device& dw, setg<group, flag>) {
-    dw.setf(flag, group);
+inline int write(io::text, Device& wd, setg<group, flag>) {
+    wd.setf(flag, group);
     return 0;
 }
 
 template <class Device>
-inline bool read(Device& dr, setbase arg) {
-    dr.base(arg.value);
+inline bool read(io::text, Device& rd, setbase arg) {
+    rd.base(arg.value);
     return true;
 }
 
-#define WRITE_MANIP(name)                         \
-    template <class Device>                       \
-    inline int write(Device& dw, set##name arg) { \
-        dw.name(arg.value);                       \
-        return 0;                                 \
+#define WRITE_MANIP(name)                                   \
+    template <class Device>                                 \
+    inline int write(io::text, Device& wd, set##name arg) { \
+        wd.name(arg.value);                                 \
+        return 0;                                           \
     }
 
 WRITE_MANIP(base)
@@ -152,23 +152,23 @@ WRITE_MANIP(delimiter)
 #undef WRITE_MANIP
 
 template <class Device>
-inline int write(Device& dw, endl_t) {
-    return write(dw, '\n', flush);
+inline int write(io::text, Device& wd, endl_t) {
+    return write(wd, '\n', flush);
 }
 
 template <class Device>
-inline int write(Device& dw, ends_t) {
-    return write(dw, '\0');
+inline int write(io::text, Device& wd, ends_t) {
+    return write(wd, '\0');
 }
 
 template <class Device>
-inline int write(Device& dw, flush_t) {
-    dw.flush();
+inline int write(io::text, Device& wd, flush_t) {
+    wd.flush();
     return 0;
 }
 
 template <class Device>
-inline bool read(Device& dr, ws_t) {
+inline bool read(io::text, Device& rd, ws_t) {
     // implement
     return true;
 }
