@@ -30,7 +30,6 @@ enum : flag_t {
     left,
     right,
     center,
-    internal,
     skipws,
     unitbuf,
     brackets
@@ -46,9 +45,8 @@ enum : flag_t { floatfield, adjustfield };
 
 inline constexpr flag_t bits(flag_t flag) { return flag_t{1} << flag; }
 
-const flag_t gbits[] = {
-    bits(flags::fixed) | bits(flags::scientific) | bits(flags::hexfloat),
-    bits(flags::left) | bits(flags::right) | bits(flags::center) | bits(flags::internal)};
+const flag_t gbits[] = {bits(flags::fixed) | bits(flags::scientific) | bits(flags::hexfloat),
+                        bits(flags::left) | bits(flags::right) | bits(flags::center)};
 
 const char space[] = " ";
 
