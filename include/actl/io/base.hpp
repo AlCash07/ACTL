@@ -14,6 +14,10 @@ namespace ac::io {
 struct binary {};
 struct text {};
 
+struct itext : text {
+    char last;  // the last extracted character is passed to next read operation for optimization
+};
+
 using mode_t = uint8_t;
 inline constexpr mode_t bin = 0x01;
 inline constexpr mode_t in  = 0x02;
