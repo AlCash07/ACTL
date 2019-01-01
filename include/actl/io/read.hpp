@@ -49,7 +49,7 @@ inline bool read(Device& in, char& arg) {
         arg = '\0';
         return false;
     } else {
-        arg = in.read_char();
+        arg = in.get();
         return true;
     }
 }
@@ -66,7 +66,7 @@ inline int read_unsigned_int_general(Device& in, UInt& arg, char c) {
     auto base   = in.get_base();
     UInt value  = 0;
     int  length = 0;
-    for (;; c = in.read_char()) {
+    for (;; c = in.get()) {
         if (is_digit(c)) c -= '0';
         else if (is_upper(c)) c -= 'A' - 10;
         else if (is_lower(c)) c -= 'a' - 10;
@@ -75,7 +75,7 @@ inline int read_unsigned_int_general(Device& in, UInt& arg, char c) {
         value = base * value + c;
         ++length;
     }
-    in.put_back();
+    in.unget();
     arg = value;
     return length;
 }
@@ -86,11 +86,11 @@ inline int read_unsigned_int(Device& in, Int& arg, char c) {
     if (EXPECT_FALSE(base > 10)) return read_unsigned_int_general(in, arg, c);
     Int value  = 0;
     int length = 0;
-    for (; static_cast<unsigned char>(c - '0') < base; c = in.read_char()) {
+    for (; static_cast<unsigned char>(c - '0') < base; c = in.get()) {
         value = base * value + c - '0';
         ++length;
     }
-    in.put_back();
+    in.unget();
     arg = value;
     return length;
 }
@@ -100,24 +100,13 @@ inline bool is_one_of(char c, const char* str) { return std::strchr(str, c) != n
 template <class Device, class UnaryPredicate>
 inline char skip_characters(Device& in, UnaryPredicate is_skipped) {
     char c;
-    do { c = in.read_char(); } while (is_skipped(c));
+    do { c = in.get(); } while (is_skipped(c));
     return c;
 }
 
 template <class Device>
 inline char skip_characters(Device& in) {
     return skip_characters(in, is_space);
-}
-
-template <class Device>
-inline char skip_characters(Device& in, const char* arg) {
-    if (!*arg) return skip_characters(in);
-    return skip_characters(in, [arg](char c) { return is_one_of(c, arg); });
-}
-
-template <class Device>
-inline char skip_characters(Device& in, const char& arg) {
-    return skip_characters(in, [arg](char c) { return arg == c; });
 }
 
 template <class Device>
@@ -148,7 +137,7 @@ inline std::enable_if_t<is_signed_int_v<Int> && !std::is_same_v<Int, char>, bool
 read(text_io_tag, Device& in, Int& arg) {
     char c = detail::skip_characters(in);
     bool negative = c == '-';
-    if (negative) c = in.read_char();
+    if (negative) c = in.get();
     std::make_unsigned_t<Int> unsigned_arg;
     if (detail::read_unsigned_int(in, unsigned_arg, c) == 0) return false;
     arg = negative ? ~static_cast<Int>(unsigned_arg - 1) : static_cast<Int>(unsigned_arg);
@@ -160,13 +149,13 @@ inline std::enable_if_t<std::is_floating_point_v<Float>, bool> read(text_io_tag,
                                                                     Float& arg) {
     char c = detail::skip_characters(in);
     bool negative = c == '-';
-    if (negative) c = in.read_char();
+    if (negative) c = in.get();
     unsigned long long integer_part;
     if (detail::read_unsigned_int(in, integer_part, c) == 0) return false;
     arg = static_cast<Float>(integer_part);
-    if (in.read_char() == '.') {
+    if (in.get() == '.') {
         unsigned long long fractional_part = 0;
-        int fractional_length = detail::read_unsigned_int(in, fractional_part, in.read_char());
+        int fractional_length = detail::read_unsigned_int(in, fractional_part, in.get());
         if (fractional_length > 0) {
             unsigned long long base_power = 1;
             auto base = in.get_base();
@@ -175,7 +164,7 @@ inline std::enable_if_t<std::is_floating_point_v<Float>, bool> read(text_io_tag,
             arg += static_cast<Float>(fractional_part) / base_power;
         }
     } else {
-        in.put_back();
+        in.unget();
     }
     if (negative) arg = -arg;
     return true;
@@ -192,18 +181,9 @@ inline bool read(binary_io_tag, Device& in, std::string& arg) {
 }
 
 template <class Device, class T>
-inline std::enable_if_t<
-    std::is_convertible_v<T, const char*> || std::is_convertible_v<T, bool (*)(char)>, bool>
-read(text_io_tag, Device& in, T&& arg) {
-    detail::skip_characters(in, std::forward<T>(arg));
-    in.put_back();
-    return true;
-}
-
-template <class Device, class T>
 inline bool read(text_io_tag, Device& in, const char& arg) {
     detail::skip_characters(in, [arg](char c) { return arg != c; });
-    in.put_back();
+    in.unget();
     return true;
 }
 
@@ -215,7 +195,7 @@ inline bool read(text_io_tag, Device& in, char (&arg)[N], Ts&&... args) {
 template <class Device, class Terminator, class... Ts>
 inline bool read(text_io_tag, Device& in, std::string& arg, Terminator&& terminator, Ts&&... args) {
     detail::skip_characters(in, terminator);
-    in.put_back();
+    in.unget();
     uint32_t length = std::max(16u, static_cast<uint32_t>(arg.capacity()));
     for (uint32_t last = 0;; length = last += length) {
         arg.resize(last + length);
@@ -247,7 +227,7 @@ template <class Device, class Terminator, class... Ts>
 inline bool read(text_io_tag, Device& in, const iterator_range<char*>& arg, Terminator&& terminator,
                  Ts&&... args) {
     detail::skip_characters(in, terminator);
-    in.put_back();
+    in.unget();
     detail::read_string(in, arg.begin(), arg.size(), terminator);
     return read(in, std::forward<Ts>(args)...);
 }
