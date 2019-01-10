@@ -45,15 +45,15 @@ struct setdelimiter {
 };
 
 template <class Device>
-inline bool read(io::text, Device& rd, setbase arg) {
-    rd.base(arg.value);
+inline bool read(io::text, Device& id, setbase arg) {
+    id.base(arg.value);
     return true;
 }
 
 #define WRITE_MANIP(name)                                   \
     template <class Device>                                 \
-    inline int write(io::text, Device& wd, set##name arg) { \
-        wd.name(arg.value);                                 \
+    inline int write(io::text, Device& od, set##name arg) { \
+        od.name(arg.value);                                 \
         return 0;                                           \
     }
 

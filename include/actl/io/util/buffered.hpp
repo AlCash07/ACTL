@@ -82,7 +82,7 @@ public:
         for (; ptr_ < end_; underflow()) {
             char* ptr = ptr_;
             char* end = std::min(end_, ptr_ + (last - dst));
-            while (ptr_ != end && !is_delimiter(*ptr_)) *dst++= *ptr_++;
+            while (ptr_ != end && !is_delimiter(*ptr_)) *dst++ = *ptr_++;
             if (ptr == ptr_) break;
         }
         return count - static_cast<int>(last - dst);

@@ -22,6 +22,9 @@ public:
         ACTL_ASSERT(begin < end);
     }
 
+    template <size_t N>
+    explicit out_memory(const char (&data)[N]) : out_memory(data, data + N) {}
+
 protected:
     const char* begin_;
     const char* ptr_;
@@ -34,6 +37,9 @@ public:
     explicit out_memory(char* begin, const char* end) : begin_{begin}, ptr_{begin}, end_{end} {
         ACTL_ASSERT(begin < end);
     }
+
+    template <size_t N>
+    explicit out_memory(char (&data)[N]) : out_memory(data, data + N) {}
 
     bool put(char c) {
         bool ok = ptr_ < end_;

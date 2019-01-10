@@ -8,15 +8,17 @@
 #pragma once
 
 #include <cstdint>
+#include <type_traits>
 
 namespace ac::io {
 
-struct binary {};
-struct text {};
+struct format {};
 
-struct itext : text {
-    char last;  // the last extracted character is passed to next read operation for optimization
-};
+struct binary : format {};
+struct text : format {};
+
+template <class T>
+inline constexpr bool is_format_v = std::is_base_of_v<format, T>;
 
 using mode_t = uint8_t;
 inline constexpr mode_t bin = 0x01;
@@ -38,11 +40,16 @@ inline constexpr bool is_out = (Mode & (out | app)) > 0;
 template <mode_t Mode>
 inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
 
+struct device {};
+
 template <mode_t Mode>
-struct base {
+struct base : device {
     static_assert(is_in<Mode> || is_out<Mode>, "invalid mode");
 
     static constexpr mode_t mode = Mode;
 };
+
+template <class T>
+inline constexpr bool is_device_v = std::is_base_of_v<device, T>;
 
 }  // namespace ac::io

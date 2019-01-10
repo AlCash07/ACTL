@@ -37,8 +37,8 @@ inline auto skip(Predicate pred) { return skip_t(pred); }
 inline constexpr auto ws = skip();  // skip whitespace
 
 template <class Device, class Predicate>
-inline bool read(io::itext& code, Device& rd, io::skip_t<Predicate> skip) {
-    for (char& c = code.last; skip(code.last); c = rd.get());
+inline bool read(io::text& fmt, Device& id, io::skip_t<Predicate> skip) {
+//    for (char& c = id.last; skip(id.last); c = id.get());
     return true;
 }
 

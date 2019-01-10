@@ -10,6 +10,6 @@
 #include <actl/io/complex_types.hpp>
 #include <actl/io/device/all.hpp>
 #include <actl/io/iterator.hpp>
-#include <actl/io/manip/all.hpp>
 #include <actl/io/read.hpp>
+#include <actl/io/text/all.hpp>
 #include <actl/io/write.hpp>

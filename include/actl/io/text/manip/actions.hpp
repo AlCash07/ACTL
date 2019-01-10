@@ -16,18 +16,18 @@ struct ends_t {} constexpr ends{};  // put '\0'
 struct flush_t {} constexpr flush{};
 
 template <class Device>
-inline int write(io::text, Device& wd, endl_t) {
-    return write(wd, '\n', flush);
+inline int write(io::text, Device& od, endl_t) {
+    return write(od, '\n', flush);
 }
 
 template <class Device>
-inline int write(io::text, Device& wd, ends_t) {
-    return write(wd, '\0');
+inline int write(io::text, Device& od, ends_t) {
+    return write(od, '\0');
 }
 
 template <class Device>
-inline int write(io::text, Device& wd, flush_t) {
-    wd.flush();
+inline int write(io::text, Device& od, flush_t) {
+    od.flush();
     return 0;
 }
 

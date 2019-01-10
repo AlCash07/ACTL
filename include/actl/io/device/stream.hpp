@@ -7,18 +7,19 @@
 
 #pragma once
 
-#include <actl/io/util/formatted.hpp>
+#include <actl/assert.hpp>
+#include <actl/io/text/flags.hpp>
 #include <actl/io/util/unbuffered.hpp>
 #include <ios>
 
 namespace ac::io {
 
-template <class Stream, mode_t Mode, bool = is_in<Mode>>
-class istream : public base<Mode> {
+template <class Stream>
+class ios_format : format {
     using ios = std::ios_base;
 
 public:
-    explicit istream(Stream& s) : s_(s) {}
+    explicit ios_format(Stream& s) : s_(s) {}
 
     bool getf(flag_t flag) const {
         auto b = bits[flag];
@@ -55,6 +56,19 @@ public:
         s_.setf(flag, ios::basefield);
     }
 
+    uint8_t precision() const { return static_cast<uint8_t>(s_.precision()); }
+    void precision(uint8_t value) { s_.precision(static_cast<std::streamsize>(value)); }
+
+    uint8_t width() const { return static_cast<uint8_t>(s_.precision()); }
+    void width(uint8_t value) { s_.width(static_cast<std::streamsize>(value)); }
+
+    char fill() const { return s_.fill(); }
+    void fill(char value) { s_.fill(value); }
+
+    constexpr bool separate() { return false; }
+
+    constexpr const char* delimiter() const { return ""; }
+
 protected:
     static constexpr ios::fmtflags bits[] = {
         ios::boolalpha,
@@ -68,7 +82,6 @@ protected:
         ios::left,
         ios::right,
         0,
-        ios::internal,
         ios::skipws,
         ios::unitbuf,
         0
@@ -76,6 +89,15 @@ protected:
 
     static constexpr ios::fmtflags g[] = {ios::floatfield, ios::adjustfield};
 
+    Stream& s_;
+};
+
+template <class Stream, mode_t Mode, bool = is_in<Mode>>
+class istream : public base<Mode> {
+public:
+    explicit istream(Stream& s) : s_(s) {}
+
+protected:
     Stream& s_;
 };
 
@@ -120,19 +142,6 @@ protected:
 
 public:
     using base_t::base_t;
-
-    uint8_t precision() const { return static_cast<uint8_t>(s_.precision()); }
-    void precision(uint8_t value) { s_.precision(static_cast<std::streamsize>(value)); }
-
-    uint8_t width() const { return static_cast<uint8_t>(s_.precision()); }
-    void width(uint8_t value) { s_.width(static_cast<std::streamsize>(value)); }
-
-    char fill() const { return s_.fill(); }
-    void fill(char value) { s_.fill(value); }
-
-    constexpr bool separate() { return false; }
-
-    constexpr const char* delimiter() const { return ""; }
 
     bool put(char c) {
         s_.put(c);

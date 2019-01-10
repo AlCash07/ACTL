@@ -9,12 +9,20 @@
 
 #pragma once
 
-#define MAKE_READ_WRITE(name, ...) \
-template <class Code, class Device> \
-bool read_impl(Device& dr) { return read<Code>(dr, __VA_ARGS__); } \
-template <class Code, class Device> \
-int write_impl(Device& dw) const { return write<Code>(dw, __VA_ARGS__); } \
-template <class Code, class Device> \
-friend bool read(Device& dr, name& arg) { return arg.read_impl<Code>(dr); } \
-template <class Code, class Device> \
-friend int write(Device& dw, const name& arg) { return arg.write_impl<Code>(dw); }
+#define MAKE_READ_WRITE(name, ...)                         \
+template <class Format, class Device>                      \
+bool read_impl(Format& fmt, Device& id) {                  \
+    return read(fmt, id, __VA_ARGS__);                     \
+}                                                          \
+template <class Format, class Device>                      \
+int write_impl(Format& fmt, Device& od) const {            \
+    return write(fmt, od, __VA_ARGS__);                    \
+}                                                          \
+template <class Format, class Device>                      \
+friend bool read(Format& fmt, Device& id, name& x) {       \
+    return x.read_impl(fmt, id);                           \
+}                                                          \
+template <class Format, class Device>                      \
+friend int write(Format& fmt, Device& od, const name& x) { \
+    return x.write_impl(fmt, od);                          \
+}

@@ -62,31 +62,31 @@ constexpr setf<flags::unitbuf, false> nounitbuf{};
 constexpr setf<flags::brackets, true> brackets{};
 constexpr setf<flags::brackets, false> nobrackets{};
 
-template <class Device, flag_t flag, bool value>
-inline bool read(io::text, Device& rd, setf<flag, value>) {
+template <class Format, class Device, flag_t flag, bool value>
+inline bool read(Format& fmt, Device&, setf<flag, value>) {
     if constexpr (value) {
-        rd.setf(flag);
+        fmt.setf(flag);
     } else {
-        rd.unsetf(flag);
+        fmt.unsetf(flag);
     }
     return true;
 }
 
-template <class Device, flag_t flag, bool value>
-inline int write(io::text, Device& wd, setf<flag, value>) {
-    read(wd, setf<flag, value>{});
+template <class Format, class Device, flag_t flag, bool value>
+inline int write(Format& fmt, Device& od, setf<flag, value>) {
+    read(fmt, od, setf<flag, value>{});
     return 0;
 }
 
-template <class Device, flag_t group, flag_t flag>
-inline bool read(io::text, Device& rd, setg<group, flag>) {
-    rd.setf(flag, group);
+template <class Format, class Device, flag_t group, flag_t flag>
+inline bool read(Format& fmt, Device&, setg<group, flag>) {
+    fmt.setf(flag, group);
     return true;
 }
 
-template <class Device, flag_t group, flag_t flag>
-inline int write(io::text, Device& wd, setg<group, flag>) {
-    wd.setf(flag, group);
+template <class Format, class Device, flag_t group, flag_t flag>
+inline int write(Format& fmt, Device&, setg<group, flag>) {
+    fmt.setf(flag, group);
     return 0;
 }
 
