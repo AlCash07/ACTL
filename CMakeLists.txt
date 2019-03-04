@@ -8,11 +8,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIR})
 project("ACTL")
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-DACTL_DEBUG -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC
--Wall -Wextra -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align
--pedantic -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector)
+add_definitions(-DACTL_DEBUG)
+if(NOT MSVC)
+    add_definitions(-D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC
+    -Wall -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align
+    -pedantic -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -fsanitize=undefined")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -fsanitize=undefined")
+endif()
 
 function(get_files OUTPUT PATH EXTENSION)
 get_filename_component(FULL_PATH ${PATH} ABSOLUTE)

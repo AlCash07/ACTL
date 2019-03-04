@@ -13,11 +13,18 @@
 #include <stdexcept>
 #include <string>
 
-#define ACTL_ASSERT(condition)                                                             \
-    if (!(condition)) {                                                                    \
-        throw std::runtime_error(std::string() + #condition + " in line " +                \
-                                 std::to_string(__LINE__) + " in " + __PRETTY_FUNCTION__); \
+#define ACTL_ASSERT_IMPL(condition, function)                                   \
+    if (!(condition)) {                                                         \
+        throw std::runtime_error(std::string() + #condition + " in line " +     \
+                                 std::to_string(__LINE__) + " in " + function); \
     }
+
+#ifdef _MSC_VER
+#define ACTL_ASSERT(condition) ACTL_ASSERT_IMPL(condition, __FUNCSIG__)
+#else
+#define ACTL_ASSERT(condition) ACTL_ASSERT_IMPL(condition, __PRETTY_FUNCTION__)
+#endif
+#undef ACTL_ASSERT_IMPL
 
 #else
 

@@ -37,7 +37,7 @@ public:
         static_assert(sizeof(It) == sizeof(void*));
     }
 
-    friend constexpr std::uintptr_t id_key(iterator_id id) {
+    friend std::uintptr_t id_key(iterator_id id) {
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.base()));
     }
 

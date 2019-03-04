@@ -74,10 +74,14 @@ class it_facade;
 
 // TODO: inheritance from iterator is deprecated, remove it.
 template <class It, class V, class R, class P, class D>
-class it_facade<It, std::output_iterator_tag, V, R, P, D>
-    : public std::iterator<std::output_iterator_tag, V, D,
-                           typename operator_arrow_dispatch<R, P>::type, R> {
+class it_facade<It, std::output_iterator_tag, V, R, P, D> {
 public:
+	using iterator_category = std::output_iterator_tag;
+	using value_type        = V;
+	using reference         = R;
+	using pointer           = typename operator_arrow_dispatch<R, P>::type;
+	using difference_type   = D;
+
     R operator*() const { return iterator_core_access::dereference(derived()); }
 
     It& operator++() {

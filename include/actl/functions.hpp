@@ -7,11 +7,17 @@
 
 #pragma once
 
+#include <type_traits>
+
 namespace ac {
 
 template <class T>
 inline constexpr T abs(const T& x) {
-    return x < T{0} ? -x : x;
+    if constexpr (std::is_unsigned_v<T>) {
+        return x;
+    } else {
+        return x < T{0} ? -x : x;
+    }
 }
 
 template <class T>
