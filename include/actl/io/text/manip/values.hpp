@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/io/base.hpp>
+#include <actl/macros.hpp>
 
 namespace ac::io {
 
@@ -38,30 +39,23 @@ struct setfill {
     setfill(char v = ' ') : value{v} {}
 };
 
-// units delimiter, inserted between consecutive non-string and non-char output units
-struct setdelimiter {
-    const char* value;
-    setdelimiter(const char* v) : value{v} {}
-};
-
-template <class Device>
-inline bool read(io::text, Device& id, setbase arg) {
-    id.base(arg.value);
+template <class Device, class Format>
+inline bool read(Device&, Format& fmt, setbase arg) {
+    fmt.base(arg.value);
     return true;
 }
 
-#define WRITE_MANIP(name)                                   \
-    template <class Device>                                 \
-    inline int write(io::text, Device& od, set##name arg) { \
-        od.name(arg.value);                                 \
-        return 0;                                           \
+#define WRITE_MANIP(name)                                        \
+    template <class Device, class Format>                        \
+    inline int write(Device&, Format& fmt, CAT(set, name) arg) { \
+        fmt.name(arg.value);                                     \
+        return 0;                                                \
     }
 
 WRITE_MANIP(base)
 WRITE_MANIP(precision)
 WRITE_MANIP(width)
 WRITE_MANIP(fill)
-WRITE_MANIP(delimiter)
 
 #undef WRITE_MANIP
 
