@@ -7,8 +7,8 @@
 
 #pragma once
 
-#define CONCAT_IMPL(x, y) x##y
-#define CONCAT(x, y) CONCAT_IMPL(x, y)
+#define CAT_IMPL(x, y) x##y
+#define CAT(x, y) CAT_IMPL(x, y)
 
 #if __GNUG__
 
