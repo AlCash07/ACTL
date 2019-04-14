@@ -30,7 +30,7 @@ enum : flag_t {
     center,
     skipws,
     unitbuf,
-    brackets
+    prettify
 };
 
 }  // namespace flags

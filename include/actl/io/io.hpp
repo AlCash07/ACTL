@@ -8,69 +8,48 @@
 #pragma once
 
 #include <actl/io/base.hpp>
+#include <actl/io/util/serialization_access.hpp>
 #include <actl/util/use_default.hpp>
 
 namespace ac::io {
 
+/* Composite types  */
+
+template <class T>
+struct is_composite : has_serialization<T> {};
+
+template <class T>
+inline constexpr bool is_composite_v = is_composite<T>::value;
+
 /* Convert rvalue references to lvalue references for the duration of the function call */
 
-template <class Format, class Device, class... Ts>
-inline std::enable_if_t<!std::is_reference_v<Format> || !std::is_reference_v<Device>, int> write(
-    Format&& fmt, Device&& od, const Ts&... args) {
-    return write(fmt, od, args...);
+template <class Device, class Format, class... Ts>
+inline std::enable_if_t<!std::is_reference_v<Device> || !std::is_reference_v<Format>, int> write(
+    Device&& od, Format&& fmt, const Ts&... args) {
+    return write(od, fmt, args...);
 }
 
-template <class Format, class Device, class... Ts>
-inline std::enable_if_t<!std::is_reference_v<Format> || !std::is_reference_v<Device>, bool> read(
-    Format&& fmt, Device&& id, Ts&&... args) {
-    return read(fmt, id, std::forward<Ts>(args)...);
-}
-
-/* Format deduction */
-
-template <class Format, class Device>
-inline auto deduce_format(Device& device) {
-    if constexpr (std::is_same_v<Format, use_default>) {
-        if constexpr (is_bin<Device::mode>) {
-            return binary{};
-        } else {
-            return device.format();
-        }
-    } else {
-        return Format{};
-    }
-}
-
-template <class Format = use_default, class Device, class... Ts>
-inline int write(Device& od, const Ts&... args) {
-    return write(deduce_format<Format>(od), od, args...);
-}
-
-template <class Format = use_default, class Device, class... Ts>
-inline bool read(Device& id, Ts&&... args) {
-    return read(deduce_format<Format>(id), id, std::forward<Ts>(args)...);
+template <class Device, class Format, class... Ts>
+inline std::enable_if_t<!std::is_reference_v<Device> || !std::is_reference_v<Format>, bool> read(
+    Device&& id, Format&& fmt, Ts&&... args) {
+    return read(id, fmt, std::forward<Ts>(args)...);
 }
 
 /* Generic forwarding */
 
-template <class Format, class Device, class T, class... Ts>
-inline int write(Format& fmt, Device& od, const T& x, const Ts&... args) {
-    return write(fmt, od, x) + write(fmt, od, args...);
+template <class Device, class Format, class T, class... Ts>
+inline int write(Device& od, Format& fmt, const T& x, const Ts&... args) {
+    return write(od, fmt, x) + write(od, fmt, args...);
 }
 
-template <class Format, class Device, class T, class... Ts>
-inline bool read(Format& fmt, Device& id, T&& x, Ts&&... args) {
-    return read(fmt, id, std::forward<T>(x)) && read(fmt, id, std::forward<Ts>(args)...);
+template <class Device, class Format, class T, class... Ts>
+inline bool read(Device& id, Format& fmt, T&& x, Ts&&... args) {
+    return read(id, fmt, std::forward<T>(x)) && read(id, fmt, std::forward<Ts>(args)...);
 }
 
-template <class Format = use_default, class Device, class... Ts>
-inline int writeln(Device&& od, const Ts&... args) {
-    return write<Format>(od, args..., '\n');
-}
-
-template <class Format, class Device, class... Ts>
-inline int writeln(Format&& fmt, Device&& od, const Ts&... args) {
-    return write(fmt, od, args..., '\n');
+template <class Device, class... Ts>
+inline int writeln(Device&& od, Ts&&... args) {
+    return write(od, std::forward<Ts>(args)..., '\n');
 }
 
 }  // namespace ac::io

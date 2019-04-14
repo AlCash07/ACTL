@@ -58,12 +58,12 @@ constexpr setf<flags::skipws, false> noskipws{};
 constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
 
-// enclose containers in brackets, don't output their size
-constexpr setf<flags::brackets, true> brackets{};
-constexpr setf<flags::brackets, false> nobrackets{};
+// enclose composite types in brackets and add delimiters
+constexpr setf<flags::prettify, true> prettify{};
+constexpr setf<flags::prettify, false> noprettify{};
 
-template <class Format, class Device, flag_t flag, bool value>
-inline bool read(Format& fmt, Device&, setf<flag, value>) {
+template <class Device, class Format, flag_t flag, bool value>
+inline bool read(Device&, Format& fmt, setf<flag, value>) {
     if constexpr (value) {
         fmt.setf(flag);
     } else {
@@ -72,20 +72,20 @@ inline bool read(Format& fmt, Device&, setf<flag, value>) {
     return true;
 }
 
-template <class Format, class Device, flag_t flag, bool value>
-inline int write(Format& fmt, Device& od, setf<flag, value>) {
-    read(fmt, od, setf<flag, value>{});
+template <class Device, class Format, flag_t flag, bool value>
+inline int write(Device& od, Format& fmt, setf<flag, value>) {
+    read(od, fmt, setf<flag, value>{});
     return 0;
 }
 
-template <class Format, class Device, flag_t group, flag_t flag>
-inline bool read(Format& fmt, Device&, setg<group, flag>) {
+template <class Device, class Format, flag_t group, flag_t flag>
+inline bool read(Device&, Format& fmt, setg<group, flag>) {
     fmt.setf(flag, group);
     return true;
 }
 
-template <class Format, class Device, flag_t group, flag_t flag>
-inline int write(Format& fmt, Device&, setg<group, flag>) {
+template <class Device, class Format, flag_t group, flag_t flag>
+inline int write(Device&, Format& fmt, setg<group, flag>) {
     fmt.setf(flag, group);
     return 0;
 }

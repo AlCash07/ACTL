@@ -52,4 +52,14 @@ struct base : device {
 template <class T>
 inline constexpr bool is_device_v = std::is_base_of_v<device, T>;
 
+// TODO: when concepts are available, call this by default if the second parameter isn't a format.
+template <class Device>
+inline auto deduce_format(Device& device) {
+    if constexpr (is_bin<Device::mode>) {
+        return binary{};
+    } else {
+        return device.format();
+    }
+}
+
 }  // namespace ac::io
