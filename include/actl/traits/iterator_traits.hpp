@@ -56,18 +56,18 @@ inline constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 template <class T>
 inline constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
 
-#define is_XXX_iterator_v(name)                              \
+#define IS_XXX_ITERATOR_V(name)                              \
     template <class T>                                       \
     inline constexpr bool CAT(CAT(is_, name), _iterator_v) = \
         detail::has_iterator_category<T, std::CAT(name, _iterator_tag)>::value
 
-is_XXX_iterator_v(input);
-is_XXX_iterator_v(output);
-is_XXX_iterator_v(forward);
-is_XXX_iterator_v(bidirectional);
-is_XXX_iterator_v(random_access);
+IS_XXX_ITERATOR_V(input);
+IS_XXX_ITERATOR_V(output);
+IS_XXX_ITERATOR_V(forward);
+IS_XXX_ITERATOR_V(bidirectional);
+IS_XXX_ITERATOR_V(random_access);
 
-#undef is_XXX_iterator_v
+#undef IS_XXX_ITERATOR_V
 
 template <class T, class = void>
 struct is_range : std::false_type {};
