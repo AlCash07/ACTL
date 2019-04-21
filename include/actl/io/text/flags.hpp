@@ -29,8 +29,7 @@ enum : flag_t {
     right,
     center,
     skipws,
-    unitbuf,
-    prettify
+    unitbuf
 };
 
 }  // namespace flags

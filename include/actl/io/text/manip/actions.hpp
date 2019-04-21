@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/base.hpp>
+#include <actl/io/io.hpp>
 
 namespace ac::io {
 
@@ -15,18 +15,18 @@ struct endl_t {} constexpr endl{};  // put '\n' and flush
 struct ends_t {} constexpr ends{};  // put '\0'
 struct flush_t {} constexpr flush{};
 
-template <class Device>
-inline int write(io::text, Device& od, endl_t) {
-    return write(od, '\n', flush);
+template <class Device, class Format>
+inline int serialize(Device& od, Format& fmt, endl_t) {
+    return write(od, fmt, '\n', flush);
 }
 
-template <class Device>
-inline int write(io::text, Device& od, ends_t) {
-    return write(od, '\0');
+template <class Device, class Format>
+inline int serialize(Device& od, Format& fmt, ends_t) {
+    return write(od, fmt, '\0');
 }
 
-template <class Device>
-inline int write(io::text, Device& od, flush_t) {
+template <class Device, class Format>
+inline int serialize(Device& od, Format&, flush_t) {
     od.flush();
     return 0;
 }

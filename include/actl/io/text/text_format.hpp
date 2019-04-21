@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/io/base.hpp>
+#include <actl/io/io.hpp>
 #include <actl/io/text/flags.hpp>
 
 namespace ac::io {
@@ -39,6 +39,11 @@ public:
     static constexpr width_t width() { return Width; }
 
     static constexpr char fill() { return Fill; }
+};
+
+template <flag_t Fl, uint8_t B, width_t P, width_t W, char F>
+struct format_traits<text_static<Fl, B, P, W, F>> {
+    using tag = text;
 };
 
 template <mode_t Mode, bool = is_out<Mode>>
@@ -85,6 +90,11 @@ protected:
     width_t precision_ = ts::precision();
     width_t width_ = ts::width();
     char fill_ = ts::fill();
+};
+
+template <mode_t Mode, bool B>
+struct format_traits<text_format<Mode, B>> {
+    using tag = text;
 };
 
 }  // namespace ac::io

@@ -13,6 +13,14 @@
 
 namespace ac::io {
 
+/* Composite types  */
+
+template <class T>
+struct is_composite : has_serialization<T> {};
+
+template <class T>
+inline constexpr bool is_composite_v = is_composite<T>::value;
+
 /**
  * Format that inserts delimiter between consecutive non-string and non-char output units.
  */

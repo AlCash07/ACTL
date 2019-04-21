@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include <actl/io/util/formatted.hpp>
+#include <actl/io/io.hpp>
+#include <actl/io/text/flags.hpp>
 
 namespace ac::io {
 
@@ -58,36 +59,32 @@ constexpr setf<flags::skipws, false> noskipws{};
 constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
 
-// enclose composite types in brackets and add delimiters
-constexpr setf<flags::prettify, true> prettify{};
-constexpr setf<flags::prettify, false> noprettify{};
-
 template <class Device, class Format, flag_t flag, bool value>
-inline bool read(Device&, Format& fmt, setf<flag, value>) {
+inline int serialize(Device&, Format& fmt, setf<flag, value>, text) {
     if constexpr (value) {
         fmt.setf(flag);
     } else {
         fmt.unsetf(flag);
     }
-    return true;
+    return 0;
 }
 
 template <class Device, class Format, flag_t flag, bool value>
-inline int write(Device& od, Format& fmt, setf<flag, value>) {
-    read(od, fmt, setf<flag, value>{});
-    return 0;
-}
-
-template <class Device, class Format, flag_t group, flag_t flag>
-inline bool read(Device&, Format& fmt, setg<group, flag>) {
-    fmt.setf(flag, group);
+inline bool deserialize(Device& id, Format& fmt, setf<flag, value>, text) {
+    serialize(id, fmt, setf<flag, value>{}, text{});
     return true;
 }
 
 template <class Device, class Format, flag_t group, flag_t flag>
-inline int write(Device&, Format& fmt, setg<group, flag>) {
+inline int serialize(Device&, Format& fmt, setg<group, flag>, text) {
     fmt.setf(flag, group);
     return 0;
+}
+
+template <class Device, class Format, flag_t group, flag_t flag>
+inline bool deserialize(Device&, Format& fmt, setg<group, flag>, text) {
+    fmt.setf(flag, group);
+    return true;
 }
 
 }  // namespace ac::io
