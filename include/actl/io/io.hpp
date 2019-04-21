@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/io/util/serialization_access.hpp>
 #include <actl/util/none.hpp>
 #include <cstdint>
 #include <type_traits>
