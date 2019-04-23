@@ -97,7 +97,7 @@ public:
               class VertexPredicate = always_false>
     void operator()(const Graph& graph, typename Graph::vertex s, OutEdgeIteratorStack&& stack = {},
                     VertexPredicate is_terminator = {}) {
-        for (typename Graph::vertex u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
+        for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         visit(graph, s, std::forward<OutEdgeIteratorStack>(stack), is_terminator);
     }
 
@@ -116,7 +116,7 @@ public:
 
 template <class... Components>
 inline auto depth_first_search(Components&&... components) {
-    return dfs<Components...>(std::forward<Components>(components)...);
+    return dfs<Components...>{std::forward<Components>(components)...};
 }
 
 }  // namespace ac

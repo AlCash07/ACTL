@@ -26,7 +26,7 @@ inline auto circumcenter(const circumcenter_policy<R, IP>& policy, const point<T
 
 template <class T0, class T1, class T2>
 inline auto circumcenter(const point<T0>& a, const point<T1>& b, const point<T2>& c) {
-    return circumcenter(circumcenter_policy<>(), a, b, c);
+    return circumcenter(circumcenter_policy<>{}, a, b, c);
 }
 
 }  // namespace ac

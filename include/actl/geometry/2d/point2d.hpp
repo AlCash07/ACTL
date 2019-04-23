@@ -50,7 +50,7 @@ inline constexpr bool y_compare(const point<T0>& lhs, const point<T1>& rhs) {
  */
 template <class T>
 inline constexpr point<T> perpendicular(const point<T>& src) {
-    return point(-src[1], src[0]);
+    return point{-src[1], src[0]};
 }
 
 }  // namespace ac

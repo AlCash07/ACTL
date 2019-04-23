@@ -49,7 +49,7 @@ private:
 
 template <class T, class Device>
 inline auto make_input_device_iterator(Device& device) {
-    return input_device_iterator<T, Device>(device);
+    return input_device_iterator<T, Device>{device};
 }
 
 /**
@@ -84,7 +84,7 @@ private:
 
 template <class T, class Device>
 inline auto make_output_device_iterator(Device& device) {
-    return output_device_iterator<T, Device>(device);
+    return output_device_iterator<T, Device>{device};
 }
 
 }  // namespace ac

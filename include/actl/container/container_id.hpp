@@ -29,11 +29,11 @@ class iterator_id : public iterator_adaptor<iterator_id<It>, It, use_default, it
 
 public:
     explicit iterator_id(It it = It{})
-        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>(it) {}
+        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>{it} {}
 
     explicit iterator_id(void* raw)
-        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>(bit_cast<It>(raw)) {
-        // TODO: implement more general logic in case this condition fails (very unlikely).
+        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>{bit_cast<It>(raw)} {
+        // TODO: implement more general logic in case this condition fails.
         static_assert(sizeof(It) == sizeof(void*));
     }
 
@@ -94,7 +94,7 @@ inline container_id<C> id_begin(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return 0;
     } else {
-        return container_id<C>(cont.begin());
+        return container_id<C>{cont.begin()};
     }
 }
 
@@ -103,7 +103,7 @@ inline container_id<C> id_end(const C& cont) {
     if constexpr (is_random_access_container_v<C>) {
         return static_cast<container_id<C>>(cont.size());
     } else {
-        return container_id<C>(cont.end());
+        return container_id<C>{cont.end()};
     }
 }
 
@@ -120,7 +120,7 @@ inline container_id<C> id_null(const C& cont) {
 template <class C>
 inline auto id_range(const C& cont) {
     using iterator = container_id_iterator<C>;
-    return make_range(iterator(id_begin(cont)), iterator(id_end(cont)));
+    return make_range(iterator{id_begin(cont)}, iterator{id_end(cont)});
 }
 
 template <class C>
@@ -128,7 +128,7 @@ inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator 
     if constexpr (is_random_access_container_v<C>) {
         return static_cast<container_id<C>>(it - cont.begin());
     } else {
-        return container_id<C>(it);
+        return container_id<C>{it};
     }
 }
 

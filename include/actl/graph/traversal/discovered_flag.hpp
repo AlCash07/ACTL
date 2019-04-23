@@ -19,7 +19,7 @@ struct discovered_flag : property_map_wrapper_t<Map> {
 
     using vertex = typename property_traits<Map>::key_type;
 
-    discovered_flag(Map&& pm) : property_map_wrapper_t<Map>(std::move(pm)) {}
+    discovered_flag(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
 
     void operator()(on_vertex_initialize, vertex u) { put(*this, u, false); }
     void operator()(on_vertex_discover, vertex u) { put(*this, u, true); }
@@ -28,7 +28,7 @@ struct discovered_flag : property_map_wrapper_t<Map> {
 
 template <class Graph>
 inline auto default_discovered_flag(const Graph& graph) {
-    return discovered_flag(default_vertex_property_map<bool>(graph));
+    return discovered_flag{default_vertex_property_map<bool>(graph)};
 }
 
 }  // namespace ac

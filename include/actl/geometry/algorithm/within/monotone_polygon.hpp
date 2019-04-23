@@ -35,7 +35,7 @@ inline int within(const within_monotone_polygon<CP>& policy, const point<T0>& po
 
 template <class T0, class T1>
 inline int within(use_default, const point<T0>& point, const monotone_polygon<T1>& polygon) {
-    return within(within_monotone_polygon<>(), point, polygon);
+    return within(within_monotone_polygon<>{}, point, polygon);
 }
 
 }  // namespace ac

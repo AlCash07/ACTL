@@ -27,6 +27,8 @@ inline constexpr bool is_composite_v = is_composite<T>::value;
 template <class Format>
 class spacer : public Format {
 public:
+    using Format::Format;
+
     const char* space() const { return space_.data(); }
     void space(const char* value) { space_ = value; }
 

@@ -36,7 +36,7 @@ public:
     class iterator
         : public iterator_adaptor<iterator, It, use_default, key_ref, key_ref, const key_ref*> {
         iterator(It it, const Container& cont)
-            : iterator_adaptor<iterator, It, use_default, key_ref, key_ref, const key_ref*>(it)
+            : iterator_adaptor<iterator, It, use_default, key_ref, key_ref, const key_ref*>{it}
             , cont_{cont} {}
 
         key_ref dereference() const { return {iterator_to_id(cont_, this->base()), *this->base()}; }

@@ -14,7 +14,7 @@ namespace ac {
  */
 struct none {
     template <class... Ts>
-    explicit constexpr none(Ts&&...) {}
+    explicit constexpr none(Ts...) {}
 };
 
 template <class T> struct replace_void             { using type = T;          };

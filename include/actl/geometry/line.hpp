@@ -97,12 +97,12 @@ struct line : public Kind {
 
     template <class T1, class T2>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
-        : start(a), vector(vector ? point<T, N>(a) : point<T, N>(b - a)) {}
+        : start{a}, vector{vector ? point<T, N>{a} : point<T, N>{b - a}} {}
 
     template <class T1, class T2>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, uint8_t kind,
                             bool vector = false)
-        : Kind(kind), start(a), vector(vector ? point<T, N>(a) : point<T, N>(b - a)) {}
+        : Kind{kind}, start{a}, vector{vector ? point<T, N>{a} : point<T, N>{b - a}} {}
 
     template <class T1, class K1>
     explicit constexpr line(const line<T1, N, K1>& rhs) { (*this) = rhs; }
@@ -149,31 +149,31 @@ struct geometry_traits<line<T, N, K>> : geometry_traits_base<line_tag, point<T, 
 
 template <int N, class T0, class T1>
 inline constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
-    return line<geometry::scalar_t<T0, T1>, N>(a, b, vector);
+    return line<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <int N, class T0, class T1>
 inline constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
-    return ray<geometry::scalar_t<T0, T1>, N>(a, b, vector);
+    return ray<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <int N, class T0, class T1>
 inline constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b,
                                    bool vector = false) {
-    return segment<geometry::scalar_t<T0, T1>, N>(a, b, vector);
+    return segment<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <int N, class T0, class T1>
 inline constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
                                     uint8_t kind = line_kind::free, bool vector = false) {
-    return any_line<geometry::scalar_t<T0, T1>, N>(a, b, kind, vector);
+    return any_line<geometry::scalar_t<T0, T1>, N>{a, b, kind, vector};
 }
 
 template <int N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
 inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
                                     const point<T1, N>& b, uint8_t bkind) {
     if (akind < bkind) return make_any_line(b, bkind, a, akind);
-    return Line(a, b, endpoint::combine(akind, bkind));
+    return Line{a, b, endpoint::combine(akind, bkind)};
 }
 
 template <int N, class T, class K>

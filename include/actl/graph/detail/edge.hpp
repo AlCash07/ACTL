@@ -18,7 +18,7 @@ public:
     using id_type = std::conditional_t<CompareSrc, std::pair<V, B>, B>;
 
     explicit constexpr edge() = default;
-    explicit constexpr edge(V u, V v, B b) : u_(u), v_(v), b_(b) {}
+    explicit constexpr edge(V u, V v, B b) : u_{u}, v_{v}, b_{b} {}
 
     constexpr V source() const { return u_; }
     constexpr V target() const { return v_; }
@@ -26,7 +26,7 @@ public:
 
     constexpr id_type id() const {
         if constexpr (CompareSrc) {
-            return std::pair(u_, b_);
+            return std::pair{u_, b_};
         } else {
             return b_;
         }

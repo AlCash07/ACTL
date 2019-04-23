@@ -144,7 +144,7 @@ public:
     class iterator
         : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
         iterator(const It& it, const PM2& pm)
-            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>(it)
+            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>{it}
             , pm_{pm} {}
 
         Pair dereference() const { return {this->base()->first, get(pm_, this->base()->second)}; }
@@ -173,7 +173,7 @@ public:
     class iterator
         : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
         iterator(const It& it, const PM1& pm)
-            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>(it)
+            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>{it}
             , pm_{pm} {}
 
         Pair dereference() const { return {pm_.invert(this->base()->first), this->base()->second}; }

@@ -88,7 +88,7 @@ inline bool crosses(const general_cross_line_line<AP> policy, const line<T0, 2, 
 
 template <class T0, class K0, class T1, class K1>
 inline bool crosses(use_default, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) {
-    return crosses(comparable_cross_line_line<>(), lhs, rhs);
+    return crosses(comparable_cross_line_line<>{}, lhs, rhs);
 }
 
 }  // namespace ac

@@ -16,14 +16,14 @@ namespace ac::detail {
 template <class It>
 class reverse_edge_it : public iterator_adaptor<reverse_edge_it<It>, It> {
 public:
-    explicit reverse_edge_it(It it) : iterator_adaptor<reverse_edge_it<It>, It>(it) {}
+    explicit reverse_edge_it(It it) : iterator_adaptor<reverse_edge_it<It>, It>{it} {}
 
 private:
     friend struct ac::iterator_core_access;
 
     auto dereference() const {
         auto edge = *this->base();
-        return typename It::value_type(edge.target(), edge.source(), edge.bundle());
+        return typename It::value_type{edge.target(), edge.source(), edge.bundle()};
     }
 };
 
@@ -47,7 +47,7 @@ class adj_list_out_edge_it
 public:
     explicit adj_list_out_edge_it() = default;
 
-    explicit adj_list_out_edge_it(const AdjList* al, vertex u, It it) : al_(al), u_(u), it_(it) {}
+    explicit adj_list_out_edge_it(const AdjList* al, vertex u, It it) : al_{al}, u_{u}, it_{it} {}
 
     It id() const { return it_; }
 };
@@ -101,7 +101,7 @@ class adj_list_edge_it
 public:
     explicit adj_list_edge_it() = default;
 
-    explicit adj_list_edge_it(const AdjList* al, bool begin) : al_(al) {
+    explicit adj_list_edge_it(const AdjList* al, bool begin) : al_{al} {
         if (begin) {
             u_  = id_begin(al_->vertices_);
             it_ = al_->out_begin(u_);

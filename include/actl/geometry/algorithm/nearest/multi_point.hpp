@@ -38,7 +38,7 @@ inline auto nearest(const nearest_multi_point<DP>& policy, Iterator first, Itera
             for (auto j = i + 1; j != last; ++j) {
                 auto dist = distance(policy, *i, *j);
                 if (j == first + 1 || dist < res.first)
-                    res = std::pair(dist, std::pair(*i, *j));
+                    res = std::pair{dist, std::pair{*i, *j}};
             }
         }
         std::sort(first, last, y_cmp);
@@ -58,7 +58,7 @@ inline auto nearest(const nearest_multi_point<DP>& policy, Iterator first, Itera
             for (auto i = tmp.rbegin(); i != tmp.rend(); ++i) {
                 if ((*middle)[1] - (*i)[1] >= res.first) break;
                 auto dist = distance(policy, *middle, *i);
-                if (dist < res.first) res = std::pair(dist, std::pair(*middle, *i));
+                if (dist < res.first) res = std::pair{dist, std::pair{*middle, *i}};
             }
             tmp.push_back(*middle);
         }
@@ -77,7 +77,7 @@ inline auto nearest(const nearest_multi_point<DP>& policy, multi_point<T>& point
     ACTL_ASSERT(points.size() > 1);
     sort(points);
     for (auto it = points.begin(); it + 1 != points.end(); ++it) {
-        if (it[0] == it[1]) return std::pair(it[0], it[1]);
+        if (it[0] == it[1]) return std::pair{it[0], it[1]};
     }
     std::vector<typename geometry_traits<multi_point<T>>::point> tmp(points.size());
     return detail::nearest(policy, points.begin(), points.end(), tmp).second;
@@ -85,7 +85,7 @@ inline auto nearest(const nearest_multi_point<DP>& policy, multi_point<T>& point
 
 template <class T, class = std::enable_if_t<geometry_traits<multi_point<T>>::dimension == 2>>
 inline auto nearest(use_default, multi_point<T>& points) {
-    return nearest(comparable_nearest_multi_point<>(), points);
+    return nearest(comparable_nearest_multi_point<>{}, points);
 }
 
 }  // namespace ac

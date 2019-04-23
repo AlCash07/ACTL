@@ -29,7 +29,7 @@ inline int within(const within_simple_polygon<CP>& policy, const point<T0>& poin
 
 template <class T0, class T1>
 inline int within(use_default, const point<T0>& point, const simple_polygon<T1>& polygon) {
-    return within(within_simple_polygon<>(), point, polygon);
+    return within(within_simple_polygon<>{}, point, polygon);
 }
 
 }  // namespace ac

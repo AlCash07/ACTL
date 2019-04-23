@@ -27,9 +27,9 @@ struct rng_decorator : public Rng {
     template <class T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
     T uniform(T from, T to) {
         if constexpr (std::is_integral_v<T>) {
-            return std::uniform_int_distribution<T>(from, to - 1)(*this);
+            return std::uniform_int_distribution<T>{from, to - 1}(*this);
         } else {
-            return std::uniform_real_distribution<T>(from, to)(*this);
+            return std::uniform_real_distribution<T>{from, to}(*this);
         }
     }
 
@@ -46,7 +46,7 @@ struct rng_decorator : public Rng {
      */
     template <class T = double, class = std::enable_if_t<std::is_floating_point_v<T>>>
     T normal(T mean = T{}, T stddev = T{1}) {
-        return std::normal_distribution<T>(mean, stddev)(*this);
+        return std::normal_distribution<T>{mean, stddev}(*this);
     }
 
     void seed(const char* value) {

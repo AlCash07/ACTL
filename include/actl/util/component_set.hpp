@@ -56,7 +56,7 @@ public:
     explicit component_set() = default;
 
     explicit component_set(Components&&... components)
-        : components_(std::forward<Components>(components)...) {}
+        : components_{std::forward<Components>(components)...} {}
 };
 
 }  // namespace ac

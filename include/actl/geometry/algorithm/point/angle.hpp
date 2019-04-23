@@ -39,7 +39,7 @@ inline auto angle(const standard_angle<P, S, AP>& policy, const point<T0, N>& lh
 
 template <int N, class T, class... Ts>
 inline auto angle(const point<T, N>& point, const Ts&... args) {
-    return angle(standard_angle<>(), point, args...);
+    return angle(standard_angle<>{}, point, args...);
 }
 
 }  // namespace ac

@@ -25,7 +25,7 @@ public:
     }
 
     explicit in_file(const char* filename)
-        : in_file(std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true) {}
+        : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
     ~in_file() {
         if (own_) std::fclose(file_);

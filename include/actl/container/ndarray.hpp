@@ -37,7 +37,7 @@ struct static_array {
 template <int I0, int... Is>
 struct static_array<I0, Is...> {
     constexpr int operator[](int i) const {
-        return i == 0 ? I0 : static_array<Is...>()[i - 1];
+        return i == 0 ? I0 : static_array<Is...>{}[i - 1];
     }
 };
 
@@ -54,7 +54,7 @@ static_array<D0 * I0, I0, Is...> strides_impl(static_array<I0, Is...>);
 
 template <int D0, int D1, int... Ds>
 struct strides<D0, D1, Ds...> {
-    using type = decltype(strides_impl<D0>(strides_t<D1, Ds...>()));
+    using type = decltype(strides_impl<D0>(strides_t<D1, Ds...>{}));
 };
 
 template <class T, int N>
@@ -94,7 +94,7 @@ class ndarray_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
 
-    ndarray_container(int size) : data_(new T[size]) {}
+    ndarray_container(int size) : data_{new T[size]} {}
 
     T*       data() { return data_.get(); }
     const T* data() const { return data_.get(); }
@@ -113,16 +113,16 @@ class ndarray_data : public ndarray_container<Data> {
     using T      = typename base_t::value_type;
 
 public:
-    ndarray_data(int size) : base_t(size) {}
+    ndarray_data(int size) : base_t{size} {}
 
     template <class InputIterator>
-    ndarray_data(int size, InputIterator it) : base_t(size) {
+    ndarray_data(int size, InputIterator it) : base_t{size} {
         std::copy_n(it, size, this->data());
     }
 
     template <class Strides>
     explicit ndarray_data(int size, nd_initializer_list_t<T, N> ilist, Strides strides)
-        : base_t(size) {
+        : base_t{size} {
         std::fill_n(this->data(), size, T{});
         initialize<0>(this->data(), ilist, strides);
     }
@@ -153,7 +153,7 @@ class ndarray_data<N, T*> {
 public:
     using value_type = T;
 
-    ndarray_data(int, T* data) : data_(data) {}
+    ndarray_data(int, T* data) : data_{data} {}
 
     void swap(ndarray_data& rhs) { std::swap(data_, rhs.data_); }
 
@@ -173,14 +173,14 @@ class ndarray_shape : public ndarray_data<N, Data> {
 
 public:
     template <class... Ts>
-    explicit ndarray_shape(const Dims& dims, Ts... args) : base_t(compute_size(dims), args...) {}
+    explicit ndarray_shape(const Dims& dims, Ts... args) : base_t{compute_size(dims), args...} {}
 
     template <class... Ts>
     explicit ndarray_shape(int dimension, Ts... args)
-        : ndarray_shape(std::make_tuple(dimension), args...) {}
+        : ndarray_shape{std::make_tuple(dimension), args...} {}
 
     explicit ndarray_shape(nd_initializer_list_t<T, N> ilist)
-        : base_t(compute_size(ilist), ilist, strides()) {}
+        : base_t{compute_size(ilist), ilist, strides()} {}
 
     void swap(ndarray_shape& rhs) {
         base_t::swap(rhs);
@@ -198,11 +198,11 @@ private:
 
     template <class... Us, class... Ts>
     ndarray_shape(std::tuple<Us...> dims, Ts... args)
-        : ndarray_shape(tuple_to_array(dims, std::make_integer_sequence<int, N>()), args...) {}
+        : ndarray_shape{tuple_to_array(dims, std::make_integer_sequence<int, N>()), args...} {}
 
     template <class... Us, class... Ts>
     ndarray_shape(std::tuple<Us...> dims, int dimension, Ts... args)
-        : ndarray_shape(std::tuple_cat(dims, std::make_tuple(dimension)), args...) {}
+        : ndarray_shape{std::tuple_cat(dims, std::make_tuple(dimension)), args...} {}
 
     int compute_size(const Dims& dims) {
         int size = 1;
@@ -235,7 +235,7 @@ class ndarray_shape<N, T*, const int*> : public ndarray_data<N, T*> {
 
 public:
     explicit ndarray_shape(const int* strides, T* data)
-        : base_t(strides[0], data), strides_(strides) {}
+        : base_t{strides[0], data}, strides_{strides} {}
 
     void swap(ndarray_shape& rhs) {
         base_t::swap(rhs);
@@ -254,10 +254,10 @@ class ndarray_shape<N, Data, static_array<Ds...>> : public ndarray_data<N, Data>
 
 public:
     template <class... Ts>
-    explicit ndarray_shape(Ts... args) : base_t(0, args...) {}
+    explicit ndarray_shape(Ts... args) : base_t{0, args...} {}
 
     explicit ndarray_shape(nd_initializer_list_t<typename base_t::value_type, N> ilist)
-        : base_t(0, ilist, strides()) {}
+        : base_t{0, ilist, strides()} {}
 
     static constexpr strides_t<Ds...> strides() { return {}; }
 };
@@ -269,9 +269,9 @@ class ndarray_shape<0, Data, static_array<>> : public ndarray_data<0, Data> {
 
 public:
     template <class... Ts>
-    explicit ndarray_shape(Ts... args) : base_t(1, args...) {}
+    explicit ndarray_shape(Ts... args) : base_t{1, args...} {}
 
-    explicit ndarray_shape(T value) : base_t(1) { *this->data() = value; }
+    explicit ndarray_shape(T value) : base_t{1} { *this->data() = value; }
 
     constexpr operator T&() { return *this->data(); }
     constexpr operator const T&() const { return *this->data(); }

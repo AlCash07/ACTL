@@ -44,7 +44,7 @@ struct assert_impl {
     const char* filename;
     int line;
 
-    assert_impl(const char* filename, int line) : filename(filename), line(line) {}
+    assert_impl(const char* filename, int line) : filename{filename}, line{line} {}
 
     template <bool Equal, class T0, class T1>
     inline void check(const T0& expected, const T1& actual) const {

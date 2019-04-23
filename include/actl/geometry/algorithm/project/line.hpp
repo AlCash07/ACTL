@@ -27,12 +27,12 @@ inline auto project(project_line_scalar<P, R>, const point<T0, N>& src, const li
 
 template <class P, class R, int N, class T0, class T1, class K>
 inline auto project(project_line<P, R>, const point<T0, N>& src, const line<T1, N, K>& dst) {
-    return dst(project(project_line_scalar<P, R>(), src, dst));
+    return dst(project(project_line_scalar<P, R>{}, src, dst));
 }
 
 template <int N, class T0, class T1, class K>
 inline auto project(use_default, const point<T0, N>& src, const line<T1, N, K>& dst) {
-    return project(project_line<>(), src, dst);
+    return project(project_line<>{}, src, dst);
 }
 
 }  // namespace ac

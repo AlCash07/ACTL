@@ -23,7 +23,7 @@ inline auto project(project_plane<P, R>, const point<T0, N>& src, const plane<T1
 
 template <int N, class T0, class T1>
 inline auto project(use_default, const point<T0, N>& src, const plane<T1, N>& dst) {
-    return project(project_plane<>(), src, dst);
+    return project(project_plane<>{}, src, dst);
 }
 
 }  // namespace ac

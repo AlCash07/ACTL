@@ -24,11 +24,11 @@ struct plane {
 
     template <class T1, class T2>
     explicit constexpr plane(const point<T1, N>& normal, const T2& d)
-        : normal(normal), d{static_cast<T>(d)} {}
+        : normal{normal}, d{static_cast<T>(d)} {}
 
     template <class T1, class T2>
     explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& point)
-        : plane(normal, dot(normal, point)) {}
+        : plane{normal, dot(normal, point)} {}
 
     template <class T1>
     explicit constexpr plane(const plane<T1, N>& rhs) { (*this) = rhs; }
@@ -69,13 +69,13 @@ using plane_type = plane<geometry::scalar_t<Ts...>, N>;
 
 template <class T0, class T1>
 inline constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b) {
-    return plane_type<2, T0, T1>(perpendicular(b - a), a);
+    return plane_type<2, T0, T1>{perpendicular(b - a), a};
 }
 
 template <class T0, class T1, class T2>
 inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
                                    const point3d<T2>& c) {
-    return plane_type<3, T0, T1, T2>(cross(b - a, c - a), a);
+    return plane_type<3, T0, T1, T2>{cross(b - a, c - a), a};
 }
 
 template <int N, class T>

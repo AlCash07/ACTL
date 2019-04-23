@@ -32,7 +32,7 @@ inline bool collinear(const collinear_policy<AP>& policy, const point<T0, N>& lh
         if (rhs[i] != T1{0}) return false;
     }
     for (int j = i + 1; j < N; ++j) {
-        if (!collinear(policy, point(lhs[i], lhs[j]), point(rhs[i], rhs[j])))
+        if (!collinear(policy, point{lhs[i], lhs[j]}, point{rhs[i], rhs[j]}))
             return false;
     }
     return true;
@@ -40,7 +40,7 @@ inline bool collinear(const collinear_policy<AP>& policy, const point<T0, N>& lh
 
 template <int N, class T0, class T1>
 inline constexpr bool collinear(const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return collinear(comparable_collinear<>(), lhs, rhs);
+    return collinear(comparable_collinear<>{}, lhs, rhs);
 }
 
 }  // namespace ac

@@ -15,7 +15,7 @@ template <class T, class P = use_default>
 class angle_compare {
 public:
     explicit constexpr angle_compare(const point<T>& origin = {})
-        : origin_(origin), zero_(!origin) {}
+        : origin_{origin}, zero_{!origin} {}
 
     template <class T0, class T1>
     bool operator()(const point<T0>& lhs, const point<T1>& rhs) const {
@@ -30,7 +30,7 @@ private:
 
 template <class P = use_default, class T>
 inline auto make_angle_compare(const point<T>& origin) {
-    return angle_compare<T, P>(origin);
+    return angle_compare<T, P>{origin};
 }
 
 }  // namespace ac

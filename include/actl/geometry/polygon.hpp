@@ -26,11 +26,11 @@ public:
     using multi_point<T>::multi_point;
 
     auto cyclic(typename multi_point<T>::iterator it) {
-        return cyclic_iterator(it, this->begin(), this->end());
+        return cyclic_iterator{it, this->begin(), this->end()};
     }
 
     auto cyclic(typename multi_point<T>::const_iterator it) const {
-        return const_cyclic_iterator(it, this->begin(), this->end());
+        return const_cyclic_iterator{it, this->begin(), this->end()};
     }
 
     auto cyclic_begin() { return cyclic(this->begin()); }

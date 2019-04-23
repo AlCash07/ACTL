@@ -38,7 +38,7 @@ TEST("execute_first") {
 }
 
 TEST("execute_all") {
-    component_set_test<increment, increment, increment> c({1}, {2}, {4});
+    component_set_test<increment, increment, increment> c{{1}, {2}, {4}};
     int x = 0;
     c.execute_all(x);
     ASSERT_EQUAL(7, x);

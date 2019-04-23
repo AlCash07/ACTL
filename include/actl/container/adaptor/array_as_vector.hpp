@@ -32,7 +32,7 @@ public:
     iterator       end() noexcept { return end_; }
     const_iterator end() const noexcept { return end_; }
 
-    array_as_vector() : end_(array_.begin()) {}
+    array_as_vector() : end_{array_.begin()} {}
 
     size_type size() const noexcept { return static_cast<size_type>(end() - begin()); }
     bool      empty() const noexcept { return begin() == end(); }
@@ -42,6 +42,7 @@ public:
 
     reference       front() { return *begin(); }
     const_reference front() const { return *begin(); }
+
     reference       back() { return *(end() - 1); }
     const_reference back() const { return *(end() - 1); }
 

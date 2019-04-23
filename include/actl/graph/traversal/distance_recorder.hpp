@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Map>
 struct distance_recorder : property_map_wrapper_t<Map> {
-    distance_recorder(Map&& pm) : property_map_wrapper_t<Map>(std::move(pm)) {}
+    distance_recorder(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
 
     void operator()(on_vertex_start, typename property_traits<Map>::key_type u) {
         put(*this, u, 0);

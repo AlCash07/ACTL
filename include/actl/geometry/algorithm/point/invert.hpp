@@ -31,7 +31,7 @@ inline auto invert(const invert_policy<P, R>& policy, const point<T0, N>& src, c
 
 template <int N, class T, class... Ts>
 inline auto invert(const point<T, N>& point, const Ts&... args) {
-    return invert(invert_policy<>(), point, args...);
+    return invert(invert_policy<>{}, point, args...);
 }
 
 }  // namespace ac

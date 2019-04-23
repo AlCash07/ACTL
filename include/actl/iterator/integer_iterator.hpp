@@ -53,7 +53,7 @@ class integer_iterator_with_step
                              const Int*,
                              Int> {
 public:
-    explicit integer_iterator_with_step() : value_{}, step_{1} {}
+    explicit integer_iterator_with_step() = default;
 
     explicit integer_iterator_with_step(Int value, Int step) : value_{value}, step_{step} {}
 
@@ -75,8 +75,8 @@ private:
         return (rhs.value_ - value_) / step_;
     }
 
-    Int value_;
-    Int step_;
+    Int value_ = 0;
+    Int step_ = 1;
 
     friend struct iterator_core_access;
 };

@@ -12,14 +12,14 @@
 using namespace ac;
 
 TEST("free_function") {
-    auto pm = function_property_map(std::strlen);
+    auto pm = function_property_map{std::strlen};
     ASSERT_EQUAL(0u, get(pm, ""));
     ASSERT_EQUAL(2u, get(pm, "pm"));
 }
 
 TEST("lambda") {
     int count = 0;
-    auto pm = function_property_map([&count](int) { return count++; });
+    auto pm = function_property_map{[&count](int) { return count++; }};
     ASSERT_EQUAL(0, get(pm, 0));
     ASSERT_EQUAL(1, get(pm, 0));
     ASSERT_EQUAL(2, count);

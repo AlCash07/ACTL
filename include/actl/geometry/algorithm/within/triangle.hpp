@@ -24,7 +24,7 @@ template <class CP, class T0, class T1>
 inline int within(const within_triangle<CP>& policy, const point<T0>& point,
                   const polygon<T1>& triangle) {
     ACTL_ASSERT(triangle.size() == 3);
-    int signs[3];
+    int signs[3] = {};
     auto it = triangle.cyclic_begin();
     for (int i = 0; i < 3; ++i, ++it) {
         signs[i] = ccw(policy, point, it[1], it[0]);

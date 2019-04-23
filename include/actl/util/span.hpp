@@ -27,10 +27,10 @@ public:
 
     constexpr span(T* ptr, index_type count) : data_{ptr}, size_{count} {}
 
-    constexpr span(T* first, T* last) : span(first, last - first) {}
+    constexpr span(T* first, T* last) : span{first, last - first} {}
 
     template <class Range>
-    constexpr span(Range& r) : span(std::data(r), static_cast<index_type>(std::size(r))) {}
+    constexpr span(Range& r) : span{std::data(r), static_cast<index_type>(std::size(r))} {}
 
     constexpr T* begin() const { return data(); }
 

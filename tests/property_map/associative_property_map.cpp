@@ -19,8 +19,8 @@ inline std::map<int, int> get_map() { return {kv.begin(), kv.end()}; }
 
 template <bool Writable, class Map>
 inline void test_associative_pm(Map&& map) {
-    auto pm = associative_property_map(std::forward<Map>(map));
-    for (auto[key, value] : kv) {
+    auto pm = associative_property_map{std::forward<Map>(map)};
+    for (auto [key, value] : kv) {
         ASSERT_EQUAL(value, get(pm, key));
     }
     ASSERT_EQUAL(0, get(pm, 0));

@@ -23,7 +23,7 @@ public:
     }
 
     template <size_t N>
-    explicit out_memory(const char (&data)[N]) : out_memory(data, data + N) {}
+    explicit out_memory(const char (&data)[N]) : out_memory{data, data + N} {}
 
 protected:
     const char* begin_;
@@ -39,7 +39,7 @@ public:
     }
 
     template <size_t N>
-    explicit out_memory(char (&data)[N]) : out_memory(data, data + N) {}
+    explicit out_memory(char (&data)[N]) : out_memory{data, data + N} {}
 
     bool put(char c) {
         bool ok = ptr_ < end_;

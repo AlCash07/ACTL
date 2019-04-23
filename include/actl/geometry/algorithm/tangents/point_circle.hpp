@@ -30,15 +30,15 @@ inline auto tangents(const tangents_point_circle_scalar<P>& policy, const point<
     auto center_vector = circle.center - point;
     switch (within(policy, point, circle)) {
         case 0: {
-            auto center_angle = angle(standard_angle<O, O>(), center_vector);
+            auto center_angle = angle(standard_angle<O, O>{}, center_vector);
             auto offset = math::atan2(static_cast<O>(circle.radius),
-                                      norm(standard_norm<O, O>(), center_vector));
+                                      norm(standard_norm<O, O>{}, center_vector));
             *dst++ = center_angle - offset;
             *dst++ = center_angle + offset;
             break;
         }
         case 1:
-            *dst++ = angle(standard_angle<O, O>(), perpendicular(center_vector));
+            *dst++ = angle(standard_angle<O, O>{}, perpendicular(center_vector));
     }
     return dst;
 }
@@ -50,7 +50,7 @@ inline auto tangents(const tangents_point_circle_point<P>& policy, const point<T
     auto center_vector = circle.center - point;
     switch (within(policy, point, circle)) {
         case 0: {
-            auto dist = math::sqrt(norm(standard_norm<O, O>(), center_vector) +
+            auto dist = math::sqrt(norm(standard_norm<O, O>{}, center_vector) +
                                    sqr(static_cast<O>(circle.radius)));
             intersect(policy.intersect_policy, make_circle(point, dist), circle, dst);
             break;
@@ -66,13 +66,13 @@ namespace detail {
 template <class T0, class T1, class OutputIterator>
 inline auto tangents(const point<T0>& point, const circle<T1>& circle, OutputIterator dst,
                      scalar_tag) {
-    return tangents(tangents_point_circle_scalar<>(), point, circle, dst);
+    return tangents(tangents_point_circle_scalar<>{}, point, circle, dst);
 }
 
 template <class T0, class T1, class OutputIterator>
 inline auto tangents(const point<T0>& point, const circle<T1>& circle, OutputIterator dst,
                      point_tag) {
-    return tangents(tangents_point_circle_point<>(), point, circle, dst);
+    return tangents(tangents_point_circle_point<>{}, point, circle, dst);
 }
 
 }  // namespace detail
@@ -80,7 +80,7 @@ inline auto tangents(const point<T0>& point, const circle<T1>& circle, OutputIte
 template <class T0, class T1, class OutputIterator>
 inline auto tangents(use_default, const point<T0>& point, const circle<T1>& circle,
                      OutputIterator dst) {
-    return detail::tangents(point, circle, dst, geometry::tag_t<output_type_t<OutputIterator>>());
+    return detail::tangents(point, circle, dst, geometry::tag_t<output_type_t<OutputIterator>>{});
 }
 
 }  // namespace ac

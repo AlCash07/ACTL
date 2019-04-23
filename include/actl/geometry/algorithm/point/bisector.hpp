@@ -25,7 +25,7 @@ inline auto bisector(const bisector_policy<NP>& policy, const point<T0, N>& lhs,
 
 template <int N, class T0, class T1>
 inline auto bisector(const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return bisector(standard_bisector<>(), lhs, rhs);
+    return bisector(standard_bisector<>{}, lhs, rhs);
 }
 
 }  // namespace ac

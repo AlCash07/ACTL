@@ -43,7 +43,7 @@ class transition_property_map
 public:
     template <class C>
     explicit transition_property_map(C&& cont, Predicate pred = {})
-        : filtered_range<CPM, TSP>(CPM(std::forward<C>(cont)), TSP(pred)) {}
+        : filtered_range<CPM, TSP>{CPM{std::forward<C>(cont)}, TSP{pred}} {}
 
     friend typename CPM::reference get(const transition_property_map& pm,
                                        typename CPM::key_type         key) {

@@ -18,5 +18,5 @@ inline void test_lowercase(PM pm) {
 
 TEST("lowercase") {
     test_lowercase(make_shift_property_map<int>('a'));
-    test_lowercase(static_shift_property_map<'a', int>());
+    test_lowercase(static_shift_property_map<'a', int>{});
 }

@@ -15,7 +15,7 @@ namespace ac {
 // T can be a reference to share global time.
 template <class Map, class T = typename property_traits<Map>::value_type>
 struct time_stamper : property_map_wrapper_t<Map> {
-    time_stamper(Map&& pm) : property_map_wrapper_t<Map>(std::move(pm)) {}
+    time_stamper(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
 
     T time = {};
 

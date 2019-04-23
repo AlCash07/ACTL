@@ -47,7 +47,7 @@ bool test_base::run() {
     using diagnostics::to_string;
     ac::stopwatch stopwatch;
     try {
-        default_random random(args());
+        default_random random{args()};
         auto args = split_va_args(this->args());
         for (auto& arg : args) {
             arg = trim(arg);

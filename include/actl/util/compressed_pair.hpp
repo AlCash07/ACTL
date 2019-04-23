@@ -15,7 +15,7 @@ template <class T, bool = std::is_empty_v<T> && !std::is_final_v<T>>
 class ebo : private T {
 public:
     template <class... Ts>
-    constexpr explicit ebo(Ts&&... args) : T(std::forward<Ts>(args)...) {}
+    constexpr explicit ebo(Ts&&... args) : T{std::forward<Ts>(args)...} {}
 
     constexpr T&       get() noexcept { return *this; }
     constexpr const T& get() const noexcept { return *this; }
@@ -25,7 +25,7 @@ template <class T>
 class ebo<T, false> {
 public:
     template <class... Ts>
-    constexpr explicit ebo(Ts&&... args) : value_(std::forward<Ts>(args)...) {}
+    constexpr explicit ebo(Ts&&... args) : value_{std::forward<Ts>(args)...} {}
 
     constexpr T&       get() noexcept { return value_; }
     constexpr const T& get() const noexcept { return value_; }
@@ -57,8 +57,8 @@ public:
 
     template <class T, class... Ts>
     explicit constexpr compressed_pair(T&& first, Ts&&... second)
-        : detail::member<1, T1>(std::forward<T>(first))
-        , detail::member<2, T2>(std::forward<Ts>(second)...) {}
+        : detail::member<1, T1>{std::forward<T>(first)}
+        , detail::member<2, T2>{std::forward<Ts>(second)...} {}
 
     constexpr T1&       first() noexcept { return detail::member<1, T1>::get(); }
     constexpr const T1& first() const noexcept { return detail::member<1, T1>::get(); }

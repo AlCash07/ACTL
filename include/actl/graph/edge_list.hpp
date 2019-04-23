@@ -26,10 +26,10 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](edge_property) { return get_second(container_property_map(this->edges_)); }
+    auto operator[](edge_property) { return get_second(container_property_map{this->edges_}); }
 
     auto operator[](edge_property) const {
-        return get_second(container_property_map(this->edges_));
+        return get_second(container_property_map{this->edges_});
     }
 
     T&       operator[](edge e) { return get((*this)[edge_property{}], e); }
@@ -67,7 +67,7 @@ public:
             if (v < u) std::swap(u, v);
         }
         auto res = id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
-        return {edge(u, v, res.first), res.second};
+        return {edge{u, v, res.first}, res.second};
     }
 
     template <class... Ts>
@@ -117,12 +117,12 @@ public:
 
         using ec_id = container_id<typename base_t::edge_container>;
 
-        edge_iterator(const edge_list_impl& el, ec_id id) : el_(el), id_(id) {}
+        edge_iterator(const edge_list_impl& el, ec_id id) : el_{el}, id_{id} {}
 
         E dereference() const {
             auto& vertices = id_at(el_.edges_, id_).first();
             using V1 = typename E::vertex;
-            return E(V1(vertices.u), V1(vertices.v), id_);
+            return E{V1{vertices.u}, V1{vertices.v}, id_};
         }
 
         void increment() { ++id_; }
@@ -136,14 +136,14 @@ public:
     // E template parameter is needed for adjacency_list where vertices aren't stored directly.
     template <class E = edge>
     iterator_range<edge_iterator<E>> edges() const {
-        return {edge_iterator<E>(*this, id_begin(edges_)), edge_iterator<E>(*this, id_end(edges_))};
+        return {edge_iterator<E>{*this, id_begin(edges_)}, edge_iterator<E>{*this, id_end(edges_)}};
     }
 
     edge find_edge(vertex u, vertex v) const {
         if constexpr (base_t::is_undirected) {
             if (v < u) std::swap(u, v);
         }
-        return edge(u, v, id_find(edges_, typename base_t::edge_vertices(u, v)));
+        return edge{u, v, id_find(edges_, typename base_t::edge_vertices(u, v))};
     }
 
     void remove_edge(edge e) { id_erase(edges_, e); }

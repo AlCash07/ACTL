@@ -31,7 +31,7 @@ inline constexpr X area(comparable_area_points<P>, const point<T0>& lhs, const p
 
 template <class P, class S, class T0, class T1>
 inline constexpr auto area(standard_area_points<P, S>, const point<T0>& lhs, const point<T1>& rhs) {
-    return area(comparable_area_points<P>(), lhs, rhs);
+    return area(comparable_area_points<P>{}, lhs, rhs);
 }
 
 // TODO: figure out the correct sign instead of returning the absolute value.
@@ -48,12 +48,12 @@ inline auto area(comparable_area_points<P>, const point<T0, N>& lhs, const point
 
 template <class P, class S, int N, class T0, class T1>
 inline auto area(standard_area_points<P, S>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return static_cast<geometry::sqrt_t<S, T0, T1>>(area(comparable_area_points<P>(), lhs, rhs));
+    return static_cast<geometry::sqrt_t<S, T0, T1>>(area(comparable_area_points<P>{}, lhs, rhs));
 }
 
 template <int N, class T0, class T1>
 inline auto area(use_default, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return area(standard_area_points<>(), lhs, rhs);
+    return area(standard_area_points<>{}, lhs, rhs);
 }
 
 }  // namespace ac

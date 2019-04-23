@@ -23,7 +23,7 @@ struct sphere {
 
     template <class T1, class T2>
     explicit constexpr sphere(const point<T1, N>& center, const T2& radius)
-        : center(center), radius{static_cast<T>(radius)} {}
+        : center{center}, radius{static_cast<T>(radius)} {}
 
     template <class T1>
     explicit constexpr sphere(const sphere<T1, N>& rhs) { (*this) = rhs; }

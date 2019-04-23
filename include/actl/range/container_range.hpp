@@ -56,7 +56,7 @@ public:
 
 template <class Container>
 inline auto make_range(Container&& cont) {
-    return container_range<remove_rvalue_ref_t<Container>>(std::forward<Container>(cont));
+    return container_range<remove_rvalue_ref_t<Container>>{std::forward<Container>(cont)};
 }
 
 template <class Container>

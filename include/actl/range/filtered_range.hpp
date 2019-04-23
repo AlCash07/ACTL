@@ -24,7 +24,7 @@ class filtered_range
 public:
     using iterator = filter_iterator<Range, Predicate>;
 
-    explicit filtered_range(Range range, Predicate pred) : data_(range, pred) {}
+    explicit filtered_range(Range range, Predicate pred) : data_{range, pred} {}
 
     iterator begin() const { return {original().begin(), *this}; }
     iterator end() const { return {original().end(), *this}; }
@@ -53,7 +53,7 @@ class filter_iterator : public detail::filter_iterator_base<R, P> {
 
 public:
     filter_iterator(typename remove_cvref_t<R>::iterator it, const filtered_range<R, P>& range)
-        : base_t(it), range_(range) {
+        : base_t{it}, range_{range} {
         find_next();
     }
 
@@ -81,7 +81,7 @@ private:
 
 template <class Range, class Predicate>
 inline auto filter_range(Range&& range, Predicate pred) {
-    return filtered_range<remove_rvalue_ref_t<Range>, Predicate>(std::forward<Range>(range), pred);
+    return filtered_range<remove_rvalue_ref_t<Range>, Predicate>{std::forward<Range>(range), pred};
 }
 
 }  // namespace ac

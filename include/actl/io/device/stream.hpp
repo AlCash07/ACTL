@@ -19,7 +19,7 @@ class ios_format : format {
     using ios = std::ios_base;
 
 public:
-    explicit ios_format(Stream& s) : s_(s) {}
+    explicit ios_format(Stream& s) : s_{s} {}
 
     bool getf(flag_t flag) const {
         auto b = bits[flag];
@@ -95,7 +95,7 @@ protected:
 template <class Stream, mode_t Mode, bool = is_in<Mode>>
 class istream : public base<Mode> {
 public:
-    explicit istream(Stream& s) : s_(s) {}
+    explicit istream(Stream& s) : s_{s} {}
 
 protected:
     Stream& s_;

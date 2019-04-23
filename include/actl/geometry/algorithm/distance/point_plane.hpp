@@ -24,7 +24,7 @@ inline auto distance(distance_point_plane<P, R, NP> policy, const point<T0, N>& 
 
 template <int N, class T0, class T1>
 inline auto distance(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
-    return distance(distance_point_plane<>(), point, plane);
+    return distance(distance_point_plane<>{}, point, plane);
 }
 
 }  // namespace ac

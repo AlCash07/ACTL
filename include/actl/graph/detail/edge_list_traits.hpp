@@ -56,7 +56,7 @@ struct edge_vertices<Dir, V, two_vertices> {
         }
     }
 
-    constexpr auto key() const { return std::pair(id_key(u), id_key(v)); }
+    constexpr auto key() const { return std::pair{id_key(u), id_key(v)}; }
 
     bool operator < (const edge_vertices& rhs) const { return key() < rhs.key(); }
 

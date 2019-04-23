@@ -27,7 +27,7 @@ inline auto intersect(intersect_circle_circle_scalar, const circle<T0>& lhs, con
                       OutputIterator dst) {
     using O = geometry::scalar_t<output_type_t<OutputIterator>>;
     auto centers_vector = rhs.center - lhs.center;
-    auto centers_angle  = angle(standard_angle<O, O>(), centers_vector);
+    auto centers_angle = angle(standard_angle<O, O>{}, centers_vector);
     return dst;
 }
 
@@ -60,12 +60,12 @@ namespace detail {
 
 template <class T0, class T1, class It>
 inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, scalar_tag) {
-    return ac::intersect(intersect_circle_circle_scalar(), lhs, rhs, dst);
+    return ac::intersect(intersect_circle_circle_scalar{}, lhs, rhs, dst);
 }
 
 template <class T0, class T1, class It>
 inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, point_tag) {
-    return ac::intersect(intersect_circle_circle_point<>(), lhs, rhs, dst);
+    return ac::intersect(intersect_circle_circle_point<>{}, lhs, rhs, dst);
 }
 
 }  // namespace detail
@@ -73,7 +73,7 @@ inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, poin
 template <class T0, class T1, class OutputIterator>
 inline auto intersect(use_default, const circle<T0>& lhs, const circle<T1>& rhs,
                       OutputIterator dst) {
-    return detail::intersect(lhs, rhs, dst, geometry::tag_t<output_type_t<OutputIterator>>());
+    return detail::intersect(lhs, rhs, dst, geometry::tag_t<output_type_t<OutputIterator>>{});
 }
 
 }  // namespace ac

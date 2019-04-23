@@ -21,7 +21,7 @@ class scalar_to_point_adaptor
 public:
     explicit scalar_to_point_adaptor(const Line& line, It it)
         : iterator_adaptor<scalar_to_point_adaptor<Line, It>, It, use_default, T,
-                           const scalar_to_point_adaptor<Line, It>&, T*>(it)
+                           const scalar_to_point_adaptor<Line, It>&, T*>{it}
         , line_{line} {}
 
     void operator = (const T& value) const { *this->base_ref() = line_(value); }
@@ -41,12 +41,12 @@ inline auto adapt_iterator(const Line&, It it, scalar_tag) { return it; }
 
 template <class Line, class It>
 inline auto adapt_iterator(const Line& line, It it, point_tag) {
-    return scalar_to_point_adaptor<Line, It>(line, it);
+    return scalar_to_point_adaptor<Line, It>{line, it};
 }
 
 template <class Line, class Iterator>
 inline auto adapt_iterator(const Line& line, Iterator it) {
-    return adapt_iterator(line, it, geometry::tag_t<output_type_t<Iterator>>());
+    return adapt_iterator(line, it, geometry::tag_t<output_type_t<Iterator>>{});
 }
 
 }  // namespace ac::detail

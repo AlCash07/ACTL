@@ -82,7 +82,7 @@ class adj_list_vertex_data : public adj_list_traits<Dir, OEC, EC, VC>::vertex_da
 public:
     template <class... Ts>
     explicit adj_list_vertex_data(Ts&&... args)
-        : traits::vertex_data(typename traits::vertex_edges(), std::forward<Ts>(args)...) {}
+        : traits::vertex_data{typename traits::vertex_edges{}, std::forward<Ts>(args)...} {}
 };
 
 template <class V, class OE, class S>

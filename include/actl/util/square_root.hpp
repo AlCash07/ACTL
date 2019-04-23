@@ -63,7 +63,7 @@ private:
 
 template <class T>
 inline constexpr square_root<T> deferred_sqrt(const T& value) {
-    return square_root<T>(value, 0);
+    return square_root<T>{value, 0};
 }
 
 }  // namespace ac

@@ -28,7 +28,7 @@ inline auto distance(const distance_point_point<NP>& policy, const point<T0, N>&
 
 template <int N, class T0, class T1>
 inline auto distance(use_default, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return distance(standard_distance_point_point<>(), lhs, rhs);
+    return distance(standard_distance_point_point<>{}, lhs, rhs);
 }
 
 }  // namespace ac

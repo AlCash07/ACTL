@@ -30,6 +30,7 @@ public:
 
     reference       front() { return vector_[begin_]; }
     const_reference front() const { return vector_[begin_]; }
+
     reference       back() { return vector_.back(); }
     const_reference back() const { return vector_.back(); }
 

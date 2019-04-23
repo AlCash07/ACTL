@@ -21,7 +21,7 @@ using comparable_ccw = ccw_policy<comparable_area_points<P>>;
 template <class T, class... Ts, class = geometry::disable_if_policy_t<T>,
           class = std::enable_if_t<geometry_traits<T>::dimension == 2>>
 inline auto ccw(const T& arg, const Ts&... args) {
-    return ccw(comparable_ccw<>(), arg, args...);
+    return ccw(comparable_ccw<>{}, arg, args...);
 }
 
 }  // namespace ac

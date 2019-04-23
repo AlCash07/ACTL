@@ -29,7 +29,7 @@ inline auto extreme_vertex(const extreme_vertex_policy<CP>& policy,
         return (i_sgn = vertex_cmp(i + 1, i)) >= 0 && vertex_cmp(i, i - 1) < 0;
     };
     auto first = polygon.begin();
-    int first_sgn, middle_sgn;
+    int first_sgn{}, middle_sgn{};
     if (is_extreme(polygon.cyclic(first), first_sgn)) return first;
     for (auto last = polygon.end(); first + 1 != last;) {
         auto middle = first + (last - first) / 2;
@@ -47,7 +47,7 @@ inline auto extreme_vertex(const extreme_vertex_policy<CP>& policy,
 
 template <class T, class Function>
 inline auto extreme_vertex(const convex_polygon<T>& polygon, Function direction) {
-    return extreme_vertex(extreme_vertex_policy<>(), polygon, direction);
+    return extreme_vertex(extreme_vertex_policy<>{}, polygon, direction);
 }
 
 }  // namespace ac

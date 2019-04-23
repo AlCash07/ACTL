@@ -12,8 +12,8 @@
 using namespace ac;
 
 TEST("none") {
-    vertex_list<> graph(3);
-    ASSERT_EQUAL(std::pair(3, true), graph.try_add_vertex());
+    vertex_list<> graph{3};
+    ASSERT_EQUAL(std::pair{3, true}, graph.try_add_vertex());
     ASSERT_EQUAL(4, graph.add_vertex());
     ASSERT_EQUAL(2, graph.nth_vertex(2));
     graph.remove_vertex(2);

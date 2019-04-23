@@ -15,7 +15,7 @@ struct bundle {
     std::string s;
 
     explicit bundle() = default;
-    explicit bundle(int i, std::string s) : i(i), s(s) {};
+    explicit bundle(int i, std::string s) : i{i}, s{s} {};
 
     bool operator < (const bundle& rhs) const { return i < rhs.i; }
     bool operator == (const bundle& rhs) const { return i == rhs.i; }

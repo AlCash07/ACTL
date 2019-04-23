@@ -17,9 +17,9 @@ struct setbase {
     uint8_t value;
     explicit constexpr setbase(uint8_t v = 10) : value{v} {}
 };
-constexpr setbase dec(10);
-constexpr setbase hex(16);
-constexpr setbase oct(8);
+constexpr setbase dec{10};
+constexpr setbase hex{16};
+constexpr setbase oct{8};
 
 // number of digits after the decimal point
 struct setprecision {

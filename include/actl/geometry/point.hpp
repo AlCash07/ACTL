@@ -28,7 +28,7 @@ template <class T, int N>
 class point_base {
 public:
     template <class... Ts>
-    explicit constexpr point_base(Ts&&... values) : coordinates_{T(std::forward<Ts>(values))...} {}
+    explicit constexpr point_base(Ts&&... values) : coordinates_{T{std::forward<Ts>(values)}...} {}
 
     constexpr point_base(std::initializer_list<T> values) {
         ACTL_ASSERT(values.size() == N);
@@ -44,19 +44,19 @@ public:
     constexpr T*       data() { return coordinates_; }
     constexpr const T* data() const { return coordinates_; }
 
-    constexpr T& operator[](int index) {
-        ACTL_ASSERT(0 <= index && index < N);
-        return data()[index];
+    constexpr T& operator[](int i) {
+        ACTL_ASSERT(0 <= i && i < N);
+        return data()[i];
     }
 
-    constexpr T& operator()(int index) { return data()[index]; }
+    constexpr T& operator()(int i) { return data()[i]; }
 
-    constexpr const T& operator[](int index) const {
-        ACTL_ASSERT(0 <= index && index < N);
-        return data()[index];
+    constexpr const T& operator[](int i) const {
+        ACTL_ASSERT(0 <= i && i < N);
+        return data()[i];
     }
 
-    constexpr const T& operator()(int index) const { return data()[index]; }
+    constexpr const T& operator()(int i) const { return data()[i]; }
 
     explicit constexpr operator bool() const {
         for (int i = 0; i < N; ++i)

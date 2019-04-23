@@ -12,7 +12,7 @@ using namespace ac;
 
 TEST("input") {
     const char s[] = "abcdef";
-    io::memory<io::in> in(s, s + 5);
+    io::memory<io::in> in{s, s + 5};
     ASSERT_EQUAL('a', in.get());
     ASSERT_EQUAL('b', in.get());
     in.unget();
@@ -27,7 +27,7 @@ TEST("input") {
 
 TEST("output") {
     char s[5];
-    io::memory<io::out> out(s, s + 5);
+    io::memory<io::out> out{s, s + 5};
     ASSERT_TRUE(out.put('a'));
     ASSERT_EQUAL(3, out.write("bcd", 3));
     ASSERT_EQUAL(1, out.write("ef", 2));

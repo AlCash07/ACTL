@@ -12,7 +12,7 @@ using namespace ac;
 
 TEST("input") {
     std::string s = "abcde";
-    io::string<io::in> in(s);
+    io::string<io::in> in{s};
     ASSERT_EQUAL('a', in.get());
     ASSERT_EQUAL('b', in.get());
     in.unget();
@@ -28,7 +28,7 @@ TEST("input") {
 
 TEST("output") {
     std::string s;
-    io::string<io::app> out(s);
+    io::string<io::app> out{s};
     ASSERT_TRUE(out.put('a'));
     ASSERT_EQUAL(3, out.write("bcd", 3));
     ASSERT_EQUAL("abcd", s);
