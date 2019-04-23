@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/base.hpp>
+#include <actl/io/io.hpp>
 #include <actl/traits/ctype.hpp>
 #include <cstring>
 
@@ -17,28 +17,35 @@ inline bool is_one_of(char c, const char* s) { return std::strchr(s, c) != nullp
 
 template <class Predicate>
 class skip_t {
-    Predicate pred;
-
 public:
-    explicit constexpr skip_t(Predicate pred) : pred(pred) {}
+    explicit constexpr skip_t(Predicate pred) : pred_{pred} {}
 
-    constexpr bool operator()(char c) const { return pred(c); }
+    constexpr bool operator()(char c) const { return pred_(c); }
+
+private:
+    Predicate pred_;
 };
 
-inline constexpr auto skip() { return skip_t(is_space); }
+inline constexpr auto skip() { return skip_t{is_space}; }
 
-inline auto skip(char c) { return skip_t([c](char x) { return x == c; }); }
+inline auto skip(char c) {
+    return skip_t{[c](char x) { return x == c; }};
+}
 
-inline auto skip(const char* s) { return skip_t([s](char c) { return is_one_of(c, s); }); }
+inline auto skip(const char* s) {
+    return skip_t{[s](char c) { return is_one_of(c, s); }};
+}
 
 template <class Predicate>
-inline auto skip(Predicate pred) { return skip_t(pred); }
+inline auto skip(Predicate pred) {
+    return skip_t{pred};
+}
 
 inline constexpr auto ws = skip();  // skip whitespace
 
-template <class Device, class Predicate>
-inline bool read(io::text& fmt, Device& id, io::skip_t<Predicate> skip) {
-//    for (char& c = id.last; skip(id.last); c = id.get());
+template <class Device, class Format, class Predicate>
+inline bool deserialize(Device& id, Format& fmt, skip_t<Predicate> skip, text) {
+    //    for (char& c = id.last; skip(id.last); c = id.get());
     return true;
 }
 

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/traits/container_traits.hpp>
+#include <actl/traits/string_traits.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <iterator>
 
@@ -76,26 +77,6 @@ struct is_tuple : std::false_type {};
 template <class... Args>
 struct is_tuple<std::tuple<Args...>> : std::true_type {};
 
-// is_string
-
-template <class T>
-struct is_string : std::false_type {};
-
-template <class C, class T, class A>
-struct is_string<std::basic_string<C, T, A>> : std::true_type {};
-
-template <int N>
-struct is_string<char[N]> : std::true_type {};
-
-template <>
-struct is_string<char[]> : std::true_type {};
-
-template <>
-struct is_string<char*> : std::true_type {};
-
-template <>
-struct is_string<const char*> : std::true_type {};
-
 }  // namespace detail
 
 // _v
@@ -130,7 +111,6 @@ static constexpr type_kind general_type_kind_v = general_type_kind<kind>::value;
 MAKE_IS_TYPE_TRAIT(is_array);
 MAKE_IS_TYPE_TRAIT(is_pair);
 MAKE_IS_TYPE_TRAIT(is_tuple);
-MAKE_IS_TYPE_TRAIT(is_string);
 
 #undef MAKE_IS_TYPE_TRAIT
 

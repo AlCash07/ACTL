@@ -7,70 +7,136 @@
 
 #pragma once
 
-#include <actl/io/base.hpp>
-#include <actl/util/use_default.hpp>
+#include <actl/io/util/serialization_access.hpp>
+#include <actl/util/none.hpp>
+#include <cstdint>
+#include <type_traits>
 
 namespace ac::io {
 
-/* Convert rvalue references to lvalue references for the duration of the function call */
+/* Device */
 
-template <class Format, class Device, class... Ts>
-inline std::enable_if_t<!std::is_reference_v<Format> || !std::is_reference_v<Device>, int> write(
-    Format&& fmt, Device&& od, const Ts&... args) {
-    return write(fmt, od, args...);
-}
+using mode_t = uint8_t;
+inline constexpr mode_t bin = 0x01;
+inline constexpr mode_t in = 0x02;
+inline constexpr mode_t out = 0x04;
+inline constexpr mode_t app = 0x08;
+inline constexpr mode_t line_buffered = 0x10;
+inline constexpr mode_t trunc = in | out | app;
 
-template <class Format, class Device, class... Ts>
-inline std::enable_if_t<!std::is_reference_v<Format> || !std::is_reference_v<Device>, bool> read(
-    Format&& fmt, Device&& id, Ts&&... args) {
-    return read(fmt, id, std::forward<Ts>(args)...);
-}
+template <mode_t Mode>
+inline constexpr bool is_in = (Mode & in) > 0;
 
-/* Format deduction */
+template <mode_t Mode>
+inline constexpr bool is_out = (Mode & (out | app)) > 0;
 
-template <class Format, class Device>
+template <mode_t Mode>
+inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
+
+struct device {};
+
+template <mode_t Mode>
+struct base : device {
+    static_assert(is_in<Mode> || is_out<Mode>, "invalid mode");
+
+    static constexpr mode_t mode = Mode;
+};
+
+template <class T>
+inline constexpr bool is_device_v = std::is_base_of_v<device, T>;
+
+/* Format */
+
+struct format {};
+
+struct binary {};
+struct text {};
+
+template <class T>
+struct format_traits {
+    using tag = none;
+};
+
+template <>
+struct format_traits<binary> {
+    using base = format;
+    using tag = binary;
+};
+
+template <>
+struct format_traits<text> {
+    using base = format;
+    using tag = text;
+};
+
+template <class T>
+using format_tag_t = typename format_traits<T>::tag;
+
+template <class Device>
 inline auto deduce_format(Device& device) {
-    if constexpr (std::is_same_v<Format, use_default>) {
-        if constexpr (is_bin<Device::mode>) {
-            return binary{};
-        } else {
-            return device.format();
-        }
+    if constexpr ((Device::mode & bin) > 0) {
+        return binary{};
     } else {
-        return Format{};
+        return device.format();
     }
 }
 
-template <class Format = use_default, class Device, class... Ts>
-inline int write(Device& od, const Ts&... args) {
-    return write(deduce_format<Format>(od), od, args...);
+/* Default serialization forwarding */
+
+template <class Device, class Format, class T>
+inline int serialize(Device& od, Format& fmt, T&& x, format) {
+    return serialize(od, fmt, x);
 }
 
-template <class Format = use_default, class Device, class... Ts>
-inline bool read(Device& id, Ts&&... args) {
-    return read(deduce_format<Format>(id), id, std::forward<Ts>(args)...);
+template <class Device, class Format, class T>
+inline bool deserialize(Device& id, Format& fmt, T&& x, format) {
+    return deserialize(id, fmt, x);
 }
 
-/* Generic forwarding */
-
-template <class Format, class Device, class T, class... Ts>
-inline int write(Format& fmt, Device& od, const T& x, const Ts&... args) {
-    return write(fmt, od, x) + write(fmt, od, args...);
+template <class Device, class Format, class T, class Tag>
+inline int serialize(Device& od, Format& fmt, T&& x, Tag) {
+    return serialize(od, fmt, x, typename format_traits<Tag>::base{});
 }
 
-template <class Format, class Device, class T, class... Ts>
-inline bool read(Format& fmt, Device& id, T&& x, Ts&&... args) {
-    return read(fmt, id, std::forward<T>(x)) && read(fmt, id, std::forward<Ts>(args)...);
+template <class Device, class Format, class T, class Tag>
+inline bool deserialize(Device& id, Format& fmt, T&& x, Tag) {
+    return deserialize(id, fmt, x, typename format_traits<Tag>::base{});
 }
 
-template <class Format = use_default, class Device, class... Ts>
-inline int writeln(Device&& od, const Ts&... args) {
-    return write<Format>(od, args..., '\n');
+/* Read and write. Absence of std::forward is intentional here to convert rvalue references into
+ * lvalue references, because I/O doesn't operate with rvalues. */
+
+template <class Device, class Format, class... Ts>
+inline int write(Device&& od, Format&& fmt, Ts&&... args) {
+    if constexpr (std::is_same_v<format_tag_t<std::remove_cv_t<Format>>, none>) {
+        return write(od, deduce_format(od), fmt, args...);
+    } else {
+        return (... + serialize(od, fmt, args, format_tag_t<Format>{}));
+    }
 }
 
-template <class Format, class Device, class... Ts>
-inline int writeln(Format&& fmt, Device&& od, const Ts&... args) {
-    return write(fmt, od, args..., '\n');
+template <class Device, class Format, class... Ts>
+inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
+    if constexpr (std::is_same_v<format_tag_t<std::remove_cv_t<Format>>, none>) {
+        return read(id, deduce_format(id), fmt, args...);
+    } else {
+        return (... && deserialize(id, fmt, args, format_tag_t<Format>{}));
+    }
+}
+
+template <class... Ts>
+inline int writeln(Ts&&... args) {
+    return write(args..., '\n');
+}
+
+template <class Device, class Format, class T>
+inline int writeSize(Device& od, Format& fmt, const T& size) {
+    return write(od, fmt, size);
+}
+
+template <class Device, class Format, class T>
+inline bool readSize(Device& od, Format& fmt, T& size) {
+    return read(od, fmt, size);
 }
 
 }  // namespace ac::io

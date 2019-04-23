@@ -8,28 +8,26 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/io/base.hpp>
+#include <actl/io/io.hpp>
 #include <actl/io/text/flags.hpp>
-#include <string>
 
 namespace ac::io {
 
 inline constexpr flag_t bits(flag_t flag) { return flag_t{1} << flag; }
 
-const flag_t gbits[] = {bits(flags::fixed) | bits(flags::scientific) | bits(flags::hexfloat),
-                        bits(flags::left) | bits(flags::right) | bits(flags::center)};
-
-const char space[] = " ";
+const flag_t group_bits[] = {bits(flags::fixed) | bits(flags::scientific) | bits(flags::hexfloat),
+                             bits(flags::left) | bits(flags::right) | bits(flags::center)};
 
 template <
     flag_t Flags = bits(flags::skipws),
     uint8_t Base = 10,
     width_t Precision = 6,
     width_t Width = 0,
-    char Fill = ' ',
-    const char* Delimiter = space>
+    char Fill = ' '>
 class text_static : text {
 public:
+    static constexpr mode_t mode = 0;
+
     static constexpr flag_t flags() { return Flags; }
 
     static constexpr bool getf(flag_t flag) { return (Flags & bits(flag)) != 0; }
@@ -41,8 +39,11 @@ public:
     static constexpr width_t width() { return Width; }
 
     static constexpr char fill() { return Fill; }
+};
 
-    static constexpr const char* delimiter() { return Delimiter; }
+template <flag_t Fl, uint8_t B, width_t P, width_t W, char F>
+struct format_traits<text_static<Fl, B, P, W, F>> {
+    using tag = text;
 };
 
 template <mode_t Mode, bool = is_out<Mode>>
@@ -56,7 +57,7 @@ public:
     void unsetf(flag_t flag) { flags_ &= ~bits(flag); }
 
     void setf(flag_t flag, flag_t group) {
-        group = gbits[group];
+        group = group_bits[group];
         flags_ = (flags_ & ~group) | (bits(flag) & group);
     }
 
@@ -83,16 +84,17 @@ public:
     char fill() const { return fill_; }
     void fill(char value) { fill_ = value; }
 
-    const char* delimiter() const { return delimiter_.data(); }
-    void delimiter(const char* value) { delimiter_ = value; }
-
 protected:
     using ts = text_static<>;
 
     width_t precision_ = ts::precision();
     width_t width_ = ts::width();
     char fill_ = ts::fill();
-    std::string delimiter_ = ts::delimiter();
+};
+
+template <mode_t Mode, bool B>
+struct format_traits<text_format<Mode, B>> {
+    using tag = text;
 };
 
 }  // namespace ac::io

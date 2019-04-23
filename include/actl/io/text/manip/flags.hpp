@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include <actl/io/util/formatted.hpp>
+#include <actl/io/io.hpp>
+#include <actl/io/text/flags.hpp>
 
 namespace ac::io {
 
@@ -58,36 +59,32 @@ constexpr setf<flags::skipws, false> noskipws{};
 constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
 
-// enclose containers in brackets, don't output their size
-constexpr setf<flags::brackets, true> brackets{};
-constexpr setf<flags::brackets, false> nobrackets{};
-
-template <class Format, class Device, flag_t flag, bool value>
-inline bool read(Format& fmt, Device&, setf<flag, value>) {
+template <class Device, class Format, flag_t flag, bool value>
+inline int serialize(Device&, Format& fmt, setf<flag, value>, text) {
     if constexpr (value) {
         fmt.setf(flag);
     } else {
         fmt.unsetf(flag);
     }
-    return true;
-}
-
-template <class Format, class Device, flag_t flag, bool value>
-inline int write(Format& fmt, Device& od, setf<flag, value>) {
-    read(fmt, od, setf<flag, value>{});
     return 0;
 }
 
-template <class Format, class Device, flag_t group, flag_t flag>
-inline bool read(Format& fmt, Device&, setg<group, flag>) {
-    fmt.setf(flag, group);
+template <class Device, class Format, flag_t flag, bool value>
+inline bool deserialize(Device& id, Format& fmt, setf<flag, value>, text) {
+    serialize(id, fmt, setf<flag, value>{}, text{});
     return true;
 }
 
-template <class Format, class Device, flag_t group, flag_t flag>
-inline int write(Format& fmt, Device&, setg<group, flag>) {
+template <class Device, class Format, flag_t group, flag_t flag>
+inline int serialize(Device&, Format& fmt, setg<group, flag>, text) {
     fmt.setf(flag, group);
     return 0;
+}
+
+template <class Device, class Format, flag_t group, flag_t flag>
+inline bool deserialize(Device&, Format& fmt, setg<group, flag>, text) {
+    fmt.setf(flag, group);
+    return true;
 }
 
 }  // namespace ac::io
