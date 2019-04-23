@@ -24,7 +24,7 @@ template <
     width_t Precision = 6,
     width_t Width = 0,
     char Fill = ' '>
-class text_static : text {
+class text_static {
 public:
     static constexpr mode_t mode = 0;
 
@@ -47,7 +47,7 @@ struct format_traits<text_static<Fl, B, P, W, F>> {
 };
 
 template <mode_t Mode, bool = is_out<Mode>>
-class text_format : text {
+class text_format {
 public:
     flag_t flags() const { return flags_; }
     void flags(flag_t value) { flags_ = value; }
