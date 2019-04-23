@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 
-project("ACTL")
+project(ACTL)
 set(CMAKE_CXX_STANDARD 17)
 
 add_definitions(-DACTL_DEBUG)
@@ -12,29 +12,18 @@ if(NOT MSVC)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -fsanitize=undefined")
 endif()
 
-function(get_files OUTPUT PATH EXTENSION)
-get_filename_component(FULL_PATH ${PATH} ABSOLUTE)
-file(GLOB_RECURSE FILES ${PATH}/*.${EXTENSION})
-foreach(FILE_NAME ${FILES})
-    get_filename_component(ABSOLUTE_FILE_NAME ${FILE_NAME} ABSOLUTE)
-    file(RELATIVE_PATH FILE_RELATIVE_PATH ${FULL_PATH} ${ABSOLUTE_FILE_NAME})
-    get_filename_component(FILE_DIRECTORY ${FILE_RELATIVE_PATH} DIRECTORY)
-    set(FILE_DIRECTORY "\\${FILE_DIRECTORY}")
-    string(REPLACE / \\ FILE_DIRECTORY ${FILE_DIRECTORY})
-    source_group("${FILE_DIRECTORY}" FILES "${FILE_NAME}")
-endforeach()
-set(${OUTPUT} ${FILES} PARENT_SCOPE)
-endfunction(get_files)
-
 include_directories(include)
 # make includes show up in IDE
-get_files(HEADER_FILES include hpp)
+file(GLOB_RECURSE HEADER_FILES include/*.hpp)
+source_group(TREE include FILES ${HEADER_FILES})
 add_custom_target(include SOURCES ${HEADER_FILES})
 
-get_files(SRC_FILES src cpp)
+file(GLOB_RECURSE SRC_FILES src/*.cpp)
+source_group(TREE src FILES ${SRC_FILES})
 add_library(src ${SRC_FILES})
 
-get_files(TEST_FILES tests *)
+file(GLOB_RECURSE TEST_FILES tests/*)
+source_group(TREE tests FILES ${TEST_FILES})
 add_executable(tests ${TEST_FILES})
 target_link_libraries(tests src)
 
