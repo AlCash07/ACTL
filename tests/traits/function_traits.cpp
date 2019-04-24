@@ -19,13 +19,13 @@ TEST("0_arity") {
     ASSERT_TRUE(std::is_same_v<bool, return_type_t<F>>);
 }
 
-inline int cmp(const char*, const std::string&);
+inline int cmp(const void*, const std::string&);
 
 TEST("function") {
     using F = decltype(cmp);
     ASSERT_EQUAL(2u, arity_v<F>);
     ASSERT_TRUE(std::is_same_v<int, return_type_t<F>>);
-    ASSERT_TRUE(std::is_same_v<const char*, argument_type_t<F, 0>>);
+    ASSERT_TRUE(std::is_same_v<const void*, argument_type_t<F, 0>>);
     ASSERT_TRUE(std::is_same_v<const std::string&, argument_type_t<F, 1>>);
 }
 

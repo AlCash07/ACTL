@@ -7,8 +7,9 @@
 
 #pragma once
 
-#include <type_traits>
+#include <actl/types.hpp>
 #include <string>
+#include <type_traits>
 
 namespace ac {
 
@@ -18,17 +19,14 @@ struct is_string : std::false_type {};
 template <class C, class T, class A>
 struct is_string<std::basic_string<C, T, A>> : std::true_type {};
 
-template <>
-struct is_string<char[]> : std::true_type {};
-
 template <int N>
 struct is_string<char[N]> : std::true_type {};
 
 template <>
-struct is_string<char*> : std::true_type {};
+struct is_string<zstring> : std::true_type {};
 
 template <>
-struct is_string<const char*> : std::true_type {};
+struct is_string<czstring> : std::true_type {};
 
 template <class T>
 inline constexpr bool is_string_v = is_string<T>::value;

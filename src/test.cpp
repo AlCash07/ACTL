@@ -4,6 +4,7 @@
 #include <actl/string/trim.hpp>
 #include <actl/test.hpp>
 #include <actl/traits/type_traits.hpp>
+#include <actl/types.hpp>
 #include <actl/util/stopwatch.hpp>
 #include <cmath>
 #include <iomanip>
@@ -14,8 +15,8 @@ namespace ac::tests {
 
 namespace detail {
 
-static const char* repeat_key     = "repeat";
-static const char* time_limit_key = "time_limit";
+static czstring repeat_key = "repeat";
+static czstring time_limit_key = "time_limit";
 
 inline std::vector<std::string> split_va_args(const std::string& va_args_str) {
     return split(va_args_str, [depth = int{}, quote = bool{}, last = char{}](char c) mutable {
@@ -62,7 +63,7 @@ bool test_base::run() {
             params[trim(key_value[0])] = {trim(key_value[1]), args[i]};
         }
         std::cerr << name << ": ";
-        auto try_get_param = [&params, this](const char* key, auto& value) -> bool {
+        auto try_get_param = [&params, this](czstring key, auto& value) -> bool {
             auto it = params.find(key);
             if (it == params.end()) return false;
             try {
@@ -113,7 +114,7 @@ std::vector<test_base*>& all_tests() {
 
 }  // namespace detail
 
-int run(int argc, const char* argv[]) {
+int run(int argc, czstring argv[]) {
     using namespace detail;
     std::function<bool(const std::string&)> filter = [](const std::string&) -> bool {
         return true;

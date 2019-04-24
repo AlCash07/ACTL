@@ -22,7 +22,7 @@ struct functor {
 TEST("is_invocable") {
     ASSERT_TRUE(is_invocable_v<functor, int, double>);
     ASSERT_TRUE(is_invocable_v<functor, char, int>);
-    ASSERT_FALSE(is_invocable_v<functor, int, const char*>);
+    ASSERT_FALSE(is_invocable_v<functor, int, const void*>);
     ASSERT_FALSE(is_invocable_v<functor, int, double, int>);
 }
 
@@ -44,7 +44,7 @@ TEST("is_unsigned_int") {
 
 TEST("is_static_castable") {
     ASSERT_TRUE(is_static_castable_v<double, int>);
-    ASSERT_FALSE(is_static_castable_v<double, const char*>);
+    ASSERT_FALSE(is_static_castable_v<double, const void*>);
 }
 
 TEST("remove_cvref") { ASSERT_TRUE(std::is_same_v<int, remove_cvref_t<volatile const int&>>); }

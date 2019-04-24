@@ -67,8 +67,6 @@ public:
 
     constexpr bool separate() { return false; }
 
-    constexpr const char* delimiter() const { return ""; }
-
 protected:
     static constexpr ios::fmtflags bits[] = {
         ios::boolalpha,

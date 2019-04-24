@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/types.hpp>
 #include <random>
 #include <type_traits>
 
@@ -49,7 +50,7 @@ struct rng_decorator : public Rng {
         return std::normal_distribution<T>{mean, stddev}(*this);
     }
 
-    void seed(const char* value) {
+    void seed(czstring value) {
         Rng& base = static_cast<Rng&>(*this);
         Rng  default_rng;
         do {

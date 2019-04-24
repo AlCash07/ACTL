@@ -23,7 +23,7 @@ TEST("cp::type_kind_of") {
     ASSERT_EQUAL(type_kind::floating_point, type_kind_of<float>);
     ASSERT_EQUAL(type_kind::pair, type_kind_of<std::pair<bool, int>>);
     ASSERT_EQUAL(type_kind::tuple, type_kind_of<std::tuple<bool>>);
-    ASSERT_EQUAL(type_kind::string, type_kind_of<char[]>);
+    ASSERT_EQUAL(type_kind::string, type_kind_of<zstring>);
     ASSERT_EQUAL(type_kind::string, type_kind_of<std::string>);
     ASSERT_EQUAL(type_kind::set, type_kind_of<std::unordered_set<int>>);
     ASSERT_EQUAL(type_kind::map, type_kind_of<std::unordered_map<int, int>>);

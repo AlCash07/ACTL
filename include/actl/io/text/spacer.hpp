@@ -9,17 +9,10 @@
 
 #include <actl/io/io.hpp>
 #include <actl/traits/string_traits.hpp>
+#include <actl/types.hpp>
 #include <string>
 
 namespace ac::io {
-
-/* Composite types  */
-
-template <class T>
-struct is_composite : has_serialization<T> {};
-
-template <class T>
-inline constexpr bool is_composite_v = is_composite<T>::value;
 
 /**
  * Format that inserts delimiter between consecutive non-string and non-char output units.
@@ -29,8 +22,8 @@ class spacer : public Format {
 public:
     using Format::Format;
 
-    const char* space() const { return space_.data(); }
-    void space(const char* value) { space_ = value; }
+    czstring space() const { return space_.data(); }
+    void space(czstring value) { space_ = value; }
 
     bool insert() const { return insert_; }
     void insert(bool value) { insert_ = value; }
@@ -41,8 +34,8 @@ protected:
 };
 
 struct setspace {
-    const char* value;
-    setspace(const char* v) : value{v} {}
+    czstring value;
+    setspace(czstring v) : value{v} {}
 };
 
 template <class Device, class Format>

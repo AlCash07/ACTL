@@ -11,19 +11,20 @@
 #include <actl/macros.hpp>
 #include <actl/random/random.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/types.hpp>
 #include <iostream>
 
-#define TEST_IMPL(name, va_args)                                   \
-    namespace {                                                    \
-    struct name : ac::tests::detail::test_base {                   \
-        const char* filename() const override { return __FILE__; } \
-        int         line() const override { return __LINE__; }     \
-        const char* args() const override { return va_args; }      \
-        void        body(ac::default_random&) const override;      \
-        name() { ac::tests::detail::all_tests().push_back(this); } \
-        static name initializer;                                   \
-    } name::initializer;                                           \
-    }                                                              \
+#define TEST_IMPL(name, va_args)                                    \
+    namespace {                                                     \
+    struct name : ac::tests::detail::test_base {                    \
+        ac::czstring filename() const override { return __FILE__; } \
+        int line() const override { return __LINE__; }              \
+        ac::czstring args() const override { return va_args; }      \
+        void body(ac::default_random&) const override;              \
+        name() { ac::tests::detail::all_tests().push_back(this); }  \
+        static name initializer;                                    \
+    } name::initializer;                                            \
+    }                                                               \
     inline void name::body([[maybe_unused]] ac::default_random& random) const
 
 #define TEST(...) TEST_IMPL(CAT(_tesT_, __COUNTER__), #__VA_ARGS__)
@@ -41,10 +42,10 @@ namespace ac::tests {
 namespace detail {
 
 struct assert_impl {
-    const char* filename;
+    czstring filename;
     int line;
 
-    assert_impl(const char* filename, int line) : filename{filename}, line{line} {}
+    assert_impl(czstring filename, int line) : filename{filename}, line{line} {}
 
     template <bool Equal, class T0, class T1>
     inline void check(const T0& expected, const T1& actual) const {
@@ -88,7 +89,7 @@ struct assert_impl {
 };
 
 template <class Function>
-inline void assert_throws(const char*, int line, const Function& f) {
+inline void assert_throws(czstring, int line, const Function& f) {
     try {
         f();
     } catch (...) {
@@ -101,9 +102,9 @@ inline void assert_throws(const char*, int line, const Function& f) {
 }
 
 struct test_base {
-    virtual const char* filename() const = 0;
+    virtual czstring filename() const = 0;
     virtual int line() const = 0;
-    virtual const char* args() const = 0;
+    virtual czstring args() const = 0;
     virtual void body(default_random& random) const = 0;
 
     bool run();
@@ -113,6 +114,6 @@ std::vector<test_base*>& all_tests();
 
 }  // namespace detail
 
-int run(int argc, const char* argv[]);
+int run(int argc, czstring argv[]);
 
 }  // namespace ac::tests

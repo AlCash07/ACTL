@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/types.hpp>
 #include <sstream>
 #include <string>
 
@@ -29,13 +30,13 @@ struct lexical_cast_impl<std::string, U> {
 template <class T>
 struct lexical_cast_impl<T, std::string> {
     static T doit(const std::string& str) {
-        return lexical_cast_impl<T, char*>::doit(str.data());
+        return lexical_cast_impl<T, zstring>::doit(str.data());
     }
 };
 
 template <class T>
-struct lexical_cast_impl<T, char*> {
-    static T doit(const char* str) {
+struct lexical_cast_impl<T, zstring> {
+    static T doit(czstring str) {
         T res = T();
         std::stringstream ss(str);
         if (!(ss >> res) || !ss.eof())

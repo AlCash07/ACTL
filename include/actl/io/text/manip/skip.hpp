@@ -9,11 +9,12 @@
 
 #include <actl/io/io.hpp>
 #include <actl/traits/ctype.hpp>
+#include <actl/types.hpp>
 #include <cstring>
 
 namespace ac::io {
 
-inline bool is_one_of(char c, const char* s) { return std::strchr(s, c) != nullptr; }
+inline bool is_one_of(char c, czstring s) { return std::strchr(s, c) != nullptr; }
 
 template <class Predicate>
 class skip_t {
@@ -32,7 +33,7 @@ inline auto skip(char c) {
     return skip_t{[c](char x) { return x == c; }};
 }
 
-inline auto skip(const char* s) {
+inline auto skip(czstring s) {
     return skip_t{[s](char c) { return is_one_of(c, s); }};
 }
 
