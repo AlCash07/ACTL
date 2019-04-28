@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include <actl/io/text/manip/actions.hpp>
-#include <actl/io/text/manip/flags.hpp>
-#include <actl/io/text/manip/skip.hpp>
-#include <actl/io/text/manip/till.hpp>
-#include <actl/io/text/manip/values.hpp>
+#include <actl/io/manip/actions.hpp>
+#include <actl/io/manip/skip.hpp>
+#include <actl/io/manip/till.hpp>

@@ -19,11 +19,12 @@ const flag_t group_bits[] = {bits(flags::fixed) | bits(flags::scientific) | bits
                              bits(flags::left) | bits(flags::right) | bits(flags::center)};
 
 template <
+    class Char = char,
     flag_t Flags = bits(flags::skipws),
     uint8_t Base = 10,
     width_t Precision = 6,
     width_t Width = 0,
-    char Fill = ' '>
+    Char Fill = ' '>
 class text_static {
 public:
     static constexpr mode_t mode = 0;
@@ -38,16 +39,16 @@ public:
 
     static constexpr width_t width() { return Width; }
 
-    static constexpr char fill() { return Fill; }
+    static constexpr Char fill() { return Fill; }
 };
 
-template <flag_t Fl, uint8_t B, width_t P, width_t W, char F>
-struct format_traits<text_static<Fl, B, P, W, F>> {
+template <class C, flag_t Fl, uint8_t B, width_t P, width_t W, C F>
+struct format_traits<text_static<C, Fl, B, P, W, F>> {
     using tag = text;
 };
 
-template <mode_t Mode, bool = is_out<Mode>>
-class text_format {
+template <class Char>
+class in_text {
 public:
     flag_t flags() const { return flags_; }
     void flags(flag_t value) { flags_ = value; }
@@ -63,17 +64,19 @@ public:
 
     uint8_t base() const { return base_; }
     void base(uint8_t value) {
-        ACTL_ASSERT(value != 1 && value < 36);
+        ACTL_ASSERT(1 < value && value < 36);
         base_ = value;
     }
 
 protected:
-    flag_t flags_ = text_static<>::flags();
-    uint8_t base_ = text_static<>::base();
+    using ts = text_static<Char>;
+
+    flag_t flags_ = ts::flags();
+    uint8_t base_ = ts::base();
 };
 
-template <mode_t Mode>
-class text_format<Mode, true> : public text_format<Mode, false> {
+template <class Char>
+class out_text<Char> : public in_text<Char> {
 public:
     width_t precision() const { return precision_; }
     void precision(width_t value) { precision_ = value; }
@@ -81,19 +84,22 @@ public:
     width_t width() const { return width_; }
     void width(width_t value) { width_ = value; }
 
-    char fill() const { return fill_; }
-    void fill(char value) { fill_ = value; }
+    Char fill() const { return fill_; }
+    void fill(Char value) { fill_ = value; }
 
 protected:
-    using ts = text_static<>;
+    using ts = text_static<Char>;
 
     width_t precision_ = ts::precision();
     width_t width_ = ts::width();
-    char fill_ = ts::fill();
+    Char fill_ = ts::fill();
 };
 
-template <mode_t Mode, bool B>
-struct format_traits<text_format<Mode, B>> {
+template <mode_t Mode, class Char>
+using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
+
+template <mode_t M, class C>
+struct format_traits<text_format<M, C>> {
     using tag = text;
 };
 

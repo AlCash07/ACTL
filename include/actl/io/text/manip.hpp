@@ -11,6 +11,7 @@
 
 #include <actl/io/io.hpp>
 #include <actl/io/text/flags.hpp>
+#include <actl/macros.hpp>
 
 namespace ac::io {
 
@@ -86,5 +87,49 @@ inline bool deserialize(Device&, Format& fmt, setg<group, flag>, text) {
     fmt.setf(flag, group);
     return true;
 }
+
+// integer and real numbers base
+struct setbase {
+    uint8_t value = 10;
+};
+constexpr setbase dec{10};
+constexpr setbase hex{16};
+constexpr setbase oct{8};
+
+// number of digits after the decimal point
+struct setprecision {
+    uint8_t value = 6;
+};
+
+// minimum width of an output unit
+struct setwidth {
+    uint8_t value = 0;
+};
+
+// character to pad units with less width
+template <class Char>
+struct setfill {
+    Char value = ' ';
+};
+
+template <class Device, class Format>
+inline bool deserialize(Device&, Format& fmt, setbase arg, text) {
+    fmt.base(arg.value);
+    return true;
+}
+
+#define SERIALIZE_MANIP(name)                                              \
+    template <class Device, class Format>                                  \
+    inline int serialize(Device&, Format& fmt, CAT(set, name) arg, text) { \
+        fmt.name(arg.value);                                               \
+        return 0;                                                          \
+    }
+
+SERIALIZE_MANIP(base)
+SERIALIZE_MANIP(precision)
+SERIALIZE_MANIP(width)
+SERIALIZE_MANIP(fill)
+
+#undef SERIALIZE_MANIP
 
 }  // namespace ac::io
