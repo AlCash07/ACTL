@@ -15,74 +15,82 @@
 
 namespace ac::io {
 
-template <mode_t Mode, bool = is_out<Mode>>
-class out_string : public base<Mode> {
+template <mode_t Mode, class Char, bool = is_out<Mode>>
+class out_string : public device<Mode, Char> {
 public:
-    explicit out_string(const std::string& s) : s_{s} {}
+    explicit out_string(const std::basic_string<Char>& s) : s_{s} {}
 
 protected:
-    const std::string& s_;
+    const std::basic_string<Char>& s_;
 };
 
-template <mode_t Mode>
-class out_string<Mode, true> : public base<Mode> {
+template <mode_t Mode, class Char>
+class out_string<Mode, Char, true> : public device<Mode, Char> {
 public:
     static_assert((Mode & app) > 0, "only append is supported now");
 
-    explicit out_string(std::string& s) : s_{s} {
+    explicit out_string(std::basic_string<Char>& s) : s_{s} {
         if constexpr (trunc == (Mode & trunc)) s.clear();
     }
 
-    bool put(char c) {
+    bool put(Char c) {
         s_ += c;
         return true;
     }
 
-    int write(const char* src, int count) {
-        s_.append(src, static_cast<size_t>(count));
-        return count;
+    index write(span<const Char> src) {
+        s_.append(src.data(), static_cast<size_t>(src.size()));
+        return src.size();
     }
 
     void flush() {}
 
 protected:
-    std::string& s_;
+    std::basic_string<Char>& s_;
 };
 
-template <mode_t Mode, bool = is_in<Mode>>
-class in_string : public out_string<Mode> {
+template <mode_t Mode, class Char, bool = is_in<Mode>>
+class in_string : public out_string<Mode, Char> {
 public:
-    using out_string<Mode>::out_string;
+    using out_string<Mode, Char>::out_string;
 };
 
-template <mode_t Mode>
-class in_string<Mode, true> : public out_string<Mode> {
+template <mode_t Mode, class Char>
+class in_string<Mode, Char, true> : public out_string<Mode, Char> {
 protected:
-    using base_t = out_string<Mode>;
+    using base_t = out_string<Mode, Char>;
     using base_t::s_;
-    int pos_ = 0;
+    index pos_ = 0;
 
 public:
     using base_t::base_t;
 
-    bool eof() const { return static_cast<size_t>(pos_) == s_.size(); }
-
-    char get() { return eof() ? char{} : s_[static_cast<size_t>(pos_++)]; }
-
-    void unget() {
-        ACTL_ASSERT(pos_ > 0);
-        --pos_;
+    Char peek() {
+        return pos_ < static_cast<index>(s_.size()) ? s_[static_cast<size_t>(pos_)] : Char{};
     }
 
-    int read(char* dst, int count) {
-        smin(count, static_cast<int>(s_.size()) - pos_);
-        std::memcpy(dst, s_.data() + pos_, static_cast<size_t>(count));
+    Char get() {
+        Char c = peek();
+        ++pos_;
+        return c;
+    }
+
+    index read(span<Char> dst) {
+        index count = std::min(dst.size(), static_cast<index>(s_.size()) - pos_);
+        std::memcpy(dst.data(), s_.data() + pos_, static_cast<size_t>(count));
         pos_ += count;
         return count;
     }
+
+    void move(index offset) {
+        pos_ += offset;
+        ACTL_ASSERT(0 <= pos_ && pos_ <= static_cast<size_t>(s_.size()));
+    }
+
+    bool eof() const { return pos_ > static_cast<index>(s_.size()); }
 };
 
-template <mode_t Mode>
-using string = unbuffered<in_string<Mode>>;
+template <mode_t Mode, class Char = char_t<Mode>>
+using string = unbuffered<in_string<Mode, Char>>;
 
 }  // namespace ac::io

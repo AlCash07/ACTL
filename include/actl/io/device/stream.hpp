@@ -11,6 +11,7 @@
 #include <actl/io/text/flags.hpp>
 #include <actl/io/util/unbuffered.hpp>
 #include <ios>
+#include <iostream>
 
 namespace ac::io {
 
@@ -19,6 +20,8 @@ class ios_format : format {
     using ios = std::ios_base;
 
 public:
+    using char_type = typename Stream::char_type;
+
     explicit ios_format(Stream& s) : s_{s} {}
 
     bool getf(flag_t flag) const {
@@ -62,10 +65,8 @@ public:
     uint8_t width() const { return static_cast<uint8_t>(s_.precision()); }
     void width(uint8_t value) { s_.width(static_cast<std::streamsize>(value)); }
 
-    char fill() const { return s_.fill(); }
-    void fill(char value) { s_.fill(value); }
-
-    constexpr bool separate() { return false; }
+    char_type fill() const { return s_.fill(); }
+    void fill(char_type value) { s_.fill(value); }
 
 protected:
     static constexpr ios::fmtflags bits[] = {
@@ -90,8 +91,8 @@ protected:
     Stream& s_;
 };
 
-template <class Stream, mode_t Mode, bool = is_in<Mode>>
-class istream : public base<Mode> {
+template <mode_t Mode, class Stream, bool = is_in<Mode>>
+class istream : public device<Mode, typename Stream::char_type> {
 public:
     explicit istream(Stream& s) : s_{s} {}
 
@@ -99,62 +100,76 @@ protected:
     Stream& s_;
 };
 
-template <class Stream, mode_t Mode>
-class istream<Stream, Mode, true> : public istream<Stream, Mode, false> {
+template <mode_t Mode, class Stream>
+class istream<Mode, Stream, true> : public istream<Mode, Stream, false> {
 protected:
-    using base_t = istream<Stream, Mode, false>;
+    using base_t = istream<Mode, Stream, false>;
     using base_t::s_;
 
 public:
+    using char_type = typename Stream::char_type;
+
     using base_t::base_t;
+
+    char_type peek() {
+        auto c = s_.peek();
+        return c == typename Stream::traits_type::eof() ? {} : static_cast<char_type>(c);
+    }
+
+    char_type get() {
+        auto c = s_.get();
+        return c == typename Stream::traits_type::eof() ? {} : static_cast<char_type>(c);
+    }
+
+    index read(span<char_type> dst) {
+        s_.read(dst.data(), dst.size());
+        return s_.gcount();
+    }
+
+    index read_until(till<char_type, char_type> dst) {
+        s_.get(dst.data(), dst.size(), dst.terminator.pred);
+        return s_.gcount();
+    }
+
+    void move(index offset) {
+        s_.seekg(offset, std::ios_base::cur);
+        ACTL_ASSERT(!s_.fail());
+    }
 
     bool eof() const { return s_.eof(); }
-
-    char get() {
-        auto c = s_.get();
-        return eof() ? char{} : static_cast<char>(c);
-    }
-
-    int read(char* dst, int count) {
-        s_.read(dst, count);
-        return s_.gcount();
-    }
-
-    int read_until(char* dst, int count, char delimiter) {
-        s_.get(dst, count, delimiter);
-        return s_.gcount();
-    }
 };
 
-template <class Stream, mode_t Mode, bool = is_out<Mode>>
-class ostream : public istream<Stream, Mode> {
+template <mode_t Mode, class Stream, bool = is_out<Mode>>
+class ostream : public istream<Mode, Stream> {
 public:
-    using istream<Stream, Mode>::istream;
+    using istream<Mode, Stream>::istream;
 };
 
-template <class Stream, mode_t Mode>
-class ostream<Stream, Mode, true> : public istream<Stream, Mode> {
+template <mode_t Mode, class Stream>
+class ostream<Mode, Stream, true> : public istream<Mode, Stream> {
 protected:
-    using base_t = istream<Stream, Mode>;
+    using base_t = istream<Mode, Stream>;
     using base_t::s_;
 
 public:
+    using typename base_t::char_type;
+
     using base_t::base_t;
 
-    bool put(char c) {
+    bool put(char_type c) {
         s_.put(c);
         return !s_.bad();
     }
 
-    int write(const char* src, int count) {
-        s_.wrise(src, static_cast<std::streamsize>(count));
-        return s_.bad() ? 0 : count;
+    index write(span<const char_type> src) {
+        s_.wrise(src.data(), src.size());
+        return s_.bad() ? 0 : src.size();
     }
 
     void flush() { s_.flush(); }
 };
 
-template <class Stream, mode_t Mode>
-using stream = unbuffered<ostream<Stream, Mode>>;
+template <mode_t Mode, class Stream>
+using stream = unbuffered<ostream<Mode, Stream>>;
 
 }  // namespace ac::io

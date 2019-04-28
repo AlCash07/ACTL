@@ -7,49 +7,37 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
 #include <actl/functions.hpp>
 #include <actl/io/util/unbuffered.hpp>
+#include <algorithm>
 #include <cstring>
 
 namespace ac::io {
 
-template <mode_t Mode, bool = is_out<Mode>>
-class out_memory : public base<Mode> {
+template <mode_t Mode, class Char, bool = is_out<Mode>>
+class out_memory : public device<Mode, Char> {
 public:
-    explicit out_memory(const char* begin, const char* end)
-        : begin_{begin}, ptr_{begin}, end_{end} {
-        ACTL_ASSERT(begin < end);
-    }
-
-    template <size_t N>
-    explicit out_memory(const char (&data)[N]) : out_memory{data, data + N} {}
+    explicit out_memory(span<const Char> data) : data_{data}, ptr_{data_.begin()} {}
 
 protected:
-    const char* begin_;
-    const char* ptr_;
-    const char* end_;
+    span<const Char> data_;
+    const Char* ptr_;
 };
 
-template <mode_t Mode>
-class out_memory<Mode, true> : public base<Mode> {
+template <mode_t Mode, class Char>
+class out_memory<Mode, Char, true> : public device<Mode, Char> {
 public:
-    explicit out_memory(char* begin, const char* end) : begin_{begin}, ptr_{begin}, end_{end} {
-        ACTL_ASSERT(begin < end);
-    }
+    explicit out_memory(span<Char> data) : data_{data}, ptr_{data_.begin()} {}
 
-    template <size_t N>
-    explicit out_memory(char (&data)[N]) : out_memory{data, data + N} {}
-
-    bool put(char c) {
-        bool ok = ptr_ < end_;
+    bool put(Char c) {
+        bool ok = ptr_ < data_.end();
         if (ok) *ptr_++ = c;
         return ok;
     }
 
-    int write(const char* src, int count) {
-        smin(count, static_cast<int>(end_ - ptr_));
-        std::memcpy(ptr_, src, static_cast<size_t>(count));
+    index write(span<const Char> src) {
+        index count = std::min(src.size(), data_.end() - ptr_);
+        std::memcpy(ptr_, src.data(), static_cast<size_t>(count) * sizeof(Char));
         ptr_ += count;
         return count;
     }
@@ -57,45 +45,50 @@ public:
     void flush() {}
 
 protected:
-    char* begin_;
-    char* ptr_;
-    const char* end_;
+    span<Char> data_;
+    Char* ptr_;
 };
 
-template <mode_t Mode, bool = is_in<Mode>>
-class in_memory : public out_memory<Mode> {
+template <mode_t Mode, class Char, bool = is_in<Mode>>
+class in_memory : public out_memory<Mode, Char> {
 public:
-    using out_memory<Mode>::out_memory;
+    using out_memory<Mode, Char>::out_memory;
 };
 
-template <mode_t Mode>
-class in_memory<Mode, true> : public out_memory<Mode> {
+template <mode_t Mode, class Char>
+class in_memory<Mode, Char, true> : public out_memory<Mode, Char> {
 protected:
-    using base_t = out_memory<Mode>;
-    using base_t::end_;
+    using base_t = out_memory<Mode, Char>;
+    using base_t::data_;
     using base_t::ptr_;
 
 public:
     using base_t::base_t;
 
-    bool eof() const { return ptr_ == end_; }
+    Char peek() { return ptr_ < data_.end() ? *ptr_ : Char{}; }
 
-    char get() { return eof() ? char{} : *ptr_++; }
-
-    void unget() {
-        ACTL_ASSERT(this->begin_ != ptr_);
-        --ptr_;
+    Char get() {
+        Char c = peek();
+        ++ptr_;
+        return c;
     }
 
-    int read(char* dst, int count) {
-        smin(count, static_cast<int>(end_ - ptr_));
-        std::memcpy(dst, ptr_, static_cast<size_t>(count));
+    index read(span<Char> dst) {
+        index count = std::min(dst.size(), data_.end() - ptr_);
+        std::memcpy(dst.data(), ptr_, static_cast<size_t>(count));
         ptr_ += count;
         return count;
     }
+
+    void move(index offset) {
+        ptr_ += offset;
+        ACTL_ASSERT(data_.begin() <= ptr_ && ptr_ <= data_.end());
+    }
+
+    bool eof() const { return ptr_ > data_.end(); }
 };
 
-template <mode_t Mode>
-using memory = unbuffered<in_memory<Mode>>;
+template <mode_t Mode, class Char = char_t<Mode>>
+using memory = unbuffered<in_memory<Mode, Char>>;
 
 }  // namespace ac::io

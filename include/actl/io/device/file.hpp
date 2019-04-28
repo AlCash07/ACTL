@@ -13,9 +13,9 @@
 
 namespace ac::io {
 
-template <mode_t Mode, bool = is_in<Mode>>
-class in_file : public base<Mode> {
-    static constexpr const char* mode_str[14] = {
+template <mode_t Mode, class Char, bool = is_in<Mode>>
+class in_file : public device<Mode, Char> {
+    static constexpr czstring mode_str[14] = {
         "r", "rb", "w", "wb", "w+", "w+b", "a", "ab", "a+", "a+b", "a", "ab", "r+", "r+b",
     };
 
@@ -24,7 +24,7 @@ public:
         ACTL_ASSERT(file);
     }
 
-    explicit in_file(const char* filename)
+    explicit in_file(czstring filename)
         : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
     ~in_file() {
@@ -38,43 +38,56 @@ protected:
     bool       own_;
 };
 
-template <mode_t Mode>
-class in_file<Mode, true> : public in_file<Mode, false> {
+template <mode_t Mode, class Char>
+class in_file<Mode, Char, true> : public in_file<Mode, Char, false> {
 public:
-    using in_file<Mode, false>::in_file;
+    using in_file<Mode, Char, false>::in_file;
 
-    char get() {
-        auto c = std::fgetc(this->file_);
-        return static_cast<char>(c == EOF ? '\0' : c);
+    Char peek() {
+        Char c = get();
+        move(-1);
+        return c;
     }
 
-    void unget() { std::fseek(this->file_, -1, SEEK_CUR); }
+    Char get() {
+        int c = std::fgetc(this->file_);
+        return c == EOF ? {} : static_cast<Char>(c);
+    }
 
-    int read(char* dst, int count) {
-        *dst = char{};
+    index read(span<Char> dst) {
+        size_t res{};
         if constexpr (is_line_buffered<Mode>) {
-            return std::fgets(dst, count, this->file_) ? static_cast<int>(std::strlen(dst)) : 0;
+            if (std::fgets(dst.data(), static_cast<int>(dst.size()), this->file_))
+                res = std::strlen(dst.data());
         } else {
-            return static_cast<int>(std::fread(dst, 1, static_cast<size_t>(count), this->file_));
+            res =
+                std::fread(dst.data(), sizeof(Char), static_cast<size_t>(dst.size()), this->file_);
         }
+        return static_cast<index>(res);
+    }
+
+    void move(index offset) {
+        int res = std::fseek(this->file_, offset * static_cast<index>(sizeof(Char)), SEEK_CUR);
+        ACTL_ASSERT(res == 0);
     }
 };
 
-template <mode_t Mode, bool = is_out<Mode>>
-class file : public in_file<Mode> {
+template <mode_t Mode, class Char = char_t<Mode>, bool = is_out<Mode>>
+class file : public in_file<Mode, Char> {
 public:
-    using in_file<Mode>::in_file;
+    using in_file<Mode, Char>::in_file;
 };
 
-template <mode_t Mode>
-class file<Mode, true> : public in_file<Mode> {
+template <mode_t Mode, class Char>
+class file<Mode, Char, true> : public in_file<Mode, Char> {
 public:
-    using in_file<Mode>::in_file;
+    using in_file<Mode, Char>::in_file;
 
-    bool put(char c) { return std::fputc(c, this->file_) != EOF; }
+    bool put(Char c) { return std::fputc(c, this->file_) != EOF; }
 
-    int write(const char* src, int count) {
-        return static_cast<int>(std::fwrite(src, 1, static_cast<size_t>(count), this->file_));
+    index write(span<const Char> src) {
+        return static_cast<index>(
+            std::fwrite(src.data(), sizeof(Char), static_cast<size_t>(src.size()), this->file_));
     }
 
     void flush() { std::fflush(this->file_); }

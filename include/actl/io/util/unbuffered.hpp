@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/io.hpp>
+#include <actl/io/manip/till.hpp>
 
 namespace ac::io {
 
@@ -21,19 +21,24 @@ public:
 
 template <class Device>
 class unbuffered_reader<Device, true> : public unbuffered_reader<Device, false> {
-public:
-    using unbuffered_reader<Device, false>::unbuffered_reader;
+protected:
+    using base_t = unbuffered_reader<Device, false>;
+    using Char = typename Device::char_type;
 
-    template <class Predicate>
-    int read_until(char* dst, int count, Predicate is_delimiter) {
-        int n = count;
-        while (count > 0 && !Device::eof()) {
-            char c = Device::get();
-            if (is_delimiter(c)) break;
-            --count;
-            *dst++ = c;
+public:
+    using base_t::base_t;
+    using base_t::read;
+
+    template <class T>
+    index read(till<Char, T> dst) {
+        Char* dstPtr = dst.data();
+        index count = dst.size();
+        for (; 0 < count; --count) {
+            Char c = Device::get();
+            if (Device::eof() || dst.terminator(c)) break;
+            *dstPtr++ = c;
         }
-        return n - count;
+        return dst.size() - count;
     }
 };
 
@@ -48,8 +53,8 @@ class unbuffered<Device, true> : public unbuffered<Device, false> {
 public:
     using unbuffered<Device, false>::unbuffered;
 
-    void write_fill(char c, int count) {
-        for (; count > 0; --count) Device::put(c);
+    void write_fill(typename Device::char_type c, index count) {
+        for (; 0 < count; --count) Device::put(c);
     }
 };
 

@@ -10,7 +10,8 @@
 #include <actl/assert.hpp>
 #include <actl/io/io.hpp>
 #include <actl/macros.hpp>
-#include <algorithm>
+#include <actl/range/algorithm.hpp>
+#include <array>
 
 namespace ac::io {
 
@@ -20,79 +21,88 @@ public:
     using Device::Device;
 
 protected:
-    char data_[BufferSize];
-    char* ptr_ = data_;
-    char* end_ = Read ? data_ : data_ + BufferSize;
+    using Char = typename Device::char_type;
+
+    std::array<Char, BufferSize> data_;
+    Char* ptr_ = data_.begin();
+    Char* end_ = Read ? data_.begin() : data_.end();
 };
 
 template <class Device, int BS>
 class buffered_reader<Device, BS, true> : public buffered_reader<Device, BS, false> {
 protected:
     using base_t = buffered_reader<Device, BS, false>;
-    using base_t::ptr_;
     using base_t::end_;
+    using base_t::ptr_;
+    using typename base_t::Char;
 
     void underflow() {
-        ptr_ = this->data_;
-        *ptr_ = '\0';
-        end_ = ptr_ + Device::read(this->data_, BufferSize);
+        ptr_ = this->data_.begin();
+        end_ = ptr_ + Device::read(this->data_);
     }
 
 public:
     using buffered_reader<Device, BS, false>::buffered_reader;
 
-    char get() {
-        if (EXPECT_FALSE(ptr_ >= end_)) underflow();
-        return *ptr_++;
+    Char peek() {
+        if (ptr_ >= end_) underflow();
+        return ptr_ < end_ ? *ptr_ : {};
     }
 
-    void unget() {
-        ACTL_ASSERT(this->data_ != ptr_);
-        --ptr_;
+    Char get() {
+        Char c = peek();
+        ++ptr_;
+        return c;
     }
 
-    int read(char* dst, int count) {
-        int available = static_cast<int>(end_ - ptr_);
+    index read(span<Char> dst) {
+        Char* dstPtr = dst.data();
+        index count = dst.size();
+        index available = end_ - ptr_;
         if (count <= available) {
-            std::copy_n(ptr_, count, dst);
+            std::copy_n(ptr_, count, dstPtr);
             ptr_ += count;
             return count;
         }
-        int chars_read = available;
-        dst = std::copy_n(ptr_, available, dst);
+        index res = available;
+        dstPtr = std::copy_n(ptr_, available, dstPtr);
         count -= available;
-        int remainder = count % BS;
+        index remainder = count % BS;
         if (remainder < count) {
-            chars_read += Device::read(dst, count - remainder);
-            dst += count - remainder;
+            res += Device::read({dstPtr, count - remainder});
+            dstPtr += count - remainder;
         }
         underflow();
-        smin(remainder, static_cast<int>(end_ - ptr_));
-        if (remainder > 0) {
-            chars_read += remainder;
-            std::copy_n(ptr_, remainder, dst);
+        smin(remainder, end_ - ptr_);
+        if (0 < remainder) {
+            res += remainder;
+            std::copy_n(ptr_, remainder, dstPtr);
             ptr_ += remainder;
         }
-        return chars_read;
+        return res;
     }
 
-    template <class Predicate>
-    int read_until(char* dst, int count, Predicate is_delimiter) {
-        char* last = dst + count;
-        for (; ptr_ < end_; underflow()) {
-            char* ptr = ptr_;
-            char* end = std::min(end_, ptr_ + (last - dst));
-            while (ptr_ != end && !is_delimiter(*ptr_)) *dst++ = *ptr_++;
+    template <class T>
+    index read(till<Char, T> dst) {
+        Char* dstPtr = dst.data();
+        Char* last = dst.end();
+        while (ptr_ < end_) {
+            Char* ptr = ptr_;
+            Char* end = std::min(end_, ptr_ + (last - dstPtr));
+            while (ptr_ != end && !dst.terminator(*ptr_)) *dstPtr++ = *ptr_++;
             if (ptr == ptr_) break;
+            underflow();
         }
-        return count - static_cast<int>(last - dst);
+        return dst.size() - (last - dstPtr);
     }
 
-    bool eof() {
-        if (EXPECT_TRUE(ptr_ < end_)) return false;
-        underflow();
-        return ptr_ == end_;
+    void move(index offset) {
+        // TODO: support move fully along the underlying device, not just along the buffer.
+        ptr_ += offset;
+        ACTL_ASSERT(this->data_.data() <= ptr_ && ptr_ < end_);
     }
+
+    bool eof() { return ptr_ > end_; }
 };
 
 template <class Device, int BS = 1 << 10, bool = is_out<Device::mode>>
@@ -106,76 +116,75 @@ class buffered<Device, BS, true> : public buffered<Device, BS, false> {
 protected:
     using base_t = buffered_reader<Device, BS, false>;
     using base_t::data_;
-    using base_t::ptr_;
     using base_t::end_;
+    using base_t::ptr_;
+    using typename base_t::Char;
 
     void overflow() {
-        Device::write(data_, static_cast<int>(ptr_ - data_));
+        Device::write({data_, ptr_});
         ptr_ = data_;
     }
 
-    inline void flush_maybe() {
-        if (EXPECT_FALSE(ptr_ == end_)) flush();
-    }
-
-    void write_impl(const char* src, int count) {
-        int available = static_cast<int>(end_ - ptr_);
+    void write_impl(span<const Char> src) {
+        const Char* srcPtr = src.data();
+        index count = src.size();
+        index available = end_ - ptr_;
         if (EXPECT_TRUE(count < available)) {
             if (count == 1) {
-                *ptr_++ = *src;
+                *ptr_++ = *srcPtr;
             } else {
-                ptr_ = std::copy_n(src, count, ptr_);
+                ptr_ = copy(src, ptr_);
             }
         } else {
-            std::copy_n(src, available, ptr_);
-            Device::write(data_, BS);
-            src += available;
+            std::copy_n(srcPtr, available, ptr_);
+            Device::write(data_);
+            srcPtr += available;
             count -= available;
-            int remainder = count % BS;
+            index remainder = count % BS;
             if (remainder < count) {
-                Device::write(src, count - remainder);
-                src += count - remainder;
+                Device::write({srcPtr, count - remainder});
+                srcPtr += count - remainder;
             }
-            if (remainder > 0) {
-                ptr_ = std::copy_n(src, remainder, data_);
+            if (0 < remainder) {
+                ptr_ = std::copy_n(srcPtr, remainder, data_.data());
             }
         }
     }
 
 public:
-    inline void put(char arg) {
+    void put(Char arg) {
         *ptr_++ = arg;
-        flush_maybe();
+        if (EXPECT_FALSE(ptr_ == end_)) overflow();
     }
 
-    int write(const char* src, int count) {
+    index write(span<const Char> src) {
         if constexpr (is_line_buffered<Mode>) {
-            int last = count;
-            while (0 < last && src[last - 1] != '\n') --last;
-            if (0 < last) {
-                write_impl(src, last);
+            const Char* last = src.end();
+            while (last != src.data() && last[-1] != '\n') --last;
+            if (last != src.data()) {
+                write_impl({src.data(), last});
                 flush();
             }
-            write_impl(src + last, count - last);
+            write_impl({last, src.end()});
         } else {
-            write_impl(src, count);
+            write_impl(src);
         }
-        return count;
+        return src.size();
     }
 
-    void write_fill(char c, int count) {
-        int chunk_size = static_cast<int>(end_ - ptr_);
+    void write_fill(Char c, index count) {
+        index chunk_size = end_ - ptr_;
         if (EXPECT_TRUE(count < chunk_size)) {
             ptr_ = std::fill_n(ptr_, count, c);
         } else {
             std::fill_n(ptr_, chunk_size, c);
-            Device::write(data_, BS);
+            Device::write(data_);
             count -= chunk_size;
-            std::fill_n(data_, std::min(count, BS), c);
-            for (int n = count / BS; n > 0; --n) {
-                Device::write(data_, BS);
+            std::fill_n(data_.data(), std::min(count, BS), c);
+            for (index n = count / BS; n > 0; --n) {
+                Device::write(data_);
             }
-            ptr_ = data_ + count % BS;
+            ptr_ = data_.data() + count % BS;
         }
     }
 
