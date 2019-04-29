@@ -10,8 +10,6 @@
 #include <actl/test.hpp>
 #include <vector>
 
-using namespace ac;
-
 TEST("correctness") {
     std::vector<int> v{1, 2, 4, 5, 7, 10}, even;
     copy(filter_range(v, [](int x) { return x % 2 == 0; }), std::back_inserter(even));

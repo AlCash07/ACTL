@@ -8,8 +8,6 @@
 #include <actl/property_map/identity_property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("int") {
     identity_property_map<int, long long> pm;
     ASSERT_EQUAL(1LL, get(pm, 1));

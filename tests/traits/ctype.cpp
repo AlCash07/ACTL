@@ -8,8 +8,6 @@
 #include <actl/test.hpp>
 #include <actl/traits/ctype.hpp>
 
-using namespace ac;
-
 TEST("correctness") {
     for (char c = std::numeric_limits<char>::min();; ++c) {
         auto uc = static_cast<unsigned char>(c);

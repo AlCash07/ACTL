@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/polygon/extreme_vertex.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -8,8 +8,6 @@
 #include <actl/container/std/unordered_set.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("category") {
     using C = std::unordered_set<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);

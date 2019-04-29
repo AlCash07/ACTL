@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include <map>
 
-using namespace ac;
-
 using C = std::vector<std::pair<int, int>>;
 
 static C kv{{1, 1}, {2, 7}, {5, 25}};

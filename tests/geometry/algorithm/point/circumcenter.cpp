@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/point/circumcenter.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

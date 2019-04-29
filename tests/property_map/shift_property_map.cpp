@@ -8,8 +8,6 @@
 #include <actl/property_map/shift_property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 template <class PM>
 inline void test_lowercase(PM pm) {
     ASSERT_EQUAL(1, get(pm, 'b'));

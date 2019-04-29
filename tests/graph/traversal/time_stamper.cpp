@@ -10,8 +10,6 @@
 #include <actl/test.hpp>
 #include "sample_graphs.hpp"
 
-using namespace ac;
-
 TEST("in") {
     auto graph = sample_undirected_graph();
     size_t n = (size_t)graph.vertex_count();

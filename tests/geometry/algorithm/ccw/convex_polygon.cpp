@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/ccw/convex_polygon.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

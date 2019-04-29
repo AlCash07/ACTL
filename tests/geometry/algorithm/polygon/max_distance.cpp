@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/polygon/max_distance.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

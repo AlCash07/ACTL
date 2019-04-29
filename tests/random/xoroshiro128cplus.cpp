@@ -8,6 +8,4 @@
 #include <actl/random/xoroshiro128cplus.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

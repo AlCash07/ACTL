@@ -12,8 +12,6 @@
 #include <list>
 #include <vector>
 
-using namespace ac;
-
 TEST("is_iterator") {
     ASSERT_FALSE(is_iterator_v<int[4]>);
     ASSERT_TRUE(is_iterator_v<int*>);

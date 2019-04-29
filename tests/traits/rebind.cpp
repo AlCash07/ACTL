@@ -10,8 +10,6 @@
 #include <tuple>
 #include <unordered_set>
 
-using namespace ac;
-
 struct A {};
 struct B {};
 

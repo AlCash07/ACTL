@@ -8,8 +8,6 @@
 #include <actl/io/device/string.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("input") {
     std::string s = "abcde";
     io::string<io::in> in{s};

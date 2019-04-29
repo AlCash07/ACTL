@@ -10,8 +10,6 @@
 #include <actl/cp/diagnostics/to_string.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("cp::diagnostics::to_string") {
     using diagnostics::to_string;
     ASSERT_EQUAL("true", to_string(true));

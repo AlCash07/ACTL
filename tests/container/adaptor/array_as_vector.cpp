@@ -8,6 +8,4 @@
 #include <actl/container/adaptor/array_as_vector.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

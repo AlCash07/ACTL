@@ -8,6 +8,4 @@
 #include <actl/geometry/traits/aliases.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

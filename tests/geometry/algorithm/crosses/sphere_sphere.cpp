@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/crosses/sphere_sphere.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -8,6 +8,4 @@
 #include <actl/geometry/plane.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

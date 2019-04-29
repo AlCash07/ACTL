@@ -8,6 +8,4 @@
 #include <actl/iterator/limited_input_iterator.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

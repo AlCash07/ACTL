@@ -8,8 +8,6 @@
 #include <actl/io/device/memory.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("input") {
     const char s[] = "abcdef";
     io::memory<io::in> in{{s, s + 5}};

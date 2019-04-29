@@ -8,6 +8,4 @@
 #include <actl/geometry/traits/policy.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

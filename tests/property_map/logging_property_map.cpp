@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include <vector>
 
-using namespace ac;
-
 TEST("int*") {
     int data[4];
     using Log = std::vector<std::pair<int, int>>;

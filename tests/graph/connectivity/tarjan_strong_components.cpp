@@ -8,6 +8,4 @@
 #include <actl/graph/connectivity/tarjan_strong_components.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

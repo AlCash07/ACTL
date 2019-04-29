@@ -9,8 +9,6 @@
 #include <actl/traits/output_type.hpp>
 #include <deque>
 
-using namespace ac;
-
 TEST("correctness") {
     ASSERT_TRUE(std::is_same_v<int, output_type_t<int*>>);
     ASSERT_TRUE(std::is_same_v<int, output_type_t<std::ostream_iterator<int>>>);

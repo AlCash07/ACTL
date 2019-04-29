@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/project/project.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -10,8 +10,6 @@
 #include <actl/property_map/container_property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("const_set&") {
     const std::set<int> s{1, 5};
     auto pm = container_property_map{s};

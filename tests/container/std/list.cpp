@@ -8,8 +8,6 @@
 #include <actl/container/std/list.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("category") {
     using C = std::list<int>;
     ASSERT_TRUE(is_sequence_container_v<C>);

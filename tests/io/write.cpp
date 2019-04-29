@@ -8,6 +8,4 @@
 #include <actl/io/write.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -8,8 +8,6 @@
 #include <actl/container/std/set.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("category") {
     using C = std::set<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);

@@ -8,6 +8,4 @@
 #include <actl/container/adaptor/vector_as_queue.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

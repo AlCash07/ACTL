@@ -9,8 +9,6 @@
 #include <actl/util/none.hpp>
 #include <type_traits>
 
-using namespace ac;
-
 TEST("is_empty") { ASSERT_TRUE(std::is_empty_v<none>); }
 
 template <class E, class T>

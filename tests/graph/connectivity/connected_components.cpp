@@ -10,8 +10,6 @@
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 // 1 - 0 - 7  6
 // |   |
 // 2 - 3  4 - 5

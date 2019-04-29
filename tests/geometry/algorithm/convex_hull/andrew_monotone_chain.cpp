@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/convex_hull/convex_hull.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

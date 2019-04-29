@@ -7,9 +7,6 @@
 
 #include <actl/test.hpp>
 #include <actl/util/span.hpp>
-#include <vector>
-
-using namespace ac;
 
 constexpr int N = 9;
 

@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include "sample_graphs.hpp"
 
-using namespace ac;
-
 TEST("inorder") {
     auto graph = sample_undirected_tree();
     std::vector<int> order;

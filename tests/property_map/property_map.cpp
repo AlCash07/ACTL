@@ -8,8 +8,6 @@
 #include <actl/property_map/property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("iterator_property_map") {
     int a[3] = {2, 1, 0};
     int* p = a;

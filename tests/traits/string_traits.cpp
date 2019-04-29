@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include <vector>
 
-using namespace ac;
-
 TEST("is_string") {
     ASSERT_TRUE(is_string_v<char[9]>);
     ASSERT_TRUE(is_string_v<zstring>);

@@ -11,8 +11,6 @@
 #include <actl/property_map/shift_property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("first") {
     std::vector<int> v{2, 3, 4};
     auto pm = composite_property_map{container_property_map{v}, static_shift_property_map<2>{}};

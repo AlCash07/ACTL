@@ -9,8 +9,6 @@
 #include <actl/graph/edge_list.hpp>
 #include "test_edges.hpp"
 
-using namespace ac;
-
 TEST("none") {
     edge_list<directed, int> graph;
     auto e = graph.add_edge(2, 3);

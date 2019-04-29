@@ -14,28 +14,30 @@
 #include <actl/types.hpp>
 #include <iostream>
 
-#define TEST_IMPL(name, va_args)                                    \
-    namespace {                                                     \
-    struct name : ac::tests::detail::test_base {                    \
-        ac::czstring filename() const override { return __FILE__; } \
-        int line() const override { return __LINE__; }              \
-        ac::czstring args() const override { return va_args; }      \
-        void body(ac::default_random&) const override;              \
-        name() { ac::tests::detail::all_tests().push_back(this); }  \
-        static name initializer;                                    \
-    } name::initializer;                                            \
-    }                                                               \
-    inline void name::body([[maybe_unused]] ac::default_random& random) const
+using namespace ac;
+
+#define TEST_IMPL(name, va_args)                                \
+    namespace {                                                 \
+    struct name : tests::detail::test_base {                    \
+        czstring filename() const override { return __FILE__; } \
+        int line() const override { return __LINE__; }          \
+        czstring args() const override { return va_args; }      \
+        void body(default_random&) const override;              \
+        name() { tests::detail::all_tests().push_back(this); }  \
+        static name initializer;                                \
+    } name::initializer;                                        \
+    }                                                           \
+    inline void name::body([[maybe_unused]] default_random& random) const
 
 #define TEST(...) TEST_IMPL(CAT(_tesT_, __COUNTER__), #__VA_ARGS__)
 
-#define ASSERT_EQUAL      ac::tests::detail::assert_impl(__FILE__, __LINE__).check<true>
-#define ASSERT_NOT_EQUAL  ac::tests::detail::assert_impl(__FILE__, __LINE__).check<false>
-#define ASSERT_TRUE       ac::tests::detail::assert_impl(__FILE__, __LINE__).check_true
-#define ASSERT_FALSE      ac::tests::detail::assert_impl(__FILE__, __LINE__).check_false
-#define ASSERT_EQUAL_SETS ac::tests::detail::assert_impl(__FILE__, __LINE__).check_sets
+#define ASSERT_EQUAL      tests::detail::assert_impl(__FILE__, __LINE__).check<true>
+#define ASSERT_NOT_EQUAL  tests::detail::assert_impl(__FILE__, __LINE__).check<false>
+#define ASSERT_TRUE       tests::detail::assert_impl(__FILE__, __LINE__).check_true
+#define ASSERT_FALSE      tests::detail::assert_impl(__FILE__, __LINE__).check_false
+#define ASSERT_EQUAL_SETS tests::detail::assert_impl(__FILE__, __LINE__).check_sets
 #define ASSERT_THROWS(expression) \
-    ac::tests::detail::assert_throws(__FILE__, __LINE__, [&] { (void)(expression); })
+    tests::detail::assert_throws(__FILE__, __LINE__, [&] { (void)(expression); })
 
 namespace ac::tests {
 

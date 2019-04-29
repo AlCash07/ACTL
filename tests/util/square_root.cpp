@@ -8,6 +8,4 @@
 #include <actl/test.hpp>
 #include <actl/util/square_root.hpp>
 
-using namespace ac;
-
 TEST("") {}

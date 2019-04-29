@@ -11,8 +11,6 @@
 #include <actl/test.hpp>
 #include "sample_graphs.hpp"
 
-using namespace ac;
-
 TEST("bfs") {
     auto graph = sample_undirected_graph();
     std::vector<int> pred((size_t)graph.vertex_count());

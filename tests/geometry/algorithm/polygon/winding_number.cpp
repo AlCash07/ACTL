@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/polygon/winding_number.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

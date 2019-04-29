@@ -8,6 +8,4 @@
 #include <actl/graph/shortest_paths/dijkstra_shortest_paths_dense.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

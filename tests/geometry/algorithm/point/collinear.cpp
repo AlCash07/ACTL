@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/point/collinear.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

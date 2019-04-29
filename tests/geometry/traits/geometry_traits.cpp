@@ -8,6 +8,4 @@
 #include <actl/geometry/traits/geometry_traits.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include <cstring>
 
-using namespace ac;
-
 TEST("free_function") {
     auto pm = function_property_map{std::strlen};
     ASSERT_EQUAL(0u, get(pm, ""));

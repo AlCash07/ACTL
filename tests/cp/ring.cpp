@@ -9,8 +9,6 @@
 #include <actl/random/random.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("cp::static_quotient_ring::arithmetic", repeat = 1000, time_limit = 1) {
     using ring = static_quotient_ring<18446744073709551557ull>;  // largest uint64_t prime number
     using int_mod = ring_element<ring>;

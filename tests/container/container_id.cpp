@@ -9,8 +9,6 @@
 #include <actl/container/std/all.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("vector") {
     using vid = container_id<std::vector<int>>;
     ASSERT_TRUE(std::is_same_v<int, vid>);

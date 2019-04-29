@@ -10,8 +10,6 @@
 #include "test_edges.hpp"
 #include "test_vertices.hpp"
 
-using namespace ac;
-
 TEST("none") {
     adjacency_list<directed> graph(2);
     graph.add_edge(0, 2);

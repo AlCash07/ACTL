@@ -8,8 +8,6 @@
 #include <actl/cp/lexical_cast.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("cp::lexical_cast") {
     ASSERT_EQUAL(1, lexical_cast<int>("1"));
     ASSERT_EQUAL("42", lexical_cast<std::string>(42));

@@ -10,8 +10,6 @@
 #include <actl/range/algorithm.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 static std::vector<int> xs        = {5, 4, 1, 2, 4, 2};
 static std::vector<int> sorted_xs = {1, 2, 2, 4, 4, 5};
 static std::vector<int> unique_xs = {1, 2, 4, 5};

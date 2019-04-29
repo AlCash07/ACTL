@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/point/invert.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

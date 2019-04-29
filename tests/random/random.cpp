@@ -8,6 +8,4 @@
 #include <actl/random/random.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

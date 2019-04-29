@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/intersect/line_sphere.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -12,8 +12,6 @@
 #include <actl/test.hpp>
 #include "sample_graphs.hpp"
 
-using namespace ac;
-
 TEST("bfs") {
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;

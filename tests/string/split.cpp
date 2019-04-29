@@ -8,6 +8,4 @@
 #include <actl/string/split.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -8,6 +8,4 @@
 #include <actl/io/complex_types.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

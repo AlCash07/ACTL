@@ -9,8 +9,6 @@
 #include <actl/property_map/transition_property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("to_bool") {
     auto pm = transition_property_map{std::vector<int>{3, 2, 0, 6}};
     ASSERT_EQUAL(3, get(pm, 0));

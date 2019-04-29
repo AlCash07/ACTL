@@ -8,6 +8,4 @@
 #include <actl/graph/traversal/breadth_first_search.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

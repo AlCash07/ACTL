@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/crosses/plane_plane.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

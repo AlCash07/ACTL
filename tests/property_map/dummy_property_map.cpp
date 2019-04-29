@@ -8,8 +8,6 @@
 #include <actl/property_map/dummy_property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("int") {
     dummy_property_map<int, int> pm;
     put(pm, 2, 2);

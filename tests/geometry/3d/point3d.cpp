@@ -8,6 +8,4 @@
 #include <actl/geometry/3d/point3d.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

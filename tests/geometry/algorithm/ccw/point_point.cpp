@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/ccw/point_point.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

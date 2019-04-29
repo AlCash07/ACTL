@@ -8,6 +8,4 @@
 #include <actl/graph/shortest_paths/dijkstra_shortest_paths_sparse.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

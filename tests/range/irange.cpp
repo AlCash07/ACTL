@@ -8,6 +8,4 @@
 #include <actl/range/irange.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

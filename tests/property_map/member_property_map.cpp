@@ -8,8 +8,6 @@
 #include <actl/property_map/member_property_map.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 struct A {
     int a;
 };

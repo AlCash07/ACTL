@@ -9,8 +9,6 @@
 #include <actl/traits/function_traits.hpp>
 #include <functional>
 
-using namespace ac;
-
 inline bool ok();
 
 TEST("0_arity") {

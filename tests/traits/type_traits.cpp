@@ -8,8 +8,6 @@
 #include <actl/test.hpp>
 #include <actl/traits/type_traits.hpp>
 
-using namespace ac;
-
 TEST("add_const_if") {
     ASSERT_TRUE(std::is_same_v<int, add_const_if_t<false, int>>);
     ASSERT_TRUE(std::is_same_v<const int, add_const_if_t<true, int>>);

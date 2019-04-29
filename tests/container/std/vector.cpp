@@ -8,8 +8,6 @@
 #include <actl/container/std/vector.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("category") {
     using C = std::vector<int>;
     ASSERT_TRUE(is_sequence_container_v<C>);

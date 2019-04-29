@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/polygon/antipodal_vertices.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

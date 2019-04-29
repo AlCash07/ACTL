@@ -9,8 +9,6 @@
 #include <actl/graph/vertex_list.hpp>
 #include "test_vertices.hpp"
 
-using namespace ac;
-
 TEST("none") {
     vertex_list<> graph{3};
     ASSERT_EQUAL(std::pair{3, true}, graph.try_add_vertex());

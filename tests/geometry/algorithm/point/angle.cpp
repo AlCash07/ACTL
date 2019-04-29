@@ -8,6 +8,4 @@
 #include <actl/geometry/algorithm/point/angle.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

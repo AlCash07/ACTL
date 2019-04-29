@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/ccw/simple_polygon.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

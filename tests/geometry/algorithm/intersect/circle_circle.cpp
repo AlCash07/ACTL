@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

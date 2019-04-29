@@ -8,6 +8,4 @@
 #include <actl/graph/shortest_paths/bellman_ford_shortest_paths.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

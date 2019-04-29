@@ -13,8 +13,6 @@
 #include <actl/test.hpp>
 #include "sample_graphs.hpp"
 
-using namespace ac;
-
 using Log = std::vector<std::pair<int, colors>>;
 
 TEST("bfs") {

@@ -8,6 +8,4 @@
 #include <actl/iterator/function_output_iterator.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

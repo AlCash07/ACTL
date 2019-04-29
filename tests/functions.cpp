@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include <limits>
 
-using namespace ac;
-
 TEST("abs") {
     ASSERT_EQUAL(0, abs(0));
     constexpr auto int_max = std::numeric_limits<int>::max();

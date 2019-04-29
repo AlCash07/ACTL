@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include <actl/traits/container_traits.hpp>
 
-using namespace ac;
-
 TEST("array::category") {
     using C = int[2];
     ASSERT_TRUE(is_sequence_container_v<C>);

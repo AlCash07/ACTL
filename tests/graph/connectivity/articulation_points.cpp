@@ -8,6 +8,4 @@
 #include <actl/graph/connectivity/articulation_points.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

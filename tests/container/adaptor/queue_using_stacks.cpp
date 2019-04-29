@@ -8,6 +8,4 @@
 #include <actl/container/adaptor/queue_using_stacks.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

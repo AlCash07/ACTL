@@ -8,8 +8,6 @@
 #include <actl/test.hpp>
 #include <actl/util/component_set.hpp>
 
-using namespace ac;
-
 template <class T, int V>
 struct const_op {
     constexpr int operator()(T) const { return V; }

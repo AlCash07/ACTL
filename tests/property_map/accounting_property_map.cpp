@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 #include <map>
 
-using namespace ac;
-
 template <bool Invertible>
 inline void test_accounting_pm() {
     accounting_property_map<std::map<std::string, int>, Invertible> pm;

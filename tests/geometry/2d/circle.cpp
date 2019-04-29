@@ -8,6 +8,4 @@
 #include <actl/geometry/2d/circle.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

@@ -9,6 +9,4 @@
 #include <actl/geometry/algorithm/area/point_line.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}

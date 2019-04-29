@@ -8,8 +8,6 @@
 #include <actl/container/dummy_container.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("basic") {
     dummy_container c(3);
     c.emplace_back(1);

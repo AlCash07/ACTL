@@ -8,6 +8,4 @@
 #include <actl/graph/shortest_paths/floyd_warshall_all_shortest_paths.hpp>
 #include <actl/test.hpp>
 
-using namespace ac;
-
 TEST("") {}
