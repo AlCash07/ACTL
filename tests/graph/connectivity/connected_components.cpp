@@ -28,7 +28,7 @@ TEST("basic") {
             ASSERT_EQUAL(c[expected[i][0]], c[v]);
         }
         for (size_t j = 0; j < expected.size(); ++j) {
-            if (i != j) ASSERT_NOT_EQUAL(c[expected[i][0]], c[expected[j][0]]);
+            ASSERT_EQUAL(i != j, c[expected[i][0]] != c[expected[j][0]]);
         }
     }
 }

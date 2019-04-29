@@ -12,8 +12,10 @@
 #include <actl/random/random.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/types.hpp>
+#include <actl/util/span.hpp>
 #include <iostream>
 
+using namespace std::string_literals;
 using namespace ac;
 
 #define TEST_IMPL(name, va_args)                                \
@@ -31,11 +33,11 @@ using namespace ac;
 
 #define TEST(...) TEST_IMPL(CAT(_tesT_, __COUNTER__), #__VA_ARGS__)
 
-#define ASSERT_EQUAL      tests::detail::assert_impl(__FILE__, __LINE__).check<true>
-#define ASSERT_NOT_EQUAL  tests::detail::assert_impl(__FILE__, __LINE__).check<false>
-#define ASSERT_TRUE       tests::detail::assert_impl(__FILE__, __LINE__).check_true
-#define ASSERT_FALSE      tests::detail::assert_impl(__FILE__, __LINE__).check_false
-#define ASSERT_EQUAL_SETS tests::detail::assert_impl(__FILE__, __LINE__).check_sets
+#define ASSERT_EQUAL        tests::detail::assert_impl(__FILE__, __LINE__).check
+#define ASSERT_TRUE         tests::detail::assert_impl(__FILE__, __LINE__).check_true
+#define ASSERT_FALSE        tests::detail::assert_impl(__FILE__, __LINE__).check_false
+#define ASSERT_EQUAL_RANGES tests::detail::assert_impl(__FILE__, __LINE__).check_ranges
+#define ASSERT_EQUAL_SETS   tests::detail::assert_impl(__FILE__, __LINE__).check_sets
 #define ASSERT_THROWS(expression) \
     tests::detail::assert_throws(__FILE__, __LINE__, [&] { (void)(expression); })
 
@@ -49,44 +51,47 @@ struct assert_impl {
 
     assert_impl(czstring filename, int line) : filename{filename}, line{line} {}
 
-    template <bool Equal, class T0, class T1>
+    template <class T0, class T1>
     inline void check(const T0& expected, const T1& actual) const {
-        if ((expected == actual) == Equal) return;
+        if (expected == actual) return;
         std::stringstream ss;
-        if (!Equal) ss << "not ";
         ss << "expected = " << diagnostics::to_string(expected)
            << ", actual = " << diagnostics::to_string(actual);
         ss << "; line = " << line;
         throw ss.str();
     }
 
-    template <bool Equal, class T, class = std::enable_if_t<std::is_floating_point_v<T>>>
+    template <class T, class = std::enable_if_t<std::is_floating_point_v<T>>>
     inline void check(T expected, T actual, T eps) const {
         T numerator   = std::abs(expected - actual);
         T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
-        if ((numerator <= eps * denominator) == Equal) return;
+        if (numerator <= eps * denominator) return;
         std::stringstream ss;
-        if (!Equal) ss << "not ";
         ss << "expected = " << expected << ", actual = " << actual
            << ", error = " << numerator / denominator;
         ss << "; line = " << line;
         throw ss.str();
     }
 
-    inline void check_true(bool condition) const { check<true>(true, condition); }
+    inline void check_true(bool condition) const { check(true, condition); }
 
-    inline void check_false(bool condition) const { check<true>(false, condition); }
+    inline void check_false(bool condition) const { check(false, condition); }
 
-    template <class T>
-    inline void check_sets(std::vector<T> expected, std::vector<T> actual) const {
-        sort(expected);
-        sort(actual);
+    template <class T0, class T1>
+    inline void check_ranges(const T0& expected, const T1& actual) const {
         if (equal(expected, actual)) return;
         std::stringstream ss;
         ss << "expected = " << diagnostics::to_string(expected)
            << ", actual = " << diagnostics::to_string(actual);
         ss << "; line = " << line;
         throw ss.str();
+    }
+
+    template <class T>
+    inline void check_sets(std::vector<T> expected, std::vector<T> actual) const {
+        sort(expected);
+        sort(actual);
+        check_ranges(expected, actual);
     }
 };
 
