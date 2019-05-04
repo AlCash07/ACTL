@@ -10,25 +10,25 @@
 
 TEST("input") {
     const char s[] = "abcdef";
-    io::memory<io::in> in{{s, s + 5}};
-    ASSERT_EQUAL('a', in.get());
-    ASSERT_EQUAL('b', in.get());
-    in.move(-1);
+    io::memory<io::in> id{{s, s + 5}};
+    ASSERT_EQUAL('a', id.get());
+    ASSERT_EQUAL('b', id.get());
+    id.move(-1);
     char dst[9];
-    ASSERT_EQUAL(3, in.read({dst, 3}));
+    ASSERT_EQUAL(3, id.read({dst, 3}));
     ASSERT_EQUAL("bcd", std::string(dst, dst + 3));
-    ASSERT_EQUAL(1, in.read({dst, 3}));
+    ASSERT_EQUAL(1, id.read({dst, 3}));
     ASSERT_EQUAL("e", std::string(dst, dst + 1));
-    ASSERT_EQUAL(0, in.read({dst, 3}));
-    ASSERT_EQUAL('\0', in.get());
+    ASSERT_EQUAL(0, id.read({dst, 3}));
+    ASSERT_EQUAL('\0', id.get());
 }
 
 TEST("output") {
     char s[5];
-    io::memory<io::out> out{s};
-    ASSERT_TRUE(out.put('a'));
-    ASSERT_EQUAL(3, out.write({"bcd", 3}));
-    ASSERT_EQUAL(1, out.write({"ef", 2}));
-    ASSERT_FALSE(out.put('g'));
+    io::memory<io::out> od{s};
+    ASSERT_TRUE(od.put('a'));
+    ASSERT_EQUAL(3, od.write({"bcd", 3}));
+    ASSERT_EQUAL(1, od.write({"ef", 2}));
+    ASSERT_FALSE(od.put('g'));
     ASSERT_EQUAL("abcde", std::string(s, s + 5));
 }

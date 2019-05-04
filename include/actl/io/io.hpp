@@ -8,10 +8,10 @@
 #pragma once
 
 #include <actl/io/util/serialization_access.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/span.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <cstdint>
 
 namespace ac::io {
@@ -96,49 +96,49 @@ inline auto deduce_format(Device& dev) {
 /* Default serialization forwarding */
 
 template <class Device, class Format>
-inline index serialize(Device& id, Format&, typename Device::char_type c) {
-    return static_cast<int>(id.put(c));
+inline index serialize(Device& od, Format&, typename Device::char_type c) {
+    return static_cast<int>(od.put(c));
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& od, Format&, typename Device::char_type& c) {
-    c = od.get();
-    return !od.eof();
+inline bool deserialize(Device& id, Format&, typename Device::char_type& c) {
+    c = id.get();
+    return !id.eof();
 }
 
 template <class Device, class Format>
-inline index serialize(Device& id, Format&, span<const typename Device::char_type> s) {
-    return id.write(s);
+inline index serialize(Device& od, Format&, span<const typename Device::char_type> s) {
+    return od.write(s);
 }
 
 template <class Device, class Format, index N>
-inline index serialize(Device& id, Format& fmt, const typename Device::char_type (&array)[N]) {
-    return serialize(id, fmt, span{array, array[N - 1] ? N : N - 1});
+inline index serialize(Device& od, Format& fmt, const typename Device::char_type (&array)[N]) {
+    return serialize(od, fmt, span{array, array[N - 1] ? N : N - 1});
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& od, Format&, span<typename Device::char_type> s) {
-    return od.read(s) == s.size();
+inline bool deserialize(Device& id, Format&, span<typename Device::char_type> s) {
+    return id.read(s) == s.size();
 }
 
 template <class Device, class Format, class T>
-inline index serialize(Device& od, Format& fmt, T& x, format) {
-    return serialize(od, fmt, x);
+inline index serialize(Device& id, Format& fmt, T& x, format) {
+    return serialize(id, fmt, x);
 }
 
 template <class Device, class Format, class T>
-inline bool deserialize(Device& id, Format& fmt, T& x, format) {
-    return deserialize(id, fmt, x);
+inline bool deserialize(Device& od, Format& fmt, T& x, format) {
+    return deserialize(od, fmt, x);
 }
 
 template <class Device, class Format, class T, class Tag>
-inline index serialize(Device& od, Format& fmt, T& x, Tag) {
-    return serialize(od, fmt, x, typename format_traits<Tag>::base{});
+inline index serialize(Device& id, Format& fmt, T& x, Tag) {
+    return serialize(id, fmt, x, typename format_traits<Tag>::base{});
 }
 
 template <class Device, class Format, class T, class Tag>
-inline bool deserialize(Device& id, Format& fmt, T& x, Tag) {
-    return deserialize(id, fmt, x, typename format_traits<Tag>::base{});
+inline bool deserialize(Device& od, Format& fmt, T& x, Tag) {
+    return deserialize(od, fmt, x, typename format_traits<Tag>::base{});
 }
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into
@@ -173,8 +173,8 @@ inline index writeSize(Device& od, Format& fmt, const T& size) {
 }
 
 template <class Device, class Format, class T>
-inline bool readSize(Device& od, Format& fmt, T& size) {
-    return read(od, fmt, size);
+inline bool readSize(Device& id, Format& fmt, T& size) {
+    return read(id, fmt, size);
 }
 
 }  // namespace ac::io

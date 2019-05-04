@@ -10,24 +10,24 @@
 
 TEST("input") {
     std::string s = "abcde";
-    io::string<io::in> in{s};
-    ASSERT_EQUAL('a', in.get());
-    ASSERT_EQUAL('b', in.get());
-    in.move(-1);
+    io::string<io::in> id{s};
+    ASSERT_EQUAL('a', id.get());
+    ASSERT_EQUAL('b', id.get());
+    id.move(-1);
     char dst[9];
-    ASSERT_EQUAL(4, in.read({dst, 5}));
+    ASSERT_EQUAL(4, id.read({dst, 5}));
     ASSERT_EQUAL("bcde", std::string(dst, dst + 4));
     s += 'f';
-    ASSERT_EQUAL(1, in.read({dst, 3}));
+    ASSERT_EQUAL(1, id.read({dst, 3}));
     ASSERT_EQUAL("f", std::string(dst, dst + 1));
-    ASSERT_EQUAL(0, in.read({dst, 3}));
-    ASSERT_EQUAL('\0', in.get());
+    ASSERT_EQUAL(0, id.read({dst, 3}));
+    ASSERT_EQUAL('\0', id.get());
 }
 
 TEST("output") {
     std::string s;
-    io::string<io::app> out{s};
-    ASSERT_TRUE(out.put('a'));
-    ASSERT_EQUAL(3, out.write({"bcd", 3}));
+    io::string<io::app> od{s};
+    ASSERT_TRUE(od.put('a'));
+    ASSERT_EQUAL(3, od.write({"bcd", 3}));
     ASSERT_EQUAL("abcd", s);
 }
