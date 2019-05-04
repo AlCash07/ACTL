@@ -75,8 +75,13 @@ protected:
     uint8_t base_ = ts::base();
 };
 
+template <class C>
+struct format_traits<in_text<C>> {
+    using tag = text;
+};
+
 template <class Char>
-class out_text<Char> : public in_text<Char> {
+class out_text : public in_text<Char> {
 public:
     width_t precision() const { return precision_; }
     void precision(width_t value) { precision_ = value; }
@@ -95,12 +100,12 @@ protected:
     Char fill_ = ts::fill();
 };
 
-template <mode_t Mode, class Char>
-using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
-
-template <mode_t M, class C>
-struct format_traits<text_format<M, C>> {
+template <class C>
+struct format_traits<out_text<C>> {
     using tag = text;
 };
+
+template <mode_t Mode, class Char>
+using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
 
 }  // namespace ac::io

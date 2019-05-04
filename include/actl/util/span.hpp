@@ -24,6 +24,7 @@ public:
     using pointer = T*;
     using reference = T&;
     using iterator = pointer;
+    using const_iterator = iterator;
 
     constexpr span() = default;
 

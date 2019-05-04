@@ -87,7 +87,7 @@ public:
         ACTL_ASSERT(0 <= pos_ && pos_ <= static_cast<size_t>(s_.size()));
     }
 
-    bool eof() const { return pos_ > static_cast<index>(s_.size()); }
+    bool eof() const { return static_cast<index>(s_.size()) < pos_; }
 };
 
 template <mode_t Mode, class Char = char_t<Mode>>

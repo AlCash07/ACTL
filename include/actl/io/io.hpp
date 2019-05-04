@@ -11,8 +11,8 @@
 #include <actl/types.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/span.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <cstdint>
-#include <type_traits>
 
 namespace ac::io {
 
@@ -82,7 +82,7 @@ struct format_traits<text> {
 };
 
 template <class T>
-using format_tag_t = typename format_traits<T>::tag;
+using format_tag_t = typename format_traits<remove_cvref_t<T>>::tag;
 
 template <class Device>
 inline auto deduce_format(Device& dev) {
@@ -95,23 +95,49 @@ inline auto deduce_format(Device& dev) {
 
 /* Default serialization forwarding */
 
+template <class Device, class Format>
+inline index serialize(Device& id, Format&, typename Device::char_type c) {
+    return static_cast<int>(id.put(c));
+}
+
+template <class Device, class Format>
+inline bool deserialize(Device& od, Format&, typename Device::char_type& c) {
+    c = od.get();
+    return !od.eof();
+}
+
+template <class Device, class Format>
+inline index serialize(Device& id, Format&, span<const typename Device::char_type> s) {
+    return id.write(s);
+}
+
+template <class Device, class Format, index N>
+inline index serialize(Device& id, Format& fmt, const typename Device::char_type (&array)[N]) {
+    return serialize(id, fmt, span{array, array[N - 1] ? N : N - 1});
+}
+
+template <class Device, class Format>
+inline bool deserialize(Device& od, Format&, span<typename Device::char_type> s) {
+    return od.read(s) == s.size();
+}
+
 template <class Device, class Format, class T>
-inline int serialize(Device& od, Format& fmt, T&& x, format) {
+inline index serialize(Device& od, Format& fmt, T& x, format) {
     return serialize(od, fmt, x);
 }
 
 template <class Device, class Format, class T>
-inline bool deserialize(Device& id, Format& fmt, T&& x, format) {
+inline bool deserialize(Device& id, Format& fmt, T& x, format) {
     return deserialize(id, fmt, x);
 }
 
 template <class Device, class Format, class T, class Tag>
-inline int serialize(Device& od, Format& fmt, T&& x, Tag) {
+inline index serialize(Device& od, Format& fmt, T& x, Tag) {
     return serialize(od, fmt, x, typename format_traits<Tag>::base{});
 }
 
 template <class Device, class Format, class T, class Tag>
-inline bool deserialize(Device& id, Format& fmt, T&& x, Tag) {
+inline bool deserialize(Device& id, Format& fmt, T& x, Tag) {
     return deserialize(id, fmt, x, typename format_traits<Tag>::base{});
 }
 
@@ -119,8 +145,8 @@ inline bool deserialize(Device& id, Format& fmt, T&& x, Tag) {
  * lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
-inline int write(Device&& od, Format&& fmt, Ts&&... args) {
-    if constexpr (std::is_same_v<format_tag_t<std::remove_cv_t<Format>>, none>) {
+inline index write(Device&& od, Format&& fmt, Ts&&... args) {
+    if constexpr (std::is_same_v<format_tag_t<Format>, none>) {
         return write(od, deduce_format(od), fmt, args...);
     } else {
         return (... + serialize(od, fmt, args, format_tag_t<Format>{}));
@@ -129,7 +155,7 @@ inline int write(Device&& od, Format&& fmt, Ts&&... args) {
 
 template <class Device, class Format, class... Ts>
 inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
-    if constexpr (std::is_same_v<format_tag_t<std::remove_cv_t<Format>>, none>) {
+    if constexpr (std::is_same_v<format_tag_t<Format>, none>) {
         return read(id, deduce_format(id), fmt, args...);
     } else {
         return (... && deserialize(id, fmt, args, format_tag_t<Format>{}));
@@ -137,12 +163,12 @@ inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
 }
 
 template <class... Ts>
-inline int writeln(Ts&&... args) {
+inline index writeln(Ts&&... args) {
     return write(args..., '\n');
 }
 
 template <class Device, class Format, class T>
-inline int writeSize(Device& od, Format& fmt, const T& size) {
+inline index writeSize(Device& od, Format& fmt, const T& size) {
     return write(od, fmt, size);
 }
 

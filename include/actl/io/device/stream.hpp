@@ -113,12 +113,12 @@ public:
 
     char_type peek() {
         auto c = s_.peek();
-        return c == typename Stream::traits_type::eof() ? {} : static_cast<char_type>(c);
+        return c == typename Stream::traits_type::eof() ? char_type{} : static_cast<char_type>(c);
     }
 
     char_type get() {
         auto c = s_.get();
-        return c == typename Stream::traits_type::eof() ? {} : static_cast<char_type>(c);
+        return c == typename Stream::traits_type::eof() ? char_type{} : static_cast<char_type>(c);
     }
 
     index read(span<char_type> dst) {
