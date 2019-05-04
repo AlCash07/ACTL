@@ -10,8 +10,6 @@ head -6 $path > $test
 echo "
 #include <${path:8}>
 #include <actl/test.hpp>
-
-using namespace ac;
 " >> $test
 echo 'TEST("") {}' >> $test
 else
