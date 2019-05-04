@@ -37,7 +37,7 @@ constexpr setf<flags::showpos, false> noshowpos{};
 constexpr setf<flags::uppercase, true> uppercase{};
 constexpr setf<flags::uppercase, false> nouppercase{};
 
-// real numbers formatted
+// real numbers format
 constexpr setg<groups::floatfield, 0> defaultfloat{};
 constexpr setg<groups::floatfield, flags::fixed> fixed{};
 constexpr setg<groups::floatfield, flags::scientific> scientific{};
@@ -98,12 +98,12 @@ constexpr setbase oct{8};
 
 // number of digits after the decimal point
 struct setprecision {
-    uint8_t value = 6;
+    index value = 6;
 };
 
 // minimum width of an output unit
 struct setwidth {
-    uint8_t value = 0;
+    index value = 0;
 };
 
 // character to pad units with less width
@@ -128,8 +128,13 @@ inline bool deserialize(Device&, Format& fmt, setbase arg, text) {
 SERIALIZE_MANIP(base)
 SERIALIZE_MANIP(precision)
 SERIALIZE_MANIP(width)
-SERIALIZE_MANIP(fill)
 
 #undef SERIALIZE_MANIP
+
+template <class Device, class Format, class Char>
+inline int serialize(Device&, Format& fmt, setfill<Char> arg, text) {
+    fmt.fill(arg.value);
+    return 0;
+}
 
 }  // namespace ac::io

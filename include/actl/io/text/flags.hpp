@@ -12,7 +12,6 @@
 namespace ac::io {
 
 using flag_t = uint32_t;
-using width_t = uint32_t;
 
 namespace flags {
 

@@ -10,6 +10,7 @@
 #include <actl/assert.hpp>
 #include <actl/io/io.hpp>
 #include <actl/io/text/flags.hpp>
+#include <utility>
 
 namespace ac::io {
 
@@ -22,8 +23,8 @@ template <
     class Char = char,
     flag_t Flags = bits(flags::skipws),
     uint8_t Base = 10,
-    width_t Precision = 6,
-    width_t Width = 0,
+    index Precision = 6,
+    index Width = 0,
     Char Fill = ' '>
 class text_static {
 public:
@@ -35,14 +36,14 @@ public:
 
     static constexpr uint8_t base() { return Base; }
 
-    static constexpr width_t precision() { return Precision; }
+    static constexpr index precision() { return Precision; }
 
-    static constexpr width_t width() { return Width; }
+    static constexpr index width() { return Width; }
 
     static constexpr Char fill() { return Fill; }
 };
 
-template <class C, flag_t Fl, uint8_t B, width_t P, width_t W, C F>
+template <class C, flag_t Fl, uint8_t B, index P, index W, C F>
 struct format_traits<text_static<C, Fl, B, P, W, F>> {
     using tag = text;
 };
@@ -83,11 +84,17 @@ struct format_traits<in_text<C>> {
 template <class Char>
 class out_text : public in_text<Char> {
 public:
-    width_t precision() const { return precision_; }
-    void precision(width_t value) { precision_ = value; }
+    index precision() const { return precision_; }
+    void precision(index value) {
+        ACTL_ASSERT(0 <= value);
+        precision_ = value;
+    }
 
-    width_t width() const { return width_; }
-    void width(width_t value) { width_ = value; }
+    index width() const { return width_; }
+    void width(index value) {
+        ACTL_ASSERT(0 <= value);
+        width_ = value;
+    }
 
     Char fill() const { return fill_; }
     void fill(Char value) { fill_ = value; }
@@ -95,8 +102,8 @@ public:
 protected:
     using ts = text_static<Char>;
 
-    width_t precision_ = ts::precision();
-    width_t width_ = ts::width();
+    index precision_ = ts::precision();
+    index width_ = ts::width();
     Char fill_ = ts::fill();
 };
 
@@ -107,5 +114,27 @@ struct format_traits<out_text<C>> {
 
 template <mode_t Mode, class Char>
 using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
+
+template <class Format>
+inline std::pair<index, index> adjustment(Format& fmt, index size) {
+    size = fmt.width() - size;
+    if (size <= 0) return {0, 0};
+    auto p = fmt.getf(flags::center) ? std::pair{size / 2, size - size / 2} : std::pair{index{}, size};
+    return fmt.getf(flags::left) ? std::pair{p.second, p.first} : p;
+}
+
+template <class Device, class Format>
+inline index serialize(Device& id, Format& fmt, typename Device::char_type c, text) {
+    return write(id, fmt, span<const typename Device::char_type>{&c, 1});
+}
+
+template <class Device, class Format>
+inline index serialize(Device& id, Format& fmt, span<const typename Device::char_type> s, text) {
+    auto [l, r] = adjustment(fmt, s.size());
+    id.write_fill(fmt.fill(), l);
+    index res = id.write(s);
+    id.write_fill(fmt.fill(), r);
+    return res + l + r;
+}
 
 }  // namespace ac::io
