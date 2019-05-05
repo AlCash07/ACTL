@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/macros.hpp>
 #include <iterator>
 #include <type_traits>
 
@@ -56,28 +55,32 @@ inline constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 template <class T>
 inline constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
 
-#define IS_XXX_ITERATOR_V(name)                              \
-    template <class T>                                       \
-    inline constexpr bool CAT(CAT(is_, name), _iterator_v) = \
-        detail::has_iterator_category<T, std::CAT(name, _iterator_tag)>::value
+template <class T>
+inline constexpr bool is_input_iterator_v =
+    detail::has_iterator_category<T, std::input_iterator_tag>::value;
 
-IS_XXX_ITERATOR_V(input);
-IS_XXX_ITERATOR_V(output);
-IS_XXX_ITERATOR_V(forward);
-IS_XXX_ITERATOR_V(bidirectional);
-IS_XXX_ITERATOR_V(random_access);
+template <class T>
+inline constexpr bool is_output_iterator_v =
+    detail::has_iterator_category<T, std::output_iterator_tag>::value;
 
-#undef IS_XXX_ITERATOR_V
+template <class T>
+inline constexpr bool is_forward_iterator_v =
+    detail::has_iterator_category<T, std::forward_iterator_tag>::value;
+
+template <class T>
+inline constexpr bool is_bidirectional_iterator_v =
+    detail::has_iterator_category<T, std::bidirectional_iterator_tag>::value;
+
+template <class T>
+inline constexpr bool is_random_access_iterator_v =
+    detail::has_iterator_category<T, std::random_access_iterator_tag>::value;
 
 template <class T, class = void>
 struct is_range : std::false_type {};
 
-template <class T, size_t N>
-struct is_range<T[N], void> : std::true_type {};
-
 template <class T>
 struct is_range<T,
-                std::void_t<decltype(std::declval<T>().begin()), decltype(std::declval<T>().end())>>
+                std::void_t<decltype(std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
     : std::true_type {};
 
 template <class T>

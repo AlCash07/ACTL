@@ -42,5 +42,6 @@ TEST("has_iterator_category") {
 TEST("is_range") {
     ASSERT_FALSE(is_range_v<int>);
     ASSERT_TRUE(is_range_v<int[4]>);
+    ASSERT_TRUE(is_range_v<int(&)[4]>);
     ASSERT_TRUE(is_range_v<std::vector<int>>);
 }
