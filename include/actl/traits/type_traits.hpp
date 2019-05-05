@@ -23,17 +23,6 @@ using add_const_if_t = typename add_const_if<B, T>::type;
 template <index N>
 using index_constant = std::integral_constant<index, N>;
 
-// TODO: use std::is_invocable when C++17 is fully supported.
-template <class, class = void>
-struct is_invocable : std::false_type {};
-
-template <class F, class... Ts>
-struct is_invocable<F(Ts...), std::void_t<decltype(std::declval<F>()(std::declval<Ts>()...))>>
-    : std::true_type {};
-
-template <class F, class... Ts>
-inline constexpr bool is_invocable_v = is_invocable<F(Ts...)>::value;
-
 template <class T>
 inline constexpr bool is_signed_int_v = std::is_signed_v<T> && std::is_integral_v<T>;
 

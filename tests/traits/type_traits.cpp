@@ -13,17 +13,6 @@ TEST("add_const_if") {
     ASSERT_TRUE(std::is_same_v<const int, add_const_if_t<true, int>>);
 }
 
-struct functor {
-    void operator()(int, double) {}
-};
-
-TEST("is_invocable") {
-    ASSERT_TRUE(is_invocable_v<functor, int, double>);
-    ASSERT_TRUE(is_invocable_v<functor, char, int>);
-    ASSERT_FALSE(is_invocable_v<functor, int, const void*>);
-    ASSERT_FALSE(is_invocable_v<functor, int, double, int>);
-}
-
 TEST("is_signed_int") {
     ASSERT_FALSE(is_signed_int_v<bool>);
     ASSERT_TRUE(is_signed_int_v<char>);

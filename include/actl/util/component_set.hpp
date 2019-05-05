@@ -7,20 +7,21 @@
 
 #pragma once
 
-#include <actl/traits/type_traits.hpp>
 #include <tuple>
+#include <type_traits>
 
 namespace ac {
 
 template <class... Components>
 class component_set {
     using tuple_t = std::tuple<Components...>;
+
     tuple_t components_;
 
     template <size_t I, class... Ts>
     auto exec_first(Ts&&... args) {
         static_assert(I < sizeof...(Components), "no component with requested overload");
-        if constexpr (is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
+        if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
             return std::get<I>(components_)(std::forward<Ts>(args)...);
         } else {
             return exec_first<I + 1>(std::forward<Ts>(args)...);
@@ -30,7 +31,7 @@ class component_set {
     template <size_t I, class... Ts>
     void exec_all(Ts&&... args) {
         if constexpr (I < sizeof...(Components)) {
-            if constexpr (is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
+            if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
                 std::get<I>(components_)(std::forward<Ts>(args)...);
             }
             exec_all<I + 1>(std::forward<Ts>(args)...);

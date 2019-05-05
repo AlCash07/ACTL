@@ -9,6 +9,7 @@
 
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/component_set.hpp>
 #include <stack>
 
