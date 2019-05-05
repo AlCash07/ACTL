@@ -11,6 +11,7 @@
 
 #include <actl/container/dummy_container.hpp>
 #include <actl/traits/rebind.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
@@ -31,6 +32,17 @@ struct value_type<none> {
 
 template <class C>
 using value_type_t = typename value_type<C>::type;
+
+inline constexpr index dynamic_size = -1;
+
+template <class T>
+struct static_size : index_constant<dynamic_size> {};
+
+template <class T, index N>
+struct static_size<T[N]> : index_constant<N> {};
+
+template <class T>
+inline constexpr index static_size_v = static_size<remove_cvref_t<T>>::value;
 
 // Virtual inheritance is used because of inheritance diamonds.
 struct container_tag {};

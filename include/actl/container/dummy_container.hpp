@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/hash.hpp>
+#include <actl/types.hpp>
 #include <actl/util/none.hpp>
 #include <utility>
 
@@ -18,23 +19,23 @@ namespace ac {
  */
 class dummy_container {
 public:
-    using size_type       = int;
+    using size_type       = index;
     using value_type      = none;
     using reference       = none;
     using const_reference = none;
-    using iterator        = int;
-    using const_iterator  = int;
+    using iterator        = index;
+    using const_iterator  = index;
 
-    explicit constexpr dummy_container(int n = 0) : n_{n} {}
+    explicit constexpr dummy_container(index size = 0) : n_{size} {}
 
-    constexpr int size() const { return n_; }
+    constexpr index size() const { return n_; }
 
     constexpr bool empty() const { return size() == 0; }
 
-    constexpr int begin() const { return 0; }
-    constexpr int end() const { return size(); }
+    constexpr index begin() const { return 0; }
+    constexpr index end() const { return size(); }
 
-    none operator[](int) const { return none{}; }
+    none operator[](index) const { return none{}; }
 
     template <class... Ts>
     void emplace_back(Ts...) {
@@ -46,12 +47,12 @@ public:
 
     void clear() { n_ = 0; }
 
-    void resize(int n) { n_ = n; }
+    void resize(index size) { n_ = size; }
 
     void swap(dummy_container& rhs) { std::swap(n_, rhs.n_); }
 
 protected:
-    int n_;
+    index n_;
 };
 
 }  // namespace ac

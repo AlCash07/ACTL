@@ -461,10 +461,10 @@ template <int N, class D, class S>
 inline void swap(ndarray_base<N, D, S>& lhs, ndarray_base<N, D, S>& rhs) { lhs.swap(rhs); }
 
 template <int...>
-struct ndarray_size : int_constant<1> {};
+struct ndarray_size : index_constant<1> {};
 
 template <int D0, int... Ds>
-struct ndarray_size<D0, Ds...> : int_constant<D0 * ndarray_size<Ds...>::value> {};
+struct ndarray_size<D0, Ds...> : index_constant<D0 * ndarray_size<Ds...>::value> {};
 
 template <class T, int... Ds>
 using ndarray_base_static =

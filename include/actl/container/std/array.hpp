@@ -16,6 +16,9 @@ template <class T, size_t N>
 struct container_category<std::array<T, N>> : random_access_container_tag {};
 
 template <class T, size_t N>
+struct static_size<std::array<T, N>> : index_constant<static_cast<index>(N)> {};
+
+template <class T, size_t N>
 struct template_type<std::array<T, N>> {
     using type = T;
 };

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <actl/types.hpp>
 #include <type_traits>
 
 namespace ac {
@@ -19,8 +20,8 @@ struct add_const_if : std::conditional<B, const T, T> {};
 template <bool B, class T>
 using add_const_if_t = typename add_const_if<B, T>::type;
 
-template <int N>
-using int_constant = std::integral_constant<int, N>;
+template <index N>
+using index_constant = std::integral_constant<index, N>;
 
 // TODO: use std::is_invocable when C++17 is fully supported.
 template <class, class = void>
