@@ -47,7 +47,7 @@ find(C& cont, const T& value) {
     if constexpr (is_associative_container_v<C>) {
         return cont.find(value);
     } else {
-        return std::find(std::begin(cont), std::end(cont), value);
+        return std::find(cont.begin(), cont.end(), value);
     }
 }
 
