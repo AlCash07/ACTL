@@ -42,3 +42,10 @@ TEST("read span<char>") {
     ASSERT_EQUAL_RANGES("cab"s, b);
     ASSERT_FALSE(read(id, a));
 }
+
+TEST("read span<const char>") {
+    std::string s = "abacaba";
+    memory<bin | in> id{s};
+    ASSERT_TRUE(read(id, "aba"));
+    ASSERT_FALSE(read(id, "caca"));
+}

@@ -68,10 +68,14 @@ inline index serialize(Device& od, Format& fmt, const Range& x) {
     if constexpr (is_container_v<Range> && static_size_v<Range> != dynamic_size) {
         res = writeSize(od, fmt, x.size());
     }
-    for (const auto& value : x) {
-        res += write(od, fmt, value);
+    if constexpr (is_contiguous_container_v<Range>) {
+        return res + write(od, fmt, span{x});
+    } else {
+        for (const auto& value : x) {
+            res += write(od, fmt, value);
+        }
+        return res;
     }
-    return res;
 }
 
 template <class Device, class Format, class Range, class = std::enable_if_t<is_range_v<Range>>>
@@ -90,10 +94,14 @@ inline bool deserialize(Device& id, Format& fmt, Range& x) {
             x.resize(size);
         }
     }
-    for (auto& value : x) {
-        if (!read(id, fmt, value)) return false;
+    if constexpr (is_contiguous_container_v<Range>) {
+        return read(id, fmt, span{x});
+    } else {
+        for (auto& value : x) {
+            if (!read(id, fmt, value)) return false;
+        }
+        return true;
     }
-    return true;
 }
 
 }  // namespace ac::io

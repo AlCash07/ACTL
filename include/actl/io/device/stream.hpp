@@ -11,7 +11,6 @@
 #include <actl/io/text/flags.hpp>
 #include <actl/io/util/unbuffered.hpp>
 #include <ios>
-#include <iostream>
 
 namespace ac::io {
 

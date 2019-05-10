@@ -121,6 +121,25 @@ inline bool deserialize(Device& id, Format&, span<typename Device::char_type> s)
     return id.read(s) == s.size();
 }
 
+template <class Device, class Format, index N>
+inline bool deserialize(Device& od, Format& fmt, typename Device::char_type (&array)[N]) {
+    return deserialize(od, fmt, span{array});
+}
+
+template <class Device, class Format>
+inline bool deserialize(Device& id, Format&, span<const typename Device::char_type> s) {
+    for (char c : s) {
+        if (id.peek() != c) return false;
+        id.move(1);
+    }
+    return true;
+}
+
+template <class Device, class Format, index N>
+inline bool deserialize(Device& od, Format& fmt, const typename Device::char_type (&array)[N]) {
+    return deserialize(od, fmt, span{array, array[N - 1] ? N : N - 1});
+}
+
 template <class Device, class Format, class T>
 inline index serialize(Device& id, Format& fmt, T& x, format) {
     return serialize(id, fmt, x);
