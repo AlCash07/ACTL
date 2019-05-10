@@ -12,5 +12,6 @@ TEST("category") {
     using C = std::deque<int>;
     ASSERT_TRUE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_random_access_container_v<C>);
+    ASSERT_FALSE(is_contiguous_container_v<C>);
     ASSERT_FALSE(is_associative_container_v<C>);
 }

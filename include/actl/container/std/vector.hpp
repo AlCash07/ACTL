@@ -13,7 +13,7 @@
 namespace ac {
 
 template <class T, class A>
-struct container_category<std::vector<T, A>> : random_access_container_tag {};
+struct container_category<std::vector<T, A>> : contiguous_container_tag {};
 
 }  // namespace ac
 

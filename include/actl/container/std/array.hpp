@@ -13,7 +13,7 @@
 namespace ac {
 
 template <class T, size_t N>
-struct container_category<std::array<T, N>> : random_access_container_tag {};
+struct container_category<std::array<T, N>> : contiguous_container_tag {};
 
 template <class T, size_t N>
 struct static_size<std::array<T, N>> : index_constant<static_cast<index>(N)> {};

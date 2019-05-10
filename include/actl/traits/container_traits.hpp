@@ -51,6 +51,8 @@ struct sequence_container_tag : virtual container_tag {};
 
 struct random_access_container_tag : virtual sequence_container_tag {};
 
+struct contiguous_container_tag : virtual random_access_container_tag {};
+
 struct associative_container_tag : virtual container_tag {};
 
 struct sorted_associative_container_tag : virtual associative_container_tag {};
@@ -65,7 +67,7 @@ template <class C>
 struct container_category {};
 
 template <class T, size_t N>
-struct container_category<T[N]> : random_access_container_tag {};
+struct container_category<T[N]> : contiguous_container_tag {};
 
 template <>
 struct container_category<dummy_container> : random_access_container_tag {};
@@ -82,6 +84,9 @@ inline constexpr bool is_sequence_container_v = has_container_tag_v<C, sequence_
 template <class C>
 inline constexpr bool is_random_access_container_v =
     has_container_tag_v<C, random_access_container_tag>;
+
+template <class C>
+inline constexpr bool is_contiguous_container_v = has_container_tag_v<C, contiguous_container_tag>;
 
 template <class C>
 inline constexpr bool is_associative_container_v =
