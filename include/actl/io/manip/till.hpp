@@ -21,7 +21,7 @@ public:
 };
 
 template <class Device, class Format, class T>
-inline bool deserialize(Device& id, Format&, till<typename Device::char_type, T> x) {
+inline bool deserialize(Device& id, Format&, till<char_t<Device>, T> x) {
     // TODO: design buffer class and move read implementation here.
     id.read(x);
     return !id.eof();

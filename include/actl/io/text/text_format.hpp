@@ -112,7 +112,7 @@ struct format_traits<out_text<C>> {
     using tag = text;
 };
 
-template <mode_t Mode, class Char = char_t<Mode>>
+template <mode_t Mode, class Char = default_char_t<Mode>>
 using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
 
 template <class Format>
@@ -124,12 +124,12 @@ inline std::pair<index, index> adjustment(Format& fmt, index size) {
 }
 
 template <class Device, class Format>
-inline index serialize(Device& id, Format& fmt, typename Device::char_type c, text) {
-    return write(id, fmt, span<const typename Device::char_type>{&c, 1});
+inline index serialize(Device& id, Format& fmt, char_t<Device> c, text) {
+    return write(id, fmt, span<const char_t<Device>>{&c, 1});
 }
 
 template <class Device, class Format>
-inline index serialize(Device& id, Format& fmt, span<const typename Device::char_type> s, text) {
+inline index serialize(Device& id, Format& fmt, span<const char_t<Device>> s, text) {
     auto [l, r] = adjustment(fmt, s.size());
     id.write_fill(fmt.fill(), l);
     index res = id.write(s);
@@ -138,7 +138,7 @@ inline index serialize(Device& id, Format& fmt, span<const typename Device::char
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format& fmt, typename Device::char_type& c, text) {
+inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text) {
     if (fmt.getf(flags::skipws) && !read(id, fmt, ws)) return false;
     return deserialize(id, fmt, c);
 }

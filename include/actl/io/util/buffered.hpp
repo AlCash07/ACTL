@@ -21,7 +21,7 @@ public:
     using Device::Device;
 
 protected:
-    using Char = typename Device::char_type;
+    using Char = char_t<Device>;
 
     std::array<Char, BufferSize> data_;
     Char* ptr_ = data_.begin();

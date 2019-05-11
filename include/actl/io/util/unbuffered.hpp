@@ -23,7 +23,7 @@ template <class Device>
 class unbuffered_reader<Device, true> : public unbuffered_reader<Device, false> {
 protected:
     using base_t = unbuffered_reader<Device, false>;
-    using Char = typename Device::char_type;
+    using Char = char_t<Device>;
 
 public:
     using base_t::base_t;
@@ -53,7 +53,7 @@ class unbuffered<Device, true> : public unbuffered<Device, false> {
 public:
     using unbuffered<Device, false>::unbuffered;
 
-    void write_fill(typename Device::char_type c, index count) {
+    void write_fill(char_t<Device> c, index count) {
         for (; 0 < count; --count) Device::put(c);
     }
 };

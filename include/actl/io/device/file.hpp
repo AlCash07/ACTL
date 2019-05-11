@@ -72,7 +72,7 @@ public:
     }
 };
 
-template <mode_t Mode, class Char = char_t<Mode>, bool = is_out<Mode>>
+template <mode_t Mode, class Char = default_char_t<Mode>, bool = is_out<Mode>>
 class file : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;

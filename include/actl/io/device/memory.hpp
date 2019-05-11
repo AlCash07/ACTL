@@ -88,7 +88,7 @@ public:
     bool eof() const { return ptr_ > data_.end(); }
 };
 
-template <mode_t Mode, class Char = char_t<Mode>>
+template <mode_t Mode, class Char = default_char_t<Mode>>
 using memory = unbuffered<in_memory<Mode, Char>>;
 
 }  // namespace ac::io

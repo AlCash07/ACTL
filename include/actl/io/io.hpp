@@ -39,9 +39,12 @@ template <mode_t Mode>
 inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
 
 template <mode_t Mode>
-using char_t = char;
+using default_char_t = char;
 // TODO: uncomment when wchar and std::byte support is added.
-// using char_t = std::conditional_t<is_bin<Mode>, std::byte, char>;
+// using default_char_t = std::conditional_t<is_bin<Mode>, std::byte, char>;
+
+template <class Device>
+using char_t = typename Device::char_type;
 
 struct device_base {};
 
@@ -96,38 +99,38 @@ inline auto deduce_format(Device& dev) {
 /* Default serialization forwarding */
 
 template <class Device, class Format>
-inline index serialize(Device& od, Format&, typename Device::char_type c) {
+inline index serialize(Device& od, Format&, char_t<Device> c) {
     return static_cast<int>(od.put(c));
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, typename Device::char_type& c) {
+inline bool deserialize(Device& id, Format&, char_t<Device>& c) {
     c = id.get();
     return !id.eof();
 }
 
 template <class Device, class Format>
-inline index serialize(Device& od, Format&, span<const typename Device::char_type> s) {
+inline index serialize(Device& od, Format&, span<const char_t<Device>> s) {
     return od.write(s);
 }
 
 template <class Device, class Format, index N>
-inline index serialize(Device& od, Format& fmt, const typename Device::char_type (&array)[N]) {
+inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N]) {
     return serialize(od, fmt, span{array, array[N - 1] ? N : N - 1});
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, span<typename Device::char_type> s) {
+inline bool deserialize(Device& id, Format&, span<char_t<Device>> s) {
     return id.read(s) == s.size();
 }
 
 template <class Device, class Format, index N>
-inline bool deserialize(Device& od, Format& fmt, typename Device::char_type (&array)[N]) {
+inline bool deserialize(Device& od, Format& fmt, char_t<Device> (&array)[N]) {
     return deserialize(od, fmt, span{array});
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, span<const typename Device::char_type> s) {
+inline bool deserialize(Device& id, Format&, span<const char_t<Device>> s) {
     for (char c : s) {
         if (id.peek() != c) return false;
         id.move(1);
@@ -136,7 +139,7 @@ inline bool deserialize(Device& id, Format&, span<const typename Device::char_ty
 }
 
 template <class Device, class Format, index N>
-inline bool deserialize(Device& od, Format& fmt, const typename Device::char_type (&array)[N]) {
+inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N]) {
     return deserialize(od, fmt, span{array, array[N - 1] ? N : N - 1});
 }
 

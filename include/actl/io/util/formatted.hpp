@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template <class Device, class Format = text_format<Device::mode, typename Device::char_type>>
+template <class Device, class Format = text_format<Device::mode, char_t<Device>>>
 class formatted : public Device, public Format {
 public:
     using Device::Device;

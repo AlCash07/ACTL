@@ -90,7 +90,7 @@ public:
     bool eof() const { return static_cast<index>(s_.size()) < pos_; }
 };
 
-template <mode_t Mode, class Char = char_t<Mode>>
+template <mode_t Mode, class Char = default_char_t<Mode>>
 using string = unbuffered<in_string<Mode, Char>>;
 
 }  // namespace ac::io
