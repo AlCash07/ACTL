@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/io/io.hpp>
+#include <actl/io/manip/skip.hpp>
 #include <actl/io/text/flags.hpp>
 #include <utility>
 
@@ -112,7 +112,7 @@ struct format_traits<out_text<C>> {
     using tag = text;
 };
 
-template <mode_t Mode, class Char>
+template <mode_t Mode, class Char = char_t<Mode>>
 using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
 
 template <class Format>
@@ -135,6 +135,12 @@ inline index serialize(Device& id, Format& fmt, span<const typename Device::char
     index res = id.write(s);
     id.write_fill(fmt.fill(), r);
     return res + l + r;
+}
+
+template <class Device, class Format>
+inline bool deserialize(Device& id, Format& fmt, typename Device::char_type& c, text) {
+    if (fmt.getf(flags::skipws) && !read(id, fmt, ws)) return false;
+    return deserialize(id, fmt, c);
 }
 
 }  // namespace ac::io
