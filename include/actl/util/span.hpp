@@ -39,10 +39,7 @@ public:
 
     constexpr T* end() const { return data() + size(); }
 
-    constexpr T& back() const {
-        ACTL_ASSERT(data() && !empty());
-        return data()[size() - 1];
-    }
+    constexpr T& back() const { return data()[size() - 1]; }
 
     constexpr T& operator[](index i) const {
         ACTL_ASSERT(data() && 0 <= i && i < size());

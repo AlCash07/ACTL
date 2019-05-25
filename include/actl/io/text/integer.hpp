@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/io/text/text_format.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <type_traits>
 
 namespace ac::io {
 
@@ -17,7 +17,7 @@ namespace detail {
 template <class Char, class UInt>
 inline Char* uitoa10(Char* last, UInt x, uint8_t base) {
     do {
-        int digit = static_cast<int>(x % base);
+        auto digit = x % base;
         x /= base;
         *--last = static_cast<Char>('0' + digit);
     } while (x != 0);
@@ -27,7 +27,7 @@ inline Char* uitoa10(Char* last, UInt x, uint8_t base) {
 template <class Char, class UInt>
 inline Char* uitoa(Char* last, UInt x, uint8_t base, Char ten) {
     do {
-        int digit = static_cast<int>(x % base);
+        auto digit = x % base;
         x /= base;
         *--last = static_cast<Char>(digit < 10 ? '0' + digit : ten + (digit - 10));
     } while (x != 0);
@@ -39,36 +39,39 @@ inline constexpr T digit_count(T x, T base) {
     return x == 0 ? 0 : 1 + digit_count(x / base, base);
 }
 
+template <class Char, class F, class UInt>
+inline Char* write_uint(Char* last, F& fmt, UInt x, uint8_t base) {
+    if (base <= 10) {
+        last = uitoa10(last, x, base);
+        if (base == 8 && x != 0 && fmt.getf(flags::showbase)) *--last = '0';
+    } else {
+        Char ten = fmt.getf(flags::uppercase) ? 'A' : 'a';
+        last = uitoa(last, x, base, ten);
+        if (base == 16 && x != 0 && fmt.getf(flags::showbase)) {
+            *--last = ten + 'x' - 'a';
+            *--last = '0';
+        }
+    }
+    return last;
+}
+
 template <uint8_t MinBase, class D, class F, class Int>
 inline index write_int(D& od, F& fmt, Int x, uint8_t base) {
     using UInt = std::make_unsigned_t<Int>;
     char_t<D> s[1 + digit_count(std::numeric_limits<UInt>::max(), UInt{MinBase})];
     auto last = std::end(s);
-    auto write_uint = [&](UInt x) {
-        if (base <= 10) {
-            last = uitoa10(last, x, base);
-            if (base == 8 && x != 0 && fmt.getf(flags::showbase)) *--last = '0';
-        } else {
-            last = uitoa(last, x, base, fmt.getf(flags::uppercase) ? 'A' : 'a');
-            if (base == 16 && x != 0 && fmt.getf(flags::showbase)) {
-                *--last = fmt.getf(flags::uppercase) ? 'X' : 'x';
-                *--last = '0';
-            }
-        }
-    };
     if constexpr (std::is_signed_v<Int>) {
-        UInt ux = static_cast<UInt>(x);
         if (x < 0) {
-            write_uint(~ux + 1);
+            last = write_uint(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
             *--last = '-';
         } else {
-            write_uint(ux);
+            last = write_uint(last, fmt, x, base);
             if (fmt.getf(flags::showpos)) *--last = '+';
         }
     } else {
-        write_uint(x);
+        last = write_uint(last, fmt, x, base);
     }
-    return serialize(od, fmt, span<const char_t<D>>{last, std::end(s)}, text{});
+    return write(od, fmt, span<const char_t<D>>{last, std::end(s)});
 }
 
 }  // namespace detail
@@ -78,13 +81,12 @@ inline std::enable_if_t<std::is_integral_v<Int>, index> serialize(Device& od, Fo
                                                                   text) {
     auto base = fmt.base();
     ACTL_ASSERT(2 <= base && base <= 36);
-    switch (base) {
-        case 10:
-            return detail::write_int<10>(od, fmt, x, 10);
-        case 2:
-            return detail::write_int<2>(od, fmt, x, 2);
-        default:
-            return detail::write_int<3>(od, fmt, x, base);
+    if (base == 10) {
+        return detail::write_int<10>(od, fmt, x, 10);
+    } else if (base < 8) {
+        return detail::write_int<2>(od, fmt, x, base);
+    } else {
+        return detail::write_int<8>(od, fmt, x, base);
     }
 }
 

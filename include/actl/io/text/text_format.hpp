@@ -116,7 +116,7 @@ template <mode_t Mode, class Char = default_char_t<Mode>>
 using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
 
 template <class Format>
-inline std::pair<index, index> adjustment(Format& fmt, index size) {
+inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
     size = fmt.width() - size;
     if (size <= 0) return {0, 0};
     auto p = fmt.getf(flags::center) ? std::pair{size / 2, size - size / 2} : std::pair{index{}, size};
@@ -130,6 +130,7 @@ inline index serialize(Device& id, Format& fmt, char_t<Device> c, text) {
 
 template <class Device, class Format>
 inline index serialize(Device& id, Format& fmt, span<const char_t<Device>> s, text) {
+    if (fmt.width() <= s.size()) return id.write(s);
     auto [l, r] = adjustment(fmt, s.size());
     id.write_fill(fmt.fill(), l);
     index res = id.write(s);

@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
 #include <actl/io/util/unbuffered.hpp>
 #include <algorithm>
 #include <cstring>
