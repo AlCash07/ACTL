@@ -65,7 +65,7 @@ public:
 
     uint8_t base() const { return base_; }
     void base(uint8_t value) {
-        ACTL_ASSERT(1 < value && value <= 36);
+        ACTL_ASSERT(value == 0 || 1 < value && value <= 36);
         base_ = value;
     }
 

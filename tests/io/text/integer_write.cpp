@@ -5,7 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/io/text/integer.hpp>
+#include <actl/io/text/integer_write.hpp>
 #include <actl/io/text/manip.hpp>
 #include "test_io.hpp"
 

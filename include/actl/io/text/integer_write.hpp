@@ -80,20 +80,14 @@ template <class Device, class Format, class Int>
 inline std::enable_if_t<std::is_integral_v<Int>, index> serialize(Device& od, Format& fmt, Int x,
                                                                   text) {
     auto base = fmt.base();
-    ACTL_ASSERT(2 <= base && base <= 36);
-    if (base == 10) {
+    ACTL_ASSERT(base == 0 || (2 <= base && base <= 36));
+    if (base == 0 || base == 10) {
         return detail::write_int<10>(od, fmt, x, 10);
-    } else if (base < 8) {
+    } else if (base < 7) {
         return detail::write_int<2>(od, fmt, x, base);
     } else {
-        return detail::write_int<8>(od, fmt, x, base);
+        return detail::write_int<7>(od, fmt, x, base);
     }
-}
-
-template <class Device, class Format, class Int>
-inline std::enable_if_t<std::is_integral_v<Int>, bool> deserialize(Device& id, Format& fmt, Int& x,
-                                                                   text) {
-    return true;
 }
 
 }  // namespace ac::io

@@ -8,6 +8,8 @@
 #pragma once
 
 #include <actl/io/text/boolean.hpp>
+#include <actl/io/text/integer_read.hpp>
+#include <actl/io/text/integer_write.hpp>
 #include <actl/io/text/manip.hpp>
 #include <actl/io/text/spacer.hpp>
 #include <actl/io/text/text_format.hpp>
