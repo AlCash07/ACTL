@@ -140,7 +140,7 @@ inline index serialize(Device& id, Format& fmt, span<const char_t<Device>> s, te
 
 template <class Device, class Format>
 inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text) {
-    if (fmt.getf(flags::skipws) && !read(id, fmt, ws)) return false;
+    if (fmt.getf(flags::skipws)) read(id, fmt, ws);
     return deserialize(id, fmt, c);
 }
 

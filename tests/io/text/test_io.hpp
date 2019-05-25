@@ -12,8 +12,17 @@
 #include <actl/test.hpp>
 
 template <class... Ts>
-void test_output(const std::string& expected, Ts&&... xs) {
+void test_write(const std::string& expected, Ts&& ... xs) {
     std::string s;
     write(io::string<io::app>{s}, std::forward<Ts>(xs)...);
     ASSERT_EQUAL(expected, s);
+}
+
+template <bool Valid, class T, class... Ts>
+void test_read(const T& expected, const std::string& input, Ts&& ... xs) {
+    T x;
+    ASSERT_EQUAL(Valid, read(io::string<io::in>{input}, std::forward<Ts>(xs)..., x));
+    if constexpr (Valid) {
+        ASSERT_EQUAL(expected, x);
+    }
 }
