@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/io/text/detail/peek_digit.hpp>
 #include <actl/io/text/text_format.hpp>
 #include <type_traits>
 
@@ -14,38 +15,19 @@ namespace ac::io {
 
 namespace detail {
 
-template <uint8_t MaxBase, class UInt, class D>
-inline bool peek_digit(D& id, UInt& x, uint8_t base) {
-    if constexpr (MaxBase <= 10) {
-        x = static_cast<UInt>(id.peek() - '0');
-    } else {
-        auto c = id.peek();
-        if (is_digit(c)) {
-            x = static_cast<UInt>(c - '0');
-        } else if (is_upper(c)) {
-            x = static_cast<UInt>(c - 'A' + 10);
-        } else if (is_lower(c)) {
-            x = static_cast<UInt>(c - 'a' + 10);
-        } else {
-            x = std::numeric_limits<UInt>::max();
-        }
-    }
-    return x < base;
-}
-
-template <uint8_t B, auto Max, class D, class UInt>
-inline bool read_uint(D& id, UInt& x, uint8_t base) {
+template <uint8_t MaxBase, auto Max, class D, class UInt>
+inline bool read_uint2(D& id, UInt& x, uint8_t base) {
     UInt v, d;
-    if (!peek_digit<B>(id, v, base)) return false;
+    if (!peek_digit<MaxBase>(id, v, base)) return false;
     id.move(1);
     const UInt safe = Max / base;
-    while (peek_digit<B>(id, d, base)) {
+    while (peek_digit<MaxBase>(id, d, base)) {
+        id.move(1);
         if (safe < v || (safe == v && Max % base < d)) {
             x = Max;
             return false;
         }
         v = v * base + d;
-        id.move(1);
     }
     x = v;
     return true;
@@ -75,9 +57,9 @@ inline bool read_uint(D& id, F& fmt, UInt& x) {
         if (base == 0) base = 10;
     }
     if (base <= 10) {
-        return read_uint<10, Max>(id, x, base);
+        return read_uint2<10, Max>(id, x, base);
     } else {
-        return read_uint<36, Max>(id, x, base);
+        return read_uint2<36, Max>(id, x, base);
     }
 }
 

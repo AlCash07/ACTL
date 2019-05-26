@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/io/text/manip.hpp>
-#include <actl/io/text/real.hpp>
+#include <actl/io/text/real_write.hpp>
 #include <actl/test.hpp>
 #include "test_io.hpp"
 
