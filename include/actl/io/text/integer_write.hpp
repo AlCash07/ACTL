@@ -16,22 +16,6 @@ namespace ac::io {
 
 namespace detail {
 
-template <class Char, class F, class UInt>
-inline Char* write_uint(Char* last, F& fmt, UInt x, uint8_t base) {
-    if (base <= 10) {
-        last = uitoa10(last, x, base);
-        if (base == 8 && x != 0 && fmt.getf(flags::showbase)) *--last = '0';
-    } else {
-        Char a = fmt.getf(flags::uppercase) ? 'A' : 'a';
-        last = uitoa(last, x, base, a);
-        if (base == 16 && x != 0 && fmt.getf(flags::showbase)) {
-            *--last = a + 'x' - 'a';
-            *--last = '0';
-        }
-    }
-    return last;
-}
-
 template <uint8_t MinBase, class D, class F, class Int>
 inline index write_int(D& od, F& fmt, Int x, uint8_t base) {
     using UInt = std::make_unsigned_t<Int>;
@@ -39,14 +23,14 @@ inline index write_int(D& od, F& fmt, Int x, uint8_t base) {
     auto last = std::end(s);
     if constexpr (std::is_signed_v<Int>) {
         if (x < 0) {
-            last = write_uint(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
+            last = uitoa(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
             *--last = '-';
         } else {
-            last = write_uint(last, fmt, x, base);
+            last = uitoa(last, fmt, x, base);
             if (fmt.getf(flags::showpos)) *--last = '+';
         }
     } else {
-        last = write_uint(last, fmt, x, base);
+        last = uitoa(last, fmt, x, base);
     }
     return write(od, fmt, span<const char_t<D>>{last, std::end(s)});
 }

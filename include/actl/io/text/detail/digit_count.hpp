@@ -7,10 +7,12 @@
 
 #pragma once
 
+#include <actl/types.hpp>
+
 namespace ac::io::detail {
 
 template <class T>
-inline constexpr T digit_count(T x, T base) {
+inline constexpr index digit_count(T x, T base) {
     return x == 0 ? 0 : 1 + digit_count(x / base, base);
 }
 
