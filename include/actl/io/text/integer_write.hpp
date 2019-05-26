@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <actl/io/text/detail/digit_count.hpp>
+#include <actl/io/text/detail/uitoa.hpp>
 #include <actl/io/text/text_format.hpp>
 #include <type_traits>
 
@@ -14,41 +16,16 @@ namespace ac::io {
 
 namespace detail {
 
-template <class Char, class UInt>
-inline Char* uitoa10(Char* last, UInt x, uint8_t base) {
-    do {
-        auto digit = x % base;
-        x /= base;
-        *--last = static_cast<Char>('0' + digit);
-    } while (x != 0);
-    return last;
-}
-
-template <class Char, class UInt>
-inline Char* uitoa(Char* last, UInt x, uint8_t base, Char ten) {
-    do {
-        auto digit = x % base;
-        x /= base;
-        *--last = static_cast<Char>(digit < 10 ? '0' + digit : ten + (digit - 10));
-    } while (x != 0);
-    return last;
-}
-
-template <class T>
-inline constexpr T digit_count(T x, T base) {
-    return x == 0 ? 0 : 1 + digit_count(x / base, base);
-}
-
 template <class Char, class F, class UInt>
 inline Char* write_uint(Char* last, F& fmt, UInt x, uint8_t base) {
     if (base <= 10) {
         last = uitoa10(last, x, base);
         if (base == 8 && x != 0 && fmt.getf(flags::showbase)) *--last = '0';
     } else {
-        Char ten = fmt.getf(flags::uppercase) ? 'A' : 'a';
-        last = uitoa(last, x, base, ten);
+        Char a = fmt.getf(flags::uppercase) ? 'A' : 'a';
+        last = uitoa(last, x, base, a);
         if (base == 16 && x != 0 && fmt.getf(flags::showbase)) {
-            *--last = ten + 'x' - 'a';
+            *--last = a + 'x' - 'a';
             *--last = '0';
         }
     }
