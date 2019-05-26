@@ -110,7 +110,7 @@ inline bool deserialize(Device& id, Format&, char_t<Device>& c) {
 }
 
 template <class Device, class Format>
-inline index serialize(Device& od, Format&, span<const char_t<Device>> s) {
+inline index serialize(Device& od, Format&, const span<const char_t<Device>>& s) {
     return od.write(s);
 }
 
@@ -120,7 +120,7 @@ inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N]
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, span<char_t<Device>> s) {
+inline bool deserialize(Device& id, Format&, const span<char_t<Device>>& s) {
     return id.read(s) == s.size();
 }
 
@@ -130,7 +130,7 @@ inline bool deserialize(Device& od, Format& fmt, char_t<Device> (&array)[N]) {
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, span<const char_t<Device>> s) {
+inline bool deserialize(Device& id, Format&, const span<const char_t<Device>>& s) {
     for (char c : s) {
         if (id.peek() != c) return false;
         id.move(1);
@@ -167,7 +167,7 @@ inline bool deserialize(Device& od, Format& fmt, T& x, Tag) {
  * lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
-inline index write(Device&& od, Format&& fmt, Ts&&... args) {
+inline index write(Device&& od, Format&& fmt, const Ts&... args) {
     if constexpr (std::is_same_v<format_tag_t<Format>, none>) {
         return write(od, deduce_format(od), fmt, args...);
     } else {
@@ -190,12 +190,12 @@ inline index writeln(Ts&&... args) {
 }
 
 template <class Device, class Format, class T>
-inline index writeSize(Device& od, Format& fmt, const T& size) {
+inline index write_size(Device& od, Format& fmt, const T& size) {
     return write(od, fmt, size);
 }
 
 template <class Device, class Format, class T>
-inline bool readSize(Device& id, Format& fmt, T& size) {
+inline bool read_size(Device& id, Format& fmt, T& size) {
     return read(id, fmt, size);
 }
 

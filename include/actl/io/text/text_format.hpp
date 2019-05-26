@@ -129,8 +129,8 @@ inline index serialize(Device& id, Format& fmt, char_t<Device> c, text) {
 }
 
 template <class Device, class Format>
-inline index serialize(Device& id, Format& fmt, span<const char_t<Device>> s, text) {
-    if (fmt.width() <= s.size()) return id.write(s);
+inline index serialize(Device& id, Format& fmt, const span<const char_t<Device>>& s, text) {
+    if (fmt.width() == 0 || fmt.width() <= s.size()) return id.write(s);
     auto [l, r] = adjustment(fmt, s.size());
     id.write_fill(fmt.fill(), l);
     index res = id.write(s);

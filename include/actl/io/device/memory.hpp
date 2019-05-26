@@ -34,7 +34,7 @@ public:
         return ok;
     }
 
-    index write(span<const Char> src) {
+    index write(const span<const Char>& src) {
         index count = std::min(src.size(), data_.end() - ptr_);
         std::memcpy(ptr_, src.data(), static_cast<size_t>(count) * sizeof(Char));
         ptr_ += count;
@@ -72,7 +72,7 @@ public:
         return c;
     }
 
-    index read(span<Char> dst) {
+    index read(const span<Char>& dst) {
         index count = std::min(dst.size(), data_.end() - ptr_);
         std::memcpy(dst.data(), ptr_, static_cast<size_t>(count));
         ptr_ += count;

@@ -54,7 +54,7 @@ public:
         return c == EOF ? {} : static_cast<Char>(c);
     }
 
-    index read(span<Char> dst) {
+    index read(const span<Char>& dst) {
         size_t res{};
         if constexpr (is_line_buffered<Mode>) {
             if (std::fgets(dst.data(), static_cast<int>(dst.size()), this->file_))
@@ -85,7 +85,7 @@ public:
 
     bool put(Char c) { return std::fputc(c, this->file_) != EOF; }
 
-    index write(span<const Char> src) {
+    index write(const span<const Char>& src) {
         return static_cast<index>(
             std::fwrite(src.data(), sizeof(Char), static_cast<size_t>(src.size()), this->file_));
     }

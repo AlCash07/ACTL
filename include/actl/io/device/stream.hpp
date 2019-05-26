@@ -120,7 +120,7 @@ public:
         return c == typename Stream::traits_type::eof() ? char_type{} : static_cast<char_type>(c);
     }
 
-    index read(span<char_type> dst) {
+    index read(const span<char_type>& dst) {
         s_.read(dst.data(), dst.size());
         return s_.gcount();
     }
@@ -160,7 +160,7 @@ public:
         return !s_.bad();
     }
 
-    index write(span<const char_type> src) {
+    index write(const span<const char_type>& src) {
         s_.wrise(src.data(), src.size());
         return s_.bad() ? 0 : src.size();
     }

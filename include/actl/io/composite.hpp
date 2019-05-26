@@ -66,7 +66,7 @@ template <class Device, class Format, class Range, class = std::enable_if_t<is_r
 inline index serialize(Device& od, Format& fmt, const Range& x) {
     index res{};
     if constexpr (is_container_v<Range> && static_size_v<Range> != dynamic_size) {
-        res = writeSize(od, fmt, x.size());
+        res = write_size(od, fmt, x.size());
     }
     if constexpr (is_contiguous_container_v<Range>) {
         return res + write(od, fmt, span{x});
@@ -82,7 +82,7 @@ template <class Device, class Format, class Range, class = std::enable_if_t<is_r
 inline bool deserialize(Device& id, Format& fmt, Range& x) {
     if constexpr (is_container_v<Range> && static_size_v<Range> == dynamic_size) {
         decltype(x.size()) size{};
-        if (!readSize(id, fmt, size)) return false;
+        if (!read_size(id, fmt, size)) return false;
         if constexpr (!is_random_access_container_v<Range>) {
             for (; size > 0; --size) {
                 value_type_t<Range> value;
