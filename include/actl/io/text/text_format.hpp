@@ -8,31 +8,25 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/bit.hpp>
 #include <actl/io/manip/skip.hpp>
 #include <actl/io/text/flags.hpp>
 #include <utility>
 
 namespace ac::io {
 
-inline constexpr flag_t bits(flag_t flag) { return flag_t{1} << flag; }
+const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat),
+                             bit(flags::left) | bit(flags::right) | bit(flags::center)};
 
-const flag_t group_bits[] = {bits(flags::fixed) | bits(flags::scientific) | bits(flags::hexfloat),
-                             bits(flags::left) | bits(flags::right) | bits(flags::center)};
-
-template <
-    class Char = char,
-    flag_t Flags = bits(flags::skipws),
-    uint8_t Base = 10,
-    index Precision = 6,
-    index Width = 0,
-    Char Fill = ' '>
+template <class Char = char, flag_t Flags = bit(flags::skipws), uint8_t Base = 10,
+          index Precision = 6, index Width = 0, Char Fill = ' '>
 class text_static {
 public:
     static constexpr mode_t mode = 0;
 
     static constexpr flag_t flags() { return Flags; }
 
-    static constexpr bool getf(flag_t flag) { return (Flags & bits(flag)) != 0; }
+    static constexpr bool getf(flag_t flag) { return has_bit(Flags, flag); }
 
     static constexpr uint8_t base() { return Base; }
 
@@ -54,13 +48,12 @@ public:
     flag_t flags() const { return flags_; }
     void flags(flag_t value) { flags_ = value; }
 
-    bool getf(flag_t flag) const { return (flags() & bits(flag)) != 0; }
-    void setf(flag_t flag) { flags_ |= bits(flag); }
-    void unsetf(flag_t flag) { flags_ &= ~bits(flag); }
+    bool getf(flag_t flag) const { return has_bit(flags(), flag); }
+    void setf(flag_t flag) { flags_ |= bit(flag); }
+    void unsetf(flag_t flag) { clear_bit(flags_, flag); }
 
     void setf(flag_t flag, flag_t group) {
-        group = group_bits[group];
-        flags_ = (flags_ & ~group) | (bits(flag) & group);
+        flags_ = set_bits(flags_, group_bits[group], bit(flag));
     }
 
     uint8_t base() const { return base_; }

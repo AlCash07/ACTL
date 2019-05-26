@@ -23,21 +23,21 @@ TEST("adjustment::default") {
 }
 
 TEST("adjustment::right") {
-    text_static<char, bits(flags::right), 0, 0, 4> ts;
+    text_static<char, bit(flags::right), 0, 0, 4> ts;
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 4));
     ASSERT_EQUAL(pii{0, 3}, adjustment(ts, 1));
 }
 
 TEST("adjustment::left") {
-    text_static<char, bits(flags::left), 0, 0, 4> ts;
+    text_static<char, bit(flags::left), 0, 0, 4> ts;
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 4));
     ASSERT_EQUAL(pii{3, 0}, adjustment(ts, 1));
 }
 
 TEST("adjustment::center") {
-    text_static<char, bits(flags::center), 0, 0, 4> ts;
+    text_static<char, bit(flags::center), 0, 0, 4> ts;
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 4));
     ASSERT_EQUAL(pii{1, 1}, adjustment(ts, 2));
@@ -45,7 +45,7 @@ TEST("adjustment::center") {
 }
 
 TEST("adjustment::centerleft") {
-    text_static<char, bits(flags::center) | bits(flags::left), 0, 0, 4> ts;
+    text_static<char, bit(flags::center) | bit(flags::left), 0, 0, 4> ts;
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(ts, 4));
     ASSERT_EQUAL(pii{1, 1}, adjustment(ts, 2));
@@ -53,7 +53,7 @@ TEST("adjustment::centerleft") {
 }
 
 TEST("fill") {
-    text_static<char, bits(flags::center), 0, 0, 4, '*'> ts;
+    text_static<char, bit(flags::center), 0, 0, 4, '*'> ts;
     char s[10];
     memory<out> od{s};
     ASSERT_EQUAL(4, write(od, ts, 'a'));

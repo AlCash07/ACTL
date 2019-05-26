@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/bit.hpp>
 #include <actl/io/text/flags.hpp>
 #include <actl/io/util/unbuffered.hpp>
 #include <ios>
@@ -25,7 +26,7 @@ public:
 
     bool getf(flag_t flag) const {
         auto b = bits[flag];
-        return b != 0 && (s_.flags() & b) == b;
+        return b != 0 && has_bits(s_.flags(), b);
     }
 
     void setf(flag_t flag) {

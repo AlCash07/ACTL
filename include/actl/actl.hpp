@@ -10,6 +10,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/bit.hpp>
 #include <actl/container/all.hpp>
 #include <actl/functions.hpp>
 #include <actl/geometry/all.hpp>
