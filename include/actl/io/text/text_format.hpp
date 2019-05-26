@@ -18,8 +18,13 @@ namespace ac::io {
 const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat),
                              bit(flags::left) | bit(flags::right) | bit(flags::center)};
 
-template <class Char = char, flag_t Flags = bit(flags::skipws), uint8_t Base = 10,
-          index Precision = 6, index Width = 0, Char Fill = ' '>
+template <
+    class Char = char,
+    flag_t Flags = bit(flags::skipws),
+    uint8_t Base = 10,
+    index Precision = 6,
+    index Width = 0,
+    Char Fill = ' '>
 class text_static {
 public:
     static constexpr mode_t mode = 0;
@@ -50,7 +55,7 @@ public:
 
     bool getf(flag_t flag) const { return has_bit(flags(), flag); }
     void setf(flag_t flag) { flags_ |= bit(flag); }
-    void unsetf(flag_t flag) { clear_bit(flags_, flag); }
+    void unsetf(flag_t flag) { flags_ = clear_bit(flags_, flag); }
 
     void setf(flag_t flag, flag_t group) {
         flags_ = set_bits(flags_, group_bits[group], bit(flag));
