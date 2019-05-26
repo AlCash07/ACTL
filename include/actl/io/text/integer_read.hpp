@@ -39,18 +39,10 @@ inline bool read_uint(D& id, UInt& x, uint8_t base) {
     if (!peek_digit<B>(id, v, base)) return false;
     id.move(1);
     const UInt safe = Max / base;
-    while (v < safe) {
-        if (!peek_digit<B>(id, d, base)) break;
+    while (peek_digit<B>(id, d, base)) {
+        if (safe < v || safe == v && Max % base < d) return false;
         v = v * base + d;
         id.move(1);
-    }
-    if (safe <= v) {
-        if (peek_digit<B>(id, d, base)) {
-            if (safe < v || Max % base < d) return false;
-            v = v * base + d;
-            id.move(1);
-            if (peek_digit<B>(id, d, base)) return false;
-        }
     }
     x = v;
     return true;
