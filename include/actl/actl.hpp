@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <actl/algorithm/all.hpp>
 #include <actl/assert.hpp>
 #include <actl/bit.hpp>
 #include <actl/container/all.hpp>
