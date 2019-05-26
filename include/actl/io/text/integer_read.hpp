@@ -40,7 +40,10 @@ inline bool read_uint(D& id, UInt& x, uint8_t base) {
     id.move(1);
     const UInt safe = Max / base;
     while (peek_digit<B>(id, d, base)) {
-        if (safe < v || safe == v && Max % base < d) return false;
+        if (safe < v || (safe == v && Max % base < d)) {
+            x = Max;
+            return false;
+        }
         v = v * base + d;
         id.move(1);
     }
@@ -87,17 +90,17 @@ inline std::enable_if_t<std::is_integral_v<Int>, bool> deserialize(Device& id, F
     if constexpr (is_signed_int_v<Int>) {
         using UInt = std::make_unsigned_t<Int>;
         UInt ux;
+        bool ok;
         if (id.peek() == '-') {
             id.move(1);
-            if (!detail::read_uint<std::numeric_limits<UInt>::max() / 2 + 1>(id, fmt, ux))
-                return false;
+            ok = detail::read_uint<std::numeric_limits<UInt>::max() / 2 + 1>(id, fmt, ux);
             x = ~static_cast<Int>(ux - 1);
         } else {
             if (id.peek() == '+') id.move(1);
-            if (!detail::read_uint<std::numeric_limits<UInt>::max() / 2>(id, fmt, ux)) return false;
+            ok = detail::read_uint<std::numeric_limits<UInt>::max() / 2>(id, fmt, ux);
             x = static_cast<Int>(ux);
         }
-        return true;
+        return ok;
     } else {
         if (id.peek() == '+') id.move(1);
         return detail::read_uint<std::numeric_limits<Int>::max()>(id, fmt, x);
