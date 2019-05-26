@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/text/detail/peek_digit.hpp>
+#include <actl/io/text/arithmetic/detail/peek_digit.hpp>
 #include <actl/io/text/text_format.hpp>
 #include <type_traits>
 

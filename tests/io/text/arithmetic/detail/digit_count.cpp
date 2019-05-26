@@ -5,9 +5,13 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#pragma once
+#include <actl/io/text/arithmetic/detail/digit_count.hpp>
+#include <actl/test.hpp>
 
-#include <actl/io/text/arithmetic/all.hpp>
-#include <actl/io/text/manip.hpp>
-#include <actl/io/text/spacer.hpp>
-#include <actl/io/text/text_format.hpp>
+TEST("digit_count") {
+    using io::detail::digit_count;
+    ASSERT_EQUAL(2, digit_count(8, 3));
+    ASSERT_EQUAL(9, digit_count(999'999'999, 10));
+    ASSERT_EQUAL(10, digit_count(1'000'000'000, 10));
+    ASSERT_EQUAL(64, digit_count(std::numeric_limits<unsigned long long>::max(), 2ull));
+}

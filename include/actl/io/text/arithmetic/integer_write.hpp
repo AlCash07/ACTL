@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/io/text/detail/digit_count.hpp>
-#include <actl/io/text/detail/uitoa.hpp>
+#include <actl/io/text/arithmetic/detail/digit_count.hpp>
+#include <actl/io/text/arithmetic/detail/uitoa.hpp>
 #include <actl/io/text/text_format.hpp>
 #include <type_traits>
 

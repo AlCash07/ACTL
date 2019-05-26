@@ -5,8 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/io/text/arithmetic/real_write.hpp>
 #include <actl/io/text/manip.hpp>
-#include <actl/io/text/real_write.hpp>
 #include <actl/test.hpp>
 #include "test_io.hpp"
 
@@ -16,7 +16,6 @@ TEST("write double") {
     const auto inf = std::numeric_limits<double>::infinity();
     const auto nan = std::numeric_limits<double>::quiet_NaN();
     text_format<out> f;
-    test_write("0.123456789", f, setprecision{9}, 0.123456789);
     test_write("inf", f, inf);
     test_write("-inf", f, -inf);
     test_write("+INF", f, showpos, uppercase, inf);

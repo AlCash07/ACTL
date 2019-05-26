@@ -5,7 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/io/text/boolean.hpp>
+#include <actl/io/text/arithmetic/boolean.hpp>
 #include "test_io.hpp"
 
 using namespace ac::io;
