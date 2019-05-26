@@ -5,22 +5,12 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#pragma once
+#include <actl/algorithm/binary_pow.hpp>
+#include <actl/test.hpp>
 
-#include <actl/bit.hpp>
-
-namespace ac {
-
-template <class T, class Int>
-inline T binary_pow(T value, Int power) {
-    ACTL_ASSERT(power >= 0);
-    T res{1};
-    if (power == 0) return res;
-    for (; power > 1; power >>= 1) {
-        if (power & 1) res *= value;
-        value *= value;
-    }
-    return res * value;
+TEST("correctness") {
+    ASSERT_EQUAL(1, binary_pow(1024, 0));
+    ASSERT_EQUAL(1 << 15, binary_pow(2, 15));
+    ASSERT_EQUAL(1 << 16, binary_pow(2, 16));
+    ASSERT_EQUAL(1ll << 62, binary_pow(2ll, 62));
 }
-
-}  // namespace ac
