@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/cp/ring.hpp>
-#include <actl/random/random.hpp>
+#include <actl/numeric/random/random.hpp>
 #include <actl/test.hpp>
 
 TEST("cp::static_quotient_ring::arithmetic", repeat = 1000, time_limit = 1) {

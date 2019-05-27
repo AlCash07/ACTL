@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/random/rng_decorator.hpp>
-#include <actl/random/xoroshiro128cplus.hpp>
+#include <actl/numeric/random/rng_decorator.hpp>
+#include <actl/numeric/random/xoroshiro128cplus.hpp>
 
 namespace ac {
 

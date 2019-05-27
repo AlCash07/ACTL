@@ -52,7 +52,7 @@ struct rng_decorator : public Rng {
 
     void seed(czstring value) {
         Rng& base = static_cast<Rng&>(*this);
-        Rng  default_rng;
+        Rng default_rng;
         do {
             default_rng();
             base = default_rng;

@@ -9,7 +9,7 @@
 
 #include <actl/cp/diagnostics/to_string.hpp>
 #include <actl/macros.hpp>
-#include <actl/random/random.hpp>
+#include <actl/numeric/random/random.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/types.hpp>
 #include <actl/util/span.hpp>
