@@ -99,7 +99,7 @@ inline auto deduce_format(Device& dev) {
 
 template <class Device, class Format>
 inline index serialize(Device& od, Format&, char_t<Device> c) {
-    return static_cast<index>(od.put(c));
+    return od.put(c);
 }
 
 template <class Device, class Format>
@@ -183,9 +183,9 @@ inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
     }
 }
 
-template <class... Ts>
-inline index writeln(Ts&&... args) {
-    return write(args..., '\n');
+template <class Device, class... Ts>
+inline index writeln(Device&& od, Ts&&... args) {
+    return write(od, args...) + od.put('\n');
 }
 
 template <class Device, class Format, class T>

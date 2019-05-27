@@ -156,9 +156,9 @@ public:
 
     using base_t::base_t;
 
-    bool put(char_type c) {
+    index put(char_type c) {
         s_.put(c);
-        return !s_.bad();
+        return s_.bad() ? 0 : 1;
     }
 
     index write(const span<const char_type>& src) {

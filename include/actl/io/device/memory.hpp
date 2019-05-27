@@ -28,10 +28,10 @@ class out_memory<Mode, Char, true> : public device<Mode, Char> {
 public:
     explicit out_memory(span<Char> data) : data_{data}, ptr_{data_.begin()} {}
 
-    bool put(Char c) {
-        bool ok = ptr_ < data_.end();
-        if (ok) *ptr_++ = c;
-        return ok;
+    index put(Char c) {
+        if (ptr_ >= data_.end()) return 0;
+        *ptr_++ = c;
+        return 1;
     }
 
     index write(const span<const Char>& src) {

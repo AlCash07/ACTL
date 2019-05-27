@@ -33,9 +33,9 @@ public:
         if constexpr (trunc == (Mode & trunc)) s.clear();
     }
 
-    bool put(Char c) {
+    index put(Char c) {
         s_ += c;
-        return true;
+        return 1;
     }
 
     index write(const span<const Char>& src) {
@@ -66,7 +66,8 @@ public:
     using base_t::base_t;
 
     Char peek() {
-        return pos_ < static_cast<index>(s_.size()) ? s_[static_cast<size_t>(pos_)] : Char{};
+        auto i = static_cast<size_t>(pos_);
+        return i < s_.size() ? s_[i] : Char{};
     }
 
     Char get() {

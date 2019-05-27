@@ -152,10 +152,10 @@ protected:
     }
 
 public:
-    bool put(Char arg) {
+    index put(Char arg) {
         *ptr_++ = arg;
         if (EXPECT_FALSE(ptr_ == end_)) overflow();
-        return true;
+        return 1;
     }
 
     index write(const span<const Char>& src) {
