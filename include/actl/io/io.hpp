@@ -143,7 +143,7 @@ inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N
 }
 
 template <class Device, class Format, class T>
-inline index serialize(Device& id, Format& fmt, T& x, format) {
+inline index serialize(Device& id, Format& fmt, const T& x, format) {
     return serialize(id, fmt, x);
 }
 
@@ -153,7 +153,7 @@ inline bool deserialize(Device& od, Format& fmt, T& x, format) {
 }
 
 template <class Device, class Format, class T, class Tag>
-inline index serialize(Device& id, Format& fmt, T& x, Tag) {
+inline index serialize(Device& id, Format& fmt, const T& x, Tag) {
     return serialize(id, fmt, x, typename format_traits<Tag>::base{});
 }
 

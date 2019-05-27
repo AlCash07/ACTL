@@ -20,12 +20,9 @@ class in_file : public device<Mode, Char> {
     };
 
 public:
-    explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} {
-        ACTL_ASSERT(file);
-    }
+    in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} { ACTL_ASSERT(file); }
 
-    explicit in_file(czstring filename)
-        : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
+    in_file(czstring filename) : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
     ~in_file() {
         if (own_) std::fclose(file_);
@@ -35,7 +32,7 @@ public:
 
 protected:
     std::FILE* file_;
-    bool       own_;
+    bool own_;
 };
 
 template <mode_t Mode, class Char>
@@ -51,7 +48,7 @@ public:
 
     Char get() {
         int c = std::fgetc(this->file_);
-        return c == EOF ? {} : static_cast<Char>(c);
+        return c == EOF ? Char{} : static_cast<Char>(c);
     }
 
     index read(const span<Char>& dst) {
@@ -91,6 +88,8 @@ public:
     }
 
     void flush() { std::fflush(this->file_); }
+
+    ~file() { flush(); }
 };
 
 }  // namespace ac::io

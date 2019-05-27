@@ -15,7 +15,7 @@
 
 namespace ac::io {
 
-template <class Device, int BufferSize = 1 << 10, bool Read = is_in<Device::mode>>
+template <class Device, index BufferSize = 1 << 10, bool Read = is_in<Device::mode>>
 class buffered_reader : public Device {
 public:
     using Device::Device;
@@ -24,11 +24,11 @@ protected:
     using Char = char_t<Device>;
 
     std::array<Char, BufferSize> data_;
-    Char* ptr_ = data_.begin();
-    Char* end_ = Read ? data_.begin() : data_.end();
+    Char* ptr_ = data_.data();
+    Char* end_ = Read ? ptr_ : data_.end();
 };
 
-template <class Device, int BS>
+template <class Device, index BS>
 class buffered_reader<Device, BS, true> : public buffered_reader<Device, BS, false> {
 protected:
     using base_t = buffered_reader<Device, BS, false>;
@@ -46,7 +46,7 @@ public:
 
     Char peek() {
         if (ptr_ >= end_) underflow();
-        return ptr_ < end_ ? *ptr_ : {};
+        return ptr_ < end_ ? *ptr_ : Char{};
     }
 
     Char get() {
@@ -105,13 +105,13 @@ public:
     bool eof() { return ptr_ > end_; }
 };
 
-template <class Device, int BS = 1 << 10, bool = is_out<Device::mode>>
+template <class Device, index BS = 1 << 10, bool = is_out<Device::mode>>
 class buffered : public buffered_reader<Device, BS> {
 public:
     using buffered_reader<Device, BS>::buffered_reader;
 };
 
-template <class Device, int BS>
+template <class Device, index BS>
 class buffered<Device, BS, true> : public buffered<Device, BS, false> {
 protected:
     using base_t = buffered_reader<Device, BS, false>;
@@ -121,8 +121,8 @@ protected:
     using typename base_t::Char;
 
     void overflow() {
-        Device::write({data_, ptr_});
-        ptr_ = data_;
+        Device::write({data_.data(), ptr_});
+        ptr_ = data_.data();
     }
 
     void write_impl(const span<const Char>& src) {
@@ -152,13 +152,14 @@ protected:
     }
 
 public:
-    void put(Char arg) {
+    bool put(Char arg) {
         *ptr_++ = arg;
         if (EXPECT_FALSE(ptr_ == end_)) overflow();
+        return true;
     }
 
     index write(const span<const Char>& src) {
-        if constexpr (is_line_buffered<Mode>) {
+        if constexpr (is_line_buffered<base_t::mode>) {
             const Char* last = src.end();
             while (last != src.data() && last[-1] != '\n') --last;
             if (last != src.data()) {
@@ -192,6 +193,8 @@ public:
         overflow();
         Device::flush();
     }
+
+    ~buffered() { overflow(); }
 };
 
 }  // namespace ac::io

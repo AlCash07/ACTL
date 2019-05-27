@@ -66,8 +66,8 @@ inline bool read_uint(D& id, F& fmt, UInt& x) {
 }  // namespace detail
 
 template <class Device, class Format, class Int>
-inline std::enable_if_t<std::is_integral_v<Int>, bool> deserialize(Device& id, Format& fmt, Int& x,
-                                                                   text) {
+inline std::enable_if_t<std::is_integral_v<Int> && !std::is_same_v<Int, char_t<Device>>, bool>
+deserialize(Device& id, Format& fmt, Int& x, text) {
     if (fmt.getf(flags::skipws)) read(id, fmt, ws);
     if constexpr (is_signed_int_v<Int>) {
         using UInt = std::make_unsigned_t<Int>;

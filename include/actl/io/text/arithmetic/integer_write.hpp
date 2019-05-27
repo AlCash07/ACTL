@@ -38,8 +38,8 @@ inline index write_int(D& od, F& fmt, Int x, uint8_t base) {
 }  // namespace detail
 
 template <class Device, class Format, class Int>
-inline std::enable_if_t<std::is_integral_v<Int>, index> serialize(Device& od, Format& fmt, Int x,
-                                                                  text) {
+inline std::enable_if_t<std::is_integral_v<Int> && !std::is_same_v<Int, char_t<Device>>, index>
+serialize(Device& od, Format& fmt, Int x, text) {
     auto base = fmt.base();
     ACTL_ASSERT(base == 0 || (2 <= base && base <= 36));
     if (base == 0 || base == 10) {
