@@ -113,16 +113,16 @@ struct setfill {
 };
 
 template <class Device, class Format>
-inline bool deserialize(Device&, Format& fmt, setbase arg, text) {
-    fmt.base(arg.value);
+inline bool deserialize(Device&, Format& fmt, setbase x, text) {
+    fmt.base(x.value);
     return true;
 }
 
-#define SERIALIZE_MANIP(name)                                              \
-    template <class Device, class Format>                                  \
-    inline int serialize(Device&, Format& fmt, CAT(set, name) arg, text) { \
-        fmt.name(arg.value);                                               \
-        return 0;                                                          \
+#define SERIALIZE_MANIP(name)                                            \
+    template <class Device, class Format>                                \
+    inline int serialize(Device&, Format& fmt, CAT(set, name) x, text) { \
+        fmt.name(x.value);                                               \
+        return 0;                                                        \
     }
 
 SERIALIZE_MANIP(base)
@@ -132,8 +132,8 @@ SERIALIZE_MANIP(width)
 #undef SERIALIZE_MANIP
 
 template <class Device, class Format, class Char>
-inline int serialize(Device&, Format& fmt, setfill<Char> arg, text) {
-    fmt.fill(arg.value);
+inline int serialize(Device&, Format& fmt, setfill<Char> x, text) {
+    fmt.fill(x.value);
     return 0;
 }
 
