@@ -16,20 +16,20 @@ TEST("read unsigned long long") {
     const auto max = std::numeric_limits<unsigned long long>::max();
     text_format<in> f;
     unsigned long long x{};
-    test_read<true>(zero, "0", f);
-    test_read<true>(max, "18446744073709551615", f);
+    test_read(zero, "0", f);
+    test_read(max, "18446744073709551615", f);
     test_read<false>(x, "18446744073709551616", f);
     test_read<false>(x, "18446744073709551620", f);
     test_read<false>(x, "100000000000000000000", f);
-    test_read<true>(zero, "+00", f, setbase{2});
-    test_read<true>(max, "1111111111111111111111111111111111111111111111111111111111111111", f);
-    test_read<true>(max, "11112220022122120101211020120210210211220", f, setbase{3});
-    test_read<true>(max, "3w5e11264sgsf", f, setbase{36});
-    test_read<true>(max, "fFfFfFfFfFfFfFfF", f, setbase{16});
-    test_read<true>(max, "0XFFFFFFFFFFFFFFFF", f);
-    test_read<true>(max, "0xffffffffffffffff", f);
+    test_read(zero, "+00", f, setbase{2});
+    test_read(max, "1111111111111111111111111111111111111111111111111111111111111111", f);
+    test_read(max, "11112220022122120101211020120210210211220", f, setbase{3});
+    test_read(max, "3w5e11264sgsf", f, setbase{36});
+    test_read(max, "fFfFfFfFfFfFfFfF", f, setbase{16});
+    test_read(max, "0XFFFFFFFFFFFFFFFF", f);
+    test_read(max, "0xffffffffffffffff", f);
     test_read<false>(x, "0xfffffffffffffffff", f);
-    test_read<true>(zero, "0x0xf", f);
+    test_read(zero, "0x0xf", f);
 }
 
 TEST("read long long") {

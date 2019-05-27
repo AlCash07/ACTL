@@ -18,7 +18,7 @@ inline void test_write(const std::string& expected, Ts&&... xs) {
     ASSERT_EQUAL(expected, s);
 }
 
-template <bool Valid, class T, class... Ts>
+template <bool Valid = true, class T, class... Ts>
 inline void test_read(const T& expected, const std::string& input, Ts&&... xs) {
     T x;
     ASSERT_EQUAL(Valid, read(io::string<io::in>{input}, std::forward<Ts>(xs)..., x));
