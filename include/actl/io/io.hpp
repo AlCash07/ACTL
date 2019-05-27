@@ -81,7 +81,6 @@ struct format_traits<binary> {
 template <>
 struct format_traits<text> {
     using base = format;
-    using tag = text;
 };
 
 template <class T>
@@ -100,7 +99,7 @@ inline auto deduce_format(Device& dev) {
 
 template <class Device, class Format>
 inline index serialize(Device& od, Format&, char_t<Device> c) {
-    return static_cast<int>(od.put(c));
+    return static_cast<index>(od.put(c));
 }
 
 template <class Device, class Format>
