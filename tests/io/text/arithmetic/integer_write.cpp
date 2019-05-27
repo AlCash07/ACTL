@@ -19,10 +19,10 @@ TEST("write unsigned long long") {
     test_write("18446744073709551615", f, max);
     test_write("0", f, setbase{2}, zero);
     test_write("1111111111111111111111111111111111111111111111111111111111111111", f, max);
-    test_write("0", f, setbase{8}, zero);
+    test_write("0", f, oct, zero);
     test_write("01777777777777777777777", f, max);
     test_write("1777777777777777777777", f, noshowbase, max);
-    test_write("ffffffffffffffff", f, setbase{16}, max);
+    test_write("ffffffffffffffff", f, hex, max);
     test_write("FFFFFFFFFFFFFFFF", f, uppercase, max);
     test_write("0XFFFFFFFFFFFFFFFF", f, showbase, max);
     test_write("0xffffffffffffffff", f, nouppercase, max);
@@ -42,12 +42,12 @@ TEST("write long long") {
     test_write("+0", f, showpos, setbase{2}, zero);
     test_write("-1000000000000000000000000000000000000000000000000000000000000000", f, min);
     test_write("+111111111111111111111111111111111111111111111111111111111111111", f, max);
-    test_write("0", f, noshowpos, setbase{8}, zero);
+    test_write("0", f, noshowpos, oct, zero);
     test_write("-01000000000000000000000", f, min);
     test_write("0777777777777777777777", f, max);
     test_write("-1000000000000000000000", f, noshowbase, min);
     test_write("777777777777777777777", f, max);
-    test_write("-8000000000000000", f, setbase{16}, min);
+    test_write("-8000000000000000", f, hex, min);
     test_write("7fffffffffffffff", f, max);
     test_write("7FFFFFFFFFFFFFFF", f, uppercase, max);
     test_write("-0X8000000000000000", f, showbase, min);

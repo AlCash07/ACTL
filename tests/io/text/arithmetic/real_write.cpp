@@ -28,5 +28,5 @@ TEST("write double") {
     test_write("0.", f, showpoint, 0.0);
     test_write("0.123456789", f, setprecision{9}, 0.123456789);
     test_write("-12345678987654320.000000000", f, -12345678987654320.0);
-    test_write("F0E1.D20000000", f, uppercase, setbase{16}, 0xF0E1.D2p0);
+    test_write("F0E1.D20000000", f, uppercase, hex, 0xF0E1.D2p0);
 }

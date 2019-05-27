@@ -15,10 +15,10 @@
 
 namespace ac::io {
 
-template <flag_t flag, bool value>
+template <flag_t Flag, bool Value>
 struct setf {};
 
-template <flag_t group, flag_t flag>
+template <flag_t Group, flag_t Flag>
 struct setg {};
 
 // boolean as string or int
@@ -60,31 +60,31 @@ constexpr setf<flags::skipws, false> noskipws{};
 constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
 
-template <class Device, class Format, flag_t flag, bool value>
-inline int serialize(Device&, Format& fmt, setf<flag, value>, text) {
-    if constexpr (value) {
-        fmt.setf(flag);
+template <class Device, class Format, flag_t Flag, bool Value, class Tag>
+inline index serialize(Device&, Format& fmt, setf<Flag, Value>, Tag) {
+    if constexpr (Value) {
+        fmt.setf(Flag);
     } else {
-        fmt.unsetf(flag);
+        fmt.unsetf(Flag);
     }
     return 0;
 }
 
-template <class Device, class Format, flag_t flag, bool value>
-inline bool deserialize(Device& id, Format& fmt, setf<flag, value>, text) {
-    serialize(id, fmt, setf<flag, value>{}, text{});
+template <class Device, class Format, flag_t Flag, bool Value, class Tag>
+inline bool deserialize(Device& id, Format& fmt, setf<Flag, Value>, Tag) {
+    serialize(id, fmt, setf<Flag, Value>{}, Tag{});
     return true;
 }
 
-template <class Device, class Format, flag_t group, flag_t flag>
-inline int serialize(Device&, Format& fmt, setg<group, flag>, text) {
-    fmt.setf(flag, group);
+template <class Device, class Format, flag_t Group, flag_t Flag, class Tag>
+inline index serialize(Device&, Format& fmt, setg<Group, Flag>, Tag) {
+    fmt.setf(Flag, Group);
     return 0;
 }
 
-template <class Device, class Format, flag_t group, flag_t flag>
-inline bool deserialize(Device&, Format& fmt, setg<group, flag>, text) {
-    fmt.setf(flag, group);
+template <class Device, class Format, flag_t Group, flag_t Flag, class Tag>
+inline bool deserialize(Device&, Format& fmt, setg<Group, Flag>, Tag) {
+    fmt.setf(Flag, Group);
     return true;
 }
 
@@ -112,17 +112,17 @@ struct setfill {
     Char value = ' ';
 };
 
-template <class Device, class Format>
-inline bool deserialize(Device&, Format& fmt, setbase x, text) {
+template <class Device, class Format, class Tag>
+inline bool deserialize(Device&, Format& fmt, setbase x, Tag) {
     fmt.base(x.value);
     return true;
 }
 
-#define SERIALIZE_MANIP(name)                                            \
-    template <class Device, class Format>                                \
-    inline int serialize(Device&, Format& fmt, CAT(set, name) x, text) { \
-        fmt.name(x.value);                                               \
-        return 0;                                                        \
+#define SERIALIZE_MANIP(name)                                             \
+    template <class Device, class Format, class Tag>                      \
+    inline index serialize(Device&, Format& fmt, CAT(set, name) x, Tag) { \
+        fmt.name(x.value);                                                \
+        return 0;                                                         \
     }
 
 SERIALIZE_MANIP(base)
@@ -131,8 +131,8 @@ SERIALIZE_MANIP(width)
 
 #undef SERIALIZE_MANIP
 
-template <class Device, class Format, class Char>
-inline int serialize(Device&, Format& fmt, setfill<Char> x, text) {
+template <class Device, class Format, class Char, class Tag>
+inline index serialize(Device&, Format& fmt, setfill<Char> x, Tag) {
     fmt.fill(x.value);
     return 0;
 }

@@ -25,7 +25,7 @@ TEST("read unsigned long long") {
     test_read(max, "1111111111111111111111111111111111111111111111111111111111111111", f);
     test_read(max, "11112220022122120101211020120210210211220", f, setbase{3});
     test_read(max, "3w5e11264sgsf", f, setbase{36});
-    test_read(max, "fFfFfFfFfFfFfFfF", f, setbase{16});
+    test_read(max, "fFfFfFfFfFfFfFfF", f, hex);
     test_read(max, "0XFFFFFFFFFFFFFFFF", f);
     test_read(max, "0xffffffffffffffff", f);
     test_read<false>(x, "0xfffffffffffffffff", f);
@@ -50,7 +50,7 @@ TEST("read long long") {
     test_read<true>(max, "+2021110011022210012102010021220101220221", f);
     test_read<true>(min, "-1y2p0ij32e8e8", f, setbase{36});
     test_read<true>(max, "+1y2p0ij32e8e7", f);
-    test_read<true>(min, "-8000000000000000", f, setbase{16});
+    test_read<true>(min, "-8000000000000000", f, hex);
     test_read<true>(min, "-0x8000000000000000", f);
     test_read<true>(max, "7fffffffffffffff", f);
     test_read<true>(max, "+0X7fFfFfFfFfFfFfFf", f);
