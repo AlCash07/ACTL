@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/algorithm/binary_pow.hpp>
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
 #include <actl/io/text/arithmetic/detail/peek_digit.hpp>
 #include <actl/io/text/text_format.hpp>
+#include <actl/numeric/binary_pow.hpp>
 #include <type_traits>
 #include <utility>
 
