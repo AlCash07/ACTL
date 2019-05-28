@@ -7,28 +7,18 @@
 
 #pragma once
 
+#include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
-#include <string>
-#include <type_traits>
 
 namespace ac {
 
-template <class T>
+template <class T, class C>
 struct is_string : std::false_type {};
 
-template <class C, class T, class A>
-struct is_string<std::basic_string<C, T, A>> : std::true_type {};
+template <class C, index N>
+struct is_string<C[N], C> : std::true_type {};
 
-template <int N>
-struct is_string<char[N]> : std::true_type {};
-
-template <>
-struct is_string<zstring> : std::true_type {};
-
-template <>
-struct is_string<czstring> : std::true_type {};
-
-template <class T>
-inline constexpr bool is_string_v = is_string<T>::value;
+template <class T, class Char = char>
+inline constexpr bool is_string_v = is_string<remove_cvref_t<T>, Char>::value;
 
 }  // namespace ac

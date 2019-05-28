@@ -13,6 +13,7 @@
 #include <actl/container/std/list.hpp>
 #include <actl/container/std/map.hpp>
 #include <actl/container/std/set.hpp>
+#include <actl/container/std/string.hpp>
 #include <actl/container/std/unordered_map.hpp>
 #include <actl/container/std/unordered_set.hpp>
 #include <actl/container/std/vector.hpp>

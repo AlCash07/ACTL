@@ -53,11 +53,12 @@ template <class T>
 struct to_string_impl<T, type_kind::string> {
     static std::string doit(const T& value) {
         std::string res(1, '"');
-        for (char c : std::string(value)) {
+        for (char c : value) {
             switch (c) {
                 case '\"': res += "\\\""; break;
                 case '\n': res += "\\n" ; break;
                 case '\r': res += "\\r" ; break;
+                case '\0': break;
                 default  : res += c;
             }
         }

@@ -8,9 +8,8 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/types.hpp>
+#include <actl/traits/string_traits.hpp>
 #include <iterator>
-#include <type_traits>
 
 namespace ac {
 
@@ -59,5 +58,11 @@ private:
 
 template <class Range>
 span(Range&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Range&>()))>>;
+
+template <class C>
+struct is_string<span<C>, C> : std::true_type {};
+
+template <class C>
+struct is_string<span<const C>, C> : std::true_type {};
 
 }  // namespace ac

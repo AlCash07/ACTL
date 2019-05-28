@@ -6,6 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/container/std/set.hpp>
+#include <actl/container/std/string.hpp>
 #include <actl/container/std/vector.hpp>
 #include <actl/cp/diagnostics/to_string.hpp>
 #include <actl/test.hpp>
@@ -17,5 +18,5 @@ TEST("cp::diagnostics::to_string") {
     ASSERT_EQUAL("\"hello\"", to_string("hello"));
     ASSERT_EQUAL("[1, 2, 3]", to_string(std::vector<int>{1, 2, 3}));
     ASSERT_EQUAL("{1, 2, 3}", to_string(std::set<int>{1, 2, 3}));
-    ASSERT_EQUAL("(\"hello\", 42)", to_string(std::make_tuple("hello", 42)));
+    ASSERT_EQUAL("(\"hello\", 42)", to_string(std::make_tuple("hello"s, 42)));
 }
