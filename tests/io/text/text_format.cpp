@@ -61,7 +61,7 @@ TEST("fill") {
     ASSERT_EQUAL_RANGES("*a**bacaba"s, s);
 }
 
-TEST("read char") {
+TEST("whitespace skip") {
     std::string s = " \n\ta\n";
     formatted<memory<in>> id{s};
     char a, b;

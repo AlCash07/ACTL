@@ -142,4 +142,26 @@ inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text) {
     return deserialize(id, fmt, c);
 }
 
+// Use this class to write string representation of a non-string type.
+// Distinguishes such string from spans passed by the user.
+template <class Char>
+class ospan : public span<const Char> {
+public:
+    using span<const Char>::span;
+
+    template <index N>
+    ospan(const Char (&array)[N]) : span<const Char>{array, array[N - 1] ? N : N - 1} {}
+};
+
+// Null-terminated string literals handling.
+template <class Device, class Format, index N>
+inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text) {
+    return serialize(od, fmt, ospan{array});
+}
+
+template <class Device, class Format, index N>
+inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text) {
+    return deserialize(od, fmt, ospan{array});
+}
+
 }  // namespace ac::io

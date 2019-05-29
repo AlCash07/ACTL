@@ -32,7 +32,7 @@ inline index write_int(D& od, F& fmt, Int x, uint8_t base) {
     } else {
         last = uitoa(last, fmt, x, base);
     }
-    return write(od, fmt, span<const char_t<D>>{last, std::end(s)});
+    return write(od, fmt, ospan<char_t<D>>{last, std::end(s)});
 }
 
 }  // namespace detail

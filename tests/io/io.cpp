@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/io/device/memory.hpp>
-#include <actl/io/io.hpp>
+#include <actl/io/text/text_format.hpp>
 #include <actl/test.hpp>
 
 using namespace ac::io;
@@ -29,7 +29,7 @@ TEST("read char") {
 
 TEST("write span<char>") {
     char s[7];
-    ASSERT_EQUAL(7, write(memory<bin | out>{s}, "aba", "cabad"));
+    ASSERT_EQUAL(7, write(memory<bin | out>{s}, ospan{"aba"}, ospan{"cabad"}));
     ASSERT_EQUAL_RANGES("abacaba"s, s);
 }
 
@@ -46,6 +46,6 @@ TEST("read span<char>") {
 TEST("read span<const char>") {
     std::string s = "abacaba";
     memory<bin | in> id{s};
-    ASSERT_TRUE(read(id, "aba"));
-    ASSERT_FALSE(read(id, "caca"));
+    ASSERT_TRUE(read(id, ospan{"aba"}));
+    ASSERT_FALSE(read(id, ospan{"caca"}));
 }

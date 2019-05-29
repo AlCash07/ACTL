@@ -112,11 +112,6 @@ inline index serialize(Device& od, Format&, const span<const char_t<Device>>& s)
     return od.write(s);
 }
 
-template <class Device, class Format, index N>
-inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N]) {
-    return serialize(od, fmt, span{array, array[N - 1] ? N : N - 1});
-}
-
 template <class Device, class Format>
 inline bool deserialize(Device& id, Format&, const span<char_t<Device>>& s) {
     return id.read(s) == s.size();
@@ -134,11 +129,6 @@ inline bool deserialize(Device& id, Format&, const span<const char_t<Device>>& s
         id.move(1);
     }
     return true;
-}
-
-template <class Device, class Format, index N>
-inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N]) {
-    return deserialize(od, fmt, span{array, array[N - 1] ? N : N - 1});
 }
 
 template <class Device, class Format, class T>
