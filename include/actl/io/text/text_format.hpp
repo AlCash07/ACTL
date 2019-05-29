@@ -164,4 +164,9 @@ inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N
     return deserialize(od, fmt, ospan{array});
 }
 
+template <class Device, class... Ts>
+inline index writeln(Device&& od, Ts&&... args) {
+    return write(od, args...) + od.put('\n');
+}
+
 }  // namespace ac::io

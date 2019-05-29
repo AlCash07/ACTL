@@ -117,11 +117,6 @@ inline bool deserialize(Device& id, Format&, const span<char_t<Device>>& s) {
     return id.read(s) == s.size();
 }
 
-template <class Device, class Format, index N>
-inline bool deserialize(Device& od, Format& fmt, char_t<Device> (&array)[N]) {
-    return deserialize(od, fmt, span{array});
-}
-
 template <class Device, class Format>
 inline bool deserialize(Device& id, Format&, const span<const char_t<Device>>& s) {
     for (char c : s) {
@@ -170,11 +165,6 @@ inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
     } else {
         return (... && deserialize(id, fmt, args, format_tag_t<Format>{}));
     }
-}
-
-template <class Device, class... Ts>
-inline index writeln(Device&& od, Ts&&... args) {
-    return write(od, args...) + od.put('\n');
 }
 
 template <class Device, class Format, class T>

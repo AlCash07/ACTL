@@ -37,10 +37,10 @@ TEST("read span<char>") {
     std::string s = "abacaba";
     memory<bin | in> id{s};
     char a[3], b[3];
-    ASSERT_TRUE(read(id, a, b));
+    ASSERT_TRUE(read(id, span{a}, span{b}));
     ASSERT_EQUAL_RANGES("aba"s, a);
     ASSERT_EQUAL_RANGES("cab"s, b);
-    ASSERT_FALSE(read(id, a));
+    ASSERT_FALSE(read(id, span{a}));
 }
 
 TEST("read span<const char>") {
