@@ -7,36 +7,43 @@
 
 #pragma once
 
+#include <actl/types.hpp>
 #include <type_traits>
 
 namespace ac::io {
 
-template <class AlwaysVoid, class T, class... Ts>
-struct has_serialize : std::false_type {};
-
-template <class T, class... Ts>
-struct has_serialize<
-    std::void_t<decltype(std::declval<const T>().serialize(std::declval<Ts>()...))>, T, Ts...>
-    : std::true_type {};
-
-template <class AlwaysVoid, class T, class... Ts>
-struct has_deserialize : std::false_type {};
-
-template <class T, class... Ts>
-struct has_deserialize<std::void_t<decltype(std::declval<T>().deserialize(std::declval<Ts>()...))>,
-                       T, Ts...> : std::true_type {};
-
 struct serialization_access {
+    // This is the simplest portable way I found to check for optional private members in T.
+    template <class T, class = typename T::composite_io_tag>
+    static std::true_type has_composite_io_tag(int);
+
+    template <class T>
+    static std::false_type has_composite_io_tag(...);
+
+    template <class T, class... Ts,
+              class = decltype(std::declval<const T>().serialize(std::declval<Ts>()...))>
+    static std::true_type has_serialize(int);
+
+    template <class T, class... Ts>
+    static std::false_type has_serialize(...);
+
     // Tag represents 0 or 1 types.
     template <class Device, class Format, class T, class... Tag>
-    friend std::enable_if_t<has_serialize<T, Device, Format, Tag...>::value, int> serialize(
-        Device& od, Format& fmt, const T& x, Tag... tag) {
+    friend std::enable_if_t<decltype(has_serialize<T, Device, Format, Tag...>(0))::value, index>
+    serialize(Device& od, Format& fmt, const T& x, Tag... tag) {
         return x.serialize(od, fmt, tag...);
     }
 
+    template <class T, class... Ts,
+              class = decltype(std::declval<T>().deserialize(std::declval<Ts>()...))>
+    static std::true_type has_deserialize(int);
+
+    template <class T, class... Ts>
+    static std::false_type has_deserialize(...);
+
     template <class Device, class Format, class T, class... Tag>
-    friend std::enable_if_t<has_deserialize<T, Device, Format, Tag...>::value, bool> deserialize(
-        Device& id, Format& fmt, T& x, Tag... tag) {
+    friend std::enable_if_t<decltype(has_deserialize<T, Device, Format, Tag...>(0))::value, bool>
+    deserialize(Device& id, Format& fmt, T& x, Tag... tag) {
         return x.deserialize(id, fmt, tag...);
     }
 };

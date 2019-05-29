@@ -22,6 +22,9 @@ namespace ac::io {
 
 /* std::pair */
 
+template <class T1, class T2>
+struct is_composite<std::pair<T1, T2>> : std::true_type {};
+
 template <class Device, class Format, class T1, class T2>
 inline index serialize(Device& od, Format& fmt, const std::pair<T1, T2>& x) {
     return write(od, fmt, x.first, x.second);
@@ -36,15 +39,18 @@ inline bool deserialize(Device& id, Format& fmt, std::pair<T1, T2>& x) {
 
 /* std::tuple */
 
+template <class... Ts>
+struct is_composite<std::tuple<Ts...>> : std::true_type {};
+
 namespace detail {
 
 template <class D, class F, class T, size_t... Is>
-inline index writeTuple(D& od, F& fmt, const T& x, std::index_sequence<Is...>) {
+inline index write_tuple(D& od, F& fmt, const T& x, std::index_sequence<Is...>) {
     return write(od, fmt, std::get<Is>(x)...);
 }
 
 template <class D, class F, class T, size_t... Is>
-inline bool readTuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
+inline bool read_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
     return read(id, fmt, std::get<Is>(x)...);
 }
 
@@ -52,12 +58,12 @@ inline bool readTuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
 
 template <class Device, class Format, class... Ts>
 inline index serialize(Device& od, Format& fmt, const std::tuple<Ts...>& x) {
-    return detail::writeTuple(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
+    return detail::write_tuple(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
 template <class Device, class Format, class... Ts>
 inline bool deserialize(Device& id, Format& fmt, std::tuple<Ts...>& x) {
-    return detail::readTuple(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
+    return detail::read_tuple(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
 /* ranges and containers */

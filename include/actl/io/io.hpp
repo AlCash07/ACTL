@@ -9,7 +9,6 @@
 
 #include <actl/io/util/serialization_access.hpp>
 #include <actl/traits/type_traits.hpp>
-#include <actl/types.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/span.hpp>
 #include <cstdint>
@@ -197,5 +196,8 @@ template <class Device, class Format, class T>
 inline bool read_size(Device& id, Format& fmt, T& size) {
     return read(id, fmt, size);
 }
+
+template <class T>
+struct is_composite : decltype(serialization_access::has_composite_io_tag<T>(0)) {};
 
 }  // namespace ac::io
