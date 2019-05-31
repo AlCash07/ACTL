@@ -27,10 +27,17 @@ source_group(TREE tests FILES ${TEST_FILES})
 add_executable(tests ${TEST_FILES})
 target_link_libraries(tests src)
 
+source_group(TREE benchmark FILES benchmark/main.cpp)
+add_executable(benchmark benchmark/main.cpp)
+find_package(benchmark)
+find_path(benchmark_INCLUDE_DIRS "benchmark/benchmark.h")
+find_library(benchmark_LIBRARIES NAMES "benchmark")
+target_include_directories(benchmark PRIVATE ${benchmark_INCLUDE_DIRS})
+target_link_libraries(benchmark src ${benchmark_LIBRARIES})
+
 # AppCode support
 if(APPLE AND NOT IOS)
     set(CMAKE_OSX_SYSROOT macosx)
     set(CMAKE_XCODE_ATTRIBUTE_CXX_LANGUAGE_STANDARD "с++${CMAKE_CXX_STANDARD}")
     set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
-    set(CMAKE_XCODE_GENERATE_SCHEME TRUE)
 endif()
