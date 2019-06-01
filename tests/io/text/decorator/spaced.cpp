@@ -12,16 +12,19 @@
 
 using namespace ac::io;
 
-struct point_ {
-    int x, y;
+template <class T>
+struct pair {
+    explicit pair(T x, T y) : x{x}, y{y} {}
+    T x, y;
 };
 
-template <class D, class F>
-inline ac::index serialize(D& od, F& fmt, const point_& x, text_tag) {
+template <class D, class F, class T>
+inline ac::index serialize(D& od, F& fmt, const pair<T>& x, text_tag) {
     return write(od, fmt, raw{'('}, x.x, x.y, raw{')'});
 }
 
 TEST("nested") {
     spaced<text> f;
-    test_write("(1, 3), (2, 4)", f, setspace{", "}, point_{1, 3}, point_{2, 4});
+    test_write("((2, 1), (4, 3)), (1, 3)", f, setspace{", "}, pair{pair{2, 1}, pair{4, 3}},
+               pair{1, 3});
 }
