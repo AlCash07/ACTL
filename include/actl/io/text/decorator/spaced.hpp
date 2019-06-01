@@ -13,7 +13,9 @@
 namespace ac::io {
 
 template <class Tag>
-struct spaced_tag {};
+struct spaced_tag {
+    using base = Tag;
+};
 
 struct setspace {
     ospan<const char> value;
@@ -62,11 +64,6 @@ public:
 private:
     std::basic_string<Char> space_ = " ";
     bool separate_ = false;
-};
-
-template <class Tag>
-struct format_traits<spaced_tag<Tag>> {
-    using base = Tag;
 };
 
 template <class Format, class Char>

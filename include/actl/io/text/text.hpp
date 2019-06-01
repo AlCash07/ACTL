@@ -18,7 +18,10 @@ namespace ac::io {
 const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat),
                              bit(flags::left) | bit(flags::right) | bit(flags::center)};
 
-template <flag_t Flags = bit(flags::skipws), uint8_t Base = 10, index Precision = 6>
+template <
+    flag_t Flags = bit(flags::skipws),
+    uint8_t Base = 10,
+    index Precision = 6>
 class text_static {
 public:
     static constexpr mode_t mode = 0;

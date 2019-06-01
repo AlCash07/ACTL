@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/io/io.hpp>
 #include <actl/io/manip/raw.hpp>
 
 namespace ac::io {

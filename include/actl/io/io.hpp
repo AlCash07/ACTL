@@ -61,10 +61,13 @@ inline constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
 
 /* Format */
 
-struct format {};
+struct binary {
+    using base = none;
+};
 
-struct binary {};
-struct text_tag {};
+struct text_tag {
+    using base = none;
+};
 
 template <class T>
 struct format_traits {
@@ -73,13 +76,7 @@ struct format_traits {
 
 template <>
 struct format_traits<binary> {
-    using base = format;
     using tag = binary;
-};
-
-template <>
-struct format_traits<text_tag> {
-    using base = format;
 };
 
 template <class T>
@@ -127,23 +124,23 @@ inline bool deserialize(Device& id, Format&, const span<const char_t<Device>>& s
 }
 
 template <class Device, class Format, class T>
-inline index serialize(Device& id, Format& fmt, const T& x, format) {
+inline index serialize(Device& id, Format& fmt, const T& x, none) {
     return serialize(id, fmt, x);
 }
 
 template <class Device, class Format, class T>
-inline bool deserialize(Device& od, Format& fmt, T& x, format) {
+inline bool deserialize(Device& od, Format& fmt, T& x, none) {
     return deserialize(od, fmt, x);
 }
 
 template <class Device, class Format, class T, class Tag>
 inline index serialize(Device& id, Format& fmt, const T& x, Tag) {
-    return serialize(id, fmt, x, typename format_traits<Tag>::base{});
+    return serialize(id, fmt, x, typename Tag::base{});
 }
 
 template <class Device, class Format, class T, class Tag>
 inline bool deserialize(Device& od, Format& fmt, T& x, Tag) {
-    return deserialize(od, fmt, x, typename format_traits<Tag>::base{});
+    return deserialize(od, fmt, x, typename Tag::base{});
 }
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into
@@ -151,19 +148,21 @@ inline bool deserialize(Device& od, Format& fmt, T& x, Tag) {
 
 template <class Device, class Format, class... Ts>
 inline index write(Device&& od, Format&& fmt, const Ts&... args) {
-    if constexpr (std::is_same_v<format_tag_t<Format>, none>) {
+    using tag = format_tag_t<Format>;
+    if constexpr (std::is_same_v<tag, none>) {
         return write(od, deduce_format(od), fmt, args...);
     } else {
-        return (... + serialize(od, fmt, args, format_tag_t<Format>{}));
+        return (... + serialize(od, fmt, args, tag{}));
     }
 }
 
 template <class Device, class Format, class... Ts>
 inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
-    if constexpr (std::is_same_v<format_tag_t<Format>, none>) {
+    using tag = format_tag_t<Format>;
+    if constexpr (std::is_same_v<tag, none>) {
         return read(id, deduce_format(id), fmt, args...);
     } else {
-        return (... && deserialize(id, fmt, args, format_tag_t<Format>{}));
+        return (... && deserialize(id, fmt, args, tag{}));
     }
 }
 

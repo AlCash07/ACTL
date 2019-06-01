@@ -9,14 +9,14 @@
 
 #include <actl/assert.hpp>
 #include <actl/bit.hpp>
-#include <actl/io/text/flags.hpp>
+#include <actl/io/text/decorator/adjusted.hpp>
 #include <actl/io/util/unbuffered.hpp>
 #include <ios>
 
 namespace ac::io {
 
 template <class Stream>
-class ios_format : format {
+class ios_format {
     using ios = std::ios_base;
 
 public:
@@ -59,11 +59,11 @@ public:
         s_.setf(flag, ios::basefield);
     }
 
-    uint8_t precision() const { return static_cast<uint8_t>(s_.precision()); }
-    void precision(uint8_t value) { s_.precision(static_cast<std::streamsize>(value)); }
+    index precision() const { return s_.precision(); }
+    void precision(index value) { s_.precision(value); }
 
-    uint8_t width() const { return static_cast<uint8_t>(s_.precision()); }
-    void width(uint8_t value) { s_.width(static_cast<std::streamsize>(value)); }
+    index width() const { return s_.precision(); }
+    void width(index value) { s_.width(value); }
 
     char_type fill() const { return s_.fill(); }
     void fill(char_type value) { s_.fill(value); }
@@ -89,6 +89,11 @@ protected:
     static constexpr ios::fmtflags g[] = {ios::floatfield, ios::adjustfield};
 
     Stream& s_;
+};
+
+template <class Stream>
+struct format_traits<ios_format<Stream>> {
+    using tag = adjusted_tag<text_tag>;
 };
 
 template <mode_t Mode, class Stream, bool = is_in<Mode>>

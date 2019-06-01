@@ -31,10 +31,7 @@ protected:
 };
 
 template <class Tag>
-struct adjusted_tag {};
-
-template <class Tag>
-struct format_traits<adjusted_tag<Tag>> {
+struct adjusted_tag {
     using base = Tag;
 };
 
