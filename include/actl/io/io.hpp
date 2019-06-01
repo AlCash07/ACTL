@@ -177,7 +177,12 @@ inline bool read_size(Device& id, Format& fmt, T& size) {
     return read(id, fmt, size);
 }
 
+/* Traits */
+
 template <class T>
 struct is_composite : decltype(serialization_access::has_composite_io_tag<T>(0)) {};
+
+template <class T>
+struct is_manipulator : std::false_type {};
 
 }  // namespace ac::io

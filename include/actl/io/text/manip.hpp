@@ -17,8 +17,14 @@ namespace ac::io {
 template <flag_t Flag, bool Value>
 struct setf {};
 
+template <flag_t F, bool V>
+struct is_manipulator<setf<F, V>> : std::true_type {};
+
 template <flag_t Group, flag_t Flag>
 struct setg {};
+
+template <flag_t G, flag_t F>
+struct is_manipulator<setg<G, F>> : std::true_type {};
 
 // boolean as string or int
 constexpr setf<flags::boolalpha, true> boolalpha{};
@@ -54,8 +60,8 @@ constexpr setf<flags::skipws, false> noskipws{};
 constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
 
-template <class Device, class Format, flag_t Flag, bool Value, class Tag>
-inline index serialize(Device&, Format& fmt, setf<Flag, Value>, Tag) {
+template <class Device, class Format, flag_t Flag, bool Value>
+inline index serialize(Device&, Format& fmt, setf<Flag, Value>) {
     if constexpr (Value) {
         fmt.setf(Flag);
     } else {
@@ -64,20 +70,20 @@ inline index serialize(Device&, Format& fmt, setf<Flag, Value>, Tag) {
     return 0;
 }
 
-template <class Device, class Format, flag_t Flag, bool Value, class Tag>
-inline bool deserialize(Device& id, Format& fmt, setf<Flag, Value>, Tag) {
-    serialize(id, fmt, setf<Flag, Value>{}, Tag{});
+template <class Device, class Format, flag_t Flag, bool Value>
+inline bool deserialize(Device& id, Format& fmt, setf<Flag, Value>) {
+    serialize(id, fmt, setf<Flag, Value>{});
     return true;
 }
 
-template <class Device, class Format, flag_t Group, flag_t Flag, class Tag>
-inline index serialize(Device&, Format& fmt, setg<Group, Flag>, Tag) {
+template <class Device, class Format, flag_t Group, flag_t Flag>
+inline index serialize(Device&, Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
     return 0;
 }
 
-template <class Device, class Format, flag_t Group, flag_t Flag, class Tag>
-inline bool deserialize(Device&, Format& fmt, setg<Group, Flag>, Tag) {
+template <class Device, class Format, flag_t Group, flag_t Flag>
+inline bool deserialize(Device&, Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
     return true;
 }
@@ -90,14 +96,17 @@ constexpr setbase dec{10};
 constexpr setbase hex{16};
 constexpr setbase oct{8};
 
-template <class Device, class Format, class Tag>
-inline bool deserialize(Device&, Format& fmt, setbase x, Tag) {
+template <>
+struct is_manipulator<setbase> : std::true_type {};
+
+template <class Device, class Format>
+inline bool deserialize(Device&, Format& fmt, setbase x) {
     fmt.base(x.value);
     return true;
 }
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device&, Format& fmt, setbase x, Tag) {
+template <class Device, class Format>
+inline index serialize(Device&, Format& fmt, setbase x) {
     fmt.base(x.value);
     return 0;
 }
@@ -107,8 +116,11 @@ struct setprecision {
     index value = 6;
 };
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device&, Format& fmt, setprecision x, Tag) {
+template <>
+struct is_manipulator<setprecision> : std::true_type {};
+
+template <class Device, class Format>
+inline index serialize(Device&, Format& fmt, setprecision x) {
     fmt.precision(x.value);
     return 0;
 }

@@ -9,6 +9,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/bit.hpp>
+#include <actl/io/manip/raw.hpp>
 #include <actl/io/manip/skip.hpp>
 #include <actl/io/text/flags.hpp>
 
@@ -104,7 +105,7 @@ inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N
 
 template <class Device, class... Ts>
 inline index writeln(Device&& od, Ts&&... args) {
-    return write(od, args...) + od.put('\n');
+    return write(od, args..., raw{'\n'});
 }
 
 }  // namespace ac::io

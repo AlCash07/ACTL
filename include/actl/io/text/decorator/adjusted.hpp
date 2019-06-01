@@ -78,8 +78,11 @@ struct setwidth {
     index value = 0;
 };
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device&, Format& fmt, setwidth x, Tag) {
+template <>
+struct is_manipulator<setwidth> : std::true_type {};
+
+template <class Device, class Format>
+inline index serialize(Device&, Format& fmt, setwidth x) {
     fmt.width(x.value);
     return 0;
 }
@@ -87,14 +90,16 @@ inline index serialize(Device&, Format& fmt, setwidth x, Tag) {
 // character to pad units with less width
 template <class Char>
 struct setfill {
+    explicit setfill(Char c) : value{c} {}
+
     Char value = ' ';
 };
 
-template <class Char>
-setfill(Char)->setfill<Char>;
+template <class C>
+struct is_manipulator<setfill<C>> : std::true_type {};
 
-template <class Device, class Format, class Char, class Tag>
-inline index serialize(Device&, Format& fmt, setfill<Char> x, Tag) {
+template <class Device, class Format, class Char>
+inline index serialize(Device&, Format& fmt, setfill<Char> x) {
     fmt.fill(x.value);
     return 0;
 }

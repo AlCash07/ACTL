@@ -8,5 +8,6 @@
 #pragma once
 
 #include <actl/io/manip/actions.hpp>
+#include <actl/io/manip/raw.hpp>
 #include <actl/io/manip/skip.hpp>
 #include <actl/io/manip/till.hpp>

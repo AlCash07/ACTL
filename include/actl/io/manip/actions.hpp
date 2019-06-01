@@ -7,29 +7,29 @@
 
 #pragma once
 
-#include <actl/types.hpp>
+#include <actl/io/manip/raw.hpp>
 
 namespace ac::io {
 
 struct endl_t {};
 constexpr endl_t endl{};  // put '\n' and flush
-struct ends_t {};
-constexpr ends_t ends{};  // put '\0'
+constexpr raw ends{'\0'};  // put '\0'
 struct flush_t {};
 constexpr flush_t flush{};
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device& od, Format& fmt, endl_t, Tag) {
-    return od.put('\n') + serialize(od, fmt, flush, Tag{});
+template <>
+struct is_manipulator<endl_t> : std::true_type {};
+
+template <>
+struct is_manipulator<flush_t> : std::true_type {};
+
+template <class Device, class Format>
+inline index serialize(Device& od, Format& fmt, endl_t) {
+    return write(od, fmt, raw{'\n'}, flush);
 }
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device& od, Format& fmt, ends_t, Tag) {
-    return od.put('\0');
-}
-
-template <class Device, class Format, class Tag>
-inline index serialize(Device& od, Format&, flush_t, Tag) {
+template <class Device, class Format>
+inline index serialize(Device& od, Format&, flush_t) {
     od.flush();
     return 0;
 }
