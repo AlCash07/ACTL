@@ -14,7 +14,7 @@ using namespace ac::io;
 TEST("read unsigned long long") {
     const unsigned long long zero = 0;
     const auto max = std::numeric_limits<unsigned long long>::max();
-    text_format f;
+    text f;
     unsigned long long x{};
     test_read(zero, "0", f);
     test_read(max, "18446744073709551615", f);
@@ -36,7 +36,7 @@ TEST("read long long") {
     const long long zero = 0;
     const auto max = std::numeric_limits<long long>::max();
     const auto min = std::numeric_limits<long long>::min();
-    text_format f;
+    text f;
     long long x{};
     test_read<true>(zero, "+0", f);
     test_read<true>(min, "-9223372036854775808", f);
@@ -59,7 +59,7 @@ TEST("read long long") {
 }
 
 TEST("determine base") {
-    text_format f;
+    text f;
     test_read<true>(10, "10", f, setbase{0});
     test_read<true>(8, "010", f);
     test_read<true>(-16, "-0x10", f);
@@ -67,7 +67,7 @@ TEST("determine base") {
 }
 
 TEST("multiple signs") {
-    text_format f;
+    text f;
     int x{};
     test_read<false>(x, "++1", f);
     test_read<false>(x, "+-1", f);

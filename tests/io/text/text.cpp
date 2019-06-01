@@ -7,7 +7,7 @@
 
 #include <actl/io/device/memory.hpp>
 #include <actl/io/text/manip.hpp>
-#include <actl/io/text/text_format.hpp>
+#include <actl/io/text/text.hpp>
 #include <actl/io/util/formatted.hpp>
 #include <actl/test.hpp>
 

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/io/text/arithmetic/detail/peek_digit.hpp>
-#include <actl/io/text/text_format.hpp>
+#include <actl/io/text/text.hpp>
 #include <type_traits>
 
 namespace ac::io {
@@ -67,7 +67,7 @@ inline bool read_uint(D& id, F& fmt, UInt& x) {
 
 template <class Device, class Format, class Int>
 inline std::enable_if_t<std::is_integral_v<Int> && !std::is_same_v<Int, char_t<Device>>, bool>
-deserialize(Device& id, Format& fmt, Int& x, text) {
+deserialize(Device& id, Format& fmt, Int& x, text_tag) {
     if (fmt.getf(flags::skipws)) read(id, fmt, ws);
     if constexpr (is_signed_int_v<Int>) {
         using UInt = std::make_unsigned_t<Int>;

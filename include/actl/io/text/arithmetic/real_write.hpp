@@ -9,7 +9,7 @@
 
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
 #include <actl/io/text/arithmetic/detail/uitoa.hpp>
-#include <actl/io/text/text_format.hpp>
+#include <actl/io/text/text.hpp>
 #include <actl/numeric/binary_pow.hpp>
 #include <algorithm>
 #include <cmath>
@@ -19,7 +19,7 @@ namespace ac::io {
 
 template <class Device, class Format, class Float>
 inline std::enable_if_t<std::is_floating_point_v<Float>, index> serialize(Device& od, Format& fmt,
-                                                                          Float x, text) {
+                                                                          Float x, text_tag) {
     std::unique_ptr<char[]> s;
     char* first;
     char* last;

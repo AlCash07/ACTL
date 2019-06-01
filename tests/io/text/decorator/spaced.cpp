@@ -15,7 +15,7 @@ struct point_ {
 };
 
 template <class D, class F>
-inline ac::index serialize(D& od, F& fmt, const point_& x, io::text) {
+inline ac::index serialize(D& od, F& fmt, const point_& x, io::text_tag) {
     return od.put('(') + write(od, fmt, x.x, x.y) + od.put(')');
 }
 

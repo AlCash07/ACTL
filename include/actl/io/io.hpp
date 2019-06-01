@@ -64,7 +64,7 @@ inline constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
 struct format {};
 
 struct binary {};
-struct text {};
+struct text_tag {};
 
 template <class T>
 struct format_traits {
@@ -78,7 +78,7 @@ struct format_traits<binary> {
 };
 
 template <>
-struct format_traits<text> {
+struct format_traits<text_tag> {
     using base = format;
 };
 

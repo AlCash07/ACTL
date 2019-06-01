@@ -10,4 +10,4 @@
 #include <actl/io/text/arithmetic/all.hpp>
 #include <actl/io/text/decorator/all.hpp>
 #include <actl/io/text/manip.hpp>
-#include <actl/io/text/text_format.hpp>
+#include <actl/io/text/text.hpp>

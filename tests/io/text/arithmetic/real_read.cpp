@@ -13,7 +13,7 @@
 using namespace ac::io;
 
 TEST("read double") {
-    text_format f;
+    text f;
     double x;
     test_read<false>(x, ".1", f);
     ASSERT_TRUE(read(io::string<io::in>{"+0.123456789"}, f, x));

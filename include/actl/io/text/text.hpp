@@ -33,10 +33,10 @@ public:
 
 template <flag_t F, uint8_t B, index P>
 struct format_traits<text_static<F, B, P>> {
-    using tag = text;
+    using tag = text_tag;
 };
 
-class text_format {
+class text {
 public:
     flag_t flags() const { return flags_; }
     void flags(flag_t value) { flags_ = value; }
@@ -70,12 +70,12 @@ protected:
 };
 
 template <>
-struct format_traits<text_format> {
-    using tag = text;
+struct format_traits<text> {
+    using tag = text_tag;
 };
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text) {
+inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text_tag) {
     if (fmt.getf(flags::skipws)) read(id, fmt, ws);
     return deserialize(id, fmt, c);
 }
@@ -93,12 +93,12 @@ public:
 
 // Null-terminated string literals handling.
 template <class Device, class Format, index N>
-inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text) {
+inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text_tag) {
     return serialize(od, fmt, ospan{array});
 }
 
 template <class Device, class Format, index N>
-inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text) {
+inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text_tag) {
     return deserialize(od, fmt, ospan{array});
 }
 

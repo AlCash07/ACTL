@@ -14,7 +14,7 @@ using namespace ac::io;
 TEST("write unsigned long long") {
     const unsigned long long zero = 0;
     const auto max = std::numeric_limits<unsigned long long>::max();
-    text_format f;
+    text f;
     test_write("0", f, showpos, showbase, zero);
     test_write("18446744073709551615", f, max);
     test_write("0", f, setbase{2}, zero);
@@ -35,7 +35,7 @@ TEST("write long long") {
     const long long zero = 0;
     const auto min = std::numeric_limits<long long>::min();
     const auto max = std::numeric_limits<long long>::max();
-    text_format f;
+    text f;
     test_write("0", f, showbase, zero);
     test_write("-9223372036854775808", f, min);
     test_write("9223372036854775807", f, max);

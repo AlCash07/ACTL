@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include <actl/io/text/text_format.hpp>
+#include <actl/io/text/text.hpp>
 
 namespace ac::io {
 
-template <class Device, class Format = text_format>
+template <class Device, class Format = text>
 class formatted : public Device, public Format {
 public:
     using Device::Device;

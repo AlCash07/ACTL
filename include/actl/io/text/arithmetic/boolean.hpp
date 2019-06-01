@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include <actl/io/text/text_format.hpp>
+#include <actl/io/text/text.hpp>
 
 namespace ac::io {
 
 template <class Device, class Format>
-inline index serialize(Device& od, Format& fmt, bool x, text) {
+inline index serialize(Device& od, Format& fmt, bool x, text_tag) {
     if (fmt.getf(flags::boolalpha)) {
         return x ? write(od, fmt, ospan{"true"}) : write(od, fmt, ospan{"false"});
     } else {
@@ -21,7 +21,7 @@ inline index serialize(Device& od, Format& fmt, bool x, text) {
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format& fmt, bool& x, text) {
+inline bool deserialize(Device& id, Format& fmt, bool& x, text_tag) {
     char_t<Device> c;
     if (!read(id, fmt, c)) return false;
     if (fmt.getf(flags::boolalpha)) {

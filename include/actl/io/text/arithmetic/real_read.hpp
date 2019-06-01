@@ -9,7 +9,7 @@
 
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
 #include <actl/io/text/arithmetic/detail/peek_digit.hpp>
-#include <actl/io/text/text_format.hpp>
+#include <actl/io/text/text.hpp>
 #include <actl/numeric/binary_pow.hpp>
 #include <type_traits>
 #include <utility>
@@ -18,7 +18,7 @@ namespace ac::io {
 
 template <class Device, class Format, class Float>
 inline std::enable_if_t<std::is_floating_point_v<Float>, bool> deserialize(Device& id, Format& fmt,
-                                                                           Float& x, text) {
+                                                                           Float& x, text_tag) {
     if (fmt.getf(flags::skipws)) read(id, fmt, ws);
     char c = id.peek();
     bool negative = c == '-';
