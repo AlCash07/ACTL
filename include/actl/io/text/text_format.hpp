@@ -11,20 +11,13 @@
 #include <actl/bit.hpp>
 #include <actl/io/manip/skip.hpp>
 #include <actl/io/text/flags.hpp>
-#include <utility>
 
 namespace ac::io {
 
 const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat),
                              bit(flags::left) | bit(flags::right) | bit(flags::center)};
 
-template <
-    class Char = char,
-    flag_t Flags = bit(flags::skipws),
-    uint8_t Base = 10,
-    index Precision = 6,
-    index Width = 0,
-    Char Fill = ' '>
+template <flag_t Flags = bit(flags::skipws), uint8_t Base = 10, index Precision = 6>
 class text_static {
 public:
     static constexpr mode_t mode = 0;
@@ -36,19 +29,14 @@ public:
     static constexpr uint8_t base() { return Base; }
 
     static constexpr index precision() { return Precision; }
-
-    static constexpr index width() { return Width; }
-
-    static constexpr Char fill() { return Fill; }
 };
 
-template <class C, flag_t Fl, uint8_t B, index P, index W, C F>
-struct format_traits<text_static<C, Fl, B, P, W, F>> {
+template <flag_t F, uint8_t B, index P>
+struct format_traits<text_static<F, B, P>> {
     using tag = text;
 };
 
-template <class Char>
-class in_text {
+class text_format {
 public:
     flag_t flags() const { return flags_; }
     void flags(flag_t value) { flags_ = value; }
@@ -67,74 +55,24 @@ public:
         base_ = value;
     }
 
-protected:
-    using ts = text_static<Char>;
-
-    flag_t flags_ = ts::flags();
-    uint8_t base_ = ts::base();
-};
-
-template <class C>
-struct format_traits<in_text<C>> {
-    using tag = text;
-};
-
-template <class Char>
-class out_text : public in_text<Char> {
-public:
     index precision() const { return precision_; }
     void precision(index value) {
         ACTL_ASSERT(0 <= value);
         precision_ = value;
     }
 
-    index width() const { return width_; }
-    void width(index value) {
-        ACTL_ASSERT(0 <= value);
-        width_ = value;
-    }
-
-    Char fill() const { return fill_; }
-    void fill(Char value) { fill_ = value; }
-
 protected:
-    using ts = text_static<Char>;
+    using ts = text_static<>;
 
+    flag_t flags_ = ts::flags();
+    uint8_t base_ = ts::base();
     index precision_ = ts::precision();
-    index width_ = ts::width();
-    Char fill_ = ts::fill();
 };
 
-template <class C>
-struct format_traits<out_text<C>> {
+template <>
+struct format_traits<text_format> {
     using tag = text;
 };
-
-template <mode_t Mode, class Char = default_char_t<Mode>>
-using text_format = std::conditional_t<is_out<Mode>, out_text<Char>, in_text<Char>>;
-
-template <class Format>
-inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
-    size = fmt.width() - size;
-    if (size <= 0) return {0, 0};
-    auto p = fmt.getf(flags::center) ? std::pair{size / 2, size - size / 2} : std::pair{index{}, size};
-    return fmt.getf(flags::left) ? std::pair{p.second, p.first} : p;
-}
-
-template <class Device, class Format>
-inline index serialize(Device& id, Format& fmt, char_t<Device> c, text) {
-    return write(id, fmt, span<const char_t<Device>>{&c, 1});
-}
-
-template <class Device, class Format>
-inline index serialize(Device& id, Format& fmt, const span<const char_t<Device>>& s, text) {
-    if (fmt.width() == 0 || fmt.width() <= s.size()) return id.write(s);
-    auto [l, r] = adjustment(fmt, s.size());
-    id.write_fill(fmt.fill(), l);
-    index res = id.write(s);
-    id.write_fill(fmt.fill(), r);
-    return res + l + r;
-}
 
 template <class Device, class Format>
 inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text) {

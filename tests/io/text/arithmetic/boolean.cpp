@@ -11,7 +11,7 @@
 using namespace ac::io;
 
 TEST("write") {
-    text_format<out> f;
+    text_format f;
     test_write("true", f, boolalpha, true);
     test_write("false", f, false);
     test_write("1", f, noboolalpha, true);
@@ -19,7 +19,7 @@ TEST("write") {
 }
 
 TEST("read") {
-    text_format<in> f;
+    text_format f;
     bool x{};
     test_read(true, "true", f, boolalpha);
     test_read(false, "false", f);

@@ -11,7 +11,6 @@
 
 #include <actl/io/io.hpp>
 #include <actl/io/text/flags.hpp>
-#include <actl/macros.hpp>
 
 namespace ac::io {
 
@@ -29,7 +28,7 @@ constexpr setf<flags::boolalpha, false> noboolalpha{};
 constexpr setf<flags::showbase, true> showbase{};
 constexpr setf<flags::showbase, false> noshowbase{};
 
-// prepend + before positive integer and real numbers
+// prepend '+' before positive integer and real numbers
 constexpr setf<flags::showpos, true> showpos{};
 constexpr setf<flags::showpos, false> noshowpos{};
 
@@ -46,11 +45,6 @@ constexpr setg<groups::floatfield, flags::hexfloat> hexfloat{};
 // always show decimal point
 constexpr setf<flags::showpoint, true> showpoint{};
 constexpr setf<flags::showpoint, false> noshowpoint{};
-
-// adjustment
-constexpr setg<groups::adjustfield, flags::left> left{};
-constexpr setg<groups::adjustfield, flags::right> right{};
-constexpr setg<groups::adjustfield, flags::center> center{};
 
 // skip whitespace before each input unit
 constexpr setf<flags::skipws, true> skipws{};
@@ -96,44 +90,26 @@ constexpr setbase dec{10};
 constexpr setbase hex{16};
 constexpr setbase oct{8};
 
-// number of digits after the decimal point
-struct setprecision {
-    index value = 6;
-};
-
-// minimum width of an output unit
-struct setwidth {
-    index value = 0;
-};
-
-// character to pad units with less width
-template <class Char>
-struct setfill {
-    Char value = ' ';
-};
-
 template <class Device, class Format, class Tag>
 inline bool deserialize(Device&, Format& fmt, setbase x, Tag) {
     fmt.base(x.value);
     return true;
 }
 
-#define SERIALIZE_MANIP(name)                                             \
-    template <class Device, class Format, class Tag>                      \
-    inline index serialize(Device&, Format& fmt, CAT(set, name) x, Tag) { \
-        fmt.name(x.value);                                                \
-        return 0;                                                         \
-    }
+template <class Device, class Format, class Tag>
+inline index serialize(Device&, Format& fmt, setbase x, Tag) {
+    fmt.base(x.value);
+    return 0;
+}
 
-SERIALIZE_MANIP(base)
-SERIALIZE_MANIP(precision)
-SERIALIZE_MANIP(width)
+// number of digits after the decimal point
+struct setprecision {
+    index value = 6;
+};
 
-#undef SERIALIZE_MANIP
-
-template <class Device, class Format, class Char, class Tag>
-inline index serialize(Device&, Format& fmt, setfill<Char> x, Tag) {
-    fmt.fill(x.value);
+template <class Device, class Format, class Tag>
+inline index serialize(Device&, Format& fmt, setprecision x, Tag) {
+    fmt.precision(x.value);
     return 0;
 }
 
