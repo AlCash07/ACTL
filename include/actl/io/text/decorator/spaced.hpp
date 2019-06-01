@@ -7,30 +7,51 @@
 
 #pragma once
 
-#include <actl/io/text/text.hpp>
+#include <actl/io/io.hpp>
 #include <string>
 
 namespace ac::io {
 
-template <class Format>
-struct spacer {};
+template <class Tag>
+struct spaced_tag {};
 
 struct setspace {
-    czstring value;
+    ospan<const char> value;
 };
+
+template <>
+struct is_manipulator<setspace> : std::true_type {};
 
 /**
  * Format that inserts delimiter between consecutive output units.
  */
-template <class Format>
+template <class Format, class Char = char, template <class> class Except = is_raw>
 class spaced : public Format {
 public:
     using Format::Format;
 
-    void reset() { first_ = true; }
+    void reset() { separate_ = false; }
 
-    czstring space() const { return space_.data(); }
-    void space(czstring value) { space_ = value; }
+    ospan<const Char> space() const { return space_; }
+    void space(ospan<const Char> x) { space_.assign(x.begin(), x.end()); }
+
+    template <class Device, class T, class Tag, class = std::enable_if_t<!is_manipulator<T>::value>>
+    friend index serialize(Device& od, spaced& fmt, const T& x, spaced_tag<Tag>) {
+        index res{};
+        if constexpr (Except<T>::value) {
+            fmt.separate_ = false;
+            res = serialize(od, fmt, x, Tag{});
+            fmt.separate_ = false;
+        } else {
+            if (fmt.separate_) {
+                res = od.write(fmt.space());
+                fmt.reset();
+            }
+            res += serialize(od, fmt, x, Tag{});
+            fmt.separate_ = true;
+        }
+        return res;
+    }
 
     template <class Device>
     friend index serialize(Device&, spaced& fmt, setspace x) {
@@ -38,26 +59,19 @@ public:
         return 0;
     }
 
-    template <class Device, class T>
-    friend index serialize(Device& od, spaced& fmt, const T& x, spacer<Format>) {
-        index space{};
-        if (!fmt.first_) {
-            space = od.write(span<const char>{fmt.space_});
-            fmt.reset();
-        }
-        index res = serialize(od, fmt, x, format_tag_t<Format>{});
-        if (res != 0) fmt.first_ = false;
-        return space + res;
-    }
-
 private:
-    std::string space_ = " ";
-    bool first_ = true;
+    std::basic_string<Char> space_ = " ";
+    bool separate_ = false;
 };
 
-template <class Format>
-struct format_traits<spaced<Format>> {
-    using tag = spacer<Format>;
+template <class Tag>
+struct format_traits<spaced_tag<Tag>> {
+    using base = Tag;
+};
+
+template <class Format, class Char>
+struct format_traits<spaced<Format, Char>> {
+    using tag = spaced_tag<format_tag_t<Format>>;
 };
 
 }  // namespace ac::io

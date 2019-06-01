@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/io.hpp>
+#include <actl/util/span.hpp>
 
 namespace ac::io {
 
@@ -23,7 +23,10 @@ template <class T>
 raw(T)->raw<T>;
 
 template <class T>
-struct is_manipulator<raw<T>> : std::true_type {};
+struct is_raw : std::false_type {};
+
+template <class T>
+struct is_raw<raw<T>> : std::true_type {};
 
 template <class Device, class Format, class Char>
 inline index serialize(Device& od, Format&, raw<Char> x) {
