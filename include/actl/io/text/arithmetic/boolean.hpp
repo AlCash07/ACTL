@@ -14,9 +14,9 @@ namespace ac::io {
 template <class Device, class Format>
 inline index serialize(Device& od, Format& fmt, bool x, text_tag) {
     if (fmt.getf(flags::boolalpha)) {
-        return x ? write(od, fmt, ospan{"true"}) : write(od, fmt, ospan{"false"});
+        return x ? write(od, fmt, char_span{"true"}) : write(od, fmt, char_span{"false"});
     } else {
-        return write(od, fmt, x ? ospan{"1"} : ospan{"0"});
+        return write(od, fmt, x ? char_span{"1"} : char_span{"0"});
     }
 }
 

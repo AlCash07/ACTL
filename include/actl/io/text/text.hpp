@@ -87,23 +87,28 @@ inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text_tag) {
 // Use this class to write string representation of a non-string type.
 // Distinguishes such string from spans passed by the user.
 template <class Char>
-class ospan : public span<const Char> {
+class char_span : public span<const Char> {
 public:
     using span<const Char>::span;
 
     template <index N>
-    ospan(const Char (&array)[N]) : span<const Char>{array, array[N - 1] ? N : N - 1} {}
+    char_span(const Char (&array)[N]) : span<const Char>{array, array[N - 1] ? N : N - 1} {}
 };
+
+template <class Device, class Format>
+inline index serialize(Device& od, Format&, const char_span<char_t<Device>>& s, text_tag) {
+    return od.write(s);
+}
 
 // Null-terminated string literals handling.
 template <class Device, class Format, index N>
 inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text_tag) {
-    return serialize(od, fmt, ospan{array});
+    return serialize(od, fmt, char_span{array});
 }
 
 template <class Device, class Format, index N>
 inline bool deserialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text_tag) {
-    return deserialize(od, fmt, ospan{array});
+    return deserialize(od, fmt, char_span{array});
 }
 
 template <class Device, class... Ts>

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/io.hpp>
+#include <actl/io/text/text.hpp>
 #include <string>
 
 namespace ac::io {
@@ -16,13 +16,6 @@ template <class Tag>
 struct spaced_tag {
     using base = Tag;
 };
-
-struct setspace {
-    ospan<const char> value;
-};
-
-template <>
-struct is_manipulator<setspace> : std::true_type {};
 
 /**
  * Format that inserts delimiter between consecutive output units.
@@ -34,11 +27,12 @@ public:
 
     void reset() { separate_ = false; }
 
-    ospan<const Char> space() const { return space_; }
-    void space(ospan<const Char> x) { space_.assign(x.begin(), x.end()); }
+    char_span<const Char> space() const { return space_; }
+    void space(char_span<const Char> x) { space_.assign(x.begin(), x.end()); }
 
-    template <class Device, class T, class Tag, class = std::enable_if_t<!is_manipulator<T>::value>>
-    friend index serialize(Device& od, spaced& fmt, const T& x, spaced_tag<Tag>) {
+    template <class Device, class Spaced, class T, class Tag,
+              class = std::enable_if_t<!is_manipulator<T>::value>>
+    friend index serialize(Device& od, Spaced& fmt, const T& x, spaced_tag<Tag>) {
         index res{};
         if constexpr (Except<T>::value) {
             fmt.separate_ = false;
@@ -55,12 +49,6 @@ public:
         return res;
     }
 
-    template <class Device>
-    friend index serialize(Device&, spaced& fmt, setspace x) {
-        fmt.space(x.value);
-        return 0;
-    }
-
 private:
     std::basic_string<Char> space_ = " ";
     bool separate_ = false;
@@ -70,5 +58,18 @@ template <class Format, class Char>
 struct format_traits<spaced<Format, Char>> {
     using tag = spaced_tag<format_tag_t<Format>>;
 };
+
+struct setspace {
+    char_span<const char> value;
+};
+
+template <>
+struct is_manipulator<setspace> : std::true_type {};
+
+template <class Device, class Format>
+inline index serialize(Device&, Format& fmt, setspace x) {
+    fmt.space(x.value);
+    return 0;
+}
 
 }  // namespace ac::io

@@ -64,7 +64,7 @@ inline std::enable_if_t<std::is_floating_point_v<Float>, index> serialize(Device
         first = detail::uitoa(first, fmt, integer_part, base);
     }
     if (sign) *--first = sign;
-    return write(od, fmt, ospan<char>{first, last});
+    return write(od, fmt, char_span<char>{first, last});
 }
 
 }  // namespace ac::io
