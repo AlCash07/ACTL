@@ -7,4 +7,6 @@
 
 #pragma once
 
+#include <actl/io/text/decorator/adjusted.hpp>
+#include <actl/io/text/decorator/pretty.hpp>
 #include <actl/io/text/decorator/spaced.hpp>
