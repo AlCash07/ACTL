@@ -50,19 +50,19 @@ inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
 }
 
 template <class Device, class Format, class Tag>
-inline index serialize(Device& id, Format& fmt, const span<const char_t<Device>>& s,
+inline index serialize(Device& od, Format& fmt, const span<const char_t<Device>>& s,
                        adjusted_tag<Tag>) {
-    if (fmt.width() <= 0 || fmt.width() <= s.size()) return id.write(s);
+    if (fmt.width() <= 0 || fmt.width() <= s.size()) return od.write(s);
     auto [l, r] = adjustment(fmt, s.size());
-    id.write_fill(fmt.fill(), l);
-    index res = id.write(s);
-    id.write_fill(fmt.fill(), r);
+    od.write_fill(fmt.fill(), l);
+    index res = od.write(s);
+    od.write_fill(fmt.fill(), r);
     return l + res + r;
 }
 
 template <class Device, class Format, class Tag>
-inline index serialize(Device& id, Format& fmt, char_t<Device> c, adjusted_tag<Tag>) {
-    return serialize(id, fmt, span<const char_t<Device>>{&c, 1}, adjusted_tag<Tag>{});
+inline index serialize(Device& od, Format& fmt, char_t<Device> c, adjusted_tag<Tag>) {
+    return serialize(od, fmt, span<const char_t<Device>>{&c, 1}, adjusted_tag<Tag>{});
 }
 
 // adjustment

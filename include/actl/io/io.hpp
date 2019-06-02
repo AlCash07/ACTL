@@ -124,23 +124,23 @@ inline bool deserialize(Device& id, Format&, const span<const char_t<Device>>& s
 }
 
 template <class Device, class Format, class T>
-inline index serialize(Device& id, Format& fmt, const T& x, none) {
-    return serialize(id, fmt, x);
+inline index serialize(Device& od, Format& fmt, const T& x, none) {
+    return serialize(od, fmt, x);
 }
 
 template <class Device, class Format, class T>
-inline bool deserialize(Device& od, Format& fmt, T& x, none) {
-    return deserialize(od, fmt, x);
+inline bool deserialize(Device& id, Format& fmt, T& x, none) {
+    return deserialize(id, fmt, x);
 }
 
 template <class Device, class Format, class T, class Tag>
-inline index serialize(Device& id, Format& fmt, const T& x, Tag) {
-    return serialize(id, fmt, x, typename Tag::base{});
+inline index serialize(Device& od, Format& fmt, const T& x, Tag) {
+    return serialize(od, fmt, x, typename Tag::base{});
 }
 
 template <class Device, class Format, class T, class Tag>
-inline bool deserialize(Device& od, Format& fmt, T& x, Tag) {
-    return deserialize(od, fmt, x, typename Tag::base{});
+inline bool deserialize(Device& id, Format& fmt, T& x, Tag) {
+    return deserialize(id, fmt, x, typename Tag::base{});
 }
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into

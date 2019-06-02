@@ -29,7 +29,11 @@ TEST("tuple") { test_write("(3 2 1 0)", spts{}, std::tuple{3, 2, 1, 0}); }
 
 TEST("sequence") { test_write("[3 2 1 0]", spts{}, std::vector{3, 2, 1, 0}); }
 
-TEST("associative container") { test_write("{0 1 2 3}", spts{}, std::set{3, 2, 1, 0}); }
+TEST("simple associative container") { test_write("{0 1 2 3}", spts{}, std::set{3, 2, 1, 0}); }
+
+TEST("pair associative container") {
+    test_write("{0:1 1:0 2:1 3:0}", spts{}, std::map<int, int>{{3, 0}, {2, 1}, {1, 0}, {0, 1}});
+}
 
 TEST("nested") {
     test_write("{[(0 1)] [(2 3) (4 5)] [(6 7)]}", spts{},
