@@ -59,7 +59,7 @@ inline index serialize(Device& od, Format& fmt, const T& x, pretty_tag<Tag>) {
         index res = write_raw('"');
         for (auto c : char_span{x}) res += write_escaped(c);
         return res + write_raw('"');
-    } else if constexpr (is_range_v<T> && !std::is_base_of_v<cspan<char_t<Device>>, T>) {
+    } else if constexpr (is_custom_range_v<T, Device>) {
         if constexpr (is_associative_container_v<T>) {
             index res = write_raw('{');
             if constexpr (is_simple_associative_container_v<T>) {

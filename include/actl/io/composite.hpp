@@ -68,13 +68,17 @@ inline bool deserialize(Device& id, Format& fmt, std::tuple<Ts...>& x) {
 
 /* ranges and containers */
 
-template <class Device, class Format, class Range, class = std::enable_if_t<is_range_v<Range>>>
-inline index serialize(Device& od, Format& fmt, const Range& x) {
+template <class T, class Device>
+constexpr bool is_custom_range_v = is_range_v<T> && !std::is_base_of_v<cspan<char_t<Device>>, T>;
+
+template <class Device, class Format, class R>
+inline std::enable_if_t<is_custom_range_v<R, Device>, index> serialize(Device& od, Format& fmt,
+                                                                       const R& x) {
     index res{};
-    if constexpr (is_container_v<Range> && static_size_v<Range> != dynamic_size) {
+    if constexpr (is_container_v<R> && static_size_v<R> != dynamic_size) {
         res = write_size(od, fmt, x.size());
     }
-    if constexpr (is_contiguous_container_v<Range>) {
+    if constexpr (is_contiguous_container_v<R>) {
         return res + write(od, fmt, span{x});
     } else {
         for (const auto& value : x) {
@@ -84,14 +88,15 @@ inline index serialize(Device& od, Format& fmt, const Range& x) {
     }
 }
 
-template <class Device, class Format, class Range, class = std::enable_if_t<is_range_v<Range>>>
-inline bool deserialize(Device& id, Format& fmt, Range& x) {
-    if constexpr (is_container_v<Range> && static_size_v<Range> == dynamic_size) {
+template <class Device, class Format, class R>
+inline std::enable_if_t<is_custom_range_v<R, Device>, bool> deserialize(Device& id, Format& fmt,
+                                                                        R& x) {
+    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         decltype(x.size()) size{};
         if (!read_size(id, fmt, size)) return false;
-        if constexpr (!is_random_access_container_v<Range>) {
+        if constexpr (!is_random_access_container_v<R>) {
             for (; size > 0; --size) {
-                value_type_t<Range> value;
+                value_type_t<R> value;
                 if (!read(id, fmt, value)) return false;
                 emplace(x, std::move(value));
             }
@@ -100,7 +105,7 @@ inline bool deserialize(Device& id, Format& fmt, Range& x) {
             x.resize(size);
         }
     }
-    if constexpr (is_contiguous_container_v<Range>) {
+    if constexpr (is_contiguous_container_v<R>) {
         return read(id, fmt, span{x});
     } else {
         for (auto& value : x) {
