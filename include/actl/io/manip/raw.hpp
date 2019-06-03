@@ -31,7 +31,7 @@ inline index serialize(Device& od, Format&, raw<Char> x) {
 }
 
 template <class Device, class Format, class Char>
-inline index serialize(Device& od, Format&, const raw<span<const Char>>& x) {
+inline index serialize(Device& od, Format&, const raw<cspan<Char>>& x) {
     return od.write(x.value);
 }
 

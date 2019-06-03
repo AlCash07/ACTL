@@ -105,7 +105,7 @@ inline bool deserialize(Device& id, Format&, char_t<Device>& c) {
 }
 
 template <class Device, class Format>
-inline index serialize(Device& od, Format&, const span<const char_t<Device>>& s) {
+inline index serialize(Device& od, Format&, const cspan<char_t<Device>>& s) {
     return od.write(s);
 }
 
@@ -115,7 +115,7 @@ inline bool deserialize(Device& id, Format&, const span<char_t<Device>>& s) {
 }
 
 template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, const span<const char_t<Device>>& s) {
+inline bool deserialize(Device& id, Format&, const cspan<char_t<Device>>& s) {
     for (char c : s) {
         if (id.peek() != c) return false;
         id.move(1);

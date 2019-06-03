@@ -126,7 +126,7 @@ protected:
         ptr_ = data_.data();
     }
 
-    void write_impl(const span<const Char>& src) {
+    void write_impl(const cspan<Char>& src) {
         const Char* srcPtr = src.data();
         index count = src.size();
         index available = end_ - ptr_;
@@ -159,7 +159,7 @@ public:
         return 1;
     }
 
-    index write(const span<const Char>& src) {
+    index write(const cspan<Char>& src) {
         if constexpr (is_line_buffered<base_t::mode>) {
             const Char* last = src.end();
             while (last != src.data() && last[-1] != '\n') --last;

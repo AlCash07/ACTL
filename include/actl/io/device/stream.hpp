@@ -166,7 +166,7 @@ public:
         return s_.bad() ? 0 : 1;
     }
 
-    index write(const span<const char_type>& src) {
+    index write(const cspan<char_type>& src) {
         s_.wrise(src.data(), src.size());
         return s_.bad() ? 0 : src.size();
     }

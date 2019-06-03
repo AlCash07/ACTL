@@ -43,7 +43,7 @@ TEST("read span<char>") {
     ASSERT_FALSE(read(id, span{a}));
 }
 
-TEST("read span<const char>") {
+TEST("read cspan<char>") {
     std::string s = "abacaba";
     memory<bin | in> id{s};
     ASSERT_TRUE(read(id, char_span{"aba"}));

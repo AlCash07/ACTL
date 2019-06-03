@@ -82,7 +82,7 @@ public:
 
     index put(Char c) { return std::fputc(c, this->file_) != EOF ? 1 : 0; }
 
-    index write(const span<const Char>& src) {
+    index write(const cspan<Char>& src) {
         return static_cast<index>(
             std::fwrite(src.data(), sizeof(Char), static_cast<size_t>(src.size()), this->file_));
     }

@@ -38,7 +38,7 @@ public:
         return 1;
     }
 
-    index write(const span<const Char>& src) {
+    index write(const cspan<Char>& src) {
         s_.append(src.data(), static_cast<size_t>(src.size()));
         return src.size();
     }

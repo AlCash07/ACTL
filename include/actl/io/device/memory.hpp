@@ -16,10 +16,10 @@ namespace ac::io {
 template <mode_t Mode, class Char, bool = is_out<Mode>>
 class out_memory : public device<Mode, Char> {
 public:
-    explicit out_memory(span<const Char> data) : data_{data}, ptr_{data_.begin()} {}
+    explicit out_memory(cspan<Char> data) : data_{data}, ptr_{data_.begin()} {}
 
 protected:
-    span<const Char> data_;
+    cspan<Char> data_;
     const Char* ptr_;
 };
 
@@ -34,7 +34,7 @@ public:
         return 1;
     }
 
-    index write(const span<const Char>& src) {
+    index write(const cspan<Char>& src) {
         index count = std::min(src.size(), data_.end() - ptr_);
         std::memcpy(ptr_, src.data(), static_cast<size_t>(count) * sizeof(Char));
         ptr_ += count;
