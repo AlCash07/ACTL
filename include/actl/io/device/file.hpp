@@ -80,7 +80,7 @@ class file<Mode, Char, true> : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;
 
-    index put(Char c) { return std::fputc(c, this->file_) != EOF ? 1 : 0; }
+    index write(Char c) { return std::fputc(c, this->file_) != EOF ? 1 : 0; }
 
     index write(const cspan<Char>& src) {
         return static_cast<index>(

@@ -54,7 +54,7 @@ public:
     using unbuffered<Device, false>::unbuffered;
 
     void write_fill(char_t<Device> c, index count) {
-        for (; 0 < count; --count) Device::put(c);
+        for (; 0 < count; --count) Device::write(c);
     }
 };
 

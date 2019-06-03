@@ -95,7 +95,7 @@ inline auto deduce_format(Device& dev) {
 
 template <class Device, class Format>
 inline index serialize(Device& od, Format&, char_t<Device> c) {
-    return od.put(c);
+    return od.write(c);
 }
 
 template <class Device, class Format>

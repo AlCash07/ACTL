@@ -33,7 +33,7 @@ public:
         if constexpr (trunc == (Mode & trunc)) s.clear();
     }
 
-    index put(Char c) {
+    index write(Char c) {
         s_ += c;
         return 1;
     }

@@ -153,7 +153,7 @@ protected:
     }
 
 public:
-    index put(Char arg) {
+    index write(Char arg) {
         *ptr_++ = arg;
         if (EXPECT_FALSE(ptr_ == end_)) overflow();
         return 1;

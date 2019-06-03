@@ -27,7 +27,7 @@ TEST("input") {
 TEST("output") {
     std::string s;
     io::string<io::app> od{s};
-    ASSERT_TRUE(od.put('a'));
+    ASSERT_TRUE(od.write('a'));
     ASSERT_EQUAL(3, od.write({"bcd", 3}));
     ASSERT_EQUAL("abcd", s);
 }

@@ -26,9 +26,9 @@ TEST("input") {
 TEST("output") {
     char s[5];
     io::memory<io::out> od{s};
-    ASSERT_TRUE(od.put('a'));
+    ASSERT_TRUE(od.write('a'));
     ASSERT_EQUAL(3, od.write({"bcd", 3}));
     ASSERT_EQUAL(1, od.write({"ef", 2}));
-    ASSERT_FALSE(od.put('g'));
+    ASSERT_FALSE(od.write('g'));
     ASSERT_EQUAL("abcde", std::string(s, s + 5));
 }

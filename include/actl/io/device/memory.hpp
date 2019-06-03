@@ -28,7 +28,7 @@ class out_memory<Mode, Char, true> : public device<Mode, Char> {
 public:
     explicit out_memory(span<Char> data) : data_{data}, ptr_{data_.begin()} {}
 
-    index put(Char c) {
+    index write(Char c) {
         if (ptr_ >= data_.end()) return 0;
         *ptr_++ = c;
         return 1;

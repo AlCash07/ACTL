@@ -51,7 +51,7 @@ inline index serialize(Device& od, Format& fmt, const T& x, pretty_tag<Tag>) {
     auto write_raw = [&](C c) { return serialize(od, fmt, raw{c}, Tag{}); };
     auto write_escaped = [&](C c) {
         auto e = escaped(c);
-        return e ? od.put('\\') + od.put(e) : od.put(c);
+        return e ? od.write('\\') + od.write(e) : od.write(c);
     };
     if constexpr (std::is_same_v<T, C>) {
         return write_raw('\'') + write_escaped(x) + write_raw('\'');

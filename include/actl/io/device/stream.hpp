@@ -161,7 +161,7 @@ public:
 
     using base_t::base_t;
 
-    index put(char_type c) {
+    index write(char_type c) {
         s_.put(c);
         return s_.bad() ? 0 : 1;
     }
