@@ -59,10 +59,19 @@ private:
 template <class Range>
 span(Range&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Range&>()))>>;
 
-template <class C>
-struct is_string<span<C>, C> : std::true_type {};
+template <class T>
+using cspan = span<const T>;
+
+template <class Char>
+class char_span : public cspan<Char> {
+public:
+    using cspan<Char>::cspan;
+
+    template <index N>
+    char_span(const Char (&array)[N]) : cspan<Char>{array, array[N - 1] ? N : N - 1} {}
+};
 
 template <class C>
-struct is_string<span<const C>, C> : std::true_type {};
+struct is_string<char_span<C>, C> : std::true_type {};
 
 }  // namespace ac

@@ -27,8 +27,8 @@ public:
 
     void reset() { separate_ = false; }
 
-    char_span<const Char> space() const { return space_; }
-    void space(char_span<const Char> x) { space_.assign(x.begin(), x.end()); }
+    char_span<Char> space() const { return space_; }
+    void space(char_span<Char> x) { space_.assign(x.begin(), x.end()); }
 
     template <class Device, class Spaced, class T, class Tag,
               class = std::enable_if_t<!is_manipulator<T>::value>>
@@ -60,7 +60,7 @@ struct format_traits<spaced<Format, Char>> {
 };
 
 struct setspace {
-    char_span<const char> value;
+    char_span<char> value;
 };
 
 template <>

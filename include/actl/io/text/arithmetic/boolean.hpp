@@ -11,12 +11,16 @@
 
 namespace ac::io {
 
+constexpr char true_s[4] = {'t', 'r', 'u', 'e'};
+constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
+
 template <class Device, class Format>
 inline index serialize(Device& od, Format& fmt, bool x, text_tag) {
     if (fmt.getf(flags::boolalpha)) {
-        return x ? write(od, fmt, char_span{"true"}) : write(od, fmt, char_span{"false"});
+        return x ? write(od, fmt, span{true_s}) : write(od, fmt, span{false_s});
     } else {
-        return write(od, fmt, x ? char_span{"1"} : char_span{"0"});
+        const char c = x ? '1' : '0';
+        return write(od, fmt, span{&c, 1});
     }
 }
 
@@ -28,9 +32,9 @@ inline bool deserialize(Device& id, Format& fmt, bool& x, text_tag) {
         x = c == 't';
         switch (c) {
             case 't':
-                return read(id, fmt, "rue");
+                return read(id, fmt, span{std::begin(true_s) + 1, std::end(true_s)});
             case 'f':
-                return read(id, fmt, "alse");
+                return read(id, fmt, span{std::begin(false_s) + 1, std::end(false_s)});
             default:
                 return false;
         }

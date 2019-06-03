@@ -11,24 +11,10 @@
 
 namespace ac::io {
 
-// Use this class to write string representation of a non-string type.
-// Distinguishes such string from spans passed by the user.
-template <class Char>
-class char_span : public span<const Char> {
-public:
-    using span<const Char>::span;
-
-    template <index N>
-    char_span(const Char (&array)[N]) : span<const Char>{array, array[N - 1] ? N : N - 1} {}
-};
-
-template <class Char>
+template <class T>
 struct raw {
-    Char c;
+    T value;
 };
-
-template <class Char>
-struct raw<char_span<Char>> : char_span<Char> {};
 
 template <class T>
 raw(T)->raw<T>;
@@ -41,12 +27,12 @@ struct is_raw<raw<T>> : std::true_type {};
 
 template <class Device, class Format, class Char>
 inline index serialize(Device& od, Format&, raw<Char> x) {
-    return od.put(x.c);
+    return od.put(x.value);
 }
 
 template <class Device, class Format, class Char>
-inline index serialize(Device& od, Format&, const raw<char_span<Char>>& x) {
-    return od.write(x);
+inline index serialize(Device& od, Format&, const raw<span<const Char>>& x) {
+    return od.write(x.value);
 }
 
 }  // namespace ac::io

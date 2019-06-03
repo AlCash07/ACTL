@@ -84,11 +84,6 @@ inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text_tag) {
     return deserialize(id, fmt, c);
 }
 
-template <class Device, class Format>
-inline index serialize(Device& od, Format&, const char_span<char_t<Device>>& s, text_tag) {
-    return od.write(s);
-}
-
 // Null-terminated string literals handling.
 template <class Device, class Format, index N>
 inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text_tag) {
