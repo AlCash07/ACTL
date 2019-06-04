@@ -1,3 +1,10 @@
+/***************************************************************************************************
+ * Copyright 2018 Roman Rizvanov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
 #include <actl/cp/lexical_cast.hpp>
 #include <actl/functions.hpp>
 #include <actl/string/split.hpp>
@@ -8,6 +15,7 @@
 #include <actl/util/stopwatch.hpp>
 #include <cmath>
 #include <iomanip>
+#include <iostream>
 #include <map>
 #include <regex>
 
@@ -101,7 +109,8 @@ bool test_base::run() {
         return true;
     } catch (const std::string& fail_message) {
         double elapsed_seconds = stopwatch.seconds();
-        std::cerr << "failed: " << fail_message << " [ET = " << std::fixed << std::setprecision(3)
+        std::cerr << "failed: \n"
+                  << fail_message << " [ET = " << std::fixed << std::setprecision(3)
                   << elapsed_seconds << "s]" << std::endl;
         return false;
     }

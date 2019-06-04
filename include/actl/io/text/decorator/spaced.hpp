@@ -30,9 +30,10 @@ public:
     char_span<Char> space() const { return space_; }
     void space(char_span<Char> x) { space_.assign(x.begin(), x.end()); }
 
-    template <class Device, class Spaced, class T, class Tag,
-              class = std::enable_if_t<!is_manipulator<T>::value>>
-    friend index serialize(Device& od, Spaced& fmt, const T& x, spaced_tag<Tag>) {
+    template <class Device, class Spaced, class T, class Tag>
+    friend std::enable_if_t<!is_manipulator<T>::value, index> serialize(Device& od, Spaced& fmt,
+                                                                        const T& x,
+                                                                        spaced_tag<Tag>) {
         index res{};
         if constexpr (Except<T>::value) {
             fmt.separate_ = false;

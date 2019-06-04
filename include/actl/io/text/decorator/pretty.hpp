@@ -9,7 +9,7 @@
 
 #include <actl/io/composite.hpp>
 #include <actl/io/manip/raw.hpp>
-#include <actl/range/container_range.hpp>
+#include <actl/range/iterator_range.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <actl/traits/string_traits.hpp>
 
@@ -63,7 +63,7 @@ inline index serialize(Device& od, Format& fmt, const T& x, pretty_tag<Tag>) {
         if constexpr (is_associative_container_v<T>) {
             index res = write_raw('{');
             if constexpr (is_simple_associative_container_v<T>) {
-                res += serialize(od, fmt, make_range(x), Tag{});
+                res += serialize(od, fmt, make_range(std::begin(x), std::end(x)), Tag{});
             } else {
                 for (const auto& [key, value] : x) {
                     res += write(od, fmt, key, raw{':'}, value);
@@ -71,7 +71,9 @@ inline index serialize(Device& od, Format& fmt, const T& x, pretty_tag<Tag>) {
             }
             return res + write_raw('}');
         } else {
-            return write_raw('[') + serialize(od, fmt, make_range(x), Tag{}) + write_raw(']');
+            return write_raw('[') +
+                   serialize(od, fmt, make_range(std::begin(x), std::end(x)), Tag{}) +
+                   write_raw(']');
         }
     } else if constexpr (is_composite<T>::value) {
         return write_raw('(') + serialize(od, fmt, x, Tag{}) + write_raw(')');

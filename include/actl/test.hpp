@@ -8,12 +8,10 @@
 #pragma once
 
 #include <actl/cp/diagnostics/to_string.hpp>
+#include <actl/io/all.hpp>
 #include <actl/macros.hpp>
 #include <actl/numeric/random/random.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/types.hpp>
-#include <actl/util/span.hpp>
-#include <iostream>
 
 using namespace std::string_literals;
 using namespace ac;
@@ -41,9 +39,27 @@ using namespace ac;
 #define ASSERT_THROWS(expression) \
     tests::detail::assert_throws(__FILE__, __LINE__, [&] { (void)(expression); })
 
+namespace ac::io {
+
+template <class Device, class Format, class T>
+inline std::enable_if_t<!is_range_v<T> && !is_composite<T>::value, index>
+    serialize(Device& od, Format&, const T& x) {
+    return od.write(char_span{"<unknown-type>"});
+}
+
+}  // namespace ac::io
+
 namespace ac::tests {
 
 namespace detail {
+
+template <class T>
+inline std::string to_string(const T& value) {
+    std::string s;
+    io::spaced<io::pretty<io::text_static<bit(io::flags::boolalpha)>>> fmt;
+    io::write(io::string<io::app>{s}, fmt, value);
+    return s;
+}
 
 struct assert_impl {
     czstring filename;
@@ -54,11 +70,9 @@ struct assert_impl {
     template <class T0, class T1>
     inline void check(const T0& expected, const T1& actual) const {
         if (expected == actual) return;
-        std::stringstream ss;
-        ss << "expected = " << diagnostics::to_string(expected)
-           << ", actual = " << diagnostics::to_string(actual);
-        ss << "; line = " << line;
-        throw ss.str();
+        throw "expected = " + to_string(expected) +
+            "\nactual   = " + to_string(expected) +
+            "\nline = " + to_string(line);
     }
 
     template <class T, class = std::enable_if_t<std::is_floating_point_v<T>>>
@@ -66,11 +80,10 @@ struct assert_impl {
         T numerator   = std::abs(expected - actual);
         T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
         if (numerator <= eps * denominator) return;
-        std::stringstream ss;
-        ss << "expected = " << expected << ", actual = " << actual
-           << ", error = " << numerator / denominator;
-        ss << "; line = " << line;
-        throw ss.str();
+        throw "expected = " + to_string(expected) +
+            "\nactual   = " + to_string(expected) +
+            "\nerror    = " + to_string(numerator / denominator) +
+            "\nline = " + to_string(line);
     }
 
     inline void check_true(bool condition) const { check(true, condition); }
@@ -80,11 +93,9 @@ struct assert_impl {
     template <class T0, class T1>
     inline void check_ranges(const T0& expected, const T1& actual) const {
         if (equal(expected, actual)) return;
-        std::stringstream ss;
-        ss << "expected = " << diagnostics::to_string(expected)
-           << ", actual = " << diagnostics::to_string(actual);
-        ss << "; line = " << line;
-        throw ss.str();
+        throw "expected = " + to_string(expected) +
+            "\nactual   = " + to_string(expected) +
+            "\nline = " + to_string(line);
     }
 
     template <class T>
@@ -102,10 +113,8 @@ inline void assert_throws(czstring, int line, const Function& f) {
     } catch (...) {
         return;
     }
-    std::stringstream ss;
-    ss << "expected exception";
-    ss << "; line = " << line;
-    throw ss.str();
+    throw "expected exception"
+        "\nline = " + to_string(line);
 }
 
 struct test_base {
