@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/cp/diagnostics/to_string.hpp>
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
 #include <actl/numeric/random/random.hpp>
@@ -42,8 +41,9 @@ using namespace ac;
 namespace ac::io {
 
 template <class Device, class Format, class T>
-inline std::enable_if_t<!is_range_v<T> && !is_composite<T>::value, index>
-    serialize(Device& od, Format&, const T& x) {
+inline std::enable_if_t<
+    !is_range_v<T> && !is_composite<T>::value && !std::is_same_v<T, io::char_t<Device>>, index>
+serialize(Device& od, Format&, const T& x) {
     return od.write(char_span{"<unknown-type>"});
 }
 
@@ -71,7 +71,7 @@ struct assert_impl {
     inline void check(const T0& expected, const T1& actual) const {
         if (expected == actual) return;
         throw "expected = " + to_string(expected) +
-            "\nactual   = " + to_string(expected) +
+            "\nactual   = " + to_string(actual) +
             "\nline = " + to_string(line);
     }
 
@@ -81,7 +81,7 @@ struct assert_impl {
         T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
         if (numerator <= eps * denominator) return;
         throw "expected = " + to_string(expected) +
-            "\nactual   = " + to_string(expected) +
+            "\nactual   = " + to_string(actual) +
             "\nerror    = " + to_string(numerator / denominator) +
             "\nline = " + to_string(line);
     }
@@ -94,7 +94,7 @@ struct assert_impl {
     inline void check_ranges(const T0& expected, const T1& actual) const {
         if (equal(expected, actual)) return;
         throw "expected = " + to_string(expected) +
-            "\nactual   = " + to_string(expected) +
+            "\nactual   = " + to_string(actual) +
             "\nline = " + to_string(line);
     }
 
