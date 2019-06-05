@@ -82,13 +82,14 @@ struct format_traits<binary> {
 template <class T>
 using format_tag_t = typename format_traits<remove_cvref_t<T>>::tag;
 
-template <class Device>
-inline auto&& deduce_format(Device& dev) {
-    if constexpr (is_bin<Device::mode>) {
-        return binary{};
-    } else {
-        return dev.format();
-    }
+template <class Device, class = std::enable_if_t<is_bin<Device::mode>>>
+inline binary deduce_format(Device& dev) {
+    return {};
+}
+
+template <class Device, class = std::enable_if_t<!is_bin<Device::mode>>>
+inline auto& deduce_format(Device& dev) {
+    return dev.format();
 }
 
 /* Default serialization forwarding */
