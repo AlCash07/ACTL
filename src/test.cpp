@@ -21,6 +21,8 @@
 
 namespace ac::tests {
 
+io::formatted<io::file<io::out>> cerr{stderr};
+
 namespace detail {
 
 static czstring repeat_key = "repeat";
@@ -53,7 +55,6 @@ inline std::vector<std::string> split_va_args(const std::string& va_args_str) {
 }
 
 bool test_base::run() {
-    using diagnostics::to_string;
     ac::stopwatch stopwatch;
     try {
         default_random random{args()};
@@ -70,13 +71,11 @@ bool test_base::run() {
             if (key_value.size() != 2) continue;
             params[trim(key_value[0])] = {trim(key_value[1]), args[i]};
         }
-        std::cerr << name << ": ";
+        io::write(cerr, name, ": ");
         auto try_get_param = [&params, this](czstring key, auto& value) -> bool {
             auto it = params.find(key);
             if (it == params.end()) return false;
-            try {
-                value = lexical_cast<remove_cvref_t<decltype(value)>>(it->second.first);
-            } catch (...) {
+            if (!io::read(io::string<io::in>{it->second.first}, io::text_static<>{}, value)) {
                 throw "param " + to_string(key) + " has invalid value " +
                     to_string(it->second.first) + "; line = " + to_string(line());
             }
@@ -104,14 +103,11 @@ bool test_base::run() {
         if (elapsed_seconds > time_limit) {
             throw "time limit exceeded; line = " + to_string(line());
         }
-        std::cerr << "passed [ET = " << std::fixed << std::setprecision(3)
-                  << elapsed_seconds << "s]" << std::endl;
+        io::writeln(cerr, "passed [ET = ", elapsed_seconds, "s]");
         return true;
     } catch (const std::string& fail_message) {
         double elapsed_seconds = stopwatch.seconds();
-        std::cerr << "failed: \n"
-                  << fail_message << " [ET = " << std::fixed << std::setprecision(3)
-                  << elapsed_seconds << "s]" << std::endl;
+        io::writeln(cerr, "failed: \n", fail_message, " [ET = ", elapsed_seconds, "s]");
         return false;
     }
 }
@@ -124,6 +120,7 @@ std::vector<test_base*>& all_tests() {
 }  // namespace detail
 
 int run(int argc, czstring argv[]) {
+    io::write(cerr, io::setprecision{3});
     using namespace detail;
     std::function<bool(const std::string&)> filter = [](const std::string&) -> bool {
         return true;
@@ -142,7 +139,7 @@ int run(int argc, czstring argv[]) {
     }
     std::map<std::string, std::vector<test_base*>> tests_per_file;
     if (all_tests().empty()) {
-        std::cerr << "There are no tests :(" << std::endl;
+        io::writeln(cerr, "There are no tests :(");
         return 0;
     }
     int total = 0;
@@ -153,12 +150,12 @@ int run(int argc, czstring argv[]) {
         }
     }
     if (tests_per_file.empty()) {
-        std::cerr << "warning: ignoring command line arguments ";
+        io::write(cerr, "warning: ignoring command line arguments ");
         for (int i = 1; i < argc; ++i) {
-            if (i > 1) std::cerr << ", ";
-            std::cerr << diagnostics::to_string(argv[i]);
+            if (i > 1) io::write(cerr, ", ");
+            io::write(cerr, to_string(argv[i]));
         }
-        std::cerr << "." << std::endl << std::endl;
+        io::write(cerr, ".\n", io::endl);
         return run(1, argv);
     }
     std::string common_prefix = tests_per_file.begin()->first;
@@ -177,17 +174,17 @@ int run(int argc, czstring argv[]) {
         auto filename = file_and_tests.first.substr(common_prefix_size);
         const auto& tests = file_and_tests.second;
         if (!filename.empty()) {
-            std::cerr << "--- " << filename << " ---" << std::endl;
+            io::writeln(cerr, "--- ", filename, " ---");
         }
         for (auto test_ptr : tests) {
             failed += static_cast<int>(!test_ptr->run());
         }
-        std::cerr << std::endl;
+        io::write(cerr, io::endl);
     }
     if (failed == 0) {
-        std::cerr << "Passed all tests." << std::endl;
+        io::writeln(cerr, "Passed all tests.");
     } else {
-        std::cerr << "Failed " << failed << "/" << total << " tests." << std::endl;
+        io::writeln(cerr, "Failed ", failed, "/", total, " tests.");
     }
     return failed;
 }

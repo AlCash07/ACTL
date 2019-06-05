@@ -83,7 +83,7 @@ template <class T>
 using format_tag_t = typename format_traits<remove_cvref_t<T>>::tag;
 
 template <class Device>
-inline auto deduce_format(Device& dev) {
+inline auto&& deduce_format(Device& dev) {
     if constexpr (is_bin<Device::mode>) {
         return binary{};
     } else {
