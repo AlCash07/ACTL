@@ -10,7 +10,7 @@
 
 TEST("input") {
     const char s[] = "abcdef";
-    io::memory<io::in> id{{s, s + 5}};
+    io::memory<io::in> id{span{s, s + 5}};
     ASSERT_EQUAL('a', id.get());
     ASSERT_EQUAL('b', id.get());
     id.move(-1);

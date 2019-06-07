@@ -65,6 +65,8 @@ protected:
 public:
     using base_t::base_t;
 
+    cspan<Char> available() const { return {s_.data() + pos_, s_.data() + s_.size()}; }
+
     Char peek() {
         auto i = static_cast<size_t>(pos_);
         return i < s_.size() ? s_[i] : Char{};
