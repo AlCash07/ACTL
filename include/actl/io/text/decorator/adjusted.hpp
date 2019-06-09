@@ -49,13 +49,37 @@ inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
     return fmt.getf(flags::left) ? std::pair{p.second, p.first} : p;
 }
 
+template <class Device>
+inline void write_fill(Device& od, char_t<Device> c, index count) {
+    if constexpr (is_buffered<Device>::value) {
+        auto s = od.available();
+        if (count <= s.size()) {
+            std::fill_n(s.data(), count, c);
+            od.move(count);
+        } else {
+            std::fill_n(s.data(), s.size(), c);
+            od.move(s.size());
+            count -= s.size();
+            s = od.available();
+            std::fill_n(s.data(), std::min(count, s.size()), c);
+            // Here we assume that s references device buffer and does not change.
+            for (index n = count / s.size(); n > 0; --n) {
+                od.move(s.size());
+            }
+            od.move(count % s.size());
+        }
+    } else {
+        for (; 0 < count; --count) od.write(c);
+    }
+}
+
 template <class Device, class Format, class Tag>
 inline index serialize(Device& od, Format& fmt, const cspan<char_t<Device>>& s, adjusted_tag<Tag>) {
     if (fmt.width() <= 0 || fmt.width() <= s.size()) return od.write(s);
     auto [l, r] = adjustment(fmt, s.size());
-    od.write_fill(fmt.fill(), l);
+    write_fill(od, fmt.fill(), l);
     index res = od.write(s);
-    od.write_fill(fmt.fill(), r);
+    write_fill(od, fmt.fill(), r);
     return l + res + r;
 }
 

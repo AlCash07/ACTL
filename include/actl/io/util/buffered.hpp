@@ -174,22 +174,6 @@ public:
         return src.size();
     }
 
-    void write_fill(Char c, index count) {
-        index chunk_size = end_ - ptr_;
-        if (EXPECT_TRUE(count < chunk_size)) {
-            ptr_ = std::fill_n(ptr_, count, c);
-        } else {
-            std::fill_n(ptr_, chunk_size, c);
-            Device::write(data_);
-            count -= chunk_size;
-            std::fill_n(data_.data(), std::min(count, BS), c);
-            for (index n = count / BS; n > 0; --n) {
-                Device::write(data_);
-            }
-            ptr_ = data_.data() + count % BS;
-        }
-    }
-
     void flush() {
         overflow();
         Device::flush();

@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/io/io.hpp>
-#include <actl/io/util/unbuffered.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <algorithm>
 #include <cstring>
@@ -98,6 +97,6 @@ public:
 };
 
 template <mode_t Mode, class T = span<add_const_if_t<!is_out<Mode>, default_char_t<Mode>>>>
-using memory = unbuffered<in_memory<Mode, T, value_type_t<T>>>;
+using memory = in_memory<Mode, T, value_type_t<T>>;
 
 }  // namespace ac::io

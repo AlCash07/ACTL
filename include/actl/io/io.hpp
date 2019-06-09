@@ -59,6 +59,12 @@ struct device : device_base {
 template <class T>
 inline constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
 
+template <class T, class = void>
+struct is_buffered : std::false_type {};
+
+template <class T>
+struct is_buffered<T, std::void_t<decltype(std::declval<T>().available())>> : std::true_type {};
+
 /* Format */
 
 struct binary {
