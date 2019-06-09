@@ -20,10 +20,24 @@ public:
     predicate<T> terminator;
 };
 
-template <class Device, class Format, class T>
-inline bool deserialize(Device& id, Format&, till<char_t<Device>, T> x) {
-    // TODO: design buffer class and move read implementation here.
-    id.read(x);
+template <class Device, class Format, class T, class C = char_t<Device>>
+inline bool deserialize(Device& id, Format&, till<C, T> x) {
+    if constexpr (is_buffered<Device>::value) {
+        for (index i = 0; i < x.size() && !id.eof();) {
+            auto s = id.available();
+            auto end = std::min(s.end(), s.begin() + (x.size() - i));
+            auto ptr = s.begin();
+            while (ptr != end && !x.terminator(*ptr)) x[i++] = *ptr++;
+            id.move(ptr - s.begin());
+            if (ptr != end) break;
+        }
+    } else {
+        for (index i = 0; i < x.size(); ++i) {
+            auto c = id.get();
+            if (id.eof() || x.terminator(c)) break;
+            x[i] = c;
+        }
+    }
     return !id.eof();
 }
 

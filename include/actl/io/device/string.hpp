@@ -9,7 +9,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/functions.hpp>
-#include <actl/io/util/unbuffered.hpp>
+#include <actl/io/io.hpp>
 #include <cstring>
 #include <string>
 
@@ -94,6 +94,6 @@ public:
 };
 
 template <mode_t Mode, class Char = default_char_t<Mode>>
-using string = unbuffered<in_string<Mode, Char>>;
+using string = in_string<Mode, Char>;
 
 }  // namespace ac::io

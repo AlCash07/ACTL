@@ -9,7 +9,6 @@
 
 #include <actl/assert.hpp>
 #include <actl/io/io.hpp>
-#include <actl/io/manip/till.hpp>
 #include <actl/macros.hpp>
 #include <actl/range/algorithm.hpp>
 #include <array>
@@ -81,20 +80,6 @@ public:
             ptr_ += remainder;
         }
         return res;
-    }
-
-    template <class T>
-    index read(till<Char, T> dst) {
-        Char* dstPtr = dst.data();
-        Char* last = dst.end();
-        while (ptr_ < end_) {
-            Char* ptr = ptr_;
-            Char* end = std::min(end_, ptr_ + (last - dstPtr));
-            while (ptr_ != end && !dst.terminator(*ptr_)) *dstPtr++ = *ptr_++;
-            if (ptr == ptr_) break;
-            underflow();
-        }
-        return dst.size() - (last - dstPtr);
     }
 
     void move(index offset) {

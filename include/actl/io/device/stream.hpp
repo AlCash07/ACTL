@@ -9,8 +9,8 @@
 
 #include <actl/assert.hpp>
 #include <actl/bit.hpp>
+#include <actl/io/manip/till.hpp>
 #include <actl/io/text/decorator/adjusted.hpp>
-#include <actl/io/util/unbuffered.hpp>
 #include <ios>
 
 namespace ac::io {
@@ -131,9 +131,10 @@ public:
         return s_.gcount();
     }
 
-    index read_until(till<char_type, char_type> dst) {
-        s_.get(dst.data(), dst.size(), dst.terminator.pred);
-        return s_.gcount();
+    template <class Format>
+    friend bool deserialize(istream& id, Format&, till<char_type, char_type> x) {
+        id.s_.get(x.data(), x.size(), x.terminator.pred);
+        return !s_.eof();
     }
 
     void move(index offset) {
@@ -175,6 +176,6 @@ public:
 };
 
 template <mode_t Mode, class Stream>
-using stream = unbuffered<ostream<Mode, Stream>>;
+using stream = ostream<Mode, Stream>;
 
 }  // namespace ac::io

@@ -51,6 +51,16 @@ public:
 
     constexpr bool empty() const { return size() == 0; }
 
+    constexpr span<element_type> first(index n) const {
+        ACTL_ASSERT(n <= size());
+        return {begin(), n};
+    }
+
+    constexpr span<element_type> last(index n) const {
+        ACTL_ASSERT(n <= size());
+        return {end() - n, n};
+    }
+
 private:
     T* data_ = nullptr;
     index size_ = 0;
