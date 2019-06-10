@@ -14,39 +14,38 @@
 
 namespace ac::io {
 
-template <mode_t Mode, class T, class Char, bool = is_out<Mode>>
+template <mode_t Mode, class Char, bool = is_out<Mode>>
 class out_memory : public device<Mode, Char> {
     using C = add_const_if_t<!is_out<Mode>, Char>;
 
 public:
-    template <class... Ts>
-    explicit out_memory(Ts&&... xs) : data_{std::forward<Ts>(xs)...}, ptr_{std::begin(data_)} {}
+    explicit out_memory(span<C> data) : data_{std::move(data)}, ptr_{data_.begin()} {}
 
     span<C> available() const { return {ptr_, end()}; }
 
     void move(index offset) {
         ptr_ += offset;
-        ACTL_ASSERT(std::begin(data_) <= ptr_ && ptr_ <= end());
+        ACTL_ASSERT(data_.begin() <= ptr_ && ptr_ <= end());
     }
 
     bool eof() const { return end() < ptr_; }
 
 protected:
-    C* end() const { return std::end(data_); }
+    C* end() const { return data_.end(); }
 
-    T data_;
+    const span<C> data_;
     C* ptr_;
 };
 
-template <mode_t Mode, class T, class Char>
-class out_memory<Mode, T, Char, true> : public out_memory<Mode, T, Char, false> {
+template <mode_t Mode, class Char>
+class out_memory<Mode, Char, true> : public out_memory<Mode, Char, false> {
 protected:
-    using base_t = out_memory<Mode, T, Char, false>;
+    using base_t = out_memory<Mode, Char, false>;
     using base_t::end;
     using base_t::ptr_;
 
 public:
-    using out_memory<Mode, T, Char, false>::out_memory;
+    using out_memory<Mode, Char, false>::out_memory;
 
     index write(Char c) {
         if (ptr_ >= end()) return 0;
@@ -64,16 +63,16 @@ public:
     void flush() {}
 };
 
-template <mode_t Mode, class T, class Char, bool = is_in<Mode>>
-class in_memory : public out_memory<Mode, T, Char> {
+template <mode_t Mode, class Char, bool = is_in<Mode>>
+class in_memory : public out_memory<Mode, Char> {
 public:
-    using out_memory<Mode, T, Char>::out_memory;
+    using out_memory<Mode, Char>::out_memory;
 };
 
-template <mode_t Mode, class T, class Char>
-class in_memory<Mode, T, Char, true> : public out_memory<Mode, T, Char> {
+template <mode_t Mode, class Char>
+class in_memory<Mode, Char, true> : public out_memory<Mode, Char> {
 protected:
-    using base_t = out_memory<Mode, T, Char>;
+    using base_t = out_memory<Mode, Char>;
     using base_t::end;
     using base_t::ptr_;
 
@@ -96,7 +95,7 @@ public:
     }
 };
 
-template <mode_t Mode, class T = span<add_const_if_t<!is_out<Mode>, default_char_t<Mode>>>>
-using memory = in_memory<Mode, T, value_type_t<T>>;
+template <mode_t Mode, class Char = default_char_t<Mode>>
+using memory = in_memory<Mode, Char>;
 
 }  // namespace ac::io
