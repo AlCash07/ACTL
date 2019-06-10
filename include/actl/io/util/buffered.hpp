@@ -11,38 +11,38 @@
 #include <actl/io/io.hpp>
 #include <actl/macros.hpp>
 #include <actl/range/algorithm.hpp>
-#include <array>
 
 namespace ac::io {
 
-template <class Device, index BufferSize = 1 << 10, bool Read = is_in<Device::mode>>
+template <class Device, class Buffer, bool Read = is_in<Device::mode>>
 class buffered_reader : public Device {
 public:
+    // TODO: design a way to pass constructor arguments to the buffer.
     using Device::Device;
 
 protected:
     using Char = char_t<Device>;
 
-    std::array<Char, BufferSize> data_;
-    Char* ptr_ = data_.data();
-    Char* end_ = Read ? ptr_ : data_.end();
+    Buffer buf_;
+    Char* ptr_ = std::data(buf_);
 };
 
-template <class Device, index BS>
-class buffered_reader<Device, BS, true> : public buffered_reader<Device, BS, false> {
+template <class Device, class Buffer>
+class buffered_reader<Device, Buffer, true> : public buffered_reader<Device, Buffer, false> {
 protected:
-    using base_t = buffered_reader<Device, BS, false>;
-    using base_t::end_;
+    using Char = char_t<Device>;
+    using base_t = buffered_reader<Device, Buffer, false>;
     using base_t::ptr_;
-    using typename base_t::Char;
+
+    Char* end_ = ptr_;
 
     void underflow() {
-        ptr_ = this->data_.begin();
-        end_ = ptr_ + Device::read(this->data_);
+        ptr_ = std::data(this->buf_);
+        end_ = ptr_ + Device::read(this->buf_);
     }
 
 public:
-    using buffered_reader<Device, BS, false>::buffered_reader;
+    using buffered_reader<Device, Buffer, false>::buffered_reader;
 
     Char peek() {
         if (ptr_ >= end_) underflow();
@@ -67,7 +67,7 @@ public:
         index res = available;
         dstPtr = std::copy_n(ptr_, available, dstPtr);
         count -= available;
-        index remainder = count % BS;
+        index remainder = count % std::size(base_t::buf_);
         if (remainder < count) {
             res += Device::read({dstPtr, count - remainder});
             dstPtr += count - remainder;
@@ -85,36 +85,35 @@ public:
     void move(index offset) {
         // TODO: support move fully along the underlying device, not just along the buffer.
         ptr_ += offset;
-        ACTL_ASSERT(this->data_.data() <= ptr_ && ptr_ < end_);
+        ACTL_ASSERT(std::data(this->buf_) <= ptr_ && ptr_ < end_);
     }
 
     bool eof() { return ptr_ > end_; }
 };
 
-template <class Device, index BS = 1 << 10, bool = is_out<Device::mode>>
-class buffered : public buffered_reader<Device, BS> {
+template <class Device, class Buffer = char_t<Device>[1 << 10], bool = is_out<Device::mode>>
+class buffered : public buffered_reader<Device, Buffer> {
 public:
-    using buffered_reader<Device, BS>::buffered_reader;
+    using buffered_reader<Device, Buffer>::buffered_reader;
 };
 
-template <class Device, index BS>
-class buffered<Device, BS, true> : public buffered<Device, BS, false> {
+template <class Device, class Buffer>
+class buffered<Device, Buffer, true> : public buffered<Device, Buffer, false> {
 protected:
-    using base_t = buffered_reader<Device, BS, false>;
-    using base_t::data_;
-    using base_t::end_;
+    using Char = char_t<Device>;
+    using base_t = buffered_reader<Device, Buffer, false>;
+    using base_t::buf_;
     using base_t::ptr_;
-    using typename base_t::Char;
 
     void overflow() {
-        Device::write({data_.data(), ptr_});
-        ptr_ = data_.data();
+        Device::write({std::data(buf_), ptr_});
+        ptr_ = std::data(buf_);
     }
 
     void write_impl(const cspan<Char>& src) {
         const Char* srcPtr = src.data();
         index count = src.size();
-        index available = end_ - ptr_;
+        index available = std::end(buf_) - ptr_;
         if (EXPECT_TRUE(count < available)) {
             if (count == 1) {
                 *ptr_++ = *srcPtr;
@@ -123,16 +122,16 @@ protected:
             }
         } else {
             std::copy_n(srcPtr, available, ptr_);
-            Device::write(data_);
+            Device::write(buf_);
             srcPtr += available;
             count -= available;
-            index remainder = count % BS;
+            index remainder = count % std::size(buf_);
             if (remainder < count) {
                 Device::write({srcPtr, count - remainder});
                 srcPtr += count - remainder;
             }
             if (0 < remainder) {
-                ptr_ = std::copy_n(srcPtr, remainder, data_.data());
+                ptr_ = std::copy_n(srcPtr, remainder, std::data(buf_));
             }
         }
     }
@@ -140,7 +139,7 @@ protected:
 public:
     index write(Char arg) {
         *ptr_++ = arg;
-        if (EXPECT_FALSE(ptr_ == end_)) overflow();
+        if (EXPECT_FALSE(ptr_ == std::end(buf_))) overflow();
         return 1;
     }
 
