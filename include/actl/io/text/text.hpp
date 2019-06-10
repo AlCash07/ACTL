@@ -9,9 +9,9 @@
 
 #include <actl/assert.hpp>
 #include <actl/bit.hpp>
-#include <actl/io/manip/raw.hpp>
-#include <actl/io/manip/skip.hpp>
 #include <actl/io/text/flags.hpp>
+#include <actl/io/util/raw.hpp>
+#include <actl/io/util/skip.hpp>
 
 namespace ac::io {
 

@@ -7,7 +7,9 @@
 
 #pragma once
 
+#include <actl/io/device/buffered.hpp>
 #include <actl/io/device/file.hpp>
+#include <actl/io/device/formatted.hpp>
 #include <actl/io/device/memory.hpp>
 #include <actl/io/device/stream.hpp>
 #include <actl/io/device/string.hpp>

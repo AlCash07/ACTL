@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/io/composite.hpp>
-#include <actl/io/manip/raw.hpp>
+#include <actl/io/util/raw.hpp>
 #include <actl/range/iterator_range.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <actl/traits/string_traits.hpp>

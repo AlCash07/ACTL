@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/io/io.hpp>
-#include <actl/io/manip/predicate.hpp>
+#include <actl/io/util/predicate.hpp>
 
 namespace ac::io {
 

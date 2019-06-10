@@ -5,10 +5,10 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/io/device/formatted.hpp>
 #include <actl/io/device/memory.hpp>
 #include <actl/io/text/manip.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/io/util/formatted.hpp>
 #include <actl/test.hpp>
 
 using namespace ac::io;

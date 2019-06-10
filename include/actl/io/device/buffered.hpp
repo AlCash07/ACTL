@@ -46,9 +46,7 @@ public:
 
     cspan<Char> input_data() const { return {ptr_, end_}; }
 
-    Char peek() {
-        return ptr_ < end_ ? *ptr_ : Char{};
-    }
+    Char peek() { return ptr_ < end_ ? *ptr_ : Char{}; }
 
     Char get() {
         Char c = peek();

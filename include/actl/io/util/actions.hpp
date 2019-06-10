@@ -8,12 +8,12 @@
 #pragma once
 
 #include <actl/io/io.hpp>
-#include <actl/io/manip/raw.hpp>
+#include <actl/io/util/raw.hpp>
 
 namespace ac::io {
 
 struct endl_t {};
-constexpr endl_t endl{};  // put '\n' and flush
+constexpr endl_t endl{};   // put '\n' and flush
 constexpr raw ends{'\0'};  // put '\0'
 struct flush_t {};
 constexpr flush_t flush{};

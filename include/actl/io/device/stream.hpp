@@ -9,8 +9,8 @@
 
 #include <actl/assert.hpp>
 #include <actl/bit.hpp>
-#include <actl/io/manip/till.hpp>
 #include <actl/io/text/decorator/adjusted.hpp>
+#include <actl/io/util/till.hpp>
 #include <ios>
 
 namespace ac::io {

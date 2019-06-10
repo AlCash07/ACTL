@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/util/buffered.hpp>
+#include <actl/io/io.hpp>
 #include <cstdio>
 #include <cstring>
 
