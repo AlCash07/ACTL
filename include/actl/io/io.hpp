@@ -60,10 +60,18 @@ template <class T>
 inline constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
 
 template <class T, class = void>
-struct is_buffered : std::false_type {};
+struct has_input_buffer : std::false_type {};
 
 template <class T>
-struct is_buffered<T, std::void_t<decltype(std::declval<T>().available())>> : std::true_type {};
+struct has_input_buffer<T, std::void_t<decltype(std::declval<T>().input_data())>> : std::true_type {
+};
+
+template <class T, class = void>
+struct has_output_buffer : std::false_type {};
+
+template <class T>
+struct has_output_buffer<T, std::void_t<decltype(std::declval<T>().output_data())>>
+    : std::true_type {};
 
 /* Format */
 

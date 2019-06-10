@@ -51,8 +51,8 @@ inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
 
 template <class Device>
 inline void write_fill(Device& od, char_t<Device> c, index count) {
-    if constexpr (is_buffered<Device>::value) {
-        auto s = od.available();
+    if constexpr (has_output_buffer<Device>::value) {
+        auto s = od.output_data();
         if (count <= s.size()) {
             std::fill_n(s.data(), count, c);
             od.move(count);
@@ -60,7 +60,7 @@ inline void write_fill(Device& od, char_t<Device> c, index count) {
             std::fill_n(s.data(), s.size(), c);
             od.move(s.size());
             count -= s.size();
-            s = od.available();
+            s = od.output_data();
             std::fill_n(s.data(), std::min(count, s.size()), c);
             // Here we assume that s references device buffer and does not change.
             for (index n = count / s.size(); n > 0; --n) {

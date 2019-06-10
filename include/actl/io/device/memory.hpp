@@ -21,8 +21,6 @@ class out_memory : public device<Mode, Char> {
 public:
     explicit out_memory(span<C> data) : data_{std::move(data)}, ptr_{data_.begin()} {}
 
-    span<C> available() const { return {ptr_, end()}; }
-
     void move(index offset) {
         ptr_ += offset;
         ACTL_ASSERT(data_.begin() <= ptr_ && ptr_ <= end());
@@ -46,6 +44,8 @@ protected:
 
 public:
     using out_memory<Mode, Char, false>::out_memory;
+
+    span<Char> output_data() const { return {ptr_, end()}; }
 
     index write(Char c) {
         if (ptr_ >= end()) return 0;
@@ -78,6 +78,8 @@ protected:
 
 public:
     using base_t::base_t;
+
+    cspan<Char> input_data() const { return {ptr_, end()}; }
 
     Char peek() { return ptr_ < end() ? *ptr_ : Char{}; }
 
