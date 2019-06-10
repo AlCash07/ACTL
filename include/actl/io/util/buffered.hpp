@@ -44,14 +44,15 @@ protected:
 public:
     using buffered_reader<Device, Buffer, false>::buffered_reader;
 
+    cspan<Char> input_data() const { return {ptr_, end_}; }
+
     Char peek() {
-        if (ptr_ >= end_) underflow();
         return ptr_ < end_ ? *ptr_ : Char{};
     }
 
     Char get() {
         Char c = peek();
-        ++ptr_;
+        move(1);
         return c;
     }
 
@@ -59,7 +60,7 @@ public:
         Char* dstPtr = dst.data();
         index count = dst.size();
         index available = end_ - ptr_;
-        if (count <= available) {
+        if (count < available) {
             std::copy_n(ptr_, count, dstPtr);
             ptr_ += count;
             return count;
@@ -77,7 +78,7 @@ public:
         if (0 < remainder) {
             res += remainder;
             std::copy_n(ptr_, remainder, dstPtr);
-            ptr_ += remainder;
+            move(remainder);
         }
         return res;
     }
@@ -85,10 +86,11 @@ public:
     void move(index offset) {
         // TODO: support move fully along the underlying device, not just along the buffer.
         ptr_ += offset;
-        ACTL_ASSERT(std::data(this->buf_) <= ptr_ && ptr_ < end_);
+        ACTL_ASSERT(std::data(this->buf_) <= ptr_);
+        if (ptr_ == end_) underflow();
     }
 
-    bool eof() { return ptr_ > end_; }
+    bool eof() { return end_ < ptr_; }
 };
 
 template <class Device, class Buffer = char_t<Device>[1 << 10], bool = is_out<Device::mode>>
@@ -114,7 +116,7 @@ protected:
         const Char* srcPtr = src.data();
         index count = src.size();
         index available = std::end(buf_) - ptr_;
-        if (EXPECT_TRUE(count < available)) {
+        if (count < available) {
             if (count == 1) {
                 *ptr_++ = *srcPtr;
             } else {
@@ -137,9 +139,11 @@ protected:
     }
 
 public:
+    span<Char> output_data() const { return {ptr_, std::end(buf_)}; }
+
     index write(Char arg) {
-        *ptr_++ = arg;
-        if (EXPECT_FALSE(ptr_ == std::end(buf_))) overflow();
+        *ptr_ = arg;
+        move(1);
         return 1;
     }
 
@@ -156,6 +160,12 @@ public:
             write_impl(src);
         }
         return src.size();
+    }
+
+    void move(index offset) {
+        ptr_ += offset;
+        ACTL_ASSERT(std::data(buf_) <= ptr_);
+        if (ptr_ == std::end(buf_)) overflow();
     }
 
     void flush() {
