@@ -15,3 +15,12 @@ TEST("category") {
     ASSERT_TRUE(is_contiguous_container_v<C>);
     ASSERT_FALSE(is_associative_container_v<C>);
 }
+
+using namespace ac::io;
+
+TEST("read") {
+    std::string s = "  01234567890123456789 0123456789";
+    std::string x;
+    ASSERT_TRUE(read(formatted<memory<in>>{s}, x));
+    ASSERT_EQUAL("01234567890123456789", x);
+}

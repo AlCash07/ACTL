@@ -20,24 +20,35 @@ struct till {
     predicate<P> terminator;
 };
 
-template <class Device, class Format, class P>
-inline bool deserialize(Device& id, Format&, till<span<char_t<Device>>, P> x) {
+template <class T, class P>
+till(T&&, P)->till<remove_rvalue_ref_t<T>, P>;
+
+template <class Device, class P>
+inline index read_till(Device& id, till<span<char_t<Device>>, P> x) {
+    index i = 0;
+    const index size = x.value.size();
     if constexpr (has_input_buffer<Device>::value) {
-        for (index i = 0; i < x.value.size();) {
+        while (true) {
             auto s = id.input_data();
-            auto end = std::min(s.end(), s.begin() + (x.value.size() - i));
+            auto end = std::min(s.end(), s.begin() + (size - i));
             auto ptr = s.begin();
             while (ptr != end && !x.terminator(*ptr)) x.value[i++] = *ptr++;
             id.move(ptr - s.begin());
-            if (s.empty() || ptr != end) break;
-        }
+            if (i == size || s.empty() || ptr != end) break;
+        };
     } else {
-        for (auto& c : x.value) {
-            auto t = id.get();
-            if (id.eof() || x.terminator(t)) break;
-            c = t;
+        for (; i < size; ++i) {
+            auto c = id.get();
+            if (id.eof() || x.terminator(c)) break;
+            x.value[i] = c;
         }
     }
+    return i;
+}
+
+template <class Device, class Format, class P>
+inline bool deserialize(Device& id, Format&, till<span<char_t<Device>>, P> x) {
+    read_till(id, x);
     return true;
 }
 
