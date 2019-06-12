@@ -7,4 +7,4 @@
 
 #pragma once
 
-#include <actl/io/binary/trivial.hpp>
+#include <actl/io/binary/arithmetic.hpp>
