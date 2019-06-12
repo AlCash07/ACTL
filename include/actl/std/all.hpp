@@ -14,6 +14,8 @@
 #include <actl/std/map.hpp>
 #include <actl/std/set.hpp>
 #include <actl/std/string.hpp>
+#include <actl/std/tuple.hpp>
 #include <actl/std/unordered_map.hpp>
 #include <actl/std/unordered_set.hpp>
+#include <actl/std/utility.hpp>
 #include <actl/std/vector.hpp>

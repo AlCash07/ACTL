@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/io/binary/all.hpp>
-#include <actl/io/composite.hpp>
 #include <actl/io/device/all.hpp>
 #include <actl/io/iterator.hpp>
+#include <actl/io/range.hpp>
 #include <actl/io/text/all.hpp>
 #include <actl/io/util/all.hpp>
