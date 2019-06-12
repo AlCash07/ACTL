@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/io/io.hpp>
 #include <actl/assert.hpp>
 #include <actl/iterator/iterator_facade.hpp>
 
@@ -38,7 +39,7 @@ private:
 
     void increment() {
         ACTL_ASSERT(device_);
-        if (!read(*device_, value_)) device_ = nullptr;
+        if (!io::read(*device_, value_)) device_ = nullptr;
     }
 
     bool equals(const input_device_iterator& rhs) const { return device_ == rhs.device_; }
@@ -69,7 +70,7 @@ public:
     output_device_iterator(const output_device_iterator&) = default;
 
     void operator = (const T& value) const {
-        write(*device_, value);
+        io::write(*device_, value);
     }
 
 private:
