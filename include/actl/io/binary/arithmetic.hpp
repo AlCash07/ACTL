@@ -9,7 +9,7 @@
 
 #include <actl/bit.hpp>
 #include <actl/io/io.hpp>
-#include <array>
+#include <actl/std/array.hpp>
 
 namespace ac::io {
 

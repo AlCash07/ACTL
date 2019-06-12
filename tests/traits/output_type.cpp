@@ -5,9 +5,9 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/std/deque.hpp>
 #include <actl/test.hpp>
 #include <actl/traits/output_type.hpp>
-#include <deque>
 
 TEST("correctness") {
     ASSERT_TRUE(std::is_same_v<int, output_type_t<int*>>);

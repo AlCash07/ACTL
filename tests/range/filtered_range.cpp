@@ -7,8 +7,8 @@
 
 #include <actl/range/algorithm.hpp>
 #include <actl/range/filtered_range.hpp>
+#include <actl/std/vector.hpp>
 #include <actl/test.hpp>
-#include <vector>
 
 TEST("correctness") {
     std::vector<int> v{1, 2, 4, 5, 7, 10}, even;

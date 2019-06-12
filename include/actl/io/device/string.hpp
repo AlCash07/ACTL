@@ -10,8 +10,8 @@
 #include <actl/assert.hpp>
 #include <actl/functions.hpp>
 #include <actl/io/io.hpp>
+#include <actl/std/string.hpp>
 #include <cstring>
-#include <string>
 
 namespace ac::io {
 

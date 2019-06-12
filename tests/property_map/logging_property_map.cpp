@@ -6,8 +6,8 @@
  **************************************************************************************************/
 
 #include <actl/property_map/logging_property_map.hpp>
+#include <actl/std/vector.hpp>
 #include <actl/test.hpp>
-#include <vector>
 
 TEST("int*") {
     int data[4];
