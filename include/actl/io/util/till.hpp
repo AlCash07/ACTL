@@ -12,33 +12,33 @@
 
 namespace ac::io {
 
-template <class Char, class T>
-class till : public span<Char> {
-public:
-    explicit constexpr till(span<Char> s, T pred) : span<Char>{s}, terminator{pred} {}
+template <class T, class P>
+struct till {
+    explicit constexpr till(T x, P pred) : value{x}, terminator{pred} {}
 
-    predicate<T> terminator;
+    T value;
+    predicate<P> terminator;
 };
 
-template <class Device, class Format, class T, class C = char_t<Device>>
-inline bool deserialize(Device& id, Format&, till<C, T> x) {
+template <class Device, class Format, class P>
+inline bool deserialize(Device& id, Format&, till<span<char_t<Device>>, P> x) {
     if constexpr (has_input_buffer<Device>::value) {
-        for (index i = 0; i < x.size() && !id.eof();) {
+        for (index i = 0; i < x.value.size();) {
             auto s = id.input_data();
-            auto end = std::min(s.end(), s.begin() + (x.size() - i));
+            auto end = std::min(s.end(), s.begin() + (x.value.size() - i));
             auto ptr = s.begin();
-            while (ptr != end && !x.terminator(*ptr)) x[i++] = *ptr++;
+            while (ptr != end && !x.terminator(*ptr)) x.value[i++] = *ptr++;
             id.move(ptr - s.begin());
-            if (ptr != end) break;
+            if (s.empty() || ptr != end) break;
         }
     } else {
-        for (index i = 0; i < x.size(); ++i) {
-            auto c = id.get();
-            if (id.eof() || x.terminator(c)) break;
-            x[i] = c;
+        for (auto& c : x.value) {
+            auto t = id.get();
+            if (id.eof() || x.terminator(t)) break;
+            c = t;
         }
     }
-    return !id.eof();
+    return true;
 }
 
 }  // namespace ac::io
