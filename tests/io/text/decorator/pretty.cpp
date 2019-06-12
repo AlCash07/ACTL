@@ -5,11 +5,11 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/container/std/all.hpp>
 #include <actl/io/text/arithmetic/integer_write.hpp>
 #include <actl/io/text/decorator/pretty.hpp>
 #include <actl/io/text/decorator/spaced.hpp>
 #include <actl/io/text/text.hpp>
+#include <actl/std/all.hpp>
 #include <actl/test.hpp>
 #include "../test_io.hpp"
 

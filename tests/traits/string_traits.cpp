@@ -5,8 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/container/std/string.hpp>
-#include <actl/container/std/vector.hpp>
+#include <actl/std/string.hpp>
+#include <actl/std/vector.hpp>
 #include <actl/test.hpp>
 #include <actl/traits/string_traits.hpp>
 

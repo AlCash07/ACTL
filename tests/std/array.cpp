@@ -5,12 +5,13 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/container/std/forward_list.hpp>
+#include <actl/std/array.hpp>
 #include <actl/test.hpp>
 
 TEST("category") {
-    using C = std::forward_list<int>;
+    using C = std::array<int, 2>;
     ASSERT_TRUE(is_sequence_container_v<C>);
-    ASSERT_FALSE(is_random_access_container_v<C>);
+    ASSERT_TRUE(is_random_access_container_v<C>);
+    ASSERT_TRUE(is_contiguous_container_v<C>);
     ASSERT_FALSE(is_associative_container_v<C>);
 }

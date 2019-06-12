@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include <actl/container/std/vector.hpp>
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
 #include <actl/property_map/container_property_map.hpp>
 #include <actl/property_map/dummy_property_map.hpp>
+#include <actl/std/vector.hpp>
 
 namespace ac {
 

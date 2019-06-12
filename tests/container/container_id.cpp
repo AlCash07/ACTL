@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/container/container_id.hpp>
-#include <actl/container/std/all.hpp>
+#include <actl/std/all.hpp>
 #include <actl/test.hpp>
 
 TEST("vector") {

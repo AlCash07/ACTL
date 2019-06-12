@@ -6,8 +6,8 @@
  **************************************************************************************************/
 
 #include <actl/container/functions.hpp>
-#include <actl/container/std/all.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/std/all.hpp>
 #include <actl/test.hpp>
 
 static std::vector<int> xs        = {5, 4, 1, 2, 4, 2};

@@ -23,6 +23,7 @@
 #include <actl/numeric/all.hpp>
 #include <actl/property_map/all.hpp>
 #include <actl/range/all.hpp>
+#include <actl/std/all.hpp>
 #include <actl/string/all.hpp>
 #include <actl/traits/all.hpp>
 #include <actl/util/all.hpp>

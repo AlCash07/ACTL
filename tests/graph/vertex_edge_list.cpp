@@ -5,8 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/container/std/all.hpp>
 #include <actl/graph/vertex_edge_list.hpp>
+#include <actl/std/all.hpp>
 #include <actl/test.hpp>
 
 TEST("vector") {

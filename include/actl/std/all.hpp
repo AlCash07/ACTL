@@ -5,13 +5,15 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/container/std/array.hpp>
-#include <actl/test.hpp>
+#pragma once
 
-TEST("category") {
-    using C = std::array<int, 2>;
-    ASSERT_TRUE(is_sequence_container_v<C>);
-    ASSERT_TRUE(is_random_access_container_v<C>);
-    ASSERT_TRUE(is_contiguous_container_v<C>);
-    ASSERT_FALSE(is_associative_container_v<C>);
-}
+#include <actl/std/array.hpp>
+#include <actl/std/deque.hpp>
+#include <actl/std/forward_list.hpp>
+#include <actl/std/list.hpp>
+#include <actl/std/map.hpp>
+#include <actl/std/set.hpp>
+#include <actl/std/string.hpp>
+#include <actl/std/unordered_map.hpp>
+#include <actl/std/unordered_set.hpp>
+#include <actl/std/vector.hpp>

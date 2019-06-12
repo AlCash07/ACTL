@@ -5,9 +5,9 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/container/std/set.hpp>
-#include <actl/container/std/vector.hpp>
 #include <actl/property_map/container_property_map.hpp>
+#include <actl/std/set.hpp>
+#include <actl/std/vector.hpp>
 #include <actl/test.hpp>
 
 TEST("const_set&") {
