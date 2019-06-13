@@ -13,9 +13,6 @@
 #include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
 #include <actl/util/stopwatch.hpp>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
 #include <regex>
 
 namespace ac::tests {
