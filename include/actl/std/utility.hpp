@@ -7,8 +7,18 @@
 
 #pragma once
 
+#include <actl/hash.hpp>
 #include <actl/io/io.hpp>
 #include <utility>
+
+namespace ac {
+
+template <class T1, class T2>
+inline constexpr size_t hash_value(const std::pair<T1, T2>& arg) {
+    return hash_value(arg.first, arg.second);
+}
+
+}  // namespace ac
 
 namespace ac::io {
 
@@ -28,3 +38,5 @@ inline bool deserialize(Device& id, Format& fmt, std::pair<T1, T2>& x) {
 }
 
 }  // namespace ac::io
+
+SPECIALIZE_STD_VALUE_HASH(std::pair)

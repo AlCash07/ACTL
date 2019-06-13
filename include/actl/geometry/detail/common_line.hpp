@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/geometry/detail/line_test.hpp>
+#include <actl/std/utility.hpp>
 #include <functional>
-#include <utility>
 
 namespace ac::detail {
 

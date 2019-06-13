@@ -8,7 +8,6 @@
 #pragma once
 
 #include <functional>
-#include <utility>
 
 namespace ac {
 
@@ -21,11 +20,6 @@ template <class T, class... Ts>
 inline constexpr size_t hash_value(const T& arg, const Ts&... args) {
     size_t h = hash_value(arg);
     return h ^ ((h << 6) + (h >> 2) + 0x9e3779b9 + hash_value(args...));
-}
-
-template <class T1, class T2>
-inline constexpr size_t hash_value(const std::pair<T1, T2>& arg) {
-    return hash_value(arg.first, arg.second);
 }
 
 template <class R>
@@ -49,5 +43,3 @@ struct hash<name<Ts...>> {                                                      
 
 #define SPECIALIZE_STD_VALUE_HASH(name) SPECIALIZE_STD_HASH(name, value)
 #define SPECIALIZE_STD_RANGE_HASH(name) SPECIALIZE_STD_HASH(name, range)
-
-SPECIALIZE_STD_VALUE_HASH(std::pair)

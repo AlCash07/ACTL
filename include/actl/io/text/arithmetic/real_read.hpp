@@ -11,8 +11,8 @@
 #include <actl/io/text/arithmetic/detail/peek_digit.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/numeric/binary_pow.hpp>
+#include <actl/std/utility.hpp>
 #include <type_traits>
-#include <utility>
 
 namespace ac::io {
 
