@@ -23,12 +23,6 @@ using add_const_if_t = typename add_const_if<B, T>::type;
 template <index N>
 using index_constant = std::integral_constant<index, N>;
 
-template <class T>
-inline constexpr bool is_signed_int_v = std::is_signed_v<T> && std::is_integral_v<T>;
-
-template <class T>
-inline constexpr bool is_unsigned_int_v = std::is_unsigned_v<T> && std::is_integral_v<T>;
-
 template <class From, class To, class = void>
 struct is_static_castable : std::false_type {};
 

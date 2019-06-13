@@ -13,22 +13,6 @@ TEST("add_const_if") {
     ASSERT_TRUE(std::is_same_v<const int, add_const_if_t<true, int>>);
 }
 
-TEST("is_signed_int") {
-    ASSERT_FALSE(is_signed_int_v<bool>);
-    ASSERT_TRUE(is_signed_int_v<char>);
-    ASSERT_TRUE(is_signed_int_v<long long>);
-    ASSERT_FALSE(is_signed_int_v<unsigned long long>);
-    ASSERT_FALSE(is_signed_int_v<float>);
-}
-
-TEST("is_unsigned_int") {
-    ASSERT_TRUE(is_unsigned_int_v<bool>);
-    ASSERT_TRUE(is_unsigned_int_v<unsigned char>);
-    ASSERT_TRUE(is_unsigned_int_v<unsigned long long>);
-    ASSERT_FALSE(is_unsigned_int_v<int>);
-    ASSERT_FALSE(is_unsigned_int_v<float>);
-}
-
 TEST("is_static_castable") {
     ASSERT_TRUE(is_static_castable_v<double, int>);
     ASSERT_FALSE(is_static_castable_v<double, const void*>);
