@@ -21,10 +21,10 @@ io::formatted<io::file<io::out>> cerr{stderr};
 
 namespace detail {
 
-static czstring repeat_key = "repeat";
-static czstring time_limit_key = "time_limit";
+static auto repeat_key = "repeat"sv;
+static auto time_limit_key = "time_limit"sv;
 
-inline std::vector<std::string> split_va_args(const std::string& va_args_str) {
+inline std::vector<std::string> split_va_args(std::string_view va_args_str) {
     return split(va_args_str, [depth = int{}, quote = bool{}, last = char{}](char c) mutable {
         std::swap(last, c);
         switch (last) {
@@ -68,8 +68,8 @@ bool test_base::run() {
             params[trim(key_value[0])] = {trim(key_value[1]), args[i]};
         }
         io::write(cerr, name, ": ");
-        auto try_get_param = [&params, this](czstring key, auto& value) -> bool {
-            auto it = params.find(key);
+        auto try_get_param = [&params, this](std::string_view key, auto& value) -> bool {
+            auto it = params.find(key.data());
             if (it == params.end()) return false;
             if (!io::read(io::string<io::in>{it->second.first}, io::text_static<>{}, value)) {
                 throw "param " + to_string(key) + " has invalid value " +
@@ -115,7 +115,7 @@ std::vector<test_base*>& all_tests() {
 
 }  // namespace detail
 
-int run(int argc, czstring argv[]) {
+int run(int argc, const char* argv[]) {
     io::write(cerr, io::setprecision{3});
     using namespace detail;
     std::function<bool(const std::string&)> filter = [](const std::string&) -> bool {
@@ -133,14 +133,14 @@ int run(int argc, czstring argv[]) {
             return std::regex_search(s, regex);
         };
     }
-    std::map<std::string, std::vector<test_base*>> tests_per_file;
+    std::map<std::string_view, std::vector<test_base*>> tests_per_file;
     if (all_tests().empty()) {
         io::writeln(cerr, "There are no tests :(");
         return 0;
     }
     int total = 0;
     for (auto ptr : all_tests()) {
-        if (filter(ptr->filename() + std::string(" ") + ptr->args())) {
+        if (filter(std::string{ptr->filename()} + " " + std::string{ptr->args()})) {
             tests_per_file[ptr->filename()].push_back(ptr);
             ++total;
         }
@@ -154,7 +154,7 @@ int run(int argc, czstring argv[]) {
         io::write(cerr, ".\n", io::endl);
         return run(1, argv);
     }
-    std::string common_prefix = tests_per_file.begin()->first;
+    auto common_prefix = tests_per_file.begin()->first;
     size_t common_prefix_size = common_prefix.size();
     for (auto file_and_tests : tests_per_file) {
         const auto& filename = file_and_tests.first;

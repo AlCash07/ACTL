@@ -7,4 +7,4 @@
 
 #include <actl/test.hpp>
 
-int main(int argc, ac::czstring argv[]) { return ac::tests::run(argc, argv); }
+int main(int argc, const char* argv[]) { return ac::tests::run(argc, argv); }

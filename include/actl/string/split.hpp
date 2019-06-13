@@ -9,11 +9,12 @@
 
 #include <actl/std/string.hpp>
 #include <actl/std/vector.hpp>
+#include <string_view>
 
 namespace ac {
 
 template <class CharPredicate, class = decltype(std::declval<CharPredicate>()('\0'))>
-inline std::vector<std::string> split(const std::string& line, CharPredicate is_delimiter,
+inline std::vector<std::string> split(std::string_view line, CharPredicate is_delimiter,
                                       bool remove_empty = true) {
     std::vector<std::string> res(1);
     for (char c : line) {
@@ -27,7 +28,7 @@ inline std::vector<std::string> split(const std::string& line, CharPredicate is_
     return res;
 }
 
-inline std::vector<std::string> split(const std::string& line, char delimiter,
+inline std::vector<std::string> split(std::string_view line, char delimiter,
                                       bool remove_empty = true) {
     return split(line, [delimiter](char c) { return c == delimiter; }, remove_empty);
 }

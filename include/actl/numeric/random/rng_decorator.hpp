@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/types.hpp>
 #include <random>
+#include <string_view>
 #include <type_traits>
 
 namespace ac {
@@ -50,14 +50,14 @@ struct rng_decorator : public Rng {
         return std::normal_distribution<T>{mean, stddev}(*this);
     }
 
-    void seed(czstring value) {
+    void seed(std::string_view value) {
         Rng& base = static_cast<Rng&>(*this);
         Rng default_rng;
         do {
             default_rng();
             base = default_rng;
-            for (auto i = value; *i; ++i) {
-                this->state[0] += static_cast<typename Rng::result_type>(*i);
+            for (auto c : value) {
+                this->state[0] += static_cast<typename Rng::result_type>(c);
             }
         } while (base() == base());  // improbable unless RNG state is degenerate
     }

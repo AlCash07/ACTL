@@ -11,21 +11,23 @@
 #include <actl/macros.hpp>
 #include <actl/numeric/random/random.hpp>
 #include <actl/range/algorithm.hpp>
+#include <string_view>
 
 using namespace std::string_literals;
+using namespace std::string_view_literals;
 using namespace ac;
 
-#define TEST_IMPL(name, va_args)                                \
-    namespace {                                                 \
-    struct name : tests::detail::test_base {                    \
-        czstring filename() const override { return __FILE__; } \
-        int line() const override { return __LINE__; }          \
-        czstring args() const override { return va_args; }      \
-        void body(default_random&) const override;              \
-        name() { tests::detail::all_tests().push_back(this); }  \
-        static name initializer;                                \
-    } name::initializer;                                        \
-    }                                                           \
+#define TEST_IMPL(name, va_args)                                        \
+    namespace {                                                         \
+    struct name : tests::detail::test_base {                            \
+        std::string_view filename() const override { return __FILE__; } \
+        int line() const override { return __LINE__; }                  \
+        std::string_view args() const override { return va_args; }      \
+        void body(default_random&) const override;                      \
+        name() { tests::detail::all_tests().push_back(this); }          \
+        static name initializer;                                        \
+    } name::initializer;                                                \
+    }                                                                   \
     inline void name::body([[maybe_unused]] default_random& random) const
 
 #define TEST(...) TEST_IMPL(CAT(_tesT_, __COUNTER__), #__VA_ARGS__)
@@ -62,10 +64,10 @@ inline std::string to_string(const T& value) {
 }
 
 struct assert_impl {
-    czstring filename;
+    std::string_view filename;
     int line;
 
-    assert_impl(czstring filename, int line) : filename{filename}, line{line} {}
+    assert_impl(std::string_view filename, int line) : filename{filename}, line{line} {}
 
     template <class T0, class T1>
     inline void check(const T0& expected, const T1& actual) const {
@@ -107,7 +109,7 @@ struct assert_impl {
 };
 
 template <class Function>
-inline void assert_throws(czstring, int line, const Function& f) {
+inline void assert_throws(std::string_view, int line, const Function& f) {
     try {
         f();
     } catch (...) {
@@ -118,9 +120,9 @@ inline void assert_throws(czstring, int line, const Function& f) {
 }
 
 struct test_base {
-    virtual czstring filename() const = 0;
+    virtual std::string_view filename() const = 0;
     virtual int line() const = 0;
-    virtual czstring args() const = 0;
+    virtual std::string_view args() const = 0;
     virtual void body(default_random& random) const = 0;
 
     bool run();
@@ -130,6 +132,6 @@ std::vector<test_base*>& all_tests();
 
 }  // namespace detail
 
-int run(int argc, czstring argv[]);
+int run(int argc, const char* argv[]);
 
 }  // namespace ac::tests

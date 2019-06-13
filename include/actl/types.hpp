@@ -14,9 +14,4 @@ namespace ac {
 // http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-subscripts
 using index = std::ptrdiff_t;
 
-// http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-zstring
-using zstring = char*;
-
-using czstring = const char*;
-
 }  // namespace ac

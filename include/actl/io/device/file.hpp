@@ -15,14 +15,15 @@ namespace ac::io {
 
 template <mode_t Mode, class Char, bool = is_in<Mode>>
 class in_file : public device<Mode, Char> {
-    static constexpr czstring mode_str[14] = {
+    static constexpr const char* mode_str[14] = {
         "r", "rb", "w", "wb", "w+", "w+b", "a", "ab", "a+", "a+b", "a", "ab", "r+", "r+b",
     };
 
 public:
     in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} { ACTL_ASSERT(file); }
 
-    in_file(czstring filename) : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
+    in_file(const char* filename)
+        : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
     ~in_file() {
         if (own_) std::fclose(file_);
