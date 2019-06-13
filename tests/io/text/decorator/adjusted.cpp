@@ -62,5 +62,5 @@ TEST("fill") {
     memory<out> od{s};
     ASSERT_EQUAL(4, write(od, fmt, setwidth{4}, setfill{'*'}, 'a'));
     ASSERT_EQUAL(6, write(od, fmt, "bacaba"));
-    ASSERT_EQUAL_RANGES("*a**bacaba"s, s);
+    ASSERT_EQUAL_RANGES("*a**bacaba"sv, s);
 }
