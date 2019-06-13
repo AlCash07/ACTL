@@ -23,16 +23,6 @@ using add_const_if_t = typename add_const_if<B, T>::type;
 template <index N>
 using index_constant = std::integral_constant<index, N>;
 
-template <class From, class To, class = void>
-struct is_static_castable : std::false_type {};
-
-template <class From, class To>
-struct is_static_castable<From, To, std::void_t<decltype(static_cast<To>(std::declval<From>()))>>
-    : std::true_type {};
-
-template <class From, class To>
-inline constexpr bool is_static_castable_v = is_static_castable<From, To>::value;
-
 // TODO: use std::remove_cvref_t when C++20 is out.
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;

@@ -13,11 +13,6 @@ TEST("add_const_if") {
     ASSERT_TRUE(std::is_same_v<const int, add_const_if_t<true, int>>);
 }
 
-TEST("is_static_castable") {
-    ASSERT_TRUE(is_static_castable_v<double, int>);
-    ASSERT_FALSE(is_static_castable_v<double, const void*>);
-}
-
 TEST("remove_cvref") { ASSERT_TRUE(std::is_same_v<int, remove_cvref_t<volatile const int&>>); }
 
 TEST("remove_rvalue_ref") {
