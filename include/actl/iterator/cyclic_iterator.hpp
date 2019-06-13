@@ -8,9 +8,9 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functions.hpp>
 #include <actl/iterator/iterator_facade.hpp>
 #include <actl/macros.hpp>
+#include <actl/numeric/functions.hpp>
 
 namespace ac {
 

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functions.hpp>
+#include <actl/numeric/functions.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/array.hpp>
 #include <actl/std/tuple.hpp>

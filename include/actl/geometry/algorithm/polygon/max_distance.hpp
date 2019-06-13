@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/algorithm/polygon/antipodal_vertices.hpp>
 #include <actl/iterator/function_output_iterator.hpp>
+#include <actl/numeric/functions.hpp>
 
 namespace ac {
 

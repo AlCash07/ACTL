@@ -11,7 +11,7 @@
 #include <actl/geometry/algorithm/point/angle.hpp>
 #include <actl/geometry/traits/aliases.hpp>
 #include <actl/geometry/traits/policy.hpp>
-#include <actl/math.hpp>
+#include <actl/numeric/math.hpp>
 #include <actl/traits/output_type.hpp>
 
 namespace ac {

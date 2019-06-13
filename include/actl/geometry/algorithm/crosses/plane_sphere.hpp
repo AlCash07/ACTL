@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
 #include <actl/geometry/algorithm/point/norm.hpp>
 #include <actl/geometry/plane.hpp>
 #include <actl/geometry/sphere.hpp>
+#include <actl/numeric/functions.hpp>
 
 namespace ac {
 

@@ -8,11 +8,11 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/bit.hpp>
 #include <actl/container/functions.hpp>
 #include <actl/hash.hpp>
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
+#include <actl/numeric/bit.hpp>
 #include <actl/range/iterator_range.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <cstdint>

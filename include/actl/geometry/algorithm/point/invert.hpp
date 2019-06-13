@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
 #include <actl/geometry/point.hpp>
 #include <actl/geometry/traits/aliases.hpp>
 #include <actl/geometry/traits/policy.hpp>
+#include <actl/numeric/functions.hpp>
 
 namespace ac {
 

@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/sphere.hpp>
+#include <actl/numeric/functions.hpp>
 
 namespace ac {
 

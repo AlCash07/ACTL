@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
 #include <actl/geometry/algorithm/area/point_line.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/line.hpp>
+#include <actl/numeric/functions.hpp>
 
 namespace ac {
 

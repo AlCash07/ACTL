@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functions.hpp>
 #include <actl/io/io.hpp>
+#include <actl/numeric/functions.hpp>
 #include <actl/std/string.hpp>
 #include <cstring>
 

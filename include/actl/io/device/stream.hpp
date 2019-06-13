@@ -8,9 +8,9 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/bit.hpp>
 #include <actl/io/text/decorator/adjusted.hpp>
 #include <actl/io/util/till.hpp>
+#include <actl/numeric/bit.hpp>
 #include <ios>
 
 namespace ac::io {

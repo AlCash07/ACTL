@@ -8,10 +8,10 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/bit.hpp>
 #include <actl/io/text/flags.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/io/util/skip.hpp>
+#include <actl/numeric/bit.hpp>
 
 namespace ac::io {
 

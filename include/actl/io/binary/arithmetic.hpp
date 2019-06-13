@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/bit.hpp>
 #include <actl/io/io.hpp>
+#include <actl/numeric/bit.hpp>
 #include <actl/std/array.hpp>
 
 namespace ac::io {

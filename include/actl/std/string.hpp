@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/io/util/till.hpp>
+#include <actl/numeric/functions.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <actl/traits/string_traits.hpp>
 #include <string>

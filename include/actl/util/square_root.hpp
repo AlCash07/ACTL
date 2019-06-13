@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/functions.hpp>
-#include <actl/math.hpp>
+#include <actl/numeric/functions.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 
