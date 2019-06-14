@@ -25,8 +25,8 @@ struct is_raw : std::false_type {};
 template <class T>
 struct is_raw<raw<T>> : std::true_type {};
 
-template <class Device, class Format, class Char>
-inline index serialize(Device& od, Format&, raw<Char> x) {
+template <class Device, class Format, class T>
+inline index serialize(Device& od, Format&, const raw<T>& x) {
     return od.write(x.value);
 }
 
