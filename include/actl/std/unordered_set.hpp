@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/io/range.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <unordered_set>
 

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <actl/hash.hpp>
+#include <actl/io/range.hpp>
 #include <actl/traits/container_traits.hpp>
 #include <set>
 
