@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/hash.hpp>
+#include <actl/io/define_serialization.hpp>
 #include <actl/util/operators.hpp>
 
 namespace ac {
@@ -16,7 +17,7 @@ template <class T, bool = std::is_empty_v<T> && !std::is_final_v<T>>
 class ebo : private T {
 public:
     template <class... Ts>
-    constexpr explicit ebo(Ts&&... args) : T{std::forward<Ts>(args)...} {}
+    explicit constexpr ebo(Ts&&... args) : T{std::forward<Ts>(args)...} {}
 
     constexpr T& get() noexcept { return *this; }
     constexpr const T& get() const noexcept { return *this; }
@@ -26,7 +27,7 @@ template <class T>
 class ebo<T, false> {
 public:
     template <class... Ts>
-    constexpr explicit ebo(Ts&&... args) : value_{std::forward<Ts>(args)...} {}
+    explicit constexpr ebo(Ts&&... args) : value_{std::forward<Ts>(args)...} {}
 
     constexpr T& get() noexcept { return value_; }
     constexpr const T& get() const noexcept { return value_; }
@@ -37,14 +38,14 @@ private:
 
 namespace detail {
 
-template <int I, class T>
-struct member : ebo<T> {
-    using ebo<T>::ebo;
+template <class T>
+struct cpb1 : operators::base<ebo<T>> {
+    using operators::base<ebo<T>>::base;
 };
 
 template <class T>
-struct member<1, T> : operators::base<ebo<T>> {
-    using operators::base<ebo<T>>::base;
+struct cpb2 : ebo<T> {
+    using ebo<T>::ebo;
 };
 
 }  // namespace detail
@@ -54,7 +55,7 @@ struct member<1, T> : operators::base<ebo<T>> {
  * Reference: http://talesofcpp.fusionfenix.com/post-18/episode-ten-when-size-does-matter
  */
 template <class T1, class T2>
-class compressed_pair : private detail::member<1, T1>, private detail::member<2, T2> {
+class compressed_pair : private detail::cpb1<T1>, private detail::cpb2<T2> {
 public:
     using first_type  = T1;
     using second_type = T2;
@@ -63,14 +64,16 @@ public:
 
     template <class T, class... Ts>
     explicit constexpr compressed_pair(T&& first, Ts&&... second)
-        : detail::member<1, T1>{std::forward<T>(first)}
-        , detail::member<2, T2>{std::forward<Ts>(second)...} {}
+        : detail::cpb1<T1>{std::forward<T>(first)}, detail::cpb2<T2>{std::forward<Ts>(second)...} {}
 
-    constexpr T1& first() noexcept { return detail::member<1, T1>::get(); }
-    constexpr const T1& first() const noexcept { return detail::member<1, T1>::get(); }
+    constexpr T1& first() noexcept { return detail::cpb1<T1>::get(); }
+    constexpr const T1& first() const noexcept { return detail::cpb1<T1>::get(); }
 
-    constexpr T2& second() noexcept { return detail::member<2, T2>::get(); }
-    constexpr const T2& second() const noexcept { return detail::member<2, T2>::get(); }
+    constexpr T2& second() noexcept { return detail::cpb2<T2>::get(); }
+    constexpr const T2& second() const noexcept { return detail::cpb2<T2>::get(); }
+
+private:
+    DEFINE_SERIALIZATION(first(), second())
 };
 
 template <class T1, class T2>
@@ -86,16 +89,6 @@ inline bool operator < (const compressed_pair<T1, T2>& lhs, const compressed_pai
 template <class T1, class T2>
 inline size_t hash_value(const compressed_pair<T1, T2>& arg) {
     return hash_value(arg.first(), arg.second());
-}
-
-template <class Device, class T1, class T2>
-inline bool read(Device& input, compressed_pair<T1, T2>& arg) {
-    return read(input, arg.first(), arg.second());
-}
-
-template <class Device, class T1, class T2>
-inline int write(Device& output, const compressed_pair<T1, T2>& arg) {
-    return write(output, arg.first(), arg.second());
 }
 
 }  // namespace ac
