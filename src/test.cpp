@@ -103,7 +103,7 @@ bool test_base::run() {
         return true;
     } catch (const std::string& fail_message) {
         double elapsed_seconds = stopwatch.seconds();
-        io::writeln(cerr, "failed: \n", fail_message, " [ET = ", elapsed_seconds, "s]");
+        io::writeln(cerr, "failed: \n", fail_message, "[ET = ", elapsed_seconds, "s]");
         return false;
     }
 }
@@ -178,9 +178,9 @@ int run(int argc, const char* argv[]) {
         io::write(cerr, io::endl);
     }
     if (failed == 0) {
-        io::writeln(cerr, "Passed all tests.");
+        io::writeln(cerr, "Passed all ", total, " tests.");
     } else {
-        io::writeln(cerr, "Failed ", failed, "/", total, " tests.");
+        io::writeln(cerr, "Failed ", failed, " of ", total, " tests.");
     }
     return failed;
 }

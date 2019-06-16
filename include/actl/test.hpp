@@ -58,8 +58,16 @@ template <class T>
 inline std::string to_string(const T& value) {
     std::string s;
     io::spaced<io::pretty<io::text_static<bit(io::flags::boolalpha)>>> fmt;
-    io::write(io::string<io::app>{s}, fmt, value);
+    io::write(io::string<io::app>{s}, fmt, io::setspace{", "}, value);
     return s;
+}
+
+enum message_kind : uint8_t { Expected, Actual, Error, Line };
+
+template <message_kind Kind, class T>
+inline std::string message(const T& x) {
+    static std::string messages[4] = {"expected = ", "actual   = ", "error    = ", "line = "};
+    return messages[Kind] + to_string(x) + "\n";
 }
 
 struct assert_impl {
@@ -71,9 +79,7 @@ struct assert_impl {
     template <class T0, class T1>
     inline void check(const T0& expected, const T1& actual) const {
         if (expected == actual) return;
-        throw "expected = " + to_string(expected) +
-            "\nactual   = " + to_string(actual) +
-            "\nline = " + to_string(line);
+        throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class = std::enable_if_t<std::is_floating_point_v<T>>>
@@ -81,10 +87,8 @@ struct assert_impl {
         T numerator   = std::abs(expected - actual);
         T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
         if (numerator <= eps * denominator) return;
-        throw "expected = " + to_string(expected) +
-            "\nactual   = " + to_string(actual) +
-            "\nerror    = " + to_string(numerator / denominator) +
-            "\nline = " + to_string(line);
+        throw message<Expected>(expected) + message<Actual>(actual) +
+            message<Error>(numerator / denominator) + message<Line>(line);
     }
 
     inline void check_true(bool condition) const { check(true, condition); }
@@ -94,9 +98,7 @@ struct assert_impl {
     template <class T0, class T1>
     inline void check_ranges(const T0& expected, const T1& actual) const {
         if (equal(expected, actual)) return;
-        throw "expected = " + to_string(expected) +
-            "\nactual   = " + to_string(actual) +
-            "\nline = " + to_string(line);
+        throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T>
@@ -114,8 +116,7 @@ inline void assert_throws(std::string_view, int line, const Function& f) {
     } catch (...) {
         return;
     }
-    throw "expected exception"
-        "\nline = " + to_string(line);
+    throw "expected exception\n" + message<Line>(line);
 }
 
 struct test_base {
