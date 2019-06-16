@@ -16,7 +16,9 @@ namespace ac::operators {
 // Template base class enables empty base class chaining to avoid increasing type size,
 // reference: https://www.boost.org/doc/libs/1_70_0/libs/utility/operators.htm#old_lib_note
 template <class B = none>
-struct base : B {};
+struct base : B {
+    using B::B;
+};
 
 template <class T>
 inline constexpr T operator++(T& x, int) {

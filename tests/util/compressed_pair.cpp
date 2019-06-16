@@ -25,16 +25,16 @@ using pii = compressed_pair<int, int>;
 
 TEST("equal") {
     ASSERT_TRUE(pii{0, 1} == pii{0, 1});
-    ASSERT_FALSE(pii{0, 1} == pii{0, 0});
-    ASSERT_FALSE(pii{0, 1} == pii{1, 1});
-    ASSERT_FALSE(pii{0, 1} == pii{1, 0});
+    ASSERT_TRUE(pii{0, 1} != pii{0, 0});
+    ASSERT_TRUE(pii{0, 1} != pii{1, 1});
+    ASSERT_TRUE(pii{0, 1} != pii{1, 0});
 }
 
 TEST("less") {
     ASSERT_FALSE(pii{0, 0} < pii{0, 0});
     ASSERT_TRUE(pii{0, 0} < pii{0, 1});
-    ASSERT_TRUE(pii{0, 1} < pii{1, 0});
-    ASSERT_FALSE(pii{1, 0} < pii{0, 1});
+    ASSERT_TRUE(pii{0, 1} <= pii{1, 0});
+    ASSERT_TRUE(pii{1, 0} > pii{0, 1});
 }
 
 struct fin final : none {};

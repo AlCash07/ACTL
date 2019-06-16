@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/hash.hpp>
+#include <actl/util/operators.hpp>
 
 namespace ac {
 
@@ -17,7 +18,7 @@ public:
     template <class... Ts>
     constexpr explicit ebo(Ts&&... args) : T{std::forward<Ts>(args)...} {}
 
-    constexpr T&       get() noexcept { return *this; }
+    constexpr T& get() noexcept { return *this; }
     constexpr const T& get() const noexcept { return *this; }
 };
 
@@ -27,7 +28,7 @@ public:
     template <class... Ts>
     constexpr explicit ebo(Ts&&... args) : value_{std::forward<Ts>(args)...} {}
 
-    constexpr T&       get() noexcept { return value_; }
+    constexpr T& get() noexcept { return value_; }
     constexpr const T& get() const noexcept { return value_; }
 
 private:
@@ -39,6 +40,11 @@ namespace detail {
 template <int I, class T>
 struct member : ebo<T> {
     using ebo<T>::ebo;
+};
+
+template <class T>
+struct member<1, T> : operators::base<ebo<T>> {
+    using operators::base<ebo<T>>::base;
 };
 
 }  // namespace detail
@@ -60,10 +66,10 @@ public:
         : detail::member<1, T1>{std::forward<T>(first)}
         , detail::member<2, T2>{std::forward<Ts>(second)...} {}
 
-    constexpr T1&       first() noexcept { return detail::member<1, T1>::get(); }
+    constexpr T1& first() noexcept { return detail::member<1, T1>::get(); }
     constexpr const T1& first() const noexcept { return detail::member<1, T1>::get(); }
 
-    constexpr T2&       second() noexcept { return detail::member<2, T2>::get(); }
+    constexpr T2& second() noexcept { return detail::member<2, T2>::get(); }
     constexpr const T2& second() const noexcept { return detail::member<2, T2>::get(); }
 };
 
