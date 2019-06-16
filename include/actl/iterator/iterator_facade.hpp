@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <actl/util/operators.hpp>
 #include <iterator>
 #include <memory>
 
@@ -74,7 +75,7 @@ class it_facade;
 
 // TODO: inheritance from iterator is deprecated, remove it.
 template <class It, class V, class R, class P, class D>
-class it_facade<It, std::output_iterator_tag, V, R, P, D> {
+class it_facade<It, std::output_iterator_tag, V, R, P, D> : operators::base<> {
 public:
 	using iterator_category = std::output_iterator_tag;
 	using value_type        = V;
@@ -87,12 +88,6 @@ public:
     It& operator++() {
         iterator_core_access::increment(derived());
         return derived();
-    }
-
-    It operator++(int) {
-        It copy = derived();
-        ++*this;
-        return copy;
     }
 
 protected:
@@ -121,12 +116,6 @@ public:
     It& operator--() {
         iterator_core_access::decrement(this->derived());
         return this->derived();
-    }
-
-    It operator--(int) {
-        It copy = this->derived();
-        --*this;
-        return copy;
     }
 };
 
@@ -170,17 +159,11 @@ ITERATOR_OPERATOR(bool, ==,
                   iterator_core_access::equal(*static_cast<const It*>(&lhs),
                                               *static_cast<const It*>(&rhs)))
 
-ITERATOR_OPERATOR(bool, !=, !(lhs == rhs))
-
 ITERATOR_OPERATOR(D, -,
                   iterator_core_access::distance_to(*static_cast<const It*>(&rhs),
                                                     *static_cast<const It*>(&lhs)))
 
 ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
-
-ITERATOR_OPERATOR(bool, >, rhs < lhs)
-ITERATOR_OPERATOR(bool, <=, !(rhs < lhs))
-ITERATOR_OPERATOR(bool, >=, !(lhs < rhs))
 
 template <class It, class C, class V, class R, class P, class D>
 inline It operator + (D n, const iterator_facade<It, C, V, R, P, D>& rhs) { return rhs + n; }
