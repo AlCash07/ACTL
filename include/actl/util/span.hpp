@@ -13,6 +13,14 @@
 
 namespace ac {
 
+template <class T, class = void>
+struct is_continuous_range : std::false_type {};
+
+template <class T>
+struct is_continuous_range<
+    T, std::void_t<decltype(std::data(std::declval<T&>()), std::size(std::declval<T&>()))>>
+    : std::true_type {};
+
 template <class T>
 class span {
 public:
@@ -31,7 +39,7 @@ public:
 
     constexpr span(T* first, T* last) : span{first, last - first} {}
 
-    template <class Range>
+    template <class Range, class = std::enable_if_t<is_continuous_range<Range>::value>>
     constexpr span(Range& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
 
     constexpr T* begin() const { return data(); }
