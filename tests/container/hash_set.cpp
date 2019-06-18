@@ -5,27 +5,27 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/std/unordered_map.hpp>
+#include <actl/container/hash_set.hpp>
 #include <actl/test.hpp>
 
 TEST("category") {
-    using C = std::unordered_map<int, int>;
+    using C = hash_set<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
     ASSERT_FALSE(is_sorted_associative_container_v<C>);
     ASSERT_TRUE(is_unique_associative_container_v<C>);
     ASSERT_FALSE(is_multiple_associative_container_v<C>);
-    ASSERT_FALSE(is_simple_associative_container_v<C>);
-    ASSERT_TRUE(is_pair_associative_container_v<C>);
+    ASSERT_TRUE(is_simple_associative_container_v<C>);
+    ASSERT_FALSE(is_pair_associative_container_v<C>);
 }
 
 TEST("category") {
-    using C = std::unordered_multimap<int, int>;
+    using C = hash_multiset<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
     ASSERT_FALSE(is_sorted_associative_container_v<C>);
     ASSERT_FALSE(is_unique_associative_container_v<C>);
     ASSERT_TRUE(is_multiple_associative_container_v<C>);
-    ASSERT_FALSE(is_simple_associative_container_v<C>);
-    ASSERT_TRUE(is_pair_associative_container_v<C>);
+    ASSERT_TRUE(is_simple_associative_container_v<C>);
+    ASSERT_FALSE(is_pair_associative_container_v<C>);
 }

@@ -5,6 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/container/hash_set.hpp>
 #include <actl/graph/edge_list.hpp>
 #include <actl/std/all.hpp>
 #include "test_edges.hpp"
@@ -30,6 +31,6 @@ TEST("bundle") {
     test_edge_list<undirected, std::vector<bundle>>();
     test_edge_list<directed, std::set<bundle>>();
     test_edge_list<undirected, std::set<bundle>>();
-    test_edge_list<directed, std::unordered_multiset<bundle>>();
-    test_edge_list<undirected, std::unordered_multiset<bundle>>();
+    test_edge_list<directed, hash_multiset<bundle>>();
+    test_edge_list<undirected, hash_multiset<bundle>>();
 }

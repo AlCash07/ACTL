@@ -5,6 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/container/hash_set.hpp>
 #include <actl/graph/vertex_list.hpp>
 #include <actl/std/all.hpp>
 #include "test_vertices.hpp"
@@ -41,6 +42,6 @@ TEST("bundle") {
     test_vertex_list<std::list<bundle>>();
     test_vertex_list<std::set<bundle>>();
     test_vertex_list<std::multiset<bundle>>();
-    test_vertex_list<std::unordered_set<bundle>>();
-    test_vertex_list<std::unordered_multiset<bundle>>();
+    test_vertex_list<hash_set<bundle>>();
+    test_vertex_list<hash_multiset<bundle>>();
 }

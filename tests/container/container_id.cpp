@@ -6,6 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/container/container_id.hpp>
+#include <actl/container/hash_set.hpp>
 #include <actl/std/all.hpp>
 #include <actl/test.hpp>
 
@@ -42,7 +43,7 @@ TEST("id_key") {
     ASSERT_EQUAL(2u, s.size());
     s.insert(id_begin(c));
     ASSERT_EQUAL(2u, s.size());
-    std::unordered_set<sid> us;
+    hash_set<sid> us;
     us.insert(id_begin(c));
     ASSERT_EQUAL(1u, us.size());
     us.insert(id_end(c));

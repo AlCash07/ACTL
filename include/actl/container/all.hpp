@@ -10,4 +10,6 @@
 #include <actl/container/adaptor/all.hpp>
 #include <actl/container/container_id.hpp>
 #include <actl/container/dummy_container.hpp>
+#include <actl/container/hash_map.hpp>
+#include <actl/container/hash_set.hpp>
 #include <actl/container/ndarray.hpp>

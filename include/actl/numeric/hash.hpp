@@ -16,6 +16,11 @@ inline constexpr size_t hash_value(const T& arg) {
     return std::hash<T>{}(arg);
 }
 
+template <class T>
+struct hash_function {
+    constexpr size_t operator()(const T& x) const { return hash_value(x); }
+};
+
 template <class T, class... Ts>
 inline constexpr size_t hash_value(const T& arg, const Ts&... args) {
     size_t h = hash_value(arg);

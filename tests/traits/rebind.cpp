@@ -5,8 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/container/hash_set.hpp>
 #include <actl/std/tuple.hpp>
-#include <actl/std/unordered_set.hpp>
 #include <actl/test.hpp>
 #include <actl/traits/rebind.hpp>
 
@@ -28,6 +28,4 @@ TEST("inner") {
 
 TEST("array") { ASSERT_TRUE(std::is_same_v<B[2], rebind_t<A[2], B>>); }
 
-TEST("unordered_set") {
-    ASSERT_TRUE(std::is_same_v<std::unordered_set<int>, rebind_t<std::unordered_set<float>, int>>);
-}
+TEST("hash_set") { ASSERT_TRUE(std::is_same_v<hash_set<int>, rebind_t<hash_set<float>, int>>); }

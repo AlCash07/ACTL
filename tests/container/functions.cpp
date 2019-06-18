@@ -6,6 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/container/functions.hpp>
+#include <actl/container/hash_set.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/all.hpp>
 #include <actl/test.hpp>
@@ -65,8 +66,8 @@ TEST("multiset") {
     ASSERT_EQUAL(sorted_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST("unordered_set") {
-    std::unordered_set<int> c;
+TEST("hash_set") {
+    hash_set<int> c;
     for (size_t i = 0; i < xs.size(); ++i) {
         auto res = emplace(c, xs[i]);
         ASSERT_EQUAL(xs[i], *res.first);
@@ -79,8 +80,8 @@ TEST("unordered_set") {
     compare_sorted(unique_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST("unordered_multiset") {
-    std::unordered_multiset<int> c;
+TEST("hash_multiset") {
+    hash_multiset<int> c;
     for (auto x : xs) {
         auto res = emplace(c, x);
         ASSERT_EQUAL(x, *res.first);

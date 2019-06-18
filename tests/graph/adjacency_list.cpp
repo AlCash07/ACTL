@@ -5,6 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/container/hash_set.hpp>
 #include <actl/graph/adjacency_list.hpp>
 #include <actl/std/all.hpp>
 #include "test_edges.hpp"
@@ -28,12 +29,10 @@ void test_adjacency_list() {
 template <class Dir>
 void test_adjacency_list1() {
     test_adjacency_list<Dir, std::set<bundle>, none, std::vector<bundle>>();
-    test_adjacency_list<Dir, std::unordered_multiset<bundle>, std::list<edge_property>,
-                        std::set<bundle>>();
-    test_adjacency_list<Dir, std::unordered_set<bundle>, std::vector<one_vertex>,
-                        std::vector<bundle>>();
+    test_adjacency_list<Dir, hash_multiset<bundle>, std::list<edge_property>, std::set<bundle>>();
+    test_adjacency_list<Dir, hash_set<bundle>, std::vector<one_vertex>, std::vector<bundle>>();
     test_adjacency_list<Dir, std::vector<bundle>, std::vector<two_vertices>,
-                        std::unordered_multiset<bundle>>();
+                        hash_multiset<bundle>>();
 }
 
 TEST("bundle") {
