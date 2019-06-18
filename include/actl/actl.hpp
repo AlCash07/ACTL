@@ -13,7 +13,6 @@
 #include <actl/container/all.hpp>
 #include <actl/geometry/all.hpp>
 #include <actl/graph/all.hpp>
-#include <actl/hash.hpp>
 #include <actl/io/all.hpp>
 #include <actl/iterator/all.hpp>
 #include <actl/macros.hpp>

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/hash.hpp>
+#include <actl/numeric/hash.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/types.hpp>
 #include <actl/util/none.hpp>
