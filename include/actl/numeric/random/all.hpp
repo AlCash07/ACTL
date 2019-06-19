@@ -9,4 +9,5 @@
 
 #include <actl/numeric/random/random.hpp>
 #include <actl/numeric/random/rng_decorator.hpp>
+#include <actl/numeric/random/splitmix64.hpp>
 #include <actl/numeric/random/xoroshiro128cplus.hpp>
