@@ -18,10 +18,10 @@ namespace ac {
 struct xoroshiro128cplus {
     using result_type = uint64_t;
 
-    result_type operator()() {
-        result_type x = state[0];
-        result_type y = state[1];
-        result_type r = x + y;
+    uint64_t operator()() {
+        uint64_t x = state[0];
+        uint64_t y = state[1];
+        uint64_t r = x + y;
         y ^= x;
         x = ((x << 55) ^ (x >> 9)) ^ y ^ (y << 14);
         y = (y << 36) ^ (y >> 28);
@@ -30,11 +30,11 @@ struct xoroshiro128cplus {
         return r + (x + y < y);
     }
 
-    static constexpr result_type min() { return result_type(); }
-    static constexpr result_type max() { return ~result_type(); }
+    static constexpr uint64_t min() { return uint64_t{}; }
+    static constexpr uint64_t max() { return ~uint64_t{}; }
 
 protected:
-    alignas(16) result_type state[2] = {0x2b2226c33510fa6, 0xf3ce5935970031d3};
+    alignas(16) uint64_t state[2] = {0x2b2226c33510fa6, 0xf3ce5935970031d3};
 };
 
 /*
