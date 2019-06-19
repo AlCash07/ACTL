@@ -39,6 +39,8 @@ public:
     bool operator == (const edge& rhs) const { return id() == rhs.id(); }
     bool operator != (const edge& rhs) const { return id() != rhs.id(); }
 
+    friend size_t hash_value(edge& x) { return hash_value(x.id()); }
+
 private:
     V u_;
     V v_;
@@ -46,10 +48,3 @@ private:
 };
 
 }  // namespace ac::detail
-
-namespace std {
-
-template <class V, class E, bool CS>
-struct hash<ac::detail::edge<V, E, CS>> : hash<typename ac::detail::edge<V, E, CS>::id_type> {};
-
-}  // namespace std

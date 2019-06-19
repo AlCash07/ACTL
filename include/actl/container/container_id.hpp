@@ -181,5 +181,3 @@ inline container_id<C> id_find(const C& cont, const T& value) {
 }
 
 }  // namespace ac
-
-SPECIALIZE_STD_VALUE_HASH(ac::iterator_id)

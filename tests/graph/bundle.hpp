@@ -21,11 +21,4 @@ struct bundle {
     bool operator == (const bundle& rhs) const { return i == rhs.i; }
 };
 
-namespace std {
-
-template <>
-struct hash<bundle> {
-    auto operator()(const bundle& arg) const { return hash<int>{}(arg.i); }
-};
-
-}  // namespace std
+constexpr size_t hash_value(const bundle& x) { return hash_value(x.i); }

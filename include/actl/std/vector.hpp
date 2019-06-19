@@ -18,5 +18,3 @@ template <class T, class A>
 struct container_category<std::vector<T, A>> : contiguous_container_tag {};
 
 }  // namespace ac
-
-SPECIALIZE_STD_RANGE_HASH(std::vector)

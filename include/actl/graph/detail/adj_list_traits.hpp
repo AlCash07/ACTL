@@ -99,11 +99,3 @@ struct full_edge<V, OE, directed> {
 };
 
 }  // namespace ac::detail
-
-namespace std {
-
-template <class Dir, class OEC, class EC, class VC>
-struct hash<ac::detail::adj_list_vertex_data<Dir, OEC, EC, VC>>
-    : hash<typename ac::detail::adj_list_traits<Dir, OEC, EC, VC>::vertex_data> {};
-
-}  // namespace std

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/numeric/hash.hpp>
 #include <actl/property_map/composite_property_map.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <actl/util/compressed_pair.hpp>
@@ -34,6 +35,11 @@ public:
 
     bool operator < (const mimic_pair& rhs) const { return key() < rhs.key(); }
     bool operator == (const mimic_pair& rhs) const { return key() == rhs.key(); }
+
+    friend size_t hash_value(const mimic_pair& x) {
+        using ac::hash_value;
+        return hash_value(x.key());
+    }
 };
 
 template <class T1, class T2, int I>
@@ -84,14 +90,3 @@ inline auto get_second(PM&& map) {
 }
 
 }  // namespace ac::detail
-
-namespace std {
-
-template <class T1, class T2, int I>
-struct hash<ac::detail::mimic_pair<T1, T2, I>> {
-    auto operator()(const ac::detail::mimic_pair<T1, T2, I>& arg) const {
-        return ac::hash_value(arg.key());
-    }
-};
-
-}  // namespace std

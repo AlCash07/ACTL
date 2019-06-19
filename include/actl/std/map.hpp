@@ -26,6 +26,3 @@ struct container_category<std::multimap<K, T, C, A>> : virtual sorted_associativ
 };
 
 }  // namespace ac
-
-SPECIALIZE_STD_RANGE_HASH(std::map)
-SPECIALIZE_STD_RANGE_HASH(std::multimap)

@@ -18,5 +18,3 @@ template <class T, class A>
 struct container_category<std::deque<T, A>> : random_access_container_tag {};
 
 }  // namespace ac
-
-SPECIALIZE_STD_RANGE_HASH(std::deque)

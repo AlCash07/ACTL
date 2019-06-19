@@ -51,19 +51,10 @@ public:
 
     void swap(dummy_container& rhs) { std::swap(n_, rhs.n_); }
 
-protected:
+private:
     index n_;
 };
 
+inline size_t hash_value(const dummy_container& x) { return hash_value(x.size()); }
+
 }  // namespace ac
-
-namespace std {
-
-template <>
-struct hash<ac::dummy_container> {
-    constexpr size_t operator()(const ac::dummy_container& arg) const {
-        return ac::hash_value(arg.size());
-    }
-};
-
-}  // namespace std

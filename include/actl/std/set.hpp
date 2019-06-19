@@ -25,6 +25,3 @@ struct container_category<std::multiset<T, C, A>> : virtual sorted_associative_c
                                                     virtual multiple_associative_container_tag {};
 
 }  // namespace ac
-
-SPECIALIZE_STD_RANGE_HASH(std::set)
-SPECIALIZE_STD_RANGE_HASH(std::multiset)

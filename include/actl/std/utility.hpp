@@ -38,5 +38,3 @@ inline bool deserialize(Device& id, Format& fmt, std::pair<T1, T2>& x) {
 }
 
 }  // namespace ac::io
-
-SPECIALIZE_STD_VALUE_HASH(std::pair)

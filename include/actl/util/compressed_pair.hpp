@@ -92,5 +92,3 @@ inline size_t hash_value(const compressed_pair<T1, T2>& arg) {
 }
 
 }  // namespace ac
-
-SPECIALIZE_STD_VALUE_HASH(ac::compressed_pair)

@@ -61,6 +61,11 @@ struct edge_vertices<Dir, V, two_vertices> {
     bool operator < (const edge_vertices& rhs) const { return key() < rhs.key(); }
 
     bool operator == (const edge_vertices& rhs) const { return u == rhs.u && v == rhs.v; }
+
+    friend size_t hash_value(const edge_vertices& x) {
+        using ac::hash_value;
+        return hash_value(x.key());
+    }
 };
 
 template <class Dir, class V, class EC, class Selector>
@@ -79,14 +84,3 @@ struct edge_list_traits<Dir, V, EC, none> {
 };
 
 }  // namespace ac::detail
-
-namespace std {
-
-template <class Dir, class V>
-struct hash<ac::detail::edge_vertices<Dir, V, ac::two_vertices>> {
-    auto operator()(const ac::detail::edge_vertices<Dir, V, ac::two_vertices>& arg) const {
-        return ac::hash_value(arg.key());
-    }
-};
-
-}  // namespace std
