@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include <actl/io/define_serialization.hpp>
-#include <actl/numeric/util/hash_access.hpp>
+#include <actl/util/introspection.hpp>
 #include <actl/util/operators.hpp>
 
 namespace ac {
@@ -73,11 +72,7 @@ public:
     constexpr const T2& second() const noexcept { return detail::cpb2<T2>::get(); }
 
 private:
-    DEFINE_SERIALIZATION(first(), second())
-
-    friend struct ac::hash_access;
-
-    constexpr size_t hash() const { return hash_value(first(), second()); }
+    INTROSPECT(first(), second())
 };
 
 template <class T1, class T2>
