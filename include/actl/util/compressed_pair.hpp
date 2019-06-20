@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/io/define_serialization.hpp>
-#include <actl/numeric/hash.hpp>
+#include <actl/numeric/util/hash_access.hpp>
 #include <actl/util/operators.hpp>
 
 namespace ac {

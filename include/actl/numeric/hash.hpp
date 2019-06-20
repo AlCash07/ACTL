@@ -9,6 +9,7 @@
 
 #include <actl/numeric/bit.hpp>
 #include <actl/numeric/random/splitmix64.hpp>
+#include <actl/numeric/util/hash_access.hpp>
 #include <actl/traits/iterator_traits.hpp>
 #include <chrono>
 #include <functional>
@@ -58,24 +59,6 @@ inline std::enable_if_t<is_range_v<T>, size_t> hash_value(const T& range) {
     size_t res{};
     for (const auto& value : range) hash_combine(res, value);
     return res;
-}
-
-struct hash_access {
-    template <class T, class = decltype(std::declval<const T>().hash())>
-    std::true_type has_hash(int);
-
-    template <class T>
-    std::false_type has_hash(...);
-
-    template <class T>
-    static constexpr size_t hash(const T& x) {
-        return x.hash();
-    }
-};
-
-template <class T, class = std::enable_if_t<decltype(hash_access{}.has_hash<T>(0))::value>>
-inline constexpr size_t hash_value(const T& x) {
-    return hash_access::hash(x);
 }
 
 template <class T>

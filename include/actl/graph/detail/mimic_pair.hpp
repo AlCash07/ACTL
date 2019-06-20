@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/numeric/hash.hpp>
+#include <actl/numeric/util/hash_access.hpp>
 #include <actl/property_map/composite_property_map.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <actl/util/compressed_pair.hpp>
