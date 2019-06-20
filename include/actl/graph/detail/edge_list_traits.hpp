@@ -62,10 +62,10 @@ struct edge_vertices<Dir, V, two_vertices> {
 
     bool operator == (const edge_vertices& rhs) const { return u == rhs.u && v == rhs.v; }
 
-    friend size_t hash_value(const edge_vertices& x) {
-        using ac::hash_value;
-        return hash_value(x.key());
-    }
+private:
+    friend struct ac::hash_access;
+
+    size_t hash() const { return hash_value(key()); }
 };
 
 template <class Dir, class V, class EC, class Selector>

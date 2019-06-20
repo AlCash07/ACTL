@@ -74,6 +74,10 @@ public:
 
 private:
     DEFINE_SERIALIZATION(first(), second())
+
+    friend struct ac::hash_access;
+
+    constexpr size_t hash() const { return hash_value(first(), second()); }
 };
 
 template <class T1, class T2>
@@ -84,11 +88,6 @@ inline bool operator == (const compressed_pair<T1, T2>& lhs, const compressed_pa
 template <class T1, class T2>
 inline bool operator < (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
     return lhs.first() < rhs.first() || (lhs.first() == rhs.first() && lhs.second() < rhs.second());
-}
-
-template <class T1, class T2>
-inline size_t hash_value(const compressed_pair<T1, T2>& arg) {
-    return hash_value(arg.first(), arg.second());
 }
 
 }  // namespace ac

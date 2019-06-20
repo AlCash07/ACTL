@@ -52,9 +52,11 @@ public:
     void swap(dummy_container& rhs) { std::swap(n_, rhs.n_); }
 
 private:
+    friend struct ac::hash_access;
+
+    size_t hash() const { return hash_value(size()); }
+
     index n_;
 };
-
-inline size_t hash_value(const dummy_container& x) { return hash_value(x.size()); }
 
 }  // namespace ac

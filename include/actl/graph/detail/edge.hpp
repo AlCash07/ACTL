@@ -39,9 +39,11 @@ public:
     bool operator == (const edge& rhs) const { return id() == rhs.id(); }
     bool operator != (const edge& rhs) const { return id() != rhs.id(); }
 
-    friend size_t hash_value(edge& x) { return hash_value(x.id()); }
-
 private:
+    friend struct ac::hash_access;
+
+    size_t hash() const { return hash_value(id()); }
+
     V u_;
     V v_;
     B b_;

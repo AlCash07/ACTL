@@ -45,14 +45,12 @@ public:
 
 private:
     friend struct iterator_core_access;
+    friend struct ac::hash_access;
 
     iterator_id dereference() const { return *this; }
-};
 
-template <class It>
-inline size_t hash_value(const iterator_id<It>& id) {
-    return hash_value(id_key(id));
-}
+    size_t hash() const { return hash_value(id_key(*this)); }
+};
 
 template <class C>
 struct container_id_traits<C, true, false> {

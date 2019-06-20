@@ -36,10 +36,10 @@ public:
     bool operator < (const mimic_pair& rhs) const { return key() < rhs.key(); }
     bool operator == (const mimic_pair& rhs) const { return key() == rhs.key(); }
 
-    friend size_t hash_value(const mimic_pair& x) {
-        using ac::hash_value;
-        return hash_value(x.key());
-    }
+private:
+    friend struct ac::hash_access;
+
+    size_t hash() const { return hash_value(key()); }
 };
 
 template <class T1, class T2, int I>
