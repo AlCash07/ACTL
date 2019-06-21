@@ -131,20 +131,17 @@ public:
 
 private:
     template <int I, class Strides>
-    std::enable_if_t<I + 1 < N> initialize(T* data, nd_initializer_list_t<T, N - I> ilist,
-                                           Strides strides) {
-        ACTL_ASSERT(static_cast<int>(ilist.size()) * strides[I + 1] <= strides[I]);
-        for (auto it : ilist) {
-            initialize<I + 1>(data, it, strides);
-            data += strides[I + 1];
+    void initialize(T* data, nd_initializer_list_t<T, N - I> ilist, Strides strides) {
+        if constexpr (I + 1 < N) {
+            ACTL_ASSERT(static_cast<int>(ilist.size()) * strides[I + 1] <= strides[I]);
+            for (auto it : ilist) {
+                initialize<I + 1>(data, it, strides);
+                data += strides[I + 1];
+            }
+        } else {
+            ACTL_ASSERT(static_cast<int>(ilist.size()) <= strides[I]);
+            copy(ilist, data);
         }
-    }
-
-    template <int I, class Strides>
-    std::enable_if_t<I + 1 == N> initialize(T* data, std::initializer_list<T> ilist,
-                                            Strides strides) {
-        ACTL_ASSERT(static_cast<int>(ilist.size()) <= strides[I]);
-        copy(ilist, data);
     }
 };
 
@@ -218,13 +215,12 @@ private:
     }
 
     template <int I>
-    std::enable_if_t<I < N> compute_dimensions(nd_initializer_list_t<T, N - I> ilist) {
-        smax(strides_[I], static_cast<int>(ilist.size()));
-        for (auto it : ilist) compute_dimensions<I + 1>(it);
+    void compute_dimensions(nd_initializer_list_t<T, N - I> ilist) {
+        if constexpr (I < N) {
+            smax(strides_[I], static_cast<int>(ilist.size()));
+            for (auto it : ilist) compute_dimensions<I + 1>(it);
+        }
     }
-
-    template <int I>
-    std::enable_if_t<I == N> compute_dimensions(nd_initializer_list_t<T, 0>) {}
 
     Dims strides_;
 };
