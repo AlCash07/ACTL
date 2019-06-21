@@ -28,12 +28,17 @@ struct randomized_hash {
 inline const size_t randomized_hash::seed =
     static_cast<size_t>(std::chrono::steady_clock::now().time_since_epoch().count());
 
-template <class T>
-inline constexpr std::enable_if_t<std::is_arithmetic_v<T>, size_t> hash_value(const T& x) {
+template <class T, std::enable_if_t<std::is_arithmetic_v<T>, int> = 0>
+inline constexpr size_t hash_value(const T& x) {
     static_assert(sizeof(T) <= sizeof(size_t), "TODO: remove this restriction");
     size_t t{};
     std::memcpy(&t + sizeof(size_t) - sizeof(T), &x, sizeof(T));
     return randomized_hash::compute(t);
+}
+
+template <class T, std::enable_if_t<std::is_empty_v<T>, int> = 0>
+inline constexpr size_t hash_value(T) {
+    return 0;
 }
 
 template <class T>
@@ -46,16 +51,15 @@ inline constexpr void hash_combine(size_t& seed, const T& x) {
     seed ^= (seed << 6) + (seed >> 2) + 0x9e3779b9 + hash_value(x);
 }
 
-template <class T, class... Ts>
-inline constexpr std::enable_if_t<0 < sizeof...(Ts), size_t> hash_value(const T& x,
-                                                                        const Ts&... xs) {
+template <class T, class... Ts, std::enable_if_t<0 < sizeof...(Ts), int> = 0>
+inline constexpr size_t hash_value(const T& x, const Ts&... xs) {
     size_t res = hash_value(x);
     (..., hash_combine(res, xs));
     return res;
 }
 
-template <class T>
-inline std::enable_if_t<is_range_v<T>, size_t> hash_value(const T& range) {
+template <class T, std::enable_if_t<is_range_v<T>, int> = 0>
+inline constexpr size_t hash_value(const T& range) {
     size_t res{};
     for (const auto& value : range) hash_combine(res, value);
     return res;

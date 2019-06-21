@@ -41,10 +41,10 @@ using namespace ac;
 
 namespace ac::io {
 
-template <class Device, class Format, class T>
-inline std::enable_if_t<
-    !is_range_v<T> && !is_composite<T>::value && !std::is_same_v<T, io::char_t<Device>>, index>
-serialize(Device& od, Format&, const T& x) {
+template <class Device, class Format, class T,
+          std::enable_if_t<!is_range_v<T> && !is_composite<T>::value && !std::is_empty_v<T> &&
+                           !std::is_same_v<T, io::char_t<Device>>>* = nullptr>
+inline index serialize(Device& od, Format&, const T&) {
     return od.write(char_span{"<unknown-type>"});
 }
 

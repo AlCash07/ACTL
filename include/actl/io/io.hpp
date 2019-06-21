@@ -106,7 +106,17 @@ inline auto& deduce_format(Device& dev) {
     return dev.format();
 }
 
-/* Default serialization forwarding */
+/* Common types support */
+
+template <class Device, class Format, class T, std::enable_if_t<std::is_empty_v<T>, int> = 0>
+inline index serialize(Device&, Format&, const T&) {
+    return 0;
+}
+
+template <class Device, class Format, class T, std::enable_if_t<std::is_empty_v<T>, int> = 0>
+inline bool deserialize(Device&, Format&, T&) {
+    return true;
+}
 
 template <class Device, class Format>
 inline index serialize(Device& od, Format&, char_t<Device> c) {
@@ -137,6 +147,8 @@ inline bool deserialize(Device& id, Format&, const cspan<char_t<Device>>& s) {
     }
     return true;
 }
+
+/* Default forwarding */
 
 template <class Device, class Format, class T>
 inline index serialize(Device& od, Format& fmt, const T& x, none) {

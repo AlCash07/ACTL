@@ -24,10 +24,4 @@ template <>        struct replace_void<const void> { using type = const none; };
 template <class T>
 using replace_void_t = typename replace_void<T>::type;
 
-template <class Device>
-inline bool read(Device&, none&) { return true; }
-
-template <class Device>
-inline int write(Device&, const none&) { return 0; }
-
 }  // namespace ac
