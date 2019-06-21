@@ -36,14 +36,13 @@ public:
         return it == pm.data_.end() ? value_type{} : it->second;
     }
 
-    template <bool W = base_t::writable>
-    friend std::enable_if_t<W> put(const associative_property_map& pm, key_type key,
-                                   value_type value) {
+    template <bool W = base_t::writable, std::enable_if_t<W, int> = 0>
+    friend void put(const associative_property_map& pm, key_type key, value_type value) {
         pm.data_[key] = value;
     }
 
-    template <bool W = base_t::writable>
-    std::enable_if_t<W> clear() {
+    template <bool W = base_t::writable, class = std::enable_if_t<W>>
+    void clear() {
         this->data_.clear();
     }
 };

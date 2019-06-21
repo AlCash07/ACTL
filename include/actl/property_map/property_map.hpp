@@ -93,22 +93,21 @@ struct property_traits
 template <class PM>
 using property_map_wrapper_t = typename property_traits<PM>::wrapper;
 
-template <class It>
-inline std::enable_if_t<is_random_access_iterator_v<It>, typename property_traits<It>::reference>
-get(const It& it, int key) {  // const It& disallows conversion from array to pointer.
+// const It& disallows conversion from array to pointer.
+template <class It, std::enable_if_t<is_random_access_iterator_v<It>, int> = 0>
+inline typename property_traits<It>::reference get(const It& it, int key) {
     return it[key];
 }
 
-template <class It>
-inline std::enable_if_t<is_random_access_iterator_v<It> && property_traits<It>::writable> put(
-    const It& it, int key, typename property_traits<It>::value_type value) {
+template <class It, std::enable_if_t<
+                        is_random_access_iterator_v<It> && property_traits<It>::writable, int> = 0>
+inline void put(const It& it, int key, typename property_traits<It>::value_type value) {
     it[key] = value;
 }
 
-template <class PM>
-inline std::enable_if_t<property_traits<PM>::writable> put(
-    const put_helper<PM>& pm, typename property_traits<PM>::key_type key,
-    typename property_traits<PM>::value_type value) {
+template <class PM, std::enable_if_t<property_traits<PM>::writable, int> = 0>
+inline void put(const put_helper<PM>& pm, typename property_traits<PM>::key_type key,
+                typename property_traits<PM>::value_type value) {
     get(static_cast<const PM&>(pm), key) = value;
 }
 

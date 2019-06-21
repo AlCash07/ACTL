@@ -58,10 +58,10 @@ inline constexpr size_t hash_value(const T& x, const Ts&... xs) {
     return res;
 }
 
-template <class T, std::enable_if_t<is_range_v<T>, int> = 0>
-inline constexpr size_t hash_value(const T& range) {
+template <class R, std::enable_if_t<is_range_v<R>, int> = 0>
+inline constexpr size_t hash_value(const R& x) {
     size_t res{};
-    for (const auto& value : range) hash_combine(res, value);
+    for (const auto& value : x) hash_combine(res, value);
     return res;
 }
 

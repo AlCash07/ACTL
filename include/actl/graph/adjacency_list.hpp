@@ -235,8 +235,8 @@ public:
                 out_edge_iterator{this, u, this->out_end(u)}};
     }
 
-    template <bool D = std::is_same_v<Dir, directed>>
-    std::enable_if_t<!D, iterator_range<in_edge_iterator>> in_edges(vertex u) const {
+    template <bool D = std::is_same_v<Dir, directed>, class = std::enable_if_t<!D>>
+    iterator_range<in_edge_iterator> in_edges(vertex u) const {
         if constexpr (base_t::is_undirected) {
             auto out = out_edges(u);
             return {in_edge_iterator{out.begin()}, in_edge_iterator{out.end()}};
@@ -267,8 +267,8 @@ public:
     }
 
     template <class... Ts, bool UA = is_unique_associative_container_v<VC>,
-              class T = value_type_t<VC>>
-    std::enable_if_t<UA, edge> add_edge(const T& u, const T& v, Ts&&... args) {
+              class T = value_type_t<VC>, class = std::enable_if_t<UA>>
+    edge add_edge(const T& u, const T& v, Ts&&... args) {
         return add_edge(add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);
     }
 

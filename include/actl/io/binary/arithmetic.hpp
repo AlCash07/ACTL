@@ -13,16 +13,16 @@
 
 namespace ac::io {
 
-template <class Device, class Format, class T, class C = char_t<Device>>
-inline std::enable_if_t<std::is_arithmetic_v<T> && sizeof(T) % sizeof(C) == 0, index> serialize(
-    Device& od, Format&, const T& x, binary) {
+template <class Device, class Format, class T, class C = char_t<Device>,
+          std::enable_if_t<std::is_arithmetic_v<T> && sizeof(T) % sizeof(C) == 0, int> = 0>
+inline index serialize(Device& od, Format&, const T& x, binary) {
     auto bytes = bit_cast<std::array<C, sizeof(T) / sizeof(C)>>(x);
     return od.write(bytes);
 }
 
-template <class Device, class Format, class T, class C = char_t<Device>>
-inline std::enable_if_t<std::is_arithmetic_v<T> && sizeof(T) % sizeof(C) == 0, bool> deserialize(
-    Device& id, Format&, T& x, binary) {
+template <class Device, class Format, class T, class C = char_t<Device>,
+          std::enable_if_t<std::is_arithmetic_v<T> && sizeof(T) % sizeof(C) == 0, int> = 0>
+inline bool deserialize(Device& id, Format&, T& x, binary) {
     std::array<C, sizeof(T) / sizeof(C)> bytes;
     bool ok = id.read(bytes) == static_cast<index>(bytes.size());
     if (ok) x = bit_cast<T>(bytes);

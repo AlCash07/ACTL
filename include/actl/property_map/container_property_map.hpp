@@ -53,8 +53,8 @@ public:
         return id_at(pm.data_, key);
     }
 
-    template <bool W = base_t::writable>
-    std::enable_if_t<W> clear() {
+    template <bool W = base_t::writable, class = std::enable_if_t<W>>
+    void clear() {
         fill(data_, typename base_t::value_type{});
     }
 

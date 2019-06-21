@@ -17,9 +17,9 @@
 
 namespace ac::io {
 
-template <class Device, class Format, class Float>
-inline std::enable_if_t<std::is_floating_point_v<Float>, index> serialize(Device& od, Format& fmt,
-                                                                          Float x, text_tag) {
+template <class Device, class Format, class Float,
+          std::enable_if_t<std::is_floating_point_v<Float>, int> = 0>
+inline index serialize(Device& od, Format& fmt, Float x, text_tag) {
     std::unique_ptr<char[]> s;
     char* first;
     char* last;
