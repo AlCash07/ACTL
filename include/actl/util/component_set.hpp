@@ -14,6 +14,28 @@ namespace ac {
 
 template <class... Components>
 class component_set {
+public:
+    explicit component_set() = default;
+
+    explicit component_set(Components&&... components)
+        : components_{std::forward<Components>(components)...} {}
+
+protected:
+    /**
+     * Finds the first components that accepts given arguments (it's required to exist) and returns
+     * its output.
+     */
+    template <class... Ts>
+    auto execute_first(Ts&&... args) {
+        return exec_first<0>(std::forward<Ts>(args)...);
+    }
+
+    template <class... Ts>
+    void execute_all(Ts&&... args) {
+        exec_all<0>(std::forward<Ts>(args)...);
+    }
+
+private:
     using tuple_t = std::tuple<Components...>;
 
     tuple_t components_;
@@ -37,27 +59,6 @@ class component_set {
             exec_all<I + 1>(std::forward<Ts>(args)...);
         }
     }
-
-protected:
-    /**
-     * Finds the first components that accepts given arguments (it's required to exits) and returns
-     * its output.
-     */
-    template <class... Ts>
-    auto execute_first(Ts&&... args) {
-        return exec_first<0>(std::forward<Ts>(args)...);
-    }
-
-    template <class... Ts>
-    void execute_all(Ts&&... args) {
-        exec_all<0>(std::forward<Ts>(args)...);
-    }
-
-public:
-    explicit component_set() = default;
-
-    explicit component_set(Components&&... components)
-        : components_{std::forward<Components>(components)...} {}
 };
 
 }  // namespace ac
