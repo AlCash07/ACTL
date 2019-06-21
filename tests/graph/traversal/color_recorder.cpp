@@ -20,7 +20,7 @@ TEST("bfs") {
     Log  log;
     auto cr = color_recorder{
         logging_property_map{default_vertex_property_map<colors>(graph), std::back_inserter(log)}};
-    breadth_first_search(cr)(graph, 0);
+    breadth_first_search{cr}(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},
                      {2, colors::white},
@@ -47,7 +47,7 @@ TEST("dfs") {
     Log  log;
     auto cr = color_recorder{
         logging_property_map{default_vertex_property_map<colors>(graph), std::back_inserter(log)}};
-    depth_first_search(cr)(graph, 0);
+    depth_first_search{cr}(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},
                      {2, colors::white},

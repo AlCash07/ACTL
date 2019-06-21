@@ -16,7 +16,7 @@
 namespace ac {
 
 template <class... Components>
-class dfs : public component_set<Components...> {
+class depth_first_search : public component_set<Components...> {
     using base_t = component_set<Components...>;
     using base_t::execute_all;
 
@@ -117,8 +117,6 @@ public:
 };
 
 template <class... Components>
-inline auto depth_first_search(Components&&... components) {
-    return dfs<Components...>{std::forward<Components>(components)...};
-}
+depth_first_search(Components&&...)->depth_first_search<Components...>;
 
 }  // namespace ac

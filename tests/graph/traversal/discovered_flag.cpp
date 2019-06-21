@@ -20,7 +20,7 @@ TEST("bfs") {
     Log log;
     auto df = discovered_flag{
         logging_property_map{default_vertex_property_map<bool>(graph), std::back_inserter(log)}};
-    breadth_first_search(df)(graph, 0);
+    breadth_first_search{df}(graph, 0);
     ASSERT_EQUAL(Log{{0, false},
                      {1, false},
                      {2, false},
@@ -41,7 +41,7 @@ TEST("dfs") {
     Log log;
     auto df = discovered_flag{
         logging_property_map{default_vertex_property_map<bool>(graph), std::back_inserter(log)}};
-    depth_first_search(df)(graph, 0);
+    depth_first_search{df}(graph, 0);
     ASSERT_EQUAL(Log{{0, false},
                      {1, false},
                      {2, false},

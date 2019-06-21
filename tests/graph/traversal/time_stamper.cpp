@@ -14,15 +14,15 @@ TEST("in") {
     auto graph = sample_undirected_graph();
     size_t n = (size_t)graph.vertex_count();
     std::vector<int> tin(n);
-    depth_first_search(make_time_stamper(tin.data(), -1))(graph, 0);
+    depth_first_search{make_time_stamper(tin.data(), -1)}(graph, 0);
     ASSERT_EQUAL(std::vector<int>{0, 1, 2, 3, 4, 5}, tin);
 }
 
-TEST("in&out") {
+TEST("in and out") {
     auto graph = sample_undirected_tree();
     size_t n = (size_t)graph.vertex_count();
     std::vector<int> tin(n), tout(n);
-    depth_first_search(make_in_out_time_stamper(tin.data(), tout.data(), -1))(graph, 0);
+    depth_first_search{make_in_out_time_stamper(tin.data(), tout.data(), -1)}(graph, 0);
     ASSERT_EQUAL(std::vector<int>{0, 1, 2, 3, 4, 6, 5}, tin);
     ASSERT_EQUAL(std::vector<int>{7, 2, 7, 4, 6, 7, 6}, tout);
 }

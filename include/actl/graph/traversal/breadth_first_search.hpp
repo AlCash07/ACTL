@@ -16,7 +16,7 @@ namespace ac {
 
 // TODO: rename into breadth_first_search when C++17 is fully supported.
 template <class... Components>
-class bfs : public component_set<Components...> {
+class breadth_first_search : public component_set<Components...> {
     using base_t = component_set<Components...>;
     using base_t::execute_all;
 
@@ -69,8 +69,6 @@ public:
 };
 
 template <class... Components>
-inline auto breadth_first_search(Components&&... components) {
-    return bfs<Components...>{std::forward<Components>(components)...};
-}
+breadth_first_search(Components&&...)->breadth_first_search<Components...>;
 
 }  // namespace ac
