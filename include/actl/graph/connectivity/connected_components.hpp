@@ -34,8 +34,8 @@ inline vertex_initializer<connected_component_recorder<Map>> make_connected_comp
 }
 
 template <class Graph>
-inline auto default_connected_component_recorder(const Graph& graph) {
-    return make_connected_component_recorder(default_vertex_map<int>(graph), -1);
+inline auto make_default_connected_component_recorder(const Graph& graph) {
+    return make_connected_component_recorder(make_default_vertex_map<int>(graph), -1);
 }
 
 }  // namespace ac

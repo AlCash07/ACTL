@@ -16,7 +16,7 @@
 namespace ac {
 
 template <class T, class Graph>
-inline auto default_vertex_map(const Graph& graph) {
+inline auto make_default_vertex_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::vertex_container>) {
         return container_map{std::vector<T>(static_cast<size_t>(graph.vertex_count()))};
     } else {
@@ -25,7 +25,7 @@ inline auto default_vertex_map(const Graph& graph) {
 }
 
 template <class T, class Graph>
-inline auto default_edge_map(const Graph& graph) {
+inline auto make_default_edge_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::edge_container>) {
         return container_map{std::vector<T>(static_cast<size_t>(graph.edge_count()))};
     } else {

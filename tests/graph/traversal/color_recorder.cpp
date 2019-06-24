@@ -18,7 +18,7 @@ using Log = std::vector<std::pair<int, colors>>;
 TEST("bfs") {
     auto graph = sample_undirected_graph();
     Log log;
-    const auto map = logging_map{default_vertex_map<colors>(graph), std::back_inserter(log)};
+    const auto map = logging_map{make_default_vertex_map<colors>(graph), std::back_inserter(log)};
     breadth_first_search{color_recorder{map}}(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},
@@ -44,7 +44,7 @@ TEST("bfs") {
 TEST("dfs") {
     auto graph = sample_undirected_graph();
     Log  log;
-    auto map = logging_map{default_vertex_map<colors>(graph), std::back_inserter(log)};
+    auto map = logging_map{make_default_vertex_map<colors>(graph), std::back_inserter(log)};
     depth_first_search{color_recorder{map}}(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},

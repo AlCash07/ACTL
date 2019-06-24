@@ -59,8 +59,8 @@ inline vertex_initializer<in_out_time_stamper<Map, T>> make_in_out_time_stamper(
 }
 
 template <class Graph>
-inline auto default_time_stamper(const Graph& graph) {
-    return make_time_stamper(default_vertex_map<int>(graph), -1);
+inline auto make_default_time_stamper(const Graph& graph) {
+    return make_time_stamper(make_default_vertex_map<int>(graph), -1);
 }
 
 }  // namespace ac

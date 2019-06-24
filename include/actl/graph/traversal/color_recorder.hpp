@@ -32,8 +32,8 @@ template <class Map>
 color_recorder(Map&&) -> color_recorder<Map>;
 
 template <class Graph>
-inline auto default_color_recorder(const Graph& graph) {
-    return color_recorder{default_vertex_map<colors>(graph)};
+inline auto make_default_color_recorder(const Graph& graph) {
+    return color_recorder{make_default_vertex_map<colors>(graph)};
 }
 
 }  // namespace ac
