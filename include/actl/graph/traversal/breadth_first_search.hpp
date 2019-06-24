@@ -69,6 +69,6 @@ public:
 };
 
 template <class... Components>
-breadth_first_search(Components&&...)->breadth_first_search<Components...>;
+breadth_first_search(Components&&...) -> breadth_first_search<Components...>;
 
 }  // namespace ac

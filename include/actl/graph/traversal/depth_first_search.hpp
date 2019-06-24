@@ -117,6 +117,6 @@ public:
 };
 
 template <class... Components>
-depth_first_search(Components&&...)->depth_first_search<Components...>;
+depth_first_search(Components&&...) -> depth_first_search<Components...>;
 
 }  // namespace ac
