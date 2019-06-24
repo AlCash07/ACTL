@@ -10,15 +10,15 @@
 #include <cstring>
 
 TEST("free_function") {
-    auto pm = function_map{std::strlen};
-    ASSERT_EQUAL(0u, get(pm, ""));
-    ASSERT_EQUAL(2u, get(pm, "pm"));
+    auto map = function_map{std::strlen};
+    ASSERT_EQUAL(0u, get(map, ""));
+    ASSERT_EQUAL(3u, get(map, "map"));
 }
 
 TEST("lambda") {
     int count = 0;
-    auto pm = function_map{[&count](int) { return count++; }};
-    ASSERT_EQUAL(0, get(pm, 0));
-    ASSERT_EQUAL(1, get(pm, 0));
+    auto map = function_map{[&count](int) { return count++; }};
+    ASSERT_EQUAL(0, get(map, 0));
+    ASSERT_EQUAL(1, get(map, 0));
     ASSERT_EQUAL(2, count);
 }

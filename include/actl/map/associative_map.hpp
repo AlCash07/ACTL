@@ -31,14 +31,14 @@ public:
 
     using base_t::base_t;
 
-    friend value_type get(const associative_map& pm, key_type key) {
-        auto it = pm.data_.find(key);
-        return it == pm.data_.end() ? value_type{} : it->second;
+    friend value_type get(const associative_map& map, key_type key) {
+        auto it = map.data_.find(key);
+        return it == map.data_.end() ? value_type{} : it->second;
     }
 
     template <bool W = base_t::writable, std::enable_if_t<W, int> = 0>
-    friend void put(const associative_map& pm, key_type key, value_type value) {
-        pm.data_[key] = value;
+    friend void put(const associative_map& map, key_type key, value_type value) {
+        map.data_[key] = value;
     }
 
     template <bool W = base_t::writable, class = std::enable_if_t<W>>

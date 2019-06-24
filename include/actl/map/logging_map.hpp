@@ -22,12 +22,12 @@ class logging_map : public map_wrapper_t<Map> {
     mutable OutputIterator it_;
 
 public:
-    explicit logging_map(Map&& pm, OutputIterator it) : base_t{std::move(pm)}, it_{it} {}
+    explicit logging_map(Map&& map, OutputIterator it) : base_t{std::move(map)}, it_{it} {}
 
-    friend void put(const logging_map& pm, typename base_t::key_type key,
+    friend void put(const logging_map& map, typename base_t::key_type key,
                     typename base_t::value_type value) {
-        *pm.it_++ = std::pair{key, value};
-        put(static_cast<const base_t&>(pm), key, value);
+        *map.it_++ = std::pair{key, value};
+        put(static_cast<const base_t&>(map), key, value);
     }
 };
 

@@ -41,7 +41,7 @@ struct property_map : property_map_base {
     static constexpr bool writable = Writable;
 };
 
-// Inherit from this class to generate put(pm, key, value) { get(pm, key) = value; }.
+// Inherit from this class to generate put(map, key, value) { get(map, key) = value; }.
 template <class Map>
 struct put_helper : property_map_base {};
 
@@ -63,7 +63,7 @@ public:
 
     constexpr iterator_map(It it) : it_{it} {}
 
-    friend reference get(const iterator_map& pm, key_type key) { return pm.it_[key]; }
+    friend reference get(const iterator_map& map, key_type key) { return map.it_[key]; }
 };
 
 namespace detail {
@@ -105,9 +105,9 @@ inline void put(const It& it, int key, typename map_traits<It>::value_type value
 }
 
 template <class Map, std::enable_if_t<map_traits<Map>::writable, int> = 0>
-inline void put(const put_helper<Map>& pm, typename map_traits<Map>::key_type key,
+inline void put(const put_helper<Map>& map, typename map_traits<Map>::key_type key,
                 typename map_traits<Map>::value_type value) {
-    get(static_cast<const Map&>(pm), key) = value;
+    get(static_cast<const Map&>(map), key) = value;
 }
 
 }  // namespace ac

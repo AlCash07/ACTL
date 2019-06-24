@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Map>
 struct predecessor_recorder : map_wrapper_t<Map> {
-    predecessor_recorder(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
+    predecessor_recorder(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
 
     void operator()(on_vertex_start, typename map_traits<Map>::key_type u) { put(*this, u, u); }
 

@@ -44,8 +44,8 @@ public:
     explicit transition_map(C&& cont, Predicate pred = {})
         : filtered_range<CM, TSP>{CM{std::forward<C>(cont)}, TSP{pred}} {}
 
-    friend typename CM::reference get(const transition_map& pm, typename CM::key_type key) {
-        return get(pm.original(), key);
+    friend typename CM::reference get(const transition_map& map, typename CM::key_type key) {
+        return get(map.original(), key);
     }
 };
 

@@ -1,5 +1,5 @@
 /***************************************************************************************************
- * composite_property_map combines multiple property pms, applying them in the given order.
+ * composite_map combines multiple maps, applying them in the given order.
  * Supports put, inversion and traversal if at all possible.
  ***************************************************************************************************
  * Copyright 2017 Oleksandr Bacherikov.
@@ -48,8 +48,8 @@ public:
 
     using composite_map_base_t<Map1, Map2>::composite_map_base_t;
 
-    friend constexpr reference get(const composite_map_get& pm, key_type key) {
-        return get(pm.second(), get(pm.first(), key));
+    friend constexpr reference get(const composite_map_get& map, key_type key) {
+        return get(map.second(), get(map.first(), key));
     }
 };
 
@@ -71,9 +71,9 @@ public:
 
     using base_t::base_t;
 
-    friend constexpr void put(const composite_map_put& pm, typename base_t::key_type key,
+    friend constexpr void put(const composite_map_put& map, typename base_t::key_type key,
                               typename base_t::value_type value) {
-        put(pm.second(), get(pm.first(), key), value);
+        put(map.second(), get(map.first(), key), value);
     }
 };
 
@@ -86,9 +86,9 @@ public:
 
     using base_t::base_t;
 
-    friend constexpr void put(const composite_map_put& pm, typename base_t::key_type key,
+    friend constexpr void put(const composite_map_put& map, typename base_t::key_type key,
                               typename base_t::value_type value) {
-        put(pm.first(), key, pm.second().invert(value));
+        put(map.first(), key, map.second().invert(value));
     }
 };
 
@@ -143,13 +143,13 @@ class composite_map_iterate<Map1, Map2, true, It2, Inv2>
 public:
     class iterator
         : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
-        iterator(const It& it, const Map2& pm)
+        iterator(const It& it, const Map2& map)
             : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>{it}
-            , pm_{pm} {}
+            , map_{map} {}
 
-        Pair dereference() const { return {this->base()->first, get(pm_, this->base()->second)}; }
+        Pair dereference() const { return {this->base()->first, get(map_, this->base()->second)}; }
 
-        const Map2& pm_;
+        const Map2& map_;
 
         friend class composite_map_iterate;
         friend struct ac::iterator_core_access;
@@ -173,13 +173,15 @@ class composite_map_iterate<Map1, Map2, false, true, true>
 public:
     class iterator
         : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
-        iterator(const It& it, const Map1& pm)
+        iterator(const It& it, const Map1& map)
             : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>{it}
-            , pm_{pm} {}
+            , map_{map} {}
 
-        Pair dereference() const { return {pm_.invert(this->base()->first), this->base()->second}; }
+        Pair dereference() const {
+            return {map_.invert(this->base()->first), this->base()->second};
+        }
 
-        const Map1& pm_;
+        const Map1& map_;
 
         friend class composite_map_iterate;
         friend struct ac::iterator_core_access;

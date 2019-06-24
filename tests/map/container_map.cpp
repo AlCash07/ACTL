@@ -12,28 +12,28 @@
 
 TEST("const_set&") {
     const std::set<int> s{1, 5};
-    auto pm = container_map{s};
+    auto map = container_map{s};
     auto i0 = iterator_to_id(s, s.begin());
     auto i1 = iterator_to_id(s, --s.end());
-    ASSERT_EQUAL(5, get(pm, i1));
+    ASSERT_EQUAL(5, get(map, i1));
     using C = std::vector<std::pair<container_id<std::set<int>>, int>>;
-    ASSERT_EQUAL(C{{i0, 1}, {i1, 5}}, C(pm.begin(), pm.end()));
+    ASSERT_EQUAL(C{{i0, 1}, {i1, 5}}, C(map.begin(), map.end()));
 }
 
 TEST("vector&") {
     std::vector<int> v{3, 2, 1};
-    auto pm = container_map{v};
-    ASSERT_EQUAL(2, get(pm, 1));
-    put(pm, 2, 6);
-    ASSERT_EQUAL(6, get(pm, 2));
+    auto map = container_map{v};
+    ASSERT_EQUAL(2, get(map, 1));
+    put(map, 2, 6);
+    ASSERT_EQUAL(6, get(map, 2));
     ASSERT_EQUAL(std::vector<int>{3, 2, 6}, v);
 }
 
 TEST("vector&&") {
-    auto pm = container_map{std::vector<int>{3, 2, 1}};
-    ASSERT_EQUAL(2, get(pm, 1));
-    put(pm, 2, 6);
-    ASSERT_EQUAL(6, get(pm, 2));
+    auto map = container_map{std::vector<int>{3, 2, 1}};
+    ASSERT_EQUAL(2, get(map, 1));
+    put(map, 2, 6);
+    ASSERT_EQUAL(6, get(map, 2));
     using C = std::vector<std::pair<int, int>>;
-    ASSERT_EQUAL(C{{0, 3}, {1, 2}, {2, 6}}, C(pm.begin(), pm.end()));
+    ASSERT_EQUAL(C{{0, 3}, {1, 2}, {2, 6}}, C(map.begin(), map.end()));
 }

@@ -52,9 +52,9 @@ public:
 
     static_assert(std::is_integral_v<Value>, "value type must be integral");
 
-    friend Value get(const accounting_map& pm, Key key) {
-        auto pair = pm.data_.insert({key, static_cast<Value>(pm.data_.size())});
-        if (pair.second) pm.push_back(&pair.first->first);
+    friend Value get(const accounting_map& map, Key key) {
+        auto pair = map.data_.insert({key, static_cast<Value>(map.data_.size())});
+        if (pair.second) map.push_back(&pair.first->first);
         return pair.first->second;
     }
 

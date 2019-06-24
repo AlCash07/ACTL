@@ -27,7 +27,7 @@ class member_map : public detail::member_map_base<Key, Member> {
 public:
     explicit constexpr member_map(Member Key::* ptr) : ptr_{ptr} {}
 
-    friend Member& get(member_map pm, Key& key) { return key.*pm.ptr_; }
+    friend Member& get(member_map map, Key& key) { return key.*map.ptr_; }
 
     // TODO: consider making this invertible. It's possible, but not standard-compliant.
 

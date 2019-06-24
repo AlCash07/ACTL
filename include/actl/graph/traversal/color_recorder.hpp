@@ -20,7 +20,7 @@ struct color_recorder : map_wrapper_t<Map> {
 
     using vertex = typename map_traits<Map>::key_type;
 
-    color_recorder(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
+    color_recorder(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
 
     void operator()(on_vertex_initialize, vertex u) { put(*this, u, colors::white); }
     bool operator()(is_vertex_discovered, vertex u) { return get(*this, u) != colors::white; }

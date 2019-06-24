@@ -23,12 +23,12 @@ inline std::vector<V> test_vertices(Graph& graph) {
     auto[v3, ok] = graph.try_add_vertex(1, "v3");
     ASSERT_EQUAL(!is_unique_associative_container_v<typename Graph::vertex_container>, ok);
     if (ok) vs.push_back(v3);
-    auto pm = graph[vertex_property{}];
+    auto map = graph[vertex_property{}];
     graph[vs[2]].s = "v2a";
-    put(pm, vs[0], bundle(0, "v0a"));
+    put(map, vs[0], bundle(0, "v0a"));
     ASSERT_EQUAL("v0a", graph[vs[0]].s);
     ASSERT_EQUAL("v1", graph[vs[1]].s);
-    ASSERT_EQUAL("v2a", get(pm, vs[2]).s);
+    ASSERT_EQUAL("v2a", get(map, vs[2]).s);
     auto v_range = graph.vertices();
     ASSERT_EQUAL_SETS(vs, std::vector<V>(v_range.begin(), v_range.end()));
     return vs;

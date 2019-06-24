@@ -17,7 +17,7 @@ template <class Map>
 struct connected_component_recorder : map_wrapper_t<Map> {
     using vertex = typename map_traits<Map>::key_type;
 
-    connected_component_recorder(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
+    connected_component_recorder(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
 
     void operator()(on_vertex_discover, vertex u) { put(*this, u, count); }
     void operator()(on_search_finish) { ++count; }

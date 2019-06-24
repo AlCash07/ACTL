@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Map>
 struct predecessor_edge_recorder : map_wrapper_t<Map> {
-    predecessor_edge_recorder(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
+    predecessor_edge_recorder(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
 
     template <class E>
     void operator()(on_tree_edge, E e) {

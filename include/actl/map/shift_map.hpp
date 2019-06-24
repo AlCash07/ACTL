@@ -20,8 +20,8 @@ class shift_map : public property_map<Key, Value, Value, true> {
 public:
     explicit constexpr shift_map(Key offset) : offset_{offset} {}
 
-    friend constexpr Value get(const shift_map& pm, Key key) {
-        return static_cast<Value>(key - pm.offset_);
+    friend constexpr Value get(const shift_map& map, Key key) {
+        return static_cast<Value>(key - map.offset_);
     }
 
     constexpr Key invert(Value value) const { return static_cast<Key>(value) + offset_; }

@@ -66,7 +66,7 @@ inline bool operator == (const key_type_t<T1, T2, I>& lhs, const mimic_pair<T1, 
 }
 
 template <class Key>
-struct second_pm_traits {
+struct second_map_traits {
     using T = std::remove_reference_t<Key>;
     using B = typename T::second_type;
 
@@ -77,8 +77,8 @@ struct second_pm_traits {
 
 template <class Key>
 class second_property_map : public put_helper<second_property_map<Key>>,
-                            public second_pm_traits<Key>::base {
-    friend typename second_pm_traits<Key>::base::reference get(second_property_map, Key key) {
+                            public second_map_traits<Key>::base {
+    friend typename second_map_traits<Key>::base::reference get(second_property_map, Key key) {
         return key.second();
     }
 };

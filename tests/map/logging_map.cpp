@@ -13,10 +13,10 @@ TEST("int*") {
     int data[4];
     using Log = std::vector<std::pair<int, int>>;
     Log log;
-    auto pm = logging_map{(int*)data, std::back_inserter(log)};
-    put(pm, 1, 2);
-    put(pm, 2, 4);
-    ASSERT_EQUAL(2, get(pm, 1));
-    put(pm, 1, 3);
+    auto map = logging_map{(int*)data, std::back_inserter(log)};
+    put(map, 1, 2);
+    put(map, 2, 4);
+    ASSERT_EQUAL(2, get(map, 1));
+    put(map, 1, 3);
     ASSERT_EQUAL(Log{{1, 2}, {2, 4}, {1, 3}}, log);
 }

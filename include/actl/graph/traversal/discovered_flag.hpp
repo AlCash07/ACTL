@@ -19,7 +19,7 @@ struct discovered_flag : map_wrapper_t<Map> {
 
     using vertex = typename map_traits<Map>::key_type;
 
-    discovered_flag(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
+    discovered_flag(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
 
     void operator()(on_vertex_initialize, vertex u) { put(*this, u, false); }
     void operator()(on_vertex_discover, vertex u) { put(*this, u, true); }

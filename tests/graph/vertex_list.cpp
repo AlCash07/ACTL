@@ -23,8 +23,8 @@ TEST("none") {
         ++i;
     }
     ASSERT_TRUE(std::is_same_v<void, decltype(graph[0])>);
-    auto pm = graph[vertex_property{}];
-    ASSERT_TRUE(std::is_same_v<void, decltype(get(pm, 0))>);
+    auto map = graph[vertex_property{}];
+    ASSERT_TRUE(std::is_same_v<void, decltype(get(map, 0))>);
     graph.clear();
     ASSERT_EQUAL(0, graph.vertex_count());
 }

@@ -9,12 +9,12 @@
 #include <actl/test.hpp>
 
 TEST("int") {
-    dummy_map<int, int> pm;
-    put(pm, 2, 2);
-    ASSERT_EQUAL(0, get(pm, 2));
+    dummy_map<int, int> map;
+    put(map, 2, 2);
+    ASSERT_EQUAL(0, get(map, 2));
 }
 
 TEST("void") {
-    dummy_map<int> pm;
-    get(pm, 1);
+    dummy_map<int> map;
+    get(map, 1);
 }

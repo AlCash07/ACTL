@@ -10,23 +10,23 @@
 #include <actl/test.hpp>
 
 template <bool Invertible>
-inline void test_accounting_pm() {
-    accounting_map<std::map<std::string, int>, Invertible> pm;
-    ASSERT_EQUAL(0, get(pm, "a"));
-    ASSERT_EQUAL(1, get(pm, "s"));
-    ASSERT_EQUAL(0, get(pm, "a"));
-    ASSERT_EQUAL(2, get(pm, "p"));
-    ASSERT_EQUAL(1, get(pm, "s"));
+inline void test_accounting_map() {
+    accounting_map<std::map<std::string, int>, Invertible> map;
+    ASSERT_EQUAL(0, get(map, "a"));
+    ASSERT_EQUAL(1, get(map, "s"));
+    ASSERT_EQUAL(0, get(map, "a"));
+    ASSERT_EQUAL(2, get(map, "p"));
+    ASSERT_EQUAL(1, get(map, "s"));
     using C = std::vector<std::pair<std::string, int>>;
     C expected{{"a", 0}, {"s", 1}, {"p", 2}};
-    ASSERT_EQUAL_SETS(expected, {pm.begin(), pm.end()});
+    ASSERT_EQUAL_SETS(expected, {map.begin(), map.end()});
     if constexpr (Invertible) {
         for (int i = 0; i < 3; ++i) {
-            ASSERT_EQUAL(expected[(unsigned)i].first, pm.invert(i));
+            ASSERT_EQUAL(expected[(unsigned)i].first, map.invert(i));
         }
     }
 }
 
-TEST("non-invertible") { test_accounting_pm<false>(); }
+TEST("non-invertible") { test_accounting_map<false>(); }
 
-TEST("invertible") { test_accounting_pm<true>(); }
+TEST("invertible") { test_accounting_map<true>(); }

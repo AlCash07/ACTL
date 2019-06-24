@@ -49,7 +49,7 @@ public:
 
     using base_t::base_t;
 
-    friend reference get(const container_map& pm, key_type key) { return id_at(pm.data_, key); }
+    friend reference get(const container_map& map, key_type key) { return id_at(map.data_, key); }
 
     template <bool W = base_t::writable, class = std::enable_if_t<W>>
     void clear() {

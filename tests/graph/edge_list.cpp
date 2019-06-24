@@ -16,8 +16,8 @@ TEST("none") {
     ASSERT_EQUAL(2, e.source());
     ASSERT_EQUAL(3, e.target());
     ASSERT_TRUE(std::is_same_v<void, decltype(graph[e])>);
-    auto pm = graph[edge_property{}];
-    ASSERT_TRUE(std::is_same_v<void, decltype(get(pm, e))>);
+    auto map = graph[edge_property{}];
+    ASSERT_TRUE(std::is_same_v<void, decltype(get(map, e))>);
 }
 
 template <class Dir, class EC>

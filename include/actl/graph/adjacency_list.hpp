@@ -123,8 +123,8 @@ public:
     public:
         edge_property_map(vertices_ref& vertices) : vertices_{vertices} {}
 
-        friend Ref get(const edge_property_map& pm, edge e) {
-            return id_at(id_at(pm.vertices_, e.source()).first().out_edges, e.bundle()).second();
+        friend Ref get(const edge_property_map& map, edge e) {
+            return id_at(id_at(map.vertices_, e.source()).first().out_edges, e.bundle()).second();
         }
     };
 
