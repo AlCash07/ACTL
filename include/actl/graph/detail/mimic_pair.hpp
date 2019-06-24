@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/map/composite_map.hpp>
 #include <actl/numeric/util/hash_access.hpp>
-#include <actl/property_map/composite_property_map.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <actl/util/compressed_pair.hpp>
 
@@ -83,10 +83,10 @@ class second_property_map : public put_helper<second_property_map<Key>>,
     }
 };
 
-template <class PM>
-inline auto get_second(PM&& map) {
-    return composite_property_map{std::forward<PM>(map),
-                                  second_property_map<typename property_traits<PM>::reference>{}};
+template <class Map>
+inline auto get_second(Map&& map) {
+    return composite_map{std::forward<Map>(map),
+                         second_property_map<typename map_traits<Map>::reference>{}};
 }
 
 }  // namespace ac::detail

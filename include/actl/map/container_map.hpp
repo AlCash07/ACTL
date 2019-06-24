@@ -9,24 +9,24 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/property_map/property_map.hpp>
+#include <actl/map/property_map.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/container_range.hpp>
 
 namespace ac {
 
 template <class Container>
-class container_property_map : public put_helper<container_property_map<Container>>,
-                               public container_range<Container> {
+class container_map : public put_helper<container_map<Container>>,
+                      public container_range<Container> {
     using base_t = container_range<Container>;
     using base_t::data_;
 
-    using C  = remove_cvref_t<Container>;
+    using C = remove_cvref_t<Container>;
     using It = typename base_t::iterator;
 
 public:
     static constexpr bool invertible = false;
-    static constexpr bool iterable   = true;
+    static constexpr bool iterable = true;
 
     using key_type = container_id<C>;
     using reference =
@@ -43,15 +43,13 @@ public:
 
         const Container& cont_;
 
-        friend class container_property_map;
+        friend class container_map;
         friend struct ac::iterator_core_access;
     };
 
     using base_t::base_t;
 
-    friend reference get(const container_property_map& pm, key_type key) {
-        return id_at(pm.data_, key);
-    }
+    friend reference get(const container_map& pm, key_type key) { return id_at(pm.data_, key); }
 
     template <bool W = base_t::writable, class = std::enable_if_t<W>>
     void clear() {
@@ -63,6 +61,6 @@ public:
 };
 
 template <class C>
-container_property_map(C&&) -> container_property_map<remove_rvalue_ref_t<C>>;
+container_map(C&&) -> container_map<remove_rvalue_ref_t<C>>;
 
 }  // namespace ac

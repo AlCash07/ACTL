@@ -9,7 +9,7 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
-#include <actl/property_map/property_map.hpp>
+#include <actl/map/property_map.hpp>
 #include <actl/test.hpp>
 #include "bundle.hpp"
 

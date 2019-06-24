@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/property_map/property_map.hpp>
+#include <actl/map/property_map.hpp>
 #include <actl/traits/function_traits.hpp>
 #include <actl/traits/type_traits.hpp>
 
@@ -18,11 +18,11 @@ namespace ac {
  */
 template <class Function, class Key = argument_type_t<Function, 0>,
           class Ref = return_type_t<Function>>
-class function_property_map : public property_map<Key, remove_cvref_t<Ref>, Ref, false> {
+class function_map : public property_map<Key, remove_cvref_t<Ref>, Ref, false> {
 public:
-    explicit function_property_map(Function f = {}) : f_{f} {}
+    explicit function_map(Function f = {}) : f_{f} {}
 
-    friend Ref get(const function_property_map& pm, Key key) { return pm.f_(key); }
+    friend Ref get(const function_map& pm, Key key) { return pm.f_(key); }
 
 private:
     Function f_;

@@ -5,27 +5,26 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/property_map/member_property_map.hpp>
+#include <actl/map/identity_map.hpp>
 #include <actl/test.hpp>
+
+TEST("int") {
+    identity_map<int, long long> pm;
+    ASSERT_EQUAL(1LL, get(pm, 1));
+    ASSERT_EQUAL(3, pm.invert(3LL));
+}
 
 struct A {
     int a;
 };
 
-TEST("static") {
-    A x{0};
-    static_member_property_map<&A::a> pm;
-    get(pm, x) = 1;
-    ASSERT_EQUAL(1, x.a);
-    static_const_member_property_map<&A::a> cpm;
-    ASSERT_EQUAL(1, get(cpm, x));
-}
+struct B : A {
+    int b;
+};
 
-TEST("non-static") {
-    A x{0};
-    auto pm = member_property_map{&A::a};
-    get(pm, x) = 2;
+TEST("reference") {
+    B x{{0}, 0};
+    identity_map<B&, A&> pm;
+    get(pm, x).a = 2;
     ASSERT_EQUAL(2, x.a);
-    auto cpm = const_member_property_map(&A::a);
-    ASSERT_EQUAL(2, get(cpm, x));
 }

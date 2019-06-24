@@ -7,31 +7,31 @@
 
 #pragma once
 
-#include <actl/graph/default_property_map.hpp>
+#include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
 // T can be a reference to share global time.
-template <class Map, class T = typename property_traits<Map>::value_type>
-struct time_stamper : property_map_wrapper_t<Map> {
-    time_stamper(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
+template <class Map, class T = typename map_traits<Map>::value_type>
+struct time_stamper : map_wrapper_t<Map> {
+    time_stamper(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
 
     T time = {};
 
-    void operator()(on_vertex_examine, typename property_traits<Map>::key_type u) {
+    void operator()(on_vertex_examine, typename map_traits<Map>::key_type u) {
         put(*this, u, time);
         ++time;
     }
 };
 
-template <class Map, class T = typename property_traits<Map>::value_type>
+template <class Map, class T = typename map_traits<Map>::value_type>
 struct in_out_time_stamper : time_stamper<Map, T> {
     Map out_time;
 
     using time_stamper<Map, T>::operator();
 
-    void operator()(on_vertex_finish, typename property_traits<Map>::key_type u) {
+    void operator()(on_vertex_finish, typename map_traits<Map>::key_type u) {
         put(out_time, u, this->time);
     }
 };
@@ -55,7 +55,7 @@ inline vertex_initializer<in_out_time_stamper<Map>> make_in_out_time_stamper(Map
 
 template <class Graph>
 inline auto default_time_stamper(const Graph& graph) {
-    return make_time_stamper(default_vertex_property_map<int>(graph), -1);
+    return make_time_stamper(default_vertex_map<int>(graph), -1);
 }
 
 }  // namespace ac

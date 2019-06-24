@@ -5,26 +5,16 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/property_map/identity_property_map.hpp>
+#include <actl/map/shift_map.hpp>
 #include <actl/test.hpp>
 
-TEST("int") {
-    identity_property_map<int, long long> pm;
-    ASSERT_EQUAL(1LL, get(pm, 1));
-    ASSERT_EQUAL(3, pm.invert(3LL));
+template <class Map>
+inline void test_lowercase(Map pm) {
+    ASSERT_EQUAL(1, get(pm, 'b'));
+    ASSERT_EQUAL('c', pm.invert(2));
 }
 
-struct A {
-    int a;
-};
-
-struct B : A {
-    int b;
-};
-
-TEST("reference") {
-    B x{{0}, 0};
-    identity_property_map<B&, A&> pm;
-    get(pm, x).a = 2;
-    ASSERT_EQUAL(2, x.a);
+TEST("lowercase") {
+    test_lowercase(make_shift_map<int>('a'));
+    test_lowercase(static_shift_map<'a', int>{});
 }

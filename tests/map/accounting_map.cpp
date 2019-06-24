@@ -5,13 +5,13 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/property_map/accounting_property_map.hpp>
+#include <actl/map/accounting_map.hpp>
 #include <actl/std/map.hpp>
 #include <actl/test.hpp>
 
 template <bool Invertible>
 inline void test_accounting_pm() {
-    accounting_property_map<std::map<std::string, int>, Invertible> pm;
+    accounting_map<std::map<std::string, int>, Invertible> pm;
     ASSERT_EQUAL(0, get(pm, "a"));
     ASSERT_EQUAL(1, get(pm, "s"));
     ASSERT_EQUAL(0, get(pm, "a"));

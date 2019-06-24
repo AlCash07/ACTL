@@ -7,14 +7,14 @@
 
 #pragma once
 
-#include <actl/graph/default_property_map.hpp>
+#include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
 template <class Map>
-struct predecessor_edge_recorder : property_map_wrapper_t<Map> {
-    predecessor_edge_recorder(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
+struct predecessor_edge_recorder : map_wrapper_t<Map> {
+    predecessor_edge_recorder(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
 
     template <class E>
     void operator()(on_tree_edge, E e) {
@@ -29,7 +29,7 @@ struct predecessor_edge_recorder : property_map_wrapper_t<Map> {
 
 template <class Graph>
 inline auto default_predecessor_edge_recorder(const Graph& graph) {
-    return predecessor_edge_recorder{default_vertex_property_map<typename Graph::edge>(graph)};
+    return predecessor_edge_recorder{default_vertex_map<typename Graph::edge>(graph)};
 }
 
 }  // namespace ac

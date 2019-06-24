@@ -7,19 +7,19 @@
 
 #pragma once
 
-#include <actl/graph/default_property_map.hpp>
+#include <actl/graph/default_map.hpp>
 #include <actl/graph/events.hpp>
 #include <type_traits>
 
 namespace ac {
 
 template <class Map>
-struct discovered_flag : property_map_wrapper_t<Map> {
-    static_assert(std::is_same_v<typename property_traits<Map>::value_type, bool>);
+struct discovered_flag : map_wrapper_t<Map> {
+    static_assert(std::is_same_v<typename map_traits<Map>::value_type, bool>);
 
-    using vertex = typename property_traits<Map>::key_type;
+    using vertex = typename map_traits<Map>::key_type;
 
-    discovered_flag(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
+    discovered_flag(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
 
     void operator()(on_vertex_initialize, vertex u) { put(*this, u, false); }
     void operator()(on_vertex_discover, vertex u) { put(*this, u, true); }
@@ -28,7 +28,7 @@ struct discovered_flag : property_map_wrapper_t<Map> {
 
 template <class Graph>
 inline auto default_discovered_flag(const Graph& graph) {
-    return discovered_flag{default_vertex_property_map<bool>(graph)};
+    return discovered_flag{default_vertex_map<bool>(graph)};
 }
 
 }  // namespace ac

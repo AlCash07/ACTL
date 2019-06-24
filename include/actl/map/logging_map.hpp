@@ -7,25 +7,25 @@
 
 #pragma once
 
-#include <actl/property_map/property_map.hpp>
+#include <actl/map/property_map.hpp>
 #include <actl/std/utility.hpp>
 
 namespace ac {
 
 /**
- * Property map that writes all key-value pairs from put operations into output iterator.
+ * Map that writes all key-value pairs from put operations into output iterator.
  */
-template <class PM, class OutputIterator>
-class logging_property_map : public property_map_wrapper_t<PM> {
-    using base_t = property_map_wrapper_t<PM>;
+template <class Map, class OutputIterator>
+class logging_map : public map_wrapper_t<Map> {
+    using base_t = map_wrapper_t<Map>;
 
     mutable OutputIterator it_;
 
 public:
-    explicit logging_property_map(PM&& pm, OutputIterator it) : base_t{std::move(pm)}, it_{it} {}
+    explicit logging_map(Map&& pm, OutputIterator it) : base_t{std::move(pm)}, it_{it} {}
 
-    friend void put(const logging_property_map& pm, typename base_t::key_type key,
-        typename base_t::value_type value) {
+    friend void put(const logging_map& pm, typename base_t::key_type key,
+                    typename base_t::value_type value) {
         *pm.it_++ = std::pair{key, value};
         put(static_cast<const base_t&>(pm), key, value);
     }

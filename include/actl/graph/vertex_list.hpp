@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/graph/selectors.hpp>
-#include <actl/property_map/container_property_map.hpp>
-#include <actl/property_map/dummy_property_map.hpp>
+#include <actl/map/container_map.hpp>
+#include <actl/map/dummy_map.hpp>
 
 namespace ac {
 
@@ -22,8 +22,8 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](vertex_property) { return container_property_map{this->vertices_}; }
-    auto operator[](vertex_property) const { return container_property_map{this->vertices_}; }
+    auto operator[](vertex_property) { return container_map{this->vertices_}; }
+    auto operator[](vertex_property) const { return container_map{this->vertices_}; }
 
     T&       operator[](vertex u) { return get((*this)[vertex_property{}], u); }
     const T& operator[](vertex u) const { return get((*this)[vertex_property{}], u); }
@@ -79,7 +79,7 @@ public:
 
     void swap(vertex_list& rhs) { vertices_.swap(rhs.vertices_); }
 
-    dummy_property_map<vertex> operator[](vertex_property) const { return {}; }
+    dummy_map<vertex> operator[](vertex_property) const { return {}; }
 
     void operator[](vertex) const {}
 

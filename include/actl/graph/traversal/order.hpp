@@ -49,7 +49,7 @@ struct vertex_printer {
 
 template <class Graph, class VertexOutputIterator>
 inline void print_inorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
-    auto state = default_vertex_property_map<char>(graph);
+    auto state = default_vertex_map<char>(graph);
     depth_first_search{
         inorder_printer<VertexOutputIterator, decltype(state)>{it, std::move(state)}}(graph, s);
 }

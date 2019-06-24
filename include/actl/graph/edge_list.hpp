@@ -9,8 +9,8 @@
 
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
-#include <actl/property_map/container_property_map.hpp>
-#include <actl/property_map/dummy_property_map.hpp>
+#include <actl/map/container_map.hpp>
+#include <actl/map/dummy_map.hpp>
 #include <actl/std/vector.hpp>
 
 namespace ac {
@@ -26,11 +26,9 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](edge_property) { return get_second(container_property_map{this->edges_}); }
+    auto operator[](edge_property) { return get_second(container_map{this->edges_}); }
 
-    auto operator[](edge_property) const {
-        return get_second(container_property_map{this->edges_});
-    }
+    auto operator[](edge_property) const { return get_second(container_map{this->edges_}); }
 
     T&       operator[](edge e) { return get((*this)[edge_property{}], e); }
     const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
@@ -81,7 +79,7 @@ public:
 
     void swap(edge_list_edges& rhs) { edges_.swap(rhs.edges_); }
 
-    dummy_property_map<edge> operator[](edge_property) const { return {}; }
+    dummy_map<edge> operator[](edge_property) const { return {}; }
 
     void operator[](edge) const {}
 

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/property_map/property_map.hpp>
+#include <actl/map/property_map.hpp>
 
 namespace ac {
 
@@ -15,10 +15,9 @@ namespace ac {
  * Property map that simply casts the key. Fitting to be a default map.
  */
 template <class Key, class Value = Key>
-class identity_property_map
-    : public property_map<Key, Value, Value, std::is_convertible_v<Value, Key>> {
+class identity_map : public property_map<Key, Value, Value, std::is_convertible_v<Value, Key>> {
 public:
-    friend Value get(identity_property_map, Key key) { return static_cast<Value>(key); }
+    friend Value get(identity_map, Key key) { return static_cast<Value>(key); }
 
     constexpr Key invert(Value value) const { return static_cast<Key>(value); }
 };

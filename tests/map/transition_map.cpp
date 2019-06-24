@@ -5,12 +5,12 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/property_map/transition_property_map.hpp>
+#include <actl/map/transition_map.hpp>
 #include <actl/std/vector.hpp>
 #include <actl/test.hpp>
 
 TEST("to_bool") {
-    auto pm = transition_property_map{std::vector<int>{3, 2, 0, 6}};
+    auto pm = transition_map{std::vector<int>{3, 2, 0, 6}};
     ASSERT_EQUAL(3, get(pm, 0));
     put(pm, 1, 0);
     using C = std::vector<std::pair<int, int>>;
@@ -18,8 +18,8 @@ TEST("to_bool") {
 }
 
 TEST("lambda") {
-    int  x0;
-    auto pm = transition_property_map{std::vector<int>{3, 2, 6}, [&x0](int x) { return x != x0; }};
+    int x0;
+    auto pm = transition_map{std::vector<int>{3, 2, 6}, [&x0](int x) { return x != x0; }};
     x0 = 3;
     using C = std::vector<std::pair<int, int>>;
     ASSERT_EQUAL_SETS(C{{1, 2}, {2, 6}}, C(pm.begin(), pm.end()));

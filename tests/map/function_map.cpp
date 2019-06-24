@@ -5,16 +5,20 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/property_map/shift_property_map.hpp>
+#include <actl/map/function_map.hpp>
 #include <actl/test.hpp>
+#include <cstring>
 
-template <class PM>
-inline void test_lowercase(PM pm) {
-    ASSERT_EQUAL(1, get(pm, 'b'));
-    ASSERT_EQUAL('c', pm.invert(2));
+TEST("free_function") {
+    auto pm = function_map{std::strlen};
+    ASSERT_EQUAL(0u, get(pm, ""));
+    ASSERT_EQUAL(2u, get(pm, "pm"));
 }
 
-TEST("lowercase") {
-    test_lowercase(make_shift_property_map<int>('a'));
-    test_lowercase(static_shift_property_map<'a', int>{});
+TEST("lambda") {
+    int count = 0;
+    auto pm = function_map{[&count](int) { return count++; }};
+    ASSERT_EQUAL(0, get(pm, 0));
+    ASSERT_EQUAL(1, get(pm, 0));
+    ASSERT_EQUAL(2, count);
 }

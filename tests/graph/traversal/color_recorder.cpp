@@ -5,11 +5,11 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/graph/default_property_map.hpp>
+#include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/breadth_first_search.hpp>
 #include <actl/graph/traversal/color_recorder.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
-#include <actl/property_map/logging_property_map.hpp>
+#include <actl/map/logging_map.hpp>
 #include <actl/test.hpp>
 #include "sample_graphs.hpp"
 
@@ -18,8 +18,8 @@ using Log = std::vector<std::pair<int, colors>>;
 TEST("bfs") {
     auto graph = sample_undirected_graph();
     Log  log;
-    auto cr = color_recorder{
-        logging_property_map{default_vertex_property_map<colors>(graph), std::back_inserter(log)}};
+    auto cr =
+        color_recorder{logging_map{default_vertex_map<colors>(graph), std::back_inserter(log)}};
     breadth_first_search{cr}(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},
@@ -45,8 +45,8 @@ TEST("bfs") {
 TEST("dfs") {
     auto graph = sample_undirected_graph();
     Log  log;
-    auto cr = color_recorder{
-        logging_property_map{default_vertex_property_map<colors>(graph), std::back_inserter(log)}};
+    auto cr =
+        color_recorder{logging_map{default_vertex_map<colors>(graph), std::back_inserter(log)}};
     depth_first_search{cr}(graph, 0);
     ASSERT_EQUAL(Log{{0, colors::white},
                      {1, colors::white},

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/property_map/property_map.hpp>
+#include <actl/map/property_map.hpp>
 #include <actl/range/container_range.hpp>
 #include <actl/traits/type_traits.hpp>
 
@@ -17,27 +17,27 @@ namespace ac {
  * Associative property map that returns default value for keys not present in container.
  */
 template <class AssociativeContainer>
-class associative_property_map : property_map_base, public container_range<AssociativeContainer> {
+class associative_map : property_map_base, public container_range<AssociativeContainer> {
     using base_t = container_range<AssociativeContainer>;
-    using C      = remove_cvref_t<AssociativeContainer>;
+    using C = remove_cvref_t<AssociativeContainer>;
 
 public:
-    using key_type   = typename C::key_type;
+    using key_type = typename C::key_type;
     using value_type = typename C::mapped_type;
-    using reference  = value_type;
+    using reference = value_type;
 
     static constexpr bool invertible = false;
-    static constexpr bool iterable   = true;
+    static constexpr bool iterable = true;
 
     using base_t::base_t;
 
-    friend value_type get(const associative_property_map& pm, key_type key) {
+    friend value_type get(const associative_map& pm, key_type key) {
         auto it = pm.data_.find(key);
         return it == pm.data_.end() ? value_type{} : it->second;
     }
 
     template <bool W = base_t::writable, std::enable_if_t<W, int> = 0>
-    friend void put(const associative_property_map& pm, key_type key, value_type value) {
+    friend void put(const associative_map& pm, key_type key, value_type value) {
         pm.data_[key] = value;
     }
 
@@ -48,6 +48,6 @@ public:
 };
 
 template <class AC>
-associative_property_map(AC&&) -> associative_property_map<remove_rvalue_ref_t<AC>>;
+associative_map(AC&&) -> associative_map<remove_rvalue_ref_t<AC>>;
 
 }  // namespace ac

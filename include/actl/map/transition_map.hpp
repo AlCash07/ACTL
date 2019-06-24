@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/property_map/container_property_map.hpp>
+#include <actl/map/container_map.hpp>
 #include <actl/range/filtered_range.hpp>
 #include <actl/util/compressed_pair.hpp>
 
@@ -34,34 +34,31 @@ struct test_second : public ebo<Pred> {
  * Container property map with traversal interface that skips values not satisfying predicate.
  */
 template <class Container, class Predicate>
-class transition_property_map
-    : public put_helper<transition_property_map<Container, Predicate>>,
-      public filtered_range<container_property_map<Container>, test_second<Predicate>> {
-    using CPM = container_property_map<Container>;
+class transition_map : public put_helper<transition_map<Container, Predicate>>,
+                       public filtered_range<container_map<Container>, test_second<Predicate>> {
+    using CM = container_map<Container>;
     using TSP = test_second<Predicate>;
 
 public:
     template <class C>
-    explicit transition_property_map(C&& cont, Predicate pred = {})
-        : filtered_range<CPM, TSP>{CPM{std::forward<C>(cont)}, TSP{pred}} {}
+    explicit transition_map(C&& cont, Predicate pred = {})
+        : filtered_range<CM, TSP>{CM{std::forward<C>(cont)}, TSP{pred}} {}
 
-    friend typename CPM::reference get(const transition_property_map& pm,
-                                       typename CPM::key_type         key) {
+    friend typename CM::reference get(const transition_map& pm, typename CM::key_type key) {
         return get(pm.original(), key);
     }
 };
 
 template <class C, class P = to_bool>
-transition_property_map(C&&, P = {}) -> transition_property_map<remove_rvalue_ref_t<C>, P>;
+transition_map(C&&, P = {}) -> transition_map<remove_rvalue_ref_t<C>, P>;
 
 template <class C, class P>
-struct property_traits<transition_property_map<C, P>> : property_traits<container_property_map<C>> {
-};
+struct map_traits<transition_map<C, P>> : map_traits<container_map<C>> {};
 
 /**
  * Transition property map with underlying fixed-size array.
  */
 template <class T, int N, class Predicate>
-using transition_array_property_map = transition_property_map<std::array<T, N>, Predicate>;
+using transition_array_map = transition_map<std::array<T, N>, Predicate>;
 
 }  // namespace ac

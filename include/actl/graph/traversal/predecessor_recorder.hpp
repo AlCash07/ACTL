@@ -7,18 +7,16 @@
 
 #pragma once
 
-#include <actl/graph/default_property_map.hpp>
+#include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
 template <class Map>
-struct predecessor_recorder : property_map_wrapper_t<Map> {
-    predecessor_recorder(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
+struct predecessor_recorder : map_wrapper_t<Map> {
+    predecessor_recorder(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
 
-    void operator()(on_vertex_start, typename property_traits<Map>::key_type u) {
-        put(*this, u, u);
-    }
+    void operator()(on_vertex_start, typename map_traits<Map>::key_type u) { put(*this, u, u); }
 
     template <class E>
     void operator()(on_tree_edge, E e) {
@@ -39,7 +37,7 @@ inline vertex_initializer<predecessor_recorder<Map>> make_predecessor_recorder(M
 
 template <class Graph>
 inline auto default_predecessor_recorder(const Graph& graph) {
-    return make_predecessor_recorder(default_vertex_property_map<typename Graph::vertex>(graph),
+    return make_predecessor_recorder(default_vertex_map<typename Graph::vertex>(graph),
                                      graph.null_vertex());
 }
 

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/property_map/property_map.hpp>
+#include <actl/map/property_map.hpp>
 #include <actl/util/use_default.hpp>
 
 namespace ac {
@@ -16,11 +16,11 @@ namespace ac {
  * Property map that shifts key domain by the given offset (with casting).
  */
 template <class Key, class Value = Key>
-class shift_property_map : public property_map<Key, Value, Value, true> {
+class shift_map : public property_map<Key, Value, Value, true> {
 public:
-    explicit constexpr shift_property_map(Key offset) : offset_{offset} {}
+    explicit constexpr shift_map(Key offset) : offset_{offset} {}
 
-    friend constexpr Value get(const shift_property_map& pm, Key key) {
+    friend constexpr Value get(const shift_map& pm, Key key) {
         return static_cast<Value>(key - pm.offset_);
     }
 
@@ -31,19 +31,19 @@ private:
 };
 
 template <class Value = use_default, class Key>
-inline auto make_shift_property_map(Key offset) {
-    return shift_property_map<Key, deduce_type_t<Value, Key>>(offset);
+inline auto make_shift_map(Key offset) {
+    return shift_map<Key, deduce_type_t<Value, Key>>(offset);
 }
 
 /**
  * Shift property map with offset known at compile-time.
  */
 template <auto Offset, class Value = decltype(Offset)>
-class static_shift_property_map : public property_map<decltype(Offset), Value, Value, true> {
+class static_shift_map : public property_map<decltype(Offset), Value, Value, true> {
     using Key = decltype(Offset);
 
 public:
-    friend constexpr Value get(static_shift_property_map, Key key) {
+    friend constexpr Value get(static_shift_map, Key key) {
         return static_cast<Value>(key - Offset);
     }
 

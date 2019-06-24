@@ -7,22 +7,22 @@
 
 #pragma once
 
-#include <actl/graph/default_property_map.hpp>
+#include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/vertex_initializer.hpp>
 
 namespace ac {
 
 // Should be used only for undirected graphs.
 template <class Map>
-struct connected_component_recorder : property_map_wrapper_t<Map> {
-    using vertex = typename property_traits<Map>::key_type;
+struct connected_component_recorder : map_wrapper_t<Map> {
+    using vertex = typename map_traits<Map>::key_type;
 
-    connected_component_recorder(Map&& pm) : property_map_wrapper_t<Map>{std::move(pm)} {}
+    connected_component_recorder(Map&& pm) : map_wrapper_t<Map>{std::move(pm)} {}
 
     void operator()(on_vertex_discover, vertex u) { put(*this, u, count); }
     void operator()(on_search_finish) { ++count; }
 
-    typename property_traits<Map>::value_type count = {};
+    typename map_traits<Map>::value_type count = {};
 };
 
 template <class Map, class T>
@@ -33,7 +33,7 @@ inline vertex_initializer<connected_component_recorder<Map>> make_connected_comp
 
 template <class Graph>
 inline auto default_connected_component_recorder(const Graph& graph) {
-    return make_connected_component_recorder(default_vertex_property_map<int>(graph), -1);
+    return make_connected_component_recorder(default_vertex_map<int>(graph), -1);
 }
 
 }  // namespace ac
