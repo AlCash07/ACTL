@@ -14,17 +14,20 @@
 namespace ac {
 
 template <class Map>
-struct discovered_flag : map_wrapper_t<Map> {
+struct discovered_flag {
     static_assert(std::is_same_v<typename map_traits<Map>::value_type, bool>);
 
     using vertex = typename map_traits<Map>::key_type;
 
-    discovered_flag(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
+    void operator()(on_vertex_initialize, vertex u) { put(map, u, false); }
+    void operator()(on_vertex_discover, vertex u) { put(map, u, true); }
+    bool operator()(is_vertex_discovered, vertex u) { return get(map, u); }
 
-    void operator()(on_vertex_initialize, vertex u) { put(*this, u, false); }
-    void operator()(on_vertex_discover, vertex u) { put(*this, u, true); }
-    bool operator()(is_vertex_discovered, vertex u) { return get(*this, u); }
+    Map map;
 };
+
+template <class Map>
+discovered_flag(Map&&) -> discovered_flag<Map>;
 
 template <class Graph>
 inline auto default_discovered_flag(const Graph& graph) {

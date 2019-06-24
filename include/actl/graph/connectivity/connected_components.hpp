@@ -14,16 +14,18 @@ namespace ac {
 
 // Should be used only for undirected graphs.
 template <class Map>
-struct connected_component_recorder : map_wrapper_t<Map> {
+struct connected_component_recorder {
     using vertex = typename map_traits<Map>::key_type;
 
-    connected_component_recorder(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
-
-    void operator()(on_vertex_discover, vertex u) { put(*this, u, count); }
+    void operator()(on_vertex_discover, vertex u) { put(map, u, count); }
     void operator()(on_search_finish) { ++count; }
 
+    Map map;
     typename map_traits<Map>::value_type count = {};
 };
+
+template <class Map>
+connected_component_recorder(Map&&) -> connected_component_recorder<Map>;
 
 template <class Map, class T>
 inline vertex_initializer<connected_component_recorder<Map>> make_connected_component_recorder(

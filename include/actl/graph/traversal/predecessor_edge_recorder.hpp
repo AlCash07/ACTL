@@ -13,19 +13,22 @@
 namespace ac {
 
 template <class Map>
-struct predecessor_edge_recorder : map_wrapper_t<Map> {
-    predecessor_edge_recorder(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
-
+struct predecessor_edge_recorder {
     template <class E>
     void operator()(on_tree_edge, E e) {
-        put(*this, e.target(), e);
+        put(map, e.target(), e);
     }
 
     template <class E>
     void operator()(on_edge_relaxed, E e) {
         operator()(on_tree_edge{}, e);
     }
+
+    Map map;
 };
+
+template <class Map>
+predecessor_edge_recorder(Map&&) -> predecessor_edge_recorder<Map>;
 
 template <class Graph>
 inline auto default_predecessor_edge_recorder(const Graph& graph) {

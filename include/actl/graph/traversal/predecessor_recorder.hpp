@@ -13,21 +13,24 @@
 namespace ac {
 
 template <class Map>
-struct predecessor_recorder : map_wrapper_t<Map> {
-    predecessor_recorder(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
-
-    void operator()(on_vertex_start, typename map_traits<Map>::key_type u) { put(*this, u, u); }
+struct predecessor_recorder {
+    void operator()(on_vertex_start, typename map_traits<Map>::key_type u) { put(map, u, u); }
 
     template <class E>
     void operator()(on_tree_edge, E e) {
-        put(*this, e.target(), e.source());
+        put(map, e.target(), e.source());
     }
 
     template <class E>
     void operator()(on_edge_relaxed, E e) {
         operator()(on_tree_edge{}, e);
     }
+
+    Map map;
 };
+
+template <class Map>
+predecessor_recorder(Map&&) -> predecessor_recorder<Map>;
 
 template <class Map, class T>
 inline vertex_initializer<predecessor_recorder<Map>> make_predecessor_recorder(Map&& predecessor,

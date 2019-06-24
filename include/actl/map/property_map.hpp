@@ -88,6 +88,9 @@ struct map_traits_impl<It, false> : map_traits_impl<iterator_map<It>> {};
 template <class Map>
 struct map_traits : detail::map_traits_impl<Map, std::is_base_of_v<property_map_base, Map>> {};
 
+template <class Map>
+struct map_traits<Map&> : map_traits<Map> {};
+
 // This type can be used as base class even when Map is a pointer.
 template <class Map>
 using map_wrapper_t = typename map_traits<Map>::wrapper;

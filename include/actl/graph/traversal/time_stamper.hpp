@@ -13,19 +13,21 @@
 namespace ac {
 
 // T can be a reference to share global time.
-template <class Map, class T = typename map_traits<Map>::value_type>
-struct time_stamper : map_wrapper_t<Map> {
-    time_stamper(Map&& map) : map_wrapper_t<Map>{std::move(map)} {}
-
-    T time = {};
-
+template <class Map, class T>
+struct time_stamper {
     void operator()(on_vertex_examine, typename map_traits<Map>::key_type u) {
-        put(*this, u, time);
+        put(map, u, time);
         ++time;
     }
+
+    Map map;
+    T time = {};
 };
 
-template <class Map, class T = typename map_traits<Map>::value_type>
+template <class Map>
+time_stamper(Map&&) -> time_stamper<Map, typename map_traits<Map>::value_type>;
+
+template <class Map, class T>
 struct in_out_time_stamper : time_stamper<Map, T> {
     Map out_time;
 
@@ -36,20 +38,23 @@ struct in_out_time_stamper : time_stamper<Map, T> {
     }
 };
 
+template <class Map>
+in_out_time_stamper(Map&&) -> in_out_time_stamper<Map, typename map_traits<Map>::value_type>;
+
 template <class Map, class T>
-inline vertex_initializer<time_stamper<Map>> make_time_stamper(Map&& in_time, T value) {
+inline vertex_initializer<time_stamper<Map, T>> make_time_stamper(Map&& in_time, T value) {
     return {{std::forward<Map>(in_time)}, value};
 }
 
 template <class Map>
-inline in_out_time_stamper<Map> make_in_out_time_stamper(Map&& in_time, Map&& out_time) {
-    return {{std::forward<Map>(in_time)}, std::forward<Map>(out_time)};
+inline auto make_in_out_time_stamper(Map&& in_time, Map&& out_time) {
+    return in_out_time_stamper{{std::forward<Map>(in_time)}, std::forward<Map>(out_time)};
 }
 
 template <class Map, class T>
-inline vertex_initializer<in_out_time_stamper<Map>> make_in_out_time_stamper(Map&& in_time,
-                                                                             Map&& out_time,
-                                                                             T     value) {
+inline vertex_initializer<in_out_time_stamper<Map, T>> make_in_out_time_stamper(Map&& in_time,
+                                                                                Map&& out_time,
+                                                                                T value) {
     return {{{std::forward<Map>(in_time)}, std::forward<Map>(out_time)}, value};
 }
 
