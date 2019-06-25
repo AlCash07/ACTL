@@ -9,20 +9,21 @@
 
 #include <actl/map/property_map.hpp>
 #include <actl/traits/function_traits.hpp>
-#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
 /**
  * Property map that applies given function to the key.
  */
-template <class Function, class Key = argument_type_t<Function, 0>,
-          class Ref = return_type_t<Function>>
-class function_map : public property_map<Key, remove_cvref_t<Ref>, Ref, false> {
+template <class Function>
+class function_map {
 public:
+    using key_type = argument_type_t<Function, 0>;
+    using reference = return_type_t<Function>;
+
     explicit function_map(Function f = {}) : f_{f} {}
 
-    friend Ref get(const function_map& map, Key key) { return map.f_(key); }
+    friend reference get(const function_map& map, key_type key) { return map.f_(key); }
 
 private:
     Function f_;

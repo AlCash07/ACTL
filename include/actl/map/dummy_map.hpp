@@ -13,12 +13,15 @@ namespace ac {
 
 // Value is void by default to produce compilation error where get result is used.
 template <class Key, class Value = void>
-class dummy_map
-    : public property_map<Key, Value, Value, false, false, std::is_same_v<Value, void>> {
-    friend Value get(dummy_map, Key) { return Value(); }
+class dummy_map {
+public:
+    using key_type = Key;
+    using reference = Value;
+
+    friend constexpr Value get(dummy_map, Key) { return Value(); }
 };
 
-template <class K, class V>
-inline void put(dummy_map<K, V>, K, V) {}
+template <class K, class V, class = std::enable_if_t<!std::is_same_v<V, void>>>
+inline constexpr void put(dummy_map<K, V>, K, V) {}
 
 }  // namespace ac

@@ -11,7 +11,7 @@
 template <class Map>
 inline void test_lowercase(Map map) {
     ASSERT_EQUAL(1, get(map, 'b'));
-    ASSERT_EQUAL('c', map.invert(2));
+    ASSERT_EQUAL('c', invert(map, 2));
 }
 
 TEST("lowercase") {

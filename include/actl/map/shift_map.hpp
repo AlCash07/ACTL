@@ -16,15 +16,20 @@ namespace ac {
  * Property map that shifts key domain by the given offset (with casting).
  */
 template <class Key, class Value = Key>
-class shift_map : public property_map<Key, Value, Value, true> {
+class shift_map {
 public:
+    using key_type = Key;
+    using reference = Value;
+
     explicit constexpr shift_map(Key offset) : offset_{offset} {}
 
     friend constexpr Value get(const shift_map& map, Key key) {
         return static_cast<Value>(key - map.offset_);
     }
 
-    constexpr Key invert(Value value) const { return static_cast<Key>(value) + offset_; }
+    friend constexpr Key invert(const shift_map& map, Value value) {
+        return static_cast<Key>(value) + map.offset_;
+    }
 
 private:
     const Key offset_;
@@ -39,15 +44,18 @@ inline auto make_shift_map(Key offset) {
  * Shift property map with offset known at compile-time.
  */
 template <auto Offset, class Value = decltype(Offset)>
-class static_shift_map : public property_map<decltype(Offset), Value, Value, true> {
-    using Key = decltype(Offset);
-
+class static_shift_map {
 public:
-    friend constexpr Value get(static_shift_map, Key key) {
+    using key_type = decltype(Offset);
+    using reference = Value;
+
+    friend constexpr Value get(static_shift_map, key_type key) {
         return static_cast<Value>(key - Offset);
     }
 
-    constexpr Key invert(Value value) const { return static_cast<Key>(value) + Offset; }
+    friend constexpr key_type invert(static_shift_map, Value value) {
+        return static_cast<key_type>(value) + Offset;
+    }
 };
 
 }  // namespace ac
