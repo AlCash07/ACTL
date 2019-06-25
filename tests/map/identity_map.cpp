@@ -11,7 +11,7 @@
 TEST("int") {
     identity_map<int, long long> map;
     ASSERT_EQUAL(1LL, get(map, 1));
-    ASSERT_EQUAL(3, map.invert(3LL));
+    ASSERT_EQUAL(3, map_invert(map, 3LL));
 }
 
 struct A {
