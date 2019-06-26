@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/map/property_map.hpp>
+#include <actl/map/map.hpp>
 #include <actl/traits/function_traits.hpp>
 
 namespace ac {

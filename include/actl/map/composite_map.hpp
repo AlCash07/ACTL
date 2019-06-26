@@ -11,7 +11,7 @@
 #pragma once
 
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/map/property_map.hpp>
+#include <actl/map/map.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/compressed_pair.hpp>
 #include <type_traits>

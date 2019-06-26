@@ -9,7 +9,7 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/map/property_map.hpp>
+#include <actl/map/map.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/container_range.hpp>
 

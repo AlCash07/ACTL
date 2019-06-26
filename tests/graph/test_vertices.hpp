@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/graph/selectors.hpp>
-#include <actl/map/property_map.hpp>
+#include <actl/map/map.hpp>
 #include <actl/test.hpp>
 #include "bundle.hpp"
 
