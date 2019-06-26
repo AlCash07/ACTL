@@ -11,34 +11,20 @@
 
 namespace ac {
 
-namespace detail {
-
-template <class Key, class Member>
-using member_map_base = property_map<Key&, Member, Member&, false, false,
-                                     !std::is_const_v<Key> && !std::is_const_v<Member>>;
-
-}  // namespace detail
-
 /**
  * Property map that fetches member from a class key.
  */
-template <class Key, class Member>
-class member_map : public detail::member_map_base<Key, Member> {
+// TODO: consider making this map invertible. It's possible, but not standard-compliant.
+template <class Class, class Member>
+class member_map {
 public:
-    explicit constexpr member_map(Member Key::* ptr) : ptr_{ptr} {}
+    using key_type = Class&;
+    using reference = Member&;
 
-    friend Member& get(member_map map, Key& key) { return key.*map.ptr_; }
+    explicit constexpr member_map(Member Class::* ptr) : ptr{ptr} {}
 
-    // TODO: consider making this invertible. It's possible, but not standard-compliant.
-
-private:
-    Member Key::*ptr_;
+    Member Class::* const ptr;
 };
-
-template <class Key, class Member>
-inline auto const_member_property_map(Member Key::* ptr) {
-    return member_map<const Key, const Member>{ptr};
-}
 
 /**
  * Member property map with member mapping known at compile-time.
@@ -46,19 +32,40 @@ inline auto const_member_property_map(Member Key::* ptr) {
 template <auto Ptr>
 class static_member_map;
 
-template <class Key, class Member, Member Key::* Ptr>
-class static_member_map<Ptr> : public detail::member_map_base<Key, Member> {
+template <class Class, class Member, Member Class::* Ptr>
+class static_member_map<Ptr> {
 public:
-    friend Member& get(static_member_map, Key& key) { return key.*Ptr; }
+    using key_type = Class&;
+    using reference = Member&;
+
+    static constexpr auto ptr = Ptr;
 };
+
+namespace detail {
+
+template <class T>
+struct is_memmap : std::false_type {};
+
+template <class C, class M>
+struct is_memmap<member_map<C, M>> : std::true_type {};
 
 template <auto Ptr>
-class static_const_member_map;
+struct is_memmap<static_member_map<Ptr>> : std::true_type {};
 
-template <class Key, class Member, Member Key::* Ptr>
-class static_const_member_map<Ptr> : public detail::member_map_base<const Key, const Member> {
-public:
-    friend const Member& get(static_const_member_map, const Key& key) { return key.*Ptr; }
+}  // namespace detail
+
+template <class Map>
+struct map_types<const Map, std::enable_if_t<detail::is_memmap<Map>::value>> {
+    template <class T>
+    using make_const_ref_t = const std::remove_reference_t<T>&;
+
+    using key_type = make_const_ref_t<typename Map::key_type>;
+    using reference = make_const_ref_t<typename Map::reference>;
 };
+
+template <class Map, std::enable_if_t<detail::is_memmap<std::remove_const_t<Map>>::value, int> = 0>
+inline typename map_types<Map>::reference get(Map& map, typename map_types<Map>::key_type key) {
+    return key.*map.ptr;
+}
 
 }  // namespace ac

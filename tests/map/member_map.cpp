@@ -12,20 +12,14 @@ struct A {
     int a;
 };
 
-TEST("static") {
+template <class Map>
+void test_member_map(Map&& map) {
     A x{0};
-    static_member_map<&A::a> map;
     get(map, x) = 1;
     ASSERT_EQUAL(1, x.a);
-    static_const_member_map<&A::a> cmap;
-    ASSERT_EQUAL(1, get(cmap, x));
+    ASSERT_EQUAL(1, get((const Map&)map, x));
 }
 
-TEST("non-static") {
-    A x{0};
-    auto map = member_map{&A::a};
-    get(map, x) = 2;
-    ASSERT_EQUAL(2, x.a);
-    auto cmap = const_member_property_map(&A::a);
-    ASSERT_EQUAL(2, get(cmap, x));
-}
+TEST("static") { test_member_map(static_member_map<&A::a>{}); }
+
+TEST("non-static") { test_member_map(member_map{&A::a}); }
