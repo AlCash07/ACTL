@@ -9,65 +9,56 @@
 
 #include <actl/map/property_map.hpp>
 #include <actl/std/vector.hpp>
+#include <actl/util/compressed_pair.hpp>
 
 namespace ac {
-
-namespace detail {
-
-template <class Key, class Value, bool Invertible = false>
-class vector_invert {
-protected:
-    void push_back(const Key*) const {}
-    void clear_vector() const {}
-};
-
-template <class Key, class Value>
-class vector_invert<Key, Value, true> {
-public:
-    Key invert(Value value) const {
-        return *keys_[static_cast<typename std::vector<const Key*>::size_type>(value)];
-    }
-
-protected:
-    void push_back(const Key* ptr) const { keys_.push_back(ptr); }
-    void clear_vector() const { keys_.clear(); }
-
-private:
-    mutable std::vector<const Key*> keys_;
-};
-
-}  // namespace detail
 
 /**
  * Property map into integer domain that assigns next non-negative integer to every key not
  * encountered before. Can be invertible with overhead of additional vector of pointers.
  */
-template <class AssociativeContainer, bool Invertible = false,
-          class Key = typename AssociativeContainer::key_type,
-          class Value = typename AssociativeContainer::mapped_type>
-class accounting_map : public property_map<Key, Value, Value, Invertible, true>,
-                       public detail::vector_invert<Key, Value, Invertible> {
+template <class AssociativeContainer, bool Invertible = false>
+class accounting_map {
+    using V = typename AssociativeContainer::mapped_type;
+
 public:
-    using iterator = typename AssociativeContainer::const_iterator;
+    static_assert(is_unique_associative_container_v<AssociativeContainer> &&
+                  is_pair_associative_container_v<AssociativeContainer>);
 
-    static_assert(std::is_integral_v<Value>, "value type must be integral");
+    using key_type = typename AssociativeContainer::key_type;
+    using reference = const V&;
 
-    friend Value get(const accounting_map& map, Key key) {
-        auto pair = map.data_.insert({key, static_cast<Value>(map.data_.size())});
-        if (pair.second) map.push_back(&pair.first->first);
+    static_assert(std::is_integral_v<V>, "value type must be integral");
+
+    friend reference get(accounting_map& map, key_type key) {
+        auto& ac = map.data_.first();
+        auto pair = ac.insert({key, static_cast<V>(ac.size())});
+        if constexpr (Invertible) {
+            if (pair.second) map.data_.second().push_back(&pair.first->first);
+        }
         return pair.first->second;
     }
 
-    iterator begin() const { return data_.begin(); }
-    iterator end() const { return data_.end(); }
+    template <bool I = Invertible, class = std::enable_if_t<I>>
+    friend key_type invert(const accounting_map& map, V value) {
+        return *map.data_.second()[static_cast<size_t>(value)];
+    }
+
+    friend const AssociativeContainer& map_range(const accounting_map& map) {
+        return map.data_.first();
+    }
 
     void clear() {
-        this->data_.clear();
-        this->clear_vector();
+        data_.first().clear();
+        if constexpr (Invertible) {
+            data_.second().clear();
+        }
     }
 
 private:
-    mutable AssociativeContainer data_;
+    using C = std::conditional_t<Invertible, std::vector<const key_type*>, none>;
+
+    compressed_pair<AssociativeContainer, C> data_;
 };
 
 }  // namespace ac

@@ -19,10 +19,11 @@ inline void test_accounting_map() {
     ASSERT_EQUAL(1, get(map, "s"));
     using C = std::vector<std::pair<std::string, int>>;
     C expected{{"a", 0}, {"s", 1}, {"p", 2}};
-    ASSERT_EQUAL_SETS(expected, {map.begin(), map.end()});
+    auto r = map_range(map);
+    ASSERT_EQUAL_SETS(expected, {r.begin(), r.end()});
     if constexpr (Invertible) {
         for (int i = 0; i < 3; ++i) {
-            ASSERT_EQUAL(expected[(unsigned)i].first, map.invert(i));
+            ASSERT_EQUAL(expected[(unsigned)i].first, invert(map, i));
         }
     }
 }
