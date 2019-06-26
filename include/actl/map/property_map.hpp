@@ -19,14 +19,14 @@
 
 namespace ac {
 
-template <class T>
+template <class T, class = void>
 struct map_types {
     using key_type = typename T::key_type;
     using reference = typename T::reference;
 };
 
 template <class T>
-struct map_types<T&> : map_types<T> {};
+struct map_types<T&, void> : map_types<T> {};
 
 namespace detail {
 

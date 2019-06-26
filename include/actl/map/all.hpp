@@ -8,12 +8,12 @@
 #pragma once
 
 #include <actl/map/accounting_map.hpp>
-#include <actl/map/associative_map.hpp>
 #include <actl/map/composite_map.hpp>
 #include <actl/map/container_map.hpp>
 #include <actl/map/dummy_map.hpp>
 #include <actl/map/function_map.hpp>
 #include <actl/map/identity_map.hpp>
 #include <actl/map/member_map.hpp>
+#include <actl/map/pair_associative.hpp>
 #include <actl/map/shift_map.hpp>
 #include <actl/map/transition_map.hpp>
