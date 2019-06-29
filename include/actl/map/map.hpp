@@ -16,6 +16,7 @@
 #pragma once
 
 #include <actl/traits/type_traits.hpp>
+#include <utility>
 
 namespace ac {
 
@@ -61,6 +62,7 @@ struct map_traits : map_types<T> {
     using typename map_types<T>::key_type;
     using typename map_types<T>::reference;
     using value_type = remove_cvref_t<reference>;
+    using pair_type = std::pair<key_type, reference>;
 
     static constexpr bool readable = detail::has_get<void, T&, key_type>::value;
     static constexpr bool writable = detail::has_put<void, T&, key_type, value_type>::value;

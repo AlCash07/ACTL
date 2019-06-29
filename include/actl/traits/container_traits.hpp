@@ -66,6 +66,9 @@ struct pair_associative_container_tag : virtual associative_container_tag {};
 template <class C>
 struct container_category {};
 
+template <class C>
+struct container_category<const C> : container_category<C> {};
+
 template <class T, size_t N>
 struct container_category<T[N]> : contiguous_container_tag {};
 

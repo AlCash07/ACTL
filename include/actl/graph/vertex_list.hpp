@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/graph/selectors.hpp>
-#include <actl/map/container_map.hpp>
 #include <actl/map/dummy_map.hpp>
+#include <actl/map/generic_container.hpp>
 
 namespace ac {
 

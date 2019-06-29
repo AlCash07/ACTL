@@ -9,8 +9,8 @@
 
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
-#include <actl/map/container_map.hpp>
 #include <actl/map/dummy_map.hpp>
+#include <actl/map/generic_container.hpp>
 #include <actl/std/vector.hpp>
 
 namespace ac {
