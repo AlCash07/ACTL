@@ -38,13 +38,12 @@ using composite_map_base_t =
 template <class Map1, class Map2>
 class composite_map_get : public composite_map_base_t<Map1, Map2> {
 public:
-    static_assert(std::is_convertible_v<typename map_traits<Map1>::reference,
-                                        typename map_traits<Map2>::key_type>,
+    static_assert(std::is_convertible_v<map_reference_t<Map1>, map_key_t<Map2>>,
                   "incompatible property maps");
 
-    using key_type = typename map_traits<Map1>::key_type;
-    using value_type = typename map_traits<Map2>::value_type;
-    using reference = typename map_traits<Map2>::reference;
+    using key_type = map_key_y<Map1>;
+    using value_type = map_value_t<Map2>;
+    using reference = map_reference_t<Map2>;
 
     using composite_map_base_t<Map1, Map2>::composite_map_base_t;
 

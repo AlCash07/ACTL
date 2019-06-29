@@ -15,9 +15,9 @@ namespace ac {
 
 template <class Map>
 struct discovered_flag {
-    static_assert(std::is_same_v<typename map_traits<Map>::value_type, bool>);
+    static_assert(std::is_same_v<map_value_t<Map>, bool>);
 
-    using vertex = typename map_traits<Map>::key_type;
+    using vertex = map_key_t<Map>;
 
     void operator()(on_vertex_initialize, vertex u) { put(map, u, false); }
     void operator()(on_vertex_discover, vertex u) { put(map, u, true); }

@@ -70,4 +70,16 @@ struct map_traits : map_types<T> {
     static constexpr bool iterable = detail::has_range<T&>::value;
 };
 
+template <class T>
+using map_key_t = typename map_traits<T>::key_type;
+
+template <class T>
+using map_reference_t = typename map_traits<T>::reference;
+
+template <class T>
+using map_value_t = typename map_traits<T>::value_type;
+
+template <class T>
+using map_pair_t = typename map_traits<T>::pair_type;
+
 }  // namespace ac

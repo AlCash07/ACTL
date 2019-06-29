@@ -64,7 +64,7 @@ struct map_types<const Map, std::enable_if_t<detail::is_memmap<Map>::value>> {
 };
 
 template <class Map, std::enable_if_t<detail::is_memmap<std::remove_const_t<Map>>::value, int> = 0>
-inline typename map_types<Map>::reference get(Map& map, typename map_types<Map>::key_type key) {
+inline map_reference_t<Map> get(Map& map, map_key_t<Map> key) {
     return key.*map.ptr;
 }
 

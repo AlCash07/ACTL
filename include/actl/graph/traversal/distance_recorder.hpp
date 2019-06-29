@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Map>
 struct distance_recorder {
-    void operator()(on_vertex_start, typename map_traits<Map>::key_type u) { put(map, u, 0); }
+    void operator()(on_vertex_start, map_key_t<Map> u) { put(map, u, 0); }
 
     template <class E>
     void operator()(on_tree_edge, E e) {

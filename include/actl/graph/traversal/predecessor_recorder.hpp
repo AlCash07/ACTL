@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Map>
 struct predecessor_recorder {
-    void operator()(on_vertex_start, typename map_traits<Map>::key_type u) { put(map, u, u); }
+    void operator()(on_vertex_start, map_key_t<Map> u) { put(map, u, u); }
 
     template <class E>
     void operator()(on_tree_edge, E e) {

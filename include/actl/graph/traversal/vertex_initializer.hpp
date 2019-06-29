@@ -16,14 +16,14 @@ template <class Base>
 struct vertex_initializer : Base {
     using Base::map;
     using map_t = decltype(map);
-    using vertex = typename map_traits<map_t>::key_type;
+    using vertex = map_key_t<map_t>;
 
     using Base::operator();
 
     void operator()(on_vertex_initialize, vertex u) { put(map, u, value); }
     bool operator()(is_vertex_discovered, vertex u) { return get(map, u) != value; }
 
-    typename map_traits<map_t>::value_type value;
+    map_value_t<map_t> value;
 };
 
 }  // namespace ac

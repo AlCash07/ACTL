@@ -16,9 +16,9 @@ enum class colors : uint8_t { white, gray, black };
 
 template <class Map>
 struct color_recorder {
-    static_assert(std::is_same_v<typename map_traits<Map>::value_type, colors>);
+    static_assert(std::is_same_v<map_value_t<Map>, colors>);
 
-    using vertex = typename map_traits<Map>::key_type;
+    using vertex = map_key_t<Map>;
 
     void operator()(on_vertex_initialize, vertex u) { put(map, u, colors::white); }
     bool operator()(is_vertex_discovered, vertex u) { return get(map, u) != colors::white; }

@@ -15,13 +15,13 @@ namespace ac {
 // Should be used only for undirected graphs.
 template <class Map>
 struct connected_component_recorder {
-    using vertex = typename map_traits<Map>::key_type;
+    using vertex = map_key_t<Map>;
 
     void operator()(on_vertex_discover, vertex u) { put(map, u, count); }
     void operator()(on_search_finish) { ++count; }
 
     Map map;
-    typename map_traits<Map>::value_type count = {};
+    map_value_t<Map> count = {};
 };
 
 template <class Map>

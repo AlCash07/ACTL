@@ -43,25 +43,25 @@ private:
 };
 
 template <class T1, class T2, int I>
-using key_type_t = std::conditional_t<I == 1, T1, T2>;
+using key_t = std::conditional_t<I == 1, T1, T2>;
 
 template <class T1, class T2, int I>
-inline bool operator < (const mimic_pair<T1, T2, I>& lhs, const key_type_t<T1, T2, I>& rhs) {
+inline bool operator < (const mimic_pair<T1, T2, I>& lhs, const key_t<T1, T2, I>& rhs) {
     return lhs.key() < rhs;
 }
 
 template <class T1, class T2, int I>
-inline bool operator < (const key_type_t<T1, T2, I>& lhs, const mimic_pair<T1, T2, I>& rhs) {
+inline bool operator < (const key_t<T1, T2, I>& lhs, const mimic_pair<T1, T2, I>& rhs) {
     return lhs < rhs.key();
 }
 
 template <class T1, class T2, int I>
-inline bool operator == (const mimic_pair<T1, T2, I>& lhs, const key_type_t<T1, T2, I>& rhs) {
+inline bool operator == (const mimic_pair<T1, T2, I>& lhs, const key_t<T1, T2, I>& rhs) {
     return lhs.key() == rhs;
 }
 
 template <class T1, class T2, int I>
-inline bool operator == (const key_type_t<T1, T2, I>& lhs, const mimic_pair<T1, T2, I>& rhs) {
+inline bool operator == (const key_t<T1, T2, I>& lhs, const mimic_pair<T1, T2, I>& rhs) {
     return lhs == rhs.key();
 }
 

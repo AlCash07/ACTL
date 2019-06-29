@@ -61,13 +61,12 @@ struct map_types<C, std::void_t<detail::enable_int_if_gc<C>>> {
 };
 
 template <class C, detail::enable_int_if_gc<C> = 0>
-inline typename map_traits<C>::reference get(C& map, typename map_traits<C>::key_type key) {
+inline map_reference_t<C> get(C& map, map_key_t<C> key) {
     return id_at(map, key);
 }
 
 template <class C, detail::enable_int_if_gc<C> = 0, std::enable_if_t<!std::is_const_v<C>, int> = 0>
-inline void put(C& map, typename map_traits<C>::key_type key,
-                typename map_traits<C>::value_type value) {
+inline void put(C& map, map_key_t<C> key, map_value_t<C> value) {
     id_at(map, key) = value;
 }
 

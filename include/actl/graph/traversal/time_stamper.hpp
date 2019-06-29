@@ -15,7 +15,7 @@ namespace ac {
 // T can be a reference to share global time.
 template <class Map, class T>
 struct time_stamper {
-    void operator()(on_vertex_examine, typename map_traits<Map>::key_type u) {
+    void operator()(on_vertex_examine, map_key_t<Map> u) {
         put(map, u, time);
         ++time;
     }
@@ -25,7 +25,7 @@ struct time_stamper {
 };
 
 template <class Map>
-time_stamper(Map&&) -> time_stamper<Map, typename map_traits<Map>::value_type>;
+time_stamper(Map&&) -> time_stamper<Map, map_value_t<Map>>;
 
 template <class Map, class T>
 struct in_out_time_stamper : time_stamper<Map, T> {
@@ -33,13 +33,11 @@ struct in_out_time_stamper : time_stamper<Map, T> {
 
     using time_stamper<Map, T>::operator();
 
-    void operator()(on_vertex_finish, typename map_traits<Map>::key_type u) {
-        put(out_time, u, this->time);
-    }
+    void operator()(on_vertex_finish, map_key_t<Map> u) { put(out_time, u, this->time); }
 };
 
 template <class Map>
-in_out_time_stamper(Map&&) -> in_out_time_stamper<Map, typename map_traits<Map>::value_type>;
+in_out_time_stamper(Map&&) -> in_out_time_stamper<Map, map_value_t<Map>>;
 
 template <class Map, class T>
 inline vertex_initializer<time_stamper<Map, T>> make_time_stamper(Map&& in_time, T value) {

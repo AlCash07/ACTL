@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/map/container_map.hpp>
+#include <actl/map/generic_container.hpp>
 #include <actl/range/filtered_range.hpp>
 #include <actl/util/compressed_pair.hpp>
 

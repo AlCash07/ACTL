@@ -28,17 +28,15 @@ struct map_types<AC, std::void_t<detail::enable_int_if_upac<AC>>> {
 };
 
 // If key isn't present in container, default value is returned.
-template <class AC, class Ref = typename map_traits<AC>::reference,
-          detail::enable_int_if_upac<AC> = 0>
-inline Ref get(AC& map, typename map_traits<AC>::key_type key) {
+template <class AC, detail::enable_int_if_upac<AC> = 0>
+inline map_reference_t<AC> get(AC& map, map_key_t<AC> key) {
     auto it = map.find(key);
-    return it == map.end() ? Ref{} : it->second;
+    return it == map.end() ? map_reference_t<AC>{} : it->second;
 }
 
 template <class AC, detail::enable_int_if_upac<AC> = 0,
           std::enable_if_t<!std::is_const_v<AC>, int> = 0>
-inline void put(AC& map, typename map_traits<AC>::key_type key,
-                typename map_traits<AC>::value_type value) {
+inline void put(AC& map, map_key_t<AC> key, map_value_t<AC> value) {
     map[key] = value;
 }
 
