@@ -35,42 +35,29 @@ public:
     static constexpr auto ptr = Ptr;
 };
 
-template <class C, class M>
-struct map_types<member_map<C, M>> {
-    using key_type = C&;
-    using reference = M&;
-
-    struct member_map_tag;
-};
-
-template <class C, class M, M C::* Ptr>
-struct map_types<static_member_map<Ptr>> {
-    using key_type = C&;
-    using reference = M&;
-
-    struct member_map_tag;
-};
-
 namespace detail {
 
-template <class T, class = void>
-struct is_memmap : std::false_type {};
+struct memmap_tag {};
 
 template <class T>
-struct is_memmap<T, std::void_t<typename map_types<T>::member_map_tag>> : std::true_type {};
+inline constexpr bool is_memmap_v = std::is_base_of_v<memmap_tag, map_traits<T>>;
+
+template <class T>
+using cref_t = const std::remove_reference_t<T>&;
 
 }  // namespace detail
 
+template <class C, class M>
+struct map_traits<member_map<C, M>> : map_traits_base<C&, M&>, detail::memmap_tag {};
+
+template <class C, class M, M C::* Ptr>
+struct map_traits<static_member_map<Ptr>> : map_traits_base<C&, M&>, detail::memmap_tag {};
+
 template <class Map>
-struct map_types<const Map, std::enable_if_t<detail::is_memmap<Map>::value>> {
-    template <class T>
-    using make_const_ref_t = const std::remove_reference_t<T>&;
+struct map_traits<const Map, std::enable_if_t<detail::is_memmap_v<Map>>>
+    : map_traits_base<detail::cref_t<map_key_t<Map>>, detail::cref_t<map_reference_t<Map>>> {};
 
-    using key_type = make_const_ref_t<map_key_t<Map>>;
-    using reference = make_const_ref_t<map_reference_t<Map>>;
-};
-
-template <class Map, std::enable_if_t<detail::is_memmap<std::remove_const_t<Map>>::value, int> = 0>
+template <class Map, std::enable_if_t<detail::is_memmap_v<std::remove_const_t<Map>>, int> = 0>
 inline map_reference_t<Map> get(Map& map, map_key_t<Map> key) {
     return key.*map.ptr;
 }

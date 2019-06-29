@@ -17,15 +17,16 @@ namespace ac {
 template <class Key, class Value = Key>
 class identity_map {
 public:
-    using key_type = Key;
-    using reference = Value;
-
     friend constexpr Value get(identity_map, Key key) { return static_cast<Value>(key); }
+
+    template <bool B = map_traits<identity_map>::invertible, std::enable_if_t<B, int> = 0>
+    friend constexpr Key invert(identity_map, Value value) {
+        return static_cast<Key>(value);
+    }
 };
 
-template <class K, class V, class = std::enable_if_t<std::is_convertible_v<V, K>>>
-inline constexpr K invert(identity_map<K, V>, V value) {
-    return static_cast<K>(value);
-}
+template <class K, class V>
+struct const_map_traits<identity_map<K, V>>
+    : map_traits_base<K, V, true, false, std::is_convertible_v<V, K>> {};
 
 }  // namespace ac

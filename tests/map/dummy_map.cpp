@@ -8,13 +8,8 @@
 #include <actl/map/dummy_map.hpp>
 #include <actl/test.hpp>
 
-TEST("int") {
+TEST("basic") {
     dummy_map<int, int> map;
     put(map, 2, 2);
     ASSERT_EQUAL(0, get(map, 2));
-}
-
-TEST("void") {
-    dummy_map<int> map;
-    get(map, 1);
 }

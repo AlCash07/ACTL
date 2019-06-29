@@ -11,17 +11,23 @@
 
 namespace ac {
 
-// Value is void by default to produce compilation error where get result is used.
 template <class Key, class Value = void>
 class dummy_map {
-public:
-    using key_type = Key;
-    using reference = Value;
+    static constexpr bool RW = !std::is_same_v<Value, void>;
 
-    friend constexpr Value get(dummy_map, Key) { return Value(); }
+public:
+    using traits = map_traits_base<Key, Value, RW, RW>;
+
+    template <bool B = RW, std::enable_if_t<B, int> = 0>
+    friend constexpr Value get(dummy_map, Key) {
+        return Value{};
+    }
+
+    template <bool B = RW, std::enable_if_t<B, int> = 0>
+    friend constexpr void put(dummy_map, Key, Value) {}
 };
 
-template <class K, class V, class = std::enable_if_t<!std::is_same_v<V, void>>>
-inline constexpr void put(dummy_map<K, V>, K, V) {}
+template <class K, class V>
+struct const_map_traits<dummy_map<K, V>> : dummy_map<K, V>::traits {};
 
 }  // namespace ac

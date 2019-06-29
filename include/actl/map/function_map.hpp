@@ -13,20 +13,23 @@
 namespace ac {
 
 /**
- * Property map that applies given function to the key.
+ * Map that applies given function to the key.
  */
 template <class Function>
 class function_map {
 public:
-    using key_type = argument_type_t<Function, 0>;
-    using reference = return_type_t<Function>;
-
     explicit function_map(Function f = {}) : f_{f} {}
 
-    friend reference get(const function_map& map, key_type key) { return map.f_(key); }
+    friend map_reference_t<function_map> get(const function_map& map, map_key_t<function_map> key) {
+        return map.f_(key);
+    }
 
 private:
     Function f_;
 };
+
+template <class F>
+struct const_map_traits<function_map<F>>
+    : map_traits_base<argument_type_t<F, 0>, return_type_t<F>> {};
 
 }  // namespace ac

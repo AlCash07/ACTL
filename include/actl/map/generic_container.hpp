@@ -23,8 +23,10 @@ using enable_int_if_gc =
 
 template <class C>
 class container_map_range {
-    using It = container_id_iterator<C>;
-    using Pair = typename map_traits<C>::pair_type;
+    using It = container_id_iterator<std::remove_const_t<C>>;
+    using Pair = map_pair_t<C>;
+
+    C& cont_;
 
 public:
     class iterator : public iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*> {
@@ -43,8 +45,6 @@ public:
         friend struct ac::iterator_core_access;
     };
 
-    C& cont_;
-
     explicit container_map_range(C& cont) : cont_{cont} {}
 
     iterator begin() const { return {It{id_begin(cont_)}, cont_}; }
@@ -54,23 +54,24 @@ public:
 }  // namespace detail
 
 template <class C>
-struct map_types<C, std::void_t<detail::enable_int_if_gc<C>>> {
-    using key_type = container_id<C>;
-    using reference =
-        std::conditional_t<std::is_const_v<C>, typename C::const_reference, typename C::reference>;
-};
+struct map_traits<C, std::void_t<detail::enable_int_if_gc<C>>>
+    : map_traits_base<container_id<C>, typename C::reference, true, true, false, true> {};
 
-template <class C, detail::enable_int_if_gc<C> = 0>
+template <class C>
+struct map_traits<const C, std::void_t<detail::enable_int_if_gc<C>>>
+    : map_traits_base<container_id<C>, typename C::const_reference, true, false, false, true> {};
+
+template <class C, detail::enable_int_if_gc<std::remove_const_t<C>> = 0>
 inline map_reference_t<C> get(C& map, map_key_t<C> key) {
     return id_at(map, key);
 }
 
-template <class C, detail::enable_int_if_gc<C> = 0, std::enable_if_t<!std::is_const_v<C>, int> = 0>
+template <class C, detail::enable_int_if_gc<C> = 0>
 inline void put(C& map, map_key_t<C> key, map_value_t<C> value) {
     id_at(map, key) = value;
 }
 
-template <class C, detail::enable_int_if_gc<C> = 0>
+template <class C, detail::enable_int_if_gc<std::remove_const_t<C>> = 0>
 inline auto map_range(C& map) {
     return detail::container_map_range{map};
 }

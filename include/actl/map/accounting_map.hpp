@@ -19,18 +19,20 @@ namespace ac {
  */
 template <class AssociativeContainer, bool Invertible = false>
 class accounting_map {
+    using K = typename AssociativeContainer::key_type;
+    using Key = const K&;
     using V = typename AssociativeContainer::mapped_type;
 
 public:
     static_assert(is_unique_associative_container_v<AssociativeContainer> &&
                   is_pair_associative_container_v<AssociativeContainer>);
 
-    using key_type = typename AssociativeContainer::key_type;
-    using reference = const V&;
-
     static_assert(std::is_integral_v<V>, "value type must be integral");
 
-    friend reference get(accounting_map& map, key_type key) {
+    template <bool Const>
+    using traits = map_traits_base<Key, const V&, !Const, false, Invertible, true>;
+
+    friend const V& get(accounting_map& map, Key key) {
         auto& ac = map.data_.first();
         auto pair = ac.insert({key, static_cast<V>(ac.size())});
         if constexpr (Invertible) {
@@ -39,8 +41,8 @@ public:
         return pair.first->second;
     }
 
-    template <bool I = Invertible, class = std::enable_if_t<I>>
-    friend key_type invert(const accounting_map& map, V value) {
+    template <bool I = Invertible, std::enable_if_t<I, int> = 0>
+    friend Key invert(const accounting_map& map, V value) {
         return *map.data_.second()[static_cast<size_t>(value)];
     }
 
@@ -56,9 +58,15 @@ public:
     }
 
 private:
-    using C = std::conditional_t<Invertible, std::vector<const key_type*>, none>;
+    using C = std::conditional_t<Invertible, std::vector<const K*>, none>;
 
     compressed_pair<AssociativeContainer, C> data_;
 };
+
+template <class AC, bool I>
+struct map_traits<accounting_map<AC, I>> : accounting_map<AC, I>::template traits<false> {};
+
+template <class AC, bool I>
+struct map_traits<const accounting_map<AC, I>> : accounting_map<AC, I>::template traits<true> {};
 
 }  // namespace ac

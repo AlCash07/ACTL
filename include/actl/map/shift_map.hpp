@@ -18,9 +18,6 @@ namespace ac {
 template <class Key, class Value = Key>
 class shift_map {
 public:
-    using key_type = Key;
-    using reference = Value;
-
     explicit constexpr shift_map(Key offset) : offset_{offset} {}
 
     friend constexpr Value get(const shift_map& map, Key key) {
@@ -40,22 +37,28 @@ inline auto make_shift_map(Key offset) {
     return shift_map<Key, deduce_type_t<Value, Key>>(offset);
 }
 
+template <class K, class V>
+struct const_map_traits<shift_map<K, V>> : map_traits_base<K, V, true, false, true> {};
+
 /**
  * Shift property map with offset known at compile-time.
  */
 template <auto Offset, class Value = decltype(Offset)>
 class static_shift_map {
-public:
-    using key_type = decltype(Offset);
-    using reference = Value;
+    using Key = decltype(Offset);
 
-    friend constexpr Value get(static_shift_map, key_type key) {
+public:
+    friend constexpr Value get(static_shift_map, Key key) {
         return static_cast<Value>(key - Offset);
     }
 
-    friend constexpr key_type invert(static_shift_map, Value value) {
-        return static_cast<key_type>(value) + Offset;
+    friend constexpr Key invert(static_shift_map, Value value) {
+        return static_cast<Key>(value) + Offset;
     }
 };
+
+template <auto O, class V>
+struct const_map_traits<static_shift_map<O, V>>
+    : map_traits_base<decltype(O), V, true, false, true> {};
 
 }  // namespace ac
