@@ -21,10 +21,7 @@
 namespace ac {
 
 template <class T, class = void>
-struct map_types {
-    using key_type = typename T::key_type;
-    using reference = typename T::reference;
-};
+struct map_types {};
 
 template <class T>
 struct map_types<T&, void> : map_types<T> {};
@@ -58,9 +55,9 @@ struct has_range<T, std::void_t<decltype(map_range(std::declval<T>()))>> : std::
 }  // namespace detail
 
 template <class T>
-struct map_traits : map_types<T> {
-    using typename map_types<T>::key_type;
-    using typename map_types<T>::reference;
+struct map_traits {
+    using key_type = typename map_types<T>::key_type;
+    using reference = typename map_types<T>::reference;
     using value_type = remove_cvref_t<reference>;
     using pair_type = std::pair<key_type, reference>;
 

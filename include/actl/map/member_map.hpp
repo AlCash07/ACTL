@@ -18,9 +18,6 @@ namespace ac {
 template <class Class, class Member>
 class member_map {
 public:
-    using key_type = Class&;
-    using reference = Member&;
-
     explicit constexpr member_map(Member Class::* ptr) : ptr{ptr} {}
 
     Member Class::* const ptr;
@@ -35,22 +32,32 @@ class static_member_map;
 template <class Class, class Member, Member Class::* Ptr>
 class static_member_map<Ptr> {
 public:
-    using key_type = Class&;
-    using reference = Member&;
-
     static constexpr auto ptr = Ptr;
+};
+
+template <class C, class M>
+struct map_types<member_map<C, M>> {
+    using key_type = C&;
+    using reference = M&;
+
+    struct member_map_tag;
+};
+
+template <class C, class M, M C::* Ptr>
+struct map_types<static_member_map<Ptr>> {
+    using key_type = C&;
+    using reference = M&;
+
+    struct member_map_tag;
 };
 
 namespace detail {
 
-template <class T>
+template <class T, class = void>
 struct is_memmap : std::false_type {};
 
-template <class C, class M>
-struct is_memmap<member_map<C, M>> : std::true_type {};
-
-template <auto Ptr>
-struct is_memmap<static_member_map<Ptr>> : std::true_type {};
+template <class T>
+struct is_memmap<T, std::void_t<typename map_types<T>::member_map_tag>> : std::true_type {};
 
 }  // namespace detail
 
@@ -59,8 +66,8 @@ struct map_types<const Map, std::enable_if_t<detail::is_memmap<Map>::value>> {
     template <class T>
     using make_const_ref_t = const std::remove_reference_t<T>&;
 
-    using key_type = make_const_ref_t<typename Map::key_type>;
-    using reference = make_const_ref_t<typename Map::reference>;
+    using key_type = make_const_ref_t<map_key_t<Map>>;
+    using reference = make_const_ref_t<map_reference_t<Map>>;
 };
 
 template <class Map, std::enable_if_t<detail::is_memmap<std::remove_const_t<Map>>::value, int> = 0>
