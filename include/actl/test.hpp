@@ -13,6 +13,12 @@
 #include <actl/range/algorithm.hpp>
 #include <string_view>
 
+namespace ac {
+
+inline io::formatted<io::file<io::out>, io::spaced<io::text>> cout{stdout};
+
+}  // namespace ac
+
 using namespace std::string_view_literals;
 using namespace ac;
 
