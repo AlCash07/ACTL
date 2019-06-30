@@ -11,7 +11,7 @@
 #include <actl/io/text/text.hpp>
 #include <actl/std/all.hpp>
 #include <actl/test.hpp>
-#include "../test_io.hpp"
+#include "io/text/test_io.hpp"
 
 using namespace ac::io;
 

@@ -7,7 +7,7 @@
 
 #include <actl/graph/traversal/order.hpp>
 #include <actl/test.hpp>
-#include "sample_graphs.hpp"
+#include "graph/sample_graphs.hpp"
 
 TEST("inorder") {
     auto graph = sample_undirected_tree();

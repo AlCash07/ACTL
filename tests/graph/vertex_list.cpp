@@ -8,7 +8,7 @@
 #include <actl/container/hash_set.hpp>
 #include <actl/graph/vertex_list.hpp>
 #include <actl/std/all.hpp>
-#include "test_vertices.hpp"
+#include "graph/test_vertices.hpp"
 
 TEST("none") {
     vertex_list<> graph{3};

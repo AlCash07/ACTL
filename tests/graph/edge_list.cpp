@@ -8,7 +8,7 @@
 #include <actl/container/hash_set.hpp>
 #include <actl/graph/edge_list.hpp>
 #include <actl/std/all.hpp>
-#include "test_edges.hpp"
+#include "graph/test_edges.hpp"
 
 TEST("none") {
     edge_list<directed, int> graph;

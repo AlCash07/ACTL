@@ -11,7 +11,7 @@
 #include <actl/graph/selectors.hpp>
 #include <actl/map/map.hpp>
 #include <actl/test.hpp>
-#include "bundle.hpp"
+#include "graph/bundle.hpp"
 
 template <bool Directed, class E>
 inline auto get_ends(const std::vector<E>& es) {

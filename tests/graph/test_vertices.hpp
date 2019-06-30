@@ -10,7 +10,7 @@
 #include <actl/graph/selectors.hpp>
 #include <actl/map/map.hpp>
 #include <actl/test.hpp>
-#include "bundle.hpp"
+#include "graph/bundle.hpp"
 
 template <class Graph, class V = typename Graph::vertex>
 inline std::vector<V> test_vertices(Graph& graph) {

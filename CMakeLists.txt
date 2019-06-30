@@ -25,6 +25,7 @@ add_library(src ${SRC_FILES})
 file(GLOB_RECURSE TEST_FILES tests/*)
 source_group(TREE tests FILES ${TEST_FILES})
 add_executable(tests ${TEST_FILES})
+target_include_directories(tests PRIVATE tests)
 target_link_libraries(tests src)
 
 source_group(TREE benchmark FILES benchmark/main.cpp)

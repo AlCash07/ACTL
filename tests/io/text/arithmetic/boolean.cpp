@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/io/text/arithmetic/boolean.hpp>
-#include "../test_io.hpp"
+#include "io/text/test_io.hpp"
 
 using namespace ac::io;
 

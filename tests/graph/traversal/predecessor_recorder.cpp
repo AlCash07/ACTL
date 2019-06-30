@@ -9,7 +9,7 @@
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/graph/traversal/predecessor_recorder.hpp>
 #include <actl/test.hpp>
-#include "sample_graphs.hpp"
+#include "graph/sample_graphs.hpp"
 
 TEST("bfs") {
     auto graph = sample_undirected_graph();

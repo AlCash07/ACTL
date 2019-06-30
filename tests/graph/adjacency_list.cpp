@@ -8,8 +8,8 @@
 #include <actl/container/hash_set.hpp>
 #include <actl/graph/adjacency_list.hpp>
 #include <actl/std/all.hpp>
-#include "test_edges.hpp"
-#include "test_vertices.hpp"
+#include "graph/test_edges.hpp"
+#include "graph/test_vertices.hpp"
 
 TEST("none") {
     adjacency_list<directed> graph(2);

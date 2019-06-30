@@ -11,7 +11,7 @@
 #include <actl/graph/traversal/discovered_flag.hpp>
 #include <actl/map/logging_map.hpp>
 #include <actl/test.hpp>
-#include "sample_graphs.hpp"
+#include "graph/sample_graphs.hpp"
 
 using Log = std::vector<std::pair<int, bool>>;
 
