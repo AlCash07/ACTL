@@ -16,9 +16,7 @@ namespace ac {
 namespace detail {
 
 template <class T>
-using enable_if_gc_t =
-    std::enable_if_t<is_container_v<T> && !is_multiple_associative_container_v<T> &&
-                     !is_pair_associative_container_v<T>>;
+using enable_if_gc_t = std::enable_if_t<is_container_v<T> && !is_pair_associative_container_v<T>>;
 
 template <class C>
 class container_map_range {

@@ -17,6 +17,7 @@
 
 #include <actl/std/utility.hpp>
 #include <actl/traits/type_traits.hpp>
+#include <functional>
 
 namespace ac {
 
@@ -39,13 +40,16 @@ template <class T, class = void>
 struct const_map_traits {};
 
 template <class T>
-struct const_map_traits<const T, void> : const_map_traits<T> {};
+struct const_map_traits<const T> : const_map_traits<T> {};
 
 template <class T, class = void>
 struct map_traits : const_map_traits<T> {};
 
 template <class T>
-struct map_traits<T&, void> : map_traits<T> {};
+struct map_traits<T&> : map_traits<T> {};
+
+template <class T>
+struct map_traits<std::reference_wrapper<T>> : map_traits<T> {};
 
 template <class T>
 using map_key_t = typename map_traits<T>::key_type;
@@ -78,25 +82,28 @@ struct map_ops {
 };
 
 template <class T>
-struct map_ops<T&, void> : map_ops<T> {};
+struct map_ops<T&> : map_ops<T> {};
+
+template <class T>
+struct map_ops<std::reference_wrapper<T>> : map_ops<T> {};
 
 template <class T, std::enable_if_t<map_traits<T>::readable, int> = 0>
-inline map_reference_t<T> get(T& map, map_key_t<T> key) {
+inline map_reference_t<T> get(T&& map, map_key_t<T> key) {
     return map_ops<T>::get(map, key);
 }
 
 template <class T, std::enable_if_t<map_traits<T>::writable, int> = 0>
-inline void put(T& map, map_key_t<T> key, map_value_t<T> value) {
+inline void put(T&& map, map_key_t<T> key, map_value_t<T> value) {
     return map_ops<T>::put(map, key, value);
 }
 
 template <class T, std::enable_if_t<map_traits<T>::invertible, int> = 0>
-inline map_key_t<T> invert(T& map, map_value_t<T> value) {
+inline map_key_t<T> invert(T&& map, map_value_t<T> value) {
     return map_ops<T>::invert(map, value);
 }
 
 template <class T, std::enable_if_t<map_traits<T>::iterable, int> = 0>
-inline map_range_t<T> map_range(T& map) {
+inline map_range_t<T> map_range(T&& map) {
     return map_ops<T>::map_range(map);
 }
 

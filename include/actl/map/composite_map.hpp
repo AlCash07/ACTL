@@ -21,7 +21,8 @@ namespace detail {
 struct compmap_tag {};
 
 template <class T>
-inline constexpr bool is_compmap_v = std::is_base_of_v<compmap_tag, map_traits<T>>;
+inline constexpr bool is_compmap_v =
+    !std::is_reference_v<T> && std::is_base_of_v<compmap_tag, map_traits<T>>;
 
 template <class M1, class M2, class V, bool I1, bool I2>
 struct cm_range {

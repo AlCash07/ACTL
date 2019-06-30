@@ -40,7 +40,8 @@ namespace detail {
 struct memmap_tag {};
 
 template <class T>
-inline constexpr bool is_memmap_v = std::is_base_of_v<memmap_tag, map_traits<T>>;
+inline constexpr bool is_memmap_v =
+    !std::is_reference_v<T> && std::is_base_of_v<memmap_tag, map_traits<T>>;
 
 template <class T>
 using cref_t = const std::remove_reference_t<T>&;
