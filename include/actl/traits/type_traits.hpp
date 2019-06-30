@@ -27,10 +27,4 @@ using index_constant = std::integral_constant<index, N>;
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
-template <class T> struct remove_rvalue_ref      { using type = T; };
-template <class T> struct remove_rvalue_ref<T&&> { using type = T; };
-
-template <class T>
-using remove_rvalue_ref_t = typename remove_rvalue_ref<T>::type;
-
 }  // namespace ac

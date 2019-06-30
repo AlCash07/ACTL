@@ -21,7 +21,7 @@ struct till {
 };
 
 template <class T, class P>
-till(T&&, P)->till<remove_rvalue_ref_t<T>, P>;
+till(T&&, P) -> till<T, P>;
 
 template <class Device, class P>
 inline index read_till(Device& id, till<span<char_t<Device>>, P> x) {
