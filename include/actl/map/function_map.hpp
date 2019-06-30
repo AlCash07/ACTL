@@ -20,9 +20,7 @@ class function_map {
 public:
     explicit function_map(Function f = {}) : f_{f} {}
 
-    friend map_reference_t<function_map> get(const function_map& map, map_key_t<function_map> key) {
-        return map.f_(key);
-    }
+    map_reference_t<function_map> get(map_key_t<function_map> key) const { return f_(key); }
 
 private:
     Function f_;

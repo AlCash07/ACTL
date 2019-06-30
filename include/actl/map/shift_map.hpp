@@ -20,13 +20,9 @@ class shift_map {
 public:
     explicit constexpr shift_map(Key offset) : offset_{offset} {}
 
-    friend constexpr Value get(const shift_map& map, Key key) {
-        return static_cast<Value>(key - map.offset_);
-    }
+    constexpr Value get(Key key) const { return static_cast<Value>(key - offset_); }
 
-    friend constexpr Key invert(const shift_map& map, Value value) {
-        return static_cast<Key>(value) + map.offset_;
-    }
+    constexpr Key invert(Value value) const { return static_cast<Key>(value) + offset_; }
 
 private:
     const Key offset_;
@@ -48,13 +44,9 @@ class static_shift_map {
     using Key = decltype(Offset);
 
 public:
-    friend constexpr Value get(static_shift_map, Key key) {
-        return static_cast<Value>(key - Offset);
-    }
+    constexpr static Value get(Key key) { return static_cast<Value>(key - Offset); }
 
-    friend constexpr Key invert(static_shift_map, Value value) {
-        return static_cast<Key>(value) + Offset;
-    }
+    constexpr static Key invert(Value value) { return static_cast<Key>(value) + Offset; }
 };
 
 template <auto O, class V>

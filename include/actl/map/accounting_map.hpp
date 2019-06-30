@@ -19,36 +19,30 @@ namespace ac {
  */
 template <class AssociativeContainer, bool Invertible = false>
 class accounting_map {
-    using K = typename AssociativeContainer::key_type;
+    using AC = AssociativeContainer;
+    using K = typename AC::key_type;
     using Key = const K&;
-    using V = typename AssociativeContainer::mapped_type;
+    using V = typename AC::mapped_type;
 
 public:
-    static_assert(is_unique_associative_container_v<AssociativeContainer> &&
-                  is_pair_associative_container_v<AssociativeContainer>);
-
+    static_assert(is_unique_associative_container_v<AC> && is_pair_associative_container_v<AC>);
     static_assert(std::is_integral_v<V>, "value type must be integral");
 
     template <bool Const>
-    using traits = map_traits_base<Key, const V&, !Const, false, Invertible, true>;
+    using traits = map_traits_base<Key, const V&, !Const, false, Invertible, true, const AC&>;
 
-    friend const V& get(accounting_map& map, Key key) {
-        auto& ac = map.data_.first();
+    const V& get(Key key) {
+        auto& ac = data_.first();
         auto pair = ac.insert({key, static_cast<V>(ac.size())});
         if constexpr (Invertible) {
-            if (pair.second) map.data_.second().push_back(&pair.first->first);
+            if (pair.second) data_.second().push_back(&pair.first->first);
         }
         return pair.first->second;
     }
 
-    template <bool I = Invertible, std::enable_if_t<I, int> = 0>
-    friend Key invert(const accounting_map& map, V value) {
-        return *map.data_.second()[static_cast<size_t>(value)];
-    }
+    Key invert(V value) const { return *data_.second()[static_cast<size_t>(value)]; }
 
-    friend const AssociativeContainer& map_range(const accounting_map& map) {
-        return map.data_.first();
-    }
+    const AC& map_range() const { return data_.first(); }
 
     void clear() {
         data_.first().clear();
@@ -58,9 +52,7 @@ public:
     }
 
 private:
-    using C = std::conditional_t<Invertible, std::vector<const K*>, none>;
-
-    compressed_pair<AssociativeContainer, C> data_;
+    compressed_pair<AC, std::conditional_t<Invertible, std::vector<const K*>, none>> data_;
 };
 
 template <class AC, bool I>

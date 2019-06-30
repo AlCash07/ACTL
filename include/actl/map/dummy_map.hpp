@@ -18,13 +18,10 @@ class dummy_map {
 public:
     using traits = map_traits_base<Key, Value, RW, RW>;
 
-    template <bool B = RW, std::enable_if_t<B, int> = 0>
-    friend constexpr Value get(dummy_map, Key) {
-        return Value{};
-    }
+    constexpr static Value get(Key) { return Value{}; }
 
-    template <bool B = RW, std::enable_if_t<B, int> = 0>
-    friend constexpr void put(dummy_map, Key, Value) {}
+    template <bool B = RW>
+    constexpr static void put(Key, std::enable_if_t<B, Value>) {}
 };
 
 template <class K, class V>

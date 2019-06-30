@@ -21,12 +21,13 @@
 namespace ac {
 
 template <class Key, class Ref, bool Readable = true, bool Writable = false,
-          bool Invertible = false, bool Iterable = false>
+          bool Invertible = false, bool Iterable = false, class Range = void>
 struct map_traits_base {
     using key_type = Key;
     using reference = Ref;
     using value_type = remove_cvref_t<Ref>;
     using pair_type = std::pair<Key, Ref>;
+    using range_type = Range;
 
     static constexpr bool readable = Readable;
     static constexpr bool writable = Writable;
@@ -57,5 +58,40 @@ using map_value_t = typename map_traits<T>::value_type;
 
 template <class T>
 using map_pair_t = typename map_traits<T>::pair_type;
+
+template <class T>
+using map_range_t = typename map_traits<T>::range_type;
+
+// This struct guarantees that function declaration is found during unqualified name lookup.
+template <class T, class = void>
+struct map_ops {
+    using K = map_key_t<T>;
+    using V = map_value_t<T>;
+
+    static constexpr map_reference_t<T> get(T& map, K key) { return map.get(key); }
+    static constexpr void put(T& map, K key, V value) { map.put(key, value); }
+    static constexpr K invert(T& map, V value) { return map.invert(value); }
+    static constexpr map_range_t<T> map_range(T& map) { return map.map_range(); }
+};
+
+template <class T, std::enable_if_t<map_traits<T>::readable, int> = 0>
+inline map_reference_t<T> get(T& map, map_key_t<T> key) {
+    return map_ops<T>::get(map, key);
+}
+
+template <class T, std::enable_if_t<map_traits<T>::writable, int> = 0>
+inline void put(T& map, map_key_t<T> key, map_value_t<T> value) {
+    return map_ops<T>::put(map, key, value);
+}
+
+template <class T, std::enable_if_t<map_traits<T>::invertible, int> = 0>
+inline map_key_t<T> invert(T& map, map_value_t<T> value) {
+    return map_ops<T>::invert(map, value);
+}
+
+template <class T, std::enable_if_t<map_traits<T>::iterable, int> = 0>
+inline map_range_t<T> map_range(T& map) {
+    return map_ops<T>::map_range(map);
+}
 
 }  // namespace ac

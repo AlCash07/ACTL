@@ -57,9 +57,9 @@ template <class Map>
 struct map_traits<const Map, std::enable_if_t<detail::is_memmap_v<Map>>>
     : map_traits_base<detail::cref_t<map_key_t<Map>>, detail::cref_t<map_reference_t<Map>>> {};
 
-template <class Map, std::enable_if_t<detail::is_memmap_v<std::remove_const_t<Map>>, int> = 0>
-inline map_reference_t<Map> get(Map& map, map_key_t<Map> key) {
-    return key.*map.ptr;
-}
+template <class Map>
+struct map_ops<Map, std::enable_if_t<detail::is_memmap_v<std::remove_const_t<Map>>>> {
+    static map_reference_t<Map> get(Map& map, map_key_t<Map> key) { return key.*map.ptr; }
+};
 
 }  // namespace ac

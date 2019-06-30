@@ -16,10 +16,9 @@ namespace ac {
 namespace detail {
 
 template <class T>
-using enable_int_if_gc =
+using enable_if_gc_t =
     std::enable_if_t<is_container_v<T> && !is_multiple_associative_container_v<T> &&
-                         !is_pair_associative_container_v<T>,
-                     int>;
+                     !is_pair_associative_container_v<T>>;
 
 template <class C>
 class container_map_range {
@@ -54,26 +53,22 @@ public:
 }  // namespace detail
 
 template <class C>
-struct map_traits<C, std::void_t<detail::enable_int_if_gc<C>>>
-    : map_traits_base<container_id<C>, typename C::reference, true, true, false, true> {};
+struct map_traits<C, detail::enable_if_gc_t<C>>
+    : map_traits_base<container_id<C>, typename C::reference, true, true, false, true,
+                      detail::container_map_range<C>> {};
 
 template <class C>
-struct map_traits<const C, std::void_t<detail::enable_int_if_gc<C>>>
-    : map_traits_base<container_id<C>, typename C::const_reference, true, false, false, true> {};
+struct map_traits<const C, detail::enable_if_gc_t<C>>
+    : map_traits_base<container_id<C>, typename C::const_reference, true, false, false, true,
+                      detail::container_map_range<const C>> {};
 
-template <class C, detail::enable_int_if_gc<std::remove_const_t<C>> = 0>
-inline map_reference_t<C> get(C& map, map_key_t<C> key) {
-    return id_at(map, key);
-}
+template <class C>
+struct map_ops<C, detail::enable_if_gc_t<std::remove_const_t<C>>> {
+    static map_reference_t<C> get(C& map, map_key_t<C> key) { return id_at(map, key); }
 
-template <class C, detail::enable_int_if_gc<C> = 0>
-inline void put(C& map, map_key_t<C> key, map_value_t<C> value) {
-    id_at(map, key) = value;
-}
+    static void put(C& map, map_key_t<C> key, map_value_t<C> value) { id_at(map, key) = value; }
 
-template <class C, detail::enable_int_if_gc<std::remove_const_t<C>> = 0>
-inline auto map_range(C& map) {
-    return detail::container_map_range{map};
-}
+    static auto map_range(C& map) { return map_range_t<C>{map}; }
+};
 
 }  // namespace ac
