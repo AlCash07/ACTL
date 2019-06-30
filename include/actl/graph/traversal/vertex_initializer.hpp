@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/graph/events.hpp>
-#include <actl/map/map.hpp>
+#include <actl/map/traits.hpp>
 
 namespace ac {
 

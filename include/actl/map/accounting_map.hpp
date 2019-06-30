@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/map/map.hpp>
+#include <actl/map/traits.hpp>
 #include <actl/std/vector.hpp>
 #include <actl/util/compressed_pair.hpp>
 

@@ -9,7 +9,7 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/map/map.hpp>
+#include <actl/map/traits.hpp>
 
 namespace ac {
 

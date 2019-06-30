@@ -10,7 +10,7 @@
 #pragma once
 
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/map/map.hpp>
+#include <actl/map/traits.hpp>
 #include <actl/range/iterator_range.hpp>
 #include <actl/util/compressed_pair.hpp>
 
