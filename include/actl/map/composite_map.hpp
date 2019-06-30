@@ -1,6 +1,5 @@
 /***************************************************************************************************
  * composite_map combines multiple maps, applying them in the given order.
- * Supports put, inversion and traversal if at all possible.
  ***************************************************************************************************
  * Copyright 2017 Oleksandr Bacherikov.
  *
@@ -12,204 +11,127 @@
 
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/map/map.hpp>
-#include <actl/std/utility.hpp>
+#include <actl/range/iterator_range.hpp>
 #include <actl/util/compressed_pair.hpp>
-#include <type_traits>
 
 namespace ac {
 
 namespace detail {
 
-template <class Map1, class Map2>
-class composite_map_base : property_map_base, protected compressed_pair<Map1, Map2> {
-    using base_t = compressed_pair<Map1, Map2>;
+struct compmap_tag {};
 
-public:
-    using base_t::base_t;
-};
+template <class T>
+inline constexpr bool is_compmap_v = std::is_base_of_v<compmap_tag, map_traits<T>>;
 
-// This type is used to avoid multiple inheritance from property_map_base.
-template <class Map1, class Map2>
-using composite_map_base_t =
-    std::conditional_t<std::is_base_of_v<property_map_base, compressed_pair<Map1, Map2>>,
-                       compressed_pair<Map1, Map2>, composite_map_base<Map1, Map2>>;
+template <class M1, class M2, class V, bool I1, bool I2>
+struct cm_range {
+    using It1 = map_iterator_t<M1>;
 
-// Class that adds typedefs and get function.
-template <class Map1, class Map2>
-class composite_map_get : public composite_map_base_t<Map1, Map2> {
-public:
-    static_assert(std::is_convertible_v<map_reference_t<Map1>, map_key_t<Map2>>,
-                  "incompatible property maps");
-
-    using key_type = map_key_y<Map1>;
-    using value_type = map_value_t<Map2>;
-    using reference = map_reference_t<Map2>;
-
-    using composite_map_base_t<Map1, Map2>::composite_map_base_t;
-
-    friend constexpr reference get(const composite_map_get& map, key_type key) {
-        return get(map.second(), get(map.first(), key));
-    }
-};
-
-// Class that adds put function if possible.
-template <class Map1, class Map2, bool, bool, bool>
-class composite_map_put : public composite_map_get<Map1, Map2> {
-public:
-    static constexpr bool writable = false;
-
-    using composite_map_get<Map1, Map2>::composite_map_get;
-};
-
-template <class Map1, class Map2, bool W1, bool Inv2>
-class composite_map_put<Map1, Map2, W1, true, Inv2> : public composite_map_get<Map1, Map2> {
-    using base_t = composite_map_get<Map1, Map2>;
-
-public:
-    static constexpr bool writable = true;
-
-    using base_t::base_t;
-
-    friend constexpr void put(const composite_map_put& map, typename base_t::key_type key,
-                              typename base_t::value_type value) {
-        put(map.second(), get(map.first(), key), value);
-    }
-};
-
-template <class Map1, class Map2>
-class composite_map_put<Map1, Map2, true, false, true> : public composite_map_get<Map1, Map2> {
-    using base_t = composite_map_get<Map1, Map2>;
-
-public:
-    static constexpr bool writable = true;
-
-    using base_t::base_t;
-
-    friend constexpr void put(const composite_map_put& map, typename base_t::key_type key,
-                              typename base_t::value_type value) {
-        put(map.first(), key, map.second().invert(value));
-    }
-};
-
-template <class Map1, class Map2>
-using composite_map_put_t =
-    composite_map_put<Map1, Map2, map_traits<Map1>::writable, map_traits<Map2>::writable,
-                      map_traits<Map2>::invertible>;
-
-// Class that adds invert method if possible.
-template <class Map1, class Map2, bool>
-class composite_map_invert : public composite_map_put_t<Map1, Map2> {
-public:
-    static constexpr bool invertible = false;
-
-    using composite_map_put_t<Map1, Map2>::composite_map_put_t;
-};
-
-template <class Map1, class Map2>
-class composite_map_invert<Map1, Map2, true> : public composite_map_put_t<Map1, Map2> {
-    using base_t = composite_map_put_t<Map1, Map2>;
-
-public:
-    static constexpr bool invertible = true;
-
-    using base_t::base_t;
-
-    constexpr typename base_t::key_type invert(typename base_t::value_type value) const {
-        return this->first().invert(this->second().invert(value));
-    }
-};
-
-template <class Map1, class Map2>
-using composite_map_invert_t =
-    composite_map_invert<Map1, Map2, map_traits<Map1>::invertible && map_traits<Map2>::invertible>;
-
-// Class that adds begin/end methods if possible.
-template <class Map1, class Map2, bool, bool, bool>
-class composite_map_iterate : public composite_map_invert_t<Map1, Map2> {
-public:
-    static constexpr bool iterable = false;
-
-    using composite_map_invert_t<Map1, Map2>::composite_map_invert_t;
-};
-
-template <class Map1, class Map2, bool It2, bool Inv2>
-class composite_map_iterate<Map1, Map2, true, It2, Inv2>
-    : public composite_map_invert_t<Map1, Map2> {
-    using base_t = composite_map_invert_t<Map1, Map2>;
-    using It = typename Map1::iterator;
-    using Pair = std::pair<typename base_t::key_type, typename base_t::reference>;
-
-public:
-    class iterator
-        : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
-        iterator(const It& it, const Map2& map)
-            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>{it}
-            , map_{map} {}
-
-        Pair dereference() const { return {this->base()->first, get(map_, this->base()->second)}; }
-
-        const Map2& map_;
-
-        friend class composite_map_iterate;
+    class iterator : public iterator_adaptor<iterator, It1, use_default, V, V, V*> {
         friend struct ac::iterator_core_access;
+
+        V dereference() const { return {this->base()->first, ac::get(map_, this->base()->second)}; }
+
+        M2& map_;
+
+    public:
+        iterator(const It1& it, M2& map)
+            : iterator_adaptor<iterator, It1, use_default, V, V, V*>{it}, map_{map} {}
     };
 
-    static constexpr bool iterable = true;
-
-    using base_t::base_t;
-
-    iterator begin() const { return {this->first().begin(), this->second()}; }
-    iterator end() const { return {this->first().end(), this->second()}; }
+    using type = iterator_range<iterator>;
 };
 
-template <class Map1, class Map2>
-class composite_map_iterate<Map1, Map2, false, true, true>
-    : public composite_map_invert_t<Map1, Map2> {
-    using base_t = composite_map_invert_t<Map1, Map2>;
-    using It = typename Map2::iterator;
-    using Pair = std::pair<typename base_t::key_type, typename base_t::reference>;
+template <class M1, class M2, class V>
+struct cm_range<M1, M2, V, false, true> {
+    using It2 = map_iterator_t<M2>;
 
-public:
-    class iterator
-        : public iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default> {
-        iterator(const It& it, const Map1& map)
-            : iterator_adaptor<iterator, It, use_default, Pair, Pair, Pair*, use_default>{it}
-            , map_{map} {}
+    class iterator : public iterator_adaptor<iterator, It2, use_default, V, V, V*> {
+        friend struct ac::iterator_core_access;
 
-        Pair dereference() const {
-            return {map_.invert(this->base()->first), this->base()->second};
+        V dereference() const {
+            return {ac::invert(map_, this->base()->first), this->base()->second};
         }
 
-        const Map1& map_;
+        M1& map_;
 
-        friend class composite_map_iterate;
-        friend struct ac::iterator_core_access;
+    public:
+        iterator(const It2& it, M1& map)
+            : iterator_adaptor<iterator, It2, use_default, V, V, V*>{it}, map_{map} {}
     };
 
-    static constexpr bool iterable = true;
-
-    using base_t::base_t;
-
-    iterator begin() const { return {this->second().begin(), this->first()}; }
-    iterator end() const { return {this->second().end(), this->first()}; }
+    using type = iterator_range<iterator>;
 };
 
-template <class Map1, class Map2>
-using composite_map_t =
-    composite_map_iterate<Map1, Map2, map_traits<Map1>::iterable, map_traits<Map2>::iterable,
-                          map_traits<Map1>::invertible>;
+template <class M1, class M2, class V>
+struct cm_range<M1, M2, V, false, false> {
+    using type = void;
+};
 
 }  // namespace detail
 
 template <class Map1, class Map2, class... Maps>
 class composite_map : public composite_map<composite_map<Map1, Map2>, Maps...> {};
 
-template <class Map1, class Map2>
-class composite_map<Map1, Map2> : public detail::composite_map_t<Map1, Map2> {
-    using base_t = detail::composite_map_t<Map1, Map2>;
+template <class M1, class M2>
+class composite_map<M1, M2> : public compressed_pair<M1, M2> {
+    using K = map_key_t<M1>;
+    using R = map_reference_t<M2>;
 
 public:
-    using base_t::base_t;
+    static_assert(std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>,
+                  "incompatible property maps");
+
+    static constexpr bool writable2 = map_traits<M1>::readable && map_traits<M2>::writable;
+    static constexpr bool iterable1 = map_traits<M1>::iterable && map_traits<M2>::readable;
+    static constexpr bool iterable2 = map_traits<M1>::invertible && map_traits<M2>::iterable;
+    using range_t = typename detail::cm_range<M1, M2, std::pair<K, R>, iterable1, iterable2>::type;
+
+    using traits =
+        map_traits_base<K, R, map_traits<M1>::readable && map_traits<M2>::readable,
+                        writable2 || (map_traits<M1>::writable && map_traits<M2>::invertible),
+                        map_traits<M1>::invertible && map_traits<M2>::invertible,
+                        iterable1 || iterable2, range_t>;
+
+    using compressed_pair<M1, M2>::compressed_pair;
+};
+
+template <class... Ms>
+struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits, detail::compmap_tag {};
+
+template <class... Ms>
+struct map_traits<const composite_map<Ms...>> : map_traits<composite_map<const Ms...>> {};
+
+template <class CM>
+struct map_ops<CM, std::enable_if_t<detail::is_compmap_v<CM>>> {
+    using K = map_key_t<CM>;
+    using V = map_value_t<CM>;
+
+    static constexpr map_reference_t<CM> get(CM& map, K key) {
+        return ac::get(map.second(), ac::get(map.first(), key));
+    }
+
+    static constexpr void put(CM& map, K key, V value) {
+        if constexpr (CM::writable2) {
+            ac::put(map.second(), ac::get(map.first(), key), value);
+        } else {
+            ac::put(map.first(), key, ac::invert(map.second(), value));
+        }
+    }
+
+    static constexpr K invert(CM& map, V value) {
+        return ac::invert(map.first(), ac::invert(map.second(), value));
+    }
+
+    static constexpr map_range_t<CM> map_range(CM& map) {
+        if constexpr (CM::iterable1) {
+            map_range_t<typename CM::first_type> r = ac::map_range(map.first());
+            return {{r.begin(), map.second()}, {r.end(), map.second()}};
+        } else {
+            map_range_t<typename CM::second_type> r = ac::map_range(map.second());
+            return {{r.begin(), map.first()}, {r.end(), map.first()}};
+        }
+    }
 };
 
 template <class... Maps>
