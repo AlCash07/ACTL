@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/graph/selectors.hpp>
-#include <actl/map/dummy_map.hpp>
 #include <actl/map/generic_container.hpp>
 
 namespace ac {
@@ -78,8 +77,6 @@ public:
     void clear() { vertices_.clear(); }
 
     void swap(vertex_list& rhs) { vertices_.swap(rhs.vertices_); }
-
-    dummy_map<vertex> operator[](vertex_property) const { return {}; }
 
     void operator[](vertex) const {}
 

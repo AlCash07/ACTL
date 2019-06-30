@@ -9,7 +9,6 @@
 
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
-#include <actl/map/dummy_map.hpp>
 #include <actl/map/generic_container.hpp>
 #include <actl/std/vector.hpp>
 
@@ -77,8 +76,6 @@ public:
     void clear() { edges_.clear(); }
 
     void swap(edge_list_edges& rhs) { edges_.swap(rhs.edges_); }
-
-    dummy_map<edge> operator[](edge_property) const { return {}; }
 
     void operator[](edge) const {}
 
