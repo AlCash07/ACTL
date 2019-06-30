@@ -9,9 +9,9 @@
 #include <actl/graph/traversal/breadth_first_search.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/graph/traversal/discovered_flag.hpp>
-#include <actl/map/logging_map.hpp>
 #include <actl/test.hpp>
 #include "graph/sample_graphs.hpp"
+#include "map/logging_map.hpp"
 
 using Log = std::vector<std::pair<int, bool>>;
 
