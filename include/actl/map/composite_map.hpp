@@ -88,7 +88,7 @@ public:
     using range_t = typename detail::cm_range<M1, M2, std::pair<K, R>, iterable1, iterable2>::type;
 
     using traits =
-        map_traits_base<K, R, map_traits<M1>::readable && map_traits<M2>::readable,
+        map_traits_base<K, R, map_value_t<M2>, map_traits<M1>::readable && map_traits<M2>::readable,
                         writable2 || (map_traits<M1>::writable && map_traits<M2>::invertible),
                         map_traits<M1>::invertible && map_traits<M2>::invertible,
                         iterable1 || iterable2, range_t>;

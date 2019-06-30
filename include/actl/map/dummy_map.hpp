@@ -16,7 +16,7 @@ class dummy_map {
     static constexpr bool RW = !std::is_same_v<Value, void>;
 
 public:
-    using traits = map_traits_base<Key, Value, RW, RW>;
+    using traits = map_traits_base<Key, Value, Value, RW, RW>;
 
     constexpr static Value get(Key) { return Value{}; }
 

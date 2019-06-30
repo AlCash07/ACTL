@@ -54,13 +54,13 @@ public:
 
 template <class C>
 struct map_traits<C, detail::enable_if_gc_t<C>>
-    : map_traits_base<container_id<C>, typename C::reference, true, true, false, true,
-                      detail::container_map_range<C>> {};
+    : map_traits_base<container_id<C>, typename C::reference, typename C::value_type, true, true,
+                      false, true, detail::container_map_range<C>> {};
 
 template <class C>
 struct map_traits<const C, detail::enable_if_gc_t<C>>
-    : map_traits_base<container_id<C>, typename C::const_reference, true, false, false, true,
-                      detail::container_map_range<const C>> {};
+    : map_traits_base<container_id<C>, typename C::const_reference, typename C::value_type, true,
+                      false, false, true, detail::container_map_range<const C>> {};
 
 template <class C>
 struct map_ops<C, detail::enable_if_gc_t<std::remove_const_t<C>>> {

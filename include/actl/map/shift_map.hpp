@@ -34,7 +34,7 @@ inline auto make_shift_map(Key offset) {
 }
 
 template <class K, class V>
-struct const_map_traits<shift_map<K, V>> : map_traits_base<K, V, true, false, true> {};
+struct const_map_traits<shift_map<K, V>> : map_traits_base<K, V, V, true, false, true> {};
 
 /**
  * Shift property map with offset known at compile-time.
@@ -51,6 +51,6 @@ public:
 
 template <auto O, class V>
 struct const_map_traits<static_shift_map<O, V>>
-    : map_traits_base<decltype(O), V, true, false, true> {};
+    : map_traits_base<decltype(O), V, use_default, true, false, true> {};
 
 }  // namespace ac

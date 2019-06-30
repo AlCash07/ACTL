@@ -20,12 +20,12 @@
 
 namespace ac {
 
-template <class Key, class Ref, bool Readable = true, bool Writable = false,
-          bool Invertible = false, bool Iterable = false, class Range = void>
+template <class Key, class Ref, class Value = use_default, bool Readable = true,
+          bool Writable = false, bool Invertible = false, bool Iterable = false, class Range = void>
 struct map_traits_base {
     using key_type = Key;
     using reference = Ref;
-    using value_type = remove_cvref_t<Ref>;
+    using value_type = deduce_type_t<Value, remove_cvref_t<Ref>>;
     using pair_type = std::pair<Key, Ref>;
     using range_type = Range;
 

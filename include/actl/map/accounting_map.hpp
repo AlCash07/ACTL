@@ -29,7 +29,7 @@ public:
     static_assert(std::is_integral_v<V>, "value type must be integral");
 
     template <bool Const>
-    using traits = map_traits_base<Key, const V&, !Const, false, Invertible, true, const AC&>;
+    using traits = map_traits_base<Key, const V&, V, !Const, false, Invertible, true, const AC&>;
 
     const V& get(Key key) {
         auto& ac = data_.first();

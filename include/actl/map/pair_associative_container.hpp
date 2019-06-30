@@ -22,7 +22,7 @@ using enable_if_upac_t =
 
 template <class AC>
 struct map_traits<AC, detail::enable_if_upac_t<AC>>
-    : map_traits_base<const typename AC::key_type, typename AC::mapped_type, true,
+    : map_traits_base<const typename AC::key_type, typename AC::mapped_type, use_default, true,
                       !std::is_const_v<AC>, false, true, AC&> {};
 
 template <class AC>

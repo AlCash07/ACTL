@@ -24,6 +24,6 @@ public:
 
 template <class K, class V>
 struct const_map_traits<identity_map<K, V>>
-    : map_traits_base<K, V, true, false, std::is_convertible_v<V, K>> {};
+    : map_traits_base<K, V, use_default, true, false, std::is_convertible_v<V, K>> {};
 
 }  // namespace ac
