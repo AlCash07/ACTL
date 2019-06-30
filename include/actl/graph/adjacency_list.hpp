@@ -36,7 +36,7 @@ public:
     auto operator[](edge_property) { return this->edge_list_[edge_property{}]; }
     auto operator[](edge_property) const { return this->edge_list_[edge_property{}]; }
 
-    T&       operator[](edge e) { return get((*this)[edge_property{}], e); }
+    T& operator[](edge e) { return get((*this)[edge_property{}], e); }
     const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
 };
 
@@ -104,38 +104,42 @@ public:
 
 /* Adjacency list without edge container */
 
+template <class VC, class E, class Ref>
+class edge_map {
+    VC& vertices_;
+
+public:
+    using traits = map_traits_base<E, Ref, use_default, true, !std::is_const_v<Ref>>;
+
+    edge_map(VC& vertices) : vertices_{vertices} {}
+
+    Ref get(E e) const {
+        return id_at(id_at(vertices_, e.source()).first().out_edges, e.bundle()).second();
+    }
+
+    void put(E e, map_value_t<edge_map> value) const { get(e) = value; }
+};
+
 template <class Dir, class OEC, class EC, class VC, class T>
 class adj_list_edges<Dir, OEC, EC, VC, none, T>
     : public adj_list_edges<Dir, OEC, EC, VC, none, none> {
     using base_t    = adj_list_edges<Dir, OEC, EC, VC, none, none>;
-    using reference = add_const_if_t<base_t::is_undirected, T&>;
+    using Ref = add_const_if_t<base_t::is_undirected, T&>;
+    using AVC = typename base_t::vertex_container;
 
 public:
     using typename base_t::edge;
 
-    template <bool Const, class Ref = add_const_if_t<Const, reference>>
-    class edge_property_map : public property_map<edge, T, Ref, false, false, !Const>,
-                              public put_helper<edge_property_map<Const, Ref>> {
-        using vertices_ref = add_const_if_t<Const, typename base_t::vertex_container&>;
-
-        vertices_ref vertices_;
-
-    public:
-        edge_property_map(vertices_ref& vertices) : vertices_{vertices} {}
-
-        friend Ref get(const edge_property_map& map, edge e) {
-            return id_at(id_at(map.vertices_, e.source()).first().out_edges, e.bundle()).second();
-        }
-    };
-
     using base_t::base_t;
     using base_t::operator[];
 
-    edge_property_map<false> operator[](edge_property) { return {this->vertices_}; }
-    edge_property_map<true>  operator[](edge_property) const { return {this->vertices_}; }
+    edge_map<AVC, edge, Ref> operator[](edge_property) { return {this->vertices_}; }
+    edge_map<const AVC, edge, const Ref> operator[](edge_property) const {
+        return {this->vertices_};
+    }
 
-    reference operator[](edge e) { return get((*this)[edge_property{}], e); }
-    const T&  operator[](edge e) const { return get((*this)[edge_property{}], e); }
+    Ref operator[](edge e) { return get((*this)[edge_property{}], e); }
+    const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
 };
 
 template <class Dir, class OEC, class EC, class VC>
@@ -190,6 +194,9 @@ public:
 };
 
 }  // namespace detail
+
+template <class VC, class E, class R>
+struct const_map_traits<detail::edge_map<VC, E, R>> : detail::edge_map<VC, E, R>::traits {};
 
 /* Common functionality */
 

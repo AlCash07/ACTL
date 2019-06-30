@@ -66,27 +66,28 @@ inline bool operator == (const key_t<T1, T2, I>& lhs, const mimic_pair<T1, T2, I
 }
 
 template <class Key>
-struct second_map_traits {
-    using T = std::remove_reference_t<Key>;
-    using B = typename T::second_type;
+class second_map {
+    using R = decltype(std::declval<Key>().second());
 
-    static constexpr bool writable = !std::is_const_v<T>;
+public:
+    using traits =
+        map_traits_base<Key, R, use_default, true, !std::is_const_v<std::remove_reference_t<R>>>;
 
-    using base = property_map<Key, B, add_const_if_t<!writable, B&>, false, false, writable>;
-};
+    R get(Key key) { return key.second(); }
 
-template <class Key>
-class second_property_map : public put_helper<second_property_map<Key>>,
-                            public second_map_traits<Key>::base {
-    friend typename second_map_traits<Key>::base::reference get(second_property_map, Key key) {
-        return key.second();
-    }
+    void put(Key key, remove_cvref_t<R> value) { get(key) = value; }
 };
 
 template <class Map>
 inline auto get_second(Map&& map) {
-    return composite_map{std::forward<Map>(map),
-                         second_property_map<typename map_traits<Map>::reference>{}};
+    return composite_map{std::forward<Map>(map), second_map<map_reference_t<Map>>{}};
 }
 
 }  // namespace ac::detail
+
+namespace ac {
+
+template <class K>
+struct map_traits<detail::second_map<K>> : detail::second_map<K>::traits {};
+
+}  // namespace ac

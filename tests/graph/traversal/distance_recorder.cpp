@@ -14,13 +14,13 @@
 TEST("bfs") {
     auto graph = sample_undirected_graph();
     std::vector<int> dist((size_t)graph.vertex_count());
-    breadth_first_search{make_distance_recorder(dist.data(), -1)}(graph, 0);
+    breadth_first_search{make_distance_recorder(dist, -1)}(graph, 0);
     ASSERT_EQUAL(std::vector<int>{0, 1, 2, 1, 2, 2}, dist);
 }
 
 TEST("dfs") {
     auto graph = sample_undirected_graph();
     std::vector<int> dist((size_t)graph.vertex_count());
-    depth_first_search{make_distance_recorder(dist.data(), -1)}(graph, 0);
+    depth_first_search{make_distance_recorder(dist, -1)}(graph, 0);
     ASSERT_EQUAL(std::vector<int>{0, 1, 2, 3, 4, 5}, dist);
 }

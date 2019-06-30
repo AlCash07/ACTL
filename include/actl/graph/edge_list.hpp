@@ -26,11 +26,10 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](edge_property) { return get_second(container_map{this->edges_}); }
+    auto operator[](edge_property) { return get_second(this->edges_); }
+    auto operator[](edge_property) const { return get_second(this->edges_); }
 
-    auto operator[](edge_property) const { return get_second(container_map{this->edges_}); }
-
-    T&       operator[](edge e) { return get((*this)[edge_property{}], e); }
+    T& operator[](edge e) { return get((*this)[edge_property{}], e); }
     const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
 };
 

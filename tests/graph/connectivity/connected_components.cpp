@@ -21,7 +21,7 @@ TEST("basic") {
     graph.add_edge(0, 7);
     graph.add_edge(4, 5);
     std::vector<int> c(8);
-    depth_first_search(make_connected_component_recorder(c.data(), -1))(graph);
+    depth_first_search(make_connected_component_recorder(c, -1))(graph);
     std::vector<std::vector<size_t>> expected{{0, 1, 2, 3, 7}, {4, 5}, {6}};
     for (size_t i = 0; i < expected.size(); ++i) {
         for (auto v : expected[i]) {

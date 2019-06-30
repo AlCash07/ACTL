@@ -22,11 +22,11 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](vertex_property) { return container_map{this->vertices_}; }
-    auto operator[](vertex_property) const { return container_map{this->vertices_}; }
+    auto operator[](vertex_property) { return std::ref(this->vertices_); }
+    auto operator[](vertex_property) const { return std::ref(this->vertices_); }
 
-    T&       operator[](vertex u) { return get((*this)[vertex_property{}], u); }
-    const T& operator[](vertex u) const { return get((*this)[vertex_property{}], u); }
+    T& operator[](vertex u) { return get(this->vertices_, u); }
+    const T& operator[](vertex u) const { return get(this->vertices_, u); }
 };
 
 template <class VC>
