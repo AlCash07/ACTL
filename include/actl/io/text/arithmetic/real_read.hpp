@@ -12,12 +12,12 @@
 #include <actl/io/text/text.hpp>
 #include <actl/numeric/algorithm/binary_pow.hpp>
 #include <actl/std/utility.hpp>
-#include <type_traits>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac::io {
 
 template <class Device, class Format, class Float,
-          std::enable_if_t<std::is_floating_point_v<Float>, int> = 0>
+          enable_int_if<std::is_floating_point_v<Float>> = 0>
 inline bool deserialize(Device& id, Format& fmt, Float& x, text_tag) {
     if (fmt.getf(flags::skipws)) read(id, fmt, ws);
     char c = id.peek();

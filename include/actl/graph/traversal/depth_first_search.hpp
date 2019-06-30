@@ -104,8 +104,8 @@ public:
 
     template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>,
               class VertexPredicate = always_false,
-              class = std::enable_if_t<
-                  !std::is_same_v<remove_cvref_t<OutEdgeIteratorStack>, typename Graph::vertex>>>
+              enable_int_if<!std::is_same_v<remove_cvref_t<OutEdgeIteratorStack>,
+                                            typename Graph::vertex>> = 0>
     void operator()(const Graph& graph, OutEdgeIteratorStack&& stack = {},
                     VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);

@@ -42,7 +42,7 @@ public:
     }
 
     template <class... Ts, bool UA = is_unique_associative_container_v<VertexContainer>,
-              class T = value_type_t<VertexContainer>, class = std::enable_if_t<UA>>
+              class T = value_type_t<VertexContainer>, enable_int_if<UA> = 0>
     edge add_edge(const T& u, const T& v, Ts&&... args) {
         return add_edge(this->add_vertex(u), this->add_vertex(v), std::forward<Ts>(args)...);
     }

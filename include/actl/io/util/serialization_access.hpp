@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
-#include <type_traits>
 
 namespace ac::io {
 
@@ -47,17 +47,15 @@ struct serialization_access {
 
 // Tag represents 0 or 1 types.
 template <class Device, class Format, class T, class... Tag,
-          std::enable_if_t<
-              decltype(serialization_access{}.has_serialize<T, Device&, Format&, Tag...>(0))::value,
-              int> = 0>
+          enable_int_if<decltype(
+              serialization_access{}.has_serialize<T, Device&, Format&, Tag...>(0))::value> = 0>
 inline index serialize(Device& od, Format& fmt, const T& x, Tag... tag) {
     return serialization_access::write(x, od, fmt, tag...);
 }
 
 template <class Device, class Format, class T, class... Tag,
-          std::enable_if_t<decltype(serialization_access{}
-                                        .has_deserialize<T, Device&, Format&, Tag...>(0))::value,
-                           int> = 0>
+          enable_int_if<decltype(
+              serialization_access{}.has_deserialize<T, Device&, Format&, Tag...>(0))::value> = 0>
 inline bool deserialize(Device& id, Format& fmt, T& x, Tag... tag) {
     return serialization_access::read(x, id, fmt, tag...);
 }

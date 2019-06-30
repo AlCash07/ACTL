@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <type_traits>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
@@ -24,7 +24,7 @@ struct hash_access {
     }
 };
 
-template <class T, class = std::enable_if_t<decltype(hash_access{}.has_hash<T>(0))::value>>
+template <class T, enable_int_if<decltype(hash_access{}.has_hash<T>(0))::value> = 0>
 inline constexpr size_t hash_value(const T& x) {
     return hash_access::hash(x);
 }

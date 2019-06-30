@@ -27,4 +27,7 @@ using index_constant = std::integral_constant<index, N>;
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
+template <bool B>
+using enable_int_if = std::enable_if_t<B, int>;
+
 }  // namespace ac

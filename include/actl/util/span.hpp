@@ -39,7 +39,7 @@ public:
 
     constexpr span(T* first, T* last) : span{first, last - first} {}
 
-    template <class Range, class = std::enable_if_t<is_continuous_range<Range>::value>>
+    template <class Range, enable_int_if<is_continuous_range<Range>::value> = 0>
     constexpr span(Range& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
 
     constexpr T* begin() const { return data(); }

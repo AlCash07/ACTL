@@ -96,24 +96,24 @@ struct format_traits<binary> {
 template <class T>
 using format_tag_t = typename format_traits<remove_cvref_t<T>>::tag;
 
-template <class Device, class = std::enable_if_t<is_bin<Device::mode>>>
+template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
 inline binary deduce_format(Device& dev) {
     return {};
 }
 
-template <class Device, class = std::enable_if_t<!is_bin<Device::mode>>>
+template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
 inline auto& deduce_format(Device& dev) {
     return dev.format();
 }
 
 /* Common types support */
 
-template <class Device, class Format, class T, std::enable_if_t<std::is_empty_v<T>, int> = 0>
+template <class Device, class Format, class T, enable_int_if<std::is_empty_v<T>> = 0>
 inline index serialize(Device&, Format&, const T&) {
     return 0;
 }
 
-template <class Device, class Format, class T, std::enable_if_t<std::is_empty_v<T>, int> = 0>
+template <class Device, class Format, class T, enable_int_if<std::is_empty_v<T>> = 0>
 inline bool deserialize(Device&, Format&, T&) {
     return true;
 }

@@ -9,7 +9,7 @@
 
 #include <actl/io/text/arithmetic/detail/peek_digit.hpp>
 #include <actl/io/text/text.hpp>
-#include <type_traits>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac::io {
 
@@ -65,9 +65,8 @@ inline bool read_uint(D& id, F& fmt, UInt& x) {
 
 }  // namespace detail
 
-template <
-    class Device, class Format, class Int,
-    std::enable_if_t<std::is_integral_v<Int> && !std::is_same_v<Int, char_t<Device>>, int> = 0>
+template <class Device, class Format, class Int,
+          enable_int_if<std::is_integral_v<Int> && !std::is_same_v<Int, char_t<Device>>> = 0>
 inline bool deserialize(Device& id, Format& fmt, Int& x, text_tag) {
     if (fmt.getf(flags::skipws)) read(id, fmt, ws);
     if constexpr (std::is_signed_v<Int>) {

@@ -8,10 +8,10 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
 #include <actl/util/use_default.hpp>
 #include <cstring>
-#include <type_traits>
 
 namespace ac {
 
@@ -49,9 +49,8 @@ inline constexpr T set_bits(T& x, const T& mask, const T& bits) {
 
 // C++20 version requires std::is_trivially_constructible_v<To>.
 template <class To, class From,
-          class = std::enable_if_t<
-              sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> &&
-              std::is_trivially_copyable_v<To> && std::is_trivially_copyable_v<From>>>
+          enable_int_if<sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> &&
+                        std::is_trivially_copyable_v<To> && std::is_trivially_copyable_v<From>> = 0>
 inline To bit_cast(const From& src) noexcept {
     To dst;
     std::memcpy(&dst, &src, sizeof(To));

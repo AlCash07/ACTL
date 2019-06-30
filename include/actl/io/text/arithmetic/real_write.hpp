@@ -11,14 +11,14 @@
 #include <actl/io/text/arithmetic/detail/uitoa.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/numeric/algorithm/binary_pow.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <algorithm>
 #include <cmath>
-#include <type_traits>
 
 namespace ac::io {
 
 template <class Device, class Format, class Float,
-          std::enable_if_t<std::is_floating_point_v<Float>, int> = 0>
+          enable_int_if<std::is_floating_point_v<Float>> = 0>
 inline index serialize(Device& od, Format& fmt, Float x, text_tag) {
     std::unique_ptr<char[]> s;
     char* first;

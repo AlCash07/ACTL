@@ -13,6 +13,7 @@
 #include <actl/range/algorithm.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/std/vector.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
@@ -71,8 +72,7 @@ inline auto nearest(const nearest_multi_point<DP>& policy, Iterator first, Itera
 /**
  * Minimum distance between two different points from the set : O(N log N).
  */
-template <class DP, class T,
-          class = std::enable_if_t<geometry_traits<multi_point<T>>::dimension == 2>>
+template <class DP, class T, enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
 inline auto nearest(const nearest_multi_point<DP>& policy, multi_point<T>& points) {
     ACTL_ASSERT(points.size() > 1);
     sort(points);
@@ -83,7 +83,7 @@ inline auto nearest(const nearest_multi_point<DP>& policy, multi_point<T>& point
     return detail::nearest(policy, points.begin(), points.end(), tmp).second;
 }
 
-template <class T, class = std::enable_if_t<geometry_traits<multi_point<T>>::dimension == 2>>
+template <class T, enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
 inline auto nearest(use_default, multi_point<T>& points) {
     return nearest(comparable_nearest_multi_point<>{}, points);
 }

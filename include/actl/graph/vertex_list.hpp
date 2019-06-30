@@ -41,14 +41,14 @@ private:
 public:
     explicit vertex_list() = default;
 
-    template <bool B = RA, class = std::enable_if_t<B>>
+    template <bool B = RA, enable_int_if<B> = 0>
     explicit vertex_list(int n) {
         resize(n);
     }
 
     int vertex_count() const { return static_cast<int>(vertices_.size()); }
 
-    template <bool B = RA, class = std::enable_if_t<B>>
+    template <bool B = RA, enable_int_if<B> = 0>
     void resize(int n) {
         vertices_.resize(static_cast<typename vertex_container::size_type>(n));
     }

@@ -10,6 +10,7 @@
 #include <actl/geometry/algorithm/ccw/point_point.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
@@ -32,7 +33,7 @@ static void set_right(std::bool_constant<false>, T&, int) {}
  * Implementation reference: https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
  */
 template <bool M, class P, class AP, class T,
-          class = std::enable_if_t<geometry_traits<multi_point<T>>::dimension == 2>>
+          enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
 inline auto convex_hull(andrew_monotone_chain<M, P, AP> policy, multi_point<T>& points) {
     sort(points);
     using point_t = deduce_type_t<P, typename geometry_traits<multi_point<T>>::point>;
@@ -54,7 +55,7 @@ inline auto convex_hull(andrew_monotone_chain<M, P, AP> policy, multi_point<T>& 
     return hull;
 }
 
-template <class T, class = std::enable_if_t<geometry_traits<multi_point<T>>::dimension == 2>>
+template <class T, enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
 inline auto convex_hull(use_default, multi_point<T>& points) {
     return convex_hull(andrew_monotone_chain<>{}, points);
 }

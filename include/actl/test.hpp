@@ -88,7 +88,7 @@ struct assert_impl {
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
-    template <class T, class = std::enable_if_t<std::is_floating_point_v<T>>>
+    template <class T, enable_int_if<std::is_floating_point_v<T>> = 0>
     inline void check(T expected, T actual, T eps) const {
         T numerator   = std::abs(expected - actual);
         T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
