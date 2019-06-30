@@ -52,10 +52,10 @@ inline void test_edges(Graph& graph, V v0, V v1, V v2) {
     es.push_back(graph.add_edge(v0, v2, 1, "e02"));
     es.push_back(graph.add_edge(v2, v1, 2, "e21"));
     es.push_back(graph.add_edge(v2, v2, 8, "e22"));
-    auto[e01, ok01] = graph.try_add_edge(v0, v1, 3, "e01a");
+    auto [e01, ok01] = graph.try_add_edge(v0, v1, 3, "e01a");
     ASSERT_EQUAL(Graph::allows_parallel_edges, ok01);
     if (ok01) es.push_back(e01);
-    auto[e10, ok10] = graph.try_add_edge(v1, v0, 4, "e10");
+    auto [e10, ok10] = graph.try_add_edge(v1, v0, 4, "e10");
     ASSERT_EQUAL(Graph::allows_parallel_edges || Graph::is_directed, ok10);
     if (ok10) es.push_back(e10);
     auto map = graph[edge_property{}];
