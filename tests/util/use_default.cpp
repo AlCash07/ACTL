@@ -9,6 +9,6 @@
 #include <actl/util/use_default.hpp>
 
 TEST("deduce_type") {
-    ASSERT_TRUE(std::is_same_v<double, deduce_type_t<double, int>>);
-    ASSERT_TRUE(std::is_same_v<int, deduce_type_t<use_default, int>>);
+    ASSERT_TRUE(std::is_same_v<double, deduce_t<double, int>>);
+    ASSERT_TRUE(std::is_same_v<int, deduce_t<use_default, int>>);
 }

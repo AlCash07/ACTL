@@ -18,7 +18,7 @@ namespace ac {
 template <class T = use_default, class I>
 inline constexpr auto bit(const I& i) {
     ACTL_ASSERT(i >= 0);
-    return deduce_type_t<T, I>{1} << i;
+    return deduce_t<T, I>{1} << i;
 }
 
 template <class T, class I>

@@ -14,13 +14,13 @@
 namespace ac::geometry {
 
 template <class P, class... Ts>
-using product_t = deduce_type_t<P, scalar_t<Ts...>>;
+using product_t = deduce_t<P, scalar_t<Ts...>>;
 
 template <class S, class... Ts>
-using sqrt_t = deduce_type_t<S, decltype(math::sqrt(std::declval<scalar_t<Ts...>>()))>;
+using sqrt_t = deduce_t<S, decltype(math::sqrt(std::declval<scalar_t<Ts...>>()))>;
 
 template <class R, class... Ts>
-using ratio_t = deduce_type_t<R, sqrt_t<use_default, Ts...>>;
+using ratio_t = deduce_t<R, sqrt_t<use_default, Ts...>>;
 
 template <class P, class... Ts>
 using comparable_sqrt_t = square_root<product_t<P, Ts...>>;

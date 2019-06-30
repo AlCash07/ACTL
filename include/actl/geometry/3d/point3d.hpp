@@ -40,7 +40,7 @@ using point3d = point<T, 3>;
 template <class P = use_default, class T0, class T1>
 inline constexpr point<geometry::scalar_t<T0, T1>, 3> cross(const point3d<T0>& lhs,
                                                             const point3d<T1>& rhs) {
-    point3d<deduce_type_t<P, T0>> lhs1 = lhs;
+    point3d<deduce_t<P, T0>> lhs1 = lhs;
     return point{lhs1[1] * rhs[2] - lhs1[2] * rhs[1],
                  lhs1[2] * rhs[0] - lhs1[0] * rhs[2],
                  lhs1[0] * rhs[1] - lhs1[1] * rhs[0]};

@@ -16,7 +16,7 @@ namespace ac {
 
 template <class P = use_default, class R = use_default, class NormPolicy = use_default,
           class AreaPolicy = standard_area_points<P>>
-struct distance_point_line : deduce_type_t<NormPolicy, standard_norm<P>> {
+struct distance_point_line : deduce_t<NormPolicy, standard_norm<P>> {
     AreaPolicy area_policy;
 };
 

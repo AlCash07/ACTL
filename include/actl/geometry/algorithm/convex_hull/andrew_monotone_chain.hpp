@@ -36,7 +36,7 @@ template <bool M, class P, class AP, class T,
           enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
 inline auto convex_hull(andrew_monotone_chain<M, P, AP> policy, multi_point<T>& points) {
     sort(points);
-    using point_t = deduce_type_t<P, typename geometry_traits<multi_point<T>>::point>;
+    using point_t = deduce_t<P, typename geometry_traits<multi_point<T>>::point>;
     std::conditional_t<M, convex_monotone_polygon<point_t>, convex_polygon<point_t>> hull;
     hull.reserve(points.size() + 1);
     for (int phase = 0; phase < 2; ++phase) {  // Lower, then upper chain.

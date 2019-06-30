@@ -182,7 +182,7 @@ inline constexpr auto operator / (const point<T0, N>& lhs, const T1& factor) {
 }
 
 template <class P = use_default, int N, class T0, class T1,
-          class X = deduce_type_t<P, geometry::scalar_t<T0, T1>>>
+          class X = deduce_t<P, geometry::scalar_t<T0, T1>>>
 inline constexpr X dot(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     X res{0};
     for (int i = 0; i < N; ++i)

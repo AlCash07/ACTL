@@ -16,7 +16,7 @@ namespace ac {
 
 template <class DistancePolicy = use_default, class AntipodalPolicy = antipodal_vertices_policy<>>
 struct max_distance_policy : AntipodalPolicy {
-    deduce_type_t<DistancePolicy, comparable_distance_point_point<>> distance_policy;
+    deduce_t<DistancePolicy, comparable_distance_point_point<>> distance_policy;
 };
 
 /**

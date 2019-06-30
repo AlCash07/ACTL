@@ -26,7 +26,7 @@ template <class Key, class Ref, class Value = use_default, bool Readable = true,
 struct map_traits_base {
     using key_type = Key;
     using reference = Ref;
-    using value_type = deduce_type_t<Value, remove_cvref_t<Ref>>;
+    using value_type = deduce_t<Value, remove_cvref_t<Ref>>;
     using pair_type = std::pair<Key, Ref>;
     using range_type = Range;
 
