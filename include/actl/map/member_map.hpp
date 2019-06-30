@@ -53,13 +53,13 @@ struct map_traits<member_map<C, M>> : map_traits_base<C&, M&>, detail::memmap_ta
 template <class C, class M, M C::* Ptr>
 struct map_traits<static_member_map<Ptr>> : map_traits_base<C&, M&>, detail::memmap_tag {};
 
-template <class Map>
-struct map_traits<const Map, std::enable_if_t<detail::is_memmap_v<Map>>>
-    : map_traits_base<detail::cref_t<map_key_t<Map>>, detail::cref_t<map_reference_t<Map>>> {};
+template <class MM>
+struct map_traits<const MM, std::enable_if_t<detail::is_memmap_v<MM>>>
+    : map_traits_base<detail::cref_t<map_key_t<MM>>, detail::cref_t<map_reference_t<MM>>> {};
 
-template <class Map>
-struct map_ops<Map, std::enable_if_t<detail::is_memmap_v<std::remove_const_t<Map>>>> {
-    static map_reference_t<Map> get(Map& map, map_key_t<Map> key) { return key.*map.ptr; }
+template <class MM>
+struct map_ops<MM, std::enable_if_t<detail::is_memmap_v<std::remove_const_t<MM>>>> {
+    static map_reference_t<MM> get(MM& map, map_key_t<MM> key) { return key.*map.ptr; }
 };
 
 }  // namespace ac
