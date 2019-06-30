@@ -77,6 +77,9 @@ struct map_ops {
     static constexpr map_range_t<T> map_range(T& map) { return map.map_range(); }
 };
 
+template <class T>
+struct map_ops<T&, void> : map_ops<T> {};
+
 template <class T, std::enable_if_t<map_traits<T>::readable, int> = 0>
 inline map_reference_t<T> get(T& map, map_key_t<T> key) {
     return map_ops<T>::get(map, key);

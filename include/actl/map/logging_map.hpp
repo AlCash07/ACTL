@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/map/map.hpp>
-#include <actl/std/utility.hpp>
+#include <actl/util/compressed_pair.hpp>
 
 namespace ac {
 
@@ -16,18 +16,24 @@ namespace ac {
  * Map that writes all key-value pairs from put operations into output iterator.
  */
 template <class Map, class OutputIterator>
-class logging_map : public map_wrapper_t<Map> {
-    using base_t = map_wrapper_t<Map>;
-
-    mutable OutputIterator it_;
-
+class logging_map : public compressed_pair<Map, OutputIterator> {
 public:
-    explicit logging_map(Map&& map, OutputIterator it) : base_t{std::move(map)}, it_{it} {}
+    using compressed_pair<Map, OutputIterator>::compressed_pair;
 
-    friend void put(const logging_map& map, typename base_t::key_type key,
-                    typename base_t::value_type value) {
-        *map.it_++ = std::pair{key, value};
-        put(static_cast<const base_t&>(map), key, value);
+    operator Map&() { return this->first(); }
+};
+
+template <class M, class OI>
+logging_map(M&&, OI) -> logging_map<M, OI>;
+
+template <class M, class OI>
+struct map_traits<logging_map<M, OI>> : map_traits<M> {};
+
+template <class M, class OI>
+struct map_ops<logging_map<M, OI>> : map_ops<M> {
+    static void put(logging_map<M, OI>& map, map_key_t<M> key, map_value_t<M> value) {
+        *map.second()++ = std::pair{key, value};
+        ac::put(map.first(), key, value);
     }
 };
 
