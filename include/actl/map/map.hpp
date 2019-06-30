@@ -15,8 +15,8 @@
 
 #pragma once
 
+#include <actl/std/utility.hpp>
 #include <actl/traits/type_traits.hpp>
-#include <utility>
 
 namespace ac {
 
@@ -61,6 +61,9 @@ using map_pair_t = typename map_traits<T>::pair_type;
 
 template <class T>
 using map_range_t = typename map_traits<T>::range_type;
+
+template <class T>
+using map_iterator_t = decltype(std::declval<map_range_t<T>>().begin());
 
 // This struct guarantees that function declaration is found during unqualified name lookup.
 template <class T, class = void>

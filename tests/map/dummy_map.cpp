@@ -12,5 +12,5 @@ TEST("basic") {
     dummy_map<int, int> map;
     put(map, 2, 2);
     ASSERT_EQUAL(0, get(map, 2));
-    dummy_map<int> void_map;
+    [[maybe_unused]] dummy_map<int> void_map;
 }

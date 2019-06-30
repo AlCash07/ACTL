@@ -20,8 +20,8 @@ public:
 
     constexpr static Value get(Key) { return Value{}; }
 
-    template <bool B = RW>
-    constexpr static void put(Key, std::enable_if_t<B, Value>) {}
+    template <class V = Value>
+    constexpr static void put(Key, V) {}
 };
 
 template <class K, class V>
