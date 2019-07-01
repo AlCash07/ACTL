@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/std/string.hpp>
-#include <actl/traits/ctype.hpp>
+#include <actl/string/ctype.hpp>
 
 namespace ac {
 

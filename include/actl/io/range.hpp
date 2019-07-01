@@ -9,7 +9,7 @@
 
 #include <actl/container/functions.hpp>
 #include <actl/io/io.hpp>
-#include <actl/traits/iterator_traits.hpp>
+#include <actl/iterator/traits.hpp>
 
 namespace ac::io {
 

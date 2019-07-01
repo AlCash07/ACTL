@@ -7,5 +7,7 @@
 
 #pragma once
 
+#include <actl/string/ctype.hpp>
 #include <actl/string/split.hpp>
+#include <actl/string/traits.hpp>
 #include <actl/string/trim.hpp>

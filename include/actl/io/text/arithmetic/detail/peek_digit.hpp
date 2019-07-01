@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/traits/ctype.hpp>
+#include <actl/string/ctype.hpp>
 #include <cstdint>
 #include <limits>
 

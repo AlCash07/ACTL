@@ -7,11 +7,11 @@
 
 #pragma once
 
+#include <actl/container/traits.hpp>
 #include <actl/io/range.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/traits/container_traits.hpp>
-#include <actl/traits/string_traits.hpp>
+#include <actl/string/traits.hpp>
 
 namespace ac::io {
 

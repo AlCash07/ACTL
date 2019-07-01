@@ -5,9 +5,9 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/container/traits.hpp>
 #include <actl/std/vector.hpp>
 #include <actl/test.hpp>
-#include <actl/traits/container_traits.hpp>
 
 TEST("array::category") {
     using C = int[2];

@@ -5,11 +5,11 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/iterator/traits.hpp>
 #include <actl/std/forward_list.hpp>
 #include <actl/std/list.hpp>
 #include <actl/std/vector.hpp>
 #include <actl/test.hpp>
-#include <actl/traits/iterator_traits.hpp>
 #include <iterator>
 
 TEST("is_iterator") {

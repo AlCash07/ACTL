@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/traits/string_traits.hpp>
+#include <actl/string/traits.hpp>
 #include <iterator>
 
 namespace ac {
@@ -90,7 +90,7 @@ public:
 };
 
 template <class Range>
-char_span(Range&)->char_span<std::remove_pointer_t<decltype(std::data(std::declval<Range&>()))>>;
+char_span(Range&) -> char_span<std::remove_pointer_t<decltype(std::data(std::declval<Range&>()))>>;
 
 template <class C>
 struct is_string<char_span<C>, C> : std::true_type {};

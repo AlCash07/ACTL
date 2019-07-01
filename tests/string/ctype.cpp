@@ -5,8 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/string/ctype.hpp>
 #include <actl/test.hpp>
-#include <actl/traits/ctype.hpp>
 
 TEST("correctness") {
     for (char c = std::numeric_limits<char>::min();; ++c) {

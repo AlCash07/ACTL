@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/traits/container_traits.hpp>
+#include <actl/container/traits.hpp>
 #include <algorithm>
 
 namespace ac {

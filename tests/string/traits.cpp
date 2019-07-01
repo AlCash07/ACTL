@@ -7,8 +7,8 @@
 
 #include <actl/std/string.hpp>
 #include <actl/std/vector.hpp>
+#include <actl/string/traits.hpp>
 #include <actl/test.hpp>
-#include <actl/traits/string_traits.hpp>
 
 TEST("is_string") {
     ASSERT_TRUE(is_string_v<char[9]>);

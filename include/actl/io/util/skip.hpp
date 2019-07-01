@@ -9,7 +9,7 @@
 
 #include <actl/io/io.hpp>
 #include <actl/io/util/predicate.hpp>
-#include <actl/traits/ctype.hpp>
+#include <actl/string/ctype.hpp>
 
 namespace ac::io {
 

@@ -9,12 +9,12 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/functions.hpp>
+#include <actl/container/traits.hpp>
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/numeric/bit.hpp>
 #include <actl/numeric/util/hash_access.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/traits/container_traits.hpp>
 #include <cstdint>
 
 namespace ac {
