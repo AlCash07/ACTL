@@ -30,4 +30,20 @@ using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 template <bool B>
 using enable_int_if = std::enable_if_t<B, int>;
 
+template <size_t N, class... Ts>
+struct nth_type;
+
+template <size_t N, class... Ts>
+using nth_t = typename nth_type<N, Ts...>::type;
+
+template <class T, class... Ts>
+struct nth_type<0, T, Ts...> {
+    using type = T;
+};
+
+template <size_t N, class T, class... Ts>
+struct nth_type<N, T, Ts...> {
+    using type = nth_t<N - 1, Ts...>;
+};
+
 }  // namespace ac

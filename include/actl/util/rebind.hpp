@@ -13,8 +13,7 @@
 
 #pragma once
 
-#include <actl/util/nth_type.hpp>
-#include <type_traits>
+#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
@@ -30,7 +29,7 @@ struct template_type<T[N]> {
 
 template <template <class...> class C, class... Ts>
 struct template_type<C<Ts...>> {
-    using type = nth_type_t<0, Ts...>;
+    using type = nth_t<0, Ts...>;
 };
 
 template <class T, class To>
@@ -61,7 +60,7 @@ struct rebind2 {
 
 template <template <class...> class C, class... Ts, class To>
 struct rebind2<C<Ts...>, To> {
-    using type = C<typename rebind3<Ts, To, nth_type_t<0, Ts...>>::type...>;
+    using type = C<typename rebind3<Ts, To, nth_t<0, Ts...>>::type...>;
 };
 
 template <class R, class To, class = void>

@@ -14,3 +14,8 @@ TEST("add_const_if") {
 }
 
 TEST("remove_cvref") { ASSERT_TRUE(std::is_same_v<int, remove_cvref_t<volatile const int&>>); }
+
+TEST("nth_type") {
+    ASSERT_TRUE(std::is_same_v<int, nth_t<0, int, float>>);
+    ASSERT_TRUE(std::is_same_v<float, nth_t<1, int, float>>);
+}
