@@ -31,12 +31,22 @@ private:
 
 template <class Iterator>
 inline auto make_range(Iterator first, Iterator last) {
-    return iterator_range<Iterator>{first, last};
+    return iterator_range{first, last};
 }
 
 template <class Iterator, class Int>
 inline auto make_range(Iterator first, Int n) {
-    return iterator_range<Iterator>{first, std::next(first, n)};
+    return iterator_range{first, std::next(first, n)};
+}
+
+template <class Container>
+inline auto make_range(Container&& cont) {
+    return make_range(std::begin(cont), std::end(cont));
+}
+
+template <class Container>
+inline auto make_crange(const Container& cont) {
+    return make_range(cont);
 }
 
 }  // namespace ac
