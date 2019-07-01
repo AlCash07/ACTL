@@ -11,6 +11,7 @@
 #include <actl/numeric/bit.hpp>
 #include <actl/numeric/random/splitmix64.hpp>
 #include <actl/numeric/util/hash_access.hpp>
+#include <actl/util/rebind.hpp>
 #include <chrono>
 #include <functional>
 
@@ -65,9 +66,24 @@ inline constexpr size_t hash_value(const R& x) {
     return res;
 }
 
-template <class T>
+template <class T = void>
 struct hash_function {
     constexpr size_t operator()(const T& x) const { return hash_value(x); }
+};
+
+template <>
+struct hash_function<void> {
+    using transparent_key_equal = std::equal_to<>;
+
+    template <class T>
+    constexpr size_t operator()(const T& x) const {
+        return hash_value(x);
+    }
+};
+
+template <class T, class To>
+struct rebind<hash_function<T>, To> {
+    using type = hash_function<>;
 };
 
 }  // namespace ac

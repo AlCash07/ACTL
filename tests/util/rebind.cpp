@@ -14,12 +14,18 @@ struct A {};
 struct B {};
 
 template <class T>
-struct R {
-    template <class U>
-    using rebind = A;
+struct R {};
+
+namespace ac {
+
+template <class T, class U>
+struct rebind<R<T>, U> {
+    using type = A;
 };
 
-TEST("member_rebind") { ASSERT_TRUE(std::is_same_v<A, rebind_t<R<A>, B>>); }
+}  // namespace ac
+
+TEST("specialized_rebind") { ASSERT_TRUE(std::is_same_v<A, rebind_t<R<A>, B>>); }
 
 TEST("inner") {
     ASSERT_TRUE(
@@ -28,4 +34,7 @@ TEST("inner") {
 
 TEST("array") { ASSERT_TRUE(std::is_same_v<B[2], rebind_t<A[2], B>>); }
 
-TEST("hash_set") { ASSERT_TRUE(std::is_same_v<hash_set<int>, rebind_t<hash_set<float>, int>>); }
+TEST("hash_set") {
+    using HSF = hash_set<float, hash_function<float>, std::equal_to<float>>;
+    ASSERT_TRUE(std::is_same_v<hash_set<int>, rebind_t<HSF, int>>);
+}

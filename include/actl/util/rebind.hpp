@@ -14,6 +14,7 @@
 #pragma once
 
 #include <actl/util/type_traits.hpp>
+#include <functional>
 
 namespace ac {
 
@@ -38,54 +39,48 @@ struct rebind;
 namespace detail {
 
 template <class T, class To, bool = true>
-struct rebind4 : rebind<T, To> {};
+struct rebind2 : rebind<T, To> {};
 
 template <class T, class To>
-struct rebind4<T, To, false> {
+struct rebind2<T, To, false> {
     using type = T;
 };
 
 template <class T, class To, class From>
-struct rebind3 : rebind4<T, To, std::is_same_v<typename template_type<T>::type, From>> {};
+struct rebind1 : rebind2<T, To, std::is_same_v<typename template_type<T>::type, From>> {};
 
 template <class To, class From>
-struct rebind3<From, To, From> {
+struct rebind1<From, To, From> {
     using type = To;
 };
 
 template <class T, class To>
-struct rebind2 {
+struct rebind0 {
     using type = T;
 };
 
 template <template <class...> class C, class... Ts, class To>
-struct rebind2<C<Ts...>, To> {
-    using type = C<typename rebind3<Ts, To, nth_t<0, Ts...>>::type...>;
+struct rebind0<C<Ts...>, To> {
+    using type = C<typename rebind1<Ts, To, nth_t<0, Ts...>>::type...>;
 };
-
-template <class R, class To, class = void>
-struct rebind1 {
-    using type = R;
-};
-
-// allocator support
-template <class R, class To>
-struct rebind1<R, To, std::void_t<typename R::other>> {
-    using type = typename R::other;
-};
-
-template <class T, class To, class = void>
-struct rebind0 : rebind2<T, To> {};
-
-template <class T, class To>
-struct rebind0<T, To, std::void_t<typename T::template rebind<To>>>
-    : rebind1<typename T::template rebind<To>, To> {};
 
 }  // namespace detail
 
 template <class T, size_t N, class To>
 struct rebind<T[N], To> {
     using type = To[N];
+};
+
+// Transparent operator function objects support.
+// TODO: support all of them.
+template <class T, class To>
+struct rebind<std::less<T>, To> {
+    using type = std::less<>;
+};
+
+template <class T, class To>
+struct rebind<std::equal_to<T>, To> {
+    using type = std::equal_to<>;
 };
 
 template <class T, class To>

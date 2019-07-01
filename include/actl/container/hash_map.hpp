@@ -14,11 +14,11 @@
 
 namespace ac {
 
-template <class K, class T, class H = hash_function<K>, class E = std::equal_to<K>,
+template <class K, class T, class H = hash_function<>, class E = std::equal_to<>,
           class A = std::allocator<std::pair<const K, T>>>
 using hash_map = std::unordered_map<K, T, H, E, A>;
 
-template <class K, class T, class H = hash_function<K>, class E = std::equal_to<K>,
+template <class K, class T, class H = hash_function<>, class E = std::equal_to<>,
           class A = std::allocator<std::pair<const K, T>>>
 using hash_multimap = std::unordered_multimap<K, T, H, E, A>;
 

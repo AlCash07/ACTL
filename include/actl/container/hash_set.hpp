@@ -14,11 +14,11 @@
 
 namespace ac {
 
-template <class T, class H = hash_function<T>, class E = std::equal_to<>,
+template <class T, class H = hash_function<>, class E = std::equal_to<>,
           class A = std::allocator<T>>
 using hash_set = std::unordered_set<T, H, E, A>;
 
-template <class T, class H = hash_function<T>, class E = std::equal_to<>,
+template <class T, class H = hash_function<>, class E = std::equal_to<>,
           class A = std::allocator<T>>
 using hash_multiset = std::unordered_multiset<T, H, E, A>;
 

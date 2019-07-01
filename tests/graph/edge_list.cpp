@@ -27,8 +27,8 @@ void test_edge_list() {
 TEST("bundle") {
     test_edge_list<directed, std::vector<bundle>>();
     test_edge_list<undirected, std::vector<bundle>>();
-    test_edge_list<directed, std::set<bundle, std::less<>>>();
-    test_edge_list<undirected, std::set<bundle, std::less<>>>();
+    test_edge_list<directed, std::set<bundle>>();
+    test_edge_list<undirected, std::set<bundle>>();
     test_edge_list<directed, hash_multiset<bundle>>();
     test_edge_list<undirected, hash_multiset<bundle>>();
 }
