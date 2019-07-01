@@ -15,23 +15,24 @@ namespace ac {
 /**
  * Vector with queue interface.
  */
+// TODO: replace with vector_as_deque.
 template <class T, class Vector = std::vector<T>>
 class vector_as_queue {
 public:
-    // TODO: replace with vector_as_deque.
-    using value_type      = typename Vector::value_type;
-    using reference       = typename Vector::reference;
-    using const_reference = typename Vector::const_reference;
-    using size_type       = typename Vector::size_type;
-    static_assert(std::is_same_v<T, value_type>, "");
+    using value_type      = value_t<Vector>;
+    using reference       = reference_t<Vector>;
+    using const_reference = reference_t<const Vector>;
+    using size_type       = size_type_t<Vector>;
 
-    bool      empty() const { return begin_ == vector_.size(); }
+    static_assert(std::is_same_v<T, value_type>);
+
+    bool empty() const { return begin_ == vector_.size(); }
     size_type size() const { return vector_.size() - begin_; }
 
-    reference       front() { return vector_[begin_]; }
+    reference front() { return vector_[begin_]; }
     const_reference front() const { return vector_[begin_]; }
 
-    reference       back() { return vector_.back(); }
+    reference back() { return vector_.back(); }
     const_reference back() const { return vector_.back(); }
 
     void push(const T& value) { emplace(value); }
@@ -48,7 +49,7 @@ public:
     }
 
 protected:
-    Vector    vector_;
+    Vector vector_;
     size_type begin_ = 0;  // not an iterator since vector can reallocate
 };
 

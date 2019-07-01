@@ -73,6 +73,7 @@ struct traits<T[N]> {
     struct type : traits<T*>::type {
         using value_type = T;
         using iterator = T*;
+        using size_type = index;
     };
 };
 
@@ -125,5 +126,8 @@ using iterator_t = typename detail::iterator<T>::type;
 
 template <class T>
 using difference_t = typename detail::traits_t<T>::difference_type;
+
+template <class T>
+using size_type_t = typename detail::traits_t<T>::size_type;
 
 }  // namespace ac

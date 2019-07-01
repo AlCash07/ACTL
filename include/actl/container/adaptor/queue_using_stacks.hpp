@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/util/type_traits.hpp>
 #include <stack>
 
 namespace ac {
@@ -30,10 +31,11 @@ protected:
     }
 
 public:
-    using value_type = typename Stack::value_type;
-    using reference  = typename Stack::reference;
-    using size_type  = typename Stack::size_type;
-    static_assert(std::is_same_v<T, value_type>, "");
+    using value_type = value_t<Stack>;
+    using reference  = reference_t<Stack>;
+    using size_type  = size_type_t<Stack>;
+
+    static_assert(std::is_same_v<T, value_type>);
 
     bool empty() const { return in_stack_.empty() && out_stack_.empty(); }
 
