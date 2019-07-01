@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <class VertexContainer = none, class T = value_type_t<VertexContainer>>
+template <class VertexContainer = none, class T = value_t<VertexContainer>>
 class vertex_list : public vertex_list<VertexContainer, none> {
     using base_t = vertex_list<VertexContainer, none>;
 
@@ -31,9 +31,9 @@ public:
 template <class VC>
 class vertex_list<VC, none> {
 public:
-    using vertex_container = rebind_container_t<VC, value_type_t<VC>>;  // to handle none
-    using vertex           = container_id<vertex_container>;
-    using vertex_iterator  = container_id_iterator<vertex_container>;
+    using vertex_container = rebind_container_t<VC, value_t<VC>>;  // to handle none
+    using vertex = container_id<vertex_container>;
+    using vertex_iterator = container_id_iterator<vertex_container>;
 
 private:
     static constexpr bool RA = is_random_access_container_v<vertex_container>;

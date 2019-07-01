@@ -30,10 +30,9 @@ template <class Dir, class OEC, class EC, class VC>
 struct adj_list_traits {
     using vertex = std::conditional_t<is_random_access_container_v<VC>, int, void*>;
 
-    using edge_selector = value_type_t<EC>;
+    using edge_selector = value_t<EC>;
 
-    using edges =
-        edge_list_impl<Dir, vertex, rebind_container_t<EC, value_type_t<OEC>>, edge_selector>;
+    using edges = edge_list_impl<Dir, vertex, rebind_container_t<EC, value_t<OEC>>, edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
     static constexpr bool has_out_vertex = is_associative_container_v<OEC> ||
@@ -43,7 +42,7 @@ struct adj_list_traits {
     using out_edge_vertex = std::conditional_t<has_out_vertex, vertex, none>;
 
     using out_edge_bundle = std::conditional_t<!std::is_same_v<edge_selector, none>,
-                                               typename edges::edge_id, value_type_t<OEC>>;
+                                               typename edges::edge_id, value_t<OEC>>;
 
     using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
@@ -60,7 +59,7 @@ struct adj_list_traits {
     using in_edge_container = rebind_container_t<OEC, in_edge_data>;
 
     using vertex_edges = vertex_edges<Dir, out_edge_container, in_edge_container>;
-    using vertex_data  = mimic_pair<vertex_edges, value_type_t<VC>, 2>;
+    using vertex_data = mimic_pair<vertex_edges, value_t<VC>, 2>;
 
     using vertices = vertex_list<rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
 
@@ -87,14 +86,14 @@ public:
 
 template <class V, class OE, class S>
 struct full_edge {
-    V  u;
+    V u;
     OE e_out;
     OE e_in;
 };
 
 template <class V, class OE>
 struct full_edge<V, OE, directed> {
-    V  u;
+    V u;
     OE e_out;
 };
 

@@ -39,7 +39,7 @@ inline bool deserialize(Device& id, Format& fmt, R& x) {
         if (!read_size(id, fmt, size)) return false;
         if constexpr (!is_random_access_container_v<R>) {
             for (; size > 0; --size) {
-                value_type_t<R> value;
+                value_t<R> value;
                 if (!read(id, fmt, value)) return false;
                 emplace(x, std::move(value));
             }

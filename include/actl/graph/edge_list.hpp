@@ -16,12 +16,12 @@ namespace ac {
 
 namespace detail {
 
-template <class Dir, class V, class EC, class S, class T = value_type_t<EC>>
+template <class Dir, class V, class EC, class S, class T = value_t<EC>>
 class edge_list_edges : public edge_list_edges<Dir, V, EC, S, none> {
     using base_t = edge_list_edges<Dir, V, EC, S, none>;
 
 public:
-    using edge = typename base_t::edge;
+    using typename base_t::edge;
 
     using base_t::base_t;
 
@@ -35,7 +35,7 @@ public:
 template <class Dir, class V, class EC, class S>
 class edge_list_edges<Dir, V, EC, S, none> {
 protected:
-    using traits        = edge_list_traits<Dir, V, EC, S>;
+    using traits = edge_list_traits<Dir, V, EC, S>;
     using edge_vertices = typename traits::vertices;
 
 public:
@@ -43,9 +43,9 @@ public:
                   "associative edge list requires two vertices");
 
     using edge_container = typename traits::container;
-    using edge_id        = container_id<edge_container>;
-    using vertex         = V;
-    using edge           = edge<V, edge_id>;
+    using edge_id = container_id<edge_container>;
+    using vertex = V;
+    using edge = edge<V, edge_id>;
 
     using directed_category = Dir;
 
@@ -99,8 +99,8 @@ class edge_list_impl<Dir, V, EC, two_vertices> : public edge_list_edges<Dir, V, 
     using base_t::edges_;
 
 public:
-    using vertex = typename base_t::vertex;
-    using edge   = typename base_t::edge;
+    using typename base_t::edge;
+    using typename base_t::vertex;
 
     using base_t::base_t;
 

@@ -31,7 +31,7 @@ struct value_type<none> {
 };
 
 template <class C>
-using value_type_t = typename value_type<C>::type;
+using value_t = typename value_type<C>::type;
 
 inline constexpr index dynamic_size = -1;
 
