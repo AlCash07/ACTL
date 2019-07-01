@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <type_traits>
-#include <iostream>
+#include <actl/util/type_traits.hpp>
 #include <cstdint>
+#include <iostream>
 
 namespace ac {
 
@@ -95,8 +95,8 @@ inline constexpr Z mod_div(const Z& x, const Z& y, const R& ring) {
 
 template <class Ring>
 struct ring_element : Ring {
-    using value_type = typename Ring::value_type;
-    
+    using value_type = value_t<Ring>;
+
     value_type value;
 
     const Ring& ring() const { return static_cast<const Ring&>(*this); }

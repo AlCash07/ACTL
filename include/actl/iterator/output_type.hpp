@@ -10,13 +10,14 @@
 
 #pragma once
 
+#include <actl/util/type_traits.hpp>
 #include <iterator>
 
 namespace ac {
 
 template <class OutputIterator>
 struct output_type {
-    using type = typename std::iterator_traits<OutputIterator>::value_type;
+    using type = value_t<OutputIterator>;
 };
 
 template <class T, class CharT, class Traits>
@@ -26,17 +27,17 @@ struct output_type<std::ostream_iterator<T, CharT, Traits>> {
 
 template <class Container>
 struct output_type<std::back_insert_iterator<Container>> {
-    using type = typename Container::value_type;
+    using type = value_t<Container>;
 };
 
 template <class Container>
 struct output_type<std::front_insert_iterator<Container>> {
-    using type = typename Container::value_type;
+    using type = value_t<Container>;
 };
 
 template <class Container>
 struct output_type<std::insert_iterator<Container>> {
-    using type = typename Container::value_type;
+    using type = value_t<Container>;
 };
 
 template <class OutputIterator>

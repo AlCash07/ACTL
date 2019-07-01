@@ -12,6 +12,7 @@
 #pragma once
 
 #include <actl/util/operators.hpp>
+#include <actl/util/type_traits.hpp>
 #include <iterator>
 #include <memory>
 
@@ -27,7 +28,9 @@ class iterator_facade;
 
 struct iterator_core_access {
     template <class It>
-    static typename It::reference dereference(const It& it) { return it.dereference(); }
+    static reference_t<It> dereference(const It& it) {
+        return it.dereference();
+    }
 
     template <class It>
     static void increment(It& it) { it.increment(); }
@@ -39,10 +42,12 @@ struct iterator_core_access {
     static bool equal(const It1& it1, const It2& it2) { return it1.equals(it2); }
 
     template <class It>
-    static void advance(It& it, typename It::difference_type n) { it.advance(n); }
+    static void advance(It& it, difference_t<It> n) {
+        it.advance(n);
+    }
 
     template <class It1, class It2>
-    static typename It1::difference_type distance_to(const It1& it1, const It2& it2) {
+    static difference_t<It1> distance_to(const It1& it1, const It2& it2) {
         return it1.distance_to(it2);
     }
 };

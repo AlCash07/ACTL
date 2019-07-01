@@ -21,16 +21,16 @@ template <class Iterator>
 class cyclic_iterator
     : public iterator_facade<cyclic_iterator<Iterator>,
                              typename std::iterator_traits<Iterator>::iterator_category,
-                             typename std::iterator_traits<Iterator>::value_type,
-                             typename std::iterator_traits<Iterator>::reference,
-                             typename std::iterator_traits<Iterator>::pointer,
-                             typename std::iterator_traits<Iterator>::difference_type> {
+                             value_t<Iterator>,
+                             reference_t<Iterator>,
+                             pointer_t<Iterator>,
+                             difference_t<Iterator>> {
 public:
     cyclic_iterator(Iterator it, Iterator begin, Iterator end)
         : it_{it != end ? it : begin}, begin_{begin}, end_{end} {}
 
 private:
-    typename std::iterator_traits<Iterator>::reference dereference() const { return *it_; }
+    reference_t<Iterator> dereference() const { return *it_; }
 
     void increment() {
         ++it_;
@@ -42,7 +42,7 @@ private:
         --it_;
     }
 
-    void advance(typename std::iterator_traits<Iterator>::difference_type n) {
+    void advance(difference_t<Iterator> n) {
         auto cycle = end_ - begin_;
         ACTL_ASSERT(abs(n) < cycle);
         if (n > 0) {
@@ -54,8 +54,7 @@ private:
 
     bool equals(const cyclic_iterator& rhs) const { return it_ == rhs.it_; }
 
-    typename std::iterator_traits<Iterator>::difference_type distance_to(
-        const cyclic_iterator& rhs) const {
+    difference_t<Iterator> distance_to(const cyclic_iterator& rhs) const {
         auto distance = rhs.it_ - it_;
         return distance >= 0 ? distance : distance + (end_ - begin_);
     }

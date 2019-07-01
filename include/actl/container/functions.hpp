@@ -15,7 +15,7 @@
 namespace ac {
 
 template <class C, class... Ts>
-inline std::pair<typename C::iterator, bool> emplace(C& cont, Ts&&... args) {
+inline std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
     if constexpr (is_associative_container_v<C>) {
         auto res = cont.emplace(std::forward<Ts>(args)...);
         if constexpr (is_unique_associative_container_v<C>) {
@@ -41,9 +41,7 @@ inline void erase(C& cont, const T& value) {
 }
 
 template <class C, class T>
-inline std::conditional_t<std::is_const_v<C>, typename std::remove_const_t<C>::const_iterator,
-                          typename C::iterator>
-find(C& cont, const T& value) {
+inline iterator_t<C> find(C& cont, const T& value) {
     if constexpr (is_associative_container_v<C>) {
         return cont.find(value);
     } else {

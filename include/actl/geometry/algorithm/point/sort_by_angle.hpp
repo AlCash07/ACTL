@@ -23,7 +23,7 @@ template <class P, class T0, class T1>
 void sort_by_angle(sort_by_angle_policy<P>, multi_point<T0>& points, const point<T1>& origin) {
     auto first = points.begin(), last = points.end();
     static_assert(geometry_traits<multi_point<T0>>::dimension == 2, "incompatible dimension");
-    using reference = typename multi_point<T0>::reference;
+    using reference = reference_t<multi_point<T0>>;
     first = std::partition(first, last, [&origin](reference point) { return point == origin; });
     auto pivot = std::partition(first, last,
                                 [&origin](reference point) { return y_compare(origin, point); });

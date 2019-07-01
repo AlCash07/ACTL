@@ -32,16 +32,16 @@ struct cr_traits {
 
     using base     = cr_data<C, !(is_const || std::is_reference_v<C>)>;
     using T        = remove_cvref_t<C>;
-    using iterator = std::conditional_t<is_const, typename T::const_iterator, typename T::iterator>;
+    using iterator = iterator_t<T>;
 };
 
 }  // namespace detail
 
 template <class Container>
-class container_range : public range_facade<container_range<Container>,
-                                            typename detail::cr_traits<Container>::iterator>,
-                        protected detail::cr_traits<Container>::base {
-    using It = typename detail::cr_traits<Container>::iterator;
+class container_range
+    : public range_facade<container_range<Container>, iterator_t<detail::cr_traits<Container>>>,
+      protected detail::cr_traits<Container>::base {
+    using It = iterator_t<detail::cr_traits<Container>>;
 
 public:
     static constexpr bool writable = !detail::cr_traits<Container>::is_const;

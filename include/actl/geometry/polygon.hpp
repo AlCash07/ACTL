@@ -20,16 +20,16 @@ namespace ac {
 template <class T>
 class polygon : public multi_point<T> {
 public:
-    using cyclic_iterator       = ac::cyclic_iterator<typename multi_point<T>::iterator>;
-    using const_cyclic_iterator = ac::cyclic_iterator<typename multi_point<T>::const_iterator>;
+    using cyclic_iterator       = ac::cyclic_iterator<iterator_t<multi_point<T>>>;
+    using const_cyclic_iterator = ac::cyclic_iterator<iterator_t<const multi_point<T>>>;
 
     using multi_point<T>::multi_point;
 
-    auto cyclic(typename multi_point<T>::iterator it) {
+    auto cyclic(iterator_t<multi_point<T>> it) {
         return cyclic_iterator{it, this->begin(), this->end()};
     }
 
-    auto cyclic(typename multi_point<T>::const_iterator it) const {
+    auto cyclic(iterator_t<const multi_point<T>> it) const {
         return const_cyclic_iterator{it, this->begin(), this->end()};
     }
 
@@ -38,8 +38,7 @@ public:
 };
 
 template <class T>
-struct geometry_traits<polygon<T>>
-    : geometry_traits_base<polygon_tag, typename polygon<T>::value_type> {};
+struct geometry_traits<polygon<T>> : geometry_traits_base<polygon_tag, value_t<polygon<T>>> {};
 
 /**
  * Simple polygon - the boundary doesn't cross itself.
@@ -52,7 +51,7 @@ public:
 
 template <class T>
 struct geometry_traits<simple_polygon<T>>
-    : geometry_traits_base<simple_polygon_tag, typename polygon<T>::value_type> {};
+    : geometry_traits_base<simple_polygon_tag, value_t<polygon<T>>> {};
 
 /**
  * Star polygon - has observer point, from which all the boundary is visible.
@@ -60,7 +59,7 @@ struct geometry_traits<simple_polygon<T>>
 template <class T>
 class star_polygon : public polygon<T> {
 public:
-    using point_type = typename polygon<T>::value_type;
+    using point_type = value_t<polygon<T>>;
 
     using polygon<T>::polygon;
 
@@ -71,7 +70,7 @@ public:
 
 template <class T>
 struct geometry_traits<star_polygon<T>>
-    : geometry_traits_base<star_polygon_tag, typename polygon<T>::value_type> {};
+    : geometry_traits_base<star_polygon_tag, value_t<polygon<T>>> {};
 
 /**
  * Specific monotone polygon - with monotony direction (1, 0).
@@ -89,7 +88,7 @@ public:
 
 template <class T>
 struct geometry_traits<monotone_polygon<T>>
-    : geometry_traits_base<monotone_polygon_tag, typename polygon<T>::value_type> {};
+    : geometry_traits_base<monotone_polygon_tag, value_t<polygon<T>>> {};
 
 /**
  * Convex polygon.
@@ -99,12 +98,12 @@ class convex_polygon : public polygon<T> {
 public:
     using polygon<T>::polygon;
 
-    const typename polygon<T>::reference observer() const { return *this->begin(); }
+    const reference_t<polygon<T>> observer() const { return *this->begin(); }
 };
 
 template <class T>
 struct geometry_traits<convex_polygon<T>>
-    : geometry_traits_base<convex_polygon_tag, typename polygon<T>::value_type> {};
+    : geometry_traits_base<convex_polygon_tag, value_t<polygon<T>>> {};
 
 /**
  * Theoretically, every convex polygon is monotone. However, our definition of monotone polygon
@@ -124,11 +123,11 @@ public:
         if (this->right_ < 0) this->right_ += static_cast<int>(polygon.size());
     }
 
-    const typename monotone_polygon<T>::reference observer() const { return *this->begin(); }
+    const reference_t<monotone_polygon<T>> observer() const { return *this->begin(); }
 };
 
 template <class T>
 struct geometry_traits<convex_monotone_polygon<T>>
-    : geometry_traits_base<convex_monotone_polygon_tag, typename polygon<T>::value_type> {};
+    : geometry_traits_base<convex_monotone_polygon_tag, value_t<polygon<T>>> {};
 
 }  // namespace ac

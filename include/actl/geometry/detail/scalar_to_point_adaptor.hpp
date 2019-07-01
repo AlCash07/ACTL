@@ -13,8 +13,7 @@
 
 namespace ac::detail {
 
-template <class Line, class It,
-          class T = geometry::scalar_t<typename std::iterator_traits<It>::value_type>>
+template <class Line, class It, class T = geometry::scalar_t<value_t<It>>>
 class scalar_to_point_adaptor
     : public iterator_adaptor<scalar_to_point_adaptor<Line, It>, It, use_default, T,
                               const scalar_to_point_adaptor<Line, It>&, T*> {

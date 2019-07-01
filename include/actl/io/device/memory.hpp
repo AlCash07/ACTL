@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/container/traits.hpp>
 #include <actl/io/io.hpp>
 #include <algorithm>
 #include <cstring>

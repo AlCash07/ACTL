@@ -23,7 +23,7 @@ private:
 
     auto dereference() const {
         auto edge = *this->base();
-        return typename It::value_type{edge.target(), edge.source(), edge.bundle()};
+        return value_t<It>{edge.target(), edge.source(), edge.bundle()};
     }
 };
 

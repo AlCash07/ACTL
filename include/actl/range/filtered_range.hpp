@@ -31,7 +31,7 @@ public:
 
     const Range& original() const { return data_.first(); }
 
-    bool evaluate(typename iterator::reference x) const { return data_.second()(x); }
+    bool evaluate(reference_t<iterator> x) const { return data_.second()(x); }
 
 private:
     compressed_pair<Range, Predicate> data_;
@@ -39,7 +39,7 @@ private:
 
 namespace detail {
 
-template <class R, class P, class It = typename remove_cvref_t<R>::iterator>
+template <class R, class P, class It = iterator_t<remove_cvref_t<R>>>
 using filter_iterator_base =
     iterator_adaptor<filter_iterator<R, P>, It,
                      std::conditional_t<is_random_access_iterator_v<It>,
@@ -52,7 +52,7 @@ class filter_iterator : public detail::filter_iterator_base<R, P> {
     using base_t = detail::filter_iterator_base<R, P>;
 
 public:
-    filter_iterator(typename remove_cvref_t<R>::iterator it, const filtered_range<R, P>& range)
+    filter_iterator(iterator_t<remove_cvref_t<R>> it, const filtered_range<R, P>& range)
         : base_t{it}, range_{range} {
         find_next();
     }

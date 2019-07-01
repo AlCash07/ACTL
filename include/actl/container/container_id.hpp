@@ -9,7 +9,6 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/functions.hpp>
-#include <actl/container/traits.hpp>
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/numeric/bit.hpp>
@@ -54,7 +53,7 @@ private:
 
 template <class C>
 struct container_id_traits<C, true, false> {
-    using id       = iterator_id<typename C::const_iterator>;
+    using id = iterator_id<iterator_t<const C>>;
     using iterator = id;
 };
 
@@ -122,7 +121,7 @@ inline auto id_range(const C& cont) {
 }
 
 template <class C>
-inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator it) {
+inline container_id<C> iterator_to_id(const C& cont, iterator_t<const C> it) {
     if constexpr (is_random_access_container_v<C>) {
         return static_cast<container_id<C>>(it - cont.begin());
     } else {
@@ -131,7 +130,7 @@ inline container_id<C> iterator_to_id(const C& cont, typename C::const_iterator 
 }
 
 template <class C>
-inline typename C::const_iterator id_to_iterator(const C& cont, container_id<C> id) {
+inline iterator_t<const C> id_to_iterator(const C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
         ACTL_ASSERT(0 <= id && id < id_end(cont));
         return cont.begin() + id;
@@ -141,18 +140,18 @@ inline typename C::const_iterator id_to_iterator(const C& cont, container_id<C> 
 }
 
 template <class C>
-inline typename C::reference id_at(C& cont, container_id<C> id) {
+inline reference_t<C> id_at(C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
         return cont[static_cast<typename C::size_type>(id)];
     } else {
         // const_cast is required because id contains a const_iterator.
         // TODO: this cast allows modification of set key, which may lead to bugs.
-        return const_cast<typename C::reference>(*id.base());
+        return const_cast<reference_t<C>>(*id.base());
     }
 }
 
 template <class C>
-inline typename C::const_reference id_at(const C& cont, container_id<C> id) {
+inline reference_t<const C> id_at(const C& cont, container_id<C> id) {
     if constexpr (is_random_access_container_v<C>) {
         return cont[static_cast<typename C::size_type>(id)];
     } else {

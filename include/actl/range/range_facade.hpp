@@ -11,6 +11,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/util/type_traits.hpp>
 #include <iterator>
 
 namespace ac {
@@ -19,13 +20,11 @@ namespace detail {
 
 template <class R, class It, class C = typename std::iterator_traits<It>::iterator_category>
 class range_facade {
-    using traits = std::iterator_traits<It>;
-
 public:
-    using value_type      = typename traits::value_type;
-    using reference       = typename traits::reference;
-    using pointer         = typename traits::pointer;
-    using difference_type = typename traits::difference_type;
+    using value_type      = value_t<It>;
+    using reference       = reference_t<It>;
+    using pointer         = pointer_t<It>;
+    using difference_type = difference_t<It>;
     using iterator        = It;
     using size_type       = int;
 
@@ -33,7 +32,7 @@ public:
 
     explicit operator bool() const { return !empty(); }
 
-    typename std::iterator_traits<iterator>::reference front() const {
+    reference_t<iterator> front() const {
         ACTL_ASSERT(!empty());
         return *first();
     }
@@ -49,7 +48,7 @@ template <class R, class It>
 class range_facade<R, It, std::bidirectional_iterator_tag>
     : public range_facade<R, It, std::forward_iterator_tag> {
 public:
-    typename range_facade<R, It, std::forward_iterator_tag>::reference back() const {
+    reference_t<range_facade<R, It, std::forward_iterator_tag>> back() const {
         ACTL_ASSERT(!this->empty());
         auto last = this->last();
         return *--last;
@@ -64,7 +63,7 @@ class range_facade<R, It, std::random_access_iterator_tag>
 public:
     using typename base_t::size_type;
 
-    typename base_t::reference operator[](typename base_t::difference_type at) const {
+    reference_t<base_t> operator[](difference_t<base_t> at) const {
         ACTL_ASSERT(0 <= at && static_cast<size_type>(at) < size());
         return this->first()[at];
     }
