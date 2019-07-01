@@ -30,13 +30,13 @@ public:
     void operator = (T arg) const { f_(arg); }
 
 private:
+    friend struct ac::iterator_core_access;
+
     const function_output_iterator& dereference() const { return *this; }
 
     void increment() {}
 
     UnaryFunction f_;
-
-    friend struct iterator_core_access;
 };
 
 }  // namespace ac

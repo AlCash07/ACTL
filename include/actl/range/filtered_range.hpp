@@ -58,7 +58,7 @@ public:
     }
 
 private:
-    friend struct iterator_core_access;
+    friend struct ac::iterator_core_access;
 
     void find_next() {
         while (this->base() != range_.original().end() && !range_.evaluate(*this->base()))

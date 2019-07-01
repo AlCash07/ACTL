@@ -25,6 +25,8 @@ public:
     explicit limited_input_iterator(const Iterator& it, int limit) : base_t{it}, limit_{limit} {}
 
 private:
+    friend struct ac::iterator_core_access;
+
     void increment() {
         ACTL_ASSERT(limit_ > 0);
         if (--limit_ > 0) {
@@ -35,8 +37,6 @@ private:
     }
 
     int limit_;
-
-    friend struct iterator_core_access;
 };
 
 }  // namespace ac

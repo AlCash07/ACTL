@@ -30,6 +30,8 @@ public:
         : it_{it != end ? it : begin}, begin_{begin}, end_{end} {}
 
 private:
+    friend struct ac::iterator_core_access;
+
     reference_t<Iterator> dereference() const { return *it_; }
 
     void increment() {
@@ -62,8 +64,6 @@ private:
     Iterator it_;
     Iterator begin_;
     Iterator end_;
-
-    friend struct iterator_core_access;
 };
 
 }  // namespace ac

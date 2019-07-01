@@ -33,7 +33,7 @@ public:
     input_device_iterator(const input_device_iterator&) = default;
 
 private:
-    friend struct iterator_core_access;
+    friend struct ac::iterator_core_access;
 
     const T& dereference() const { return value_; }
 
@@ -74,7 +74,7 @@ public:
     }
 
 private:
-    friend struct iterator_core_access;
+    friend struct ac::iterator_core_access;
 
     const output_device_iterator& dereference() const { return *this; }
 

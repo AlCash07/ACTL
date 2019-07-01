@@ -43,7 +43,7 @@ public:
     bool operator < (iterator_id rhs) const { return id_key(*this) < id_key(rhs); }
 
 private:
-    friend struct iterator_core_access;
+    friend struct ac::iterator_core_access;
     friend struct ac::hash_access;
 
     iterator_id dereference() const { return *this; }

@@ -27,6 +27,8 @@ public:
     explicit integer_iterator(Int value) : value_{value} {}
 
 private:
+    friend struct ac::iterator_core_access;
+
     const Int& dereference() const { return value_; }
 
     void increment() { Increment ? ++value_ : --value_; }
@@ -40,8 +42,6 @@ private:
     Int distance_to(const integer_iterator& rhs) const { return rhs.value_ - value_; }
 
     Int value_;
-
-    friend struct iterator_core_access;
 };
 
 template <class Int>
@@ -58,6 +58,8 @@ public:
     explicit integer_iterator_with_step(Int value, Int step) : value_{value}, step_{step} {}
 
 private:
+    friend struct ac::iterator_core_access;
+
     const Int& dereference() const { return value_; }
 
     void increment() { value_ += step_; }
@@ -77,8 +79,6 @@ private:
 
     Int value_ = 0;
     Int step_ = 1;
-
-    friend struct iterator_core_access;
 };
 
 }  // namespace ac

@@ -50,7 +50,7 @@ protected:
     It& base_ref() { return it_; }
 
 private:
-    friend struct iterator_core_access;
+    friend struct ac::iterator_core_access;
 
     using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, P, D>::type;
 
