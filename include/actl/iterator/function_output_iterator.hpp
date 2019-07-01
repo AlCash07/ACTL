@@ -16,7 +16,7 @@ namespace ac {
 /**
  * Iterator that applies a function to each assigned value.
  */
-template <class UnaryFunction, class T = argument_type_t<UnaryFunction, 0>>
+template <class UnaryFunction, class T = argument_t<UnaryFunction, 0>>
 class function_output_iterator
     : public iterator_facade<function_output_iterator<UnaryFunction, T>,
                              std::output_iterator_tag,

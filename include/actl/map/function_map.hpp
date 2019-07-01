@@ -27,7 +27,6 @@ private:
 };
 
 template <class F>
-struct const_map_traits<function_map<F>>
-    : map_traits_base<argument_type_t<F, 0>, return_type_t<F>> {};
+struct const_map_traits<function_map<F>> : map_traits_base<argument_t<F, 0>, return_t<F>> {};
 
 }  // namespace ac
