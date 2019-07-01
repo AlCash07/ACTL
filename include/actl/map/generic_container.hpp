@@ -20,7 +20,7 @@ using enable_if_gc_t = std::enable_if_t<is_container_v<T> && !is_pair_associativ
 
 template <class C>
 class container_map_range {
-    using It = container_id_iterator<std::remove_const_t<C>>;
+    using It = container_id_iterator<C>;
     using Pair = map_pair_t<C>;
 
     C& cont_;
@@ -52,16 +52,11 @@ public:
 
 template <class C>
 struct map_traits<C, detail::enable_if_gc_t<C>>
-    : map_traits_base<container_id<C>, reference_t<C>, value_t<C>, true, true, false, true,
-                      detail::container_map_range<C>> {};
+    : map_traits_base<container_id<C>, reference_t<C>, value_t<C>, true, !std::is_const_v<C>, false,
+                      true, detail::container_map_range<C>> {};
 
 template <class C>
-struct map_traits<const C, detail::enable_if_gc_t<C>>
-    : map_traits_base<container_id<C>, reference_t<const C>, value_t<C>, true, false, false, true,
-                      detail::container_map_range<const C>> {};
-
-template <class C>
-struct map_ops<C, detail::enable_if_gc_t<std::remove_const_t<C>>> {
+struct map_ops<C, detail::enable_if_gc_t<C>> {
     static map_reference_t<C> get(C& map, map_key_t<C> key) { return id_at(map, key); }
 
     static void put(C& map, map_key_t<C> key, map_value_t<C> value) { id_at(map, key) = value; }

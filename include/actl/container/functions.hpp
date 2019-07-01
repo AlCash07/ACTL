@@ -42,7 +42,9 @@ inline void erase(C& cont, const T& value) {
 
 template <class C, class T>
 inline iterator_t<C> find(C& cont, const T& value) {
-    if constexpr (is_associative_container_v<C>) {
+    if constexpr (is_sorted_associative_container_v<C>) {
+        // TODO: make this case work for hash containers.
+        // This requires C++20 with find for transparently comparable key.
         return cont.find(value);
     } else {
         return std::find(cont.begin(), cont.end(), value);

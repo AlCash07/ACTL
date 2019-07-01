@@ -14,9 +14,9 @@ namespace ac {
 
 namespace detail {
 
-template <class T, class C = std::remove_const_t<T>>
+template <class T>
 using enable_if_upac_t =
-    std::enable_if_t<is_unique_associative_container_v<C> && is_pair_associative_container_v<C>>;
+    std::enable_if_t<is_unique_associative_container_v<T> && is_pair_associative_container_v<T>>;
 
 }  // namespace detail
 
