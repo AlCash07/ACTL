@@ -15,24 +15,6 @@
 
 namespace ac {
 
-template <class C>
-struct value_type {
-    using type = typename C::value_type;
-};
-
-template <class T, size_t N>
-struct value_type<T[N]> {
-    using type = T;
-};
-
-template <>
-struct value_type<none> {
-    using type = none;
-};
-
-template <class C>
-using value_t = typename value_type<C>::type;
-
 inline constexpr index dynamic_size = -1;
 
 template <class T>
