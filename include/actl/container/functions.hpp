@@ -47,7 +47,7 @@ inline iterator_t<C> find(C& cont, const T& value) {
         // This requires C++20 with find for transparently comparable key.
         return cont.find(value);
     } else {
-        return std::find(cont.begin(), cont.end(), value);
+        return std::find(std::begin(cont), std::end(cont), value);
     }
 }
 

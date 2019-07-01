@@ -50,7 +50,7 @@ public:
 
     template <bool B = RA, enable_int_if<B> = 0>
     void resize(int n) {
-        vertices_.resize(static_cast<typename vertex_container::size_type>(n));
+        vertices_.resize(static_cast<size_type_t<vertex_container>>(n));
     }
 
     iterator_range<vertex_iterator> vertices() const { return id_range(vertices_); }
