@@ -9,8 +9,8 @@
 
 #include <actl/map/composite_map.hpp>
 #include <actl/numeric/util/hash_access.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <actl/util/compressed_pair.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac::detail {
 

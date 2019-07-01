@@ -10,7 +10,7 @@
 #pragma once
 
 #include <actl/range/range_facade.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac {
 

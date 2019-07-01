@@ -1,12 +1,14 @@
 /***************************************************************************************************
- * Copyright 2017 Oleksandr Bacherikov.
+ * Copyright 2018 Oleksandr Bacherikov.
  *
  *             Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#pragma once
+#include <actl/test.hpp>
+#include <actl/util/nth_type.hpp>
 
-#include <actl/traits/function_traits.hpp>
-#include <actl/traits/rebind.hpp>
-#include <actl/traits/type_traits.hpp>
+TEST("correctness") {
+    ASSERT_TRUE(std::is_same_v<int, nth_type_t<0, int, float>>);
+    ASSERT_TRUE(std::is_same_v<float, nth_type_t<1, int, float>>);
+}

@@ -16,7 +16,7 @@
 #pragma once
 
 #include <actl/std/utility.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/type_traits.hpp>
 #include <functional>
 
 namespace ac {

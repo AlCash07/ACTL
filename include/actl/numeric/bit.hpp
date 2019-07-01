@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
+#include <actl/util/type_traits.hpp>
 #include <actl/util/use_default.hpp>
 #include <cstring>
 

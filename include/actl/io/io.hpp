@@ -8,9 +8,9 @@
 #pragma once
 
 #include <actl/io/util/serialization_access.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/span.hpp>
+#include <actl/util/type_traits.hpp>
 #include <cstdint>
 
 namespace ac::io {

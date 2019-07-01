@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/test.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/type_traits.hpp>
 
 TEST("add_const_if") {
     ASSERT_TRUE(std::is_same_v<int, add_const_if_t<false, int>>);

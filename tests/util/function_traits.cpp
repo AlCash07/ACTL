@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/test.hpp>
-#include <actl/traits/function_traits.hpp>
+#include <actl/util/function_traits.hpp>
 #include <functional>
 
 inline bool ok();

@@ -8,7 +8,7 @@
 #include <actl/container/hash_set.hpp>
 #include <actl/std/tuple.hpp>
 #include <actl/test.hpp>
-#include <actl/traits/rebind.hpp>
+#include <actl/util/rebind.hpp>
 
 struct A {};
 struct B {};

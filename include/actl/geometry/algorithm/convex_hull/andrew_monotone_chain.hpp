@@ -10,7 +10,7 @@
 #include <actl/geometry/algorithm/ccw/point_point.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac {
 

@@ -14,7 +14,7 @@
 #include <actl/std/tuple.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/std/vector.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/type_traits.hpp>
 #include <memory>
 
 namespace ac {

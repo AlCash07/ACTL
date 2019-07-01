@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac::io {
 

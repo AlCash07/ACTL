@@ -10,8 +10,8 @@
 #pragma once
 
 #include <actl/container/dummy_container.hpp>
-#include <actl/traits/rebind.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/rebind.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac {
 

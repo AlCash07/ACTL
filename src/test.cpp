@@ -10,9 +10,9 @@
 #include <actl/string/split.hpp>
 #include <actl/string/trim.hpp>
 #include <actl/test.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
 #include <actl/util/stopwatch.hpp>
+#include <actl/util/type_traits.hpp>
 #include <regex>
 
 namespace ac::tests {

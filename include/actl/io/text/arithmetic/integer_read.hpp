@@ -9,7 +9,7 @@
 
 #include <actl/io/text/arithmetic/detail/peek_digit.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac::io {
 

@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/iterator/iterator_facade.hpp>
-#include <actl/traits/function_traits.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/util/function_traits.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
