@@ -18,12 +18,6 @@ namespace ac {
 
 namespace detail {
 
-struct compmap_tag {};
-
-template <class T>
-inline constexpr bool is_compmap_v =
-    !std::is_reference_v<T> && std::is_base_of_v<compmap_tag, map_traits<T>>;
-
 template <class M1, class M2, class V, bool I1, bool I2>
 struct cm_range {
     using It1 = map_iterator_t<M1>;
@@ -88,6 +82,8 @@ public:
     static constexpr bool iterable2 = map_traits<M1>::invertible && map_traits<M2>::iterable;
     using range_t = typename detail::cm_range<M1, M2, std::pair<K, R>, iterable1, iterable2>::type;
 
+    struct is_composite_map;
+
     using traits =
         map_traits_base<K, R, map_value_t<M2>, map_traits<M1>::readable && map_traits<M2>::readable,
                         writable2 || (map_traits<M1>::writable && map_traits<M2>::invertible),
@@ -98,13 +94,13 @@ public:
 };
 
 template <class... Ms>
-struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits, detail::compmap_tag {};
+struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits {};
 
 template <class... Ms>
 struct map_traits<const composite_map<Ms...>> : map_traits<composite_map<const Ms...>> {};
 
 template <class CM>
-struct map_ops<CM, std::enable_if_t<detail::is_compmap_v<CM>>> {
+struct map_ops<CM, std::void_t<typename CM::is_composite_map>> {
     using K = map_key_t<CM>;
     using V = map_value_t<CM>;
 

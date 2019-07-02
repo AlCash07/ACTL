@@ -27,7 +27,6 @@ struct map_traits_base {
     using key_type = Key;
     using reference = Ref;
     using value_type = deduce_t<Value, remove_cvref_t<Ref>>;
-    using pair_type = std::pair<Key, Ref>;
     using range_type = Range;
 
     static constexpr bool readable = Readable;
@@ -61,13 +60,13 @@ template <class T>
 using map_value_t = typename map_traits<T>::value_type;
 
 template <class T>
-using map_pair_t = typename map_traits<T>::pair_type;
+using map_pair_t = std::pair<map_key_t<T>, map_reference_t<T>>;
 
 template <class T>
 using map_range_t = typename map_traits<T>::range_type;
 
 template <class T>
-using map_iterator_t = decltype(std::declval<map_range_t<T>>().begin());
+using map_iterator_t = iterator_t<map_range_t<T>>;
 
 // This struct guarantees that function declaration is found during unqualified name lookup.
 template <class T, class = void>

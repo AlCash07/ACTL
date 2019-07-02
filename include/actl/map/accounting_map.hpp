@@ -28,6 +28,8 @@ public:
     static_assert(is_unique_associative_container_v<AC> && is_pair_associative_container_v<AC>);
     static_assert(std::is_integral_v<V>, "value type must be integral");
 
+    struct is_accounting_map;
+
     template <bool Const>
     using traits = map_traits_base<Key, const V&, V, !Const, false, Invertible, true, const AC&>;
 
@@ -55,10 +57,8 @@ private:
     compressed_pair<AC, std::conditional_t<Invertible, std::vector<const K*>, none>> data_;
 };
 
-template <class AC, bool I>
-struct map_traits<accounting_map<AC, I>> : accounting_map<AC, I>::template traits<false> {};
-
-template <class AC, bool I>
-struct map_traits<const accounting_map<AC, I>> : accounting_map<AC, I>::template traits<true> {};
+template <class AM>
+struct map_traits<AM, std::void_t<typename AM::is_accounting_map>>
+    : AM::template traits<std::is_const_v<AM>> {};
 
 }  // namespace ac
