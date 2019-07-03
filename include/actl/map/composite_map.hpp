@@ -70,62 +70,57 @@ class composite_map : public composite_map<composite_map<Map1, Map2>, Maps...> {
 
 template <class M1, class M2>
 class composite_map<M1, M2> : public compressed_pair<M1, M2> {
-    using K = map_key_t<M1>;
-    using R = map_reference_t<M2>;
-
 public:
     static_assert(std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>,
                   "incompatible property maps");
 
-    static constexpr bool writable2 = map_traits<M1>::readable && map_traits<M2>::writable;
-    static constexpr bool iterable1 = map_traits<M1>::iterable && map_traits<M2>::readable;
-    static constexpr bool iterable2 = map_traits<M1>::invertible && map_traits<M2>::iterable;
-    using range_t = typename detail::cm_range<M1, M2, std::pair<K, R>, iterable1, iterable2>::type;
-
     struct is_composite_map;
-
-    using traits =
-        map_traits_base<K, R, map_value_t<M2>, map_traits<M1>::readable && map_traits<M2>::readable,
-                        writable2 || (map_traits<M1>::writable && map_traits<M2>::invertible),
-                        map_traits<M1>::invertible && map_traits<M2>::invertible,
-                        iterable1 || iterable2, range_t>;
 
     using compressed_pair<M1, M2>::compressed_pair;
 };
 
-template <class... Ms>
-struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits {};
-
-template <class... Ms>
-struct map_traits<const composite_map<Ms...>> : map_traits<composite_map<const Ms...>> {};
-
 template <class CM>
-struct map_ops<CM, std::void_t<typename CM::is_composite_map>> {
-    using K = map_key_t<CM>;
-    using V = map_value_t<CM>;
+class map_traits<CM, std::void_t<typename CM::is_composite_map>> {
+    using M1 = decltype(std::declval<CM>().first());
+    using M2 = decltype(std::declval<CM>().second());
 
-    static constexpr map_reference_t<CM> get(CM& map, K key) {
+    static constexpr bool writable2 = map_traits<M1>::readable && map_traits<M2>::writable;
+    static constexpr bool iterable1 = map_traits<M1>::iterable && map_traits<M2>::readable;
+    static constexpr bool iterable2 = map_traits<M1>::invertible && map_traits<M2>::iterable;
+
+public:
+    static constexpr bool readable = map_traits<M1>::readable && map_traits<M2>::readable;
+    static constexpr bool writable = writable2 || (map_traits<M1>::writable && map_traits<M2>::invertible);
+    static constexpr bool invertible = map_traits<M1>::invertible && map_traits<M2>::invertible;
+    static constexpr bool iterable = iterable1 || iterable2;
+
+    using key_type = map_key_t<M1>;
+    using value_type = map_value_t<M2>;
+    using reference = map_reference_t<M2>;
+    using range_type = typename detail::cm_range<M1, M2, std::pair<key_type, reference>, iterable1, iterable2>::type;
+
+    static constexpr reference get(CM& map, key_type key) {
         return ac::get(map.second(), ac::get(map.first(), key));
     }
 
-    static constexpr void put(CM& map, K key, V value) {
-        if constexpr (CM::writable2) {
+    static constexpr void put(CM& map, key_type key, value_type value) {
+        if constexpr (writable2) {
             ac::put(map.second(), ac::get(map.first(), key), value);
         } else {
             ac::put(map.first(), key, ac::invert(map.second(), value));
         }
     }
 
-    static constexpr K invert(CM& map, V value) {
+    static constexpr key_type invert(CM& map, value_type value) {
         return ac::invert(map.first(), ac::invert(map.second(), value));
     }
 
-    static constexpr map_range_t<CM> map_range(CM& map) {
-        if constexpr (CM::iterable1) {
-            map_range_t<typename CM::first_type> r = ac::map_range(map.first());
+    static constexpr range_type map_range(CM& map) {
+        if constexpr (iterable1) {
+            map_range_t<M1> r = ac::map_range(map.first());
             return {{r.begin(), map.second()}, {r.end(), map.second()}};
-        } else {
-            map_range_t<typename CM::second_type> r = ac::map_range(map.second());
+        } else if constexpr (iterable2) {
+            map_range_t<M2> r = ac::map_range(map.second());
             return {{r.begin(), map.first()}, {r.end(), map.first()}};
         }
     }

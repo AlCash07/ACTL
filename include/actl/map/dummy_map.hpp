@@ -12,19 +12,24 @@
 namespace ac {
 
 template <class Key, class Value = void>
-class dummy_map {
-    static constexpr bool RW = !std::is_same_v<Value, void>;
-
-public:
-    using traits = map_traits_base<Key, Value, Value, RW, RW>;
-
-    constexpr static Value get(Key) { return Value{}; }
-
-    template <class V = Value>
-    constexpr static void put(Key, V) {}
-};
+class dummy_map {};
 
 template <class K, class V>
-struct const_map_traits<dummy_map<K, V>> : dummy_map<K, V>::traits {};
+struct const_map_traits<dummy_map<K, V>> {
+    using DM = dummy_map<K, V>;
+
+    using key_type = K;
+    using reference = V;
+    using value_type = V;
+
+    static constexpr bool readable = !std::is_same_v<V, void>;
+    static constexpr bool writable = readable;
+    static constexpr bool invertible = false;
+    static constexpr bool iterable = false;
+
+    static constexpr V get(DM, K) { return {}; }
+
+    static constexpr void put(DM, K, V) {}
+};
 
 }  // namespace ac

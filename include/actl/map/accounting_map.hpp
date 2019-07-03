@@ -21,30 +21,32 @@ template <class AssociativeContainer, bool Invertible = false>
 class accounting_map {
     using AC = AssociativeContainer;
     using K = typename AC::key_type;
-    using Key = const K&;
-    using V = typename AC::mapped_type;
 
 public:
-    static_assert(is_unique_associative_container_v<AC> && is_pair_associative_container_v<AC>);
-    static_assert(std::is_integral_v<V>, "value type must be integral");
-
     struct is_accounting_map;
 
-    template <bool Const>
-    using traits = map_traits_base<Key, const V&, V, !Const, false, Invertible, true, const AC&>;
+    using key_type = const K&;
+    using value_type = typename AC::mapped_type;
+    using reference = const value_type&;
+    using range_type = const AC&;
 
-    const V& get(Key key) {
+    static constexpr bool invertible = Invertible;
+
+    static_assert(is_unique_associative_container_v<AC> && is_pair_associative_container_v<AC>);
+    static_assert(std::is_integral_v<value_type>, "value type must be integral");
+
+    reference get(key_type key) {
         auto& ac = data_.first();
-        auto pair = ac.insert({key, static_cast<V>(ac.size())});
+        auto pair = ac.insert({key, static_cast<value_type>(ac.size())});
         if constexpr (Invertible) {
             if (pair.second) data_.second().push_back(&pair.first->first);
         }
         return pair.first->second;
     }
 
-    Key invert(V value) const { return *data_.second()[static_cast<size_t>(value)]; }
+    key_type invert(value_type value) const { return *data_.second()[static_cast<size_t>(value)]; }
 
-    const AC& map_range() const { return data_.first(); }
+    range_type map_range() const { return data_.first(); }
 
 private:
     compressed_pair<AC, std::conditional_t<Invertible, std::vector<const K*>, none>> data_;
@@ -52,6 +54,10 @@ private:
 
 template <class AM>
 struct map_traits<AM, std::void_t<typename AM::is_accounting_map>>
-    : AM::template traits<std::is_const_v<AM>> {};
+    : member_map_ops<AM, AM> {
+    static constexpr bool readable = !std::is_const_v<AM>;
+    static constexpr bool writable = false;
+    static constexpr bool iterable = true;
+};
 
 }  // namespace ac

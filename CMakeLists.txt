@@ -22,7 +22,7 @@ file(GLOB_RECURSE SRC_FILES src/*.cpp)
 source_group(TREE src FILES ${SRC_FILES})
 add_library(src ${SRC_FILES})
 
-file(GLOB_RECURSE TEST_FILES tests/*)
+file(GLOB_RECURSE TEST_FILES tests/main.cpp tests/map/*)
 source_group(TREE tests FILES ${TEST_FILES})
 add_executable(tests ${TEST_FILES})
 target_include_directories(tests PRIVATE tests)
