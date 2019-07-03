@@ -18,6 +18,8 @@ namespace ac {
 template <class Function>
 class function_map {
 public:
+    static_assert(arity_v<Function> == 1);
+
     explicit function_map(Function f = {}) : f_{f} {}
 
     map_reference_t<function_map> get(map_key_t<function_map> key) const { return f_(key); }

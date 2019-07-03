@@ -106,4 +106,11 @@ inline map_range_t<T> map_range(T&& map) {
     return map_ops<T>::map_range(map);
 }
 
+template <class T>
+struct map_put {
+    static constexpr void put(T& map, map_key_t<T> key, const map_value_t<T>& value) {
+        get(map, key) = value;
+    }
+};
+
 }  // namespace ac

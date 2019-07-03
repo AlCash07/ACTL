@@ -37,9 +37,6 @@ template <class Map, class Predicate = to_bool>
 class filtered_map : private compressed_pair<Map, test_second<Predicate>> {
     using base_t = compressed_pair<Map, test_second<Predicate>>;
 
-    template <class M>
-    using range_t = filtered_range<map_range_t<M>, test_second<Predicate>>;
-
     using base_t::first;
     using base_t::second;
 
@@ -49,8 +46,8 @@ public:
     operator Map&() { return first(); }
     operator const Map&() const { return first(); }
 
-    auto map_range() { return range_t<Map>{ac::map_range(first()), second()}; }
-    auto map_range() const { return range_t<const Map>{ac::map_range(first()), second()}; }
+    auto map_range() { return filter_range(ac::map_range(first()), second()); }
+    auto map_range() const { return filter_range(ac::map_range(first()), second()); }
 };
 
 template <class M, class P = to_bool>

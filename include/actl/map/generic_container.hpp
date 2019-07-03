@@ -56,10 +56,8 @@ struct map_traits<C, detail::enable_if_gc_t<C>>
                       true, detail::container_map_range<C>> {};
 
 template <class C>
-struct map_ops<C, detail::enable_if_gc_t<C>> {
+struct map_ops<C, detail::enable_if_gc_t<C>> : map_put<C> {
     static map_reference_t<C> get(C& map, map_key_t<C> key) { return id_at(map, key); }
-
-    static void put(C& map, map_key_t<C> key, map_value_t<C> value) { id_at(map, key) = value; }
 
     static auto map_range(C& map) { return map_range_t<C>{map}; }
 };

@@ -18,7 +18,8 @@ namespace ac {
 template <class Class, class Member>
 class member_map {
 public:
-    struct is_member_map;
+    using class_t = Class;
+    using member_t = Member;
 
     explicit constexpr member_map(Member Class::* ptr) : ptr{ptr} {}
 
@@ -34,30 +35,28 @@ class static_member_map;
 template <class Class, class Member, Member Class::* Ptr>
 class static_member_map<Ptr> {
 public:
-    struct is_member_map;
+    using class_t = Class;
+    using member_t = Member;
 
     static constexpr auto ptr = Ptr;
 };
 
-namespace detail {
+template <class MM>
+struct map_traits<MM, std::void_t<typename MM::class_t, typename MM::member_t>> {
+    static constexpr bool C = std::is_const_v<MM>;
 
-template <class T>
-using cref_t = const std::remove_reference_t<T>&;
+    using key_type = add_const_if_t<C, typename MM::class_t>&;
+    using value_type = typename MM::member_t;
+    using reference = add_const_if_t<C, value_type>&;
 
-}  // namespace detail
-
-template <class C, class M>
-struct map_traits<member_map<C, M>> : map_traits_base<C&, M&> {};
-
-template <class C, class M, M C::* Ptr>
-struct map_traits<static_member_map<Ptr>> : map_traits_base<C&, M&> {};
+    static constexpr bool readable = true;
+    static constexpr bool writable = !C && !std::is_const_v<value_type>;
+    static constexpr bool invertible = false;
+    static constexpr bool iterable = false;
+};
 
 template <class MM>
-struct map_traits<const MM, std::void_t<typename MM::is_member_map>>
-    : map_traits_base<detail::cref_t<map_key_t<MM>>, detail::cref_t<map_reference_t<MM>>> {};
-
-template <class MM>
-struct map_ops<MM, std::void_t<typename MM::is_member_map>> {
+struct map_ops<MM, std::void_t<typename MM::class_t, typename MM::member_t>> : map_put<MM> {
     static map_reference_t<MM> get(MM& map, map_key_t<MM> key) { return key.*map.ptr; }
 };
 

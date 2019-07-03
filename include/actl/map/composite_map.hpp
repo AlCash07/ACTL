@@ -108,7 +108,7 @@ struct map_ops<CM, std::void_t<typename CM::is_composite_map>> {
         return ac::get(map.second(), ac::get(map.first(), key));
     }
 
-    static constexpr void put(CM& map, K key, V value) {
+    static constexpr void put(CM& map, K key, const V& value) {
         if constexpr (CM::writable2) {
             ac::put(map.second(), ac::get(map.first(), key), value);
         } else {
@@ -116,16 +116,16 @@ struct map_ops<CM, std::void_t<typename CM::is_composite_map>> {
         }
     }
 
-    static constexpr K invert(CM& map, V value) {
+    static constexpr K invert(CM& map, const V& value) {
         return ac::invert(map.first(), ac::invert(map.second(), value));
     }
 
     static constexpr map_range_t<CM> map_range(CM& map) {
         if constexpr (CM::iterable1) {
-            map_range_t<typename CM::first_type> r = ac::map_range(map.first());
+            map_range_t<decltype(map.first())> r = ac::map_range(map.first());
             return {{r.begin(), map.second()}, {r.end(), map.second()}};
-        } else {
-            map_range_t<typename CM::second_type> r = ac::map_range(map.second());
+        } else if constexpr (CM::iterable2) {
+            map_range_t<decltype(map.second())> r = ac::map_range(map.second());
             return {{r.begin(), map.first()}, {r.end(), map.first()}};
         }
     }

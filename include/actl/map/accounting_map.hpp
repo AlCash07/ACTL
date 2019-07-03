@@ -42,7 +42,7 @@ public:
         return pair.first->second;
     }
 
-    Key invert(V value) const { return *data_.second()[static_cast<size_t>(value)]; }
+    Key invert(const V& value) const { return *data_.second()[static_cast<size_t>(value)]; }
 
     const AC& map_range() const { return data_.first(); }
 
