@@ -9,12 +9,13 @@
 
 #include <actl/container/functions.hpp>
 #include <actl/io/io.hpp>
-#include <actl/iterator/traits.hpp>
+#include <actl/range/traits.hpp>
 
 namespace ac::io {
 
-template <class T, class Device>
-constexpr bool is_custom_range_v = is_range_v<T> && !std::is_base_of_v<cspan<char_t<Device>>, T>;
+template <class T, class Device, class C = char_t<Device>>
+constexpr bool is_custom_range_v =
+    is_range_v<T> && !std::is_base_of_v<cspan<C>, T> && !std::is_base_of_v<span<C>, T>;
 
 template <class Device, class Format, class R, enable_int_if<is_custom_range_v<R, Device>> = 0>
 inline index serialize(Device& od, Format& fmt, const R& x) {
@@ -22,6 +23,7 @@ inline index serialize(Device& od, Format& fmt, const R& x) {
     if constexpr (is_container_v<R> && static_size_v<R> != dynamic_size) {
         res = write_size(od, fmt, x.size());
     }
+    // TODO: replace with is_contiguous_range_v and handle span properly.
     if constexpr (is_contiguous_container_v<R>) {
         return res + write(od, fmt, span{x});
     } else {

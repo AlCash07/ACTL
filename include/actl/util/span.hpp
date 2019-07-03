@@ -8,18 +8,10 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/range/traits.hpp>
 #include <actl/string/traits.hpp>
-#include <iterator>
 
 namespace ac {
-
-template <class T, class = void>
-struct is_continuous_range : std::false_type {};
-
-template <class T>
-struct is_continuous_range<
-    T, std::void_t<decltype(std::data(std::declval<T&>()), std::size(std::declval<T&>()))>>
-    : std::true_type {};
 
 template <class T>
 class span {
@@ -39,7 +31,7 @@ public:
 
     constexpr span(T* first, T* last) : span{first, last - first} {}
 
-    template <class Range, enable_int_if<is_continuous_range<Range>::value> = 0>
+    template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
     constexpr span(Range& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
 
     constexpr T* begin() const { return data(); }
@@ -59,13 +51,13 @@ public:
 
     constexpr bool empty() const { return size() == 0; }
 
-    constexpr span<element_type> first(index n) const {
-        ACTL_ASSERT(n <= size());
+    constexpr span first(index n) const {
+        ACTL_ASSERT(0 <= n && n <= size());
         return {begin(), n};
     }
 
-    constexpr span<element_type> last(index n) const {
-        ACTL_ASSERT(n <= size());
+    constexpr span last(index n) const {
+        ACTL_ASSERT(0 <= n && n <= size());
         return {end() - n, n};
     }
 
@@ -75,7 +67,7 @@ private:
 };
 
 template <class Range>
-span(Range&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Range&>()))>>;
+span(Range&) -> span<std::remove_pointer_t<pointer_t<Range>>>;
 
 template <class T>
 using cspan = span<const T>;
@@ -90,7 +82,7 @@ public:
 };
 
 template <class Range>
-char_span(Range&) -> char_span<std::remove_pointer_t<decltype(std::data(std::declval<Range&>()))>>;
+char_span(Range&) -> char_span<std::remove_pointer_t<pointer_t<Range>>>;
 
 template <class C>
 struct is_string<char_span<C>, C> : std::true_type {};

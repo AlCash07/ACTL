@@ -2,8 +2,6 @@
  * Rebind operates on classes that have one primary template parameter (which is the first one by
  * default) and replaces all its occurrences with the given type. Inner template classes are
  * modified only if their primary template parameter is the type that's being rebinded.
- * If available, nested rebind<T> or rebind<T>::other template is used to be consistent with
- * pointer_traits and allocator_traits.
  ***************************************************************************************************
  * Copyright 2018 Oleksandr Bacherikov.
  *

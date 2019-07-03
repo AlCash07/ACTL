@@ -75,15 +75,4 @@ template <class T>
 inline constexpr bool is_random_access_iterator_v =
     detail::has_iterator_category<T, std::random_access_iterator_tag>::value;
 
-template <class T, class = void>
-struct is_range : std::false_type {};
-
-template <class T>
-struct is_range<T,
-                std::void_t<decltype(std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
-    : std::true_type {};
-
-template <class T>
-inline constexpr bool is_range_v = is_range<T>::value;
-
 }  // namespace ac
