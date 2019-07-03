@@ -26,7 +26,8 @@ public:
     using iterator        = index;
     using const_iterator  = index;
 
-    explicit constexpr dummy_container(index size = 0) : n_{size} {}
+    constexpr dummy_container() = default;
+    explicit constexpr dummy_container(index size) : n_{size} {}
 
     constexpr index size() const { return n_; }
 
@@ -45,8 +46,6 @@ public:
     template <class T>
     void erase(T) { --n_; }
 
-    void clear() { n_ = 0; }
-
     void resize(index size) { n_ = size; }
 
     void swap(dummy_container& rhs) { std::swap(n_, rhs.n_); }
@@ -56,7 +55,7 @@ private:
 
     size_t hash() const { return hash_value(size()); }
 
-    index n_;
+    index n_ = 0;
 };
 
 }  // namespace ac

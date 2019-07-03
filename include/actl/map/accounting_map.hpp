@@ -46,13 +46,6 @@ public:
 
     const AC& map_range() const { return data_.first(); }
 
-    void clear() {
-        data_.first().clear();
-        if constexpr (Invertible) {
-            data_.second().clear();
-        }
-    }
-
 private:
     compressed_pair<AC, std::conditional_t<Invertible, std::vector<const K*>, none>> data_;
 };

@@ -53,7 +53,7 @@ public:
     static constexpr bool is_directed           = !is_undirected;
     static constexpr bool allows_parallel_edges = !is_unique_associative_container_v<EC>;
 
-    explicit edge_list_edges() = default;
+    edge_list_edges() = default;
 
     int edge_count() const { return static_cast<int>(edges_.size()); }
 
@@ -72,8 +72,6 @@ public:
     }
 
     vertex get_target(vertex u, edge_id e) const { return id_at(edges_, e).first().other(u); }
-
-    void clear() { edges_.clear(); }
 
     void swap(edge_list_edges& rhs) { edges_.swap(rhs.edges_); }
 

@@ -39,7 +39,7 @@ private:
     static constexpr bool RA = is_random_access_container_v<vertex_container>;
 
 public:
-    explicit vertex_list() = default;
+    vertex_list() = default;
 
     template <bool B = RA, enable_int_if<B> = 0>
     explicit vertex_list(int n) {
@@ -73,8 +73,6 @@ public:
     }
 
     void remove_vertex(vertex u) { id_erase(vertices_, u); }
-
-    void clear() { vertices_.clear(); }
 
     void swap(vertex_list& rhs) { vertices_.swap(rhs.vertices_); }
 

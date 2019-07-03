@@ -30,7 +30,7 @@ public:
     static_assert((Mode & app) > 0, "only append is supported now");
 
     explicit out_string(std::basic_string<Char>& s) : s_{s} {
-        if constexpr (trunc == (Mode & trunc)) s.clear();
+        if constexpr (trunc == (Mode & trunc)) s = {};
     }
 
     index write(Char c) {

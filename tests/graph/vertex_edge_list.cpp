@@ -18,7 +18,7 @@ TEST("vector") {
     ASSERT_EQUAL("", graph[1]);
     ASSERT_EQUAL("v2", graph[2]);
     ASSERT_EQUAL("e02", graph[e]);
-    graph.clear();
+    graph = {};
     ASSERT_EQUAL(0, graph.vertex_count());
     ASSERT_EQUAL(0, graph.edge_count());
 }
@@ -33,7 +33,7 @@ TEST("set") {
     ASSERT_EQUAL("v0", graph[e.source()]);
     ASSERT_EQUAL("v2a", graph[v]);
     ASSERT_EQUAL("e02", graph[e]);
-    graph.clear();
+    graph = {};
     ASSERT_EQUAL(0, graph.vertex_count());
     ASSERT_EQUAL(0, graph.edge_count());
 }

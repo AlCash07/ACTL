@@ -285,11 +285,6 @@ public:
         }
     }
 
-    void clear() {
-        base_t::clear();
-        edge_list_.clear();
-    }
-
     void swap(adjacency_list& rhs) {
         detail::adj_list_vertices<Dir, OEC, EC, VC>::swap(rhs);
         edge_list_.swap(rhs.edge_list_);

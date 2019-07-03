@@ -15,7 +15,7 @@ TEST("basic") {
     c.erase(0);
     c.erase(1);
     ASSERT_EQUAL(2, c.size());
-    c.clear();
+    c = {};
     ASSERT_TRUE(c.empty());
     c.resize(3);
     ASSERT_EQUAL(3, c.size());

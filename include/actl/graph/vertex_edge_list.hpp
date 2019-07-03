@@ -50,11 +50,6 @@ public:
     // TODO: implement using one pass over edges that will remove edges and decrease int IDs.
     void remove_vertex(vertex u);
 
-    void clear() {
-        vbase_t::clear();
-        ebase_t::clear();
-    }
-
     void swap(vertex_edge_list& rhs) {
         vbase_t::swap(rhs);
         ebase_t::swap(rhs);

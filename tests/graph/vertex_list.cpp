@@ -23,7 +23,7 @@ TEST("none") {
         ++i;
     }
     ASSERT_TRUE(std::is_same_v<void, decltype(graph[0])>);
-    graph.clear();
+    graph = {};
     ASSERT_EQUAL(0, graph.vertex_count());
 }
 
