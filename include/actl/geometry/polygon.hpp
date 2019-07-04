@@ -19,19 +19,17 @@ namespace ac {
  */
 template <class T>
 class polygon : public multi_point<T> {
+    using MP = multi_point<T>;
+
 public:
-    using cyclic_iterator       = ac::cyclic_iterator<iterator_t<multi_point<T>>>;
-    using const_cyclic_iterator = ac::cyclic_iterator<iterator_t<const multi_point<T>>>;
+    using cyclic_iterator       = ac::cyclic_iterator<MP&>;
+    using const_cyclic_iterator = ac::cyclic_iterator<const MP&>;
 
-    using multi_point<T>::multi_point;
+    using MP::MP;
 
-    auto cyclic(iterator_t<multi_point<T>> it) {
-        return cyclic_iterator{it, this->begin(), this->end()};
-    }
+    auto cyclic(iterator_t<MP> it) { return cyclic_iterator{it, *this}; }
 
-    auto cyclic(iterator_t<const multi_point<T>> it) const {
-        return const_cyclic_iterator{it, this->begin(), this->end()};
-    }
+    auto cyclic(iterator_t<const MP> it) const { return const_cyclic_iterator{it, *this}; }
 
     auto cyclic_begin() { return cyclic(this->begin()); }
     auto cyclic_begin() const { return cyclic(this->begin()); }
@@ -98,7 +96,7 @@ class convex_polygon : public polygon<T> {
 public:
     using polygon<T>::polygon;
 
-    const reference_t<polygon<T>> observer() const { return *this->begin(); }
+    reference_t<const polygon<T>> observer() const { return *this->begin(); }
 };
 
 template <class T>
@@ -123,7 +121,7 @@ public:
         if (this->right_ < 0) this->right_ += static_cast<int>(polygon.size());
     }
 
-    const reference_t<monotone_polygon<T>> observer() const { return *this->begin(); }
+    reference_t<const monotone_polygon<T>> observer() const { return *this->begin(); }
 };
 
 template <class T>

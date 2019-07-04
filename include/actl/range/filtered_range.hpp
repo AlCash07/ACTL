@@ -24,10 +24,11 @@ class filtered_range
 public:
     using iterator = filter_iterator<Range, Predicate>;
 
-    explicit filtered_range(Range range, Predicate pred) : data_{range, pred} {}
+    explicit filtered_range(Range range, Predicate pred)
+        : data_{std::forward<Range>(range), pred} {}
 
-    iterator begin() const { return {original().begin(), *this}; }
-    iterator end() const { return {original().end(), *this}; }
+    auto begin() const { return iterator{original().begin(), *this}; }
+    auto end() const { return iterator{original().end(), *this}; }
 
     const Range& original() const { return data_.first(); }
 
@@ -39,7 +40,7 @@ private:
 
 namespace detail {
 
-template <class R, class P, class It = iterator_t<remove_cvref_t<R>>>
+template <class R, class P, class It = iterator_t<std::remove_reference_t<R>>>
 using filter_iterator_base =
     iterator_adaptor<filter_iterator<R, P>, It,
                      std::conditional_t<is_random_access_iterator_v<It>,
@@ -49,11 +50,10 @@ using filter_iterator_base =
 
 template <class R, class P>
 class filter_iterator : public detail::filter_iterator_base<R, P> {
-    using base_t = detail::filter_iterator_base<R, P>;
-
 public:
-    filter_iterator(iterator_t<remove_cvref_t<R>> it, const filtered_range<R, P>& range)
-        : base_t{it}, range_{range} {
+    explicit filter_iterator(iterator_t<std::remove_reference_t<R>> it,
+                             const filtered_range<R, P>& range)
+        : detail::filter_iterator_base<R, P>{it}, range_{range} {
         find_next();
     }
 

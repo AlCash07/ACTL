@@ -78,7 +78,6 @@ template <class Iterator, class Category, class Value, class Reference, class Po
           class Distance>
 class it_facade;
 
-// TODO: inheritance from iterator is deprecated, remove it.
 template <class It, class V, class R, class P, class D>
 class it_facade<It, std::output_iterator_tag, V, R, P, D> : operators::base<> {
 public:

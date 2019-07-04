@@ -41,7 +41,7 @@ private:
 
     Int distance_to(const integer_iterator& rhs) const { return rhs.value_ - value_; }
 
-    Int value_;
+    Int value_ = 0;
 };
 
 template <class Int>

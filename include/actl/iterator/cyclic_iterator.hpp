@@ -8,8 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/iterator/iterator_facade.hpp>
-#include <actl/macros.hpp>
+#include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/numeric/functions.hpp>
 
 namespace ac {
@@ -17,53 +16,52 @@ namespace ac {
 /**
  * Iterator that moves from the last element to the first and vice versa.
  */
-template <class Iterator>
+template <class Range>
 class cyclic_iterator
-    : public iterator_facade<cyclic_iterator<Iterator>,
-                             typename std::iterator_traits<Iterator>::iterator_category,
-                             value_t<Iterator>,
-                             reference_t<Iterator>,
-                             pointer_t<Iterator>,
-                             difference_t<Iterator>> {
+    : public iterator_adaptor<cyclic_iterator<Range>, iterator_t<std::remove_reference_t<Range>>> {
+    using It = iterator_t<std::remove_reference_t<Range>>;
+
+    It& it() { return this->base_ref(); }
+
 public:
-    cyclic_iterator(Iterator it, Iterator begin, Iterator end)
-        : it_{it != end ? it : begin}, begin_{begin}, end_{end} {}
+    explicit cyclic_iterator(It it, Range range)
+        : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{std::forward<Range>(range)} {
+        ACTL_ASSERT(!std::empty(range));
+        if (it == end()) it() = begin();
+    }
 
 private:
     friend struct ac::iterator_core_access;
 
-    reference_t<Iterator> dereference() const { return *it_; }
+    It begin() const { return std::begin(range_); }
+    It end() const { return std::end(range_); }
 
     void increment() {
-        ++it_;
-        if (EXPECT_FALSE(it_ == end_)) it_ = begin_;
+        ++it();
+        if (it() == end()) it() = begin();
     }
 
     void decrement() {
-        if (EXPECT_FALSE(it_ == begin_)) it_ = end_;
-        --it_;
+        if (it() == begin()) it() = end();
+        --it();
     }
 
-    void advance(difference_t<Iterator> n) {
-        auto cycle = end_ - begin_;
+    void advance(difference_t<It> n) {
+        auto cycle = std::size(range_);
         ACTL_ASSERT(abs(n) < cycle);
         if (n > 0) {
-            it_ += n - (n >= end_ - it_ ? cycle : 0);
+            it() += n - (n >= (end() - it()) ? cycle : 0);
         } else {
-            it_ += n + (-n > it_ - begin_ ? cycle : 0);
+            it() += n + (-n > (it() - begin()) ? cycle : 0);
         }
     }
 
-    bool equals(const cyclic_iterator& rhs) const { return it_ == rhs.it_; }
-
-    difference_t<Iterator> distance_to(const cyclic_iterator& rhs) const {
-        auto distance = rhs.it_ - it_;
-        return distance >= 0 ? distance : distance + (end_ - begin_);
+    difference_t<It> distance_to(const cyclic_iterator& rhs) const {
+        auto distance = rhs.base() - this->base();
+        return distance >= 0 ? distance : distance + std::size(range_);
     }
 
-    Iterator it_;
-    Iterator begin_;
-    Iterator end_;
+    Range range_;
 };
 
 }  // namespace ac
