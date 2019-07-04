@@ -10,20 +10,23 @@
 
 TEST("rank 0 initialization") {
     ndarray<int, 0> t_init{2};
-    ASSERT_EQUAL(t_init, 2);
+    ASSERT_EQUAL(1, t_init.size());
+    ASSERT_EQUAL(2, t_init);
 }
 
 TEST("rank 1 initialization") {
     ndarray<int, 1> t_dims{2, 3, 4};
-    ASSERT_EQUAL(3, t_dims.size());
+    ASSERT_EQUAL_RANGES(std::vector{3}, t_dims.dimensions());
 }
 
 TEST("rank 3 initialization") {
     ndarray<int, 3> t_dims{{5, 4, 3}};
+    ASSERT_EQUAL_RANGES(std::vector{5, 4, 3}, t_dims.dimensions());
     for (auto x : t_dims) {
         ASSERT_EQUAL(0, x);
     }
     ndarray<int, 3> t_init{{{1, 2, 3}}, {{4}, {5, 6}}};
+    ASSERT_EQUAL_RANGES(std::vector{2, 2, 3}, t_init.dimensions());
     ASSERT_EQUAL_RANGES(std::vector{1, 2, 3, 0, 0, 0, 4, 0, 0, 5, 6, 0}, t_init);
 }
 

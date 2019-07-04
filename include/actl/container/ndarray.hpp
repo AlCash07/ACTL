@@ -10,6 +10,7 @@
 #include <actl/assert.hpp>
 #include <actl/numeric/functions.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/std/array.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/type_traits.hpp>
 #include <memory>
@@ -38,21 +39,11 @@ struct static_array<I0, Is...> {
     }
 };
 
-template <int...> struct strides;
+template <int...>
+struct static_product : index_constant<1> {};
 
-template <int... Ds>
-using strides_t = typename strides<Ds...>::type;
-
-template <int D>
-struct strides<D> { using type = static_array<D>; };
-
-template <int D0, int I0, int... Is>
-static_array<D0 * I0, I0, Is...> strides_impl(static_array<I0, Is...>);
-
-template <int D0, int D1, int... Ds>
-struct strides<D0, D1, Ds...> {
-    using type = decltype(strides_impl<D0>(strides_t<D1, Ds...>{}));
-};
+template <int D0, int... Ds>
+struct static_product<D0, Ds...> : index_constant<D0 * static_product<Ds...>::value> {};
 
 template <class T, int N>
 struct nd_initializer_list {
@@ -117,28 +108,33 @@ public:
         std::copy_n(it, size, this->data());
     }
 
-    template <class Strides>
-    ndarray_data(int size, nd_initializer_list_t<T, N> ilist, Strides strides) : base_t{size} {
-        T* end = initialize<0>(this->data(), ilist, strides);
+    template <class Dims>
+    ndarray_data(int size, nd_initializer_list_t<T, N> il, Dims dims) : base_t{size} {
+        int strides[std::max(N - 1, 1)];  // array of size 0 is an extension
+        if constexpr (N >= 2) {
+            strides[N - 2] = dims[N - 1];
+            for (int i = N - 3; i >= 0; --i)
+                strides[i] = strides[i + 1] * dims[i];
+        }
+        T* end = initialize<0>(this->data(), il, dims, strides);
         std::fill(end, this->data() + size, T{});
     }
 
     void swap(ndarray_data& rhs) { base_t::swap(rhs); }
 
 private:
-    template <int I, class Strides>
-    T* initialize(T* data, nd_initializer_list_t<T, N - I> ilist, Strides strides) {
+    template <int I, class Dims>
+    T* initialize(T* data, nd_initializer_list_t<T, N - I> il, Dims dims, const int* strides) {
+        ACTL_ASSERT(static_cast<int>(il.size()) <= dims[I]);
         if constexpr (I + 1 < N) {
-            ACTL_ASSERT(static_cast<int>(ilist.size()) * strides[I + 1] <= strides[I]);
-            for (auto it : ilist) {
-                T* end = initialize<I + 1>(data, it, strides);
-                data += strides[I + 1];
+            for (auto it : il) {
+                T* end = initialize<I + 1>(data, it, dims, strides);
+                data += strides[I];
                 std::fill(end, data, T{});
             }
             return data;
         } else {
-            ACTL_ASSERT(static_cast<int>(ilist.size()) <= strides[I]);
-            return copy(ilist, data);
+            return copy(il, data);
         }
     }
 };
@@ -164,45 +160,45 @@ private:
 template <int N, class Data, class Dims>
 class ndarray_shape : public ndarray_data<N, Data> {
     using base_t = ndarray_data<N, Data>;
-    using T      = typename base_t::value_type;
+    using T = value_t<base_t>;
 
 public:
     template <class... Ts>
-    explicit ndarray_shape(const Dims& dims, Ts... args) : base_t{compute_size(dims), args...} {}
+    explicit ndarray_shape(const Dims& dims, Ts... args)
+        : base_t{compute_size(dims), args...}, dims_{dims} {}
 
-    explicit ndarray_shape(nd_initializer_list_t<T, N> ilist)
-        : base_t{compute_size(ilist), ilist, strides()} {}
+    explicit ndarray_shape(nd_initializer_list_t<T, N> il)
+        : base_t{compute_size(il), il, std::data(dims_)} {}
 
     void swap(ndarray_shape& rhs) {
         base_t::swap(rhs);
-        std::swap(strides_, rhs.strides_);
+        std::swap(dims_, rhs.dims_);
     }
 
-    const int* strides() const { return std::data(strides_); }
+    const Dims& dimensions() const { return dims_; }
 
 private:
     int compute_size(const Dims& dims) {
         int size = 1;
-        for (int i = N - 1; i >= 0; --i)
-            strides_[i] = size *= dims[i];
+        for (auto dim : dims) size *= dim;
         return size;
     }
 
-    int compute_size(nd_initializer_list_t<T, N> ilist) {
-        fill(strides_, 0);
-        compute_dimensions<0>(ilist);
-        return compute_size(strides_);
+    int compute_size(nd_initializer_list_t<T, N> il) {
+        fill(dims_, 0);
+        compute_dimensions<0>(il);
+        return compute_size(dims_);
     }
 
     template <int I>
-    void compute_dimensions(nd_initializer_list_t<T, N - I> ilist) {
+    void compute_dimensions(nd_initializer_list_t<T, N - I> il) {
         if constexpr (I < N) {
-            smax(strides_[I], static_cast<int>(ilist.size()));
-            for (auto it : ilist) compute_dimensions<I + 1>(it);
+            smax(dims_[I], static_cast<int>(il.size()));
+            for (auto i : il) compute_dimensions<I + 1>(i);
         }
     }
 
-    Dims strides_;
+    Dims dims_;
 };
 
 template <int N, class T>
@@ -210,18 +206,17 @@ class ndarray_shape<N, T*, const int*> : public ndarray_data<N, T*> {
     using base_t = ndarray_data<N, T*>;
 
 public:
-    explicit ndarray_shape(const int* strides, T* data)
-        : base_t{strides[0], data}, strides_{strides} {}
+    explicit ndarray_shape(const int* dims, T* data) : base_t{0, data}, dims_{dims} {}
 
     void swap(ndarray_shape& rhs) {
         base_t::swap(rhs);
-        std::swap(strides_, rhs.strides_);
+        std::swap(dims_, rhs.dims_);
     }
 
-    const int* strides() const { return strides_; }
+    const int* dimensions() const { return dims_; }
 
 private:
-    const int* strides_;
+    const int* dims_;
 };
 
 template <int N, class Data, int... Ds>
@@ -232,16 +227,16 @@ public:
     template <class... Ts>
     explicit ndarray_shape(Ts... args) : base_t{0, args...} {}
 
-    explicit ndarray_shape(nd_initializer_list_t<typename base_t::value_type, N> ilist)
-        : base_t{0, ilist, strides()} {}
+    explicit ndarray_shape(nd_initializer_list_t<value_t<base_t>, N> il)
+        : base_t{0, il, dimensions()} {}
 
-    static constexpr strides_t<Ds...> strides() { return {}; }
+    static constexpr static_array<Ds...> dimensions() { return {}; }
 };
 
 template <class Data>
 class ndarray_shape<0, Data, static_array<>> : public ndarray_data<0, Data> {
     using base_t = ndarray_data<0, Data>;
-    using T      = typename base_t::value_type;
+    using T = value_t<base_t>;
 
 public:
     template <class... Ts>
@@ -251,6 +246,8 @@ public:
 
     constexpr operator T&() { return *this->data(); }
     constexpr operator const T&() const { return *this->data(); }
+
+    static constexpr static_array<> dimensions() { return {}; }
 };
 
 /* NDArray subscript operator implementation */
@@ -261,8 +258,9 @@ struct ndarray_reference {
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, int i) {
-        ACTL_ASSERT(0 <= i && i < ptr->dimension(0));
-        return type(ptr->strides() + 1, ptr->data() + i * ptr->stride(1));
+        int stride = 1;
+        for (int j = 1; j < N; ++j) stride *= ptr->dimension(i);
+        return type{std::data(ptr->dimensions()) + 1, ptr->data() + i * stride};
     }
 };
 
@@ -272,8 +270,7 @@ struct ndarray_reference<T, N, static_array<D0, Ds...>, true> {
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, int i) {
-        ACTL_ASSERT(0 <= i && i < ptr->dimension(0));
-        return type(ptr->data() + i * ptr->stride(1));
+        return type{ptr->data() + i * static_product<Ds...>::value};
     }
 };
 
@@ -283,7 +280,6 @@ struct ndarray_reference<T, 1, D, false> {
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, int i) {
-        ACTL_ASSERT(0 <= i && i < ptr->dimension(0));
         return ptr->data()[i];
     }
 };
@@ -294,7 +290,7 @@ using ndarray_reference_t = typename ndarray_reference<T, N, D>::type;
 template <int N, class Data, class Dims>
 class ndarray_subscript : public ndarray_shape<N, Data, Dims> {
     using base_t = ndarray_shape<N, Data, Dims>;
-    using T      = typename base_t::value_type;
+    using T = value_t<base_t>;
 
 public:
     using reference       = ndarray_reference_t<T, N, Dims>;
@@ -302,23 +298,24 @@ public:
 
     using base_t::base_t;
 
-    constexpr int size() const { return stride(0); }
+    constexpr int size() const {
+        int res = 1;
+        for (int i = 0; i < N; ++i) res *= dimension(i);
+        return res;
+    }
 
     constexpr int dimension(int i) const {
         ACTL_ASSERT(0 <= i && i < N);
-        return stride(i) / (i + 1 < N ? stride(i + 1) : 1);
-    }
-
-    constexpr int stride(int i) const {
-        ACTL_ASSERT(0 <= i && i < N);
-        return this->strides()[i];
+        return this->dimensions()[i];
     }
 
     reference operator[](int i) {
+        ACTL_ASSERT(0 <= i && i < dimension(0));
         return ndarray_reference<T, N, Dims>::get(this, i);
     }
 
     const_reference operator[](int i) const {
+        ACTL_ASSERT(0 <= i && i < dimension(0));
         return ndarray_reference<const T, N, Dims>::get(this, i);
     }
 };
@@ -401,32 +398,13 @@ private:
     }
 };
 
-template <int N0, int N1>
-struct strides_compare {
-    template <class T0, class T1>
-    static bool equal(const T0&, const T1&) { return false; }
-};
-
-template <int N>
-struct strides_compare<N, N> {
-    template <class T0, class T1>
-    static bool equal(const T0& lhs, const T1& rhs) {
-        for (int i = 0; i < N; ++i)
-            if (lhs.stride(i) != rhs.stride(i)) return false;
-        return true;
-    }
-};
-
-template <>
-struct strides_compare<0, 0> {
-    template <class T0, class T1>
-    static bool equal(const T0&, const T1&) { return true; }
-};
-
 template <int N0, class D0, class S0, int N1, class D1, class S1>
 inline bool operator == (const ndarray_base<N0, D0, S0>& lhs, const ndarray_base<N1, D1, S1>& rhs) {
-    return strides_compare<N0, N1>::equal(lhs, rhs) &&
-           std::equal(lhs.data(), lhs.data() + lhs.size(), rhs.data());
+    if constexpr (N0 != N1) return false;
+    for (int i = 0; i < N0; ++i) {
+        if (lhs.dimension(i) != rhs.dimension(i)) return false;
+    }
+    return std::equal(lhs.data(), lhs.data() + lhs.size(), rhs.data());
 }
 
 template <int N0, class D0, class S0, int N1, class D1, class S1>
@@ -437,15 +415,9 @@ inline bool operator != (const ndarray_base<N0, D0, S0>& lhs, const ndarray_base
 template <int N, class D, class S>
 inline void swap(ndarray_base<N, D, S>& lhs, ndarray_base<N, D, S>& rhs) { lhs.swap(rhs); }
 
-template <int...>
-struct ndarray_size : index_constant<1> {};
-
-template <int D0, int... Ds>
-struct ndarray_size<D0, Ds...> : index_constant<D0 * ndarray_size<Ds...>::value> {};
-
 template <class T, int... Ds>
 using ndarray_base_static =
-    ndarray_base<sizeof...(Ds), T[ndarray_size<Ds...>::value], static_array<Ds...>>;
+    ndarray_base<sizeof...(Ds), T[static_product<Ds...>::value], static_array<Ds...>>;
 
 }  // namespace detail
 
@@ -453,8 +425,8 @@ using ndarray_base_static =
  * N-dimensional array.
  */
 template <class T, int N>
-class ndarray : public detail::ndarray_base<N, std::unique_ptr<T[]>, T[N]> {
-    using base_t = detail::ndarray_base<N, std::unique_ptr<T[]>, T[N]>;
+class ndarray : public detail::ndarray_base<N, std::unique_ptr<T[]>, std::array<int, N>> {
+    using base_t = detail::ndarray_base<N, std::unique_ptr<T[]>, std::array<int, N>>;
 
 public:
     using base_t::base_t;
