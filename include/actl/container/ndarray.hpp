@@ -10,10 +10,7 @@
 #include <actl/assert.hpp>
 #include <actl/numeric/functions.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/std/array.hpp>
-#include <actl/std/tuple.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/std/vector.hpp>
 #include <actl/util/type_traits.hpp>
 #include <memory>
 
@@ -94,7 +91,7 @@ class ndarray_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
 
-    ndarray_container(int size) : data_{new T[size]} {}
+    ndarray_container(int size) : data_{std::make_unique<T[]>(static_cast<size_t>(size))} {}
 
     T*       data() { return data_.get(); }
     const T* data() const { return data_.get(); }
@@ -161,7 +158,7 @@ private:
     T* data_;
 };
 
-/* NDArray shape class, manages dimensions, strides and subscript operator. */
+/* NDArray shape class, manages dimensions. */
 
 template <int N, class Data, class Dims>
 class ndarray_shape : public ndarray_data<N, Data> {
@@ -172,10 +169,6 @@ public:
     template <class... Ts>
     explicit ndarray_shape(const Dims& dims, Ts... args) : base_t{compute_size(dims), args...} {}
 
-    template <class... Ts>
-    explicit ndarray_shape(int dimension, Ts... args)
-        : ndarray_shape{std::make_tuple(dimension), args...} {}
-
     explicit ndarray_shape(nd_initializer_list_t<T, N> ilist)
         : base_t{compute_size(ilist), ilist, strides()} {}
 
@@ -184,23 +177,9 @@ public:
         std::swap(strides_, rhs.strides_);
     }
 
-    const int* strides() const { return strides_.data(); }
+    const int* strides() const { return std::data(strides_); }
 
 private:
-    template <class... Ts, int... Is>
-    static Dims tuple_to_array(std::tuple<Ts...> dims, std::integer_sequence<int, Is...>) {
-        static_assert(sizeof...(Ts) == N, "wrong number of dimensions given");
-        return Dims{{std::get<Is>(dims)...}};
-    }
-
-    template <class... Us, class... Ts>
-    ndarray_shape(std::tuple<Us...> dims, Ts... args)
-        : ndarray_shape{tuple_to_array(dims, std::make_integer_sequence<int, N>()), args...} {}
-
-    template <class... Us, class... Ts>
-    ndarray_shape(std::tuple<Us...> dims, int dimension, Ts... args)
-        : ndarray_shape{std::tuple_cat(dims, std::make_tuple(dimension)), args...} {}
-
     int compute_size(const Dims& dims) {
         int size = 1;
         for (int i = N - 1; i >= 0; --i)
@@ -209,7 +188,7 @@ private:
     }
 
     int compute_size(nd_initializer_list_t<T, N> ilist) {
-        strides_.fill(0);
+        fill(strides_, 0);
         compute_dimensions<0>(ilist);
         return compute_size(strides_);
     }
@@ -353,7 +332,7 @@ public:
 
 /* Base class, defines type aliases and secondary interface methods. */
 
-template <int N, class Data, class Dims = std::array<int, N>>
+template <int N, class Data, class Dims>
 class ndarray_base : public ndarray_subscript<N, Data, Dims> {
     using base_t = ndarray_subscript<N, Data, Dims>;
     using T      = typename base_t::value_type;
@@ -472,8 +451,16 @@ using ndarray_base_static =
  * N-dimensional array.
  */
 template <class T, int N>
-class ndarray : public detail::ndarray_base<N, std::unique_ptr<T[]>> {
-    using base_t = detail::ndarray_base<N, std::unique_ptr<T[]>>;
+class ndarray : public detail::ndarray_base<N, std::unique_ptr<T[]>, T[N]> {
+    using base_t = detail::ndarray_base<N, std::unique_ptr<T[]>, T[N]>;
+
+public:
+    using base_t::base_t;
+};
+
+template <class T>
+class ndarray<T, 0> : public detail::ndarray_base_static<T> {
+    using base_t = detail::ndarray_base_static<T>;
 
 public:
     using base_t::base_t;
@@ -493,9 +480,9 @@ public:
 /**
  * View of an N-dimensional array.
  */
-template <class T, int N>
-class ndarray_view : public detail::ndarray_base<N, T*> {
-    using base_t = detail::ndarray_base<N, T*>;
+template <class T, int N, class Dims = int[N]>
+class ndarray_view : public detail::ndarray_base<N, T*, Dims> {
+    using base_t = detail::ndarray_base<N, T*, Dims>;
 
 public:
     using base_t::base_t;
