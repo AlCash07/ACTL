@@ -15,17 +15,6 @@
 
 namespace ac {
 
-inline constexpr index dynamic_size = -1;
-
-template <class T>
-struct static_size : index_constant<dynamic_size> {};
-
-template <class T, index N>
-struct static_size<T[N]> : index_constant<N> {};
-
-template <class T>
-inline constexpr index static_size_v = static_size<remove_cvref_t<T>>::value;
-
 // Virtual inheritance is used because of inheritance diamonds.
 struct container_tag {};
 
