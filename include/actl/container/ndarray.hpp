@@ -118,26 +118,27 @@ public:
     }
 
     template <class Strides>
-    explicit ndarray_data(int size, nd_initializer_list_t<T, N> ilist, Strides strides)
-        : base_t{size} {
-        std::fill_n(this->data(), size, T{});
-        initialize<0>(this->data(), ilist, strides);
+    ndarray_data(int size, nd_initializer_list_t<T, N> ilist, Strides strides) : base_t{size} {
+        T* end = initialize<0>(this->data(), ilist, strides);
+        std::fill(end, this->data() + size, T{});
     }
 
     void swap(ndarray_data& rhs) { base_t::swap(rhs); }
 
 private:
     template <int I, class Strides>
-    void initialize(T* data, nd_initializer_list_t<T, N - I> ilist, Strides strides) {
+    T* initialize(T* data, nd_initializer_list_t<T, N - I> ilist, Strides strides) {
         if constexpr (I + 1 < N) {
             ACTL_ASSERT(static_cast<int>(ilist.size()) * strides[I + 1] <= strides[I]);
             for (auto it : ilist) {
-                initialize<I + 1>(data, it, strides);
+                T* end = initialize<I + 1>(data, it, strides);
                 data += strides[I + 1];
+                std::fill(end, data, T{});
             }
+            return data;
         } else {
             ACTL_ASSERT(static_cast<int>(ilist.size()) <= strides[I]);
-            copy(ilist, data);
+            return copy(ilist, data);
         }
     }
 };
