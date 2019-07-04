@@ -31,7 +31,7 @@ inline bool deserialize(Device& id, Format& fmt,
     index length = std::max(index{16}, static_cast<index>(x.value.capacity()));
     for (index last = 0;; length = last += length) {
         x.value.resize(static_cast<size_t>(last + length));
-        auto ptr = &x.value[static_cast<size_t>(last)];
+        auto* ptr = &x.value[static_cast<size_t>(last)];
         index chars_read = io::read_till(id, io::till{span{ptr, length}, x.terminator});
         if (chars_read < length) {
             x.value.resize(static_cast<size_t>(last + chars_read));

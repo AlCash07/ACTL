@@ -25,7 +25,7 @@ public:
 
     using base_t::base_t;
 
-    constexpr auto key() const {
+    constexpr decltype(auto) key() const {
         if constexpr (I == 1) {
             return this->first();
         } else {

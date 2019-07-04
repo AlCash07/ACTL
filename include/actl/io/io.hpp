@@ -90,14 +90,13 @@ struct is_format : std::false_type {};
 template <class T>
 struct is_format<T, std::void_t<typename T::format_tag>> : std::true_type {};
 
-template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
-inline binary deduce_format(Device& dev) {
-    return {};
-}
-
-template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
-inline auto& deduce_format(Device& dev) {
-    return dev.format();
+template <class Device>
+inline decltype(auto) deduce_format(Device& dev) {
+    if constexpr (is_bin<Device::mode>) {
+        return binary{};
+    } else {
+        return dev.format();
+    }
 }
 
 /* Common types support */

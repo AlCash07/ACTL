@@ -15,7 +15,7 @@ namespace ac {
 template <class... Components>
 class component_set {
 public:
-    explicit component_set() = default;
+    component_set() = default;
 
     explicit component_set(Components&&... components)
         : components_{std::forward<Components>(components)...} {}
@@ -26,7 +26,7 @@ protected:
      * its output.
      */
     template <class... Ts>
-    auto execute_first(Ts&&... args) {
+    decltype(auto) execute_first(Ts&&... args) {
         return exec_first<0>(std::forward<Ts>(args)...);
     }
 
@@ -38,10 +38,8 @@ protected:
 private:
     using tuple_t = std::tuple<Components...>;
 
-    tuple_t components_;
-
     template <size_t I, class... Ts>
-    auto exec_first(Ts&&... args) {
+    decltype(auto) exec_first(Ts&&... args) {
         static_assert(I < sizeof...(Components), "no component with requested overload");
         if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
             return std::get<I>(components_)(std::forward<Ts>(args)...);
@@ -59,6 +57,8 @@ private:
             exec_all<I + 1>(std::forward<Ts>(args)...);
         }
     }
+
+    tuple_t components_;
 };
 
 }  // namespace ac

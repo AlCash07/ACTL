@@ -30,7 +30,7 @@ struct inorder_printer {
     template <class E>
     void operator()(on_tree_edge, E e) {
         vertex u = e.source();
-        auto current = get(state, u);
+        decltype(auto) current = get(state, u);
         if (current > 0) *it++= u;
         if (current < 2) put(state, u, current + 1);
     }
