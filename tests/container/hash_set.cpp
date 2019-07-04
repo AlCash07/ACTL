@@ -8,7 +8,7 @@
 #include <actl/container/hash_set.hpp>
 #include <actl/test.hpp>
 
-TEST("category") {
+TEST("hash_set::category") {
     using C = hash_set<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
@@ -19,7 +19,7 @@ TEST("category") {
     ASSERT_FALSE(is_pair_associative_container_v<C>);
 }
 
-TEST("category") {
+TEST("hash_multiset::category") {
     using C = hash_multiset<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);

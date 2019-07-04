@@ -8,7 +8,7 @@
 #include <actl/container/hash_map.hpp>
 #include <actl/test.hpp>
 
-TEST("category") {
+TEST("hash_map::category") {
     using C = hash_map<int, int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
@@ -19,7 +19,7 @@ TEST("category") {
     ASSERT_TRUE(is_pair_associative_container_v<C>);
 }
 
-TEST("category") {
+TEST("hash_multimap::category") {
     using C = hash_multimap<int, int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);

@@ -8,7 +8,7 @@
 #include <actl/std/set.hpp>
 #include <actl/test.hpp>
 
-TEST("category") {
+TEST("set::category") {
     using C = std::set<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
@@ -19,7 +19,7 @@ TEST("category") {
     ASSERT_FALSE(is_pair_associative_container_v<C>);
 }
 
-TEST("category") {
+TEST("multiset::category") {
     using C = std::multiset<int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
