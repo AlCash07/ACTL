@@ -26,3 +26,12 @@ TEST("rank 3 initialization") {
     ndarray<int, 3> t_init{{{1, 2, 3}}, {{4}, {5, 6}}};
     ASSERT_EQUAL_RANGES(std::vector{1, 2, 3, 0, 0, 0, 4, 0, 0, 5, 6, 0}, t_init);
 }
+
+TEST("indexing") {
+    ndarray<int, 0> t0{2};
+    ASSERT_EQUAL(t0(), 2);
+    ndarray<int, 3> t3{{{1, 2, 3}}, {{4}, {5, 6}}};
+    ASSERT_EQUAL(3, t3(0, 0, 2));
+    ASSERT_EQUAL(4, t3(1, 0, 0));
+    ASSERT_EQUAL(6, t3(1, 1, 1));
+}

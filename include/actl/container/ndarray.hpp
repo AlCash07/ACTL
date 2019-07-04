@@ -377,26 +377,27 @@ public:
     bool empty() const { return this->size() == 0; }
 
     template <class... Ints>
-    T& operator()(Ints... indices) {
-        return this->data()[getIndex<0>(indices...)];
+    T& operator()(Ints... is) {
+        return this->data()[getIndex<0>(0, is...)];
     }
 
     template <class... Ints>
-    const T& operator()(Ints... indices) const {
-        return this->data()[getIndex<0>(indices...)];
+    const T& operator()(Ints... is) const {
+        return this->data()[getIndex<0>(0, is...)];
     }
 
 private:
     template <int I>
-    int getIndex() const {
-        static_assert(I == N, "number of indices isn't equal to ndarray rank");
-        return 0;
+    int getIndex(int res) const {
+        ACTL_ASSERT(I == rank());
+        return res;
     }
 
     template <int I, class... Ints>
-    int getIndex(int i, Ints... indices) const {
+    int getIndex(int res, int i, Ints... is) const {
         ACTL_ASSERT(0 <= i && i < this->dimension(I));
-        return (I + 1 < N ? i * this->stride(I + 1) : i) + getIndex<I + 1>(indices...);
+        if constexpr (I > 0) res *= this->dimension(I);
+        return getIndex<I + 1>(res + i, is...);
     }
 };
 
