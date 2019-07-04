@@ -21,6 +21,7 @@ class ios_format {
 
 public:
     using char_type = typename Stream::char_type;
+    using format_tag = adjusted_tag<text_tag>;
 
     explicit ios_format(Stream& s) : s_{s} {}
 
@@ -89,11 +90,6 @@ protected:
     static constexpr ios::fmtflags g[] = {ios::floatfield, ios::adjustfield};
 
     Stream& s_;
-};
-
-template <class Stream>
-struct format_traits<ios_format<Stream>> {
-    using tag = adjusted_tag<text_tag>;
 };
 
 template <mode_t Mode, class Stream, bool = is_in<Mode>>

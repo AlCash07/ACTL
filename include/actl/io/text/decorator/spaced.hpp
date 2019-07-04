@@ -23,6 +23,8 @@ struct spaced_tag {
 template <class Format, class Char = char, template <class> class Except = is_raw>
 class spaced : public Format {
 public:
+    using format_tag = spaced_tag<typename Format::format_tag>;
+
     using Format::Format;
 
     void reset() { separate_ = false; }
@@ -53,11 +55,6 @@ public:
 private:
     std::basic_string<Char> space_ = " ";
     bool separate_ = false;
-};
-
-template <class Format, class Char>
-struct format_traits<spaced<Format, Char>> {
-    using tag = spaced_tag<format_tag_t<Format>>;
 };
 
 struct setspace {

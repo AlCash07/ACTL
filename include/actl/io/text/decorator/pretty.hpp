@@ -15,17 +15,14 @@
 
 namespace ac::io {
 
-template <class Format>
-class pretty : public Format {};
-
 template <class Tag>
 struct pretty_tag {
     using base = Tag;
 };
 
 template <class Format>
-struct format_traits<pretty<Format>> {
-    using tag = pretty_tag<format_tag_t<Format>>;
+struct pretty : Format {
+    using format_tag = pretty_tag<typename Format::format_tag>;
 };
 
 inline char escaped(char c) {

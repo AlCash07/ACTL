@@ -13,9 +13,16 @@
 
 namespace ac::io {
 
+template <class Tag>
+struct adjusted_tag {
+    using base = Tag;
+};
+
 template <class Format, class Char = char>
 class adjusted : public Format {
 public:
+    using format_tag = adjusted_tag<typename Format::format_tag>;
+
     index width() const { return width_; }
     void width(index value) {
         ACTL_ASSERT(0 <= value);
@@ -28,16 +35,6 @@ public:
 protected:
     index width_ = 0;
     Char fill_ = ' ';
-};
-
-template <class Tag>
-struct adjusted_tag {
-    using base = Tag;
-};
-
-template <class Format>
-struct format_traits<adjusted<Format>> {
-    using tag = adjusted_tag<format_tag_t<Format>>;
 };
 
 template <class Format>

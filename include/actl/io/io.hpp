@@ -76,6 +76,7 @@ struct has_output_buffer<T, std::void_t<decltype(std::declval<T>().output_data()
 /* Format */
 
 struct binary {
+    using format_tag = binary;
     using base = none;
 };
 
@@ -83,18 +84,11 @@ struct text_tag {
     using base = none;
 };
 
-template <class T>
-struct format_traits {
-    using tag = none;
-};
-
-template <>
-struct format_traits<binary> {
-    using tag = binary;
-};
+template <class T, class = void>
+struct is_format : std::false_type {};
 
 template <class T>
-using format_tag_t = typename format_traits<remove_cvref_t<T>>::tag;
+struct is_format<T, std::void_t<typename T::format_tag>> : std::true_type {};
 
 template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
 inline binary deduce_format(Device& dev) {
@@ -175,21 +169,21 @@ inline bool deserialize(Device& id, Format& fmt, T& x, Tag) {
 
 template <class Device, class Format, class... Ts>
 inline index write(Device&& od, Format&& fmt, const Ts&... args) {
-    using tag = format_tag_t<Format>;
-    if constexpr (std::is_same_v<tag, none>) {
-        return write(od, deduce_format(od), fmt, args...);
+    using F = std::remove_reference_t<Format>;
+    if constexpr (is_format<F>::value) {
+        return (... + serialize(od, fmt, args, typename F::format_tag{}));
     } else {
-        return (... + serialize(od, fmt, args, tag{}));
+        return write(od, deduce_format(od), fmt, args...);
     }
 }
 
 template <class Device, class Format, class... Ts>
 inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
-    using tag = format_tag_t<Format>;
-    if constexpr (std::is_same_v<tag, none>) {
-        return read(id, deduce_format(id), fmt, args...);
+    using F = std::remove_reference_t<Format>;
+    if constexpr (is_format<F>::value) {
+        return (... && deserialize(id, fmt, args, typename F::format_tag{}));
     } else {
-        return (... && deserialize(id, fmt, args, tag{}));
+        return read(id, deduce_format(id), fmt, args...);
     }
 }
 

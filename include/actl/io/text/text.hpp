@@ -24,6 +24,8 @@ template <
     index Precision = 6>
 class text_static {
 public:
+    using format_tag = text_tag;
+
     static constexpr mode_t mode = 0;
 
     static constexpr flag_t flags() { return Flags; }
@@ -35,13 +37,10 @@ public:
     static constexpr index precision() { return Precision; }
 };
 
-template <flag_t F, uint8_t B, index P>
-struct format_traits<text_static<F, B, P>> {
-    using tag = text_tag;
-};
-
 class text {
 public:
+    using format_tag = text_tag;
+
     flag_t flags() const { return flags_; }
     void flags(flag_t value) { flags_ = value; }
 
@@ -71,11 +70,6 @@ protected:
     flag_t flags_ = ts::flags();
     uint8_t base_ = ts::base();
     index precision_ = ts::precision();
-};
-
-template <>
-struct format_traits<text> {
-    using tag = text_tag;
 };
 
 template <class Device, class Format>
