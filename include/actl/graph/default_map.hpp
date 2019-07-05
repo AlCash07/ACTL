@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/graph/traits.hpp>
 #include <actl/map/generic_container.hpp>
 #include <actl/map/pair_associative_container.hpp>
 #include <actl/std/map.hpp>
@@ -19,7 +20,7 @@ inline auto make_default_vertex_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::vertex_container>) {
         return std::vector<T>(static_cast<size_t>(graph.vertex_count()));
     } else {
-        return std::map<typename Graph::vertex, T>{};
+        return std::map<vertex_t<Graph>, T>{};
     }
 }
 
@@ -28,7 +29,7 @@ inline auto make_default_edge_map(const Graph& graph) {
     if constexpr (is_random_access_container_v<typename Graph::edge_container>) {
         return std::vector<T>(static_cast<size_t>(graph.edge_count()));
     } else {
-        return std::map<typename Graph::edge, T>{};
+        return std::map<edge_t<Graph>, T>{};
     }
 }
 

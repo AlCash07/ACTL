@@ -9,6 +9,7 @@
 
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
+#include <actl/graph/traits.hpp>
 #include <actl/util/component_set.hpp>
 #include <actl/util/type_traits.hpp>
 #include <stack>
@@ -22,7 +23,7 @@ class depth_first_search : public component_set<Components...> {
 
     // Recursive implementation to demonstrate dfs logic clearer.
     template <class Graph, class VertexPredicate>
-    void recurse(const Graph& graph, typename Graph::vertex u, VertexPredicate is_terminator) {
+    void recurse(const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator) {
         execute_all(on_vertex_discover{}, u);
         execute_all(on_vertex_examine{}, u);
         if (is_terminator(u)) return;
@@ -43,8 +44,8 @@ class depth_first_search : public component_set<Components...> {
 public:
     template <class Graph>
     struct stack_value {
-        typename Graph::vertex vertex;
-        typename Graph::out_edge_id out_edge;
+        vertex_t<Graph> vertex;
+        out_edge_t<Graph> out_edge;
     };
 
     using base_t::base_t;
@@ -52,7 +53,7 @@ public:
     // Depth first search without initialization.
     template <class Graph, class Stack = std::stack<stack_value<Graph>>,
               class VertexPredicate = always_false>
-    void visit(const Graph& graph, typename Graph::vertex u, Stack&& stack = {},
+    void visit(const Graph& graph, vertex_t<Graph> u, Stack&& stack = {},
                VertexPredicate is_terminator = {}) {
         while (!stack.empty()) stack.pop();
         execute_all(on_vertex_start{}, u);
@@ -81,7 +82,7 @@ public:
                     break;
                 }
                 execute_all(on_edge_examine{}, *it);
-                auto v = it->target();
+                vertex_t<Graph> v = it->target();
                 if (base_t::execute_first(is_vertex_discovered{}, v)) {
                     execute_all(on_non_tree_edge{}, *it);
                     execute_all(on_edge_finish{}, *it);
@@ -99,7 +100,7 @@ public:
 
     template <class Graph, class Stack = std::stack<stack_value<Graph>>,
               class VertexPredicate = always_false>
-    void operator()(const Graph& graph, typename Graph::vertex s, Stack&& stack = {},
+    void operator()(const Graph& graph, vertex_t<Graph> s, Stack&& stack = {},
                     VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         visit(graph, s, std::forward<Stack>(stack), is_terminator);
@@ -107,7 +108,7 @@ public:
 
     template <class Graph, class Stack = std::stack<stack_value<Graph>>,
               class VertexPredicate = always_false,
-              enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, typename Graph::vertex>> = 0>
+              enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> = 0>
     void operator()(const Graph& graph, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {

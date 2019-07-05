@@ -9,6 +9,7 @@
 
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
+#include <actl/graph/traits.hpp>
 #include <actl/util/component_set.hpp>
 #include <queue>
 
@@ -23,11 +24,11 @@ class breadth_first_search : public component_set<Components...> {
 public:
     using base_t::base_t;
 
-    template <class Graph, class Source, class VertexQueue = std::queue<typename Graph::vertex>,
+    template <class Graph, class Source, class VertexQueue = std::queue<vertex_t<Graph>>,
               class VertexPredicate = always_false>
     void operator()(const Graph& graph, const Source& source, VertexQueue&& queue = {},
                     VertexPredicate is_terminator = {}) {
-        using vertex = typename Graph::vertex;
+        using vertex = vertex_t<Graph>;
         for (vertex u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         while (!queue.empty()) queue.pop();
         auto enqueue = [&](vertex u) {

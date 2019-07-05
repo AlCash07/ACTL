@@ -9,6 +9,7 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
+#include <actl/graph/traits.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 
 namespace ac::detail {
@@ -27,42 +28,40 @@ private:
     }
 };
 
-template <class AdjList, class It, class E = typename AdjList::edge>
-class adj_list_out_edge_it
-    : public iterator_facade<adj_list_out_edge_it<AdjList, It, E>, std::input_iterator_tag, E, E> {
+template <class G, class It>
+class adj_list_out_edge_it : public iterator_facade<adj_list_out_edge_it<G, It>,
+                                                    std::input_iterator_tag, edge_t<G>, edge_t<G>> {
     friend struct ac::iterator_core_access;
 
-    using vertex = typename AdjList::vertex;
-
-    E dereference() const { return al_->get_edge(u_, *it_); }
+    edge_t<G> dereference() const { return g_->get_edge(u_, *it_); }
 
     void increment() { ++it_; }
 
     bool equals(const adj_list_out_edge_it& rhs) const { return it_ == rhs.it_; }
 
-    const AdjList* al_;
-    vertex u_;
+    const G* g_;
+    vertex_t<G> u_;
     It it_;
 
 public:
     explicit adj_list_out_edge_it() = default;
 
-    explicit adj_list_out_edge_it(const AdjList* al, vertex u, It it) : al_{al}, u_{u}, it_{it} {}
+    explicit adj_list_out_edge_it(const G* g, vertex_t<G> u, It it) : g_{g}, u_{u}, it_{it} {}
 
     It id() const { return it_; }
 };
 
-template <class AdjList, class E = typename AdjList::edge>
+template <class G>
 class adj_list_edge_it
-    : public iterator_facade<adj_list_edge_it<AdjList, E>, std::input_iterator_tag, E, E> {
+    : public iterator_facade<adj_list_edge_it<G>, std::input_iterator_tag, edge_t<G>, edge_t<G>> {
     friend struct ac::iterator_core_access;
 
-    E dereference() const { return al_->get_edge(u_, *it_); }
+    edge_t<G> dereference() const { return g_->get_edge(u_, *it_); }
 
-    bool is_end() const { return u_ == id_end(al_->vertices_); }
+    bool is_end() const { return u_ == id_end(g_->vertices_); }
 
     bool is_reverse_edge() const {
-        if constexpr (AdjList::is_undirected) {
+        if constexpr (G::is_undirected) {
             return dereference().target() < u_;
         } else {
             return false;
@@ -71,9 +70,9 @@ class adj_list_edge_it
 
     void skip_empty() {
         while (!is_end()) {
-            if (it_ == al_->out_end(u_)) {
+            if (it_ == g_->out_end(u_)) {
                 ++u_;
-                if (!is_end()) it_ = al_->out_begin(u_);
+                if (!is_end()) it_ = g_->out_begin(u_);
             } else {
                 if (is_reverse_edge()) {
                     ++it_;
@@ -94,32 +93,32 @@ class adj_list_edge_it
         return u_ == rhs.u_ && (is_end() || it_ == rhs.it_);
     }
 
-    const AdjList* al_;
-    typename AdjList::vertex u_;
-    typename AdjList::out_it it_;
+    const G* g_;
+    vertex_t<G> u_;
+    typename G::out_it it_;
 
 public:
     explicit adj_list_edge_it() = default;
 
-    explicit adj_list_edge_it(const AdjList* al, bool begin) : al_{al} {
+    explicit adj_list_edge_it(const G* g, bool begin) : g_{g} {
         if (begin) {
-            u_ = id_begin(al_->vertices_);
-            it_ = al_->out_begin(u_);
+            u_ = id_begin(g_->vertices_);
+            it_ = g_->out_begin(u_);
             skip_empty();
         } else {
-            u_ = id_end(al_->vertices_);
+            u_ = id_end(g_->vertices_);
         }
     }
 };
 
-template <class AL, class S = typename AL::edge_selector>
+template <class G, class = typename G::edge_selector>
 struct edge_it {
-    using type = adj_list_edge_it<AL>;
+    using type = adj_list_edge_it<G>;
 };
 
-template <class AL>
-struct edge_it<AL, two_vertices> {
-    using type = typename AL::traits::edges::template edge_iterator<typename AL::edge>;
+template <class G>
+struct edge_it<G, two_vertices> {
+    using type = typename G::traits::edges::template edge_iterator<edge_t<G>>;
 };
 
 }  // namespace ac::detail
