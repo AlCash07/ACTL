@@ -10,16 +10,23 @@
 
 constexpr int N = 9;
 
+TEST("empty") {
+    span<int> s;
+    ASSERT_EQUAL(nullptr, s.data());
+    span<int, 0> s0;
+    ASSERT_EQUAL(nullptr, s0.data());
+}
+
 TEST("array") {
     int a[N] = {};
-    span s(a);
+    span s{a};
     ASSERT_EQUAL(a, s.data());
-    ASSERT_EQUAL(N, s.size());
+    static_assert(N == s.size());
 }
 
 TEST("const vector") {
     const std::vector<double> v(N);
-    span s(v);
+    span s{v};
     ASSERT_EQUAL(v.data(), s.data());
     ASSERT_EQUAL(N, s.size());
 }

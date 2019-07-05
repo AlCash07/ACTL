@@ -10,24 +10,64 @@
 #include <actl/assert.hpp>
 #include <actl/range/traits.hpp>
 #include <actl/string/traits.hpp>
+#include <actl/util/static_size.hpp>
 
 namespace ac {
 
-template <class T>
-class span {
+namespace detail {
+
+template <index N>
+class span_size {
 public:
-    using element_type = T;
-    using value_type = std::remove_cv_t<T>;
-    using index_type = index;
+    static_assert(N > 0);
+
+    constexpr span_size([[maybe_unused]] index n) { ACTL_ASSERT(n == N); }
+
+    static constexpr index size() { return N; }
+};
+
+template <>
+class span_size<0> {
+public:
+    constexpr span_size() = default;
+    constexpr span_size([[maybe_unused]] index n) { ACTL_ASSERT(n == 0); }
+
+    static constexpr index size() { return 0; }
+};
+
+template <>
+class span_size<dynamic_size> {
+public:
+    constexpr span_size() = default;
+    constexpr span_size(index n) : size_{n} { ACTL_ASSERT(n >= 0); }
+
+    constexpr index size() const { return size_; }
+
+private:
+    index size_ = 0;
+};
+
+}  // namespace detail
+
+template <class T, index N = dynamic_size>
+class span : detail::span_size<N> {
+    using base_t = detail::span_size<N>;
+
+public:
+    using element_type    = T;
+    using value_type      = std::remove_cv_t<T>;
+    using index_type      = index;
     using difference_type = index;
-    using pointer = T*;
-    using reference = T&;
-    using iterator = pointer;
-    using const_iterator = iterator;
+    using pointer         = T*;
+    using reference       = T&;
+    using iterator        = pointer;
+    using const_iterator  = iterator;
+
+    static constexpr index extent = N;
 
     constexpr span() = default;
 
-    constexpr span(T* ptr, index count) : data_{ptr}, size_{count} { ACTL_ASSERT(count >= 0); }
+    constexpr span(T* ptr, index count) : base_t{count}, data_{ptr} {}
 
     constexpr span(T* first, T* last) : span{first, last - first} {}
 
@@ -38,6 +78,8 @@ public:
 
     constexpr T* end() const { return data() + size(); }
 
+    constexpr T& front() const { return data()[0]; }
+
     constexpr T& back() const { return data()[size() - 1]; }
 
     constexpr T& operator[](index i) const {
@@ -47,30 +89,32 @@ public:
 
     constexpr T* data() const { return data_; }
 
-    constexpr index size() const { return size_; }
+    using base_t::size;
 
     constexpr bool empty() const { return size() == 0; }
 
-    constexpr span first(index n) const {
+    constexpr span<T> first(index n) const {
         ACTL_ASSERT(0 <= n && n <= size());
         return {begin(), n};
     }
 
-    constexpr span last(index n) const {
+    constexpr span<T> last(index n) const {
         ACTL_ASSERT(0 <= n && n <= size());
         return {end() - n, n};
     }
 
 private:
     T* data_ = nullptr;
-    index size_ = 0;
 };
 
 template <class Range>
-span(Range&) -> span<std::remove_pointer_t<pointer_t<Range>>>;
+span(Range&) -> span<std::remove_pointer_t<pointer_t<Range>>, static_size_v<Range>>;
 
-template <class T>
-using cspan = span<const T>;
+template <class T, index N>
+struct static_size<span<T, N>> : index_constant<N> {};
+
+template <class T, index N = dynamic_size>
+using cspan = span<const T, N>;
 
 template <class Char>
 class char_span : public cspan<Char> {

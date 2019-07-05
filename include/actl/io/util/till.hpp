@@ -23,8 +23,8 @@ struct till {
 template <class T, class P>
 till(T&&, P) -> till<T, P>;
 
-template <class Device, class P>
-inline index read_till(Device& id, till<span<char_t<Device>>, P> x) {
+template <class Device, class P, index N>
+inline index read_till(Device& id, till<span<char_t<Device>, N>, P> x) {
     index i = 0;
     const index size = x.value.size();
     if constexpr (has_input_buffer<Device>::value) {
@@ -46,8 +46,8 @@ inline index read_till(Device& id, till<span<char_t<Device>>, P> x) {
     return i;
 }
 
-template <class Device, class Format, class P>
-inline bool deserialize(Device& id, Format&, till<span<char_t<Device>>, P> x) {
+template <class Device, class Format, class P, index N>
+inline bool deserialize(Device& id, Format&, till<span<char_t<Device>, N>, P> x) {
     read_till(id, x);
     return true;
 }

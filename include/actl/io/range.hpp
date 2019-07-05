@@ -10,10 +10,10 @@
 #include <actl/container/functions.hpp>
 #include <actl/io/io.hpp>
 #include <actl/range/traits.hpp>
-#include <actl/util/static_size.hpp>
 
 namespace ac::io {
 
+// TODO: fix this trait to work for spans with static extent.
 template <class T, class Device, class C = char_t<Device>>
 constexpr bool is_custom_range_v =
     is_range_v<T> && !std::is_base_of_v<cspan<C>, T> && !std::is_base_of_v<span<C>, T>;
@@ -21,7 +21,7 @@ constexpr bool is_custom_range_v =
 template <class Device, class Format, class R, enable_int_if<is_custom_range_v<R, Device>> = 0>
 inline index serialize(Device& od, Format& fmt, const R& x) {
     index res{};
-    if constexpr (is_container_v<R> && static_size_v<R> != dynamic_size) {
+    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         res = write_size(od, fmt, x.size());
     }
     // TODO: replace with is_contiguous_range_v and handle span properly.

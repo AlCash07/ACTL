@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 namespace ac {
 
 inline constexpr index dynamic_size = -1;
@@ -18,6 +20,6 @@ template <class T, index N>
 struct static_size<T[N]> : index_constant<N> {};
 
 template <class T>
-inline constexpr index static_size_v = static_size<T>::value;
+inline constexpr index static_size_v = static_size<std::remove_const_t<T>>::value;
 
 }  // namespace ac
