@@ -12,7 +12,7 @@
 
 TEST("is_string") {
     ASSERT_TRUE(is_string_v<char[9]>);
-    ASSERT_TRUE(is_string_v<const char(&)[9]>);
+    ASSERT_TRUE(is_string_v<const char[9]>);
     ASSERT_TRUE(is_string_v<std::string>);
     ASSERT_FALSE(is_string_v<char>);
     ASSERT_FALSE(is_string_v<std::vector<char>>);

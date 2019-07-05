@@ -12,6 +12,7 @@
 #include <actl/io/util/raw.hpp>
 #include <actl/io/util/skip.hpp>
 #include <actl/numeric/bit.hpp>
+#include <actl/string/traits.hpp>
 
 namespace ac::io {
 
@@ -78,15 +79,10 @@ inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text_tag) {
     return deserialize(id, fmt, c);
 }
 
-// Null-terminated string literals handling.
-template <class Device, class Format, index N>
-inline index serialize(Device& od, Format& fmt, const char_t<Device> (&array)[N], text_tag) {
-    return serialize(od, fmt, char_span{array});
-}
-
-template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format& fmt, const char_t<Device> (&array)[N], text_tag) {
-    return deserialize(id, fmt, char_span{array});
+template <class Device, class Format, class S,
+          enable_int_if<is_string_v<S, const char_t<Device>>> = 0>
+inline index serialize(Device& od, Format& fmt, const S& x, text_tag) {
+    return serialize(od, fmt, char_span{x});
 }
 
 template <class Device, class... Ts>

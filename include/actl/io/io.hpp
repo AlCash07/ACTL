@@ -132,13 +132,14 @@ inline index serialize(Device& od, Format&, const cspan<char_t<Device>, N>& s) {
     return od.write(s);
 }
 
+// TODO: add overloads taking const span&.
 template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format&, const span<char_t<Device>, N>& s) {
+inline bool deserialize(Device& id, Format&, span<char_t<Device>, N>& s) {
     return id.read(s) == s.size();
 }
 
 template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format&, const cspan<char_t<Device>, N>& s) {
+inline bool deserialize(Device& id, Format&, cspan<char_t<Device>, N>& s) {
     for (char c : s) {
         if (id.peek() != c) return false;
         id.move(1);

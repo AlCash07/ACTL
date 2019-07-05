@@ -17,7 +17,7 @@ struct raw {
 };
 
 template <class T>
-raw(T)->raw<T>;
+raw(T) -> raw<T>;
 
 template <class T>
 struct is_raw : std::false_type {};

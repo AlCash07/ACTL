@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/types.hpp>
-#include <actl/util/type_traits.hpp>
+#include <type_traits>
 
 namespace ac {
 
@@ -19,6 +19,8 @@ template <class C, index N>
 struct is_string<C[N], C> : std::true_type {};
 
 template <class T, class Char = char>
-inline constexpr bool is_string_v = is_string<remove_cvref_t<T>, Char>::value;
+inline constexpr bool is_string_v =
+    is_string<std::remove_cv_t<T>, Char>::value ||
+    is_string<std::remove_cv_t<T>, std::remove_const_t<Char>>::value;
 
 }  // namespace ac

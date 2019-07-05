@@ -6,7 +6,7 @@
  **************************************************************************************************/
 
 #include <actl/std/string.hpp>
-#include <actl/test.hpp>
+#include "io/text/test_io.hpp"
 
 TEST("category") {
     using C = std::string;
@@ -24,3 +24,5 @@ TEST("read") {
     ASSERT_TRUE(read(formatted<memory<in>>{s}, x));
     ASSERT_EQUAL("01234567890123456789", x);
 }
+
+TEST("write") { test_write("abacaba", io::text{}, std::string{"abacaba"}); }
