@@ -15,12 +15,14 @@ TEST("rank 0 initialization") {
 }
 
 TEST("rank 1 initialization") {
-    ndarray<int, 1> t_dims{2, 3, 4};
-    ASSERT_EQUAL_RANGES(std::vector{3}, t_dims.dimensions());
+    ndarray<int, 1> t_dims(2);
+    ASSERT_EQUAL_RANGES(std::vector{2}, t_dims.dimensions());
+    ndarray<int, 1> t_init{2};
+    ASSERT_EQUAL_RANGES(std::vector{1}, t_init.dimensions());
 }
 
 TEST("rank 3 initialization") {
-    ndarray<int, 3> t_dims{{5, 4, 3}};
+    ndarray<int, 3> t_dims{{5, 4, 3}, 0};
     ASSERT_EQUAL_RANGES(std::vector{5, 4, 3}, t_dims.dimensions());
     for (auto x : t_dims) {
         ASSERT_EQUAL(0, x);
