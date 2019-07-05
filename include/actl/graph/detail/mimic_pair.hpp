@@ -16,7 +16,7 @@ namespace ac::detail {
 
 // Special compressed_pair that mimics either T1 or T2 (defined by index I) for the operations
 // required by set and hash set.
-template <class T1, class T2, int I>
+template <class T1, class T2, index I>
 class mimic_pair : public compressed_pair<T1, T2> {
     using base_t = compressed_pair<T1, T2>;
 
@@ -42,25 +42,25 @@ private:
     size_t hash() const { return hash_value(key()); }
 };
 
-template <class T1, class T2, int I>
+template <class T1, class T2, index I>
 using key_t = std::conditional_t<I == 1, T1, T2>;
 
-template <class T1, class T2, int I>
+template <class T1, class T2, index I>
 inline bool operator < (const mimic_pair<T1, T2, I>& lhs, const key_t<T1, T2, I>& rhs) {
     return lhs.key() < rhs;
 }
 
-template <class T1, class T2, int I>
+template <class T1, class T2, index I>
 inline bool operator < (const key_t<T1, T2, I>& lhs, const mimic_pair<T1, T2, I>& rhs) {
     return lhs < rhs.key();
 }
 
-template <class T1, class T2, int I>
+template <class T1, class T2, index I>
 inline bool operator == (const mimic_pair<T1, T2, I>& lhs, const key_t<T1, T2, I>& rhs) {
     return lhs.key() == rhs;
 }
 
-template <class T1, class T2, int I>
+template <class T1, class T2, index I>
 inline bool operator == (const key_t<T1, T2, I>& lhs, const mimic_pair<T1, T2, I>& rhs) {
     return lhs == rhs.key();
 }

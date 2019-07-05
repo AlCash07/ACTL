@@ -34,9 +34,9 @@ struct edge_vertices<Dir, V, one_vertex> {
     V x;
 
     edge_vertices(V u, V v) : x(u ^ v) {
-        static_assert(std::is_same_v<V, int>,
+        static_assert(std::is_integral_v<V>,
                       "undirected and bidirectional graphs are incompatible with one_vertex edge "
-                      "selector and non-int vertex id");
+                      "selector and non-integral vertex id");
     }
 
     V other(V src) const { return src ^ x; }
@@ -49,7 +49,7 @@ struct edge_vertices<Dir, V, two_vertices> {
     edge_vertices(V u, V v) : u(u), v(v) {}
 
     V other(V src) const {
-        if constexpr (std::is_same_v<V, int>) {
+        if constexpr (std::is_integral_v<V>) {
             return src ^ u ^ v;
         } else {
             return src == u ? v : u;

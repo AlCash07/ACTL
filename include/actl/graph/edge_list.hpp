@@ -55,7 +55,7 @@ public:
 
     edge_list_edges() = default;
 
-    int edge_count() const { return static_cast<int>(edges_.size()); }
+    index edge_count() const { return static_cast<index>(edges_.size()); }
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {

@@ -15,7 +15,6 @@
 
 namespace ac {
 
-// TODO: rename into breadth_first_search when C++17 is fully supported.
 template <class... Components>
 class breadth_first_search : public component_set<Components...> {
     using base_t = component_set<Components...>;

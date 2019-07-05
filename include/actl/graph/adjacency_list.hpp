@@ -220,9 +220,9 @@ public:
 
     using base_t::base_t;
 
-    int edge_count() const { return edge_list_.edge_count(); }
+    index edge_count() const { return edge_list_.edge_count(); }
 
-    int degree(vertex u) const { return out_edges(u).size(); }
+    index degree(vertex u) const { return out_edges(u).size(); }
 
     iterator_range<edge_iterator> edges() const {
         if constexpr (std::is_same_v<edge_selector, two_vertices>) {

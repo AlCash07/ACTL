@@ -42,14 +42,14 @@ public:
     vertex_list() = default;
 
     template <bool B = RA, enable_int_if<B> = 0>
-    explicit vertex_list(int n) {
+    explicit vertex_list(index n) {
         resize(n);
     }
 
-    int vertex_count() const { return static_cast<int>(vertices_.size()); }
+    index vertex_count() const { return static_cast<index>(vertices_.size()); }
 
     template <bool B = RA, enable_int_if<B> = 0>
-    void resize(int n) {
+    void resize(index n) {
         vertices_.resize(static_cast<size_type_t<vertex_container>>(n));
     }
 
@@ -57,7 +57,7 @@ public:
 
     vertex null_vertex() const { return id_null(vertices_); }
 
-    vertex nth_vertex(int n) const {
+    vertex nth_vertex(index n) const {
         ACTL_ASSERT(0 <= n && n < vertex_count());
         return *std::next(id_range(vertices_).begin(), n);
     }
