@@ -10,7 +10,6 @@
 #include <actl/assert.hpp>
 #include <actl/numeric/functions.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/std/array.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/span.hpp>
 #include <actl/util/type_traits.hpp>
@@ -20,7 +19,7 @@ namespace ac {
 
 namespace detail {
 
-template <int N, class Data, class Dimensions>
+template <class Data, class Dimensions>
 class ndarray_base;
 
 /* Helper types. */
@@ -52,7 +51,14 @@ struct nd_initializer_list {
 };
 
 template <class T>
-struct nd_initializer_list<T, 0> { using type = T; };
+struct nd_initializer_list<T, 0> {
+    using type = T;
+};
+
+template <class T>
+struct nd_initializer_list<T, -1> {
+    using type = none;
+};
 
 template <class T, int N>
 using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
@@ -232,6 +238,7 @@ private:
 template <int N, class Data, int... Ds>
 class ndarray_shape<N, Data, static_array<Ds...>> : public ndarray_data<N, Data> {
     using base_t = ndarray_data<N, Data>;
+    using Dims = static_array<Ds...>;
 
 public:
     template <class... Ts>
@@ -241,30 +248,29 @@ public:
     explicit ndarray_shape(nd_initializer_list_t<value_t<base_t>, N> il)
         : base_t{size(), il, dimensions()} {}
 
-    static constexpr int rank() { return static_cast<int>(sizeof...(Ds)); }
+    static constexpr int rank() { return static_size_v<Dims>; }
 
     static constexpr int size() { return static_product<Ds...>::value; }
 
-    static constexpr static_array<Ds...> dimensions() { return {}; }
+    static constexpr Dims dimensions() { return {}; }
 };
 
 /* NDArray subscript operator implementation */
 
-template <class T, int N, class D, bool = 1 < N>
+template <class T, int N, class Dims, bool = 1 < N>
 struct ndarray_reference {
-    using type = ndarray_base<N - 1, T*, const int*>;
+    using type = ndarray_base<T*, span<int, N - 1>>;
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, int i) {
-        int stride = 1;
-        for (int j = 1; j < N; ++j) stride *= ptr->dimension(i);
-        return type{std::data(ptr->dimensions()) + 1, ptr->data() + i * stride};
+        span<int, N - 1> dims{std::data(ptr->dimensions()) + 1, N - 1};
+        return type{dims, ptr->data() + i * compute_product(dims)};
     }
 };
 
 template <class T, int N, int D0, int... Ds>
 struct ndarray_reference<T, N, static_array<D0, Ds...>, true> {
-    using type = ndarray_base<N - 1, T*, static_array<Ds...>>;
+    using type = ndarray_base<T*, static_array<Ds...>>;
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, int i) {
@@ -272,8 +278,8 @@ struct ndarray_reference<T, N, static_array<D0, Ds...>, true> {
     }
 };
 
-template <class T, class D>
-struct ndarray_reference<T, 1, D, false> {
+template <class T, class Dims>
+struct ndarray_reference<T, 1, Dims, false> {
     using type = T&;
 
     template <class NDArrayPtr>
@@ -282,8 +288,8 @@ struct ndarray_reference<T, 1, D, false> {
     }
 };
 
-template <class T, int N, class D>
-using ndarray_reference_t = typename ndarray_reference<T, N, D>::type;
+template <class T, int N, class Dims>
+using ndarray_reference_t = typename ndarray_reference<T, N, Dims>::type;
 
 template <int N, class Data, class Dims>
 class ndarray_subscript : public ndarray_shape<N, Data, Dims> {
@@ -297,8 +303,8 @@ public:
     using base_t::base_t;
 
     constexpr int dimension(int i) const {
-        ACTL_ASSERT(0 <= i && i < N);
-        return this->dimensions()[i];
+        ACTL_ASSERT(0 <= i && i < this->rank());
+        return this->dimensions()[static_cast<size_type_t<Dims>>(i)];
     }
 
     reference operator[](int i) {
@@ -326,14 +332,16 @@ public:
 
 /* Base class, defines type aliases and secondary interface methods. */
 
-template <int N, class Data, class Dims>
-class ndarray_base : public ndarray_subscript<N, Data, Dims> {
-    using base_t = ndarray_subscript<N, Data, Dims>;
-    using T      = typename base_t::value_type;
+template <class Data, class Dims>
+class ndarray_base : public ndarray_subscript<static_size_v<Dims>, Data, Dims> {
+    using base_t = ndarray_subscript<static_size_v<Dims>, Data, Dims>;
+    using T = value_t<base_t>;
 
 public:
     using size_type              = int;
     using difference_type        = int;
+    using reference              = T&;
+    using const_reference        = const T&;
     using pointer                = T*;
     using const_pointer          = const T*;
     using iterator               = pointer;
@@ -342,10 +350,6 @@ public:
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     using base_t::base_t;
-
-    void fill(const T& value) { std::fill_n(this->data(), this->size(), value); }
-
-    void clear() { fill(T{}); }
 
     iterator begin() { return this->data(); }
     iterator end() { return begin() + this->size(); }
@@ -368,12 +372,12 @@ public:
     bool empty() const { return this->size() == 0; }
 
     template <class... Ints>
-    T& operator()(Ints... is) {
+    reference operator()(Ints... is) {
         return this->data()[getIndex<0>(0, is...)];
     }
 
     template <class... Ints>
-    const T& operator()(Ints... is) const {
+    const_reference operator()(Ints... is) const {
         return this->data()[getIndex<0>(0, is...)];
     }
 
@@ -392,43 +396,54 @@ private:
     }
 };
 
-template <int N0, class D0, class S0, int N1, class D1, class S1>
-inline bool operator == (const ndarray_base<N0, D0, S0>& lhs, const ndarray_base<N1, D1, S1>& rhs) {
-    if constexpr (N0 != N1) return false;
-    for (int i = 0; i < N0; ++i) {
+template <class D0, class S0, class D1, class S1>
+inline bool operator == (const ndarray_base<D0, S0>& lhs, const ndarray_base<D1, S1>& rhs) {
+    if (lhs.rank() != rhs.rank()) return false;
+    for (int i = 0; i < lhs.rank(); ++i) {
         if (lhs.dimension(i) != rhs.dimension(i)) return false;
     }
     return std::equal(lhs.data(), lhs.data() + lhs.size(), rhs.data());
 }
 
-template <int N0, class D0, class S0, int N1, class D1, class S1>
-inline bool operator != (const ndarray_base<N0, D0, S0>& lhs, const ndarray_base<N1, D1, S1>& rhs) {
+template <class D0, class S0, class D1, class S1>
+inline bool operator != (const ndarray_base<D0, S0>& lhs, const ndarray_base<D1, S1>& rhs) {
     return !(lhs == rhs);
 }
 
-template <int N, class D, class S>
-inline void swap(ndarray_base<N, D, S>& lhs, ndarray_base<N, D, S>& rhs) { lhs.swap(rhs); }
+template <class D, class S>
+inline void swap(ndarray_base<D, S>& lhs, ndarray_base<D, S>& rhs) {
+    lhs.swap(rhs);
+}
 
 template <class T, int... Ds>
-using ndarray_base_static =
-    ndarray_base<sizeof...(Ds), T[static_product<Ds...>::value], static_array<Ds...>>;
+using ndarray_base_static = ndarray_base<T[static_product<Ds...>::value], static_array<Ds...>>;
+
+template <int N>
+struct dimensions {
+    using type = int[N];
+};
+
+template <>
+struct dimensions<0> {
+    using type = static_array<>;
+};
+
+template <>
+struct dimensions<dynamic_size> {
+    using type = std::vector<int>;
+};
+
+template <int N>
+using dimensions_t = typename dimensions<N>::type;
 
 }  // namespace detail
 
 /**
  * N-dimensional array.
  */
-template <class T, int N>
-class ndarray : public detail::ndarray_base<N, std::unique_ptr<T[]>, int[N]> {
-    using base_t = detail::ndarray_base<N, std::unique_ptr<T[]>, int[N]>;
-
-public:
-    using base_t::base_t;
-};
-
-template <class T>
-class ndarray<T, 0> : public detail::ndarray_base_static<T> {
-    using base_t = detail::ndarray_base_static<T>;
+template <class T, int N = dynamic_size, class Dims = detail::dimensions_t<N>>
+class ndarray : public detail::ndarray_base<std::unique_ptr<T[]>, Dims> {
+    using base_t = detail::ndarray_base<std::unique_ptr<T[]>, Dims>;
 
 public:
     using base_t::base_t;
@@ -448,19 +463,22 @@ public:
 /**
  * View of an N-dimensional array.
  */
-template <class T, int N, class Dims = int[N]>
-class ndarray_view : public detail::ndarray_base<N, T*, Dims> {
-    using base_t = detail::ndarray_base<N, T*, Dims>;
+template <class T, int N = dynamic_size, class Dims = detail::dimensions_t<N>>
+class ndarray_view : public detail::ndarray_base<T*, Dims> {
+    using base_t = detail::ndarray_base<T*, Dims>;
 
 public:
     using base_t::base_t;
 
     template <class Data, class Dimensions>
-    ndarray_view& operator = (const detail::ndarray_base<N, Data, Dimensions>& rhs) {
+    ndarray_view& operator = (const detail::ndarray_base<Data, Dimensions>& rhs) {
         ACTL_ASSERT(this->size() == rhs.size());
         copy(*this, rhs.begin());
         return *this;
     }
 };
+
+template <int... Is>
+struct static_size<detail::static_array<Is...>> : index_constant<sizeof...(Is)> {};
 
 }  // namespace ac

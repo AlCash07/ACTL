@@ -40,3 +40,12 @@ TEST("indexing") {
     ASSERT_EQUAL(4, t3(1, 0, 0));
     ASSERT_EQUAL(6, t3(1, 1, 1));
 }
+
+TEST("rank -1") {
+    ndarray<int> t{{3, 2}};
+    ASSERT_EQUAL(std::vector{3, 2}, t.dimensions());
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 2; ++j) t(i, j) = i * 2 + j;
+    }
+    ASSERT_EQUAL_RANGES(std::vector{0, 1, 2, 3, 4, 5}, t);
+}
