@@ -82,7 +82,7 @@ public:
 
     ndarray_container(index size) { ACTL_ASSERT(size == Size); }
 
-    T*       data() { return data_; }
+    T* data() { return data_; }
     const T* data() const { return data_; }
 
     void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
@@ -98,7 +98,7 @@ public:
 
     ndarray_container(index size) : data_{std::make_unique<T[]>(static_cast<size_t>(size))} {}
 
-    T*       data() { return data_.get(); }
+    T* data() { return data_.get(); }
     const T* data() const { return data_.get(); }
 
     void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
@@ -166,7 +166,7 @@ public:
 
     void swap(ndarray_data& rhs) { std::swap(data_, rhs.data_); }
 
-    T*       data() { return data_; }
+    T* data() { return data_; }
     const T* data() const { return data_; }
 
 private:
@@ -189,7 +189,7 @@ struct ndarray_dims<Int[N]> {
     Int dims_[N] = {};
 };
 
-template <int N, class Data, class Dims>
+template <index N, class Data, class Dims>
 class ndarray_shape : private ndarray_dims<Dims>, public ndarray_data<N, Data> {
     using base_dims = ndarray_dims<Dims>;
     using base_data = ndarray_data<N, Data>;
