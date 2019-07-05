@@ -22,11 +22,12 @@ class depth_first_search : public component_set<Components...> {
     using base_t::execute_all;
 
     // Recursive implementation to demonstrate dfs logic clearer.
+    // Returns true if terminator vertex was found.
     template <class Graph, class VertexPredicate>
-    void recurse(const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator) {
+    bool recurse(const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator) {
         execute_all(on_vertex_discover{}, u);
         execute_all(on_vertex_examine{}, u);
-        if (is_terminator(u)) return;
+        if (is_terminator(u)) return true;
         for (auto e : graph.out_edges(u)) {
             auto v = e.target();
             execute_all(on_edge_examine{}, e);
@@ -34,11 +35,12 @@ class depth_first_search : public component_set<Components...> {
                 execute_all(on_non_tree_edge{}, e);
             } else {
                 execute_all(on_tree_edge{}, e);
-                recurse(graph, v, is_terminator);
+                if (recurse(graph, v, is_terminator)) return true;
             }
             execute_all(on_edge_finish{}, e);
         }
         execute_all(on_vertex_finish{}, u);
+        return false;
     }
 
 public:
@@ -103,7 +105,7 @@ public:
     void operator()(const Graph& graph, vertex_t<Graph> s, Stack&& stack = {},
                     VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
-        visit(graph, s, std::forward<Stack>(stack), is_terminator);
+        visit(graph, s, stack, is_terminator);
     }
 
     template <class Graph, class Stack = std::stack<stack_value<Graph>>,
@@ -113,7 +115,7 @@ public:
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {
             if (!base_t::execute_first(is_vertex_discovered{}, s))
-                visit(graph, s, std::forward<Stack>(stack), is_terminator);
+                visit(graph, s, stack, is_terminator);
         }
     }
 };
