@@ -42,12 +42,15 @@ class depth_first_search : public component_set<Components...> {
 
 public:
     template <class Graph>
-    using stack_value_t = std::pair<typename Graph::vertex, typename Graph::out_edge_id>;
+    struct stack_value {
+        typename Graph::vertex vertex;
+        typename Graph::out_edge_id out_edge;
+    };
 
     using base_t::base_t;
 
     // Depth first search without initialization.
-    template <class Graph, class Stack = std::stack<stack_value_t<Graph>>,
+    template <class Graph, class Stack = std::stack<stack_value<Graph>>,
               class VertexPredicate = always_false>
     void visit(const Graph& graph, typename Graph::vertex u, Stack&& stack = {},
                VertexPredicate is_terminator = {}) {
@@ -56,7 +59,7 @@ public:
         auto it = graph.out_edges(u).begin();
         stack.push({u, it.id()});
         while (!stack.empty()) {
-            u = stack.top().first;
+            u = stack.top().vertex;
             if (it == graph.out_edges(u).begin()) {
                 execute_all(on_vertex_discover{}, u);
                 execute_all(on_vertex_examine{}, u);
@@ -69,8 +72,8 @@ public:
                 if (it == end) {
                     stack.pop();
                     if (!stack.empty()) {
-                        it = typename Graph::out_edge_iterator(&graph, stack.top().first,
-                                                               stack.top().second);
+                        it = typename Graph::out_edge_iterator{&graph, stack.top().vertex,
+                                                               stack.top().out_edge};
                         execute_all(on_edge_finish{}, *it);
                         ++it;
                     }
@@ -84,7 +87,7 @@ public:
                     execute_all(on_edge_finish{}, *it);
                 } else {
                     execute_all(on_tree_edge{}, *it);
-                    stack.top().second = it.id();
+                    stack.top().out_edge = it.id();
                     it = graph.out_edges(v).begin();
                     stack.push({v, it.id()});
                     break;
@@ -94,24 +97,22 @@ public:
         execute_all(on_search_finish{});
     }
 
-    template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>,
+    template <class Graph, class Stack = std::stack<stack_value<Graph>>,
               class VertexPredicate = always_false>
-    void operator()(const Graph& graph, typename Graph::vertex s, OutEdgeIteratorStack&& stack = {},
+    void operator()(const Graph& graph, typename Graph::vertex s, Stack&& stack = {},
                     VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
-        visit(graph, s, std::forward<OutEdgeIteratorStack>(stack), is_terminator);
+        visit(graph, s, std::forward<Stack>(stack), is_terminator);
     }
 
-    template <class Graph, class OutEdgeIteratorStack = std::stack<stack_value_t<Graph>>,
+    template <class Graph, class Stack = std::stack<stack_value<Graph>>,
               class VertexPredicate = always_false,
-              enable_int_if<!std::is_same_v<remove_cvref_t<OutEdgeIteratorStack>,
-                                            typename Graph::vertex>> = 0>
-    void operator()(const Graph& graph, OutEdgeIteratorStack&& stack = {},
-                    VertexPredicate is_terminator = {}) {
+              enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, typename Graph::vertex>> = 0>
+    void operator()(const Graph& graph, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {
             if (!base_t::execute_first(is_vertex_discovered{}, s))
-                visit(graph, s, std::forward<OutEdgeIteratorStack>(stack), is_terminator);
+                visit(graph, s, std::forward<Stack>(stack), is_terminator);
         }
     }
 };
