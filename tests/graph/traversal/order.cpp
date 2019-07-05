@@ -12,21 +12,21 @@
 TEST("inorder") {
     auto graph = sample_undirected_tree();
     std::vector<int> order;
-    print_inorder(graph, 0, std::back_inserter(order));
+    inorder(graph, 0, std::back_inserter(order));
     ASSERT_EQUAL(std::vector<int>{1, 0, 3, 2, 6, 4, 2, 5}, order);
 }
 
 TEST("postorder") {
     auto graph = sample_undirected_tree();
     std::vector<int> order;
-    print_postorder(graph, 0, std::back_inserter(order));
+    postorder(graph, 0, std::back_inserter(order));
     ASSERT_EQUAL(std::vector<int>{1, 3, 6, 4, 5, 2, 0}, order);
 }
 
 TEST("preorder") {
     auto graph = sample_undirected_tree();
     std::vector<int> order;
-    print_preorder(graph, 0, std::back_inserter(order));
+    preorder(graph, 0, std::back_inserter(order));
     ASSERT_EQUAL(std::vector<int>{0, 1, 2, 3, 4, 6, 5}, order);
 }
 

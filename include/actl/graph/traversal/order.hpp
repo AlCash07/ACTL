@@ -13,13 +13,13 @@
 
 namespace ac {
 
-// For binary tree, the output is standard. Otherwise, a vertex is printer between each pair of
+// For binary tree, the output is standard. Otherwise, a vertex is printed between each pair of
 // children or once after them if there are less than 2 children.
 // The output has from n (for binary tree) to 2 n - 3 (for star graph) vertices.
 template <class VertexOutputIterator, class VertexStateMap>
 struct inorder_printer {
     VertexOutputIterator it;
-    VertexStateMap       state;
+    VertexStateMap state;
 
     using vertex = output_type_t<VertexOutputIterator>;
 
@@ -48,20 +48,20 @@ struct vertex_printer {
 };
 
 template <class Graph, class VertexOutputIterator>
-inline void print_inorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
+inline void inorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
     auto state = make_default_vertex_map<char>(graph);
     depth_first_search{
         inorder_printer<VertexOutputIterator, decltype(state)>{it, std::move(state)}}(graph, s);
 }
 
 template <class Graph, class VertexOutputIterator>
-inline void print_postorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
+inline void postorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
     depth_first_search{vertex_printer<on_vertex_finish, VertexOutputIterator>{it},
                        make_default_discovered_flag(graph)}(graph, s);
 }
 
 template <class Graph, class VertexOutputIterator>
-inline void print_preorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
+inline void preorder(const Graph& graph, typename Graph::vertex s, VertexOutputIterator it) {
     depth_first_search{vertex_printer<on_vertex_examine, VertexOutputIterator>{it},
                        make_default_discovered_flag(graph)}(graph, s);
 }
