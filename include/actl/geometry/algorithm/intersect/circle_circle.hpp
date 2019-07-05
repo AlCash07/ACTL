@@ -22,20 +22,20 @@ template <class P = use_default>
 struct intersect_circle_circle_point : geometry::policy {};
 
 // TODO: implement using cosine theorem.
-template <class T0, class T1, class OutputIterator>
+template <class T0, class T1, class OutIter>
 inline auto intersect(intersect_circle_circle_scalar, const circle<T0>& lhs, const circle<T1>& rhs,
-                      OutputIterator dst) {
-    using O = geometry::scalar_t<output_type_t<OutputIterator>>;
+                      OutIter dst) {
+    using O = geometry::scalar_t<output_type_t<OutIter>>;
     auto centers_vector = rhs.center - lhs.center;
     auto centers_angle = angle(standard_angle<O, O>{}, centers_vector);
     return dst;
 }
 
-template <class P, class T0, class T1, class OutputIterator>
+template <class P, class T0, class T1, class OutIter>
 inline auto intersect(intersect_circle_circle_point<P>, const circle<T0>& lhs,
-                      const circle<T1>& rhs, OutputIterator dst) {
+                      const circle<T1>& rhs, OutIter dst) {
     using X = geometry::product_t<P, T0, T1>;
-    using O = geometry::scalar_t<output_type_t<OutputIterator>>;
+    using O = geometry::scalar_t<output_type_t<OutIter>>;
     auto centers_vector = rhs.center - lhs.center;
     auto centers_dist   = abs<X>(centers_vector);
     X lradius = static_cast<X>(lhs.radius);
@@ -70,10 +70,9 @@ inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, poin
 
 }  // namespace detail
 
-template <class T0, class T1, class OutputIterator>
-inline auto intersect(use_default, const circle<T0>& lhs, const circle<T1>& rhs,
-                      OutputIterator dst) {
-    return detail::intersect(lhs, rhs, dst, geometry::tag_t<output_type_t<OutputIterator>>{});
+template <class T0, class T1, class OutIter>
+inline auto intersect(use_default, const circle<T0>& lhs, const circle<T1>& rhs, OutIter dst) {
+    return detail::intersect(lhs, rhs, dst, geometry::tag_t<output_type_t<OutIter>>{});
 }
 
 }  // namespace ac

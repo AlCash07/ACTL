@@ -20,9 +20,9 @@ struct antipodal_vertices_policy : CcwPolicy {};
  * Outputs all candidates for the pairs of antipodal vertices (pairs of iterators).
  * The actual antipodal pair for a vertex is the last pair with this vertex in the output.
  */
-template <class CP, class T, class OutputIterator>
+template <class CP, class T, class OutIter>
 inline auto antipodal_vertices(const antipodal_vertices_policy<CP>& policy,
-                               const convex_polygon<T>& polygon, OutputIterator dst) {
+                               const convex_polygon<T>& polygon, OutIter dst) {
     for (auto i = polygon.begin(), j = i + 1; j != polygon.end(); ++i) {
         for (; j != polygon.end(); ++j) {
             *dst++ = std::pair{i, j};
@@ -32,8 +32,8 @@ inline auto antipodal_vertices(const antipodal_vertices_policy<CP>& policy,
     return dst;
 }
 
-template <class T, class OutputIterator>
-inline auto antipodal_vertices(const convex_polygon<T>& polygon, OutputIterator dst) {
+template <class T, class OutIter>
+inline auto antipodal_vertices(const convex_polygon<T>& polygon, OutIter dst) {
     return antipodal_vertices(antipodal_vertices_policy<>{}, polygon, dst);
 }
 

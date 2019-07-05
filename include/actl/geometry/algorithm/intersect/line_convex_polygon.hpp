@@ -52,15 +52,15 @@ inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const lin
 
 }  // namespace detail
 
-template <class AP, class T0, class K, class T1, class OutputIterator>
+template <class AP, class T0, class K, class T1, class OutIter>
 inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const line<T0, 2, K>& line,
-                      const convex_polygon<T1>& polygon, OutputIterator dst) {
+                      const convex_polygon<T1>& polygon, OutIter dst) {
     return detail::intersect(policy, line, polygon, detail::adapt_iterator(line, dst));
 }
 
-template <class T0, class K, class T1, class OutputIterator>
+template <class T0, class K, class T1, class OutIter>
 inline auto intersect(use_default, const line<T0, 2, K>& line, const convex_polygon<T1>& polygon,
-                      OutputIterator dst) {
+                      OutIter dst) {
     return intersect(intersect_line_convex_polygon<>{}, line, polygon, dst);
 }
 

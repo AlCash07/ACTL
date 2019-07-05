@@ -34,8 +34,8 @@ inline bool equal(const Range0& lhs, const Range1& rhs, BinaryPredicate pred) {
     return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), pred);
 }
 
-template <class Range, class OutputIterator>
-inline OutputIterator copy(const Range& src, OutputIterator dst) {
+template <class Range, class OutIter>
+inline OutIter copy(const Range& src, OutIter dst) {
     return std::copy(std::begin(src), std::end(src), dst);
 }
 

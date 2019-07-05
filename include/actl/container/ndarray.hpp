@@ -117,8 +117,8 @@ class ndarray_data : public ndarray_container<Data> {
 public:
     ndarray_data(index size) : base_t{size} {}
 
-    template <class InputIterator>
-    ndarray_data(index size, InputIterator it) : base_t{size} {
+    template <class InIter>
+    ndarray_data(index size, InIter it) : base_t{size} {
         std::copy_n(it, size, this->data());
     }
 

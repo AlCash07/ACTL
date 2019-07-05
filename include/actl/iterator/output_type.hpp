@@ -15,9 +15,9 @@
 
 namespace ac {
 
-template <class OutputIterator>
+template <class OutIter>
 struct output_type {
-    using type = value_t<OutputIterator>;
+    using type = value_t<OutIter>;
 };
 
 template <class T, class CharT, class Traits>
@@ -40,7 +40,7 @@ struct output_type<std::insert_iterator<Container>> {
     using type = value_t<Container>;
 };
 
-template <class OutputIterator>
-using output_type_t = typename output_type<OutputIterator>::type;
+template <class OutIter>
+using output_type_t = typename output_type<OutIter>::type;
 
 }  // namespace ac

@@ -47,16 +47,15 @@ inline auto intersect(const intersect_line_line<AP>& policy, const line<T0, 2, K
 
 }  // namespace detail
 
-template <class AP, class T0, class K0, class T1, class K1, class OutputIterator>
+template <class AP, class T0, class K0, class T1, class K1, class OutIter>
 inline auto intersect(const intersect_line_line<AP>& policy, const line<T0, 2, K0>& lhs,
-                      const line<T1, 2, K1>& rhs, OutputIterator dst) {
-    return detail::intersect(policy, lhs, rhs, dst,
-                             geometry::tag_t<output_type_t<OutputIterator>>{});
+                      const line<T1, 2, K1>& rhs, OutIter dst) {
+    return detail::intersect(policy, lhs, rhs, dst, geometry::tag_t<output_type_t<OutIter>>{});
 }
 
-template <class T0, class K0, class T1, class K1, class OutputIterator>
+template <class T0, class K0, class T1, class K1, class OutIter>
 inline auto intersect(use_default, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs,
-                      OutputIterator dst) {
+                      OutIter dst) {
     return intersect(comparable_intersect_line_line<>{}, lhs, rhs, dst);
 }
 

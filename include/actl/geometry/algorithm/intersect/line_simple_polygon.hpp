@@ -56,16 +56,15 @@ inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
 
 }  // namespace detail
 
-template <class P, class AP, class T0, class K, class T1, class OutputIterator>
+template <class P, class AP, class T0, class K, class T1, class OutIter>
 inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
-                      const line<T0, 2, K>& line, const simple_polygon<T1>& polygon,
-                      OutputIterator dst) {
+                      const line<T0, 2, K>& line, const simple_polygon<T1>& polygon, OutIter dst) {
     return detail::intersect(policy, line, polygon, detail::adapt_iterator(line, dst));
 }
 
-template <class T0, class K, class T1, class OutputIterator>
+template <class T0, class K, class T1, class OutIter>
 inline auto intersect(use_default, const line<T0, 2, K>& line, const simple_polygon<T1>& polygon,
-                      OutputIterator dst) {
+                      OutIter dst) {
     return intersect(intersect_line_simple_polygon<>{}, line, polygon, dst);
 }
 
