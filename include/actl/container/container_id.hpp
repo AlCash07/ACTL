@@ -36,11 +36,11 @@ public:
         static_assert(sizeof(It) == sizeof(void*));
     }
 
-    friend std::uintptr_t id_key(iterator_id id) {
+    friend std::uintptr_t get_id_key(iterator_id id) {
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.base()));
     }
 
-    bool operator < (iterator_id rhs) const { return id_key(*this) < id_key(rhs); }
+    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
 
 private:
     friend struct ac::iterator_core_access;
@@ -48,7 +48,7 @@ private:
 
     iterator_id dereference() const { return *this; }
 
-    size_t hash() const { return hash_value(id_key(*this)); }
+    size_t hash() const { return hash_value(get_id_key(*this)); }
 };
 
 template <class C>
@@ -63,7 +63,7 @@ struct container_id_traits<C, true, true> {
     using iterator = integer_iterator<id>;
 };
 
-inline constexpr int id_key(int id) { return id; }
+inline constexpr int get_id_key(int id) { return id; }
 
 inline constexpr int id_to_raw(int id) { return id; }
 
@@ -84,7 +84,7 @@ using container_id_iterator = typename container_id_traits<C>::iterator;
 
 // This key can be used for id comparison.
 template <class Id>
-using id_key_t = decltype(id_key(std::declval<Id>()));
+using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
 template <class C>
 inline container_id<C> id_begin(const C& cont) {
