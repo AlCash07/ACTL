@@ -14,7 +14,7 @@ namespace ac::detail {
 template <class V, class B, bool CompareSrc = false>
 class edge {
 public:
-    using vertex  = V;
+    using vertex = V;
     using id_type = std::conditional_t<CompareSrc, std::pair<V, B>, B>;
 
     explicit constexpr edge() = default;

@@ -30,9 +30,9 @@ private:
 template <class AdjList, class It, class E = typename AdjList::edge>
 class adj_list_out_edge_it
     : public iterator_facade<adj_list_out_edge_it<AdjList, It, E>, std::input_iterator_tag, E, E> {
-    using vertex = typename AdjList::vertex;
-
     friend struct ac::iterator_core_access;
+
+    using vertex = typename AdjList::vertex;
 
     E dereference() const { return al_->get_edge(u_, *it_); }
 
@@ -41,8 +41,8 @@ class adj_list_out_edge_it
     bool equals(const adj_list_out_edge_it& rhs) const { return it_ == rhs.it_; }
 
     const AdjList* al_;
-    vertex         u_;
-    It             it_;
+    vertex u_;
+    It it_;
 
 public:
     explicit adj_list_out_edge_it() = default;
@@ -94,7 +94,7 @@ class adj_list_edge_it
         return u_ == rhs.u_ && (is_end() || it_ == rhs.it_);
     }
 
-    const AdjList*           al_;
+    const AdjList* al_;
     typename AdjList::vertex u_;
     typename AdjList::out_it it_;
 
@@ -103,7 +103,7 @@ public:
 
     explicit adj_list_edge_it(const AdjList* al, bool begin) : al_{al} {
         if (begin) {
-            u_  = id_begin(al_->vertices_);
+            u_ = id_begin(al_->vertices_);
             it_ = al_->out_begin(u_);
             skip_empty();
         } else {

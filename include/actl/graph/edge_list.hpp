@@ -49,8 +49,8 @@ public:
 
     using directed_category = Dir;
 
-    static constexpr bool is_undirected         = std::is_same_v<Dir, undirected>;
-    static constexpr bool is_directed           = !is_undirected;
+    static constexpr bool is_undirected = std::is_same_v<Dir, undirected>;
+    static constexpr bool is_directed = !is_undirected;
     static constexpr bool allows_parallel_edges = !is_unique_associative_container_v<EC>;
 
     edge_list_edges() = default;
