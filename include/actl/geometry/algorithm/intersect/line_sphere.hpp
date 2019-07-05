@@ -19,7 +19,7 @@ struct intersect_line_sphere : AreaPolicy {};
 
 namespace detail {
 
-template <class P, class AP, int N, class T0, class K, class T1, class It>
+template <class P, class AP, index N, class T0, class K, class T1, class It>
 inline auto intersect(const intersect_line_sphere<P, AP>& policy, const line<T0, N, K>& line,
                       const sphere<T1, N>& sphere, It dst) {
     using O = geometry::scalar_t<output_type_t<It>>;
@@ -44,13 +44,13 @@ inline auto intersect(const intersect_line_sphere<P, AP>& policy, const line<T0,
 
 }  // namespace detail
 
-template <class P, int N, class T0, class K, class T1, class OutputIterator>
+template <class P, index N, class T0, class K, class T1, class OutputIterator>
 inline OutputIterator intersect(const intersect_line_sphere<P>& policy, const line<T0, N, K>& line,
                                 const sphere<T1, N>& sphere, OutputIterator dst) {
     return detail::intersect(policy, line, sphere, detail::adapt_iterator(line, dst));
 }
 
-template <int N, class T0, class K, class T1, class OutputIterator>
+template <index N, class T0, class K, class T1, class OutputIterator>
 inline auto intersect(use_default, const line<T0, N, K>& line, const sphere<T1, N>& sphere,
                       OutputIterator dst) {
     return intersect(intersect_line_sphere<>{}, line, sphere, dst);

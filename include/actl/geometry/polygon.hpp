@@ -79,9 +79,9 @@ class monotone_polygon : public polygon<T> {
 public:
     using polygon<T>::polygon;
 
-    int right() const { return right_; }
+    index right() const { return right_; }
 
-    int right_;
+    index right_;
 };
 
 template <class T>
@@ -117,8 +117,8 @@ public:
         this->resize(polygon.size());
         auto minmax = minmax_element(polygon);
         std::rotate_copy(polygon.begin(), minmax.first, polygon.end(), this->begin());
-        this->right_ = static_cast<int>(minmax.second - minmax.first);
-        if (this->right_ < 0) this->right_ += static_cast<int>(polygon.size());
+        this->right_ = minmax.second - minmax.first;
+        if (this->right_ < 0) this->right_ += static_cast<index>(polygon.size());
     }
 
     reference_t<const monotone_polygon<T>> observer() const { return *this->begin(); }

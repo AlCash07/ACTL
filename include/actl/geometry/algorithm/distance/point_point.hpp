@@ -20,13 +20,13 @@ using comparable_distance_point_point = distance_point_point<comparable_norm<P>>
 template <class P = use_default, class S = use_default>
 using standard_distance_point_point = distance_point_point<standard_norm<P, S>>;
 
-template <class NP, int N, class T0, class T1>
+template <class NP, index N, class T0, class T1>
 inline auto distance(const distance_point_point<NP>& policy, const point<T0, N>& lhs,
                      const point<T1, N>& rhs) {
     return norm(policy, lhs - rhs);
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline auto distance(use_default, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return distance(standard_distance_point_point<>{}, lhs, rhs);
 }

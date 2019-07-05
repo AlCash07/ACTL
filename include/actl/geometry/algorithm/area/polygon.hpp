@@ -24,7 +24,7 @@ template <class P, class T, class X = geometry::product_t<P, polygon<T>>>
 inline X area(area_polygon<P>, const polygon<T>& polygon) {
     X res{};
     auto it = polygon.cyclic_begin();
-    for (int i = 0; i < polygon.size(); ++i) {
+    for (index i = 0; i < polygon.size(); ++i) {
         res += it->x() * static_cast<X>(it[-1].y() - it[1].y());
         ++it;
     }

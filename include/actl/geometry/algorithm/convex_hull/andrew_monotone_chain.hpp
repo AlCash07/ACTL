@@ -20,10 +20,10 @@ struct andrew_monotone_chain : CcwPolicy {};
 namespace detail {
 
 template <class T>
-static void set_right(std::bool_constant<true>, T& dst, int right) { dst.right_ = right; }
+static void set_right(std::bool_constant<true>, T& dst, index right) { dst.right_ = right; }
 
 template <class T>
-static void set_right(std::bool_constant<false>, T&, int) {}
+static void set_right(std::bool_constant<false>, T&, index) {}
 
 }  // namespace detail
 
@@ -39,9 +39,9 @@ inline auto convex_hull(andrew_monotone_chain<M, P, AP> policy, multi_point<T>& 
     using point_t = deduce_t<P, typename geometry_traits<multi_point<T>>::point>;
     std::conditional_t<M, convex_monotone_polygon<point_t>, convex_polygon<point_t>> hull;
     hull.reserve(points.size() + 1);
-    for (int phase = 0; phase < 2; ++phase) {  // Lower, then upper chain.
+    for (index phase = 0; phase < 2; ++phase) {  // Lower, then upper chain.
         auto start = hull.size();
-        detail::set_right(std::bool_constant<M>(), hull, static_cast<int>(start));
+        detail::set_right(std::bool_constant<M>(), hull, static_cast<index>(start));
         for (const auto& point : points) {
             while (hull.size() >= start + 2 &&
                    ccw(policy, point, hull.back(), hull[hull.size() - 2]) <= 0)

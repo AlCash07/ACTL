@@ -15,7 +15,7 @@ namespace ac {
 template <class P = use_default, class CollinearPolicy = comparable_collinear<P>>
 struct within_line : CollinearPolicy {};
 
-template <class P, class CP, int N, class T0, class T1, class K>
+template <class P, class CP, index N, class T0, class T1, class K>
 inline int within(const within_line<P, CP>& policy, const point<T0, N>& point,
                   const line<T1, N, K>& line) {
     if (!line) return point == line.start;
@@ -23,7 +23,7 @@ inline int within(const within_line<P, CP>& policy, const point<T0, N>& point,
     return detail::between_endpoints<P>(point, line);
 }
 
-template <int N, class T0, class T1, class K>
+template <index N, class T0, class T1, class K>
 inline int within(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
     return within(within_line<>{}, point, line);
 }

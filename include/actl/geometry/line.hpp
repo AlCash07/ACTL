@@ -88,7 +88,7 @@ inline int write(Device& out, const any_kind& arg) {
 /**
  * N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
  */
-template <class T, int N = 2, class Kind = line_kind::static_kind<line_kind::free>>
+template <class T, index N = 2, class Kind = line_kind::static_kind<line_kind::free>>
 struct line : public Kind {
     point<T, N> start;
     point<T, N> vector;
@@ -135,56 +135,56 @@ struct line : public Kind {
     }
 };
 
-template <class T, int N = 2>
+template <class T, index N = 2>
 using ray = line<T, N, line_kind::static_kind<line_kind::closed_ray>>;
 
-template <class T, int N = 2>
+template <class T, index N = 2>
 using segment = line<T, N, line_kind::static_kind<line_kind::closed_segment>>;
 
-template <class T, int N = 2>
+template <class T, index N = 2>
 using any_line = line<T, N, line_kind::any_kind>;
 
-template <int N, class T, class K>
+template <index N, class T, class K>
 struct geometry_traits<line<T, N, K>> : geometry_traits_base<line_tag, point<T, N>> {};
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
     return line<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
     return ray<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b,
                                    bool vector = false) {
     return segment<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
                                     uint8_t kind = line_kind::free, bool vector = false) {
     return any_line<geometry::scalar_t<T0, T1>, N>{a, b, kind, vector};
 }
 
-template <int N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
+template <index N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
 inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
                                     const point<T1, N>& b, uint8_t bkind) {
     if (akind < bkind) return make_any_line(b, bkind, a, akind);
     return Line{a, b, endpoint::combine(akind, bkind)};
 }
 
-template <int N, class T, class K>
+template <index N, class T, class K>
 inline void swap(line<T, N, K>& lhs, line<T, N, K>& rhs) { lhs.swap(rhs); }
 
-template <class Device, int N, class T, class K>
+template <class Device, index N, class T, class K>
 inline bool read(Device& in, line<T, N, K>& arg) {
     return read(in, arg.start, arg.vector, static_cast<K&>(arg));
 }
 
-template <class Device, int N, class T, class K>
+template <class Device, index N, class T, class K>
 inline int write(Device& out, const line<T, N, K>& arg) {
     return write(out, arg.start, arg.vector, static_cast<const K&>(arg));
 }

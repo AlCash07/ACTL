@@ -15,12 +15,12 @@ namespace ac {
 template <class P = use_default>
 struct within_plane : geometry::policy {};
 
-template <class P, int N, class T0, class T1>
+template <class P, index N, class T0, class T1>
 inline int within(within_plane<P>, const point<T0, N>& point, const plane<T1, N>& plane) {
     return plane.template operator()<P>(point) == 0;
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline int within(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
     return within(within_plane<>{}, point, plane);
 }

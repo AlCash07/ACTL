@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline auto& project(use_default, const point<T0, N>&, const point<T1, N>& dst) {
     return dst;
 }

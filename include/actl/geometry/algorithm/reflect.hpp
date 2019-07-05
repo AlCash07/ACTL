@@ -11,12 +11,12 @@
 
 namespace ac {
 
-template <class Policy, int N, class T0, class T1>
+template <class Policy, index N, class T0, class T1>
 inline auto reflect(const Policy& policy, const point<T0, N>& src, const T1& dst) {
     return 2 * project(policy, src, dst) - src;
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline auto reflect(const point<T0, N>& src, const T1& dst) {
     return reflect(use_default{}, src, dst);
 }

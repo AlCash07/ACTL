@@ -14,7 +14,7 @@ namespace ac {
 /**
  * Point inclusion test, returns 0 if outside, 1 if on the border, 2 if inside.
  */
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline int within(const point<T0, N>& lhs, const T1& rhs) {
     return within(use_default{}, lhs, rhs);
 }

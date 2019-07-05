@@ -27,7 +27,7 @@ inline int winding_number(const winding_number_policy<CP>& policy, const point<T
                           const polygon<T1>& polygon) {
     static constexpr int boundary = std::numeric_limits<int>::max();
     if (polygon.empty()) return 0;
-    int n = polygon.size();
+    index n = polygon.size();
     if (n == 1) return point == polygon[0] ? boundary : 0;
     int res = 0;
     for (auto i = polygon.cyclic_begin(); n --> 0; ++i) {

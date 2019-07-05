@@ -15,14 +15,14 @@ namespace ac {
 template <class P = use_default, class R = use_default, class NormPolicy = standard_norm<P>>
 struct distance_point_plane : NormPolicy {};
 
-template <class P, class R, class NP, int N, class T0, class T1>
+template <class P, class R, class NP, index N, class T0, class T1>
 inline auto distance(distance_point_plane<P, R, NP> policy, const point<T0, N>& point,
                      const plane<T1, N>& plane) {
     return static_cast<geometry::ratio_t<R, T0, T1>>(plane.template operator()<P>(point)) /
            norm(policy, plane.normal);
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline auto distance(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
     return distance(distance_point_plane<>{}, point, plane);
 }

@@ -22,7 +22,7 @@ class multi_point : public Range {
 public:
     using Range::Range;
 
-    constexpr int size() const { return static_cast<int>(Range::size()); }
+    constexpr index size() const { return static_cast<index>(Range::size()); }
 };
 
 template <class Point>

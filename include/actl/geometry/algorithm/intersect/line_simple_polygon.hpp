@@ -35,7 +35,7 @@ inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
     auto vertex_sgn = [&](auto it) { return ccw(policy.ccw_policy, *it, line); };
     auto i = polygon.cyclic_begin();
     int prev_sgn = vertex_sgn(i - 1), i_sgn = vertex_sgn(i), next_sgn;
-    for (int n = polygon.size(); n --> 0; prev_sgn = i_sgn, i_sgn = next_sgn) {
+    for (index n = polygon.size(); n --> 0; prev_sgn = i_sgn, i_sgn = next_sgn) {
         next_sgn = vertex_sgn(i + 1);
         if (i_sgn == 0) {
             bool ok = false;

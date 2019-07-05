@@ -17,14 +17,14 @@ namespace ac {
 template <class P = use_default, class NormPolicy = comparable_norm<P>>
 struct crosses_plane_sphere : NormPolicy {};
 
-template <class P, class NP, int N, class T0, class T1>
+template <class P, class NP, index N, class T0, class T1>
 inline bool crosses(const crosses_plane_sphere<P, NP>& policy, const plane<T0, N>& plane,
                     const sphere<T1, N>& sphere) {
     auto dist = abs(plane.template operator()<P>(sphere.center));
     return sphere.radius * norm(policy, plane.normal) <= dist;
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline bool crosses(use_default, const plane<T0, N>& plane, const sphere<T1, N>& sphere) {
     return crosses(crosses_plane_sphere<>{}, plane, sphere);
 }

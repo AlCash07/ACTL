@@ -14,7 +14,7 @@ namespace ac {
 
 namespace detail {
 
-template <class T, int N>
+template <class T, index N>
 class point_xy : public point_base<T, N> {
 public:
     using point_base<T, N>::point_base;

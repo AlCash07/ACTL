@@ -15,7 +15,7 @@ namespace ac {
 template <class P = use_default, class R = use_default, class ProjectPolicy = project_line<P, R>>
 struct nearest_point_line : ProjectPolicy {};
 
-template <class P, class R, int N, class T0, class T1, class K,
+template <class P, class R, index N, class T0, class T1, class K,
           class X = geometry::ratio_t<R, T0, T1>>
 inline std::pair<point<T0, N>, point<X, N>> nearest(const nearest_point_line<P, R>& policy,
                                                     const point<T0, N>& point,
@@ -27,7 +27,7 @@ inline std::pair<point<T0, N>, point<X, N>> nearest(const nearest_point_line<P, 
     return {point, project(policy, point, line)};
 }
 
-template <int N, class T0, class T1, class K>
+template <index N, class T0, class T1, class K>
 inline auto nearest(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
     return nearest(nearest_point_line<>{}, point, line);
 }

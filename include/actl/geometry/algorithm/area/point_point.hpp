@@ -41,17 +41,17 @@ inline auto area(comparable_area_points<P>, const point3d<T0>& lhs, const point3
 }
 
 // TODO: figure out the correct sign instead of returning the absolute value.
-template <class P, int N, class T0, class T1>
+template <class P, index N, class T0, class T1>
 inline auto area(comparable_area_points<P>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return deferred_sqrt(abs<P>(lhs) * abs<P>(rhs) - sqr(dot<P>(lhs, rhs)));
 }
 
-template <class P, class S, int N, class T0, class T1>
+template <class P, class S, index N, class T0, class T1>
 inline auto area(standard_area_points<P, S>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return static_cast<geometry::sqrt_t<S, T0, T1>>(area(comparable_area_points<P>{}, lhs, rhs));
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline auto area(use_default, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return area(standard_area_points<>{}, lhs, rhs);
 }

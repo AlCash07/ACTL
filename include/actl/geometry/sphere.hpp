@@ -14,7 +14,7 @@ namespace ac {
 /**
  * N-dimensional sphere.
  */
-template <class T, int N = 3>
+template <class T, index N = 3>
 struct sphere {
     point<T, N> center;
     T           radius;
@@ -44,21 +44,21 @@ struct sphere {
     }
 };
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 sphere(const point<T0, N>&, const T1&) -> sphere<geometry::scalar_t<T0, T1>, N>;
 
-template <int N, class T>
+template <index N, class T>
 struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T, N>> {};
 
-template <int N, class T>
+template <index N, class T>
 inline void swap(sphere<T, N>& lhs, sphere<T, N>& rhs) { lhs.swap(rhs); }
 
-template <class Device, int N, class T>
+template <class Device, index N, class T>
 inline bool read(Device& in, sphere<T, N>& arg) {
     return read(in, arg.center, arg.radius);
 }
 
-template <class Device, int N, class T>
+template <class Device, index N, class T>
 inline int write(Device& out, const sphere<T, N>& arg) {
     return write(out, arg.center, arg.radius);
 }

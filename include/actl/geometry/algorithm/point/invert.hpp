@@ -17,19 +17,19 @@ namespace ac {
 template <class P = use_default, class R = use_default>
 struct invert_policy : geometry::policy {};
 
-template <class P, class R, int N, class T0, class T1, class X = geometry::ratio_t<R, T0, T1>>
+template <class P, class R, index N, class T0, class T1, class X = geometry::ratio_t<R, T0, T1>>
 inline point<X, N> invert(invert_policy<P, R>, const point<T0, N>& src, const T1& radius) {
     if (!src) return {};
     return src * sqr(static_cast<X>(radius)) / abs<P>(src);
 }
 
-template <class P, class R, class S, int N, class T0, class T1, class T2>
+template <class P, class R, class S, index N, class T0, class T1, class T2>
 inline auto invert(const invert_policy<P, R>& policy, const point<T0, N>& src, const T1& radius,
                    const point<T2, N>& origin) {
     return origin + invert(policy, src - origin, radius);
 }
 
-template <int N, class T, class... Ts>
+template <index N, class T, class... Ts>
 inline auto invert(const point<T, N>& point, const Ts&... args) {
     return invert(invert_policy<>{}, point, args...);
 }

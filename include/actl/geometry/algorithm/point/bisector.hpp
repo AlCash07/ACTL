@@ -17,13 +17,13 @@ struct bisector_policy : NormPolicy {};
 template <class P = use_default, class S = use_default>
 using standard_bisector = bisector_policy<standard_norm<P, S>>;
 
-template <class NP, int N, class T0, class T1>
+template <class NP, index N, class T0, class T1>
 inline auto bisector(const bisector_policy<NP>& policy, const point<T0, N>& lhs,
                      const point<T1, N>& rhs) {
     return lhs * norm(policy, rhs) + rhs * norm(policy, lhs);
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline auto bisector(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return bisector(standard_bisector<>{}, lhs, rhs);
 }

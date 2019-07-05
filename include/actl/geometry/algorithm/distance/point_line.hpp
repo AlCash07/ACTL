@@ -20,7 +20,7 @@ struct distance_point_line : deduce_t<NormPolicy, standard_norm<P>> {
     AreaPolicy area_policy;
 };
 
-template <class P, class R, class NP, class AP, int N, class T0, class T1, class K>
+template <class P, class R, class NP, class AP, index N, class T0, class T1, class K>
 inline auto distance(distance_point_line<P, R, NP, AP> policy, const point<T0, N>& point,
                      const line<T1, N, K>& line) {
     if (line.start_kind() != endpoint::free && dot<P>(point - line.start, line.vector) <= 0)
@@ -31,7 +31,7 @@ inline auto distance(distance_point_line<P, R, NP, AP> policy, const point<T0, N
            norm(policy, line.vector);
 }
 
-template <int N, class T0, class T1, class K>
+template <index N, class T0, class T1, class K>
 inline auto distance(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
     return distance(distance_point_line<>{}, point, line);
 }

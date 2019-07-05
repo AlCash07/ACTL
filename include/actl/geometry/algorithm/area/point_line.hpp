@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <class Policy, int N, class T0, class T1, class K>
+template <class Policy, index N, class T0, class T1, class K>
 inline auto area(const Policy& policy, const point<T0, N>& point, const line<T1, N, K>& line) {
     return area(policy, point - line.start, line.vector);
 }

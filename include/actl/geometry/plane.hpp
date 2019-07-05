@@ -15,7 +15,7 @@ namespace ac {
  * Plane with equation in the form: dot(normal, x) = d.
  * In 2D represents a line.
  */
-template <class T, int N = 3>
+template <class T, index N = 3>
 struct plane {
     point<T, N> normal;  // normal vector
     T           d;       // distance from origin to the plane times the normal norm
@@ -55,16 +55,16 @@ struct plane {
     };
 };
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 plane(const point<T0, N>&, const T1&) -> plane<geometry::scalar_t<T0, T1>, N>;
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 plane(const point<T0, N>&, const point<T1, N>&) -> plane<geometry::scalar_t<T0, T1>, N>;
 
-template <int N, class T>
+template <index N, class T>
 struct geometry_traits<plane<T, N>> : geometry_traits_base<plane_tag, point<T, N>> {};
 
-template <int N, class... Ts>
+template <index N, class... Ts>
 using plane_type = plane<geometry::scalar_t<Ts...>, N>;
 
 template <class T0, class T1>
@@ -78,15 +78,15 @@ inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
     return plane_type<3, T0, T1, T2>{cross(b - a, c - a), a};
 }
 
-template <int N, class T>
+template <index N, class T>
 inline void swap(plane<T, N>& lhs, plane<T, N>& rhs) { lhs.swap(rhs); }
 
-template <class Device, int N, class T>
+template <class Device, index N, class T>
 inline bool read(Device& in, plane<T, N>& arg) {
     return read(in, arg.normal, arg.d);
 }
 
-template <class Device, int N, class T>
+template <class Device, index N, class T>
 inline int write(Device& out, const plane<T, N>& arg) {
     return write(out, arg.normal, arg.d);
 }

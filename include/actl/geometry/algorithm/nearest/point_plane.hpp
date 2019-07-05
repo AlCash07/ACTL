@@ -15,13 +15,13 @@ namespace ac {
 template <class P = use_default, class R = use_default, class ProjectPolicy = project_plane<P, R>>
 struct nearest_point_plane : ProjectPolicy {};
 
-template <class P, class R, int N, class T0, class T1>
+template <class P, class R, index N, class T0, class T1>
 inline auto nearest(const nearest_point_plane<P, R>& policy, const point<T0, N>& point,
                     const plane<T1, N>& plane) {
     return std::pair{point, project(policy, point, plane)};
 }
 
-template <int N, class T0, class T1>
+template <index N, class T0, class T1>
 inline auto nearest(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
     return nearest(nearest_point_plane<>{}, point, plane);
 }
