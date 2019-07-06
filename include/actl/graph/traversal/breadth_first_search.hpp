@@ -54,11 +54,10 @@ public:
             execute_all(on_vertex_examine{}, u);
             for (auto e : graph.out_edges(u)) {
                 vertex v = e.target();
-                execute_all(on_edge_examine{}, e);
                 if (base_t::execute_first(is_vertex_discovered{}, v)) {
                     execute_all(on_non_tree_edge{}, e);
                 } else {
-                    execute_all(on_tree_edge{}, e);
+                    execute_all(on_tree_edge_examine{}, e);
                     if (!enqueue(v)) return;
                 }
             }

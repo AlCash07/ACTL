@@ -30,14 +30,13 @@ class depth_first_search : public component_set<Components...> {
         if (is_terminator(u)) return true;
         for (auto e : graph.out_edges(u)) {
             auto v = e.target();
-            execute_all(on_edge_examine{}, e);
             if (base_t::execute_first(is_vertex_discovered{}, v)) {
                 execute_all(on_non_tree_edge{}, e);
             } else {
-                execute_all(on_tree_edge{}, e);
+                execute_all(on_tree_edge_examine{}, e);
                 if (recurse(graph, v, is_terminator)) return true;
+                execute_all(on_tree_edge_finish{}, e);
             }
-            execute_all(on_edge_finish{}, e);
         }
         execute_all(on_vertex_finish{}, u);
         return false;
@@ -77,19 +76,17 @@ public:
                     if (!stack.empty()) {
                         it = typename Graph::out_edge_iterator{&graph, stack.top().vertex,
                                                                stack.top().out_edge};
-                        execute_all(on_edge_finish{}, *it);
+                        execute_all(on_tree_edge_finish{}, *it);
                         ++it;
                     }
                     execute_all(on_vertex_finish{}, u);
                     break;
                 }
-                execute_all(on_edge_examine{}, *it);
                 vertex_t<Graph> v = it->target();
                 if (base_t::execute_first(is_vertex_discovered{}, v)) {
                     execute_all(on_non_tree_edge{}, *it);
-                    execute_all(on_edge_finish{}, *it);
                 } else {
-                    execute_all(on_tree_edge{}, *it);
+                    execute_all(on_tree_edge_examine{}, *it);
                     stack.top().out_edge = it.id();
                     it = graph.out_edges(v).begin();
                     stack.push({v, it.id()});

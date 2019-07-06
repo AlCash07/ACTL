@@ -21,7 +21,7 @@ struct time_stamper {
     }
 
     Map map;
-    T time = {};
+    T time = 0;
 };
 
 template <class Map>

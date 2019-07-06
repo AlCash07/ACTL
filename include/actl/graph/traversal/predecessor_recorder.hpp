@@ -17,13 +17,13 @@ struct predecessor_recorder {
     void operator()(on_vertex_start, map_key_t<Map> u) { put(map, u, u); }
 
     template <class E>
-    void operator()(on_tree_edge, E e) {
+    void operator()(on_tree_edge_examine, E e) {
         put(map, e.target(), e.source());
     }
 
     template <class E>
     void operator()(on_edge_relaxed, E e) {
-        operator()(on_tree_edge{}, e);
+        operator()(on_tree_edge_examine{}, e);
     }
 
     Map map;

@@ -28,7 +28,7 @@ struct inorder_printer {
     bool operator()(is_vertex_discovered, vertex u) { return get(state, u) != -1; }
 
     template <class E>
-    void operator()(on_tree_edge, E e) {
+    void operator()(on_tree_edge_examine, E e) {
         vertex u = e.source();
         decltype(auto) current = get(state, u);
         if (current > 0) *dst++ = u;

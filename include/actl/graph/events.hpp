@@ -21,13 +21,9 @@ struct on_vertex_finish {};
 
 struct is_vertex_discovered {};
 
-struct on_edge_examine {};
-struct on_edge_finish {};
-
-struct on_tree_edge {};
+struct on_tree_edge_examine {};
+struct on_tree_edge_finish {};
 struct on_non_tree_edge {};
-struct on_forward_or_cross_edge {};
-struct on_back_edge {};
 
 struct on_edge_relaxed {};
 struct on_edge_not_relaxed {};

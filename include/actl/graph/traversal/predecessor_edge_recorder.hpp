@@ -15,13 +15,13 @@ namespace ac {
 template <class Map>
 struct predecessor_edge_recorder {
     template <class E>
-    void operator()(on_tree_edge, E e) {
+    void operator()(on_tree_edge_examine, E e) {
         put(map, e.target(), e);
     }
 
     template <class E>
     void operator()(on_edge_relaxed, E e) {
-        operator()(on_tree_edge{}, e);
+        operator()(on_tree_edge_examine{}, e);
     }
 
     Map map;

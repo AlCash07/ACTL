@@ -17,7 +17,7 @@ struct distance_recorder {
     void operator()(on_vertex_start, map_key_t<Map> u) { put(map, u, 0); }
 
     template <class E>
-    void operator()(on_tree_edge, E e) {
+    void operator()(on_tree_edge_examine, E e) {
         put(map, e.target(), get(map, e.source()) + 1);
     }
 
