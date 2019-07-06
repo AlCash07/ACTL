@@ -14,10 +14,10 @@ namespace ac {
 
 template <class Map>
 struct distance_recorder {
-    void operator()(on_vertex_start, map_key_t<Map> u) { put(map, u, 0); }
+    void operator()(on_search_start, map_key_t<Map> u) { put(map, u, 0); }
 
     template <class E>
-    void operator()(on_tree_edge_examine, E e) {
+    void operator()(on_tree_edge_start, E e) {
         put(map, e.target(), get(map, e.source()) + 1);
     }
 

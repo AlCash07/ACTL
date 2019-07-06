@@ -15,7 +15,7 @@ namespace ac {
 // T can be a reference to share global time.
 template <class Map, class T>
 struct time_stamper {
-    void operator()(on_vertex_examine, map_key_t<Map> u) {
+    void operator()(on_vertex_start, map_key_t<Map> u) {
         put(map, u, time);
         ++time;
     }

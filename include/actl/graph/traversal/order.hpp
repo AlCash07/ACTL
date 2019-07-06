@@ -28,7 +28,7 @@ struct inorder_printer {
     bool operator()(is_vertex_discovered, vertex u) { return get(state, u) != -1; }
 
     template <class E>
-    void operator()(on_tree_edge_examine, E e) {
+    void operator()(on_tree_edge_start, E e) {
         vertex u = e.source();
         decltype(auto) current = get(state, u);
         if (current > 0) *dst++ = u;
@@ -62,7 +62,7 @@ inline void postorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) 
 
 template <class Graph, class VertexOutIter>
 inline void preorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) {
-    depth_first_search{vertex_printer<on_vertex_examine, VertexOutIter>{dst},
+    depth_first_search{vertex_printer<on_vertex_start, VertexOutIter>{dst},
                        make_default_discovered_flag(graph)}(graph, s);
 }
 

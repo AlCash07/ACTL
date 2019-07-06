@@ -27,43 +27,44 @@ public:
               class VertexPredicate = always_false>
     void operator()(const Graph& graph, const Source& source, VertexQueue&& queue = {},
                     VertexPredicate is_terminator = {}) {
-        using vertex = vertex_t<Graph>;
-        for (vertex u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
+        using V = vertex_t<Graph>;
+        for (V u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
         while (!queue.empty()) queue.pop();
-        auto enqueue = [&](vertex u) {
+        auto discover = [&](V u) {
             execute_all(on_vertex_discover{}, u);
             if (is_terminator(u)) {
-                execute_all(on_search_finish{});
+                execute_all(on_search_finish{}, u);
                 return false;
             }
             queue.push(u);
             return true;
         };
-        if constexpr (std::is_same_v<Source, vertex>) {
-            execute_all(on_vertex_start{}, source);
-            if (!enqueue(source)) return;
+        if constexpr (std::is_same_v<Source, V>) {
+            execute_all(on_search_start{}, source);
+            if (!discover(source)) return;
         } else {
-            for (vertex s : source) {
-                execute_all(on_vertex_start{}, s);
-                if (!enqueue(s)) return;
+            for (V s : source) {
+                execute_all(on_search_start{}, s);
+                if (!discover(s)) return;
             }
         }
         while (!queue.empty()) {
-            vertex u = queue.front();
+            V u = queue.front();
             queue.pop();
-            execute_all(on_vertex_examine{}, u);
+            execute_all(on_vertex_start{}, u);
             for (auto e : graph.out_edges(u)) {
-                vertex v = e.target();
+                V v = e.target();
                 if (base_t::execute_first(is_vertex_discovered{}, v)) {
                     execute_all(on_non_tree_edge{}, e);
                 } else {
-                    execute_all(on_tree_edge_examine{}, e);
-                    if (!enqueue(v)) return;
+                    execute_all(on_tree_edge_start{}, e);
+                    if (!discover(v)) return;
+                    execute_all(on_tree_edge_finish{}, e);
                 }
             }
             execute_all(on_vertex_finish{}, u);
         }
-        execute_all(on_search_finish{});
+        execute_all(on_search_finish{}, graph.null_vertex());
     }
 };
 

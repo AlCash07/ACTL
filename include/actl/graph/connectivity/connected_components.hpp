@@ -18,7 +18,7 @@ struct connected_component_recorder {
     using vertex = map_key_t<Map>;
 
     void operator()(on_vertex_discover, vertex u) { put(map, u, count); }
-    void operator()(on_search_finish) { ++count; }
+    void operator()(on_search_finish, vertex) { ++count; }
 
     Map map;
     map_value_t<Map> count = {};

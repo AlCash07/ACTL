@@ -10,6 +10,8 @@
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
 #include <actl/graph/traits.hpp>
+#include <actl/std/deque.hpp>
+#include <actl/std/tuple.hpp>
 #include <actl/util/component_set.hpp>
 #include <actl/util/type_traits.hpp>
 #include <stack>
@@ -24,6 +26,8 @@ class dfs_state {
 public:
     dfs_state(V u, OEI it, OEI) : u_{u}, oe_{it.id()} {}
 
+    V vertex() const { return u_; }
+
     auto get(const G& g) const { return std::tuple{u_, OEI{&g, u_, oe_}, g.out_edges(u_).end()}; }
 };
 
@@ -33,18 +37,18 @@ class depth_first_search : public component_set<Components...> {
     using base_t::execute_all;
 
     // Recursive implementation to demonstrate dfs logic clearer.
-    // Returns true if terminator vertex was found.
+    // Returns true immediately if terminator vertex was found.
     template <class Graph, class VertexPredicate>
     bool recurse(const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator) {
         execute_all(on_vertex_discover{}, u);
-        execute_all(on_vertex_examine{}, u);
+        execute_all(on_vertex_start{}, u);
         if (is_terminator(u)) return true;
         for (auto e : graph.out_edges(u)) {
             auto v = e.target();
             if (base_t::execute_first(is_vertex_discovered{}, v)) {
                 execute_all(on_non_tree_edge{}, e);
             } else {
-                execute_all(on_tree_edge_examine{}, e);
+                execute_all(on_tree_edge_start{}, e);
                 if (recurse(graph, v, is_terminator)) return true;
                 execute_all(on_tree_edge_finish{}, e);
             }
@@ -61,11 +65,11 @@ public:
               class VertexPredicate = always_false, class V = vertex_t<Graph>>
     void visit(const Graph& graph, V u, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
         stack = {};
-        execute_all(on_vertex_start{}, u);
+        execute_all(on_search_start{}, u);
         out_edge_iterator_t<Graph> it, end;
         auto discover_vertex = [&]() {
             execute_all(on_vertex_discover{}, u);
-            execute_all(on_vertex_examine{}, u);
+            execute_all(on_vertex_start{}, u);
             if (is_terminator(u)) return false;
             it = graph.out_edges(u).begin();
             end = graph.out_edges(u).end();
@@ -86,14 +90,14 @@ public:
                     execute_all(on_non_tree_edge{}, *it);
                     ++it;
                 } else {
-                    execute_all(on_tree_edge_examine{}, *it);
+                    execute_all(on_tree_edge_start{}, *it);
                     stack.emplace(u, it, end);
                     u = v;
                     ok = discover_vertex();
                 }
             }
         }
-        execute_all(on_search_finish{});
+        execute_all(on_search_finish{}, u);
     }
 
     template <class Graph, class Stack = std::stack<dfs_state<Graph>>,

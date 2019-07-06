@@ -11,17 +11,17 @@
 
 namespace ac {
 
+struct on_search_start {};
 struct on_search_finish {};
 
 struct on_vertex_initialize {};
-struct on_vertex_start {};
 struct on_vertex_discover {};
-struct on_vertex_examine {};
+struct on_vertex_start {};
 struct on_vertex_finish {};
 
 struct is_vertex_discovered {};
 
-struct on_tree_edge_examine {};
+struct on_tree_edge_start {};
 struct on_tree_edge_finish {};
 struct on_non_tree_edge {};
 
