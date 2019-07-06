@@ -47,10 +47,10 @@ TEST("topological_sort") {
     graph.add_edge(3, 4);
     graph.add_edge(6, 7);
     graph.add_edge(7, 8);
-    int n = graph.vertex_count();
+    ac::index n = graph.vertex_count();
     std::vector<int> order;
     topological_sort(graph, std::back_inserter(order));
-    ASSERT_EQUAL(n, (int)order.size());
+    ASSERT_EQUAL(n, (ac::index)order.size());
     std::vector<int> idx(order.size());
     for (int i = 0; i < n; ++i) {
         idx[(size_t)order[(size_t)i]] = i;

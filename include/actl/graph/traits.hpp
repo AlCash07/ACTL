@@ -21,4 +21,10 @@ using out_edge_t = typename Graph::out_edge;
 template <class Graph>
 using in_edge_t = typename Graph::in_edge;
 
+template <class Graph>
+using out_edge_iterator_t = typename Graph::out_edge_iterator;
+
+template <class Graph>
+using in_edge_iterator_t = typename Graph::in_edge_iterator;
+
 }  // namespace ac
