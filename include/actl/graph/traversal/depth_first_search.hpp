@@ -10,11 +10,10 @@
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/std/deque.hpp>
+#include <actl/std/stack.hpp>
 #include <actl/std/tuple.hpp>
 #include <actl/util/component_set.hpp>
 #include <actl/util/type_traits.hpp>
-#include <stack>
 
 namespace ac {
 

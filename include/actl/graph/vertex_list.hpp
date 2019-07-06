@@ -57,7 +57,7 @@ public:
 
     vertex null_vertex() const { return id_null(vertices_); }
 
-    vertex nth_vertex(index n) const {
+    vertex nth_vertex(difference_t<container_id_iterator<vertex_container>> n) const {
         ACTL_ASSERT(0 <= n && n < vertex_count());
         return *std::next(id_range(vertices_).begin(), n);
     }
