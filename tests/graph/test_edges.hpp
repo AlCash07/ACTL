@@ -9,45 +9,15 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
+#include <actl/graph/traits.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/test.hpp>
 #include "graph/bundle.hpp"
+#include "graph/edges_ends.hpp"
 
-template <bool Directed, class E>
-inline auto get_ends(const std::vector<E>& es) {
-    using namespace ac;
-    using V = typename E::vertex;
-    std::vector<std::pair<V, V>> res;
-    for (auto e : es) {
-        V u = e.source();
-        V v = e.target();
-        if constexpr (!Directed) {
-            if (v < u) std::swap(u, v);
-        }
-        res.emplace_back(u, v);
-    }
-    return res;
-}
-
-template <class R>
-inline auto get_sources(const R& es) {
-    std::vector<typename R::value_type::vertex> res;
-    for (auto e : es) res.emplace_back(e.source());
-    return res;
-}
-
-template <class R>
-inline auto get_targets(const R& es) {
-    std::vector<typename R::value_type::vertex> res;
-    for (auto e : es) res.emplace_back(e.target());
-    return res;
-}
-
-template <bool TestAdjacency = false, class Graph, class V = typename Graph::vertex>
+template <bool TestAdjacency = false, class Graph, class V = vertex_t<Graph>>
 inline void test_edges(Graph& graph, V v0, V v1, V v2) {
-    using namespace ac;
-    using E = typename Graph::edge;
-    std::vector<E> es;
+    std::vector<edge_t<Graph>> es;
     es.push_back(graph.add_edge(v0, v1, 0, "e01"));
     es.push_back(graph.add_edge(v0, v2, 1, "e02"));
     es.push_back(graph.add_edge(v2, v1, 2, "e21"));
@@ -65,10 +35,9 @@ inline void test_edges(Graph& graph, V v0, V v1, V v2) {
     ASSERT_EQUAL("e02", graph[es[1]].s);
     ASSERT_EQUAL("e21a", get(map, es[2]).s);
     auto e_range = graph.edges();
-    ASSERT_EQUAL_SETS(get_ends<Graph::is_directed>(es),
-                      get_ends<Graph::is_directed>(std::vector<E>(e_range.begin(), e_range.end())));
+    ASSERT_EQUAL_SETS(get_ends<Graph::is_directed>(es), get_ends<Graph::is_directed>(e_range));
     auto e02 = graph.find_edge(v0, v2);
-    ASSERT_EQUAL_SETS(std::vector<V>{v0, v2}, {e02.source(), e02.target()});
+    ASSERT_EQUAL_SETS(std::vector{v0, v2}, {e02.source(), e02.target()});
     ASSERT_EQUAL(es[1], e02);
     if constexpr (TestAdjacency) {
         std::map<V, std::vector<V>> outs, ins;

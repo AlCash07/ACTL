@@ -9,8 +9,6 @@
 #include <actl/test.hpp>
 
 TEST("basic") {
-    dummy_map<int, int> map;
+    dummy_map map;
     put(map, 2, 2);
-    ASSERT_EQUAL(0, get(map, 2));
-    [[maybe_unused]] dummy_map<int> void_map;
 }

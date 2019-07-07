@@ -18,12 +18,12 @@
 namespace ac {
 
 template <class G, class V = vertex_t<G>, class OEI = out_edge_iterator_t<G>>
-class dfs_state {
+class dfs_context {
     V u_;
     out_edge_t<G> oe_;
 
 public:
-    dfs_state(V u, OEI it, OEI) : u_{u}, oe_{it.id()} {}
+    dfs_context(V u, OEI it, OEI) : u_{u}, oe_{it.id()} {}
 
     V vertex() const { return u_; }
 
@@ -60,7 +60,7 @@ public:
     using base_t::base_t;
 
     // Depth first search without initialization.
-    template <class Graph, class Stack = std::stack<dfs_state<Graph>>,
+    template <class Graph, class Stack = std::stack<dfs_context<Graph>>,
               class VertexPredicate = always_false, class V = vertex_t<Graph>>
     void visit(const Graph& graph, V u, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
         stack = {};
@@ -99,7 +99,7 @@ public:
         execute_all(on_search_finish{}, u);
     }
 
-    template <class Graph, class Stack = std::stack<dfs_state<Graph>>,
+    template <class Graph, class Stack = std::stack<dfs_context<Graph>>,
               class VertexPredicate = always_false>
     void operator()(const Graph& graph, vertex_t<Graph> s, Stack&& stack = {},
                     VertexPredicate is_terminator = {}) {
@@ -107,7 +107,7 @@ public:
         visit(graph, s, stack, is_terminator);
     }
 
-    template <class Graph, class Stack = std::stack<dfs_state<Graph>>,
+    template <class Graph, class Stack = std::stack<dfs_context<Graph>>,
               class VertexPredicate = always_false,
               enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> = 0>
     void operator()(const Graph& graph, Stack&& stack = {}, VertexPredicate is_terminator = {}) {

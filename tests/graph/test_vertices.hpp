@@ -8,13 +8,13 @@
 #pragma once
 
 #include <actl/graph/selectors.hpp>
+#include <actl/graph/traits.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/test.hpp>
 #include "graph/bundle.hpp"
 
-template <class Graph, class V = typename Graph::vertex>
+template <class Graph, class V = vertex_t<Graph>>
 inline std::vector<V> test_vertices(Graph& graph) {
-    using namespace ac;
     std::vector<V> vs;
     vs.push_back(graph.add_vertex(0, "v0"));
     vs.push_back(graph.add_vertex(1, "v1"));

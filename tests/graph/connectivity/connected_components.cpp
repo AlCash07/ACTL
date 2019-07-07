@@ -8,11 +8,11 @@
 #include <actl/graph/adjacency_list.hpp>
 #include <actl/graph/connectivity/connected_components.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
-#include <actl/test.hpp>
+#include "graph/connectivity/test_partition.hpp"
 
-// 1 - 0 - 7  6
+// 1 - 0 - 7   6
 // |   |
-// 2 - 3  4 - 5
+// 2 - 3   4 - 5
 TEST("basic") {
     adjacency_list<undirected> graph;
     graph.add_edge(0, 1);
@@ -20,15 +20,7 @@ TEST("basic") {
     graph.add_edge(2, 3);
     graph.add_edge(0, 7);
     graph.add_edge(4, 5);
-    std::vector<int> c(8);
-    depth_first_search(make_connected_component_recorder(c, -1))(graph);
-    std::vector<std::vector<size_t>> expected{{0, 1, 2, 3, 7}, {4, 5}, {6}};
-    for (size_t i = 0; i < expected.size(); ++i) {
-        for (auto v : expected[i]) {
-            ASSERT_EQUAL(c[expected[i][0]], c[v]);
-        }
-        for (size_t j = 0; j < expected.size(); ++j) {
-            ASSERT_EQUAL(i != j, c[expected[i][0]] != c[expected[j][0]]);
-        }
-    }
+    std::vector<int> components(8);
+    depth_first_search(make_connected_component_recorder(components, -1))(graph);
+    test_partition({{0, 1, 2, 3, 7}, {4, 5}, {6}}, components);
 }

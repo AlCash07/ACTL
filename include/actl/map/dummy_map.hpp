@@ -11,20 +11,12 @@
 
 namespace ac {
 
-template <class Key, class Value = void>
-class dummy_map {
-    static constexpr bool RW = !std::is_same_v<Value, void>;
+class dummy_map {};
 
-public:
-    using traits = map_traits_base<Key, Value, Value, RW, RW>;
-
-    constexpr static Value get(Key) { return Value{}; }
-
-    template <class V = Value>
-    constexpr static void put(Key, V) {}
-};
+template <>
+struct const_map_traits<dummy_map> : map_traits_base<void, void, void, false, true> {};
 
 template <class K, class V>
-struct const_map_traits<dummy_map<K, V>> : dummy_map<K, V>::traits {};
+inline constexpr void put(dummy_map, K, V) {}
 
 }  // namespace ac

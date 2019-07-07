@@ -37,7 +37,8 @@ using namespace ac;
 
 #define TEST(...) TEST_IMPL(CAT(_tesT_, __COUNTER__), #__VA_ARGS__)
 
-#define ASSERT_EQUAL        tests::detail::assert_impl(__FILE__, __LINE__).check
+#define ASSERT_EQUAL        tests::detail::assert_impl(__FILE__, __LINE__).check_equal
+#define ASSERT_NOT_EQUAL    tests::detail::assert_impl(__FILE__, __LINE__).check_not_equal
 #define ASSERT_TRUE         tests::detail::assert_impl(__FILE__, __LINE__).check_true
 #define ASSERT_FALSE        tests::detail::assert_impl(__FILE__, __LINE__).check_false
 #define ASSERT_EQUAL_RANGES tests::detail::assert_impl(__FILE__, __LINE__).check_ranges
@@ -68,11 +69,12 @@ inline std::string to_string(const T& value) {
     return s;
 }
 
-enum message_kind : uint8_t { Expected, Actual, Error, Line };
+enum message_kind : uint8_t { Expected, NotExpected, Actual, Error, Line };
 
 template <message_kind Kind, class T>
 inline std::string message(const T& x) {
-    static std::string messages[4] = {"expected = ", "actual   = ", "error    = ", "line = "};
+    static std::string messages[5] = {"expected = ", "expected = not ",
+                                      "actual   = ", "error    = ", "line = "};
     return messages[Kind] + to_string(x) + "\n";
 }
 
@@ -83,13 +85,19 @@ struct assert_impl {
     assert_impl(std::string_view filename, int line) : filename{filename}, line{line} {}
 
     template <class T0, class T1>
-    inline void check(const T0& expected, const T1& actual) const {
+    inline void check_equal(const T0& expected, const T1& actual) const {
         if (expected == actual) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
+    template <class T0, class T1>
+    inline void check_not_equal(const T0& not_expected, const T1& actual) const {
+        if (not_expected != actual) return;
+        throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
+    }
+
     template <class T, enable_int_if<std::is_floating_point_v<T>> = 0>
-    inline void check(T expected, T actual, T eps) const {
+    inline void check_equal(T expected, T actual, T eps) const {
         T numerator   = std::abs(expected - actual);
         T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
         if (numerator <= eps * denominator) return;
@@ -97,9 +105,9 @@ struct assert_impl {
             message<Error>(numerator / denominator) + message<Line>(line);
     }
 
-    inline void check_true(bool condition) const { check(true, condition); }
+    inline void check_true(bool condition) const { check_equal(true, condition); }
 
-    inline void check_false(bool condition) const { check(false, condition); }
+    inline void check_false(bool condition) const { check_equal(false, condition); }
 
     template <class T0, class T1>
     inline void check_ranges(const T0& expected, const T1& actual) const {
