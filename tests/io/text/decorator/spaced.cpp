@@ -28,3 +28,8 @@ TEST("nested") {
     test_write("((2, 1), (4, 3)), (1, 3)", f, setspace{", "}, pair{pair{2, 1}, pair{4, 3}},
                pair{1, 3});
 }
+
+TEST("vector") {
+    spaced<text> f;
+    test_write("5 3 2 1", f, std::vector{5, 3, 2, 1});
+}

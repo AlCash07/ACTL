@@ -25,16 +25,6 @@ struct pretty : Format {
     using format_tag = pretty_tag<typename Format::format_tag>;
 };
 
-namespace detail {
-
-template <class T, class C>
-struct is_span : std::false_type {};
-
-template <index N, class C>
-struct is_span<span<C, N>, C> : std::true_type {};
-
-}  // namespace detail
-
 inline char escaped(char c) {
     switch (c) {
         case '\0': return '0';
@@ -66,7 +56,7 @@ inline index serialize(Device& od, Format& fmt, const T& x, pretty_tag<Tag>) {
         index res = write_raw('"');
         for (auto c : char_span{x}) res += write_escaped(c);
         return res + write_raw('"');
-    } else if constexpr (is_range_v<T> && !detail::is_span<T, const C>::value) {
+    } else if constexpr (is_custom_range_v<T, Device>) {
         if constexpr (is_associative_container_v<T>) {
             index res = write_raw('{');
             if constexpr (is_simple_associative_container_v<T>) {
