@@ -8,7 +8,6 @@
 #include <actl/graph/connectivity/detail/component_stack.hpp>
 #include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
-#include <actl/graph/traversal/time_stamper.hpp>
 
 #pragma once
 
@@ -26,7 +25,7 @@ struct strong_component_finder {
     bool operator()(is_vertex_discovered, V u) { return get(time_low, u) != 0; }
 
     void operator()(on_vertex_start, V u) {
-        put(time_low, u, ++time);
+        put(time_low, u, ++time_now);
         components.push(u);
     }
 
@@ -53,7 +52,7 @@ struct strong_component_finder {
     ComponentStack components;
     TimeMap time_low;
     RootMap not_root;
-    T time = {};
+    T time_now = 0;
 };
 
 template <class G, class... Ts>

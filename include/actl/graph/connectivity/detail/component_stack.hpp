@@ -36,6 +36,17 @@ public:
         }
         ++n_;
     }
+
+    template <class P>
+    void pop_while(P pred) {
+        while (!stack_.empty()) {
+            T& x = stack_.top();
+            if (!pred(x)) break;
+            put(map_, x, n_);
+            stack_.pop();
+        }
+        ++n_;
+    }
 };
 
 template <class S>
@@ -48,6 +59,9 @@ public:
 
     template <class T>
     void pop(T) {}
+
+    template <class P>
+    void pop_while(P) {}
 };
 
 template <class Map>

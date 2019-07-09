@@ -32,7 +32,7 @@ struct adj_list_traits {
 
     using edge_selector = value_t<EC>;
 
-    using edges = edge_list_impl<Dir, vertex, rebind_container_t<EC, value_t<OEC>>, edge_selector>;
+    using edges = edge_list_impl<Dir, vertex, rebind_t<EC, value_t<OEC>>, edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
     static constexpr bool has_out_vertex = is_associative_container_v<OEC> ||

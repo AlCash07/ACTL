@@ -8,14 +8,34 @@
 #pragma once
 
 #include <actl/graph/connectivity/detail/component_stack.hpp>
-#include <actl/graph/connectivity/detail/once_equal.hpp>
 #include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/iterator/dummy_output_iterator.hpp>
+#include <actl/map/dummy_map.hpp>
 
 namespace ac {
 
-template <class Graph, bool ParallelEdges = false>
+namespace detail {
+
+template <bool Once, bool Other>
+struct once_equal {
+    operator bool() {
+        if (x_ == Other) return Other;
+        x_ = Other;
+        return Once;
+    }
+
+    bool x_ = true;
+};
+
+template <bool All>
+struct once_equal<All, All> {
+    constexpr operator bool() { return All; }
+};
+
+}  // namespace detail
+
+template <class Graph, bool ParallelEdges>
 struct bridge_context : dfs_context<Graph>, detail::once_equal<true, !ParallelEdges> {
     using dfs_context<Graph>::dfs_context;
 };
@@ -33,7 +53,7 @@ struct bridge_finder {
     bool operator()(is_vertex_discovered, V u) { return get(time_low, u) != 0; }
 
     void operator()(on_vertex_start, V u) {
-        put(time_low, u, ++time);
+        put(time_low, u, ++time_now);
         components.push(u);
     }
 
@@ -43,7 +63,7 @@ struct bridge_finder {
             auto& top = dfs_stack.top();
             if (top.vertex() == v && top) return;
         }
-        auto low = get(time_low, v);
+        T low = get(time_low, v);
         V u = e.source();
         if (get(time_low, u) > low) {
             put(time_low, u, low);
@@ -65,7 +85,7 @@ struct bridge_finder {
     TimeMap time_low;
     RootMap not_root;
     DfsStack dfs_stack;
-    T time = {};
+    T time_now = 0;
 };
 
 template <class G, class... Ts>

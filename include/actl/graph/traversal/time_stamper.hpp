@@ -16,12 +16,12 @@ namespace ac {
 template <class Map, class T>
 struct time_stamper {
     void operator()(on_vertex_start, map_key_t<Map> u) {
-        put(map, u, time);
-        ++time;
+        put(map, u, time_now);
+        ++time_now;
     }
 
     Map map;
-    T time = 0;
+    T time_now = 0;
 };
 
 template <class Map>
@@ -33,7 +33,7 @@ struct in_out_time_stamper : time_stamper<Map, T> {
 
     using time_stamper<Map, T>::operator();
 
-    void operator()(on_vertex_finish, map_key_t<Map> u) { put(out_time, u, this->time); }
+    void operator()(on_vertex_finish, map_key_t<Map> u) { put(out_time, u, this->time_now); }
 };
 
 template <class Map>
