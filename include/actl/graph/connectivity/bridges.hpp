@@ -11,9 +11,7 @@
 #include <actl/graph/connectivity/detail/once_equal.hpp>
 #include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
-#include <actl/graph/traversal/time_stamper.hpp>
 #include <actl/iterator/dummy_output_iterator.hpp>
-#include <actl/numeric/bit.hpp>
 
 namespace ac {
 
@@ -29,8 +27,15 @@ struct bridge_finder {
 
     using V = vertex_t<Graph>;
     using E = edge_t<Graph>;
+    using T = map_value_t<TimeMap>;
 
-    void operator()(on_vertex_start, V u) { components.push(u); }
+    void operator()(on_vertex_initialize, V u) { put(time_low, u, 0); }
+    bool operator()(is_vertex_discovered, V u) { return get(time_low, u) != 0; }
+
+    void operator()(on_vertex_start, V u) {
+        put(time_low, u, ++time);
+        components.push(u);
+    }
 
     void operator()(on_non_tree_edge, E e) {
         V v = e.target();
@@ -48,19 +53,19 @@ struct bridge_finder {
 
     void operator()(on_tree_edge_finish, E e) {
         operator()(on_non_tree_edge{}, e);
-        if (V v = e.target(); !get(not_root, v)) {
-            *bridges++ = e;
-            components.pop(v);
-        }
+        if (!get(not_root, e.target())) *bridges++ = e;
     }
 
-    void operator()(on_search_finish, V u) { components.pop(u); }
+    void operator()(on_vertex_finish, V u) {
+        if (!get(not_root, u)) components.pop(u);
+    }
 
     BridgeOutIter bridges;
     ComponentStack components;
     TimeMap time_low;
     RootMap not_root;
     DfsStack dfs_stack;
+    T time = {};
 };
 
 template <class G, class... Ts>
@@ -75,7 +80,7 @@ void find_bridges_and_components(const Graph& graph, BridgeOutIter bridges, Comp
         // Values of the next two maps can be compressed into bits of one int per vertex.
         make_default_vertex_map<int>(graph), make_default_vertex_map<bool>(graph),
         std::stack<bridge_context<Graph, ParallelEdges && Graph::allows_parallel_edges>>{});
-    depth_first_search{make_time_stamper(bf.time_low, -1), bf}(graph, bf.dfs_stack);
+    depth_first_search{bf}(graph, bf.dfs_stack);
 }
 
 template <bool ParallelEdges = true, class Graph, class BridgeOutIter>
