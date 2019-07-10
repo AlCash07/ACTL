@@ -8,4 +8,4 @@
 #include <actl/geometry/2d/point2d.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("perpendicular") { ASSERT_EQUAL(point{-3, 2}, perpendicular(point{2, 3})); }

@@ -10,7 +10,11 @@
 #include <actl/assert.hpp>
 #include <actl/geometry/traits/geometry_traits.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/util/introspection.hpp>
+#include <actl/util/operators.hpp>
+#include <actl/util/span.hpp>
 #include <actl/util/use_default.hpp>
+#include <functional>
 #include <initializer_list>
 
 namespace ac {
@@ -25,83 +29,42 @@ class point;
  * N-dimensional point base class implementing common functionality.
  */
 template <class T, index N>
-class point_base {
+class point_base : operators::base<> {
 public:
-    template <class... Ts>
-    explicit constexpr point_base(Ts&&... values) : coordinates_{T{std::forward<Ts>(values)}...} {}
+    template <class... Ts, enable_int_if<(... && std::is_convertible_v<Ts, T>)> = 0>
+    constexpr point_base(Ts&&... xs) : coordinates_{T{std::forward<Ts>(xs)}...} {}
 
-    constexpr point_base(std::initializer_list<T> values) {
-        ACTL_ASSERT(values.size() == N);
-        copy(values, coordinates_);
+    template <class T1>
+    explicit constexpr point_base(const point<T1, N>& rhs) {
+        for (index i = 0; i < N; ++i) (*this)[i] = static_cast<T>(rhs[i]);
     }
 
-    template <class T1>
-    explicit constexpr point_base(const point<T1, N>& rhs) { (*this) = rhs; }
+    constexpr span<T> span() { return coordinates_; }
+    constexpr cspan<T> span() const { return coordinates_; }
 
-    template <class T1>
-    explicit constexpr point_base(point<T1, N>&& rhs) { (*this) = rhs; }
-
-    constexpr T*       data() { return coordinates_; }
+    constexpr T* data() { return coordinates_; }
     constexpr const T* data() const { return coordinates_; }
 
-    constexpr T& operator[](index i) {
-        ACTL_ASSERT(0 <= i && i < N);
-        return data()[i];
-    }
+    constexpr T& operator[](index i) { return span()[i]; }
+    constexpr const T& operator[](index i) const { return span()[i]; }
 
-    constexpr T& operator()(index i) { return data()[i]; }
-
-    constexpr const T& operator[](index i) const {
-        ACTL_ASSERT(0 <= i && i < N);
-        return data()[i];
-    }
-
-    constexpr const T& operator()(index i) const { return data()[i]; }
+    constexpr T& operator()(index i) { return span()[i]; }
+    constexpr const T& operator()(index i) const { return span()[i]; }
 
     explicit constexpr operator bool() const {
         for (index i = 0; i < N; ++i)
-            if (data()[i]) return true;
+            if (span()[i]) return true;
         return false;
     }
 
     void swap(point_base& rhs) {
         using std::swap;
-        for (index i = 0; i < N; ++i)
-            swap(data()[i], rhs[i]);
-    }
-
-    template <class T1>
-    constexpr point_base& operator = (const point_base<T1, N>& rhs) {
-        return apply([](T& dst, const T1& src) { dst = static_cast<T>(src); }, rhs);
-    }
-
-    template <class T1>
-    constexpr point_base& operator += (const point_base<T1, N>& rhs) {
-        return apply([](T& dst, const T1& src) { dst += src; }, rhs);
-    }
-
-    template <class T1>
-    constexpr point_base& operator -= (const point_base<T1, N>& rhs) {
-        return apply([](T& dst, const T1& src) { dst -= src; }, rhs);
-    }
-
-    template <class T1>
-    constexpr point_base& operator *= (const T1& factor) {
-        return apply([&factor](T& dst) { dst *= factor; });
-    }
-
-    template <class T1>
-    constexpr point_base& operator /= (const T1& factor) {
-        return apply([&factor](T& dst) { dst /= factor; });
+        for (index i = 0; i < N; ++i) swap(span()[i], rhs[i]);
     }
 
 private:
-    template <class Operation, class... Points>
-    constexpr point_base& apply(Operation op, Points&&... points) {
-        for (index i = 0; i < N; ++i)
-            op(data()[i], points[i]...);
-        return *this;
-    }
+    // TODO: this causes point to look like ([x, y]) in pretty format. Fit it.
+    INTROSPECT(coordinates_);
 
     T coordinates_[N];
 };
@@ -126,17 +89,14 @@ struct geometry_traits<point<T, N>> {
 template <index N, class T>
 inline void swap(point<T, N>& lhs, point<T, N>& rhs) { lhs.swap(rhs); }
 
-template <class Device, index N, class T>
-inline bool read(Device& in, point<T, N>& arg) {
-    return read(in, arg.data(), N);
-}
-
-template <class Device, index N, class T>
-inline int write(Device& out, const point<T, N>& arg) {
-    return write(out, arg.data(), N);
-}
-
 namespace detail {
+
+template <class T, index N, class Operation, class... Points>
+inline constexpr auto& apply(Operation op, point<T, N>& dst, const Points&... points) {
+    for (index i = 0; i < N; ++i)
+        op(dst[i], points[i]...);
+    return dst;
+}
 
 template <index N, class Operation, class... Points>
 inline constexpr auto apply(Operation op, const Points&... points) {
@@ -150,19 +110,39 @@ inline constexpr auto apply(Operation op, const Points&... points) {
 
 /* Vector operations */
 
+template <index N, class T0, class T1 = T0>
+inline constexpr auto& operator += (point<T0, N>& lhs, const point<T1, N>& rhs) {
+    return detail::apply([](T0& lhs, const T1& src) { lhs += src; }, lhs, rhs);
+}
+
+template <index N, class T0, class T1 = T0>
+inline constexpr auto& operator -= (point<T0, N>& lhs, const point<T1, N>& rhs) {
+    return detail::apply([](T0& lhs, const T1& src) { lhs -= src; }, lhs, rhs);
+}
+
+template <index N, class T0, class T1>
+inline constexpr auto& operator *= (point<T0, N>& lhs, const T1& factor) {
+    return detail::apply([&factor](T0& lhs) { lhs *= factor; }, lhs);
+}
+
+template <index N, class T0, class T1>
+inline constexpr auto& operator /= (point<T0, N>& lhs, const T1& factor) {
+    return detail::apply([&factor](T0& lhs) { lhs /= factor; }, lhs);
+}
+
 template <index N, class T>
-inline constexpr auto operator - (const point<T, N>& src) {
-    return detail::apply<N>([](const T& x) { return -x; }, src);
+inline constexpr auto operator -(const point<T, N>& src) {
+    return detail::apply<N>(std::negate<T>{}, src);
 }
 
 template <index N, class T0, class T1>
 inline constexpr auto operator + (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return detail::apply<N>([](const T0& x, const T1& y) { return x + y; }, lhs, rhs);
+    return detail::apply<N>(std::plus<>{}, lhs, rhs);
 }
 
 template <index N, class T0, class T1>
 inline constexpr auto operator - (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return detail::apply<N>([](const T0& x, const T1& y) { return x - y; }, lhs, rhs);
+    return detail::apply<N>(std::minus<>{}, lhs, rhs);
 }
 
 template <index N, class T0, class T1>
@@ -181,50 +161,30 @@ inline constexpr auto operator / (const point<T0, N>& lhs, const T1& factor) {
     return detail::apply<N>([&factor](const T0& x) { return x / factor; }, lhs);
 }
 
-template <class P = use_default, index N, class T0, class T1,
-          class X = deduce_t<P, geometry::scalar_t<T0, T1>>>
-inline constexpr X dot(const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    X res{0};
+template <class P = use_default, index N, class T0, class T1>
+inline constexpr auto dot(const point<T0, N>& lhs, const point<T1, N>& rhs) {
+    using Res = deduce_t<P, geometry::scalar_t<T0, T1>>;
+    Res res = 0;
     for (index i = 0; i < N; ++i)
-        res += static_cast<X>(lhs[i]) * rhs[i];
+        res += static_cast<Res>(lhs[i]) * rhs[i];
     return res;
 }
 
 template <class P = use_default, index N, class T>
-inline constexpr auto abs(const point<T, N>& src) {
-    return dot<P>(src, src);
+inline constexpr auto abs(const point<T, N>& x) {
+    return dot<P>(x, x);
 }
 
 /* Comparison operators */
 
 template <index N, class T0, class T1>
 inline constexpr bool operator == (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return std::equal(lhs.data(), lhs.data() + N, rhs.data());
-}
-
-template <index N, class T0, class T1>
-inline constexpr bool operator != (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return !(lhs == rhs);
+    return equal(lhs.span(), rhs.span());
 }
 
 template <index N, class T0, class T1>
 inline constexpr bool operator < (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return std::lexicographical_compare(lhs.data(), lhs.data() + N, rhs.data(), rhs.data() + N);
-}
-
-template <index N, class T0, class T1>
-inline constexpr bool operator > (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return rhs < lhs;
-}
-
-template <index N, class T0, class T1>
-inline constexpr bool operator <= (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return !(lhs > rhs);
-}
-
-template <index N, class T0, class T1>
-inline constexpr bool operator >= (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return !(lhs < rhs);
+    return lexicographical_compare(lhs.span(), rhs.span());
 }
 
 }  // namespace ac
