@@ -125,7 +125,7 @@ private:
     Kind& base() { return *this; }
     const Kind& base() const { return *this; }
 
-    INTROSPECT(start, vector, base());
+    INTROSPECT(start, vector, base())
 };
 
 template <class T, index N = 2>

@@ -14,19 +14,21 @@ namespace ac {
 /**
  * N-dimensional sphere.
  */
+// TODO: add bool parameter indicating if the inside is included, i.e. we have a disk.
 template <class T, index N = 3>
-struct sphere {
+class sphere {
+public:
     point<T, N> center;
-    T           radius;
+    T radius;
 
-    explicit constexpr sphere() = default;
+    constexpr sphere() = default;
 
     template <class T1, class T2>
     explicit constexpr sphere(const point<T1, N>& center, const T2& radius)
         : center{center}, radius{static_cast<T>(radius)} {}
 
     template <class T1>
-    explicit constexpr sphere(const sphere<T1, N>& rhs) { (*this) = rhs; }
+    explicit constexpr sphere(const sphere<T1, N>& rhs) : sphere{rhs.center, rhs.radius} {}
 
     explicit constexpr operator bool() const { return radius > T{0}; }
 
@@ -36,12 +38,8 @@ struct sphere {
         swap(radius, rhs.radius);
     }
 
-    template <class T1>
-    constexpr sphere& operator = (const sphere<T1, N>& rhs) {
-        center = rhs.center;
-        radius = static_cast<T>(rhs.radius);
-        return *this;
-    }
+private:
+    INTROSPECT(center, radius)
 };
 
 template <index N, class T0, class T1>
@@ -52,15 +50,5 @@ struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T,
 
 template <index N, class T>
 inline void swap(sphere<T, N>& lhs, sphere<T, N>& rhs) { lhs.swap(rhs); }
-
-template <class Device, index N, class T>
-inline bool read(Device& in, sphere<T, N>& arg) {
-    return read(in, arg.center, arg.radius);
-}
-
-template <class Device, index N, class T>
-inline int write(Device& out, const sphere<T, N>& arg) {
-    return write(out, arg.center, arg.radius);
-}
 
 }  // namespace ac

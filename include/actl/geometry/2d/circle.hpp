@@ -17,7 +17,7 @@ using circle = sphere<T, 2>;
 
 template <class T0, class T1>
 inline constexpr auto make_circle(const point<T0>& center, const T1& radius) {
-    return circle<geometry::scalar_t<T0, T1>>(center, radius);
+    return circle<geometry::scalar_t<T0, T1>>{center, radius};
 }
 
 }  // namespace ac
