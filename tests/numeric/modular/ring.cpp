@@ -5,11 +5,10 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/cp/ring.hpp>
-#include <actl/numeric/random/random.hpp>
+#include <actl/numeric/modular/ring.hpp>
 #include <actl/test.hpp>
 
-TEST("cp::static_quotient_ring::arithmetic", repeat = 1000, time_limit = 1) {
+TEST("static_quotient_ring::arithmetic", repeat = 1000) {
     using ring = static_quotient_ring<18446744073709551557ull>;  // largest uint64_t prime number
     using int_mod = ring_element<ring>;
     int_mod x = random.uniform(ring::mod());
