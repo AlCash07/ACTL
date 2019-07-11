@@ -64,7 +64,7 @@ public:
 
 private:
     // TODO: this causes point to look like ([x, y]) in pretty format. Fit it.
-    INTROSPECT(coordinates_);
+    INTROSPECT(coordinates_)
 
     T coordinates_[N];
 };

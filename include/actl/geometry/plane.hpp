@@ -16,11 +16,12 @@ namespace ac {
  * In 2D represents a line.
  */
 template <class T, index N = 3>
-struct plane {
+class plane {
+public:
     point<T, N> normal;  // normal vector
-    T           d;       // distance from origin to the plane times the normal norm
+    T d;                 // distance from origin to the plane times the norm of normal
 
-    explicit constexpr plane() = default;
+    constexpr plane() = default;
 
     template <class T1, class T2>
     explicit constexpr plane(const point<T1, N>& normal, const T2& d)
@@ -28,10 +29,13 @@ struct plane {
 
     template <class T1, class T2>
     explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& point)
-        : plane{normal, dot(normal, point)} {}
+        : plane{normal, dot<T>(normal, point)} {}
 
     template <class T1>
-    explicit constexpr plane(const plane<T1, N>& rhs) { (*this) = rhs; }
+    explicit constexpr plane(const plane<T1, N>& rhs) {
+        normal = rhs.normal;
+        d = static_cast<T>(rhs.d);
+    }
 
     explicit constexpr operator bool() const { return normal; }
 
@@ -41,18 +45,14 @@ struct plane {
         swap(d, rhs.d);
     }
 
-    template <class T1>
-    constexpr plane& operator = (const plane<T1, N>& rhs) {
-        normal = rhs.normal;
-        d = static_cast<T>(rhs.d);
-        return *this;
-    }
-
-    // Oriented distance from @p point to the plane times the normal norm.
+    // Oriented distance from @p point to the plane times the norm of normal.
     template <class P = use_default, class T1>
     constexpr auto operator()(const point<T1, N>& point) const {
         return dot<P>(normal, point) - d;
     };
+
+private:
+    INTROSPECT(normal, d)
 };
 
 template <index N, class T0, class T1>
@@ -65,30 +65,20 @@ template <index N, class T>
 struct geometry_traits<plane<T, N>> : geometry_traits_base<plane_tag, point<T, N>> {};
 
 template <index N, class... Ts>
-using plane_type = plane<geometry::scalar_t<Ts...>, N>;
+using plane_t = plane<geometry::scalar_t<Ts...>, N>;
 
 template <class T0, class T1>
 inline constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b) {
-    return plane_type<2, T0, T1>{perpendicular(b - a), a};
+    return plane_t<2, T0, T1>{perpendicular(b - a), a};
 }
 
 template <class T0, class T1, class T2>
 inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
                                    const point3d<T2>& c) {
-    return plane_type<3, T0, T1, T2>{cross(b - a, c - a), a};
+    return plane_t<3, T0, T1, T2>{cross(b - a, c - a), a};
 }
 
 template <index N, class T>
 inline void swap(plane<T, N>& lhs, plane<T, N>& rhs) { lhs.swap(rhs); }
-
-template <class Device, index N, class T>
-inline bool read(Device& in, plane<T, N>& arg) {
-    return read(in, arg.normal, arg.d);
-}
-
-template <class Device, index N, class T>
-inline int write(Device& out, const plane<T, N>& arg) {
-    return write(out, arg.normal, arg.d);
-}
 
 }  // namespace ac
