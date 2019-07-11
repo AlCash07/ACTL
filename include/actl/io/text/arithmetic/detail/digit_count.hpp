@@ -11,8 +11,8 @@
 
 namespace ac::io::detail {
 
-template <class T>
-inline constexpr index digit_count(T x, T base) {
+template <class T, class U>
+inline constexpr index digit_count(T x, U base) {
     return x == 0 ? 0 : 1 + digit_count(x / base, base);
 }
 

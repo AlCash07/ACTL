@@ -49,12 +49,6 @@ struct static_kind {
     void operator = (uint8_t kind) { ACTL_ASSERT(Kind == kind); }
 };
 
-template <class Device, uint8_t K>
-inline bool read(Device&, static_kind<K>&) { return true; }
-
-template <class Device, uint8_t K>
-inline int write(Device&, const static_kind<K>&) { return 0; }
-
 class any_kind {
 public:
     any_kind(uint8_t kind = free) { (*this) = kind; }
@@ -68,20 +62,19 @@ public:
 
 private:
     uint8_t kind_;
+
+    friend struct ac::io::serialization_access;
+
+    template <class Device, class Format>
+    index serialize(Device& od, Format& fmt) const {
+        return write(od, fmt, kind_);
+    }
+
+    template <class Device, class Format>
+    bool deserialize(Device& id, Format& fmt) {
+        return read(id, fmt, kind_) && is_valid(kind_);
+    }
 };
-
-template <class Device>
-inline bool read(Device& in, any_kind& arg) {
-    uint8_t kind;
-    if (!read(in, kind)) return false;
-    arg = kind;
-    return true;
-}
-
-template <class Device>
-inline int write(Device& out, const any_kind& arg) {
-    return write(out, arg.kind());
-}
 
 }  // namespace line_kind
 
@@ -89,11 +82,12 @@ inline int write(Device& out, const any_kind& arg) {
  * N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
  */
 template <class T, index N = 2, class Kind = line_kind::static_kind<line_kind::free>>
-struct line : public Kind {
+class line : public Kind {
+public:
     point<T, N> start;
     point<T, N> vector;
 
-    explicit constexpr line() = default;
+    constexpr line() = default;
 
     template <class T1, class T2>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
@@ -105,7 +99,8 @@ struct line : public Kind {
         : Kind{kind}, start{a}, vector{vector ? point<T, N>{a} : point<T, N>{b - a}} {}
 
     template <class T1, class K1>
-    explicit constexpr line(const line<T1, N, K1>& rhs) { (*this) = rhs; }
+    explicit constexpr line(const line<T1, N, K1>& rhs)
+        : Kind{rhs.kind()}, start{rhs.start}, vector{rhs.vector} {}
 
     constexpr operator bool() const { return vector; }
 
@@ -114,14 +109,6 @@ struct line : public Kind {
         swap(start, rhs.start);
         swap(vector, rhs.vector);
         swap(static_cast<Kind&>(*this), rhs);
-    }
-
-    template <class T1, class K1>
-    constexpr line& operator = (const line<T1, N, K1>& rhs) {
-        start = rhs.start;
-        vector = rhs.vector;
-        static_cast<Kind&>(*this) = rhs.kind();
-        return *this;
     }
 
     constexpr point<T, N> end() const { return start + vector; }
@@ -133,6 +120,12 @@ struct line : public Kind {
     constexpr auto operator()(const T1& t) const {
         return start + t * vector;
     }
+
+private:
+    Kind& base() { return *this; }
+    const Kind& base() const { return *this; }
+
+    INTROSPECT(start, vector, base());
 };
 
 template <class T, index N = 2>
@@ -178,15 +171,5 @@ inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
 
 template <index N, class T, class K>
 inline void swap(line<T, N, K>& lhs, line<T, N, K>& rhs) { lhs.swap(rhs); }
-
-template <class Device, index N, class T, class K>
-inline bool read(Device& in, line<T, N, K>& arg) {
-    return read(in, arg.start, arg.vector, static_cast<K&>(arg));
-}
-
-template <class Device, index N, class T, class K>
-inline int write(Device& out, const line<T, N, K>& arg) {
-    return write(out, arg.start, arg.vector, static_cast<const K&>(arg));
-}
 
 }  // namespace ac

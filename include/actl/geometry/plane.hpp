@@ -32,10 +32,8 @@ public:
         : plane{normal, dot<T>(normal, point)} {}
 
     template <class T1>
-    explicit constexpr plane(const plane<T1, N>& rhs) {
-        normal = rhs.normal;
-        d = static_cast<T>(rhs.d);
-    }
+    explicit constexpr plane(const plane<T1, N>& rhs)
+        : normal{rhs.normal}, d{static_cast<T>(rhs.d)} {}
 
     explicit constexpr operator bool() const { return normal; }
 
