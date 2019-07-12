@@ -9,8 +9,6 @@
 
 #include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/3d/point3d.hpp>
-#include <actl/geometry/traits/aliases.hpp>
-#include <actl/geometry/traits/policy.hpp>
 
 namespace ac {
 

@@ -7,13 +7,11 @@
 
 #pragma once
 
-#include <actl/geometry/traits/id.hpp>
-#include <actl/util/use_default.hpp>
+#include <actl/geometry/traits.hpp>
 
 namespace ac {
 
-template <class Policy, class T0, class T1, class OutIter,
-          class = geometry::enable_if_swap_t<T0, T1>>
+template <class Policy, class T0, class T1, class OutIter, geometry::enable_int_if_swap<T0, T1> = 0>
 inline auto intersect(const Policy& policy, const T0& lhs, const T1& rhs, OutIter dst) {
     return intersect(policy, rhs, lhs, dst);
 }

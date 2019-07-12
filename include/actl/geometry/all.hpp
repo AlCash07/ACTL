@@ -16,4 +16,4 @@
 #include <actl/geometry/point.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/geometry/sphere.hpp>
-#include <actl/geometry/traits/all.hpp>
+#include <actl/geometry/traits.hpp>

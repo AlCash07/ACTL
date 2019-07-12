@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/geometry/algorithm/area/point_point.hpp>
-#include <actl/geometry/traits/policy.hpp>
 
 namespace ac {
 
@@ -18,7 +17,7 @@ struct ccw_policy : AreaPolicy {};
 template <class P = use_default>
 using comparable_ccw = ccw_policy<comparable_area_points<P>>;
 
-template <class T, class... Ts, class = geometry::disable_if_policy_t<T>,
+template <class T, class... Ts, geometry::disable_int_if_policy<T> = 0,
           enable_int_if<geometry_traits<T>::dimension == 2> = 0>
 inline auto ccw(const T& arg, const Ts&... args) {
     return ccw(comparable_ccw<>{}, arg, args...);

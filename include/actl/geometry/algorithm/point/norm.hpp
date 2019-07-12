@@ -8,8 +8,6 @@
 #pragma once
 
 #include <actl/geometry/point.hpp>
-#include <actl/geometry/traits/aliases.hpp>
-#include <actl/geometry/traits/policy.hpp>
 
 namespace ac {
 

@@ -9,8 +9,6 @@
 
 #include <actl/geometry/2d/circle.hpp>
 #include <actl/geometry/algorithm/point/angle.hpp>
-#include <actl/geometry/traits/aliases.hpp>
-#include <actl/geometry/traits/policy.hpp>
 #include <actl/iterator/output_type.hpp>
 #include <actl/numeric/math.hpp>
 

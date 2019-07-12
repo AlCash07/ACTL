@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/geometry/plane.hpp>
-#include <actl/geometry/traits/policy.hpp>
 
 namespace ac {
 

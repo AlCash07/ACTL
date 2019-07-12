@@ -8,12 +8,11 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/geometry/traits/geometry_traits.hpp>
+#include <actl/geometry/traits.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/util/introspection.hpp>
 #include <actl/util/operators.hpp>
 #include <actl/util/span.hpp>
-#include <actl/util/use_default.hpp>
 #include <functional>
 #include <initializer_list>
 
