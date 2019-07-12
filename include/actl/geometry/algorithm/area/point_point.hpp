@@ -9,6 +9,7 @@
 
 #include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/3d/point3d.hpp>
+#include <actl/util/square_root.hpp>
 
 namespace ac {
 

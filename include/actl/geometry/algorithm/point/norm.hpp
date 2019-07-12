@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/geometry/point.hpp>
+#include <actl/util/square_root.hpp>
 
 namespace ac {
 
