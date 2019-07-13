@@ -29,7 +29,7 @@ inline std::pair<point<T0, N>, point<X, N>> nearest(const nearest_point_line<P, 
 
 template <index N, class T0, class T1, class K>
 inline auto nearest(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
-    return nearest(nearest_point_line<>{}, point, line);
+    return nearest(nearest_point_line{}, point, line);
 }
 
 }  // namespace ac

@@ -65,12 +65,12 @@ namespace detail {
 
 template <class T0, class T1, class OutIter>
 inline auto tangents(const point<T0>& point, const circle<T1>& circle, OutIter dst, scalar_tag) {
-    return tangents(tangents_point_circle_scalar<>{}, point, circle, dst);
+    return tangents(tangents_point_circle_scalar{}, point, circle, dst);
 }
 
 template <class T0, class T1, class OutIter>
 inline auto tangents(const point<T0>& point, const circle<T1>& circle, OutIter dst, point_tag) {
-    return tangents(tangents_point_circle_point<>{}, point, circle, dst);
+    return tangents(tangents_point_circle_point{}, point, circle, dst);
 }
 
 }  // namespace detail

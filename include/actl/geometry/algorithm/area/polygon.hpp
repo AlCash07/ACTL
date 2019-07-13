@@ -31,7 +31,7 @@ inline X area(area_polygon<P>, const polygon<T>& polygon) {
 
 template <class Range>
 inline auto area(use_default, const polygon<Range>& polygon) {
-    return area(area_polygon<>(), polygon);
+    return area(area_polygon{}, polygon);
 }
 
 }  // namespace ac

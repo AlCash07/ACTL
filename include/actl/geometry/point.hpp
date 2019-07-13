@@ -136,12 +136,12 @@ inline constexpr auto operator -(const point<T, N>& src) {
 
 template <index N, class T0, class T1>
 inline constexpr auto operator + (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return detail::apply<N>(std::plus<>{}, lhs, rhs);
+    return detail::apply<N>(std::plus{}, lhs, rhs);
 }
 
 template <index N, class T0, class T1>
 inline constexpr auto operator - (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return detail::apply<N>(std::minus<>{}, lhs, rhs);
+    return detail::apply<N>(std::minus{}, lhs, rhs);
 }
 
 template <index N, class T0, class T1>

@@ -25,7 +25,7 @@ inline bool crosses(const crosses_sphere_sphere<DP>& policy, const sphere<T0, N>
 
 template <class DP, index N, class T0, class T1>
 inline bool crosses(use_default, const sphere<T0, N>& lhs, const sphere<T1, N>& rhs) {
-    return crosses(crosses_sphere_sphere<>{}, lhs, rhs);
+    return crosses(crosses_sphere_sphere{}, lhs, rhs);
 }
 
 }  // namespace ac

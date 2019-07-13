@@ -47,7 +47,7 @@ inline auto extreme_vertex(const extreme_vertex_policy<CP>& policy,
 
 template <class T, class Function>
 inline auto extreme_vertex(const convex_polygon<T>& polygon, Function direction) {
-    return extreme_vertex(extreme_vertex_policy<>{}, polygon, direction);
+    return extreme_vertex(extreme_vertex_policy{}, polygon, direction);
 }
 
 }  // namespace ac

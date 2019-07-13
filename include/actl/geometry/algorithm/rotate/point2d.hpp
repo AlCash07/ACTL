@@ -30,7 +30,7 @@ inline auto rotate(rotate_point2d<F> policy, const point<T0>& point, const T1& a
 
 template <class T0, class... Ts>
 inline auto rotate(use_default, const point<T0>& p, const Ts&... args) {
-    return rotate(rotate_point2d<>{}, p, args...);
+    return rotate(rotate_point2d{}, p, args...);
 }
 
 }  // namespace ac

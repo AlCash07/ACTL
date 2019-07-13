@@ -44,7 +44,7 @@ inline int within(const within_convex_monotone_polygon<CP>& policy, const point<
 
 template <class T0, class T1>
 inline int within(use_default, const point<T0>& point, const convex_monotone_polygon<T1>& polygon) {
-    return within(within_convex_monotone_polygon<>{}, point, polygon);
+    return within(within_convex_monotone_polygon{}, point, polygon);
 }
 
 }  // namespace ac

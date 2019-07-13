@@ -29,7 +29,7 @@ inline auto tangents(const tangents_point_convex_polygon<EVP>& policy, const poi
 
 template <class T0, class T1>
 inline auto tangents(use_default, const point<T0>& point, const polygon<T1>& polygon) {
-    return tangents(tangents_point_convex_polygon<>{}, point, polygon);
+    return tangents(tangents_point_convex_polygon{}, point, polygon);
 }
 
 }  // namespace ac

@@ -33,7 +33,7 @@ inline auto distance(distance_point_line<P, F, NP, AP> policy, const point<T0, N
 
 template <index N, class T0, class T1, class K>
 inline auto distance(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
-    return distance(distance_point_line<>{}, point, line);
+    return distance(distance_point_line{}, point, line);
 }
 
 }  // namespace ac

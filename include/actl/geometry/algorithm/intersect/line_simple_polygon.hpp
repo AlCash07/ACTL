@@ -65,7 +65,7 @@ inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
 template <class T0, class K, class T1, class OutIter>
 inline auto intersect(use_default, const line<T0, 2, K>& line, const simple_polygon<T1>& polygon,
                       OutIter dst) {
-    return intersect(intersect_line_simple_polygon<>{}, line, polygon, dst);
+    return intersect(intersect_line_simple_polygon{}, line, polygon, dst);
 }
 
 }  // namespace ac

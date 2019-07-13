@@ -23,7 +23,7 @@ inline auto nearest(const nearest_point_plane<P, F>& policy, const point<T0, N>&
 
 template <index N, class T0, class T1>
 inline auto nearest(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
-    return nearest(nearest_point_plane<>{}, point, plane);
+    return nearest(nearest_point_plane{}, point, plane);
 }
 
 }  // namespace ac

@@ -51,7 +51,7 @@ inline int winding_number(const winding_number_policy<CP>& policy, const point<T
 
 template <class T0, class T1>
 inline int winding_number(const point<T0>& point, const polygon<T1>& polygon) {
-    return winding_number(winding_number_policy<>{}, point, polygon);
+    return winding_number(winding_number_policy{}, point, polygon);
 }
 
 }  // namespace ac

@@ -34,7 +34,7 @@ void sort_by_angle(sort_by_angle_policy<P>, multi_point<T0>& points, const point
 
 template <class T0, class T1>
 inline auto sort_by_angle(multi_point<T0>& dst, const point<T1>& origin) {
-    return sort_by_angle(sort_by_angle_policy<>{}, dst, origin);
+    return sort_by_angle(sort_by_angle_policy{}, dst, origin);
 }
 
 }  // namespace ac

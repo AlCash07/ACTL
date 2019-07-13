@@ -23,7 +23,7 @@ inline int within(const within_sphere<P>& policy, const point<T0, N>& point,
 
 template <index N, class T0, class T1>
 inline int within(use_default, const point<T0, N>& point, const sphere<T1, N>& sphere) {
-    return within(within_sphere<>{}, point, sphere);
+    return within(within_sphere{}, point, sphere);
 }
 
 }  // namespace ac

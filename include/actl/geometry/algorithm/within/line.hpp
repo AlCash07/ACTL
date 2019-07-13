@@ -25,7 +25,7 @@ inline int within(const within_line<P, CP>& policy, const point<T0, N>& point,
 
 template <index N, class T0, class T1, class K>
 inline int within(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
-    return within(within_line<>{}, point, line);
+    return within(within_line{}, point, line);
 }
 
 }  // namespace ac

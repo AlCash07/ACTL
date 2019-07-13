@@ -35,7 +35,7 @@ inline auto max_distance(const max_distance_policy<DP, AP>& policy,
 
 template <class T>
 inline auto max_distance(const convex_polygon<T>& polygon) {
-    return max_distance(max_distance_policy<>{}, polygon);
+    return max_distance(max_distance_policy{}, polygon);
 }
 
 }  // namespace ac

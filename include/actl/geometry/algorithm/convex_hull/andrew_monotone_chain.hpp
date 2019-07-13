@@ -56,7 +56,7 @@ inline auto convex_hull(andrew_monotone_chain<M, P, AP> policy, multi_point<T>& 
 
 template <class T, enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
 inline auto convex_hull(use_default, multi_point<T>& points) {
-    return convex_hull(andrew_monotone_chain<>{}, points);
+    return convex_hull(andrew_monotone_chain{}, points);
 }
 
 }  // namespace ac

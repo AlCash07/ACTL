@@ -52,7 +52,7 @@ inline auto area(standard_area_points<P, F>, const point<T0, N>& lhs, const poin
 
 template <index N, class T0, class T1>
 inline auto area(use_default, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return area(standard_area_points<>{}, lhs, rhs);
+    return area(standard_area_points{}, lhs, rhs);
 }
 
 }  // namespace ac

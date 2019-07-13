@@ -21,7 +21,7 @@ inline int within(within_plane<P>, const point<T0, N>& point, const plane<T1, N>
 
 template <index N, class T0, class T1>
 inline int within(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
-    return within(within_plane<>{}, point, plane);
+    return within(within_plane{}, point, plane);
 }
 
 }  // namespace ac

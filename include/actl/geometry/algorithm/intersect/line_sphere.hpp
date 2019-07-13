@@ -53,7 +53,7 @@ inline OutIter intersect(const intersect_line_sphere<P>& policy, const line<T0, 
 template <index N, class T0, class K, class T1, class OutIter>
 inline auto intersect(use_default, const line<T0, N, K>& line, const sphere<T1, N>& sphere,
                       OutIter dst) {
-    return intersect(intersect_line_sphere<>{}, line, sphere, dst);
+    return intersect(intersect_line_sphere{}, line, sphere, dst);
 }
 
 }  // namespace ac

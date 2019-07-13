@@ -34,7 +34,7 @@ inline auto antipodal_vertices(const antipodal_vertices_policy<CP>& policy,
 
 template <class T, class OutIter>
 inline auto antipodal_vertices(const convex_polygon<T>& polygon, OutIter dst) {
-    return antipodal_vertices(antipodal_vertices_policy<>{}, polygon, dst);
+    return antipodal_vertices(antipodal_vertices_policy{}, polygon, dst);
 }
 
 }  // namespace ac

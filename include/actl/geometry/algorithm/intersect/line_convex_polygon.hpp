@@ -61,7 +61,7 @@ inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const lin
 template <class T0, class K, class T1, class OutIter>
 inline auto intersect(use_default, const line<T0, 2, K>& line, const convex_polygon<T1>& polygon,
                       OutIter dst) {
-    return intersect(intersect_line_convex_polygon<>{}, line, polygon, dst);
+    return intersect(intersect_line_convex_polygon{}, line, polygon, dst);
 }
 
 }  // namespace ac

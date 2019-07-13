@@ -27,7 +27,7 @@ inline bool crosses(const crosses_plane_plane<CP>& policy, const plane<T0, N>& l
 
 template <index N, class T0, class T1>
 inline bool crosses(use_default, const plane<T0, N>& lhs, const plane<T1, N>& rhs) {
-    return crosses(crosses_plane_plane<>{}, lhs, rhs);
+    return crosses(crosses_plane_plane{}, lhs, rhs);
 }
 
 }  // namespace ac

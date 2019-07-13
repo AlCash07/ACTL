@@ -63,7 +63,7 @@ inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, scal
 
 template <class T0, class T1, class It>
 inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, point_tag) {
-    return ac::intersect(intersect_circle_circle_point<>{}, lhs, rhs, dst);
+    return ac::intersect(intersect_circle_circle_point{}, lhs, rhs, dst);
 }
 
 }  // namespace detail
