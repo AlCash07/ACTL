@@ -8,4 +8,6 @@
 #include <actl/geometry/algorithm/point/norm.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("standard") { ASSERT_EQUAL(5.0, norm(point{3, 4}), 1e-12); }
+
+TEST("comparable") { ASSERT_EQUAL(2, sqr(norm(comparable_norm{}, point{1, 1}))); }

@@ -25,12 +25,12 @@ inline auto norm(comparable_norm<P>, const point<T, N>& point) {
 
 template <class P, class F, index N, class T>
 inline auto norm(standard_norm<P, F>, const point<T, N>& point) {
-    return (geometry::float_t<F, T>)math::sqrt(dot<P>(point));
+    return static_cast<geometry::float_t<F, T>>(math::sqrt(dot<P>(point)));
 }
 
 template <index N, class T>
 inline auto norm(const point<T, N>& point) {
-    return norm(standard_norm<>{}, point);
+    return norm(standard_norm{}, point);
 }
 
 }  // namespace ac
