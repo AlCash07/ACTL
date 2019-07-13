@@ -18,7 +18,7 @@ struct invert_policy : geometry::policy {};
 template <class P, class R, index N, class T0, class T1, class X = geometry::ratio_t<R, T0, T1>>
 inline point<X, N> invert(invert_policy<P, R>, const point<T0, N>& src, const T1& radius) {
     if (!src) return {};
-    return src * sqr(static_cast<X>(radius)) / abs<P>(src);
+    return src * sqr(static_cast<X>(radius)) / dot<P>(src);
 }
 
 template <class P, class R, class S, index N, class T0, class T1, class T2>

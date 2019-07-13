@@ -170,7 +170,7 @@ inline constexpr auto dot(const point<T0, N>& lhs, const point<T1, N>& rhs) {
 }
 
 template <class P = use_default, index N, class T>
-inline constexpr auto abs(const point<T, N>& x) {
+inline constexpr auto dot(const point<T, N>& x) {
     return dot<P>(x, x);
 }
 

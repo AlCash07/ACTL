@@ -16,7 +16,7 @@ struct project_plane : geometry::policy {};
 
 template <class P, class R, index N, class T0, class T1, class X = geometry::ratio_t<R, T0, T1>>
 inline auto project(project_plane<P, R>, const point<T0, N>& src, const plane<T1, N>& dst) {
-    return src - dst.normal * static_cast<X>(dst.template operator()<P>(src)) / abs<P>(dst.normal);
+    return src - dst.normal * static_cast<X>(dst.template operator()<P>(src)) / dot<P>(dst.normal);
 }
 
 template <index N, class T0, class T1>

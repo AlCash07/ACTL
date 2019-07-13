@@ -36,13 +36,13 @@ inline constexpr auto area(standard_area_points<P, S>, const point<T0>& lhs, con
 // TODO: figure out the correct sign instead of returning the absolute value.
 template <class P, class T0, class T1>
 inline auto area(comparable_area_points<P>, const point3d<T0>& lhs, const point3d<T1>& rhs) {
-    return deferred_sqrt(abs<P>(cross<P>(lhs, rhs)));
+    return deferred_sqrt(dot<P>(cross<P>(lhs, rhs)));
 }
 
 // TODO: figure out the correct sign instead of returning the absolute value.
 template <class P, index N, class T0, class T1>
 inline auto area(comparable_area_points<P>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return deferred_sqrt(abs<P>(lhs) * abs<P>(rhs) - sqr(dot<P>(lhs, rhs)));
+    return deferred_sqrt(dot<P>(lhs) * dot<P>(rhs) - sqr(dot<P>(lhs, rhs)));
 }
 
 template <class P, class S, index N, class T0, class T1>

@@ -23,7 +23,7 @@ template <class P, class AP, index N, class T0, class K, class T1, class It>
 inline auto intersect(const intersect_line_sphere<P, AP>& policy, const line<T0, N, K>& line,
                       const sphere<T1, N>& sphere, It dst) {
     using O = geometry::scalar_t<output_type_t<It>>;
-    auto vector_abs = abs<P>(line.vector);
+    auto vector_abs = dot<P>(line.vector);
     auto delta = vector_abs * sqr(static_cast<geometry::product_t<P, T0, T1>>(sphere.radius)) -
                  sqr(area(policy, sphere.center, line));
     int delta_sgn = sgn(delta);
