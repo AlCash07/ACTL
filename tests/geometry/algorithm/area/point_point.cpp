@@ -9,4 +9,6 @@
 #include <actl/geometry/algorithm/area/point_point.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("2d") { ASSERT_EQUAL(3, area(point{3, 0}, point{2, 1})); }
+
+TEST("3d") { ASSERT_EQUAL(2.9580398915498103, area(point{-2, 1, 1}, point{1, -1, 2}) / 2, 1e-12); }

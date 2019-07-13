@@ -19,40 +19,47 @@ struct comparable_area_points : geometry::policy {};
 template <class P = use_default, class F = use_default>
 struct standard_area_points : geometry::policy {};
 
+namespace detail {
+
+template <class P, index N, class T0, class T1>
+inline auto area2(const point<T0, N>& p0, const point<T1, N>& p1) {
+    if constexpr (N == 3) {
+        return dot<P>(cross<P>(p0, p1));
+    } else {
+        return dot<P>(p0) * dot<P>(p1) - sqr(dot<P>(p0, p1));
+    }
+}
+
+}  // namespace detail
+
 /**
- * Oriented area of parallelogram with side vectors being lhs and rhs.
- * Positive if rhs <- lhs counter-clockwise.
+ * Oriented area of parallelogram with side vectors being p0 and p1.
+ * Positive if p1 <- p0 counter-clockwise.
  */
-template <class P, class T0, class T1, class X = geometry::product_t<P, T0, T1>>
-inline constexpr X area(comparable_area_points<P>, const point<T0>& lhs, const point<T1>& rhs) {
-    return static_cast<X>(lhs[0]) * rhs[1] - static_cast<X>(lhs[1]) * rhs[0];
+template <class P, class T0, class T1, class R = geometry::product_t<P, T0, T1>>
+inline constexpr R area(comparable_area_points<P>, const point<T0>& p0, const point<T1>& p1) {
+    return static_cast<R>(p0[0]) * p1[1] - static_cast<R>(p0[1]) * p1[0];
 }
 
 template <class P, class F, class T0, class T1>
-inline constexpr auto area(standard_area_points<P, F>, const point<T0>& lhs, const point<T1>& rhs) {
-    return area(comparable_area_points<P>{}, lhs, rhs);
-}
-
-// TODO: figure out the correct sign instead of returning the absolute value.
-template <class P, class T0, class T1>
-inline auto area(comparable_area_points<P>, const point3d<T0>& lhs, const point3d<T1>& rhs) {
-    return deferred_sqrt(dot<P>(cross<P>(lhs, rhs)));
+inline constexpr auto area(standard_area_points<P, F>, const point<T0>& p0, const point<T1>& p1) {
+    return area(comparable_area_points<P>{}, p0, p1);
 }
 
 // TODO: figure out the correct sign instead of returning the absolute value.
 template <class P, index N, class T0, class T1>
-inline auto area(comparable_area_points<P>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return deferred_sqrt(dot<P>(lhs) * dot<P>(rhs) - sqr(dot<P>(lhs, rhs)));
+inline auto area(comparable_area_points<P>, const point<T0, N>& p0, const point<T1, N>& p1) {
+    return deferred_sqrt(detail::area2<P>(p0, p1));
 }
 
 template <class P, class F, index N, class T0, class T1>
-inline auto area(standard_area_points<P, F>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return static_cast<geometry::float_t<F, T0, T1>>(area(comparable_area_points<P>{}, lhs, rhs));
+inline auto area(standard_area_points<P, F>, const point<T0, N>& p0, const point<T1, N>& p1) {
+    return static_cast<geometry::float_t<F, T0, T1>>(math::sqrt(detail::area2<P>(p0, p1)));
 }
 
 template <index N, class T0, class T1>
-inline auto area(use_default, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return area(standard_area_points{}, lhs, rhs);
+inline auto area(use_default, const point<T0, N>& p0, const point<T1, N>& p1) {
+    return area(standard_area_points{}, p0, p1);
 }
 
 }  // namespace ac

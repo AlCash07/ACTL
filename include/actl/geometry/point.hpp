@@ -38,8 +38,8 @@ public:
         for (index i = 0; i < N; ++i) (*this)[i] = static_cast<T>(rhs[i]);
     }
 
-    constexpr span<T> span() { return coordinates_; }
-    constexpr cspan<T> span() const { return coordinates_; }
+    constexpr span<T, N> span() { return coordinates_; }
+    constexpr cspan<T, N> span() const { return coordinates_; }
 
     constexpr T* data() { return coordinates_; }
     constexpr const T* data() const { return coordinates_; }
@@ -162,16 +162,16 @@ inline constexpr auto operator / (const point<T0, N>& lhs, const T1& factor) {
 
 template <class P = use_default, index N, class T0, class T1>
 inline constexpr auto dot(const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    using Res = deduce_t<P, geometry::scalar_t<T0, T1>>;
-    Res res = 0;
+    using R = deduce_t<P, geometry::scalar_t<T0, T1>>;
+    R res = 0;
     for (index i = 0; i < N; ++i)
-        res += static_cast<Res>(lhs[i]) * rhs[i];
+        res += static_cast<R>(lhs[i]) * rhs[i];
     return res;
 }
 
 template <class P = use_default, index N, class T>
-inline constexpr auto dot(const point<T, N>& x) {
-    return dot<P>(x, x);
+inline constexpr auto dot(const point<T, N>& p) {
+    return dot<P>(p, p);
 }
 
 /* Comparison operators */
