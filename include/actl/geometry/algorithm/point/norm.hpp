@@ -19,18 +19,18 @@ template <class P = use_default, class F = use_default>
 struct standard_norm : geometry::policy {};
 
 template <class P, index N, class T>
-inline auto norm(comparable_norm<P>, const point<T, N>& point) {
-    return deferred_sqrt(dot<P>(point));
+inline auto norm(comparable_norm<P>, const point<T, N>& p) {
+    return deferred_sqrt(dot<P>(p));
 }
 
 template <class P, class F, index N, class T>
-inline auto norm(standard_norm<P, F>, const point<T, N>& point) {
-    return static_cast<geometry::float_t<F, T>>(math::sqrt(dot<P>(point)));
+inline auto norm(standard_norm<P, F>, const point<T, N>& p) {
+    return static_cast<geometry::float_t<F, T>>(math::sqrt(dot<P>(p)));
 }
 
 template <index N, class T>
-inline auto norm(const point<T, N>& point) {
-    return norm(standard_norm{}, point);
+inline auto norm(const point<T, N>& p) {
+    return norm(standard_norm{}, p);
 }
 
 }  // namespace ac

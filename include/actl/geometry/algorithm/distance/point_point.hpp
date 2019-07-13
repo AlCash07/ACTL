@@ -21,14 +21,14 @@ template <class P = use_default, class F = use_default>
 using standard_distance_point_point = distance_point_point<standard_norm<P, F>>;
 
 template <class NP, index N, class T0, class T1>
-inline auto distance(const distance_point_point<NP>& policy, const point<T0, N>& lhs,
-                     const point<T1, N>& rhs) {
-    return norm(policy, lhs - rhs);
+inline auto distance(const distance_point_point<NP>& policy, const point<T0, N>& p0,
+                     const point<T1, N>& p1) {
+    return norm(policy, p0 - p1);
 }
 
 template <index N, class T0, class T1>
-inline auto distance(use_default, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return distance(standard_distance_point_point<>{}, lhs, rhs);
+inline auto distance(use_default, const point<T0, N>& p0, const point<T1, N>& p1) {
+    return distance(standard_distance_point_point<>{}, p0, p1);
 }
 
 }  // namespace ac
