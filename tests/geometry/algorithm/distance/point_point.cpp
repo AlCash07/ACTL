@@ -9,4 +9,8 @@
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("standard") { ASSERT_EQUAL(5.0, distance(point{2, 2}, point{5, 6}), 1e-12); }
+
+TEST("comparable") {
+    ASSERT_EQUAL(2, sqr(distance(comparable_distance_point_point<>{}, point{2, 2}, point{3, 1})));
+}

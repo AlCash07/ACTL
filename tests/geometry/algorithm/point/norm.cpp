@@ -8,6 +8,10 @@
 #include <actl/geometry/algorithm/point/norm.hpp>
 #include <actl/test.hpp>
 
-TEST("standard") { ASSERT_EQUAL(5.0, norm(point{3, 4}), 1e-12); }
+TEST("standard") { ASSERT_EQUAL(1.414213562373095, norm(point{1, 1}), 1e-12); }
 
-TEST("comparable") { ASSERT_EQUAL(2, sqr(norm(comparable_norm{}, point{1, 1}))); }
+TEST("comparable") {
+    constexpr int x = 2'000'000'000;
+    ASSERT_EQUAL(8'000'000'000'000'000'000LL,
+                 sqr(norm(comparable_norm<long long>{}, point{x, -x})));
+}
