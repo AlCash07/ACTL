@@ -12,13 +12,13 @@
 
 namespace ac {
 
-template <class P = use_default, class R = use_default, class NormPolicy = standard_norm<P>>
+template <class P = use_default, class F = use_default, class NormPolicy = standard_norm<P>>
 struct distance_point_plane : NormPolicy {};
 
-template <class P, class R, class NP, index N, class T0, class T1>
-inline auto distance(distance_point_plane<P, R, NP> policy, const point<T0, N>& point,
+template <class P, class F, class NP, index N, class T0, class T1>
+inline auto distance(distance_point_plane<P, F, NP> policy, const point<T0, N>& point,
                      const plane<T1, N>& plane) {
-    return static_cast<geometry::ratio_t<R, T0, T1>>(plane.template operator()<P>(point)) /
+    return static_cast<geometry::float_t<F, T0, T1>>(plane.template operator()<P>(point)) /
            norm(policy, plane.normal);
 }
 

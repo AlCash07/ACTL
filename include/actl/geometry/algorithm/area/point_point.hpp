@@ -16,7 +16,7 @@ namespace ac {
 template <class P = use_default>
 struct comparable_area_points : geometry::policy {};
 
-template <class P = use_default, class S = use_default>
+template <class P = use_default, class F = use_default>
 struct standard_area_points : geometry::policy {};
 
 /**
@@ -28,8 +28,8 @@ inline constexpr X area(comparable_area_points<P>, const point<T0>& lhs, const p
     return static_cast<X>(lhs[0]) * rhs[1] - static_cast<X>(lhs[1]) * rhs[0];
 }
 
-template <class P, class S, class T0, class T1>
-inline constexpr auto area(standard_area_points<P, S>, const point<T0>& lhs, const point<T1>& rhs) {
+template <class P, class F, class T0, class T1>
+inline constexpr auto area(standard_area_points<P, F>, const point<T0>& lhs, const point<T1>& rhs) {
     return area(comparable_area_points<P>{}, lhs, rhs);
 }
 
@@ -45,9 +45,9 @@ inline auto area(comparable_area_points<P>, const point<T0, N>& lhs, const point
     return deferred_sqrt(dot<P>(lhs) * dot<P>(rhs) - sqr(dot<P>(lhs, rhs)));
 }
 
-template <class P, class S, index N, class T0, class T1>
-inline auto area(standard_area_points<P, S>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return static_cast<geometry::sqrt_t<S, T0, T1>>(area(comparable_area_points<P>{}, lhs, rhs));
+template <class P, class F, index N, class T0, class T1>
+inline auto area(standard_area_points<P, F>, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+    return static_cast<geometry::float_t<F, T0, T1>>(area(comparable_area_points<P>{}, lhs, rhs));
 }
 
 template <index N, class T0, class T1>

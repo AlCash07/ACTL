@@ -23,8 +23,8 @@ struct nearest_multi_point : DistancePolicy {};
 template <class P = use_default>
 using comparable_nearest_multi_point = nearest_multi_point<comparable_distance_point_point<P>>;
 
-template <class P = use_default, class S = use_default>
-using standard_nearest_multi_point = nearest_multi_point<standard_distance_point_point<P, S>>;
+template <class P = use_default, class F = use_default>
+using standard_nearest_multi_point = nearest_multi_point<standard_distance_point_point<P, F>>;
 
 namespace detail {
 

@@ -30,10 +30,10 @@ inline auto max_endpoint(const std::pair<T, uint8_t>& lhs, const std::pair<T, ui
     }
 }
 
-template <class R, index N, class T0, class K0, class T1, class K1>
-inline std::pair<bool, any_line<R, N>> common_line(const line<T0, N, K0>& lhs,
+template <class F, index N, class T0, class K0, class T1, class K1>
+inline std::pair<bool, any_line<F, N>> common_line(const line<T0, N, K0>& lhs,
                                                    const line<T1, N, K1>& rhs) {
-    using point_t = point<R, N>;
+    using point_t = point<F, N>;
     auto la = std::pair{(point_t)lhs.start, lhs.start_kind()};
     auto lb = std::pair{(point_t)lhs.end(), lhs.end_kind()};
     if (lhs.vector < point<T0, N>{}) std::swap(la, lb);

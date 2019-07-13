@@ -12,13 +12,13 @@
 
 namespace ac {
 
-template <class R = use_default, class IntersectPolicy = intersect_line_line<>>
+template <class F = use_default, class IntersectPolicy = intersect_line_line<>>
 struct circumcenter_policy : IntersectPolicy {};
 
-template <class R, class IP, class T0, class T1, class T2>
-inline auto circumcenter(const circumcenter_policy<R, IP>& policy, const point<T0>& a,
+template <class F, class IP, class T0, class T1, class T2>
+inline auto circumcenter(const circumcenter_policy<F, IP>& policy, const point<T0>& a,
                          const point<T1>& b, const point<T2>& c) {
-    point<geometry::ratio_t<R, T0, T1, T2>> res;
+    point<geometry::float_t<F, T0, T1, T2>> res;
     intersect(policy, make_line(a + b, perpendicular(a - b), true),
               make_line(a + c, perpendicular(a - c), true), &res);
     return res / 2;

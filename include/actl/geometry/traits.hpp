@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/numeric/math.hpp>
 #include <actl/util/type_traits.hpp>
 #include <actl/util/use_default.hpp>
 
@@ -53,11 +52,14 @@ using scalar_t = std::common_type_t<typename geometry_traits<remove_cvref_t<Ts>>
 template <class P, class... Ts>
 using product_t = deduce_t<P, scalar_t<Ts...>>;
 
-template <class S, class... Ts>
-using sqrt_t = deduce_t<S, decltype(math::sqrt(std::declval<scalar_t<Ts...>>()))>;
+template <class... Ts>
+struct float_type : float_type<std::common_type_t<Ts...>> {};
 
-template <class R, class... Ts>
-using ratio_t = deduce_t<R, sqrt_t<use_default, Ts...>>;
+template <class T>
+struct float_type<T> : std::conditional<std::is_integral_v<T>, double, T> {};
+
+template <class F, class... Ts>
+using float_t = deduce_t<F, typename float_type<Ts...>::type>;
 
 /* ID */
 

@@ -11,21 +11,21 @@
 
 namespace ac {
 
-template <class P = use_default, class R = use_default>
+template <class P = use_default, class F = use_default>
 struct project_line : geometry::policy {};
 
-template <class P = use_default, class R = use_default>
+template <class P = use_default, class F = use_default>
 struct project_line_scalar : geometry::policy {};
 
-template <class P, class R, index N, class T0, class T1, class K>
-inline auto project(project_line_scalar<P, R>, const point<T0, N>& src, const line<T1, N, K>& dst) {
-    return static_cast<geometry::ratio_t<R, T0, T1>>(dot<P>(src - dst.start, dst.vector)) /
+template <class P, class F, index N, class T0, class T1, class K>
+inline auto project(project_line_scalar<P, F>, const point<T0, N>& src, const line<T1, N, K>& dst) {
+    return static_cast<geometry::float_t<F, T0, T1>>(dot<P>(src - dst.start, dst.vector)) /
            dot<P>(dst.vector);
 }
 
-template <class P, class R, index N, class T0, class T1, class K>
-inline auto project(project_line<P, R>, const point<T0, N>& src, const line<T1, N, K>& dst) {
-    return dst(project(project_line_scalar<P, R>{}, src, dst));
+template <class P, class F, index N, class T0, class T1, class K>
+inline auto project(project_line<P, F>, const point<T0, N>& src, const line<T1, N, K>& dst) {
+    return dst(project(project_line_scalar<P, F>{}, src, dst));
 }
 
 template <index N, class T0, class T1, class K>

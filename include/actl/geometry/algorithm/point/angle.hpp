@@ -12,27 +12,27 @@
 
 namespace ac {
 
-template <class P = use_default, class S = use_default,
-          class AreaPolicy = standard_area_points<P, S>>
+template <class P = use_default, class F = use_default,
+          class AreaPolicy = standard_area_points<P, F>>
 struct standard_angle : AreaPolicy {};
 
 /**
  * Counter-clockwise angle.
  */
-template <class P, class S, class AP, index N, class T, class X = geometry::sqrt_t<S, T>>
-inline auto angle(standard_angle<P, S, AP>, const point<T, N>& point) {
+template <class P, class F, class AP, index N, class T, class X = geometry::float_t<F, T>>
+inline auto angle(standard_angle<P, F, AP>, const point<T, N>& point) {
     return math::atan2(static_cast<X>(point[1]), static_cast<X>(point[0]));
 }
 
-template <class P, class S, class AP, index N, class T0, class T1>
-inline auto angle(const standard_angle<P, S, AP>& policy, const point<T0, N>& lhs,
+template <class P, class F, class AP, index N, class T0, class T1>
+inline auto angle(const standard_angle<P, F, AP>& policy, const point<T0, N>& lhs,
                   const point<T1, N>& rhs) {
     return math::atan2(area(policy, lhs, rhs),
-                       static_cast<geometry::sqrt_t<S, T0, T1>>(dot<P>(lhs, rhs)));
+                       static_cast<geometry::float_t<F, T0, T1>>(dot<P>(lhs, rhs)));
 }
 
-template <class P, class S, class AP, index N, class T0, class T1, class T2>
-inline auto angle(const standard_angle<P, S, AP>& policy, const point<T0, N>& lhs,
+template <class P, class F, class AP, index N, class T0, class T1, class T2>
+inline auto angle(const standard_angle<P, F, AP>& policy, const point<T0, N>& lhs,
                   const point<T1, N>& rhs, const point<T2, N>& origin) {
     return angle(policy, lhs - origin, rhs - origin);
 }

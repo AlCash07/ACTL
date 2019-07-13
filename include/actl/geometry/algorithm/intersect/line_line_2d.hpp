@@ -18,8 +18,8 @@ struct intersect_line_line : AreaPolicy {};
 template <class P = use_default>
 using comparable_intersect_line_line = intersect_line_line<comparable_area_points<P>>;
 
-template <class P = use_default, class S = use_default>
-using standard_intersect_line_line = intersect_line_line<standard_area_points<P, S>>;
+template <class P = use_default, class F = use_default>
+using standard_intersect_line_line = intersect_line_line<standard_area_points<P, F>>;
 
 namespace detail {
 

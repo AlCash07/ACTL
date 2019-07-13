@@ -18,8 +18,8 @@ struct cross_line_line : AreaPolicy {};
 template <class P = use_default>
 using comparable_cross_line_line = cross_line_line<comparable_area_points<P>>;
 
-template <class P = use_default, class S = use_default>
-using standard_cross_line_line = cross_line_line<standard_area_points<P, S>>;
+template <class P = use_default, class F = use_default>
+using standard_cross_line_line = cross_line_line<standard_area_points<P, F>>;
 
 /**
  * This policy implies that lines are in general position (don't coincide but can be parallel).
@@ -30,8 +30,8 @@ struct general_cross_line_line : AreaPolicy {};
 template <class P = use_default>
 using comparable_general_cross_line_line = general_cross_line_line<comparable_area_points<P>>;
 
-template <class P = use_default, class S = use_default>
-using standard_general_cross_line_line = general_cross_line_line<standard_area_points<P, S>>;
+template <class P = use_default, class F = use_default>
+using standard_general_cross_line_line = general_cross_line_line<standard_area_points<P, F>>;
 
 namespace detail {
 
@@ -46,8 +46,8 @@ inline bool cross_test(const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs,
     return line_test(lhs, larea, tarea) && line_test(rhs, rarea, tarea);
 }
 
-template <class R = use_default, class AP, class T0, class K0, class T1, class K1,
-          class X = geometry::ratio_t<R, T0, T1>>
+template <class F = use_default, class AP, class T0, class K0, class T1, class K1,
+          class X = geometry::float_t<F, T0, T1>>
 inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<T0, 2, K0>& lhs,
                                                   const line<T1, 2, K1>& rhs) {
     auto tarea = area(policy, rhs.vector, lhs.vector);
@@ -57,8 +57,8 @@ inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<T
     return {true, static_cast<X>(larea) / tarea};
 }
 
-template <class R = use_default, class AP, class T0, class K0, class T1, class K1,
-          class X = geometry::ratio_t<R, T0, T1>>
+template <class F = use_default, class AP, class T0, class K0, class T1, class K1,
+          class X = geometry::float_t<F, T0, T1>>
 inline std::pair<bool, any_line<X, 2>> intersect_lines(const AP& policy, const line<T0, 2, K0>& lhs,
                                                        const line<T1, 2, K1>& rhs) {
     auto tarea = area(policy, rhs.vector, lhs.vector);

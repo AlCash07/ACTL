@@ -15,7 +15,7 @@ namespace ac {
 template <class P = use_default>
 struct comparable_norm : geometry::policy {};
 
-template <class P = use_default, class S = use_default>
+template <class P = use_default, class F = use_default>
 struct standard_norm : geometry::policy {};
 
 template <class P, index N, class T>
@@ -23,9 +23,9 @@ inline auto norm(comparable_norm<P>, const point<T, N>& point) {
     return deferred_sqrt(dot<P>(point));
 }
 
-template <class P, class S, index N, class T>
-inline auto norm(standard_norm<P, S>, const point<T, N>& point) {
-    return (geometry::sqrt_t<S, T>)math::sqrt(dot<P>(point));
+template <class P, class F, index N, class T>
+inline auto norm(standard_norm<P, F>, const point<T, N>& point) {
+    return (geometry::float_t<F, T>)math::sqrt(dot<P>(point));
 }
 
 template <index N, class T>

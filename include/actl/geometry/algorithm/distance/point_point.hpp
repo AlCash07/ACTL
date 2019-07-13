@@ -17,8 +17,8 @@ struct distance_point_point : NormPolicy {};
 template <class P = use_default>
 using comparable_distance_point_point = distance_point_point<comparable_norm<P>>;
 
-template <class P = use_default, class S = use_default>
-using standard_distance_point_point = distance_point_point<standard_norm<P, S>>;
+template <class P = use_default, class F = use_default>
+using standard_distance_point_point = distance_point_point<standard_norm<P, F>>;
 
 template <class NP, index N, class T0, class T1>
 inline auto distance(const distance_point_point<NP>& policy, const point<T0, N>& lhs,
