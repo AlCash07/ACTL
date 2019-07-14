@@ -56,9 +56,9 @@ public:
         return false;
     }
 
-    void swap(point_base& rhs) {
+    friend void swap(point_base& lhs, point_base& rhs) {
         using std::swap;
-        for (index i = 0; i < N; ++i) swap(span()[i], rhs[i]);
+        for (index i = 0; i < N; ++i) swap(lhs[i], rhs[i]);
     }
 
 private:
@@ -84,9 +84,6 @@ struct geometry_traits<point<T, N>> {
     using point  = point<T, N>;
     static constexpr index dimension = N;
 };
-
-template <index N, class T>
-inline void swap(point<T, N>& lhs, point<T, N>& rhs) { lhs.swap(rhs); }
 
 namespace detail {
 

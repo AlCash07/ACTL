@@ -104,11 +104,11 @@ public:
 
     constexpr operator bool() const { return vector; }
 
-    void swap(line& rhs) {
+    friend void swap(line& lhs, line& rhs) {
         using std::swap;
-        swap(start, rhs.start);
-        swap(vector, rhs.vector);
-        swap(static_cast<Kind&>(*this), rhs);
+        swap(lhs.start, rhs.start);
+        swap(lhs.vector, rhs.vector);
+        swap(static_cast<Kind&>(lhs), rhs);
     }
 
     constexpr point<T, N> end() const { return start + vector; }
@@ -168,8 +168,5 @@ inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
     if (akind < bkind) return make_any_line(b, bkind, a, akind);
     return Line{a, b, endpoint::combine(akind, bkind)};
 }
-
-template <index N, class T, class K>
-inline void swap(line<T, N, K>& lhs, line<T, N, K>& rhs) { lhs.swap(rhs); }
 
 }  // namespace ac

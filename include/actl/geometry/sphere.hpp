@@ -32,10 +32,10 @@ public:
 
     explicit constexpr operator bool() const { return radius > T{0}; }
 
-    void swap(sphere& rhs) {
+    friend void swap(sphere& lhs, sphere& rhs) {
         using std::swap;
-        swap(center, rhs.center);
-        swap(radius, rhs.radius);
+        swap(lhs.center, rhs.center);
+        swap(lhs.radius, rhs.radius);
     }
 
 private:
@@ -47,8 +47,5 @@ sphere(const point<T0, N>&, const T1&) -> sphere<geometry::scalar_t<T0, T1>, N>;
 
 template <index N, class T>
 struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T, N>> {};
-
-template <index N, class T>
-inline void swap(sphere<T, N>& lhs, sphere<T, N>& rhs) { lhs.swap(rhs); }
 
 }  // namespace ac

@@ -36,10 +36,10 @@ public:
 
     explicit constexpr operator bool() const { return normal; }
 
-    void swap(plane& rhs) {
+    friend void swap(plane& lhs, plane& rhs) {
         using std::swap;
-        swap(normal, rhs.normal);
-        swap(d, rhs.d);
+        swap(lhs.normal, rhs.normal);
+        swap(lhs.d, rhs.d);
     }
 
     // Oriented distance from @p point to the plane times the norm of normal.
@@ -74,8 +74,5 @@ inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
                                    const point3d<T2>& c) {
     return plane_t<3, T0, T1, T2>{cross(b - a, c - a), a};
 }
-
-template <index N, class T>
-inline void swap(plane<T, N>& lhs, plane<T, N>& rhs) { lhs.swap(rhs); }
 
 }  // namespace ac
