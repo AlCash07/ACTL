@@ -9,15 +9,6 @@
 #include <actl/test.hpp>
 #include <limits>
 
-TEST("abs") {
-    ASSERT_EQUAL(0, abs(0));
-    constexpr auto int_max = std::numeric_limits<int>::max();
-    ASSERT_EQUAL(int_max, abs(int_max));
-    ASSERT_EQUAL(int_max, abs(-int_max));
-    constexpr auto uint_max = std::numeric_limits<unsigned int>::max();
-    ASSERT_EQUAL(uint_max, abs(uint_max));
-}
-
 TEST("sgn") {
     ASSERT_EQUAL(1, sgn(std::numeric_limits<int>::max()));
     ASSERT_EQUAL(-1, sgn(std::numeric_limits<int>::min()));
@@ -41,10 +32,4 @@ TEST("smin") {
     ASSERT_EQUAL(4, x);
     ASSERT_EQUAL(3, smin(x, 3));
     ASSERT_EQUAL(3, x);
-}
-
-TEST("sqr") {
-    ASSERT_EQUAL(0, sqr(0));
-    ASSERT_EQUAL(4, sqr(2));
-    ASSERT_EQUAL(4, sqr(-2));
 }

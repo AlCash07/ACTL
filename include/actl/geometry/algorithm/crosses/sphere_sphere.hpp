@@ -9,7 +9,6 @@
 
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/sphere.hpp>
-#include <actl/numeric/functions.hpp>
 
 namespace ac {
 
@@ -20,7 +19,8 @@ template <class DP, index N, class T0, class T1>
 inline bool crosses(const crosses_sphere_sphere<DP>& policy, const sphere<T0, N>& lhs,
                     const sphere<T1, N>& rhs) {
     auto centers_dist = distance(policy, lhs.center, rhs.center);
-    return abs(lhs.radius - rhs.radius) <= centers_dist && centers_dist <= lhs.radius + rhs.radius;
+    return adl::abs(lhs.radius - rhs.radius) <= centers_dist &&
+           centers_dist <= lhs.radius + rhs.radius;
 }
 
 template <class DP, index N, class T0, class T1>

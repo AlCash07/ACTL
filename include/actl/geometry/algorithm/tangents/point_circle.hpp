@@ -31,8 +31,8 @@ inline auto tangents(const tangents_point_circle_scalar<P>& policy, const point<
     switch (within(policy, point, circle)) {
         case 0: {
             auto center_angle = angle(standard_angle<O, O>{}, center_vector);
-            auto offset = math::atan2(static_cast<O>(circle.radius),
-                                      norm(standard_norm<O, O>{}, center_vector));
+            auto offset = adl::atan2(static_cast<O>(circle.radius),
+                                     norm(standard_norm<O, O>{}, center_vector));
             *dst++ = center_angle - offset;
             *dst++ = center_angle + offset;
             break;
@@ -50,8 +50,8 @@ inline auto tangents(const tangents_point_circle_point<P>& policy, const point<T
     auto center_vector = circle.center - point;
     switch (within(policy, point, circle)) {
         case 0: {
-            auto dist = math::sqrt(norm(standard_norm<O, O>{}, center_vector) +
-                                   sqr(static_cast<O>(circle.radius)));
+            auto dist = adl::sqrt(norm(standard_norm<O, O>{}, center_vector) +
+                                  sqr(static_cast<O>(circle.radius)));
             intersect(policy.intersect_policy, make_circle(point, dist), circle, dst);
             break;
         }

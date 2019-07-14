@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/geometry/point.hpp>
-#include <actl/numeric/functions.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 

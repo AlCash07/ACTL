@@ -10,7 +10,6 @@
 #include <actl/geometry/algorithm/area/point_line.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/line.hpp>
-#include <actl/numeric/functions.hpp>
 
 namespace ac {
 
@@ -27,7 +26,7 @@ inline auto distance(const distance_point_line<P, F, NP, AP>& policy, const poin
         return norm(policy, p - l.start);
     if (l.end_kind() != endpoint::free && dot<P>(p - l.end(), l.vector) >= 0)
         return norm(policy, p - l.end());
-    return static_cast<geometry::float_t<F, T0, T1>>(abs(area(policy.area_policy, p, l))) /
+    return static_cast<geometry::float_t<F, T0, T1>>(adl::abs(area(policy.area_policy, p, l))) /
            norm(policy, l.vector);
 }
 

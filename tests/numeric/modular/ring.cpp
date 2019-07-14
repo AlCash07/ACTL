@@ -5,6 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/numeric/algorithm/binary_pow.hpp>
 #include <actl/numeric/modular/ring.hpp>
 #include <actl/test.hpp>
 
@@ -21,7 +22,7 @@ TEST("static_quotient_ring::arithmetic", repeat = 1000) {
     ASSERT_EQUAL(x * z + y * z, (x + y) * z);
     ASSERT_EQUAL(x * z - y * z, (x - y) * z);
     ASSERT_EQUAL(x / z - y / z, (x - y) / z);
-    // ASSERT_EQUAL(x, math::pow(x, ring::mod()));
+    ASSERT_EQUAL(x, binary_pow(x, ring::mod()));
     ASSERT_EQUAL(1u, x / x);
     ASSERT_THROWS(x / int_mod());
     ASSERT_THROWS(int_modulo<1000>(347) / int_modulo<1000>(222));

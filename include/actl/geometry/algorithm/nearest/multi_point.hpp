@@ -9,7 +9,6 @@
 
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/multi_point.hpp>
-#include <actl/numeric/functions.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/std/vector.hpp>
@@ -55,7 +54,7 @@ inline auto nearest(const nearest_multi_point<DP>& policy, Iterator first, Itera
     std::copy(tmp.begin(), tmp.end(), first);
     tmp.clear();
     for (middle = first; middle != last; ++middle) {
-        if (abs((*middle)[0] - middle_x) < res.first) {
+        if (adl::abs((*middle)[0] - middle_x) < res.first) {
             for (auto i = tmp.rbegin(); i != tmp.rend(); ++i) {
                 if ((*middle)[1] - (*i)[1] >= res.first) break;
                 auto dist = distance(policy, *middle, *i);

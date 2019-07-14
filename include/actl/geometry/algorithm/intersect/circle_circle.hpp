@@ -47,7 +47,7 @@ inline auto intersect(intersect_circle_circle_point<P>, const circle<T0>& lhs,
         *dst++ = projection;
     } else {
         auto b = static_cast<O>(sqr(lradius) + sqr(rradius)) / centers_dist;
-        auto offset = math::sqrt(2 * b - sqr(a) - 1) / 2;
+        auto offset = adl::sqrt(2 * b - sqr(a) - 1) / 2;
         *dst++ = projection - perpendicular(centers_vector) * offset;
         *dst++ = projection + perpendicular(centers_vector) * offset;
     }

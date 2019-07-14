@@ -10,7 +10,6 @@
 #include <actl/geometry/algorithm/point/norm.hpp>
 #include <actl/geometry/plane.hpp>
 #include <actl/geometry/sphere.hpp>
-#include <actl/numeric/functions.hpp>
 
 namespace ac {
 
@@ -20,7 +19,7 @@ struct crosses_plane_sphere : NormPolicy {};
 template <class P, class NP, index N, class T0, class T1>
 inline bool crosses(const crosses_plane_sphere<P, NP>& policy, const plane<T0, N>& plane,
                     const sphere<T1, N>& sphere) {
-    auto dist = abs(plane.template operator()<P>(sphere.center));
+    auto dist = adl::abs(plane.template operator()<P>(sphere.center));
     return sphere.radius * norm(policy, plane.normal) <= dist;
 }
 

@@ -9,28 +9,47 @@
 
 #include <cmath>
 
-namespace ac::math {
+namespace ac {
 
-#define MATH_ADL1(name)            \
+template <class T>
+inline constexpr T sqr(const T& x) {
+    return x * x;
+}
+
+}  // namespace ac
+
+namespace ac::adl {
+
+template <class T>
+inline constexpr T abs(const T& x) {
+    if constexpr (std::is_unsigned_v<T>) {
+        return x;
+    } else {
+        using std::abs;
+        return abs(x);
+    }
+}
+
+#define ADL1(name)                 \
     template <class T>             \
     inline auto name(const T& x) { \
         using std::name;           \
         return name(x);            \
     }
 
-#define MATH_ADL2(name)                          \
+#define ADL2(name)                               \
     template <class T0, class T1>                \
     inline auto name(const T0& x, const T1& y) { \
         using std::name;                         \
         return name(x, y);                       \
     }
 
-MATH_ADL1(sqrt)
-MATH_ADL1(sin)
-MATH_ADL1(cos)
-MATH_ADL2(atan2)
+ADL1(sqrt)
+ADL1(sin)
+ADL1(cos)
+ADL2(atan2)
 
-#undef MATH_ADL1
-#undef MATH_ADL2
+#undef ADL1
+#undef ADL2
 
-}  // namespace ac::math
+}  // namespace ac::adl

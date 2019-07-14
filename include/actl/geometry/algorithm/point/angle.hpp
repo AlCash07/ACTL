@@ -21,14 +21,14 @@ struct standard_angle : AreaPolicy {};
  */
 template <class P, class F, class AP, index N, class T, class X = geometry::float_t<F, T>>
 inline auto angle(standard_angle<P, F, AP>, const point<T, N>& point) {
-    return math::atan2(static_cast<X>(point[1]), static_cast<X>(point[0]));
+    return adl::atan2(static_cast<X>(point[1]), static_cast<X>(point[0]));
 }
 
 template <class P, class F, class AP, index N, class T0, class T1>
 inline auto angle(const standard_angle<P, F, AP>& policy, const point<T0, N>& lhs,
                   const point<T1, N>& rhs) {
-    return math::atan2(area(policy, lhs, rhs),
-                       static_cast<geometry::float_t<F, T0, T1>>(dot<P>(lhs, rhs)));
+    return adl::atan2(area(policy, lhs, rhs),
+                      static_cast<geometry::float_t<F, T0, T1>>(dot<P>(lhs, rhs)));
 }
 
 template <class P, class F, class AP, index N, class T0, class T1, class T2>

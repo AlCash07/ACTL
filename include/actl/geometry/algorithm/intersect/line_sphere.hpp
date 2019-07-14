@@ -35,7 +35,7 @@ inline auto intersect(const intersect_line_sphere<P, AP>& policy, const line<T0,
     if (delta_sgn == 0) {
         output(projection);
     } else {
-        O offset = math::sqrt(static_cast<O>(delta));
+        O offset = adl::sqrt(static_cast<O>(delta));
         output(projection - offset);
         output(projection + offset);
     }

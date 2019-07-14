@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/numeric/functions.hpp>
 #include <actl/numeric/math.hpp>
 
 namespace ac {
@@ -23,7 +22,7 @@ public:
 
     template <class T1>
     explicit operator T1() const {
-        return math::sqrt(static_cast<T1>(sqr_));
+        return adl::sqrt(static_cast<T1>(sqr_));
     }
 
     template <class T1>

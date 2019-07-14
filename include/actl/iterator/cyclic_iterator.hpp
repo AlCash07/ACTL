@@ -9,7 +9,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
-#include <actl/numeric/functions.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 
@@ -48,7 +48,7 @@ private:
 
     void advance(difference_t<It> n) {
         auto cycle = std::size(range_);
-        ACTL_ASSERT(abs(n) < cycle);
+        ACTL_ASSERT(adl::abs(n) < cycle);
         if (n > 0) {
             it() += n - (n >= (end() - it()) ? cycle : 0);
         } else {

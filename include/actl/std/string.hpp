@@ -10,7 +10,6 @@
 #include <actl/container/traits.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/io/util/till.hpp>
-#include <actl/numeric/functions.hpp>
 #include <actl/string/traits.hpp>
 #include <string>
 

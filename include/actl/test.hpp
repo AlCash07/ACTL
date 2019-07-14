@@ -9,6 +9,7 @@
 
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
+#include <actl/numeric/math.hpp>
 #include <actl/numeric/random/random.hpp>
 #include <actl/range/algorithm.hpp>
 #include <string_view>
@@ -99,8 +100,8 @@ struct assert_impl {
 
     template <class T, enable_int_if<std::is_floating_point_v<T>> = 0>
     inline void check_equal(T expected, T actual, T eps) const {
-        T numerator   = std::abs(expected - actual);
-        T denominator = std::max(std::max(std::abs(expected), std::abs(actual)), T{1});
+        T numerator = adl::abs(expected - actual);
+        T denominator = std::max(std::max(adl::abs(expected), adl::abs(actual)), T{1});
         if (numerator <= eps * denominator) return;
         throw message<Expected>(expected) + message<Actual>(actual) +
             message<Error>(numerator / denominator) + message<Line>(line);

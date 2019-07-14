@@ -25,7 +25,7 @@ inline auto norm(comparable_norm<P>, const point<T, N>& p) {
 
 template <class P, class F, index N, class T>
 inline auto norm(standard_norm<P, F>, const point<T, N>& p) {
-    return static_cast<geometry::float_t<F, T>>(math::sqrt(dot<P>(p)));
+    return static_cast<geometry::float_t<F, T>>(adl::sqrt(dot<P>(p)));
 }
 
 template <index N, class T>

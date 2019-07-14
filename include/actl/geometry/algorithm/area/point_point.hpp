@@ -54,7 +54,7 @@ inline auto area(comparable_area_points<P>, const point<T0, N>& p0, const point<
 
 template <class P, class F, index N, class T0, class T1>
 inline auto area(standard_area_points<P, F>, const point<T0, N>& p0, const point<T1, N>& p1) {
-    return static_cast<geometry::float_t<F, T0, T1>>(math::sqrt(detail::area2<P>(p0, p1)));
+    return static_cast<geometry::float_t<F, T0, T1>>(adl::sqrt(detail::area2<P>(p0, p1)));
 }
 
 template <index N, class T0, class T1>

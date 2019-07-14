@@ -17,8 +17,8 @@ struct rotate_point2d : geometry::policy {};
 
 template <class F, class T0, class T1, class X = geometry::float_t<F, T0, T1>>
 inline auto rotate(rotate_point2d<F>, const point<T0>& p, const T1& angle) {
-    auto sin = math::sin(static_cast<X>(angle));
-    auto cos = math::cos(static_cast<X>(angle));
+    auto sin = adl::sin(static_cast<X>(angle));
+    auto cos = adl::cos(static_cast<X>(angle));
     return point{cos * p[0] - sin * p[1], sin * p[0] + cos * p[1]};
 }
 
