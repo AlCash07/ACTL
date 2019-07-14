@@ -16,11 +16,12 @@ constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
 
 template <class Device, class Format>
 inline index serialize(Device& od, Format& fmt, bool x, text_tag) {
+    using C = char_t<Device>;
     if (fmt.getf(flags::boolalpha)) {
-        return x ? write(od, fmt, span{true_s}) : write(od, fmt, span{false_s});
+        return x ? write(od, fmt, cspan<C>{true_s}) : write(od, fmt, cspan<C>{false_s});
     } else {
-        const char c = x ? '1' : '0';
-        return write(od, fmt, span{&c, 1});
+        const C c = x ? '1' : '0';
+        return write(od, fmt, cspan<C>{&c, 1});
     }
 }
 

@@ -15,7 +15,9 @@
 
 using namespace ac::io;
 
-using spts = spaced<pretty<text_static<>>>;
+using spts = spaced<pretty<text_static<bit(flags::boolalpha)>>>;
+
+TEST("bool") { test_write("true false", spts{}, true, false); }
 
 TEST("int") { test_write("123", spts{}, 123); }
 
