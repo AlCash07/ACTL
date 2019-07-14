@@ -5,9 +5,28 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/numeric/functions.hpp>
+#include <actl/numeric/compare.hpp>
 #include <actl/test.hpp>
 #include <limits>
+
+constexpr double eps = 1e-9;
+
+struct Eps {
+    static constexpr double epsilon() { return eps; }
+};
+
+inline constexpr absolute_epsilon<Eps> eps_policy;
+
+TEST("equal") {
+    ASSERT_TRUE(eq(eps_policy, 0.0, eps / 2));
+    ASSERT_FALSE(eq(eps_policy, 0.0, eps));
+}
+
+TEST("less than") {
+    ASSERT_TRUE(lt(0.0, eps));
+    ASSERT_FALSE(lt(eps_policy, 0.0, eps));
+    ASSERT_TRUE(lt(eps_policy, -eps, eps));
+}
 
 TEST("sgn") {
     ASSERT_EQUAL(1, sgn(std::numeric_limits<int>::max()));

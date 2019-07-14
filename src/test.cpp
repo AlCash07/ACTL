@@ -5,7 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/numeric/functions.hpp>
+#include <actl/numeric/compare.hpp>
 #include <actl/std/map.hpp>
 #include <actl/string/split.hpp>
 #include <actl/string/trim.hpp>
