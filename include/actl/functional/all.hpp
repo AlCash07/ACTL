@@ -7,8 +7,4 @@
 
 #pragma once
 
-#include <actl/numeric/algorithm/all.hpp>
-#include <actl/numeric/bit.hpp>
-#include <actl/numeric/hash.hpp>
-#include <actl/numeric/math.hpp>
-#include <actl/numeric/random/all.hpp>
+#include <actl/functional/compare.hpp>

@@ -5,7 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/numeric/compare.hpp>
+#include <actl/functional/compare.hpp>
 #include <actl/test.hpp>
 #include <limits>
 
@@ -15,17 +15,17 @@ struct Eps {
     static constexpr double epsilon() { return eps; }
 };
 
-inline constexpr absolute_epsilon<Eps> eps_policy;
+inline constexpr absolute_error<Eps> eps_policy;
 
-TEST("equal") {
-    ASSERT_TRUE(eq(eps_policy, 0.0, eps / 2));
-    ASSERT_FALSE(eq(eps_policy, 0.0, eps));
+TEST("op::equal") {
+    ASSERT_TRUE(op::equal(eps_policy, 0.0, eps / 2));
+    ASSERT_FALSE(op::equal(eps_policy, 0.0, eps));
 }
 
-TEST("less than") {
-    ASSERT_TRUE(lt(0.0, eps));
-    ASSERT_FALSE(lt(eps_policy, 0.0, eps));
-    ASSERT_TRUE(lt(eps_policy, -eps, eps));
+TEST("op::less") {
+    ASSERT_TRUE(op::less(use_default{}, 0.0, eps));
+    ASSERT_FALSE(op::less(eps_policy, 0.0, eps));
+    ASSERT_TRUE(op::less(eps_policy, -eps, eps));
 }
 
 TEST("sgn") {
