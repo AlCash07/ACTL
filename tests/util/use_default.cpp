@@ -12,5 +12,3 @@ TEST("deduce_type") {
     ASSERT_TRUE(std::is_same_v<double, deduce_t<double, int>>);
     ASSERT_TRUE(std::is_same_v<int, deduce_t<use_default, int>>);
 }
-
-TEST("is_policy") { ASSERT_TRUE(is_policy_v<const use_default&>); }

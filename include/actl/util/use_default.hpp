@@ -14,9 +14,7 @@ namespace ac {
 /**
  * Indicates default type or policy where supported.
  */
-struct use_default {
-    struct is_policy;
-};
+struct use_default {};
 
 template <class T, class Default>
 using deduce_type = std::conditional<std::is_same_v<T, use_default>, Default, T>;

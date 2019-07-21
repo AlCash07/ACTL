@@ -48,23 +48,6 @@ struct nth_type<N, T, Ts...> {
     using type = nth_t<N - 1, Ts...>;
 };
 
-/* Policy support */
-
-template <class T, class = void>
-struct is_policy : std::false_type {};
-
-template <class T>
-struct is_policy<T, std::void_t<typename T::is_policy>> : std::true_type {};
-
-template <class T>
-inline constexpr bool is_policy_v = is_policy<remove_cvref_t<T>>::value;
-
-template <class T>
-using enable_int_if_policy = enable_int_if<is_policy_v<T>>;
-
-template <class T>
-using disable_int_if_policy = enable_int_if<!is_policy_v<T>>;
-
 /* Dependent types */
 
 namespace detail {
