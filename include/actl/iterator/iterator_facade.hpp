@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <actl/util/operators.hpp>
+#include <actl/functional/compare.hpp>
 #include <actl/util/type_traits.hpp>
 #include <iterator>
 #include <memory>
@@ -79,7 +79,7 @@ template <class Iterator, class Category, class Value, class Reference, class Po
 class it_facade;
 
 template <class It, class V, class R, class P, class D>
-class it_facade<It, std::output_iterator_tag, V, R, P, D> : operators::base<> {
+class it_facade<It, std::output_iterator_tag, V, R, P, D> : op::base<> {
 public:
 	using iterator_category = std::output_iterator_tag;
 	using value_type        = V;
@@ -92,6 +92,12 @@ public:
     It& operator++() {
         iterator_core_access::increment(derived());
         return derived();
+    }
+
+    It operator++(int) {
+        It copy = derived();
+        ++*this;
+        return copy;
     }
 
 protected:
@@ -120,6 +126,12 @@ public:
     It& operator--() {
         iterator_core_access::decrement(this->derived());
         return this->derived();
+    }
+
+    It operator--(int) {
+        It copy = this->derived();
+        --*this;
+        return copy;
     }
 };
 

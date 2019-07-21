@@ -17,6 +17,14 @@ namespace op {
 // Policies must to defined in op namespace for ADL to work.
 struct policy {};
 
+// Inherit from this class to enable ADL lookup to find operators in this namespace.
+// Template base class enables empty base class chaining to avoid increasing type size,
+// reference: https://www.boost.org/doc/libs/1_70_0/libs/utility/operators.htm#old_lib_note
+template <class B = none>
+struct base : B {
+    using B::B;
+};
+
 }  // namespace op
 
 inline constexpr op::policy default_policy;
@@ -29,6 +37,15 @@ using enable_int_if_policy = enable_int_if<is_policy_v<T>>;
 
 template <class T>
 using disable_int_if_policy = enable_int_if<!is_policy_v<T>>;
+
+#define DEFINE_HAS_OVERLOAD(name)                                                \
+    template <class, class... Ts>                                                \
+    struct has_##name : std::false_type {};                                      \
+    template <class... Ts>                                                       \
+    struct has_##name<std::void_t<decltype(name(std::declval<Ts>()...))>, Ts...> \
+        : std::true_type {};                                                     \
+    template <class... Ts>                                                       \
+    inline constexpr bool has_##name##_v = has_##name<void, Ts...>::value;
 
 #define DEFINE_HAS_BINARY_OPERATOR(name, symbol)                                               \
     template <class T, class U, class = void>                                                  \

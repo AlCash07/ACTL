@@ -30,6 +30,18 @@ inline constexpr auto equal(const absolute_error<E>& policy, const T& lhs, const
     return less(default_policy, adl::abs(rhs - lhs), policy.epsilon());
 }
 
+DEFINE_HAS_OVERLOAD(equal)
+
+template <class T, class U, enable_int_if<has_equal_v<policy, T, U>> = 0>
+inline constexpr auto operator == (const T& lhs, const U& rhs) {
+    return equal(default_policy, lhs, rhs);
+}
+
+template <class T, class U>
+inline constexpr auto operator != (const T& lhs, const U& rhs) {
+    return !(lhs == rhs);
+}
+
 DEFINE_HAS_BINARY_OPERATOR(lt, <)
 
 template <class T, class U, enable_int_if<has_lt_v<T, U>> = 0>
@@ -40,6 +52,28 @@ inline constexpr auto less(policy, const T& lhs, const U& rhs) {
 template <class E, class T, class U>
 inline constexpr auto less(const absolute_error<E>& policy, const T& lhs, const U& rhs) {
     return less(default_policy, policy.epsilon(), rhs - lhs);
+}
+
+DEFINE_HAS_OVERLOAD(less)
+
+template <class T, class U, enable_int_if<has_less_v<policy, T, U>> = 0>
+inline constexpr auto operator < (const T& lhs, const U& rhs) {
+    return less(default_policy, lhs, rhs);
+}
+
+template <class T, class U>
+inline constexpr auto operator > (const T& lhs, const U& rhs) {
+    return rhs < lhs;
+}
+
+template <class T, class U>
+inline constexpr auto operator <= (const T& lhs, const U& rhs) {
+    return !(lhs > rhs);
+}
+
+template <class T, class U>
+inline constexpr auto operator >= (const T& lhs, const U& rhs) {
+    return !(lhs < rhs);
 }
 
 }  // namespace op

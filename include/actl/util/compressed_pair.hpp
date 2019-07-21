@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/functional/compare.hpp>
 #include <actl/util/introspection.hpp>
-#include <actl/util/operators.hpp>
 
 namespace ac {
 
@@ -38,8 +38,8 @@ private:
 namespace detail {
 
 template <class T>
-struct cpb1 : operators::base<ebo<T>> {
-    using operators::base<ebo<T>>::base;
+struct cpb1 : op::base<ebo<T>> {
+    using op::base<ebo<T>>::base;
 };
 
 template <class T>

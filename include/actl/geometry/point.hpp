@@ -8,10 +8,10 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/functional/compare.hpp>
 #include <actl/geometry/traits.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/util/introspection.hpp>
-#include <actl/util/operators.hpp>
 #include <actl/util/span.hpp>
 #include <functional>
 #include <initializer_list>
@@ -28,7 +28,7 @@ class point;
  * N-dimensional point base class implementing common functionality.
  */
 template <class T, index N>
-class point_base : operators::base<> {
+class point_base : op::base<> {
 public:
     template <class... Ts, enable_int_if<(... && std::is_convertible_v<Ts, T>)> = 0>
     constexpr point_base(Ts&&... xs) : coordinates_{T{std::forward<Ts>(xs)}...} {}
