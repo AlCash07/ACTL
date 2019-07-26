@@ -94,7 +94,7 @@ class ndarray_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
 
-    ndarray_container(index size) : data_{new T[size]} {}
+    ndarray_container(index size) : data_{new T[static_cast<size_t>(size)]} {}
 
     T* data() { return data_.get(); }
     const T* data() const { return data_.get(); }
@@ -125,7 +125,7 @@ public:
     }
 
     template <class Dims>
-    ndarray_data(index size, nd_initializer_list_t<T, N> il, Dims dims) : base_t{size} {
+    ndarray_data(index size, const nd_initializer_list_t<T, N>& il, Dims dims) : base_t{size} {
         index strides[std::max(N - 1, (index)1)];  // array of size 0 is not standard-compliant
         if constexpr (N >= 2) {
             strides[N - 2] = dims[N - 1];
@@ -140,10 +140,11 @@ public:
 
 private:
     template <index I, class Dims>
-    T* initialize(T* ptr, nd_initializer_list_t<T, N - I> il, Dims dims, const index* strides) {
+    T* initialize(T* ptr, const nd_initializer_list_t<T, N - I>& il, Dims dims,
+                  const index* strides) {
         ACTL_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N) {
-            for (auto x : il) {
+            for (const auto& x : il) {
                 T* end = initialize<I + 1>(ptr, x, dims, strides);
                 ptr += strides[I];
                 std::fill(end, ptr, T{});
@@ -428,7 +429,7 @@ using dimensions_t = typename dimensions<N>::type;
 namespace op {
 
 template <class Policy, class D0, class S0, class D1, class S1>
-inline bool equal(const Policy& policy, const detail::ndarray_base<D0, S0>& lhs,
+inline bool equal(Policy&& policy, const detail::ndarray_base<D0, S0>& lhs,
                   const detail::ndarray_base<D1, S1>& rhs) {
     if (lhs.rank() != rhs.rank()) return false;
     for (index i = 0; i < lhs.rank(); ++i) {

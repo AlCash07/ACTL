@@ -25,8 +25,7 @@ inline constexpr size_t hash_value(const std::tuple<Ts...>& x) {
 namespace op {
 
 template <size_t I = 0, class Policy, class... Ts, class... Us>
-inline bool equal(const Policy& policy, const std::tuple<Ts...>& lhs,
-                  const std::tuple<Us...>& rhs) {
+inline bool equal(Policy&& policy, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
     if constexpr (I == sizeof...(Ts)) {
         return true;
     } else {
@@ -35,7 +34,7 @@ inline bool equal(const Policy& policy, const std::tuple<Ts...>& lhs,
 }
 
 template <size_t I = 0, class Policy, class... Ts, class... Us>
-inline bool less(const Policy& policy, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
+inline bool less(Policy&& policy, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
     if constexpr (I == sizeof...(Ts)) {
         return false;
     } else {

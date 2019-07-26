@@ -176,13 +176,12 @@ inline constexpr auto dot(const point<T, N>& p) {
 namespace op {
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr bool equal(const Policy& policy, const point<T0, N>& lhs,
-                            const point<T1, N>& rhs) {
+inline constexpr bool equal(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return op::equal(policy, lhs.span(), rhs.span());
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr bool less(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+inline constexpr bool less(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return less(policy, lhs.span(), rhs.span());
 }
 

@@ -41,14 +41,12 @@ inline auto sqrt(defer_sqrt, const T& x) {
 }
 
 template <class Policy, class T, class U>
-inline constexpr bool equal(const Policy& policy, const square_root<T>& lhs,
-                            const square_root<U>& rhs) {
+inline constexpr bool equal(Policy&& policy, const square_root<T>& lhs, const square_root<U>& rhs) {
     return equal(policy, sqr(lhs), sqr(rhs));
 }
 
 template <class Policy, class T, class U>
-inline constexpr bool less(const Policy& policy, const square_root<T>& lhs,
-                           const square_root<U>& rhs) {
+inline constexpr bool less(Policy&& policy, const square_root<T>& lhs, const square_root<U>& rhs) {
     return less(policy, sqr(lhs), sqr(rhs));
 }
 

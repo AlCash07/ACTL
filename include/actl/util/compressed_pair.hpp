@@ -78,13 +78,13 @@ private:
 namespace op {
 
 template <class Policy, class T1, class T2>
-inline auto equal(const Policy& policy, const compressed_pair<T1, T2>& lhs,
+inline auto equal(Policy&& policy, const compressed_pair<T1, T2>& lhs,
                   const compressed_pair<T1, T2>& rhs) {
     return equal(policy, lhs.first(), rhs.first()) && equal(policy, lhs.second(), rhs.second());
 }
 
 template <class Policy, class T1, class T2>
-inline auto less(const Policy& policy, const compressed_pair<T1, T2>& lhs,
+inline auto less(Policy&& policy, const compressed_pair<T1, T2>& lhs,
                  const compressed_pair<T1, T2>& rhs) {
     auto v = sgn(policy, lhs.first(), rhs.first());
     return v < 0 || (v == 0 && less(policy, lhs.second(), rhs.second()));
