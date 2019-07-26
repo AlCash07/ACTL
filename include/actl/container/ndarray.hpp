@@ -28,8 +28,10 @@ template <index...>
 struct static_array {
     index operator[](index) const {
         ACTL_ASSERT(false);
-        return -1;
+        return {};
     }
+
+    static constexpr index product() { return 1; }
 };
 
 template <index I0, index... Is>
@@ -37,13 +39,9 @@ struct static_array<I0, Is...> {
     constexpr index operator[](index i) const {
         return i == 0 ? I0 : static_array<Is...>{}[i - 1];
     }
+
+    static constexpr index product() { return I0 * static_array<Is...>::product(); }
 };
-
-template <index...>
-struct static_product : index_constant<1> {};
-
-template <index D0, index... Ds>
-struct static_product<D0, Ds...> : index_constant<D0 * static_product<Ds...>::value> {};
 
 template <class T, index N>
 struct nd_initializer_list {
@@ -56,8 +54,8 @@ struct nd_initializer_list<T, 0> {
 };
 
 template <class T>
-struct nd_initializer_list<T, -1> {
-    using type = none;
+struct nd_initializer_list<T, dynamic_size> {
+    struct type {};
 };
 
 template <class T, index N>
@@ -96,7 +94,7 @@ class ndarray_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
 
-    ndarray_container(index size) : data_{std::make_unique<T[]>(static_cast<size_t>(size))} {}
+    ndarray_container(index size) : data_{new T[size]} {}
 
     T* data() { return data_.get(); }
     const T* data() const { return data_.get(); }
@@ -142,17 +140,17 @@ public:
 
 private:
     template <index I, class Dims>
-    T* initialize(T* data, nd_initializer_list_t<T, N - I> il, Dims dims, const index* strides) {
+    T* initialize(T* ptr, nd_initializer_list_t<T, N - I> il, Dims dims, const index* strides) {
         ACTL_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N) {
-            for (auto it : il) {
-                T* end = initialize<I + 1>(data, it, dims, strides);
-                data += strides[I];
-                std::fill(end, data, T{});
+            for (auto x : il) {
+                T* end = initialize<I + 1>(ptr, x, dims, strides);
+                ptr += strides[I];
+                std::fill(end, ptr, T{});
             }
-            return data;
+            return ptr;
         } else {
-            return copy(il, data);
+            return copy(il, ptr);
         }
     }
 };
@@ -252,7 +250,7 @@ public:
 
     static constexpr index rank() { return static_size_v<Dims>; }
 
-    static constexpr index size() { return static_product<Ds...>::value; }
+    static constexpr index size() { return static_array<Ds...>::product(); }
 
     static constexpr Dims dimensions() { return {}; }
 };
@@ -277,7 +275,7 @@ struct ndarray_reference<T, N, static_array<D0, Ds...>, true> {
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, index i) {
-        return type{ptr->data() + i * static_product<Ds...>::value};
+        return type{ptr->data() + i * static_array<Ds...>::product()};
     }
 };
 
@@ -419,7 +417,7 @@ inline void swap(ndarray_base<D, S>& lhs, ndarray_base<D, S>& rhs) {
 }
 
 template <class T, index... Ds>
-using ndarray_base_static = ndarray_base<T[static_product<Ds...>::value], static_array<Ds...>>;
+using ndarray_base_static = ndarray_base<T[static_array<Ds...>::product()], static_array<Ds...>>;
 
 template <index N>
 struct dimensions {
