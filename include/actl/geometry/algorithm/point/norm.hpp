@@ -20,7 +20,7 @@ struct standard_norm : geometry::policy {};
 
 template <class P, index N, class T>
 inline auto norm(comparable_norm<P>, const point<T, N>& p) {
-    return square_root{dot<P>(p)};
+    return op::square_root{dot<P>(p)};
 }
 
 template <class P, class F, index N, class T>

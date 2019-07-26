@@ -10,7 +10,7 @@
 #include <actl/functional/policy.hpp>
 #include <actl/numeric/math.hpp>
 
-namespace ac {
+namespace ac::op {
 
 /**
  * Comparable square root with deferred call to sqrt.
@@ -27,8 +27,6 @@ public:
 private:
     T sqr_;
 };
-
-namespace op {
 
 struct defer_sqrt : virtual policy {};
 
@@ -54,6 +52,4 @@ inline constexpr bool less(const Policy& policy, const square_root<T>& lhs,
     return less(policy, sqr(lhs), sqr(rhs));
 }
 
-}  // namespace op
-
-}  // namespace ac
+}  // namespace ac::op
