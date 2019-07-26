@@ -15,9 +15,9 @@ TEST("vector") {
     ASSERT_EQUAL(3, graph.vertex_count());
     ASSERT_EQUAL(1, graph.edge_count());
     graph[e.target()] = "v2";
-    ASSERT_EQUAL("", graph[1]);
-    ASSERT_EQUAL("v2", graph[2]);
-    ASSERT_EQUAL("e02", graph[e]);
+    ASSERT_EQUAL(""sv, graph[1]);
+    ASSERT_EQUAL("v2"sv, graph[2]);
+    ASSERT_EQUAL("e02"sv, graph[e]);
     graph = {};
     ASSERT_EQUAL(0, graph.vertex_count());
     ASSERT_EQUAL(0, graph.edge_count());
@@ -30,9 +30,9 @@ TEST("set") {
     ASSERT_EQUAL(1, graph.edge_count());
     auto v = e.target();
     graph[v] = "v2a";
-    ASSERT_EQUAL("v0", graph[e.source()]);
-    ASSERT_EQUAL("v2a", graph[v]);
-    ASSERT_EQUAL("e02", graph[e]);
+    ASSERT_EQUAL("v0"sv, graph[e.source()]);
+    ASSERT_EQUAL("v2a"sv, graph[v]);
+    ASSERT_EQUAL("e02"sv, graph[e]);
     graph = {};
     ASSERT_EQUAL(0, graph.vertex_count());
     ASSERT_EQUAL(0, graph.edge_count());

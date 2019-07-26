@@ -31,9 +31,9 @@ inline void test_edges(Graph& graph, V v0, V v1, V v2) {
     auto map = graph[edge_property{}];
     graph[es[2]].s = "e21a";
     put(map, es[0], bundle(0, "e01b"));
-    ASSERT_EQUAL("e01b", graph[es[0]].s);
-    ASSERT_EQUAL("e02", graph[es[1]].s);
-    ASSERT_EQUAL("e21a", get(map, es[2]).s);
+    ASSERT_EQUAL("e01b"sv, graph[es[0]].s);
+    ASSERT_EQUAL("e02"sv, graph[es[1]].s);
+    ASSERT_EQUAL("e21a"sv, get(map, es[2]).s);
     auto e_range = graph.edges();
     ASSERT_EQUAL_SETS(get_ends<Graph::is_directed>(es), get_ends<Graph::is_directed>(e_range));
     auto e02 = graph.find_edge(v0, v2);

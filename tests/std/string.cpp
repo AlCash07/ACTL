@@ -22,7 +22,7 @@ TEST("read") {
     std::string s = "  01234567890123456789 0123456789";
     std::string x;
     ASSERT_TRUE(read(formatted<memory<in>>{s}, x));
-    ASSERT_EQUAL("01234567890123456789", x);
+    ASSERT_EQUAL("01234567890123456789"sv, x);
 }
 
 TEST("write") { test_write("abacaba", io::text{}, std::string{"abacaba"}); }

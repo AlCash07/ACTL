@@ -12,11 +12,11 @@
 TEST("member_access") {
     compressed_pair<int, std::string> p{2, 'a', 'b', 'a'};
     ASSERT_EQUAL(2, p.first());
-    ASSERT_EQUAL("aba", p.second());
+    ASSERT_EQUAL("aba"sv, p.second());
     p.first() = 4;
     p.second() = "s";
     ASSERT_EQUAL(4, p.first());
-    ASSERT_EQUAL("s", p.second());
+    ASSERT_EQUAL("s"sv, p.second());
     compressed_pair<none, int> p2{none{}, 3};
     ASSERT_EQUAL(3, p2.second());
 }

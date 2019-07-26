@@ -16,9 +16,9 @@ TEST("input") {
     id.move(-1);
     char dst[9];
     ASSERT_EQUAL(3, id.read({dst, 3}));
-    ASSERT_EQUAL("bcd", std::string(dst, dst + 3));
+    ASSERT_EQUAL("bcd"sv, std::string(dst, dst + 3));
     ASSERT_EQUAL(1, id.read({dst, 3}));
-    ASSERT_EQUAL("e", std::string(dst, dst + 1));
+    ASSERT_EQUAL("e"sv, std::string(dst, dst + 1));
     ASSERT_EQUAL(0, id.read({dst, 3}));
     ASSERT_EQUAL('\0', id.get());
 }
@@ -30,5 +30,5 @@ TEST("output") {
     ASSERT_EQUAL(3, od.write({"bcd", 3}));
     ASSERT_EQUAL(1, od.write({"ef", 2}));
     ASSERT_FALSE(od.write('g'));
-    ASSERT_EQUAL("abcde", std::string(s, s + 5));
+    ASSERT_EQUAL("abcde"sv, std::string(s, s + 5));
 }
