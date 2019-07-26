@@ -25,16 +25,6 @@ inline difference_t<Range> count(const Range& src, const T& value) {
     return std::count(std::begin(src), std::end(src), value);
 }
 
-template <class Range0, class Range1>
-inline bool equal(const Range0& lhs, const Range1& rhs) {
-    return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
-}
-
-template <class Range0, class Range1, class BinaryPredicate, enable_int_if<is_range_v<Range0>> = 0>
-inline bool equal(const Range0& lhs, const Range1& rhs, BinaryPredicate pred) {
-    return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), pred);
-}
-
 template <class Range, class OutIter>
 inline OutIter copy(const Range& src, OutIter dst) {
     return std::copy(std::begin(src), std::end(src), dst);

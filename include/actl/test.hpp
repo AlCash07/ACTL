@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functional/compare.hpp>
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
 #include <actl/numeric/math.hpp>
@@ -38,12 +39,11 @@ using namespace ac;
 
 #define TEST(...) TEST_IMPL(CAT(_tesT_, __COUNTER__), #__VA_ARGS__)
 
-#define ASSERT_EQUAL        tests::detail::assert_impl(__FILE__, __LINE__).check_equal
-#define ASSERT_NOT_EQUAL    tests::detail::assert_impl(__FILE__, __LINE__).check_not_equal
-#define ASSERT_TRUE         tests::detail::assert_impl(__FILE__, __LINE__).check_true
-#define ASSERT_FALSE        tests::detail::assert_impl(__FILE__, __LINE__).check_false
-#define ASSERT_EQUAL_RANGES tests::detail::assert_impl(__FILE__, __LINE__).check_ranges
-#define ASSERT_EQUAL_SETS   tests::detail::assert_impl(__FILE__, __LINE__).check_sets
+#define ASSERT_EQUAL      tests::detail::assert_impl(__FILE__, __LINE__).check_equal
+#define ASSERT_NOT_EQUAL  tests::detail::assert_impl(__FILE__, __LINE__).check_not_equal
+#define ASSERT_TRUE       tests::detail::assert_impl(__FILE__, __LINE__).check_true
+#define ASSERT_FALSE      tests::detail::assert_impl(__FILE__, __LINE__).check_false
+#define ASSERT_EQUAL_SETS tests::detail::assert_impl(__FILE__, __LINE__).check_sets
 #define ASSERT_THROWS(expression) \
     tests::detail::assert_throws(__FILE__, __LINE__, [&] { (void)(expression); })
 
@@ -88,13 +88,13 @@ struct assert_impl {
 
     template <class T0, class T1>
     inline void check_equal(const T0& expected, const T1& actual) const {
-        if (expected == actual) return;
+        if (equal(default_policy, expected, actual)) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T0, class T1>
     inline void check_not_equal(const T0& not_expected, const T1& actual) const {
-        if (not_expected != actual) return;
+        if (!equal(default_policy, not_expected, actual)) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 
@@ -111,17 +111,11 @@ struct assert_impl {
 
     inline void check_false(bool condition) const { check_equal(false, condition); }
 
-    template <class T0, class T1>
-    inline void check_ranges(const T0& expected, const T1& actual) const {
-        if (equal(expected, actual)) return;
-        throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
-    }
-
     template <class T>
     inline void check_sets(std::vector<T> expected, std::vector<T> actual) const {
         sort(expected);
         sort(actual);
-        check_ranges(expected, actual);
+        check_equal(expected, actual);
     }
 };
 

@@ -30,7 +30,7 @@ TEST("simple") {
     std::map<edge_t<Graph>, int> component_map;
     std::vector<bool> is_articulation(7);
     find_articulation_points_and_components(graph, is_articulation, component_map);
-    ASSERT_EQUAL_RANGES(std::vector{true, false, false, true, false, true, false}, is_articulation);
+    ASSERT_EQUAL(std::vector{true, false, false, true, false, true, false}, is_articulation);
     std::vector<int> components(8);
     for (auto [edge, value] : component_map) {
         components[(size_t)edge.bundle()] = value;
@@ -53,7 +53,7 @@ TEST("parallel edges") {
     std::map<edge_t<Graph>, int> component_map;
     std::vector<bool> is_articulation(6);
     find_articulation_points_and_components(graph, is_articulation, component_map);
-    ASSERT_EQUAL_RANGES(std::vector{true, false, false, false, false, false}, is_articulation);
+    ASSERT_EQUAL(std::vector{true, false, false, false, false, false}, is_articulation);
     std::vector<int> components(7);
     for (auto [edge, value] : component_map) {
         components[(size_t)edge.bundle()] = value;

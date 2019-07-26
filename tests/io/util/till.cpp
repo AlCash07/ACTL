@@ -16,8 +16,8 @@ TEST("getline") {
     memory<bin | in> id{s};
     char x[9] = {};
     ASSERT_TRUE(read(id, till{span{x}, '\n'}));
-    ASSERT_EQUAL_RANGES("line", span{x, 5});
+    ASSERT_EQUAL("line", span{x, 5});
     id.move(1);
     ASSERT_TRUE(read(id, till{span{x}, '\n'}));
-    ASSERT_EQUAL_RANGES("next", span{x, 5});
+    ASSERT_EQUAL("next", span{x, 5});
 }

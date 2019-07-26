@@ -16,20 +16,20 @@ TEST("rank 0 initialization") {
 
 TEST("rank 1 initialization") {
     ndarray<int, 1> t_dims(2);
-    ASSERT_EQUAL_RANGES(std::vector{2}, t_dims.dimensions());
+    ASSERT_EQUAL(std::vector{2}, t_dims.dimensions());
     ndarray<int, 1> t_init{2};
-    ASSERT_EQUAL_RANGES(std::vector{1}, t_init.dimensions());
+    ASSERT_EQUAL(std::vector{1}, t_init.dimensions());
 }
 
 TEST("rank 3 initialization") {
     ndarray<int, 3> t_dims{{5, 4, 3}, 0};
-    ASSERT_EQUAL_RANGES(std::vector{5, 4, 3}, t_dims.dimensions());
+    ASSERT_EQUAL(std::vector{5, 4, 3}, t_dims.dimensions());
     for (auto x : t_dims) {
         ASSERT_EQUAL(0, x);
     }
     ndarray<int, 3> t_init{{{1, 2, 3}}, {{4}, {5, 6}}};
-    ASSERT_EQUAL_RANGES(std::vector{2, 2, 3}, t_init.dimensions());
-    ASSERT_EQUAL_RANGES(std::vector{1, 2, 3, 0, 0, 0, 4, 0, 0, 5, 6, 0}, t_init);
+    ASSERT_EQUAL(std::vector{2, 2, 3}, t_init.dimensions());
+    ASSERT_EQUAL(std::vector{1, 2, 3, 0, 0, 0, 4, 0, 0, 5, 6, 0}, t_init);
 }
 
 TEST("indexing") {
@@ -47,5 +47,5 @@ TEST("rank -1") {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 2; ++j) t(i, j) = i * 2 + j;
     }
-    ASSERT_EQUAL_RANGES(std::vector{0, 1, 2, 3, 4, 5}, t);
+    ASSERT_EQUAL(std::vector{0, 1, 2, 3, 4, 5}, t);
 }

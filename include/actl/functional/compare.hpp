@@ -52,7 +52,7 @@ inline constexpr auto operator != (const T& lhs, const U& rhs) {
 DEFINE_HAS_BINARY_OPERATOR(lt, <)
 DEFINE_HAS_OVERLOAD(less)
 
-template <class T, class U, enable_int_if<has_lt_v<T, U>> = 0>
+template <class T, class U, enable_int_if<!has_less_v<T, U> && has_lt_v<T, U>> = 0>
 inline constexpr auto less(policy, const T& lhs, const U& rhs) {
     return lhs < rhs;
 }

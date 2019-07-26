@@ -397,20 +397,6 @@ private:
     }
 };
 
-template <class D0, class S0, class D1, class S1>
-inline bool operator == (const ndarray_base<D0, S0>& lhs, const ndarray_base<D1, S1>& rhs) {
-    if (lhs.rank() != rhs.rank()) return false;
-    for (index i = 0; i < lhs.rank(); ++i) {
-        if (lhs.dimension(i) != rhs.dimension(i)) return false;
-    }
-    return std::equal(lhs.data(), lhs.data() + lhs.size(), rhs.data());
-}
-
-template <class D0, class S0, class D1, class S1>
-inline bool operator != (const ndarray_base<D0, S0>& lhs, const ndarray_base<D1, S1>& rhs) {
-    return !(lhs == rhs);
-}
-
 template <class D, class S>
 inline void swap(ndarray_base<D, S>& lhs, ndarray_base<D, S>& rhs) {
     lhs.swap(rhs);
@@ -438,6 +424,20 @@ template <index N>
 using dimensions_t = typename dimensions<N>::type;
 
 }  // namespace detail
+
+namespace op {
+
+template <class Policy, class D0, class S0, class D1, class S1>
+inline bool equal(const Policy& policy, const detail::ndarray_base<D0, S0>& lhs,
+                  const detail::ndarray_base<D1, S1>& rhs) {
+    if (lhs.rank() != rhs.rank()) return false;
+    for (index i = 0; i < lhs.rank(); ++i) {
+        if (lhs.dimension(i) != rhs.dimension(i)) return false;
+    }
+    return equal(policy, span{lhs}, span{rhs});
+}
+
+}  // namespace op
 
 template <index... Is>
 struct static_size<detail::static_array<Is...>> : index_constant<sizeof...(Is)> {};
