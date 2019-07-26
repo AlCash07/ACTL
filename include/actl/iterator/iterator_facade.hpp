@@ -184,6 +184,4 @@ ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 template <class It, class C, class V, class R, class P, class D>
 inline It operator + (D n, const iterator_facade<It, C, V, R, P, D>& rhs) { return rhs + n; }
 
-#undef ITERATOR_OPERATOR
-
 }  // namespace ac

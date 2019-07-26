@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <actl/range/traits.hpp>
 #include <actl/util/type_traits.hpp>
 #include <algorithm>
 
@@ -29,7 +30,7 @@ inline bool equal(const Range0& lhs, const Range1& rhs) {
     return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
 }
 
-template <class Range0, class Range1, class BinaryPredicate>
+template <class Range0, class Range1, class BinaryPredicate, enable_int_if<is_range_v<Range0>> = 0>
 inline bool equal(const Range0& lhs, const Range1& rhs, BinaryPredicate pred) {
     return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), pred);
 }

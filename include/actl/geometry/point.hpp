@@ -171,16 +171,21 @@ inline constexpr auto dot(const point<T, N>& p) {
     return dot<P>(p, p);
 }
 
-/* Comparison operators */
+/* Comparison */
 
-template <index N, class T0, class T1>
-inline constexpr bool operator == (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return equal(lhs.span(), rhs.span());
+namespace op {
+
+template <class Policy, index N, class T0, class T1>
+inline constexpr bool equal(const Policy& policy, const point<T0, N>& lhs,
+                            const point<T1, N>& rhs) {
+    return op::equal(policy, lhs.span(), rhs.span());
 }
 
-template <index N, class T0, class T1>
-inline constexpr bool operator < (const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return lexicographical_compare(lhs.span(), rhs.span());
+template <class Policy, index N, class T0, class T1>
+inline constexpr bool less(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+    return less(policy, lhs.span(), rhs.span());
 }
+
+}  // namespace op
 
 }  // namespace ac

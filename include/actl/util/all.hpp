@@ -12,7 +12,6 @@
 #include <actl/util/function_traits.hpp>
 #include <actl/util/introspection.hpp>
 #include <actl/util/none.hpp>
-#include <actl/util/operators.hpp>
 #include <actl/util/rebind.hpp>
 #include <actl/util/square_root.hpp>
 #include <actl/util/stopwatch.hpp>
