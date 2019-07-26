@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/functional/traits.hpp>
 #include <actl/map/traits.hpp>
-#include <actl/util/function_traits.hpp>
 
 namespace ac {
 

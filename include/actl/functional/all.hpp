@@ -8,3 +8,4 @@
 #pragma once
 
 #include <actl/functional/compare.hpp>
+#include <actl/functional/traits.hpp>

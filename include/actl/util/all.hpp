@@ -9,7 +9,6 @@
 
 #include <actl/util/component_set.hpp>
 #include <actl/util/compressed_pair.hpp>
-#include <actl/util/function_traits.hpp>
 #include <actl/util/introspection.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/rebind.hpp>
