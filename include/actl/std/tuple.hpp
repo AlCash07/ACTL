@@ -10,7 +10,43 @@
 #include <actl/io/io.hpp>
 #include <tuple>
 
-namespace ac::io {
+namespace ac {
+
+template <class T, size_t... Is>
+inline constexpr size_t hash_tuple(const T& x, std::index_sequence<Is...>) {
+    return hash_value(std::get<Is>(x)...);
+}
+
+template <class... Ts>
+inline constexpr size_t hash_value(const std::tuple<Ts...>& x) {
+    return hash_tuple(x, std::make_index_sequence<sizeof...(Ts)>{});
+}
+
+namespace op {
+
+template <size_t I = 0, class Policy, class... Ts, class... Us>
+inline bool equal(const Policy& policy, const std::tuple<Ts...>& lhs,
+                  const std::tuple<Us...>& rhs) {
+    if constexpr (I == sizeof...(Ts)) {
+        return true;
+    } else {
+        return equal(policy, std::get<I>(lhs), std::get<I>(rhs)) && equal<I + 1>(policy, lhs, rhs);
+    }
+}
+
+template <size_t I = 0, class Policy, class... Ts, class... Us>
+inline bool less(const Policy& policy, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
+    if constexpr (I == sizeof...(Ts)) {
+        return false;
+    } else {
+        int v = sgn(policy, std::get<I>(lhs), std::get<I>(rhs));
+        return v < 0 || (v == 0 && less<I + 1>(policy, lhs, rhs));
+    }
+}
+
+}  // namespace op
+
+namespace io {
 
 template <class... Ts>
 struct is_composite<std::tuple<Ts...>> : std::true_type {};
@@ -39,4 +75,6 @@ inline bool deserialize(Device& id, Format& fmt, std::tuple<Ts...>& x) {
     return detail::read_tuple(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
-}  // namespace ac::io
+}  // namespace io
+
+}  // namespace ac
