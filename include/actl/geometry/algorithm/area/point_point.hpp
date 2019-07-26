@@ -7,9 +7,9 @@
 
 #pragma once
 
+#include <actl/functional/sqrt.hpp>
 #include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/3d/point3d.hpp>
-#include <actl/util/square_root.hpp>
 
 namespace ac {
 
@@ -49,7 +49,7 @@ inline constexpr auto area(standard_area_points<P, F>, const point<T0>& p0, cons
 // TODO: figure out the correct sign instead of returning the absolute value.
 template <class P, index N, class T0, class T1>
 inline auto area(comparable_area_points<P>, const point<T0, N>& p0, const point<T1, N>& p1) {
-    return deferred_sqrt(detail::area2<P>(p0, p1));
+    return square_root{detail::area2<P>(p0, p1)};
 }
 
 template <class P, class F, index N, class T0, class T1>

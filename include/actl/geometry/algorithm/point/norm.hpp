@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/functional/sqrt.hpp>
 #include <actl/geometry/point.hpp>
-#include <actl/util/square_root.hpp>
 
 namespace ac {
 
@@ -20,7 +20,7 @@ struct standard_norm : geometry::policy {};
 
 template <class P, index N, class T>
 inline auto norm(comparable_norm<P>, const point<T, N>& p) {
-    return deferred_sqrt(dot<P>(p));
+    return square_root{dot<P>(p)};
 }
 
 template <class P, class F, index N, class T>
