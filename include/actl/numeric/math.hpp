@@ -10,15 +10,6 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace ac {
-
-template <class T>
-inline constexpr T sqr(const T& x) {
-    return x * x;
-}
-
-}  // namespace ac
-
 namespace ac::adl {
 
 template <class T>

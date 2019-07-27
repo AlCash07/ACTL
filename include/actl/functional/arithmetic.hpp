@@ -9,10 +9,15 @@
 
 #include <actl/functional/policy.hpp>
 
-namespace ac::op {
+namespace ac {
+
+namespace op {
 
 DEFINE_HAS_BINARY_OPERATOR(mul, *)
 DEFINE_HAS_OVERLOAD(product)
+
+template <class... Ts>
+using product_t = decltype(product(std::declval<Ts>()...));
 
 template <class T, class U, enable_int_if<!has_product_v<T, U> && has_mul_v<T, U>> = 0>
 inline constexpr auto product(policy, const T& lhs, const U& rhs) {
@@ -35,6 +40,9 @@ inline constexpr auto operator * (const T& lhs, const U& rhs) {
 DEFINE_HAS_BINARY_OPERATOR(div, <)
 DEFINE_HAS_OVERLOAD(ratio)
 
+template <class... Ts>
+using ratio_t = decltype(ratio(std::declval<Ts>()...));
+
 template <class T, class U, enable_int_if<!has_ratio_v<T, U> && has_div_v<T, U>> = 0>
 inline constexpr auto ratio(policy, const T& lhs, const U& rhs) {
     return lhs / rhs;
@@ -53,4 +61,16 @@ inline constexpr auto operator / (const T& lhs, const U& rhs) {
     return ratio(default_policy, lhs, rhs);
 }
 
-}  // namespace ac::op
+}  // namespace op
+
+template <class Policy, class T>
+inline constexpr auto sqr(Policy&& policy, const T& x) {
+    return product(policy, x, x);
+}
+
+template <class T>
+inline constexpr auto sqr(const T& x) {
+    return x * x;
+}
+
+}  // namespace ac

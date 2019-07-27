@@ -17,9 +17,3 @@ TEST("abs") {
     constexpr auto uint_max = std::numeric_limits<unsigned int>::max();
     ASSERT_EQUAL(uint_max, adl::abs(uint_max));
 }
-
-TEST("sqr") {
-    ASSERT_EQUAL(0, sqr(0));
-    ASSERT_EQUAL(4, sqr(2));
-    ASSERT_EQUAL(4, sqr(-2));
-}
