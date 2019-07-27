@@ -23,13 +23,13 @@ public:
 
     constexpr plane() = default;
 
-    template <class T1, class T2>
+    template <class T1 = T, class T2 = T>
     explicit constexpr plane(const point<T1, N>& normal, const T2& d)
         : normal{normal}, d{static_cast<T>(d)} {}
 
-    template <class T1, class T2>
-    explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& point)
-        : plane{normal, dot(op::product_policy<T>{}, normal, point)} {}
+    template <class T1 = T, class T2 = T>
+    explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& p)
+        : plane{normal, dot(op::product_policy<T>{}, normal, p)} {}
 
     template <class T1>
     explicit constexpr plane(const plane<T1, N>& rhs) : plane{rhs.normal, rhs.d} {}
@@ -43,10 +43,15 @@ public:
     }
 
     // Oriented distance from @p point to the plane times the norm of normal.
-    template <class P = use_default, class T1>
-    constexpr auto operator()(const point<T1, N>& point) const {
-        return dot(default_policy, normal, point) - d;
-    };
+    template <class Policy, class T1 = T>
+    constexpr auto operator()(Policy&& policy, const point<T1, N>& p) const {
+        return dot(policy, normal, p) - d;
+    }
+
+    template <class T1 = T>
+    constexpr auto operator()(const point<T1, N>& p) const {
+        return (*this)(default_policy, p);
+    }
 
 private:
     INTROSPECT(normal, d)
@@ -73,6 +78,11 @@ template <class T0, class T1, class T2>
 inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
                                    const point3d<T2>& c) {
     return plane_t<3, T0, T1, T2>{cross(b - a, c - a), a};
+}
+
+template <class Policy, index N, class T>
+inline constexpr bool degenerate(Policy&& policy, const plane<T, N>& pl) {
+    return degenerate(policy, pl.normal);
 }
 
 }  // namespace ac

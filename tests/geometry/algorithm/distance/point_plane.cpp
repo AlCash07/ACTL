@@ -5,8 +5,11 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/distance/distance.hpp>
 #include <actl/geometry/algorithm/distance/point_plane.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") {
+    plane<int, 2> pl{{-1, 2}, {1, 1}};
+    ASSERT_EQUAL(adl::sqrt(5.0), distance(pl, point{2, 4}), 1e-12);
+    ASSERT_EQUAL(adl::sqrt(5.0), distance(pl, point{4, 0}), 1e-12);
+}

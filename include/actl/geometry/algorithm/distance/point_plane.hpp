@@ -7,24 +7,16 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/distance/distance.hpp>
 #include <actl/geometry/algorithm/point/norm.hpp>
 #include <actl/geometry/plane.hpp>
 
 namespace ac {
 
-template <class P = use_default, class F = use_default, class NormPolicy = standard_norm<P, F>>
-struct distance_point_plane : NormPolicy {};
-
-template <class P, class F, class NP, index N, class T0, class T1>
-inline auto distance(const distance_point_plane<P, F, NP>& policy, const point<T0, N>& p,
-                     const plane<T1, N>& pl) {
-    return static_cast<geometry::float_t<F, T0, T1>>(pl.template operator()<P>(p)) /
-           norm(policy, pl.normal);
-}
-
-template <index N, class T0, class T1>
-inline auto distance(use_default, const point<T0, N>& p, const plane<T1, N>& pl) {
-    return distance(distance_point_plane{}, p, pl);
+template <class Policy, index N, class T0, class T1>
+inline auto distance(Policy&& policy, const point<T0, N>& p, const plane<T1, N>& pl) {
+    ACTL_ASSERT(!degenerate(pl));
+    return op::ratio(policy, adl::abs(pl(policy, p)), norm(policy, pl.normal));
 }
 
 }  // namespace ac

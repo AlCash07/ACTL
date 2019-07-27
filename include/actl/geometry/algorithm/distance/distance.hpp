@@ -11,13 +11,13 @@
 
 namespace ac {
 
-template <class Policy, class T0, class T1, geometry::enable_int_if_swap<T0, T1> = 0>
-inline auto distance(Policy&& policy, const T0& lhs, const T1& rhs) {
+template <class Policy, class T, class U, geometry::enable_int_if_swap<T, U> = 0>
+inline auto distance(Policy&& policy, const T& lhs, const U& rhs) {
     return distance(policy, rhs, lhs);
 }
 
-template <class T0, class T1>
-inline auto distance(const T0& lhs, const T1& rhs) {
+template <class T, class U>
+inline auto distance(const T& lhs, const U& rhs) {
     return distance(geometry_policy, rhs, lhs);
 }
 

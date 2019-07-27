@@ -11,7 +11,6 @@
 #include <actl/functional/arithmetic.hpp>
 #include <actl/functional/compare.hpp>
 #include <actl/geometry/traits.hpp>
-#include <actl/range/algorithm.hpp>
 #include <actl/util/introspection.hpp>
 #include <actl/util/span.hpp>
 #include <functional>
@@ -203,6 +202,19 @@ inline constexpr auto dot(Policy&& policy, const point<T, N>& p) {
 template <index N, class T>
 inline constexpr auto dot(const point<T, N>& p) {
     return dot(default_policy, p);
+}
+
+template <class Policy, index N, class T>
+inline constexpr bool degenerate(Policy&& policy, const point<T, N>& p) {
+    for (index i = 0; i < N; ++i) {
+        if (!op::equal(policy, p[i], T{})) return false;
+    }
+    return true;
+}
+
+template <class T>
+inline constexpr bool degenerate(const T& x) {
+    return degenerate(default_policy, x);
 }
 
 }  // namespace ac

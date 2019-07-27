@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/distance/distance.hpp>
 #include <actl/geometry/algorithm/point/norm.hpp>
 
 namespace ac {

@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/distance/distance.hpp>
 #include <actl/geometry/algorithm/distance/point_line.hpp>
 #include <actl/geometry/algorithm/distance/point_plane.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
