@@ -7,31 +7,25 @@
 
 #pragma once
 
+#include <actl/geometry/2d/point2d.hpp>
+#include <actl/geometry/algorithm/area/area.hpp>
 #include <actl/geometry/polygon.hpp>
 
 namespace ac {
-
-template <class P = use_default>
-struct area_polygon : geometry::policy {};
 
 /**
  * Doubled oriented area of a polygon : O(N).
  * http://geomalgorithms.com/a01-_area.html area2D_Polygon().
  */
-template <class P, class T, class X = geometry::product_t<P, polygon<T>>>
-inline X area(area_polygon<P>, const polygon<T>& polygon) {
-    X res{};
-    auto it = polygon.cyclic_begin();
-    for (index i = 0; i < polygon.size(); ++i) {
-        res += it->x() * static_cast<X>(it[-1].y() - it[1].y());
+template <class Policy, class T, enable_int_if<geometry_traits<polygon<T>>::dimension == 2> = 0>
+inline auto area(Policy&& policy, const polygon<T>& poly) {
+    auto it = poly.cyclic_begin();
+    decltype(product(policy, it->x(), it->y())) res{};
+    for (index i = 0; i < poly.size(); ++i) {
+        res += product(policy, it->x(), it[1].y() - it[-1].y());
         ++it;
     }
     return res;
-}
-
-template <class Range>
-inline auto area(use_default, const polygon<Range>& polygon) {
-    return area(area_polygon{}, polygon);
 }
 
 }  // namespace ac

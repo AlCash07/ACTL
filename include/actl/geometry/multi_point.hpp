@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/geometry/point.hpp>
 #include <actl/geometry/traits.hpp>
 #include <actl/std/vector.hpp>
 

@@ -27,7 +27,7 @@ public:
     explicit cyclic_iterator(It it, Range range)
         : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{std::forward<Range>(range)} {
         ACTL_ASSERT(!std::empty(range));
-        if (it == end()) it() = begin();
+        if (it == end()) this->base_ref() = begin();
     }
 
 private:
