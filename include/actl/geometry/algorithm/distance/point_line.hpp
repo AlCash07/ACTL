@@ -22,9 +22,9 @@ struct distance_point_line : deduce_t<NormPolicy, standard_norm<P, F>> {
 template <class P, class F, class NP, class AP, index N, class T0, class T1, class K>
 inline auto distance(const distance_point_line<P, F, NP, AP>& policy, const point<T0, N>& p,
                      const line<T1, N, K>& l) {
-    if (l.start_kind() != endpoint::free && dot<P>(p - l.start, l.vector) <= 0)
+    if (l.start_kind() != endpoint::free && dot(policy, p - l.start, l.vector) <= 0)
         return norm(policy, p - l.start);
-    if (l.end_kind() != endpoint::free && dot<P>(p - l.end(), l.vector) >= 0)
+    if (l.end_kind() != endpoint::free && dot(policy, p - l.end(), l.vector) >= 0)
         return norm(policy, p - l.end());
     return static_cast<geometry::float_t<F, T0, T1>>(adl::abs(area(policy.area_policy, p, l))) /
            norm(policy, l.vector);

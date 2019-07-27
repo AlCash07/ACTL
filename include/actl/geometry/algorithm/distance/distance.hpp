@@ -18,7 +18,7 @@ inline auto distance(Policy&& policy, const T0& lhs, const T1& rhs) {
 
 template <class T0, class T1>
 inline auto distance(const T0& lhs, const T1& rhs) {
-    return distance(use_default{}, rhs, lhs);
+    return distance(geometry_policy, rhs, lhs);
 }
 
 }  // namespace ac

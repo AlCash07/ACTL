@@ -35,7 +35,7 @@ inline auto intersect(intersect_circle_circle_point<P>, const circle<T0>& lhs,
     using X = geometry::product_t<P, T0, T1>;
     using O = geometry::scalar_t<output_type_t<OutIter>>;
     auto centers_vector = rhs.center - lhs.center;
-    auto centers_dist = dot<X>(centers_vector);
+    auto centers_dist = dot(default_policy, centers_vector);
     X lradius = static_cast<X>(lhs.radius);
     X rradius = static_cast<X>(rhs.radius);
     auto sgn0 = sgn(centers_dist, sqr(lradius - rradius));

@@ -10,6 +10,7 @@
 
 TEST("cross") {
     constexpr int M = 1'000'000'000;
-    ASSERT_EQUAL(point{-2, 999999999000000001LL, -1000000001000000001LL},
-                 cross<long long>(point{1, M + 1, M - 1}, point{M + 1, M, M - 2}));
+    ASSERT_EQUAL(
+        point{-2, 999999999000000001LL, -1000000001000000001LL},
+        cross(op::product_policy<long long>{}, point{1, M + 1, M - 1}, point{M + 1, M, M - 2}));
 }

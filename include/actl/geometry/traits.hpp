@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functional/arithmetic.hpp>
 #include <actl/util/type_traits.hpp>
 #include <actl/util/use_default.hpp>
 
@@ -102,7 +103,7 @@ using enable_int_if_swap = enable_int_if<id<T1>::value < id<T0>::value>;
 
 /* Policy */
 
-struct policy {};
+struct policy : public op::policy {};
 
 template <class T>
 struct is_policy
@@ -112,5 +113,7 @@ template <class T>
 using disable_int_if_policy = enable_int_if<!is_policy<remove_cvref_t<T>>::value>;
 
 }  // namespace geometry
+
+inline op::ratio_policy<double> geometry_policy;
 
 }  // namespace ac

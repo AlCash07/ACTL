@@ -10,8 +10,9 @@
 
 TEST("standard") { ASSERT_EQUAL(1.414213562373095, norm(point{1, 1}), 1e-12); }
 
+struct norm_policy : virtual op::product_policy<long long>, virtual op::defer_sqrt {};
+
 TEST("comparable") {
     constexpr int x = 2'000'000'000;
-    ASSERT_EQUAL(8'000'000'000'000'000'000LL,
-                 sqr(norm(comparable_norm<long long>{}, point{x, -x})));
+    ASSERT_EQUAL(8'000'000'000'000'000'000LL, sqr(norm(norm_policy{}, point{x, -x})));
 }

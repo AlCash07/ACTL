@@ -18,19 +18,14 @@ struct comparable_norm : geometry::policy {};
 template <class P = use_default, class F = use_default>
 struct standard_norm : geometry::policy {};
 
-template <class P, index N, class T>
-inline auto norm(comparable_norm<P>, const point<T, N>& p) {
-    return op::square_root{dot<P>(p)};
-}
-
-template <class P, class F, index N, class T>
-inline auto norm(standard_norm<P, F>, const point<T, N>& p) {
-    return static_cast<geometry::float_t<F, T>>(adl::sqrt(dot<P>(p)));
+template <class Policy, index N, class T>
+inline auto norm(Policy&& policy, const point<T, N>& p) {
+    return op::sqrt(policy, dot(policy, p));
 }
 
 template <index N, class T>
 inline auto norm(const point<T, N>& p) {
-    return norm(standard_norm{}, p);
+    return norm(geometry_policy, p);
 }
 
 }  // namespace ac

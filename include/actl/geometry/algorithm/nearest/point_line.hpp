@@ -20,9 +20,9 @@ template <class P, class F, index N, class T0, class T1, class K,
 inline std::pair<point<T0, N>, point<X, N>> nearest(const nearest_point_line<P, F>& policy,
                                                     const point<T0, N>& point,
                                                     const line<T1, N, K>& line) {
-    if (line.start_kind() != endpoint::free && dot<P>(point - line.start, line.vector) <= 0)
+    if (line.start_kind() != endpoint::free && dot(policy, point - line.start, line.vector) <= 0)
         return {point, line.start};
-    if (line.end_kind() != endpoint::free && dot<P>(point - line.end(), line.vector) >= 0)
+    if (line.end_kind() != endpoint::free && dot(policy, point - line.end(), line.vector) >= 0)
         return {point, line.end()};
     return {point, project(policy, point, line)};
 }

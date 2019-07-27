@@ -29,7 +29,7 @@ public:
 
     template <class T1, class T2>
     explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& point)
-        : plane{normal, dot<T>(normal, point)} {}
+        : plane{normal, dot(op::product_policy<T>{}, normal, point)} {}
 
     template <class T1>
     explicit constexpr plane(const plane<T1, N>& rhs) : plane{rhs.normal, rhs.d} {}
@@ -45,7 +45,7 @@ public:
     // Oriented distance from @p point to the plane times the norm of normal.
     template <class P = use_default, class T1>
     constexpr auto operator()(const point<T1, N>& point) const {
-        return dot<P>(normal, point) - d;
+        return dot(default_policy, normal, point) - d;
     };
 
 private:

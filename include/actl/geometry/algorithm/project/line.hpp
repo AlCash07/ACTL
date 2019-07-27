@@ -18,9 +18,10 @@ template <class P = use_default, class F = use_default>
 struct project_line_scalar : geometry::policy {};
 
 template <class P, class F, index N, class T0, class T1, class K>
-inline auto project(project_line_scalar<P, F>, const point<T0, N>& src, const line<T1, N, K>& dst) {
-    return static_cast<geometry::float_t<F, T0, T1>>(dot<P>(src - dst.start, dst.vector)) /
-           dot<P>(dst.vector);
+inline auto project(project_line_scalar<P, F> policy, const point<T0, N>& src,
+                    const line<T1, N, K>& dst) {
+    return static_cast<geometry::float_t<F, T0, T1>>(dot(policy, src - dst.start, dst.vector)) /
+           dot(policy, dst.vector);
 }
 
 template <class P, class F, index N, class T0, class T1, class K>

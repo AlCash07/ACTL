@@ -37,13 +37,16 @@ public:
 template <class T>
 using point3d = point<T, 3>;
 
-template <class P = use_default, class T0, class T1>
+template <class Policy, class T0, class T1>
+inline constexpr auto cross(Policy&& policy, const point3d<T0>& lhs, const point3d<T1>& rhs) {
+    return point{product(policy, lhs[1], rhs[2]) - product(policy, lhs[2], rhs[1]),
+                 product(policy, lhs[2], rhs[0]) - product(policy, lhs[0], rhs[2]),
+                 product(policy, lhs[0], rhs[1]) - product(policy, lhs[1], rhs[0])};
+}
+
+template <class T0, class T1>
 inline constexpr auto cross(const point3d<T0>& lhs, const point3d<T1>& rhs) {
-    using Res = point3d<deduce_t<P, geometry::scalar_t<T0, T1>>>;
-    Res lhs1{lhs};
-    return Res{lhs1[1] * rhs[2] - lhs1[2] * rhs[1],
-               lhs1[2] * rhs[0] - lhs1[0] * rhs[2],
-               lhs1[0] * rhs[1] - lhs1[1] * rhs[0]};
+    return cross(default_policy, lhs, rhs);
 }
 
 }  // namespace ac

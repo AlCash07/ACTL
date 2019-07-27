@@ -28,7 +28,7 @@ template <class P, class F, class AP, index N, class T0, class T1>
 inline auto angle(const standard_angle<P, F, AP>& policy, const point<T0, N>& lhs,
                   const point<T1, N>& rhs) {
     return adl::atan2(area(policy, lhs, rhs),
-                      static_cast<geometry::float_t<F, T0, T1>>(dot<P>(lhs, rhs)));
+                      static_cast<geometry::float_t<F, T0, T1>>(dot(policy, lhs, rhs)));
 }
 
 template <class P, class F, class AP, index N, class T0, class T1, class T2>

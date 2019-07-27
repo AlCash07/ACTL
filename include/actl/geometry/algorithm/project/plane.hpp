@@ -15,8 +15,9 @@ template <class P = use_default, class F = use_default>
 struct project_plane : geometry::policy {};
 
 template <class P, class F, index N, class T0, class T1, class X = geometry::float_t<F, T0, T1>>
-inline auto project(project_plane<P, F>, const point<T0, N>& src, const plane<T1, N>& dst) {
-    return src - dst.normal * static_cast<X>(dst.template operator()<P>(src)) / dot<P>(dst.normal);
+inline auto project(project_plane<P, F> policy, const point<T0, N>& src, const plane<T1, N>& dst) {
+    return src -
+           dst.normal * static_cast<X>(dst.template operator()<P>(src)) / dot(policy, dst.normal);
 }
 
 template <index N, class T0, class T1>
