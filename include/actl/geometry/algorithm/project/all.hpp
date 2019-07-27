@@ -10,4 +10,3 @@
 #include <actl/geometry/algorithm/project/line.hpp>
 #include <actl/geometry/algorithm/project/plane.hpp>
 #include <actl/geometry/algorithm/project/point.hpp>
-#include <actl/geometry/algorithm/project/project.hpp>
