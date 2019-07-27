@@ -71,13 +71,25 @@ inline std::string to_string(const T& value) {
     return s;
 }
 
-enum message_kind : uint8_t { Expected, NotExpected, Actual, Error, Line };
+enum message_kind : uint8_t { Expected, NotExpected, Actual, Line };
 
 template <message_kind Kind, class T>
 inline std::string message(const T& x) {
-    static std::string messages[5] = {"expected = ", "expected = not ",
-                                      "actual   = ", "error    = ", "line = "};
+    static std::string messages[4] = {"expected = ", "expected = not ", "actual   = ", "line = "};
     return messages[Kind] + to_string(x) + "\n";
+}
+
+template <class T>
+struct abs_rel_error {
+    T eps;
+};
+
+template <class E, class T, class U,
+          enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
+inline bool equal(const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
+    E numerator = adl::abs(lhs - rhs);
+    E denominator = std::max(std::max(adl::abs<E>(lhs), adl::abs<E>(rhs)), E{1});
+    return numerator <= policy.eps * denominator;
 }
 
 struct assert_impl {
@@ -86,25 +98,22 @@ struct assert_impl {
 
     assert_impl(std::string_view filename, int line) : filename{filename}, line{line} {}
 
-    template <class T0, class T1>
-    inline void check_equal(const T0& expected, const T1& actual) const {
+    template <class T, class U>
+    inline void check_equal(const T& expected, const U& actual) const {
         if (equal(default_policy, expected, actual)) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
-    template <class T0, class T1>
-    inline void check_not_equal(const T0& not_expected, const T1& actual) const {
+    template <class T, class U>
+    inline void check_not_equal(const T& not_expected, const U& actual) const {
         if (!equal(default_policy, not_expected, actual)) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 
-    template <class T, enable_int_if<std::is_floating_point_v<T>> = 0>
-    inline void check_equal(T expected, T actual, T eps) const {
-        T numerator = adl::abs(expected - actual);
-        T denominator = std::max(std::max(adl::abs(expected), adl::abs(actual)), T{1});
-        if (numerator <= eps * denominator) return;
-        throw message<Expected>(expected) + message<Actual>(actual) +
-            message<Error>(numerator / denominator) + message<Line>(line);
+    template <class T, class U, class E>
+    inline void check_equal(const T& expected, const U& actual, E eps) const {
+        if (equal(abs_rel_error<E>{eps}, expected, actual)) return;
+        throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     inline void check_true(bool condition) const { check_equal(true, condition); }

@@ -7,12 +7,13 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/project/project.hpp>
 #include <actl/geometry/point.hpp>
 
 namespace ac {
 
-template <index N, class T0, class T1>
-inline auto& project(use_default, const point<T0, N>&, const point<T1, N>& dst) {
+template <class Policy, index N, class T0, class T1>
+inline auto& project(Policy&& policy, const point<T0, N>&, const point<T1, N>& dst) {
     return dst;
 }
 

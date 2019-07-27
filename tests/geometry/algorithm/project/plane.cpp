@@ -6,7 +6,8 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/project/plane.hpp>
-#include <actl/geometry/algorithm/project/project.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") {
+    ASSERT_EQUAL(point{-1, -1, 1}, project(point{0, 1, 4}, plane<int>{{1, 2, 3}, 0}), 1e-12);
+}

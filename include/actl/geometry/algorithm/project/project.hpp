@@ -11,9 +11,9 @@
 
 namespace ac {
 
-template <index N, class T0, class T1>
-inline auto project(const point<T0, N>& src, const T1& dst) {
-    return project(use_default{}, src, dst);
+template <index N, class T, class U>
+inline decltype(auto) project(const point<T, N>& src, const U& dst) {
+    return project(geometry_policy, src, dst);
 }
 
 }  // namespace ac

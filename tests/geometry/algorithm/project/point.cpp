@@ -6,7 +6,6 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/project/point.hpp>
-#include <actl/geometry/algorithm/project/project.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") { ASSERT_EQUAL(point{2, 4}, project(point{9, 1}, point{2, 4})); }
