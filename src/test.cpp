@@ -73,7 +73,7 @@ bool test_base::run() {
             if (it == params.end()) return false;
             if (!io::read(io::string<io::in>{it->second.first}, io::text_static<>{}, value)) {
                 throw "param " + to_string(key) + " has invalid value " +
-                    to_string(it->second.first) + "; line = " + to_string(line());
+                    to_string(it->second.first) + "; line = " + to_string(line_number());
             }
             params.erase(it);
             return true;
@@ -89,7 +89,7 @@ bool test_base::run() {
                 unknown_params += key_value.second.second;
             }
             throw "unknown param" + ((params.size() > 1 ? "s: " : ": ") + unknown_params) +
-                "; line = " + to_string(line());
+                "; line = " + to_string(line_number());
         }
         stopwatch.start();
         for (int k = 0; k < repeat; ++k) {
@@ -97,7 +97,7 @@ bool test_base::run() {
         }
         double elapsed_seconds = stopwatch.seconds();
         if (elapsed_seconds > time_limit) {
-            throw "time limit exceeded; line = " + to_string(line());
+            throw "time limit exceeded; line = " + to_string(line_number());
         }
         io::writeln(cerr, "passed [ET = ", elapsed_seconds, "s]");
         return true;

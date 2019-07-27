@@ -18,14 +18,14 @@ struct Eps {
 inline op::absolute_error<Eps> eps_policy;
 
 TEST("op::equal") {
-    ASSERT_TRUE(op::equal(eps_policy, 0.0, eps / 2));
-    ASSERT_FALSE(op::equal(eps_policy, 0.0, eps));
+    ASSERT_TRUE(equal(eps_policy, 0.0, eps / 2));
+    ASSERT_FALSE(equal(eps_policy, 0.0, eps));
 }
 
 TEST("op::less") {
-    ASSERT_TRUE(op::less(default_policy, 0.0, eps));
-    ASSERT_FALSE(op::less(eps_policy, 0.0, eps));
-    ASSERT_TRUE(op::less(eps_policy, -eps, eps));
+    ASSERT_TRUE(less(default_policy, 0.0, eps));
+    ASSERT_FALSE(less(eps_policy, 0.0, eps));
+    ASSERT_TRUE(less(eps_policy, -eps, eps));
 }
 
 TEST("sgn") {

@@ -89,11 +89,11 @@ public:
 
     constexpr line() = default;
 
-    template <class T1, class T2>
+    template <class T1 = T, class T2 = T>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
         : start{a}, vector{vector ? point<T, N>{a} : point<T, N>{b - a}} {}
 
-    template <class T1, class T2>
+    template <class T1 = T, class T2 = T>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, uint8_t kind,
                             bool vector = false)
         : Kind{kind}, start{a}, vector{vector ? point<T, N>{a} : point<T, N>{b - a}} {}
@@ -116,9 +116,14 @@ public:
     constexpr uint8_t start_kind() const { return endpoint::start(this->kind()); }
     constexpr uint8_t end_kind() const { return endpoint::end(this->kind()); }
 
+    template <class Policy, class T1>
+    constexpr auto operator()(Policy&& policy, const T1& t) const {
+        return start + product(policy, t, vector);
+    }
+
     template <class T1>
     constexpr auto operator()(const T1& t) const {
-        return start + t * vector;
+        return (*this)(default_policy, t);
     }
 
 private:
@@ -167,6 +172,11 @@ inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
                                     const point<T1, N>& b, uint8_t bkind) {
     if (akind < bkind) return make_any_line(b, bkind, a, akind);
     return Line{a, b, endpoint::combine(akind, bkind)};
+}
+
+template <class Policy, index N, class T, class K>
+inline constexpr bool degenerate(Policy&& policy, const line<T, N, K>& l) {
+    return degenerate(l.vector);
 }
 
 }  // namespace ac

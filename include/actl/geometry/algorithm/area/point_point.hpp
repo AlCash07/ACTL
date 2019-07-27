@@ -10,6 +10,7 @@
 #include <actl/functional/sqrt.hpp>
 #include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/3d/point3d.hpp>
+#include <actl/geometry/algorithm/area/area.hpp>
 
 namespace ac {
 
@@ -27,19 +28,13 @@ struct standard_area_points : geometry::policy {};
 template <class Policy, index N, class T0, class T1>
 inline auto area(Policy&& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
     if constexpr (N == 2) {
-        return op::product(policy, p0[0], p1[1]) - op::product(policy, p0[1], p1[0]);
+        return product(policy, p0[0], p1[1]) - product(policy, p0[1], p1[0]);
     } else if constexpr (N == 3) {
-        return op::sqrt(policy, dot(policy, cross(policy, p0, p1)));
+        return sqrt(policy, dot(policy, cross(policy, p0, p1)));
     } else {
-        auto area2 =
-            product(policy, dot(policy, p0), dot(policy, p1)) - sqr(policy, dot(policy, p0, p1));
-        return op::sqrt(policy, area2);
+        auto a = product(policy, dot(policy, p0), dot(policy, p1));
+        return sqrt(policy, a - sqr(policy, dot(policy, p0, p1)));
     }
-}
-
-template <index N, class T0, class T1>
-inline auto area(use_default, const point<T0, N>& p0, const point<T1, N>& p1) {
-    return area(standard_area_points{}, p0, p1);
 }
 
 }  // namespace ac

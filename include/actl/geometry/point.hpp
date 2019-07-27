@@ -153,7 +153,7 @@ namespace op {
 
 template <class Policy, index N, class T0, class T1>
 inline constexpr bool equal(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return op::equal(policy, span{lhs}, span{rhs});
+    return equal(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
@@ -207,7 +207,7 @@ inline constexpr auto dot(const point<T, N>& p) {
 template <class Policy, index N, class T>
 inline constexpr bool degenerate(Policy&& policy, const point<T, N>& p) {
     for (index i = 0; i < N; ++i) {
-        if (!op::equal(policy, p[i], T{})) return false;
+        if (!equal(policy, p[i], T{})) return false;
     }
     return true;
 }

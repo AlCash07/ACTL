@@ -11,18 +11,18 @@
 
 namespace ac {
 
-template <class Policy, class T0, class T1, geometry::enable_int_if_swap<T0, T1> = 0>
-inline auto area(Policy&& policy, const T0& lhs, const T1& rhs) {
-    if constexpr (geometry_traits<T0>::dimension == 2) {
+template <class Policy, class T, class U, geometry::enable_int_if_swap<T, U> = 0>
+inline auto area(Policy&& policy, const T& lhs, const U& rhs) {
+    if constexpr (geometry_traits<T>::dimension == 2) {
         return -area(policy, rhs, lhs);
     } else {
         return area(policy, rhs, lhs);
     }
 }
 
-template <class T, class... Ts, geometry::disable_int_if_policy<T> = 0>
-inline auto area(const T& arg, const Ts&... args) {
-    return area(use_default{}, arg, args...);
+template <class T, class... Ts, disable_int_if_policy<T> = 0>
+inline auto area(const T& x, const Ts&... xs) {
+    return area(geometry_policy, x, xs...);
 }
 
 }  // namespace ac

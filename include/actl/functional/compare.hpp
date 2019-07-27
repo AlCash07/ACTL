@@ -93,7 +93,7 @@ inline constexpr auto operator >= (const T& lhs, const U& rhs) {
 
 template <class Policy, class T, enable_int_if_policy<Policy> = 0>
 inline constexpr int sgn(Policy&& policy, const T& x, const T& y = T{0}) {
-    return (int)op::less(policy, y, x) - (int)op::less(policy, x, y);
+    return (int)less(policy, y, x) - (int)less(policy, x, y);
 }
 
 template <class T>
@@ -103,7 +103,7 @@ inline constexpr int sgn(const T& x, const T& y = T{0}) {
 
 template <class Policy, class T, class U>
 inline constexpr T& smax(Policy&& policy, T& x, const U& y) {
-    return op::less(policy, x, y) ? x = y : x;
+    return less(policy, x, y) ? x = y : x;
 }
 
 template <class T, class U>
@@ -113,7 +113,7 @@ inline constexpr T& smax(T& x, const U& y) {
 
 template <class Policy, class T, class U>
 inline constexpr T& smin(Policy&& policy, T& x, const U& y) {
-    return op::less(policy, y, x) ? x = y : x;
+    return less(policy, y, x) ? x = y : x;
 }
 
 template <class T, class U>

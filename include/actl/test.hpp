@@ -28,7 +28,7 @@ using namespace ac;
     namespace {                                                         \
     struct name : tests::detail::test_base {                            \
         std::string_view filename() const override { return __FILE__; } \
-        int line() const override { return __LINE__; }                  \
+        int line_number() const override { return __LINE__; }           \
         std::string_view args() const override { return va_args; }      \
         void body(default_random&) const override;                      \
         name() { tests::detail::all_tests().push_back(this); }          \
@@ -131,7 +131,7 @@ inline void assert_throws(std::string_view, int line, const Function& f) {
 
 struct test_base {
     virtual std::string_view filename() const = 0;
-    virtual int line() const = 0;
+    virtual int line_number() const = 0;
     virtual std::string_view args() const = 0;
     virtual void body(default_random& random) const = 0;
 
