@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/project/project.hpp>
 #include <actl/geometry/line.hpp>
 
 namespace ac {
@@ -17,21 +18,15 @@ struct project_line : geometry::policy {};
 template <class P = use_default, class F = use_default>
 struct project_line_scalar : geometry::policy {};
 
-template <class P, class F, index N, class T0, class T1, class K>
-inline auto project(project_line_scalar<P, F> policy, const point<T0, N>& src,
-                    const line<T1, N, K>& dst) {
-    return static_cast<geometry::float_t<F, T0, T1>>(dot(policy, src - dst.start, dst.vector)) /
-           dot(policy, dst.vector);
+template <class LS, index N, class T0, class T1, class K, enable_int_if<is_line_scalar_v<LS>> = 0>
+inline auto project(LS&& ls, const point<T0, N>& p, const line<T1, N, K>& l) {
+    return ratio(ls.policy, dot(ls.policy, p - l.start, l.vector), dot(ls.policy, l.vector));
 }
 
-template <class P, class F, index N, class T0, class T1, class K>
-inline auto project(project_line<P, F>, const point<T0, N>& src, const line<T1, N, K>& dst) {
-    return dst(project(project_line_scalar<P, F>{}, src, dst));
-}
-
-template <index N, class T0, class T1, class K>
-inline auto project(use_default, const point<T0, N>& src, const line<T1, N, K>& dst) {
-    return project(project_line{}, src, dst);
+template <class Policy, index N, class T0, class T1, class K,
+          enable_int_if<!is_line_scalar_v<Policy>> = 0>
+inline auto project(Policy&& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
+    return l(project(line_scalar{policy}, p, l));
 }
 
 }  // namespace ac

@@ -14,5 +14,5 @@ TEST("any_line") {
     auto l = make_any_line(a, endpoint::open, b, endpoint::free);
     ASSERT_EQUAL(a, l.start);
     ASSERT_EQUAL(b, l.end());
-    ASSERT_EQUAL(point{2, 3}, l(0.5));
+    ASSERT_EQUAL(point{2, 3}, l(0.5), 1e-12);
 }

@@ -11,14 +11,14 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1>
-inline auto reflect(Policy&& policy, const point<T0, N>& src, const T1& dst) {
-    return 2 * project(policy, src, dst) - src;
+template <class Policy, index N, class T, class U>
+inline auto reflect(Policy&& policy, const point<T, N>& src, const U& dst) {
+    return product(policy, 2, project(policy, src, dst)) - src;
 }
 
-template <index N, class T0, class T1>
-inline auto reflect(const point<T0, N>& src, const T1& dst) {
-    return reflect(use_default{}, src, dst);
+template <index N, class T, class U>
+inline auto reflect(const point<T, N>& src, const U& dst) {
+    return reflect(geometry_policy, src, dst);
 }
 
 }  // namespace ac

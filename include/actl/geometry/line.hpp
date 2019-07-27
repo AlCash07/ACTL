@@ -27,12 +27,12 @@ inline constexpr uint8_t end(uint8_t combined) { return static_cast<uint8_t>(com
 namespace line_kind {
 
 enum : uint8_t {
-    free                = endpoint::combine(endpoint::free,   endpoint::free),
-    closed_ray          = endpoint::combine(endpoint::closed, endpoint::free),
-    open_ray            = endpoint::combine(endpoint::open,   endpoint::free),
-    closed_segment      = endpoint::combine(endpoint::closed, endpoint::closed),
-    open_closed_segment = endpoint::combine(endpoint::open,   endpoint::closed),
-    open_segment        = endpoint::combine(endpoint::open,   endpoint::open)
+    free              = endpoint::combine(endpoint::free,   endpoint::free),
+    closed_ray        = endpoint::combine(endpoint::closed, endpoint::free),
+    open_ray          = endpoint::combine(endpoint::open,   endpoint::free),
+    closed_segment    = endpoint::combine(endpoint::closed, endpoint::closed),
+    half_open_segment = endpoint::combine(endpoint::open,   endpoint::closed),
+    open_segment      = endpoint::combine(endpoint::open,   endpoint::open)
 };
 
 inline constexpr bool is_valid(uint8_t kind) {
@@ -178,5 +178,23 @@ template <class Policy, index N, class T, class K>
 inline constexpr bool degenerate(Policy&& policy, const line<T, N, K>& l) {
     return degenerate(l.vector);
 }
+
+// Policy to indicate that scalar is expected instead of a point. This scalar can be passed to line
+// operator () to get the point.
+template <class Policy>
+struct line_scalar : virtual op::policy {
+    explicit line_scalar(Policy x) : policy{x} {}
+
+    Policy policy;
+};
+
+template <class T>
+struct is_line_scalar : std::false_type {};
+
+template <class P>
+struct is_line_scalar<line_scalar<P>> : std::true_type {};
+
+template <class T>
+inline constexpr bool is_line_scalar_v = is_line_scalar<remove_cvref_t<T>>::value;
 
 }  // namespace ac

@@ -16,9 +16,9 @@ template <class P = use_default, class F = use_default>
 struct project_plane : geometry::policy {};
 
 template <class Policy, index N, class T0, class T1>
-inline auto project(Policy&& policy, const point<T0, N>& src, const plane<T1, N>& dst) {
-    auto t = ratio(policy, dst(policy, src), dot(policy, dst.normal));
-    return src - product(policy, t, dst.normal);
+inline auto project(Policy&& policy, const point<T0, N>& p, const plane<T1, N>& pl) {
+    auto t = ratio(policy, pl(policy, p), dot(policy, pl.normal));
+    return p - product(policy, t, pl.normal);
 }
 
 }  // namespace ac

@@ -6,7 +6,11 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/project/line.hpp>
-#include <actl/geometry/algorithm/project/project.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("scalar") {
+    ASSERT_EQUAL(0.5, project(line_scalar{geometry_policy}, point{2, 4}, line<int>{{1, 1}, {5, 3}}),
+                 1e-12);
+}
+
+TEST("point") { ASSERT_EQUAL(point{3, 2}, project(point{2, 4}, line<int>{{1, 1}, {5, 3}}), 1e-12); }
