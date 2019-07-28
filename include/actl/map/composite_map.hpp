@@ -22,7 +22,7 @@ template <class M1, class M2, class V, bool I1, bool I2>
 struct cm_range {
     using It1 = map_iterator_t<M1>;
 
-    class iterator : public iterator_adaptor<iterator, It1, use_default, V, V, V*> {
+    class iterator : public iterator_adaptor<iterator, It1, use_default, V, V> {
         friend struct ac::iterator_core_access;
 
         V dereference() const { return {this->base()->first, ac::get(map_, this->base()->second)}; }
@@ -31,7 +31,7 @@ struct cm_range {
 
     public:
         iterator(const It1& it, M2& map)
-            : iterator_adaptor<iterator, It1, use_default, V, V, V*>{it}, map_{map} {}
+            : iterator_adaptor<iterator, It1, use_default, V, V>{it}, map_{map} {}
     };
 
     using type = iterator_range<iterator>;
@@ -41,7 +41,7 @@ template <class M1, class M2, class V>
 struct cm_range<M1, M2, V, false, true> {
     using It2 = map_iterator_t<M2>;
 
-    class iterator : public iterator_adaptor<iterator, It2, use_default, V, V, V*> {
+    class iterator : public iterator_adaptor<iterator, It2, use_default, V, V> {
         friend struct ac::iterator_core_access;
 
         V dereference() const {
@@ -52,7 +52,7 @@ struct cm_range<M1, M2, V, false, true> {
 
     public:
         iterator(const It2& it, M1& map)
-            : iterator_adaptor<iterator, It2, use_default, V, V, V*>{it}, map_{map} {}
+            : iterator_adaptor<iterator, It2, use_default, V, V>{it}, map_{map} {}
     };
 
     using type = iterator_range<iterator>;

@@ -20,27 +20,25 @@ template <class Derived,
           class Category  = use_default,
           class Value     = use_default,
           class Reference = use_default,
-          class Pointer   = use_default,
           class Distance  = use_default>
 class iterator_adaptor;
 
 namespace detail {
 
-template <class Derived, class It, class C, class V, class R, class P, class D>
+template <class Derived, class It, class C, class V, class R, class D>
 struct iterator_adaptor_base {
     using type = iterator_facade<
         Derived,
         deduce_t<C, typename std::iterator_traits<It>::iterator_category>,
         deduce_t<V, value_t<It>>,
         deduce_t<R, reference_t<It>>,
-        deduce_t<P, pointer_t<It>>,
         deduce_t<D, difference_t<It>>>;
 };
 
 }  // namespace detail
 
-template <class Derived, class It, class C, class V, class R, class P, class D>
-class iterator_adaptor : public detail::iterator_adaptor_base<Derived, It, C, V, R, P, D>::type {
+template <class Derived, class It, class C, class V, class R, class D>
+class iterator_adaptor : public detail::iterator_adaptor_base<Derived, It, C, V, R, D>::type {
 public:
     explicit iterator_adaptor(const It& it) : it_{it} {}
 
@@ -52,7 +50,7 @@ protected:
 private:
     friend struct ac::iterator_core_access;
 
-    using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, P, D>::type;
+    using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, D>::type;
 
     reference_t<base_t> dereference() const { return *it_; }
 
@@ -65,14 +63,14 @@ private:
         it_ += n;
     }
 
-    template <class Derived1, class It1, class C1, class V1, class R1, class P1, class D1>
-    bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& rhs) const {
+    template <class Derived1, class It1, class C1, class V1, class R1, class D1>
+    bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, D1>& rhs) const {
         return it_ == rhs.base();
     }
 
-    template <class Derived1, class It1, class C1, class V1, class R1, class P1, class D1>
+    template <class Derived1, class It1, class C1, class V1, class R1, class D1>
     difference_t<base_t> distance_to(
-        const iterator_adaptor<Derived1, It1, C1, V1, R1, P1, D1>& rhs) const {
+        const iterator_adaptor<Derived1, It1, C1, V1, R1, D1>& rhs) const {
         return rhs.base() - it_;
     }
 

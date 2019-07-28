@@ -22,7 +22,6 @@ class function_output_iterator
                              std::output_iterator_tag,
                              remove_cvref_t<T>,
                              const function_output_iterator<UnaryFunction, T>&,
-                             remove_cvref_t<T>*,
                              void> {
 public:
     explicit function_output_iterator(const UnaryFunction& f = {}) : f_{f} {}

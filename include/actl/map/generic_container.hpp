@@ -26,10 +26,9 @@ class container_map_range {
     C& cont_;
 
 public:
-    class iterator : public iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*> {
+    class iterator : public iterator_adaptor<iterator, It, use_default, Pair, Pair> {
         iterator(It it, C& cont)
-            : iterator_adaptor<iterator, It, use_default, Pair, Pair, const Pair*>{it}
-            , cont_{cont} {}
+            : iterator_adaptor<iterator, It, use_default, Pair, Pair>{it}, cont_{cont} {}
 
         Pair dereference() const {
             auto id = *this->base();

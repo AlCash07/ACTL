@@ -19,7 +19,6 @@ class integer_iterator
                              std::random_access_iterator_tag,
                              Int,
                              const Int&,
-                             const Int*,
                              Int> {
 public:
     explicit integer_iterator() = default;
@@ -50,7 +49,6 @@ class integer_iterator_with_step
                              std::random_access_iterator_tag,
                              Int,
                              const Int&,
-                             const Int*,
                              Int> {
 public:
     explicit integer_iterator_with_step() = default;

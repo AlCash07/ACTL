@@ -22,16 +22,16 @@ template <class C, bool = is_container_v<C>, bool = is_random_access_container_v
 struct container_id_traits;
 
 template <class It>
-class iterator_id : public iterator_adaptor<iterator_id<It>, It, use_default, iterator_id<It>,
-                                            iterator_id<It>, iterator_id<It>*> {
+class iterator_id
+    : public iterator_adaptor<iterator_id<It>, It, use_default, iterator_id<It>, iterator_id<It>> {
     using id = iterator_id;
 
 public:
     explicit iterator_id(It it = It{})
-        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>{it} {}
+        : iterator_adaptor<iterator_id<It>, It, use_default, id, id>{it} {}
 
     explicit iterator_id(void* raw)
-        : iterator_adaptor<iterator_id<It>, It, use_default, id, id, id*>{bit_cast<It>(raw)} {
+        : iterator_adaptor<iterator_id<It>, It, use_default, id, id>{bit_cast<It>(raw)} {
         // TODO: implement more general logic in case this condition fails.
         static_assert(sizeof(It) == sizeof(void*));
     }
