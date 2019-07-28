@@ -6,6 +6,25 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/point/sort_by_angle.hpp>
+#include <actl/range/irange.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+std::vector<point<int>> get_points() {
+    return {{2, 0}, {0, 2}, {-2, 0}, {0, -2}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}, {0, 0}};
+}
+
+TEST("points") {
+    auto points = get_points();
+    sort_by_angle(points);
+    std::vector<point<int>> expected{
+            {0, 0}, {2, 0}, {1, 1}, {0, 2}, {-1, 1}, {-2, 0}, {-1, -1}, {0, -2}, {1, -1}};
+    ASSERT_EQUAL(expected, points);
+}
+
+TEST("indices") {
+    indexed_multi_point points{std::vector<int>{}, get_points()};
+    auto r = irange((int)points.points.size());
+    points.indices.assign(r.begin(), r.end());
+    sort_by_angle(points, point{0, 0});
+    ASSERT_EQUAL(std::vector<int>{8, 0, 4, 1, 5, 2, 6, 3, 7}, points.indices);
+}

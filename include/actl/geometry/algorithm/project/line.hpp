@@ -18,9 +18,9 @@ struct project_line : geometry::policy {};
 template <class P = use_default, class F = use_default>
 struct project_line_scalar : geometry::policy {};
 
-template <class LS, index N, class T0, class T1, class K, enable_int_if<is_line_scalar_v<LS>> = 0>
-inline auto project(LS&& ls, const point<T0, N>& p, const line<T1, N, K>& l) {
-    return ratio(ls.policy, dot(ls.policy, p - l.start, l.vector), dot(ls.policy, l.vector));
+template <class LSP, index N, class T0, class T1, class K, enable_int_if<is_line_scalar_v<LSP>> = 0>
+inline auto project(LSP&& lsp, const point<T0, N>& p, const line<T1, N, K>& l) {
+    return ratio(lsp.policy, dot(lsp.policy, p - l.start, l.vector), dot(lsp.policy, l.vector));
 }
 
 template <class Policy, index N, class T0, class T1, class K,

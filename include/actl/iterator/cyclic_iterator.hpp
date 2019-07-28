@@ -25,7 +25,7 @@ class cyclic_iterator
 
 public:
     explicit cyclic_iterator(It it, Range range)
-        : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{std::forward<Range>(range)} {
+        : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{std::move(range)} {
         ACTL_ASSERT(!std::empty(range));
         if (it == end()) this->base_ref() = begin();
     }
@@ -47,7 +47,7 @@ private:
     }
 
     void advance(difference_t<It> n) {
-        auto cycle = std::size(range_);
+        auto cycle = static_cast<difference_t<It>>(std::size(range_));
         ACTL_ASSERT(adl::abs(n) < cycle);
         if (n > 0) {
             it() += n - (n >= (end() - it()) ? cycle : 0);
@@ -63,5 +63,8 @@ private:
 
     Range range_;
 };
+
+template <class It, class R>
+cyclic_iterator(It, R&&) -> cyclic_iterator<R>;
 
 }  // namespace ac

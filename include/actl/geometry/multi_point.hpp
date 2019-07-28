@@ -45,4 +45,57 @@ template <class T>
 struct geometry_traits<multi_point<T>>
     : geometry_traits_base<multi_point_tag, value_t<multi_point<T>>> {};
 
+namespace detail {
+
+template <class T, bool = is_range_v<T>>
+struct is_multi_point : std::bool_constant<std::is_same_v<point_tag, geometry::tag_t<value_t<T>>>> {
+};
+
+template <class T>
+struct is_multi_point<T, false> : std::false_type {};
+
+}  // namespace detail
+
+template <class T>
+struct geometry_traits<T, std::enable_if_t<detail::is_multi_point<T>::value>>
+    : geometry_traits_base<multi_point_tag, value_t<T>> {};
+
+template <class T>
+inline constexpr bool is_multi_point_v = std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
+
+template <class T>
+struct identity_functor {
+    T operator()(T x) const { return x; }
+};
+
+template <class T>
+inline identity_functor<reference_t<T>> get_to_point(T&) {
+    return {};
+}
+
+template <class Indices, class Points>
+struct indexed_multi_point {
+    static_assert(is_range_v<Indices> && std::is_integral_v<value_t<Indices>> &&
+                  std::is_same_v<geometry::tag_t<value_t<Points>>, point_tag>);
+
+    using value_type = value_t<Points>;
+    using reference = reference_t<Indices>;
+
+    Indices indices;
+    Points points;
+    
+    auto begin() { return indices.begin(); }
+    auto begin() const { return indices.begin(); }
+
+    auto end() { return indices.end(); }
+    auto end() const { return indices.end(); }
+
+    friend auto get_to_point(indexed_multi_point& imp) {
+        return [&p = imp.points](index x) { return p[static_cast<size_type_t<Points>>(x)]; };
+    }
+};
+
+template <class I, class P>
+indexed_multi_point(I&&, P&&) -> indexed_multi_point<I, P>;
+
 }  // namespace ac

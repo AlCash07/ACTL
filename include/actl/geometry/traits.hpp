@@ -27,7 +27,7 @@ struct monotone_polygon_tag : simple_polygon_tag {};
 struct convex_polygon_tag : star_polygon_tag {};
 struct convex_monotone_polygon_tag : monotone_polygon_tag {};
 
-template <class T>
+template <class T, class = void>
 struct geometry_traits {
     using tag    = scalar_tag;
     using scalar = T;
@@ -49,6 +49,9 @@ using tag_t = typename geometry_traits<remove_cvref_t<T>>::tag;
 
 template <class... Ts>
 using scalar_t = std::common_type_t<typename geometry_traits<remove_cvref_t<Ts>>::scalar...>;
+
+template <class T>
+using point_t = typename geometry_traits<remove_cvref_t<T>>::point;
 
 template <class P, class... Ts>
 using product_t = deduce_t<P, scalar_t<Ts...>>;

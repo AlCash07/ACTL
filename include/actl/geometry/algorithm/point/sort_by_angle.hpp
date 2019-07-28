@@ -13,28 +13,52 @@
 
 namespace ac {
 
-template <class P = use_default>
-struct sort_by_angle_policy : geometry::policy {};
-
 /**
- * Sorts 2d points by polar angle from 0 to 2 * pi. Points at origin go first.
+ * Sorts 2d points by polar angle from 0 to 2 * pi around the origin. Points at origin go first.
  */
-template <class P, class T0, class T1>
-void sort_by_angle(sort_by_angle_policy<P>, multi_point<T0>& points, const point<T1>& origin) {
+template <class Policy, class U, class T,
+          enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
+void sort_by_angle(Policy&& policy, U& points, const point<T>& origin) {
+    using ref = reference_t<U>;
+    auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
-    static_assert(geometry_traits<multi_point<T0>>::dimension == 2, "incompatible dimension");
-    using reference = reference_t<multi_point<T0>>;
-    first = std::partition(first, last, [&origin](reference point) { return point == origin; });
-    auto pivot = std::partition(first, last,
-                                [&origin](reference point) { return y_compare(origin, point); });
-    auto angle_cmp = make_angle_compare<P>(origin);
-    std::sort(first, pivot, angle_cmp);
-    std::sort(pivot, last, angle_cmp);
+    first = std::partition(first, last, [to_point, &policy, &origin](ref x) {
+        return equal(policy, origin, to_point(x));
+    });
+    auto pivot = std::partition(first, last, [to_point, &policy, &origin](ref x) {
+        return y_compare(policy, origin, to_point(x));
+    });
+    auto comp = [to_point, less = angle_compare{policy, origin}](ref lhs, ref rhs) {
+        return less(to_point(lhs), to_point(rhs));
+    };
+    std::sort(first, pivot, comp);
+    std::sort(pivot, last, comp);
 }
 
-template <class T0, class T1>
-inline auto sort_by_angle(multi_point<T0>& dst, const point<T1>& origin) {
-    return sort_by_angle(sort_by_angle_policy{}, dst, origin);
+/**
+ * Sort by angle around (0, 0).
+ */
+template <class Policy, class U,
+          enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
+void sort_by_angle(Policy&& policy, U& points) {
+    using ref = reference_t<U>;
+    auto to_point = get_to_point(points);
+    auto first = points.begin(), last = points.end();
+    first = std::partition(first, last,
+                           [to_point, &policy](ref x) { return degenerate(policy, to_point(x)); });
+    auto pivot = std::partition(first, last, [to_point, &policy](ref x) {
+        return y_compare(policy, value_t<U>{}, to_point(x));
+    });
+    auto comp = [to_point, less = angle_compare{policy}](ref lhs, ref rhs) {
+        return less(to_point(lhs), to_point(rhs));
+    };
+    std::sort(first, pivot, comp);
+    std::sort(pivot, last, comp);
+}
+
+template <class T, class... Ts, disable_int_if_policy<T> = 0>
+inline auto sort_by_angle(T&& x, Ts&&... xs) {
+    return sort_by_angle(geometry_policy, x, xs...);
 }
 
 }  // namespace ac

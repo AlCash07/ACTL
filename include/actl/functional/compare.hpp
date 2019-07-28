@@ -23,6 +23,11 @@ struct absolute_error : E, virtual policy {};
 DEFINE_HAS_BINARY_OPERATOR(eq, ==)
 DEFINE_HAS_OVERLOAD(equal)
 
+template <class Policy>
+inline auto equal_functor(Policy& policy) {
+    return [&policy](const auto& x, const auto& y) { return equal(policy, x, y); };
+}
+
 template <class T, class U, enable_int_if<!has_equal_v<T, U> && has_eq_v<T, U>> = 0>
 inline constexpr auto equal(policy, const T& lhs, const U& rhs) {
     return lhs == rhs;
@@ -36,7 +41,7 @@ inline constexpr auto equal(const absolute_error<E>& policy, const T& lhs, const
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
 inline bool equal(Policy&& policy, const R0& lhs, const R1& rhs) {
     return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs),
-                      [&policy](const auto& x, const auto& y) { return equal(policy, x, y); });
+                      equal_functor(policy));
 }
 
 template <class T, class U, enable_int_if<has_equal_v<T, U>> = 0>
@@ -52,6 +57,11 @@ inline constexpr auto operator != (const T& lhs, const U& rhs) {
 DEFINE_HAS_BINARY_OPERATOR(lt, <)
 DEFINE_HAS_OVERLOAD(less)
 
+template <class Policy>
+inline auto less_functor(Policy& policy) {
+    return [&policy](const auto& x, const auto& y) { return less(policy, x, y); };
+}
+
 template <class T, class U, enable_int_if<!has_less_v<T, U> && has_lt_v<T, U>> = 0>
 inline constexpr auto less(policy, const T& lhs, const U& rhs) {
     return lhs < rhs;
@@ -64,9 +74,8 @@ inline constexpr auto less(const absolute_error<E>& policy, const T& lhs, const 
 
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
 inline bool less(Policy&& policy, const R0& lhs, const R1& rhs) {
-    return std::lexicographical_compare(
-        std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs),
-        [&policy](const auto& x, const auto& y) { return less(policy, x, y); });
+    return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
+                                        std::end(rhs), less_functor(policy));
 }
 
 template <class T, class U, enable_int_if<has_less_v<T, U>> = 0>
