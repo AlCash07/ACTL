@@ -19,27 +19,25 @@ struct standard_angle : AreaPolicy {};
 /**
  * Counter-clockwise angle.
  */
-template <class P, class F, class AP, index N, class T, class X = geometry::float_t<F, T>>
-inline auto angle(standard_angle<P, F, AP>, const point<T, N>& point) {
-    return adl::atan2(static_cast<X>(point[1]), static_cast<X>(point[0]));
+template <class Policy, index N, class T, enable_int_if_policy<Policy> = 0>
+inline auto angle(Policy&& policy, const point<T, N>& p) {
+    return adl::atan2(p[1], p[0]);
 }
 
-template <class P, class F, class AP, index N, class T0, class T1>
-inline auto angle(const standard_angle<P, F, AP>& policy, const point<T0, N>& lhs,
-                  const point<T1, N>& rhs) {
-    return adl::atan2(area(policy, lhs, rhs),
-                      static_cast<geometry::float_t<F, T0, T1>>(dot(policy, lhs, rhs)));
+template <class Policy, index N, class T0, class T1, enable_int_if_policy<Policy> = 0>
+inline auto angle(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+    return adl::atan2(area(policy, lhs, rhs), dot(policy, lhs, rhs));
 }
 
-template <class P, class F, class AP, index N, class T0, class T1, class T2>
-inline auto angle(const standard_angle<P, F, AP>& policy, const point<T0, N>& lhs,
-                  const point<T1, N>& rhs, const point<T2, N>& origin) {
+template <class Policy, index N, class T0, class T1, class T2, enable_int_if_policy<Policy> = 0>
+inline auto angle(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs,
+                  const point<T2, N>& origin) {
     return angle(policy, lhs - origin, rhs - origin);
 }
 
-template <index N, class T, class... Ts>
-inline auto angle(const point<T, N>& point, const Ts&... args) {
-    return angle(standard_angle{}, point, args...);
+template <class T, class... Ts, disable_int_if_policy<T> = 0>
+inline auto angle(const T& x, const Ts&... xs) {
+    return angle(geometry_policy, x, xs...);
 }
 
 }  // namespace ac

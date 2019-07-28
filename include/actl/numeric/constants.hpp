@@ -7,9 +7,11 @@
 
 #pragma once
 
-#include <actl/numeric/algorithm/all.hpp>
-#include <actl/numeric/bit.hpp>
-#include <actl/numeric/constants.hpp>
-#include <actl/numeric/hash.hpp>
-#include <actl/numeric/math.hpp>
-#include <actl/numeric/random/all.hpp>
+namespace ac::math {
+
+template <class T = double>
+constexpr T pi_v = static_cast<T>(3.141592653589793238462643383279502884L);
+
+constexpr double pi = pi_v<>;
+
+}  // namespace ac::math
