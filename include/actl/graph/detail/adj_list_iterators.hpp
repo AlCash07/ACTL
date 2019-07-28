@@ -10,22 +10,13 @@
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/iterator/iterator_adaptor.hpp>
+#include <actl/iterator/iterator_facade.hpp>
 
 namespace ac::detail {
 
-template <class It>
-class reverse_edge_it : public iterator_adaptor<reverse_edge_it<It>, It> {
-public:
-    explicit reverse_edge_it(It it) : iterator_adaptor<reverse_edge_it<It>, It>{it} {}
-
-private:
-    friend struct ac::iterator_core_access;
-
-    auto dereference() const {
-        auto edge = *this->base();
-        return value_t<It>{edge.target(), edge.source(), edge.bundle()};
-    }
+template <class E>
+struct edge_inverter {
+    E operator()(E e) const { return E{e.target(), e.source(), e.bundle()}; }
 };
 
 template <class G, class It>

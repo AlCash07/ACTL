@@ -9,6 +9,7 @@
 
 #include <actl/graph/detail/adj_list_iterators.hpp>
 #include <actl/graph/detail/adj_list_vertices.hpp>
+#include <actl/iterator/transform_iterator.hpp>
 
 namespace ac {
 
@@ -216,7 +217,7 @@ public:
     using in_edge_iterator =
         std::conditional_t<std::is_same_v<edge_selector, none> && base_t::is_bidirectional,
                            detail::adj_list_out_edge_it<adjacency_list, in_edge>,
-                           detail::reverse_edge_it<out_edge_iterator>>;
+                           transform_iterator<out_edge_iterator, detail::edge_inverter<edge>>>;
 
     using base_t::base_t;
 

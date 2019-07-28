@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/iterator/iterator_adaptor.hpp>
+#include <actl/iterator/transform_iterator.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/range/iterator_range.hpp>
 #include <actl/util/compressed_pair.hpp>
@@ -20,42 +20,24 @@ namespace detail {
 
 template <class M1, class M2, class V, bool I1, bool I2>
 struct cm_range {
-    using It1 = map_iterator_t<M1>;
+    struct get2 {
+        M2& map2;
 
-    class iterator : public iterator_adaptor<iterator, It1, use_default, V, V> {
-        friend struct ac::iterator_core_access;
-
-        V dereference() const { return {this->base()->first, ac::get(map_, this->base()->second)}; }
-
-        M2& map_;
-
-    public:
-        iterator(const It1& it, M2& map)
-            : iterator_adaptor<iterator, It1, use_default, V, V>{it}, map_{map} {}
+        V operator()(map_pair_t<M1> p1) const { return {p1.first, ac::get(map2, p1.second)}; }
     };
 
-    using type = iterator_range<iterator>;
+    using type = iterator_range<transform_iterator<map_iterator_t<M1>, get2>>;
 };
 
 template <class M1, class M2, class V>
 struct cm_range<M1, M2, V, false, true> {
-    using It2 = map_iterator_t<M2>;
+    struct invert1 {
+        M1& map1;
 
-    class iterator : public iterator_adaptor<iterator, It2, use_default, V, V> {
-        friend struct ac::iterator_core_access;
-
-        V dereference() const {
-            return {ac::invert(map_, this->base()->first), this->base()->second};
-        }
-
-        M1& map_;
-
-    public:
-        iterator(const It2& it, M1& map)
-            : iterator_adaptor<iterator, It2, use_default, V, V>{it}, map_{map} {}
+        V operator()(map_pair_t<M2> p2) const { return {ac::invert(map1, p2.first), p2.second}; }
     };
 
-    using type = iterator_range<iterator>;
+    using type = iterator_range<transform_iterator<map_iterator_t<M2>, invert1>>;
 };
 
 template <class M1, class M2, class V>

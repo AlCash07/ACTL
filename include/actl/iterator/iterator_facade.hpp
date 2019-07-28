@@ -79,7 +79,6 @@ class it_facade;
 template <class It, class V, class R, class D>
 class it_facade<It, std::output_iterator_tag, V, R, D> : op::base<> {
 public:
-    using iterator_category = std::output_iterator_tag;
     using value_type        = V;
     using reference         = R;
     using pointer           = typename operator_arrow_dispatch<R>::type;
