@@ -18,18 +18,16 @@ struct collinear_policy : AreaPolicy {};
 template <class P = use_default>
 using comparable_collinear = collinear_policy<comparable_area_points<P>>;
 
-template <class AP, class T0, class T1>
-inline constexpr bool collinear(const collinear_policy<AP>& policy, const point<T0>& lhs,
-                                const point<T1>& rhs) {
-    return sgn(area(policy, lhs, rhs)) == 0;
+template <class Policy, class T0, class T1>
+inline constexpr bool collinear(Policy&& policy, const point<T0>& lhs, const point<T1>& rhs) {
+    return equal(policy, area(policy, lhs, rhs), 0);
 }
 
-template <class AP, index N, class T0, class T1>
-inline bool collinear(const collinear_policy<AP>& policy, const point<T0, N>& lhs,
-                      const point<T1, N>& rhs) {
+template <class Policy, index N, class T0, class T1>
+inline bool collinear(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     index i = 0;
-    for (; i < N && lhs[i] == T0{0}; ++i) {
-        if (rhs[i] != T1{0}) return false;
+    for (; i < N && equal(policy, lhs[i], 0); ++i) {
+        if (!equal(policy, rhs[i], 0)) return false;
     }
     for (index j = i + 1; j < N; ++j) {
         if (!collinear(policy, point{lhs[i], lhs[j]}, point{rhs[i], rhs[j]}))
@@ -40,7 +38,7 @@ inline bool collinear(const collinear_policy<AP>& policy, const point<T0, N>& lh
 
 template <index N, class T0, class T1>
 inline constexpr bool collinear(const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return collinear(comparable_collinear<>{}, lhs, rhs);
+    return collinear(geometry_policy, lhs, rhs);
 }
 
 }  // namespace ac

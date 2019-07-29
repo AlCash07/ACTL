@@ -6,6 +6,21 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/point/collinear.hpp>
+#include <actl/range/irange.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("3d") {
+    std::vector<point<int, 3>> v;
+    for (int x : irange(-1, 2)) {
+        for (int y : irange(-1, 2)) {
+            for (int z : irange(-1, 2)) {
+                if (x != 0 || y != 0 || z != 0) v.emplace_back(x, y, z);
+            }
+        }
+    }
+    for (auto p0 : v) {
+        for (auto p1 : v) {
+            ASSERT_EQUAL(p0 == p1 || p0 == -p1, collinear(p0, p1));
+        }
+    }
+}

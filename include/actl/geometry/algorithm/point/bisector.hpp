@@ -11,21 +11,14 @@
 
 namespace ac {
 
-template <class NormPolicy>
-struct bisector_policy : NormPolicy {};
-
-template <class P = use_default, class F = use_default>
-using standard_bisector = bisector_policy<standard_norm<P, F>>;
-
-template <class NP, index N, class T0, class T1>
-inline auto bisector(const bisector_policy<NP>& policy, const point<T0, N>& lhs,
-                     const point<T1, N>& rhs) {
-    return lhs * norm(policy, rhs) + rhs * norm(policy, lhs);
+template <class Policy, index N, class T0, class T1>
+inline auto bisector(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+    return product(policy, lhs, norm(policy, rhs)) + product(policy, rhs, norm(policy, lhs));
 }
 
 template <index N, class T0, class T1>
 inline auto bisector(const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return bisector(standard_bisector<>{}, lhs, rhs);
+    return bisector(geometry_policy, lhs, rhs);
 }
 
 }  // namespace ac

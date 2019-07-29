@@ -1,15 +1,16 @@
 /***************************************************************************************************
- * Copyright 2018 Oleksandr Bacherikov.
+ * Copyright 2019 Oleksandr Bacherikov.
  *
  *             Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/point/bisector.hpp>
-#include <actl/geometry/algorithm/point/collinear.hpp>
-#include <actl/test.hpp>
-#include "geometry/epsilon.hpp"
+#pragma once
 
-TEST("default") {
-    ASSERT_TRUE(collinear(absolute_error9, point{1, -1}, bisector(point{6, -3}, point{2, -4})));
-}
+#include <actl/functional/compare.hpp>
+
+struct epsilon9 {
+    static constexpr double epsilon() { return 1e-9; }
+};
+
+inline ac::op::absolute_error<epsilon9> absolute_error9;
