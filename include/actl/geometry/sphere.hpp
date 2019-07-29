@@ -23,7 +23,7 @@ public:
 
     constexpr sphere() = default;
 
-    template <class T1, class T2>
+    template <class T1 = T, class T2 = T>
     explicit constexpr sphere(const point<T1, N>& center, const T2& radius)
         : center{center}, radius{static_cast<T>(radius)} {}
 

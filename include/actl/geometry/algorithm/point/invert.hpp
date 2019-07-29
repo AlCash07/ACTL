@@ -8,27 +8,25 @@
 #pragma once
 
 #include <actl/geometry/point.hpp>
+#include <actl/geometry/sphere.hpp>
 
 namespace ac {
 
-template <class P = use_default, class F = use_default>
-struct invert_policy : geometry::policy {};
-
-template <class P, class F, index N, class T0, class T1, class X = geometry::float_t<F, T0, T1>>
-inline point<X, N> invert(invert_policy<P, F>, const point<T0, N>& src, const T1& radius) {
-    if (!src) return {};
-    return src * sqr(static_cast<X>(radius)) / dot(default_policy, src);
+template <class Policy, index N, class T0, class T1>
+inline auto invert(Policy&& policy, const point<T0, N>& p, const T1& radius) {
+    ACTL_ASSERT(!degenerate(policy, p));
+    auto t = ratio(policy, sqr(policy, radius), dot(policy, p));
+    return product(policy, p, t);
 }
 
-template <class P, class F, index N, class T0, class T1, class T2>
-inline auto invert(const invert_policy<P, F>& policy, const point<T0, N>& src, const T1& radius,
-                   const point<T2, N>& origin) {
-    return origin + invert(policy, src - origin, radius);
+template <class Policy, index N, class T0, class T1>
+inline auto invert(Policy&& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
+    return s.center + invert(policy, p - s.center, s.radius);
 }
 
-template <index N, class T, class... Ts>
-inline auto invert(const point<T, N>& point, const Ts&... args) {
-    return invert(invert_policy{}, point, args...);
+template <index N, class T, class U>
+inline auto invert(const point<T, N>& p, const U& x) {
+    return invert(geometry_policy, p, x);
 }
 
 }  // namespace ac

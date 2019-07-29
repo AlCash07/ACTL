@@ -6,7 +6,6 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/point/collinear.hpp>
-#include <actl/range/irange.hpp>
 #include <actl/test.hpp>
 
 TEST("3d") {

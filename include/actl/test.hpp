@@ -13,6 +13,7 @@
 #include <actl/numeric/math.hpp>
 #include <actl/numeric/random/random.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/range/irange.hpp>
 #include <string_view>
 
 namespace ac {
