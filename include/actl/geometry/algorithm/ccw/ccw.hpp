@@ -17,10 +17,16 @@ struct ccw_policy : AreaPolicy {};
 template <class P = use_default>
 using comparable_ccw = ccw_policy<comparable_area_points<P>>;
 
-template <class T, class... Ts, geometry::disable_int_if_policy<T> = 0,
+template <class Policy, class T, class U, enable_int_if_policy<Policy> = 0,
+          geometry::enable_int_if_swap<T, U> = 0>
+inline int ccw(const Policy& policy, const T& lhs, const U& rhs) {
+    return -ccw(policy, rhs, lhs);
+}
+
+template <class T, class... Ts, disable_int_if_policy<T> = 0,
           enable_int_if<geometry_traits<T>::dimension == 2> = 0>
-inline auto ccw(const T& arg, const Ts&... args) {
-    return ccw(comparable_ccw<>{}, arg, args...);
+inline int ccw(const T& x, const Ts&... xs) {
+    return ccw(geometry_policy, x, xs...);
 }
 
 }  // namespace ac

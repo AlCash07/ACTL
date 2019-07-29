@@ -76,51 +76,51 @@ inline void sort(Range& dst, Compare comp) {
 }
 
 template <class Range, class T>
-inline iterator_t<Range> lower_bound(const Range& src, const T& value) {
+inline iterator_t<const Range> lower_bound(const Range& src, const T& value) {
     return std::lower_bound(std::begin(src), std::end(src), value);
 }
 
 template <class Range, class T, class Compare>
-inline iterator_t<Range> lower_bound(const Range& src, const T& value, Compare comp) {
+inline iterator_t<const Range> lower_bound(const Range& src, const T& value, Compare comp) {
     return std::lower_bound(std::begin(src), std::end(src), value, comp);
 }
 
 template <class Range, class T>
-inline iterator_t<Range> upper_bound(const Range& src, const T& value) {
+inline iterator_t<const Range> upper_bound(const Range& src, const T& value) {
     return std::upper_bound(std::begin(src), std::end(src), value);
 }
 
 template <class Range, class T, class Compare>
-inline iterator_t<Range> upper_bound(const Range& src, const T& value, Compare comp) {
+inline iterator_t<const Range> upper_bound(const Range& src, const T& value, Compare comp) {
     return std::upper_bound(std::begin(src), std::end(src), value, comp);
 }
 
 template <class Range>
-inline iterator_t<Range> min_element(const Range& src) {
+inline iterator_t<const Range> min_element(const Range& src) {
     return std::min_element(std::begin(src), std::end(src));
 }
 
 template <class Range, class Compare>
-inline iterator_t<Range> min_element(const Range& src, Compare comp) {
+inline iterator_t<const Range> min_element(const Range& src, Compare comp) {
     return std::min_element(std::begin(src), std::end(src), comp);
 }
 
 template <class Range>
-inline iterator_t<Range> max_element(const Range& src) {
+inline iterator_t<const Range> max_element(const Range& src) {
     return std::max_element(std::begin(src), std::end(src));
 }
 
 template <class Range, class Compare>
-inline iterator_t<Range> max_element(const Range& src, Compare comp) {
+inline iterator_t<const Range> max_element(const Range& src, Compare comp) {
     return std::max_element(std::begin(src), std::end(src), comp);
 }
 
-template <class Range, class Iterator = iterator_t<Range>>
+template <class Range, class Iterator = iterator_t<const Range>>
 inline std::pair<Iterator, Iterator> minmax_element(const Range& src) {
     return std::minmax_element(std::begin(src), std::end(src));
 }
 
-template <class Range, class Compare, class Iterator = iterator_t<Range>>
+template <class Range, class Compare, class Iterator = iterator_t<const Range>>
 inline std::pair<Iterator, Iterator> minmax_element(const Range& src, Compare comp) {
     return std::minmax_element(std::begin(src), std::end(src), comp);
 }

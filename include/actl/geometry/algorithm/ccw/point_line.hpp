@@ -12,10 +12,9 @@
 
 namespace ac {
 
-template <class AP, class T0, class T1, class K>
-inline constexpr int ccw(const ccw_policy<AP>& policy, const point<T0>& point,
-                         const line<T1, 2, K>& line) {
-    return ccw(policy, point - line.start, line.vector);
+template <class Policy, class T0, class T1, class K, enable_int_if_policy<Policy> = 0>
+inline constexpr int ccw(const Policy& policy, const point<T0>& p, const line<T1, 2, K>& l) {
+    return ccw(policy, p - l.start, l.vector);
 }
 
 }  // namespace ac

@@ -5,8 +5,12 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/ccw/ccw.hpp>
 #include <actl/geometry/algorithm/ccw/point_line.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") {
+    line<int> l{{1, 1}, {3, 2}};
+    ASSERT_EQUAL(0, ccw(point{-1, 0}, l));
+    ASSERT_EQUAL(-1, ccw(l, point{3, 3}));
+    ASSERT_EQUAL(1, ccw(l, point{3, 1}));
+}

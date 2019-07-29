@@ -22,6 +22,7 @@ class polygon : public multi_point<T> {
     using MP = multi_point<T>;
 
 public:
+    struct is_polygon;
     using cyclic_iterator       = ac::cyclic_iterator<MP&>;
     using const_cyclic_iterator = ac::cyclic_iterator<const MP&>;
 
@@ -55,11 +56,11 @@ struct geometry_traits<simple_polygon<T>>
  * Star polygon - has observer point, from which all the boundary is visible.
  */
 template <class T>
-class star_polygon : public polygon<T> {
+class star_polygon : public simple_polygon<T> {
 public:
-    using point_type = value_t<polygon<T>>;
+    using point_type = value_t<simple_polygon<T>>;
 
-    using polygon<T>::polygon;
+    using simple_polygon<T>::simple_polygon;
 
     const point_type& observer() const { return observer_; }
 
@@ -75,9 +76,9 @@ struct geometry_traits<star_polygon<T>>
  * Bottom-left vertex has index 0, top-right index is returned by right().
  */
 template <class T>
-class monotone_polygon : public polygon<T> {
+class monotone_polygon : public simple_polygon<T> {
 public:
-    using polygon<T>::polygon;
+    using simple_polygon<T>::simple_polygon;
 
     index right() const { return right_; }
 
@@ -92,11 +93,11 @@ struct geometry_traits<monotone_polygon<T>>
  * Convex polygon.
  */
 template <class T>
-class convex_polygon : public polygon<T> {
+class convex_polygon : public simple_polygon<T> {
 public:
-    using polygon<T>::polygon;
+    using simple_polygon<T>::simple_polygon;
 
-    reference_t<const polygon<T>> observer() const { return *this->begin(); }
+    reference_t<const simple_polygon<T>> observer() const { return *this->begin(); }
 };
 
 template <class T>

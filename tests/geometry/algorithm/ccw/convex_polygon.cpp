@@ -5,8 +5,10 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/ccw/ccw.hpp>
 #include <actl/geometry/algorithm/ccw/convex_polygon.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") {
+    convex_polygon<point<int>> poly{{1, 0}, {1, 1}, {0, 1}};
+    ASSERT_EQUAL(-1, ccw(poly));
+}

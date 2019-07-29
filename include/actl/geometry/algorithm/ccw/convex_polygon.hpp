@@ -12,10 +12,10 @@
 
 namespace ac {
 
-template <class AP, class T>
-inline int ccw(const ccw_policy<AP>& policy, const convex_polygon<T>& polygon) {
-    if (polygon.size() < 3) return 0;
-    auto it = polygon.begin();
+template <class Policy, class T, enable_int_if_policy<Policy> = 0>
+inline int ccw(const Policy& policy, const convex_polygon<T>& poly) {
+    if (poly.size() < 3) return 0;
+    auto it = poly.begin();
     return ccw(policy, it[0], it[1], it[2]);
 }
 

@@ -47,7 +47,13 @@ struct geometry_traits<multi_point<T>>
 
 namespace detail {
 
-template <class T, bool = is_range_v<T>>
+template <class T, class = void>
+struct is_polygon : std::false_type {};
+
+template <class T>
+struct is_polygon<T, std::void_t<typename T::is_polygon>> : std::true_type {};
+
+template <class T, bool = !is_polygon<T>::value && is_range_v<T>>
 struct is_multi_point : std::bool_constant<std::is_same_v<point_tag, geometry::tag_t<value_t<T>>>> {
 };
 

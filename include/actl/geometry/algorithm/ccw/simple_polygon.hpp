@@ -17,9 +17,9 @@ namespace ac {
  * Orientation of a simple polygon : fast O(N).
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 12.
  */
-template <class AP, class T>
-inline int ccw(const ccw_policy<AP>& policy, const simple_polygon<T>& polygon) {
-    auto it = polygon.cyclic(min_element(polygon));
+template <class Policy, class T, enable_int_if_policy<Policy> = 0>
+inline int ccw(const Policy& policy, const simple_polygon<T>& poly) {
+    auto it = cyclic_iterator{min_element(poly, op::less_functor(policy)), poly};
     return ccw(policy, it[-1], it[0], it[1]);
 }
 
