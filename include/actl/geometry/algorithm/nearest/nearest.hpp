@@ -13,7 +13,7 @@
 namespace ac {
 
 template <class Policy, class T0, class T1, geometry::enable_int_if_swap<T0, T1> = 0>
-inline auto nearest(Policy&& policy, const T0& lhs, const T1& rhs) {
+inline auto nearest(const Policy& policy, const T0& lhs, const T1& rhs) {
     auto pair = nearest(policy, rhs, lhs);
     return std::pair{pair.second, pair.first};
 }

@@ -13,14 +13,14 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1>
-inline auto invert(Policy&& policy, const point<T0, N>& p, const T1& radius) {
+inline auto invert(const Policy& policy, const point<T0, N>& p, const T1& radius) {
     ACTL_ASSERT(!degenerate(policy, p));
     auto t = ratio(policy, sqr(policy, radius), dot(policy, p));
     return product(policy, p, t);
 }
 
 template <class Policy, index N, class T0, class T1>
-inline auto invert(Policy&& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
+inline auto invert(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
     return s.center + invert(policy, p - s.center, s.radius);
 }
 

@@ -18,7 +18,7 @@ namespace ac {
  */
 template <class Policy, class U, class T,
           enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
-void sort_by_angle(Policy&& policy, U& points, const point<T>& origin) {
+void sort_by_angle(const Policy& policy, U& points, const point<T>& origin) {
     using ref = reference_t<U>;
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
@@ -40,7 +40,7 @@ void sort_by_angle(Policy&& policy, U& points, const point<T>& origin) {
  */
 template <class Policy, class U,
           enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
-void sort_by_angle(Policy&& policy, U& points) {
+void sort_by_angle(const Policy& policy, U& points) {
     using ref = reference_t<U>;
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();

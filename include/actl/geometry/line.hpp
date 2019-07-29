@@ -117,7 +117,7 @@ public:
     constexpr uint8_t end_kind() const { return endpoint::end(this->kind()); }
 
     template <class Policy, class T1>
-    constexpr auto operator()(Policy&& policy, const T1& t) const {
+    constexpr auto operator()(const Policy& policy, const T1& t) const {
         return start + product(policy, t, vector);
     }
 
@@ -175,26 +175,17 @@ inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
 }
 
 template <class Policy, index N, class T, class K>
-inline constexpr bool degenerate(Policy&& policy, const line<T, N, K>& l) {
+inline constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l) {
     return degenerate(l.vector);
 }
 
 // Policy to indicate that scalar is expected instead of a point. This scalar can be passed to line
 // operator () to get the point.
 template <class Policy>
-struct line_scalar : virtual op::policy {
-    explicit line_scalar(Policy x) : policy{x} {}
+struct line_scalar_policy : virtual op::policy {
+    explicit line_scalar_policy(const Policy& x) : policy{x} {}
 
-    Policy policy;
+    const Policy& policy;
 };
-
-template <class T>
-struct is_line_scalar : std::false_type {};
-
-template <class P>
-struct is_line_scalar<line_scalar<P>> : std::true_type {};
-
-template <class T>
-inline constexpr bool is_line_scalar_v = is_line_scalar<remove_cvref_t<T>>::value;
 
 }  // namespace ac

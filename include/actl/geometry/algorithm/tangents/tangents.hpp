@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Policy, class T0, class T1, class OutIter, geometry::enable_int_if_swap<T0, T1> = 0>
-inline auto tangents(Policy&& policy, const T0& lhs, const T1& rhs, OutIter dst) {
+inline auto tangents(const Policy& policy, const T0& lhs, const T1& rhs, OutIter dst) {
     return tangents(policy, rhs, lhs, dst);
 }
 

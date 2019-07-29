@@ -429,7 +429,7 @@ using dimensions_t = typename dimensions<N>::type;
 namespace op {
 
 template <class Policy, class D0, class S0, class D1, class S1>
-inline bool equal(Policy&& policy, const detail::ndarray_base<D0, S0>& lhs,
+inline bool equal(const Policy& policy, const detail::ndarray_base<D0, S0>& lhs,
                   const detail::ndarray_base<D1, S1>& rhs) {
     if (lhs.rank() != rhs.rank()) return false;
     for (index i = 0; i < lhs.rank(); ++i) {

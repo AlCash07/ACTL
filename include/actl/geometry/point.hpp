@@ -152,29 +152,30 @@ inline constexpr auto operator - (const point<T0, N>& lhs, const point<T1, N>& r
 namespace op {
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr bool equal(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+inline constexpr bool equal(const Policy& policy, const point<T0, N>& lhs,
+                            const point<T1, N>& rhs) {
     return equal(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr bool less(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+inline constexpr bool less(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return less(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr auto product(Policy&& policy, const point<T0, N>& lhs, const T1& factor) {
+inline constexpr auto product(const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
     return detail::apply<N>([&policy, &factor](const T0& x) { return product(policy, x, factor); },
                             lhs);
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr auto product(Policy&& policy, const T0& factor, const point<T1, N>& rhs) {
+inline constexpr auto product(const Policy& policy, const T0& factor, const point<T1, N>& rhs) {
     return detail::apply<N>([&policy, &factor](const T1& x) { return product(policy, factor, x); },
                             rhs);
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr auto ratio(Policy&& policy, const point<T0, N>& lhs, const T1& factor) {
+inline constexpr auto ratio(const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
     ACTL_ASSERT(!equal(policy, factor, T1{0}));
     return detail::apply<N>([&policy, &factor](const T0& x) { return ratio(policy, x, factor); },
                             lhs);
@@ -183,7 +184,7 @@ inline constexpr auto ratio(Policy&& policy, const point<T0, N>& lhs, const T1& 
 }  // namespace op
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr auto dot(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+inline constexpr auto dot(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     op::product_t<Policy, T0, T1> res = 0;
     for (index i = 0; i < N; ++i) res += product(policy, lhs[i], rhs[i]);
     return res;
@@ -195,7 +196,7 @@ inline constexpr auto dot(const point<T0, N>& lhs, const point<T1, N>& rhs) {
 }
 
 template <class Policy, index N, class T, enable_int_if<is_policy_v<Policy>> = 0>
-inline constexpr auto dot(Policy&& policy, const point<T, N>& p) {
+inline constexpr auto dot(const Policy& policy, const point<T, N>& p) {
     return dot(policy, p, p);
 }
 
@@ -205,7 +206,7 @@ inline constexpr auto dot(const point<T, N>& p) {
 }
 
 template <class Policy, index N, class T>
-inline constexpr bool degenerate(Policy&& policy, const point<T, N>& p) {
+inline constexpr bool degenerate(const Policy& policy, const point<T, N>& p) {
     for (index i = 0; i < N; ++i) {
         if (!equal(policy, p[i], T{})) return false;
     }

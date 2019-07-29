@@ -39,7 +39,7 @@ inline constexpr auto equal(const absolute_error<E>& policy, const T& lhs, const
 }
 
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
-inline bool equal(Policy&& policy, const R0& lhs, const R1& rhs) {
+inline bool equal(const Policy& policy, const R0& lhs, const R1& rhs) {
     return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs),
                       equal_functor(policy));
 }
@@ -73,7 +73,7 @@ inline constexpr auto less(const absolute_error<E>& policy, const T& lhs, const 
 }
 
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
-inline bool less(Policy&& policy, const R0& lhs, const R1& rhs) {
+inline bool less(const Policy& policy, const R0& lhs, const R1& rhs) {
     return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
                                         std::end(rhs), less_functor(policy));
 }
@@ -101,7 +101,7 @@ inline constexpr auto operator >= (const T& lhs, const U& rhs) {
 }  // namespace op
 
 template <class Policy, class T, enable_int_if_policy<Policy> = 0>
-inline constexpr int sgn(Policy&& policy, const T& x, const T& y = T{0}) {
+inline constexpr int sgn(const Policy& policy, const T& x, const T& y = T{0}) {
     return (int)less(policy, y, x) - (int)less(policy, x, y);
 }
 
@@ -111,7 +111,7 @@ inline constexpr int sgn(const T& x, const T& y = T{0}) {
 }
 
 template <class Policy, class T, class U>
-inline constexpr T& smax(Policy&& policy, T& x, const U& y) {
+inline constexpr T& smax(const Policy& policy, T& x, const U& y) {
     return less(policy, x, y) ? x = y : x;
 }
 
@@ -121,7 +121,7 @@ inline constexpr T& smax(T& x, const U& y) {
 }
 
 template <class Policy, class T, class U>
-inline constexpr T& smin(Policy&& policy, T& x, const U& y) {
+inline constexpr T& smin(const Policy& policy, T& x, const U& y) {
     return less(policy, y, x) ? x = y : x;
 }
 

@@ -9,8 +9,9 @@
 #include <actl/test.hpp>
 
 TEST("scalar") {
-    ASSERT_EQUAL(0.5, project(line_scalar{geometry_policy}, point{2, 4}, line<int>{{1, 1}, {5, 3}}),
-                 1e-12);
+    ASSERT_EQUAL(
+        0.5, project(line_scalar_policy{geometry_policy}, point{2, 4}, line<int>{{1, 1}, {5, 3}}),
+        1e-12);
 }
 
 TEST("point") { ASSERT_EQUAL(point{3, 2}, project(point{2, 4}, line<int>{{1, 1}, {5, 3}}), 1e-12); }

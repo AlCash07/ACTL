@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Policy, class T, class U, geometry::enable_int_if_swap<T, U> = 0>
-inline auto distance(Policy&& policy, const T& lhs, const U& rhs) {
+inline auto distance(const Policy& policy, const T& lhs, const U& rhs) {
     return distance(policy, rhs, lhs);
 }
 

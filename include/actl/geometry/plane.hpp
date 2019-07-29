@@ -44,7 +44,7 @@ public:
 
     // Oriented distance from @p point to the plane times the norm of normal.
     template <class Policy, class T1 = T>
-    constexpr auto operator()(Policy&& policy, const point<T1, N>& p) const {
+    constexpr auto operator()(const Policy& policy, const point<T1, N>& p) const {
         return dot(policy, normal, p) - d;
     }
 
@@ -81,7 +81,7 @@ inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
 }
 
 template <class Policy, index N, class T>
-inline constexpr bool degenerate(Policy&& policy, const plane<T, N>& pl) {
+inline constexpr bool degenerate(const Policy& policy, const plane<T, N>& pl) {
     return degenerate(policy, pl.normal);
 }
 

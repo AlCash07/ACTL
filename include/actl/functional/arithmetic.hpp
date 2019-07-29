@@ -64,7 +64,7 @@ inline constexpr auto operator / (const T& lhs, const U& rhs) {
 }  // namespace op
 
 template <class Policy, class T>
-inline constexpr auto sqr(Policy&& policy, const T& x) {
+inline constexpr auto sqr(const Policy& policy, const T& x) {
     return product(policy, x, x);
 }
 

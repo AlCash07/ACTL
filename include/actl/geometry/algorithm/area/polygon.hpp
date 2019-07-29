@@ -19,7 +19,7 @@ namespace ac {
  */
 template <class Policy, class T,
           enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
-inline auto area(Policy&& policy, const T& poly) {
+inline auto area(const Policy& policy, const T& poly) {
     auto it = cyclic_iterator{poly.begin(), poly};
     decltype(product(policy, it->x(), it->y())) res{};
     for (index i = 0; i < poly.size(); ++i) {

@@ -38,7 +38,7 @@ template <class T>
 using point3d = point<T, 3>;
 
 template <class Policy, class T0, class T1>
-inline constexpr auto cross(Policy&& policy, const point3d<T0>& lhs, const point3d<T1>& rhs) {
+inline constexpr auto cross(const Policy& policy, const point3d<T0>& lhs, const point3d<T1>& rhs) {
     return point{product(policy, lhs[1], rhs[2]) - product(policy, lhs[2], rhs[1]),
                  product(policy, lhs[2], rhs[0]) - product(policy, lhs[0], rhs[2]),
                  product(policy, lhs[0], rhs[1]) - product(policy, lhs[1], rhs[0])};

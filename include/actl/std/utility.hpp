@@ -21,12 +21,13 @@ inline constexpr size_t hash_value(const std::pair<T1, T2>& x) {
 namespace op {
 
 template <class Policy, class T1, class T2>
-inline bool equal(Policy&& policy, const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs) {
+inline bool equal(const Policy& policy, const std::pair<T1, T2>& lhs,
+                  const std::pair<T1, T2>& rhs) {
     return equal(policy, lhs.first, rhs.first) && equal(policy, lhs.second, rhs.second);
 }
 
 template <class Policy, class T1, class T2>
-inline bool less(Policy&& policy, const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs) {
+inline bool less(const Policy& policy, const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs) {
     int v = sgn(policy, lhs.first, rhs.first);
     return v < 0 || (v == 0 && less(policy, lhs.second, rhs.second));
 }

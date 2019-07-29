@@ -26,7 +26,7 @@ struct standard_area_points : geometry::policy {};
  */
 // TODO: figure out the correct sign instead of returning the absolute value for dimension > 2.
 template <class Policy, index N, class T0, class T1>
-inline auto area(Policy&& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
+inline auto area(const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
     if constexpr (N == 2) {
         return product(policy, p0[0], p1[1]) - product(policy, p0[1], p1[0]);
     } else if constexpr (N == 3) {

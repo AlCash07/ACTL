@@ -19,12 +19,12 @@ template <class P = use_default>
 using comparable_collinear = collinear_policy<comparable_area_points<P>>;
 
 template <class Policy, class T0, class T1>
-inline constexpr bool collinear(Policy&& policy, const point<T0>& lhs, const point<T1>& rhs) {
+inline constexpr bool collinear(const Policy& policy, const point<T0>& lhs, const point<T1>& rhs) {
     return equal(policy, area(policy, lhs, rhs), 0);
 }
 
 template <class Policy, index N, class T0, class T1>
-inline bool collinear(Policy&& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+inline bool collinear(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     index i = 0;
     for (; i < N && equal(policy, lhs[i], 0); ++i) {
         if (!equal(policy, rhs[i], 0)) return false;

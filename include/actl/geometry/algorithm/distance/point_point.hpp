@@ -22,7 +22,7 @@ template <class P = use_default, class F = use_default>
 using standard_distance_point_point = distance_point_point<standard_norm<P, F>>;
 
 template <class Policy, index N, class T0, class T1>
-inline auto distance(Policy&& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
+inline auto distance(const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
     return norm(policy, p0 - p1);
 }
 

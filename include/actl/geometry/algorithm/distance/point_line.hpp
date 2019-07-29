@@ -13,7 +13,7 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1, class K>
-inline auto distance(Policy&& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
+inline auto distance(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
     if (l.start_kind() != endpoint::free && less(policy, dot(policy, p - l.start, l.vector), 0))
         return norm(policy, p - l.start);
     if (l.end_kind() != endpoint::free && less(policy, 0, dot(policy, p - l.end(), l.vector)))

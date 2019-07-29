@@ -81,13 +81,13 @@ inline decltype(auto) get_key(const T& x) {
 
 template <class Policy, class T, class U,
           enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto equal(Policy&& policy, const T& lhs, const U& rhs) {
+inline auto equal(const Policy& policy, const T& lhs, const U& rhs) {
     return equal(policy, get_key(lhs), get_key(rhs));
 }
 
 template <class Policy, class T, class U,
           enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto less(Policy&& policy, const T& lhs, const U& rhs) {
+inline auto less(const Policy& policy, const T& lhs, const U& rhs) {
     return less(policy, get_key(lhs), get_key(rhs));
 }
 

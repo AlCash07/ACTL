@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Policy, index N, class T, class U>
-inline auto reflect(Policy&& policy, const point<T, N>& src, const U& dst) {
+inline auto reflect(const Policy& policy, const point<T, N>& src, const U& dst) {
     return product(policy, 2, project(policy, src, dst)) - src;
 }
 
