@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/geometry/algorithm/distance/point_point.hpp>
+#include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/sphere.hpp>
 
 namespace ac {
@@ -15,15 +16,9 @@ namespace ac {
 template <class P = use_default>
 struct within_sphere : comparable_distance_point_point<P> {};
 
-template <class P, index N, class T0, class T1>
-inline int within(const within_sphere<P>& policy, const point<T0, N>& point,
-                  const sphere<T1, N>& sphere) {
-    return 1 - sgn(distance(policy, point, sphere.center), sphere.radius);
-}
-
-template <index N, class T0, class T1>
-inline int within(use_default, const point<T0, N>& point, const sphere<T1, N>& sphere) {
-    return within(within_sphere{}, point, sphere);
+template <class Policy, index N, class T0, class T1>
+inline int within(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
+    return 1 - sgn(policy, distance(policy, p, s.center), s.radius);
 }
 
 }  // namespace ac

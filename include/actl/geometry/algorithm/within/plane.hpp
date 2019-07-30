@@ -7,21 +7,14 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/plane.hpp>
 
 namespace ac {
 
-template <class P = use_default>
-struct within_plane : geometry::policy {};
-
-template <class P, index N, class T0, class T1>
-inline int within(within_plane<P> policy, const point<T0, N>& p, const plane<T1, N>& pl) {
-    return pl(policy, p) == 0;
-}
-
-template <index N, class T0, class T1>
-inline int within(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
-    return within(within_plane{}, point, plane);
+template <class Policy, index N, class T0, class T1>
+inline int within(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl) {
+    return equal(policy, pl(policy, p), 0);
 }
 
 }  // namespace ac
