@@ -17,9 +17,8 @@ namespace ac {
 /**
  * O(log N).
  */
-template <class Policy, class T0, class T1>
-inline int within(const Policy& policy, const point<T0>& p,
-                  const convex_monotone_polygon<T1>& poly) {
+template <class Policy, class T, class U>
+inline int within(const Policy& policy, const point<T>& p, const convex_monotone_polygon<U>& poly) {
     if (poly.empty()) return 0;
     if (poly.size() == 1) return equal(policy, p, poly[0]);
     const index right = poly.right();
