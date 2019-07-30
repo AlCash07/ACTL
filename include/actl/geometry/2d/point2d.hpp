@@ -41,7 +41,7 @@ using point2d = point<T, 2>;
 
 template <class Policy, class T0, class T1>
 inline constexpr bool y_compare(const Policy& policy, const point<T0>& lhs, const point<T1>& rhs) {
-    auto v = sgn(policy, lhs[1], rhs[1]);
+    int v = sgn(policy, lhs[1], rhs[1]);
     return v < 0 || (v == 0 && less(policy, lhs[0], rhs[0]));
 }
 

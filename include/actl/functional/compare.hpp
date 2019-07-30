@@ -29,12 +29,12 @@ inline auto equal_functor(Policy& policy) {
 }
 
 template <class T, class U, enable_int_if<!has_equal_v<T, U> && has_eq_v<T, U>> = 0>
-inline constexpr auto equal(policy, const T& lhs, const U& rhs) {
+inline constexpr bool equal(policy, const T& lhs, const U& rhs) {
     return lhs == rhs;
 }
 
 template <class E, class T, class U>
-inline constexpr auto equal(const absolute_error<E>& policy, const T& lhs, const U& rhs) {
+inline constexpr bool equal(const absolute_error<E>& policy, const T& lhs, const U& rhs) {
     return less(policy, adl::abs(rhs - lhs), policy.epsilon());
 }
 
@@ -45,12 +45,12 @@ inline bool equal(const Policy& policy, const R0& lhs, const R1& rhs) {
 }
 
 template <class T, class U, enable_int_if<has_equal_v<T, U>> = 0>
-inline constexpr auto operator == (const T& lhs, const U& rhs) {
+inline constexpr bool operator == (const T& lhs, const U& rhs) {
     return equal(default_policy, lhs, rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator != (const T& lhs, const U& rhs) {
+inline constexpr bool operator != (const T& lhs, const U& rhs) {
     return !(lhs == rhs);
 }
 
@@ -63,7 +63,7 @@ inline auto less_functor(Policy& policy) {
 }
 
 template <class T, class U, enable_int_if<!has_less_v<T, U> && has_lt_v<T, U>> = 0>
-inline constexpr auto less(policy, const T& lhs, const U& rhs) {
+inline constexpr bool less(policy, const T& lhs, const U& rhs) {
     return lhs < rhs;
 }
 
@@ -74,22 +74,22 @@ inline bool less(const Policy& policy, const R0& lhs, const R1& rhs) {
 }
 
 template <class T, class U, enable_int_if<has_less_v<T, U>> = 0>
-inline constexpr auto operator < (const T& lhs, const U& rhs) {
+inline constexpr bool operator < (const T& lhs, const U& rhs) {
     return less(default_policy, lhs, rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator > (const T& lhs, const U& rhs) {
+inline constexpr bool operator > (const T& lhs, const U& rhs) {
     return rhs < lhs;
 }
 
 template <class T, class U>
-inline constexpr auto operator <= (const T& lhs, const U& rhs) {
+inline constexpr bool operator <= (const T& lhs, const U& rhs) {
     return !(lhs > rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator >= (const T& lhs, const U& rhs) {
+inline constexpr bool operator >= (const T& lhs, const U& rhs) {
     return !(lhs < rhs);
 }
 

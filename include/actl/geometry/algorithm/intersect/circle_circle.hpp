@@ -38,8 +38,8 @@ inline auto intersect(intersect_circle_circle_point<P>, const circle<T0>& lhs,
     auto centers_dist = dot(default_policy, centers_vector);
     X lradius = static_cast<X>(lhs.radius);
     X rradius = static_cast<X>(rhs.radius);
-    auto sgn0 = sgn(centers_dist, sqr(lradius - rradius));
-    auto sgn1 = sgn(sqr(lradius + rradius), centers_dist);
+    int sgn0 = sgn(centers_dist, sqr(lradius - rradius));
+    int sgn1 = sgn(sqr(lradius + rradius), centers_dist);
     if (sgn0 < 0 || sgn1 < 0) return dst;
     auto a = static_cast<O>(sqr(lradius) - sqr(rradius)) / centers_dist;
     point<O> projection = lhs.center + centers_vector * (a + 1) / 2;
