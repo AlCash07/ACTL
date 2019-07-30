@@ -21,7 +21,7 @@ template <class Policy, class T,
           enable_int_if<std::is_base_of_v<simple_polygon_tag, geometry::tag_t<T>> &&
                         geometry_traits<T>::dimension == 2> = 0>
 inline auto area(const Policy& policy, const T& poly) {
-    auto it = cyclic_iterator{poly.begin(), poly};
+    auto it = cyclic_begin(poly);
     decltype(product(policy, it->x(), it->y())) res{};
     for (index i = 0; i < poly.size(); ++i) {
         res += product(policy, it->x(), it[1].y() - it[-1].y());

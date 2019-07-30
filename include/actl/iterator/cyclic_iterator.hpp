@@ -67,4 +67,9 @@ private:
 template <class It, class R>
 cyclic_iterator(It, R&&) -> cyclic_iterator<R>;
 
+template <class Range>
+inline auto cyclic_begin(Range&& range) {
+    return cyclic_iterator{range.begin(), range};
+}
+
 }  // namespace ac

@@ -8,28 +8,20 @@
 #pragma once
 
 #include <actl/geometry/algorithm/polygon/winding_number.hpp>
+#include <actl/geometry/algorithm/within/within.hpp>
 
 namespace ac {
-
-template <class WindingPolicy = winding_number_policy<>>
-struct within_simple_polygon : WindingPolicy {};
 
 /**
  * O(N).
  */
-template <class CP, class T0, class T1>
-inline int within(const within_simple_polygon<CP>& policy, const point<T0>& point,
-                  const simple_polygon<T1>& polygon) {
-    switch (winding_number(policy, point, polygon)) {
+template <class Policy, class T, class U>
+inline int within(const Policy& policy, const point<T>& p, const simple_polygon<U>& poly) {
+    switch (winding_number(policy, p, poly)) {
         case 0: return 0;
         case std::numeric_limits<int>::max(): return 1;
         default: return 2;
     }
-}
-
-template <class T0, class T1>
-inline int within(use_default, const point<T0>& point, const simple_polygon<T1>& polygon) {
-    return within(within_simple_polygon{}, point, polygon);
 }
 
 }  // namespace ac

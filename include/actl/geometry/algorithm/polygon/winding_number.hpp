@@ -14,32 +14,31 @@
 
 namespace ac {
 
-template <class CcwPolicy = comparable_ccw<>>
-struct winding_number_policy : CcwPolicy {};
-
 /**
  * Winding number - number of turns around the point in counter-clockwise direction.
  * If the point is on the boundary, returns std::numeric_limits<int>::max().
  * http://geomalgorithms.com/a03-_inclusion.html
  */
-template <class CP, class T0, class T1>
-inline int winding_number(const winding_number_policy<CP>& policy, const point<T0>& point,
-                          const polygon<T1>& polygon) {
+template <class Policy, class T, class U>
+inline int winding_number(const Policy& policy, const point<T>& p, const polygon<U>& poly) {
     static constexpr int boundary = std::numeric_limits<int>::max();
-    if (polygon.empty()) return 0;
-    index n = polygon.size();
-    if (n == 1) return point == polygon[0] ? boundary : 0;
+    if (poly.empty()) return 0;
+    index n = static_cast<index>(poly.size());
+    if (n == 1) return equal(policy, p, poly[0]) ? boundary : 0;
     int res = 0;
-    for (auto i = polygon.cyclic_begin(); n --> 0; ++i) {
-        if (point == *i) return boundary;
+    for (auto i = cyclic_begin(poly); n --> 0; ++i) {
+        if (equal(policy, p, *i)) return boundary;
         auto j = i + 1;
-        if (i->y() == point.y() && j->y() == point.y()) {
-            if (std::min(i->x(), j->x()) <= point.x() && point.x() <= std::max(i->x(), j->x()))
-                return boundary;
+        if (equal(policy, i->y(), p.y()) && equal(policy, j->y(), p.y())) {
+            if (less(policy, i->x(), j->x())) {
+                if (!less(policy, p.x(), i->x()) && !less(policy, j->x(), p.x())) return boundary;
+            } else {
+                if (!less(policy, p.x(), j->x()) && !less(policy, i->x(), p.x())) return boundary;
+            }
         } else {
-            bool below = i->y() < point.y();
-            if (below != (j->y() < point.y())) {
-                int orientation = ccw(policy, point, *j, *i);
+            bool below = less(policy, i->y(), p.y());
+            if (below != less(policy, j->y(), p.y())) {
+                int orientation = ccw(policy, p, *j, *i);
                 if (orientation == 0) return boundary;
                 if (below == (orientation > 0))
                     res += below ? 1 : -1;
@@ -47,11 +46,6 @@ inline int winding_number(const winding_number_policy<CP>& policy, const point<T
         }
     }
     return res;
-}
-
-template <class T0, class T1>
-inline int winding_number(const point<T0>& point, const polygon<T1>& polygon) {
-    return winding_number(winding_number_policy{}, point, polygon);
 }
 
 }  // namespace ac
