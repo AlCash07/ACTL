@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/point/angle_compare.hpp>
+#include <actl/geometry/algorithm/ccw/point_point.hpp>
 #include <actl/geometry/multi_point.hpp>
 #include <algorithm>
 
@@ -28,8 +28,8 @@ void sort_by_angle(const Policy& policy, U& points, const point<T>& origin) {
     auto pivot = std::partition(first, last, [to_point, &policy, &origin](ref x) {
         return y_compare(policy, origin, to_point(x));
     });
-    auto comp = [to_point, less = angle_compare{policy, origin}](ref lhs, ref rhs) {
-        return less(to_point(lhs), to_point(rhs));
+    auto comp = [to_point, &policy](ref lhs, ref rhs) {
+        return ccw(policy, to_point(lhs), to_point(rhs)) < 0;
     };
     std::sort(first, pivot, comp);
     std::sort(pivot, last, comp);
@@ -49,8 +49,8 @@ void sort_by_angle(const Policy& policy, U& points) {
     auto pivot = std::partition(first, last, [to_point, &policy](ref x) {
         return y_compare(policy, value_t<U>{}, to_point(x));
     });
-    auto comp = [to_point, less = angle_compare{policy}](ref lhs, ref rhs) {
-        return less(to_point(lhs), to_point(rhs));
+    auto comp = [to_point, &policy](ref lhs, ref rhs) {
+        return ccw(policy, to_point(lhs), to_point(rhs)) < 0;
     };
     std::sort(first, pivot, comp);
     std::sort(pivot, last, comp);
