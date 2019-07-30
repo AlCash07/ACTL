@@ -46,7 +46,7 @@ inline auto intersect(const intersect_line_simple_polygon<P, AP>& policy,
             } else {
                 ok = next_sgn != prev_sgn;
             }
-            if (ok && between_endpoints<P>(*i, line))
+            if (ok && between_endpoints(policy, *i, line))
                 *dst++ = project(project_policy, *i, line);
         } else if (next_sgn == -i_sgn) {
             dst = intersect(policy, line, make_line(i[0], i[1]), dst);

@@ -24,8 +24,7 @@ TEST("op::equal") {
 
 TEST("op::less") {
     ASSERT_TRUE(less(default_policy, 0.0, eps));
-    ASSERT_FALSE(less(eps_policy, 0.0, eps));
-    ASSERT_TRUE(less(eps_policy, -eps, eps));
+    ASSERT_TRUE(less(eps_policy, -eps, 0.0));
 }
 
 TEST("sgn") {

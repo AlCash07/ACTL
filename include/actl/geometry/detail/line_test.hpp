@@ -11,20 +11,21 @@
 
 namespace ac::detail {
 
-template <class T>
-inline bool endpoint_test(uint8_t kind, const T& lhs, const T& rhs = T{0}) {
+template <class Policy, class T, class U>
+inline bool endpoint_test(const Policy& policy, uint8_t kind, const T& lhs, const U& rhs) {
     switch (kind) {
         case endpoint::free: return true;
-        case endpoint::closed: return lhs >= rhs;
-        case endpoint::open: return lhs > rhs;
+        case endpoint::closed: return !less(policy, rhs, lhs);
+        case endpoint::open: return less(policy, lhs, rhs);
     }
     ACTL_ASSERT(false);
     return false;
 }
 
-template <index N, class T0, class K, class T1>
-inline bool line_test(const line<T0, N, K>& line, const T1& num, const T1& den) {
-    return endpoint_test(line.start_kind(), num) && endpoint_test(line.end_kind(), den, num);
+template <class Policy, index N, class T0, class K, class T1>
+inline bool line_test(const Policy& policy, const line<T0, N, K>& l, const T1& num, const T1& den) {
+    return endpoint_test(policy, l.start_kind(), 0, num) &&
+           endpoint_test(policy, l.end_kind(), num, den);
 }
 
 }  // namespace ac::detail

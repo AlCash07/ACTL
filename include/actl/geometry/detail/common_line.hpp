@@ -43,7 +43,7 @@ inline std::pair<bool, any_line<F, N>> common_line(const line<T0, N, K0>& lhs,
     la = max_endpoint<std::less>(la, ra);
     lb = max_endpoint<std::greater>(lb, rb);
     auto dst = make_any_line(la.first, la.second, lb.first, lb.second);
-    return std::pair{endpoint_test(dst.start_kind(), lb.first, la.first), dst};
+    return std::pair{endpoint_test(dst.start_kind(), la.first, lb.first), dst};
 }
 
 }  // namespace ac::detail

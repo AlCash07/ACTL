@@ -8,24 +8,16 @@
 #pragma once
 
 #include <actl/geometry/algorithm/point/collinear.hpp>
+#include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/detail/between_endpoints.hpp>
 
 namespace ac {
 
-template <class P = use_default, class CollinearPolicy = comparable_collinear<P>>
-struct within_line : CollinearPolicy {};
-
-template <class P, class CP, index N, class T0, class T1, class K>
-inline int within(const within_line<P, CP>& policy, const point<T0, N>& point,
-                  const line<T1, N, K>& line) {
-    if (!line) return point == line.start;
-    if (!collinear(policy, point - line.start, line.vector)) return 0;
-    return detail::between_endpoints<P>(point, line);
-}
-
-template <index N, class T0, class T1, class K>
-inline int within(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
-    return within(within_line{}, point, line);
+template <class Policy, index N, class T0, class T1, class K>
+inline int within(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
+    if (degenerate(policy, l)) return equal(policy, p, l.start);
+    if (!collinear(policy, p - l.start, l.vector)) return 0;
+    return detail::between_endpoints(policy, p, l);
 }
 
 }  // namespace ac

@@ -11,13 +11,13 @@
 
 namespace ac::detail {
 
-template <class P, index N, class T0, class T1, class K>
-inline bool between_endpoints(const point<T0, N>& point, const line<T1, N, K>& line) {
-    P policy;
-    if (line.end_kind() == endpoint::free)
-        return endpoint_test(line.start_kind(), dot(policy, point - line.start, line.vector));
-    if (line.kind == line_kind::half_open_segment && point == line.start) return false;
-    return endpoint_test(line.end_kind(), dot(policy, line.start - point, point - line.end()));
+template <class Policy, index N, class T0, class T1, class K>
+inline bool between_endpoints(const Policy& policy, const point<T0, N>& p,
+                              const line<T1, N, K>& l) {
+    if (l.end_kind() == endpoint::free)
+        return endpoint_test(policy, l.start_kind(), 0, dot(policy, p - l.start, l.vector));
+    if (l.kind() == line_kind::half_open_segment && equal(policy, p, l.start)) return false;
+    return endpoint_test(policy, l.end_kind(), 0, dot(policy, l.start - p, p - l.end()));
 }
 
 }  // namespace ac::detail

@@ -35,7 +35,7 @@ inline constexpr auto equal(policy, const T& lhs, const U& rhs) {
 
 template <class E, class T, class U>
 inline constexpr auto equal(const absolute_error<E>& policy, const T& lhs, const U& rhs) {
-    return less(default_policy, adl::abs(rhs - lhs), policy.epsilon());
+    return less(policy, adl::abs(rhs - lhs), policy.epsilon());
 }
 
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
@@ -67,11 +67,6 @@ inline constexpr auto less(policy, const T& lhs, const U& rhs) {
     return lhs < rhs;
 }
 
-template <class E, class T, class U>
-inline constexpr auto less(const absolute_error<E>& policy, const T& lhs, const U& rhs) {
-    return less(default_policy, policy.epsilon(), rhs - lhs);
-}
-
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
 inline bool less(const Policy& policy, const R0& lhs, const R1& rhs) {
     return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
@@ -100,13 +95,20 @@ inline constexpr auto operator >= (const T& lhs, const U& rhs) {
 
 }  // namespace op
 
-template <class Policy, class T, enable_int_if_policy<Policy> = 0>
-inline constexpr int sgn(const Policy& policy, const T& x, const T& y = T{0}) {
+template <class Policy, class T, class U = int, enable_int_if_policy<Policy> = 0>
+inline constexpr int sgn(const Policy& policy, const T& x, const U& y = {}) {
     return (int)less(policy, y, x) - (int)less(policy, x, y);
 }
 
-template <class T>
-inline constexpr int sgn(const T& x, const T& y = T{0}) {
+template <class E, class T, class U = int>
+inline constexpr int sgn(const op::absolute_error<E>& policy, const T& x, const U& y = {}) {
+    auto delta = x - y;
+    if (less(adl::abs(delta), policy.epsilon())) return 0;
+    return delta < 0 ? -1 : 1;
+}
+
+template <class T, class U = int, disable_int_if_policy<T> = 0>
+inline constexpr int sgn(const T& x, const U& y = {}) {
     return sgn(default_policy, x, y);
 }
 
