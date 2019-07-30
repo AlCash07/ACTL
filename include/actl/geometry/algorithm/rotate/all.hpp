@@ -8,4 +8,3 @@
 #pragma once
 
 #include <actl/geometry/algorithm/rotate/point2d.hpp>
-#include <actl/geometry/algorithm/rotate/rotate.hpp>

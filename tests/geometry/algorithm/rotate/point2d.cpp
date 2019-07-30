@@ -6,7 +6,12 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/rotate/point2d.hpp>
-#include <actl/geometry/algorithm/rotate/rotate.hpp>
+#include <actl/numeric/constants.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") {
+    const double sqrt2 = adl::sqrt(2.0);
+    ASSERT_EQUAL(point{sqrt2, sqrt2}, rotate(point{2, 0}, math::pi / 4), 1e-12);
+    ASSERT_EQUAL(point{-2, 0}, rotate(point{2, 0}, math::pi), 1e-12);
+    ASSERT_EQUAL(point{sqrt2, -sqrt2}, rotate(point{2, 0}, math::pi * 7 / 4), 1e-12);
+}

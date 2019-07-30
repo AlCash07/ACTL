@@ -14,4 +14,3 @@
 #include <actl/geometry/algorithm/within/simple_polygon.hpp>
 #include <actl/geometry/algorithm/within/sphere.hpp>
 #include <actl/geometry/algorithm/within/triangle.hpp>
-#include <actl/geometry/algorithm/within/within.hpp>
