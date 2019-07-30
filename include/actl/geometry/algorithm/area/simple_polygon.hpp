@@ -18,7 +18,8 @@ namespace ac {
  * http://geomalgorithms.com/a01-_area.html area2D_Polygon().
  */
 template <class Policy, class T,
-          enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
+          enable_int_if<std::is_base_of_v<simple_polygon_tag, geometry::tag_t<T>> &&
+                        geometry_traits<T>::dimension == 2> = 0>
 inline auto area(const Policy& policy, const T& poly) {
     auto it = cyclic_iterator{poly.begin(), poly};
     decltype(product(policy, it->x(), it->y())) res{};

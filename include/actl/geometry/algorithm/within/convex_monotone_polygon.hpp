@@ -8,43 +8,40 @@
 #pragma once
 
 #include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <algorithm>
 
 namespace ac {
 
-template <class CcwPolicy = comparable_ccw<>>
-struct within_convex_monotone_polygon : CcwPolicy {};
-
 /**
  * O(log N).
  */
-template <class CP, class T0, class T1>
-inline int within(const within_convex_monotone_polygon<CP>& policy, const point<T0>& point,
-                  const convex_monotone_polygon<T1>& polygon) {
-    if (polygon.empty()) return 0;
-    if (polygon.size() == 1) return point == polygon[0];
-    const int right = polygon.right();
-    if (point < polygon[0] || point > polygon[right]) return 0;
-    switch (ccw(policy, point, polygon[right], polygon[0])) {
+template <class Policy, class T0, class T1>
+inline int within(const Policy& policy, const point<T0>& p,
+                  const convex_monotone_polygon<T1>& poly) {
+    if (poly.empty()) return 0;
+    if (poly.size() == 1) return equal(policy, p, poly[0]);
+    const index right = poly.right();
+    auto first = poly.begin();
+    if (less(policy, p, poly[0]) || less(policy, first[right], p)) return 0;
+    switch (ccw(policy, p, first[right], poly[0])) {
         case 0: {
-            if (point == polygon[0] || point == polygon[right]) return 1;
-            return right == 1 || right + 1 == polygon.size() ? 1 : 2;
+            if (equal(policy, p, poly[0]) || equal(policy, p, first[right])) return 1;
+            return right == 1 || right + 1 == poly.size() ? 1 : 2;
         }
         case -1: {  // lower chain
-            auto lit = std::lower_bound(polygon.begin() + 1, polygon.begin() + right, point);
-            return 1 - ccw(policy, lit[0], point, lit[-1]);
+            auto lit = std::lower_bound(first + 1, first + right, p, op::less_functor(policy));
+            return 1 - ccw(policy, lit[0], p, lit[-1]);
         }
-        default: {  // upper chain
-            auto uit = std::lower_bound(polygon.rbegin(), polygon.rend() - right - 1, point);
-            return 1 - ccw(policy, uit == polygon.rbegin() ? polygon[0] : uit[-1], point, uit[0]);
+        case 1: {  // upper chain
+            auto uit = std::lower_bound(poly.rbegin(), poly.rend() - right - 1, p,
+                                        op::less_functor(policy));
+            return 1 - ccw(policy, uit == poly.rbegin() ? poly[0] : uit[-1], p, uit[0]);
         }
     }
-}
-
-template <class T0, class T1>
-inline int within(use_default, const point<T0>& point, const convex_monotone_polygon<T1>& polygon) {
-    return within(within_convex_monotone_polygon{}, point, polygon);
+    ACTL_ASSERT(false);
+    return 0;
 }
 
 }  // namespace ac

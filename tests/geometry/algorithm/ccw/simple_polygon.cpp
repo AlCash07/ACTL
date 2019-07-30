@@ -7,9 +7,6 @@
 
 #include <actl/geometry/algorithm/ccw/simple_polygon.hpp>
 #include <actl/test.hpp>
+#include "geometry/polygons.hpp"
 
-TEST("star") {
-    simple_polygon<point<int>> poly{{0, -2}, {3, -4}, {2, 0},  {5, 2},  {1, 2},
-                                    {0, 5},  {-1, 2}, {-5, 2}, {-2, 0}, {-3, -4}};
-    ASSERT_EQUAL(-1, ccw(poly));
-}
+TEST("star") { ASSERT_EQUAL(-1, ccw(get_star_polygon())); }

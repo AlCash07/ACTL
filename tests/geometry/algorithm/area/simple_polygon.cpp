@@ -5,11 +5,12 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/area/polygon.hpp>
+#include <actl/geometry/algorithm/area/simple_polygon.hpp>
 #include <actl/test.hpp>
+#include "geometry/polygons.hpp"
 
 TEST("trident") {
-    std::vector<point<int>> poly{{-2, 0}, {-2, 4}, {-1, 1}, {0, 4},  {1, 1},
-                                 {2, 4},  {2, 0},  {1, 0},  {0, -1}, {-1, 0}};
+    auto poly = get_trident_polygon();
+    reverse(poly);
     ASSERT_EQUAL(-22, area(poly));
 }

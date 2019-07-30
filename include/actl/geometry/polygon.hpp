@@ -60,8 +60,6 @@ class star_polygon : public simple_polygon<T> {
 public:
     using point_type = value_t<simple_polygon<T>>;
 
-    using simple_polygon<T>::simple_polygon;
-
     const point_type& observer() const { return observer_; }
 
     point_type observer_;
@@ -78,8 +76,6 @@ struct geometry_traits<star_polygon<T>>
 template <class T>
 class monotone_polygon : public simple_polygon<T> {
 public:
-    using simple_polygon<T>::simple_polygon;
-
     index right() const { return right_; }
 
     index right_;
