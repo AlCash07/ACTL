@@ -7,60 +7,53 @@
 
 #pragma once
 
+#include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
+#include <actl/geometry/algorithm/nearest/nearest.hpp>
 #include <actl/geometry/multi_point.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/std/utility.hpp>
 #include <actl/std/vector.hpp>
-#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
-template <class DistancePolicy>
-struct nearest_multi_point : DistancePolicy {};
-
-template <class P = use_default>
-using comparable_nearest_multi_point = nearest_multi_point<comparable_distance_point_point<P>>;
-
-template <class P = use_default, class F = use_default>
-using standard_nearest_multi_point = nearest_multi_point<standard_distance_point_point<P, F>>;
-
 namespace detail {
 
-template <class DP, class Iterator, class Point>
-inline auto nearest(const nearest_multi_point<DP>& policy, Iterator first, Iterator last,
-                    std::vector<Point>& tmp) {
-    using return_t = std::pair<decltype(distance(policy, *first, *first)), std::pair<Point, Point>>;
-    auto y_cmp = [](const Point& lhs, const Point& rhs) { return lhs[1] < rhs[1]; };
-    if (last - first <= 3) {
-        return_t res;
-        for (auto i = first; i != last; ++i) {
-            for (auto j = i + 1; j != last; ++j) {
-                auto dist = distance(policy, *i, *j);
-                if (j == first + 1 || dist < res.first)
-                    res = std::pair{dist, std::pair{*i, *j}};
+template <class Point, class Policy>
+inline auto nearest(const Policy& policy, const span<Point>& points, const span<Point>& tmp) {
+    using T = decltype(distance(policy, points[0], points[0]));
+    using Pair = std::pair<T, std::pair<Point, Point>>;
+    auto y_comp = [&policy](const Point& lhs, const Point& rhs) {
+        return less(policy, lhs.y(), rhs.y());
+    };
+    const index n = points.size();
+    if (n <= 3) {
+        Pair res;
+        for (index i = 0; i != n; ++i) {
+            for (index j = i + 1; j != n; ++j) {
+                auto dist = distance(policy, points[i], points[j]);
+                if (j == 1 || dist < res.first)
+                    res = std::pair{dist, std::pair{points[i], points[j]}};
             }
         }
-        std::sort(first, last, y_cmp);
+        sort(points, y_comp);
         return res;
     }
-    auto middle = first + (last - first) / 2;
-    auto middle_x = (*middle)[0];
-    return_t res  = nearest(policy, first, middle, tmp);
-    return_t res1 = nearest(policy, middle, last, tmp);
-    if (res1.first < res.first) res = res1;
-    tmp.resize(last - first);
-    std::merge(first, middle, middle, last, tmp.begin(), y_cmp);
-    std::copy(tmp.begin(), tmp.end(), first);
-    tmp.clear();
-    for (middle = first; middle != last; ++middle) {
-        if (adl::abs((*middle)[0] - middle_x) < res.first) {
-            for (auto i = tmp.rbegin(); i != tmp.rend(); ++i) {
-                if ((*middle)[1] - (*i)[1] >= res.first) break;
-                auto dist = distance(policy, *middle, *i);
-                if (dist < res.first) res = std::pair{dist, std::pair{*middle, *i}};
+    index middle = n / 2;
+    auto middle_x = points[middle].x();
+    Pair res = nearest(policy, points.first(middle), tmp);
+    if (Pair rres = nearest(policy, points.last(n - middle), tmp); rres.first < res.first)
+        res = rres;
+    merge(points.first(middle), points.last(n - middle), tmp.begin(), y_comp);
+    copy(tmp.first(n), points.begin());
+    index count = 0;
+    for (const auto& p : points) {
+        if (less(policy, adl::abs(p.x() - middle_x), res.first)) {
+            for (index i = count - 1; i >= 0; --i) {
+                if (!less(policy, p.y() - tmp[i].y(), res.first)) break;
+                auto dist = distance(policy, p, tmp[i]);
+                if (less(policy, dist, res.first)) res = std::pair{dist, std::pair{p, tmp[i]}};
             }
-            tmp.push_back(*middle);
+            tmp[count++] = p;
         }
     }
     return res;
@@ -71,20 +64,17 @@ inline auto nearest(const nearest_multi_point<DP>& policy, Iterator first, Itera
 /**
  * Minimum distance between two different points from the set : O(N log N).
  */
-template <class DP, class T, enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
-inline auto nearest(const nearest_multi_point<DP>& policy, multi_point<T>& points) {
+template <class Policy, class T,
+          enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
+inline auto nearest(const Policy& policy, T& points) {
     ACTL_ASSERT(points.size() > 1);
-    sort(points);
-    for (auto it = points.begin(); it + 1 != points.end(); ++it) {
-        if (it[0] == it[1]) return std::pair{it[0], it[1]};
+    sort(points, op::less_functor(policy));
+    for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j) {
+        if (equal(policy, *i, *j)) return std::pair{*i, *j};
     }
-    std::vector<typename geometry_traits<multi_point<T>>::point> tmp(points.size());
-    return detail::nearest(policy, points.begin(), points.end(), tmp).second;
-}
-
-template <class T, enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
-inline auto nearest(use_default, multi_point<T>& points) {
-    return nearest(comparable_nearest_multi_point<>{}, points);
+    using Point = typename geometry_traits<T>::point;
+    std::vector<Point> tmp(points.size());
+    return detail::nearest<Point>(policy, points, tmp).second;
 }
 
 }  // namespace ac

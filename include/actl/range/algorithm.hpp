@@ -95,6 +95,16 @@ inline iterator_t<const Range> upper_bound(const Range& src, const T& value, Com
     return std::upper_bound(std::begin(src), std::end(src), value, comp);
 }
 
+template <class Range0, class Range1, class OutIter>
+inline bool merge(const Range0& lhs, const Range1& rhs, OutIter dst) {
+    return std::merge(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), dst);
+}
+
+template <class Range0, class Range1, class OutIter, class Compare>
+inline bool merge(const Range0& lhs, const Range1& rhs, OutIter dst, Compare comp) {
+    return std::merge(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), dst, comp);
+}
+
 template <class Range>
 inline iterator_t<const Range> min_element(const Range& src) {
     return std::min_element(std::begin(src), std::end(src));

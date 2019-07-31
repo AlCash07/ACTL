@@ -18,8 +18,8 @@ inline auto nearest(const Policy& policy, const T0& lhs, const T1& rhs) {
     return std::pair{pair.second, pair.first};
 }
 
-template <class T, class... Ts, geometry::disable_int_if_policy<T> = 0>
-inline auto nearest(const T& x, const Ts&... xs) {
+template <class T, class... Ts, disable_int_if_policy<T> = 0>
+inline auto nearest(T&& x, Ts&&... xs) {
     return nearest(geometry_policy, x, xs...);
 }
 
