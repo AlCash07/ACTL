@@ -7,29 +7,19 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/nearest/nearest.hpp>
 #include <actl/geometry/algorithm/project/line.hpp>
-#include <actl/std/utility.hpp>
 
 namespace ac {
 
-template <class P = use_default, class F = use_default, class ProjectPolicy = project_line<P, F>>
-struct nearest_point_line : ProjectPolicy {};
-
-template <class P, class F, index N, class T0, class T1, class K,
-          class X = geometry::float_t<F, T0, T1>>
-inline std::pair<point<T0, N>, point<X, N>> nearest(const nearest_point_line<P, F>& policy,
-                                                    const point<T0, N>& point,
-                                                    const line<T1, N, K>& line) {
-    if (line.start_kind() != endpoint::free && dot(policy, point - line.start, line.vector) <= 0)
-        return {point, line.start};
-    if (line.end_kind() != endpoint::free && dot(policy, point - line.end(), line.vector) >= 0)
-        return {point, line.end()};
-    return {point, project(policy, point, line)};
-}
-
-template <index N, class T0, class T1, class K>
-inline auto nearest(use_default, const point<T0, N>& point, const line<T1, N, K>& line) {
-    return nearest(nearest_point_line{}, point, line);
+template <class Policy, index N, class T0, class T1, class K>
+inline auto nearest(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
+    using Pair = std::pair<const point<T0, N>&, decltype(project(policy, p, l))>;
+    if (l.start_kind() != endpoint::free && !less(policy, 0, dot(policy, p - l.start, l.vector)))
+        return Pair{p, l.start};
+    if (l.end_kind() != endpoint::free && !less(policy, dot(policy, p - l.end(), l.vector), 0))
+        return Pair{p, l.end()};
+    return Pair{p, project(policy, p, l)};
 }
 
 }  // namespace ac

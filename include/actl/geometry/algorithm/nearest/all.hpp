@@ -8,6 +8,5 @@
 #pragma once
 
 #include <actl/geometry/algorithm/nearest/multi_point.hpp>
-#include <actl/geometry/algorithm/nearest/nearest.hpp>
 #include <actl/geometry/algorithm/nearest/point_line.hpp>
 #include <actl/geometry/algorithm/nearest/point_plane.hpp>

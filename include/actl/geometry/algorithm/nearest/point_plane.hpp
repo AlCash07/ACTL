@@ -7,23 +7,14 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/nearest/nearest.hpp>
 #include <actl/geometry/algorithm/project/plane.hpp>
-#include <actl/std/utility.hpp>
 
 namespace ac {
 
-template <class P = use_default, class F = use_default, class ProjectPolicy = project_plane<P, F>>
-struct nearest_point_plane : ProjectPolicy {};
-
-template <class P, class F, index N, class T0, class T1>
-inline auto nearest(const nearest_point_plane<P, F>& policy, const point<T0, N>& point,
-                    const plane<T1, N>& plane) {
-    return std::pair{point, project(policy, point, plane)};
-}
-
-template <index N, class T0, class T1>
-inline auto nearest(use_default, const point<T0, N>& point, const plane<T1, N>& plane) {
-    return nearest(nearest_point_plane{}, point, plane);
+template <class Policy, index N, class T0, class T1>
+inline auto nearest(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl) {
+    return std::pair{p, project(policy, p, pl)};
 }
 
 }  // namespace ac
