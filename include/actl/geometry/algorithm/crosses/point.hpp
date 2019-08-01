@@ -7,22 +7,15 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/point.hpp>
 
 namespace ac {
 
-template <class WithinPolicy>
-struct crosses_point : WithinPolicy {};
-
-template <class WP, index N, class T0, class T1>
-inline bool crosses(const crosses_point<WP>& policy, const point<T0, N>& lhs, const T1& rhs) {
+template <class Policy, index N, class T, class U>
+inline bool crosses(const Policy& policy, const point<T, N>& lhs, const U& rhs) {
     return within(policy, lhs, rhs) == 1;
-}
-
-template <index N, class T0, class T1>
-inline bool crosses(use_default, const point<T0, N>& lhs, const T1& rhs) {
-    return within(use_default{}, lhs, rhs) == 1;
 }
 
 }  // namespace ac

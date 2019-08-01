@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/crosses/line_line_2d.hpp>
 #include <actl/geometry/algorithm/crosses/plane_plane.hpp>
 #include <actl/geometry/algorithm/crosses/plane_sphere.hpp>

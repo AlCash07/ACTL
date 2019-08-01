@@ -7,25 +7,17 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/point/norm.hpp>
 #include <actl/geometry/plane.hpp>
 #include <actl/geometry/sphere.hpp>
 
 namespace ac {
 
-template <class P = use_default, class NormPolicy = comparable_norm<P>>
-struct crosses_plane_sphere : NormPolicy {};
-
-template <class P, class NP, index N, class T0, class T1>
-inline bool crosses(const crosses_plane_sphere<P, NP>& policy, const plane<T0, N>& pl,
-                    const sphere<T1, N>& s) {
+template <class Policy, index N, class T0, class T1>
+inline bool crosses(const Policy& policy, const plane<T0, N>& pl, const sphere<T1, N>& s) {
     auto dist = adl::abs(pl(policy, s.center));
-    return s.radius * norm(policy, pl.normal) <= dist;
-}
-
-template <index N, class T0, class T1>
-inline bool crosses(use_default, const plane<T0, N>& pl, const sphere<T1, N>& s) {
-    return crosses(crosses_plane_sphere{}, pl, s);
+    return !less(policy, dist, product(policy, s.radius, norm(policy, pl.normal)));
 }
 
 }  // namespace ac

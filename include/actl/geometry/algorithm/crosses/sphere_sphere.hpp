@@ -7,25 +7,17 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/sphere.hpp>
 
 namespace ac {
 
-template <class DistancePolicy = comparable_distance_point_point<>>
-struct crosses_sphere_sphere : DistancePolicy {};
-
-template <class DP, index N, class T0, class T1>
-inline bool crosses(const crosses_sphere_sphere<DP>& policy, const sphere<T0, N>& lhs,
-                    const sphere<T1, N>& rhs) {
+template <class Policy, index N, class T0, class T1>
+inline bool crosses(const Policy& policy, const sphere<T0, N>& lhs, const sphere<T1, N>& rhs) {
     auto centers_dist = distance(policy, lhs.center, rhs.center);
-    return adl::abs(lhs.radius - rhs.radius) <= centers_dist &&
-           centers_dist <= lhs.radius + rhs.radius;
-}
-
-template <class DP, index N, class T0, class T1>
-inline bool crosses(use_default, const sphere<T0, N>& lhs, const sphere<T1, N>& rhs) {
-    return crosses(crosses_sphere_sphere{}, lhs, rhs);
+    return !less(policy, centers_dist, adl::abs(lhs.radius - rhs.radius)) &&
+           !less(policy, lhs.radius + rhs.radius, centers_dist);
 }
 
 }  // namespace ac

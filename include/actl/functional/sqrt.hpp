@@ -18,7 +18,7 @@ namespace ac::op {
 template <class T>
 class square_root {
 public:
-    constexpr explicit square_root(const T& value) : sqr_{value} {}
+    constexpr explicit square_root(const T& value = {}) : sqr_{value} {}
 
     operator decltype(adl::sqrt(std::declval<T>()))() const { return adl::sqrt(sqr_); }
 

@@ -5,7 +5,6 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/crosses/point.hpp>
 #include <actl/test.hpp>
 

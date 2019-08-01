@@ -7,27 +7,19 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/point/collinear.hpp>
 #include <actl/geometry/plane.hpp>
 
 namespace ac {
 
-template <class CollinearPolicy = comparable_collinear<>>
-struct crosses_plane_plane : CollinearPolicy {};
-
-template <class CP, index N, class T0, class T1>
-inline bool crosses(const crosses_plane_plane<CP>& policy, const plane<T0, N>& lhs,
-                    const plane<T1, N>& rhs) {
-    ACTL_ASSERT(lhs && rhs);
+template <class Policy, index N, class T0, class T1>
+inline bool crosses(const Policy& policy, const plane<T0, N>& lhs, const plane<T1, N>& rhs) {
+    ACTL_ASSERT(!degenerate(policy, lhs) && !degenerate(policy, rhs));
     if (!collinear(policy, lhs.normal, rhs.normal)) return true;
     index i = 0;
-    while (lhs.normal[i] == T0{0}) ++i;
-    return collinear(policy, point(lhs.normal[i], lhs.d), point(rhs.normal[i], rhs.d));
-}
-
-template <index N, class T0, class T1>
-inline bool crosses(use_default, const plane<T0, N>& lhs, const plane<T1, N>& rhs) {
-    return crosses(crosses_plane_plane{}, lhs, rhs);
+    while (equal(policy, lhs.normal[i], 0)) ++i;
+    return collinear(policy, point{lhs.normal[i], lhs.d}, point{rhs.normal[i], rhs.d});
 }
 
 }  // namespace ac

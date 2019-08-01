@@ -11,14 +11,14 @@
 
 namespace ac {
 
-template <class Policy, class T0, class T1, geometry::enable_int_if_swap<T0, T1> = 0>
-inline bool crosses(const Policy& policy, const T0& lhs, const T1& rhs) {
+template <class Policy, class T, class U, geometry::enable_int_if_swap<T, U> = 0>
+inline bool crosses(const Policy& policy, const T& lhs, const U& rhs) {
     return crosses(policy, rhs, lhs);
 }
 
-template <class T0, class T1>
-inline bool crosses(const T0& lhs, const T1& rhs) {
-    return crosses(use_default{}, rhs, lhs);
+template <class T, class U>
+inline bool crosses(const T& lhs, const U& rhs) {
+    return crosses(geometry_policy, rhs, lhs);
 }
 
 }  // namespace ac
