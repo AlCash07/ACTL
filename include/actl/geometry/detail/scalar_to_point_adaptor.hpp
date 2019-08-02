@@ -23,6 +23,8 @@ public:
 
     explicit scalar_to_point_adaptor(const Line& line, It it) : it_{it}, line_{line} {}
 
+    scalar_to_point_adaptor& operator = (const scalar_to_point_adaptor&) = default;
+
     template <class T>
     void operator = (const T& x) {
         *it_ = line_(x);

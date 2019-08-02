@@ -59,7 +59,8 @@ inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T0, 2
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
 inline OutIter intersect(const general_position_policy<Policy>& gpp, const line<T0, 2, K0>& lhs,
                          const line<T1, 2, K1>& rhs, OutIter dst) {
-    return intersect(line_scalar_policy{gpp.policy}, lhs, rhs, detail::adapt_iterator(lhs, dst));
+    return intersect(line_scalar_policy{gpp.policy}, lhs, rhs,
+                     detail::scalar_to_point_adaptor{lhs, dst});
 }
 
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>

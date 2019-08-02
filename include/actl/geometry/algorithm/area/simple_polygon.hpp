@@ -23,7 +23,7 @@ template <class Policy, class T,
 inline auto area(const Policy& policy, const T& poly) {
     auto it = cyclic_begin(poly);
     decltype(product(policy, it->x(), it->y())) res{};
-    for (index i = 0; i < poly.size(); ++i) {
+    for (auto n = poly.size(); n != 0; --n) {
         res += product(policy, it->x(), it[1].y() - it[-1].y());
         ++it;
     }

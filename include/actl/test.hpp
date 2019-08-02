@@ -60,6 +60,23 @@ inline index serialize(Device& od, Format&, const T&) {
 
 }  // namespace ac::io
 
+namespace ac::op {
+
+template <class T>
+struct abs_rel_error {
+    T eps;
+};
+
+template <class E, class T, class U,
+          enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
+inline bool equal(const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
+    E numerator = adl::abs(lhs - rhs);
+    E denominator = std::max(std::max(adl::abs<E>(lhs), adl::abs<E>(rhs)), E{1});
+    return numerator <= policy.eps * denominator;
+}
+
+}  // namespace ac::op
+
 namespace ac::tests {
 
 namespace detail {
@@ -78,19 +95,6 @@ template <message_kind Kind, class T>
 inline std::string message(const T& x) {
     static std::string messages[4] = {"expected = ", "expected = not ", "actual   = ", "line = "};
     return messages[Kind] + to_string(x) + "\n";
-}
-
-template <class T>
-struct abs_rel_error {
-    T eps;
-};
-
-template <class E, class T, class U,
-          enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
-inline bool equal(const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
-    E numerator = adl::abs(lhs - rhs);
-    E denominator = std::max(std::max(adl::abs<E>(lhs), adl::abs<E>(rhs)), E{1});
-    return numerator <= policy.eps * denominator;
 }
 
 struct assert_impl {
@@ -113,7 +117,7 @@ struct assert_impl {
 
     template <class T, class U, class E>
     inline void check_equal(const T& expected, const U& actual, E eps) const {
-        if (equal(abs_rel_error<E>{eps}, expected, actual)) return;
+        if (equal(op::abs_rel_error<E>{eps}, expected, actual)) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
