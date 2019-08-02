@@ -8,31 +8,35 @@
 #pragma once
 
 #include <actl/geometry/line.hpp>
-#include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/iterator/output_type.hpp>
 
 namespace ac::detail {
 
-template <class Line, class It, class T = geometry::scalar_t<value_t<It>>>
-class scalar_to_point_adaptor
-    : public iterator_adaptor<scalar_to_point_adaptor<Line, It>, It, use_default, T,
-                              const scalar_to_point_adaptor<Line, It>&> {
+template <class Line, class It>
+class scalar_to_point_adaptor {
 public:
-    explicit scalar_to_point_adaptor(const Line& line, It it)
-        : iterator_adaptor<scalar_to_point_adaptor<Line, It>, It, use_default, T,
-                           const scalar_to_point_adaptor<Line, It>&>{it}
-        , line_{line} {}
+    using value_type = void;
+    using difference_type = void;
+    using pointer = void;
+    using reference = void;
+    using iterator_category = std::output_iterator_tag;
 
-    void operator = (const T& value) const { *this->base_ref() = line_(value); }
+    explicit scalar_to_point_adaptor(const Line& line, It it) : it_{it}, line_{line} {}
 
-    operator It() const { return this->base(); }
+    template <class T>
+    void operator = (const T& x) {
+        *it_ = line_(x);
+    }
+
+    scalar_to_point_adaptor& operator*() { return *this; }
+    scalar_to_point_adaptor& operator++() { return *this; }
+    scalar_to_point_adaptor operator++(int) { return *this; }
+
+    operator It() const { return it_; }
 
 private:
-    const scalar_to_point_adaptor& dereference() const { return *this; }
-
+    It it_;
     const Line& line_;
-
-    friend struct ac::iterator_core_access;
 };
 
 template <class Line, class It>

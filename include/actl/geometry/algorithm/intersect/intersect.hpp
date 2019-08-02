@@ -11,14 +11,14 @@
 
 namespace ac {
 
-template <class Policy, class T0, class T1, class OutIter, geometry::enable_int_if_swap<T0, T1> = 0>
-inline auto intersect(const Policy& policy, const T0& lhs, const T1& rhs, OutIter dst) {
+template <class Policy, class T, class U, class OutIter, geometry::enable_int_if_swap<T, U> = 0>
+inline auto intersect(const Policy& policy, const T& lhs, const U& rhs, OutIter dst) {
     return intersect(policy, rhs, lhs, dst);
 }
 
-template <class T0, class T1, class OutIter>
-inline auto intersect(const T0& lhs, const T1& rhs, OutIter dst) {
-    return intersect(use_default{}, lhs, rhs, dst);
+template <class T, class U, class OutIter>
+inline auto intersect(const T& lhs, const U& rhs, OutIter dst) {
+    return intersect(geometry_policy, lhs, rhs, dst);
 }
 
 }  // namespace ac

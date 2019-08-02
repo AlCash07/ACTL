@@ -102,6 +102,14 @@ public:
     explicit constexpr line(const line<T1, N, K1>& rhs)
         : Kind{rhs.kind()}, start{rhs.start}, vector{rhs.vector} {}
 
+    template <class T1, class K1>
+    constexpr line& operator = (const line<T1, N, K1>& rhs) {
+        Kind::operator=(rhs.kind());
+        start = rhs.start;
+        vector = rhs.vector;
+        return *this;
+    }
+
     constexpr operator bool() const { return vector; }
 
     friend void swap(line& lhs, line& rhs) {
@@ -176,7 +184,7 @@ inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
 
 template <class Policy, index N, class T, class K>
 inline constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l) {
-    return degenerate(l.vector);
+    return degenerate(policy, l.vector);
 }
 
 // Policy to indicate that scalar is expected instead of a point. This scalar can be passed to line

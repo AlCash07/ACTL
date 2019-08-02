@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/geometry/algorithm/intersect/circle_circle.hpp>
-#include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/geometry/algorithm/intersect/line_convex_polygon.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
 #include <actl/geometry/algorithm/intersect/line_simple_polygon.hpp>

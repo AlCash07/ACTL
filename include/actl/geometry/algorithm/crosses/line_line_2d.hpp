@@ -7,88 +7,35 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/area/point_line.hpp>
-#include <actl/geometry/detail/common_line.hpp>
+#include <actl/geometry/algorithm/crosses/crosses.hpp>
+#include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
+#include <actl/iterator/iterator_facade.hpp>
 
 namespace ac {
 
-template <class AreaPolicy>
-struct cross_line_line : AreaPolicy {};
-
-template <class P = use_default>
-using comparable_cross_line_line = cross_line_line<comparable_area_points<P>>;
-
-template <class P = use_default, class F = use_default>
-using standard_cross_line_line = cross_line_line<standard_area_points<P, F>>;
-
-/**
- * This policy implies that lines are in general position (don't coincide but can be parallel).
- */
-template <class AreaPolicy>
-struct general_cross_line_line : AreaPolicy {};
-
-template <class P = use_default>
-using comparable_general_cross_line_line = general_cross_line_line<comparable_area_points<P>>;
-
-template <class P = use_default, class F = use_default>
-using standard_general_cross_line_line = general_cross_line_line<standard_area_points<P, F>>;
-
 namespace detail {
 
-template <class T0, class K0, class T1, class K1, class T2>
-inline bool cross_test(const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs,
-                       T2 tarea, T2 larea, T2 rarea) {
-    if (tarea < T2{0}) {
-        tarea = -tarea;
-        larea = -larea;
-        rarea = -rarea;
-    }
-    return line_test(lhs, larea, tarea) && line_test(rhs, rarea, tarea);
-}
+class flag_output_iterator : public iterator_facade<flag_output_iterator, std::output_iterator_tag,
+                                                    void, const flag_output_iterator&, void> {
+public:
+    bool flag = false;
 
-template <class F = use_default, class AP, class T0, class K0, class T1, class K1,
-          class X = geometry::float_t<F, T0, T1>>
-inline std::pair<bool, X> intersect_lines_general(const AP& policy, const line<T0, 2, K0>& lhs,
-                                                  const line<T1, 2, K1>& rhs) {
-    auto tarea = area(policy, rhs.vector, lhs.vector);
-    if (tarea == 0) return {false, X{}};
-    auto larea = area(policy, lhs.start, rhs);
-    if (!cross_test(lhs, rhs, tarea, larea, area(policy, rhs.start, lhs))) return {false, X{}};
-    return {true, static_cast<X>(larea) / tarea};
-}
+    template <class T>
+    void operator = (T) const {}
 
-template <class F = use_default, class AP, class T0, class K0, class T1, class K1,
-          class X = geometry::float_t<F, T0, T1>>
-inline std::pair<bool, any_line<X, 2>> intersect_lines(const AP& policy, const line<T0, 2, K0>& lhs,
-                                                       const line<T1, 2, K1>& rhs) {
-    auto tarea = area(policy, rhs.vector, lhs.vector);
-    auto larea = area(policy, lhs.start, rhs);
-    if (tarea == 0) {
-        if (larea != 0) return {false, any_line<X, 2>()};
-        return common_line<X>(lhs, rhs);
-    }
-    if (!cross_test(lhs, rhs, tarea, larea, area(policy, rhs.start, lhs)))
-        return {false, any_line<X, 2>()};
-    return {true, any_line<X, 2>(lhs(static_cast<X>(larea) / tarea), point<X>(), true)};
-}
+private:
+    friend struct ac::iterator_core_access;
+
+    const flag_output_iterator& dereference() const { return *this; }
+
+    void increment() { flag = true; }
+};
 
 }  // namespace detail
 
-template <class AP, class T0, class K0, class T1, class K1>
-inline bool crosses(const cross_line_line<AP> policy, const line<T0, 2, K0>& lhs,
-                    const line<T1, 2, K1>& rhs) {
-    return detail::intersect_lines(policy, lhs, rhs).first;
-}
-
-template <class AP, class T0, class K0, class T1, class K1>
-inline bool crosses(const general_cross_line_line<AP> policy, const line<T0, 2, K0>& lhs,
-                    const line<T1, 2, K1>& rhs) {
-    return detail::intersect_lines_general(policy, lhs, rhs).first;
-}
-
-template <class T0, class K0, class T1, class K1>
-inline bool crosses(use_default, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) {
-    return crosses(comparable_cross_line_line<>{}, lhs, rhs);
+template <class Policy, class T0, class K0, class T1, class K1>
+inline bool crosses(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) {
+    return intersect(policy, lhs, rhs, detail::flag_output_iterator{}).flag;
 }
 
 }  // namespace ac
