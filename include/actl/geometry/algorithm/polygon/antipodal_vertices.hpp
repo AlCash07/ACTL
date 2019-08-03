@@ -13,28 +13,25 @@
 
 namespace ac {
 
-template <class CcwPolicy = comparable_ccw<>>
-struct antipodal_vertices_policy : CcwPolicy {};
-
 /**
  * Outputs all candidates for the pairs of antipodal vertices (pairs of iterators).
  * The actual antipodal pair for a vertex is the last pair with this vertex in the output.
  */
-template <class CP, class T, class OutIter>
-inline auto antipodal_vertices(const antipodal_vertices_policy<CP>& policy,
-                               const convex_polygon<T>& polygon, OutIter dst) {
-    for (auto i = polygon.begin(), j = i + 1; j != polygon.end(); ++i) {
-        for (; j != polygon.end(); ++j) {
+template <class Policy, class T, class OutIter>
+inline auto antipodal_vertices(const Policy& policy, const convex_polygon<T>& poly, OutIter dst) {
+    for (auto i = poly.begin(), j = i + 1; j != poly.end(); ++i) {
+        for (; j != poly.end(); ++j) {
             *dst++ = std::pair{i, j};
-            if (ccw(policy, i[1] - i[0], polygon.cyclic(j)[1] - j[0]) >= 0) break;
+            auto vecj = *(j + 1 != poly.end() ? j + 1 : poly.begin()) - *j;
+            if (ccw(policy, i[1] - *i, vecj) >= 0) break;
         }
     }
     return dst;
 }
 
 template <class T, class OutIter>
-inline auto antipodal_vertices(const convex_polygon<T>& polygon, OutIter dst) {
-    return antipodal_vertices(antipodal_vertices_policy{}, polygon, dst);
+inline auto antipodal_vertices(const convex_polygon<T>& poly, OutIter dst) {
+    return antipodal_vertices(geometry_policy, poly, dst);
 }
 
 }  // namespace ac

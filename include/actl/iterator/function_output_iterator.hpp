@@ -9,24 +9,23 @@
 
 #include <actl/functional/traits.hpp>
 #include <actl/iterator/iterator_facade.hpp>
-#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
 /**
  * Iterator that applies a function to each assigned value.
  */
-template <class UnaryFunction, class T = argument_t<UnaryFunction, 0>>
+template <class Function>
 class function_output_iterator
-    : public iterator_facade<function_output_iterator<UnaryFunction, T>,
-                             std::output_iterator_tag,
-                             remove_cvref_t<T>,
-                             const function_output_iterator<UnaryFunction, T>&,
-                             void> {
+    : public iterator_facade<function_output_iterator<Function>, std::output_iterator_tag, void,
+                             const function_output_iterator<Function>&, void> {
 public:
-    explicit function_output_iterator(const UnaryFunction& f = {}) : f_{f} {}
+    explicit function_output_iterator(const Function& f = {}) : f_{f} {}
 
-    void operator = (T arg) const { f_(arg); }
+    template <class T>
+    void operator = (T&& x) const {
+        f_(std::forward<T>(x));
+    }
 
 private:
     friend struct ac::iterator_core_access;
@@ -35,7 +34,7 @@ private:
 
     void increment() {}
 
-    UnaryFunction f_;
+    Function f_;
 };
 
 }  // namespace ac

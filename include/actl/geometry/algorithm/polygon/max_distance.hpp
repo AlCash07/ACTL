@@ -14,28 +14,21 @@
 
 namespace ac {
 
-template <class DistancePolicy = use_default, class AntipodalPolicy = antipodal_vertices_policy<>>
-struct max_distance_policy : AntipodalPolicy {
-    deduce_t<DistancePolicy, comparable_distance_point_point<>> distance_policy;
-};
-
 /**
  * Maximum distance between two convex polygon vertices : O(N).
  */
-template <class DP, class AP, class T>
-inline auto max_distance(const max_distance_policy<DP, AP>& policy,
-                         const convex_polygon<T>& polygon) {
-    decltype(distance(policy.distance_policy, *polygon.begin(), *polygon.begin())) res{};
-    auto update_res = [&](auto pair) {
-        smax(res, distance(policy.distance_policy, *pair.first, *pair.second));
-    };
-    antipodal_vertices(policy, polygon, function_output_iterator(update_res));
+template <class Policy, class T>
+inline auto max_distance(const Policy& policy, const convex_polygon<T>& poly) {
+    decltype(distance(policy, poly[0], poly[0])) res = 0;
+    antipodal_vertices(policy, poly, function_output_iterator{[&](auto pair) {
+                           smax(res, distance(policy, *pair.first, *pair.second));
+                       }});
     return res;
 }
 
 template <class T>
-inline auto max_distance(const convex_polygon<T>& polygon) {
-    return max_distance(max_distance_policy{}, polygon);
+inline auto max_distance(const convex_polygon<T>& poly) {
+    return max_distance(geometry_policy, poly);
 }
 
 }  // namespace ac
