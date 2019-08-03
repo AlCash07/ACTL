@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
 
 namespace ac {

@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/algorithm/area/area.hpp>
 #include <actl/geometry/polygon.hpp>
 

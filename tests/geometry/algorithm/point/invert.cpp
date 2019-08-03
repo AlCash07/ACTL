@@ -5,7 +5,6 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/2d/circle.hpp>
 #include <actl/geometry/algorithm/point/collinear.hpp>
 #include <actl/geometry/algorithm/point/invert.hpp>
 #include <actl/geometry/algorithm/point/norm.hpp>

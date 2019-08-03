@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <actl/geometry/2d/circle.hpp>
 #include <actl/geometry/algorithm/point/angle.hpp>
+#include <actl/geometry/sphere.hpp>
 #include <actl/iterator/output_type.hpp>
 #include <actl/numeric/math.hpp>
 

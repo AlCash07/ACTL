@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/3d/point3d.hpp>
+#include <actl/geometry/point.hpp>
 
 namespace ac {
 

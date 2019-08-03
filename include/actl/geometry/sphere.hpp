@@ -48,4 +48,14 @@ sphere(const point<T0, N>&, const T1&) -> sphere<geometry::scalar_t<T0, T1>, N>;
 template <index N, class T>
 struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T, N>> {};
 
+/* circle */
+
+template <class T>
+using circle = sphere<T, 2>;
+
+template <class T0, class T1>
+inline constexpr auto make_circle(const point<T0>& center, const T1& radius) {
+    return circle<geometry::scalar_t<T0, T1>>{center, radius};
+}
+
 }  // namespace ac

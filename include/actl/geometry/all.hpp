@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include <actl/geometry/2d/all.hpp>
-#include <actl/geometry/3d/all.hpp>
 #include <actl/geometry/algorithm/all.hpp>
 #include <actl/geometry/line.hpp>
 #include <actl/geometry/multi_point.hpp>

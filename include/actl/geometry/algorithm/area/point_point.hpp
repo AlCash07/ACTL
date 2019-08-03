@@ -8,9 +8,8 @@
 #pragma once
 
 #include <actl/functional/sqrt.hpp>
-#include <actl/geometry/2d/point2d.hpp>
-#include <actl/geometry/3d/point3d.hpp>
 #include <actl/geometry/algorithm/area/area.hpp>
+#include <actl/geometry/point.hpp>
 
 namespace ac {
 

@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/geometry/2d/point2d.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/algorithm/nearest/nearest.hpp>
 #include <actl/geometry/multi_point.hpp>
