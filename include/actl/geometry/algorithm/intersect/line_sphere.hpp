@@ -17,7 +17,7 @@ namespace ac {
 template <class Policy, index N, class T0, class K, class T1, class OutIter>
 inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T0, N, K>& l,
                          const sphere<T1, N>& s, OutIter dst) {
-    const auto& policy = lcp.policy;
+    auto& policy = lcp.policy;
     auto vdot = dot(policy, l.vector);
     auto delta =
         product(policy, vdot, sqr(policy, s.radius)) - sqr(policy, area(policy, s.center, l));

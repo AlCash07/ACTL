@@ -6,7 +6,22 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/convex_hull/andrew_monotone_chain.hpp>
-#include <actl/geometry/algorithm/convex_hull/convex_hull.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("random", repeat = 10) {
+    constexpr int R = 10000;
+    auto gen = [&random]() { return random.uniform(-R, R); };
+    std::vector<point<int>> points;
+    while (points.size() < 1000) {
+        point p{gen(), gen()};
+        if (dot(p) <= sqr(R)) points.push_back(p);
+    }
+    auto points_copy = points;
+    auto hull = convex_hull(span{points_copy});
+    for (auto i : irange(hull.size())) {
+        line<int> l{hull[i], hull[i + 1 < hull.size() ? i + 1 : 0]};
+        for (const auto& p : points) {
+            ASSERT_TRUE(ccw(l, p) <= 0);
+        }
+    }
+}

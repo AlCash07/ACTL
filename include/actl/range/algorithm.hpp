@@ -66,12 +66,12 @@ inline iterator_t<Range> partition(Range& dst, Predicate pred) {
 }
 
 template <class Range>
-inline void sort(Range& dst) {
+inline void sort(Range&& dst) {
     std::sort(std::begin(dst), std::end(dst));
 }
 
 template <class Range, class Compare>
-inline void sort(Range& dst, Compare comp) {
+inline void sort(Range&& dst, Compare comp) {
     std::sort(std::begin(dst), std::end(dst), comp);
 }
 

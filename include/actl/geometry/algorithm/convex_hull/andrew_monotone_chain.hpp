@@ -7,56 +7,52 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/ccw/point_line.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/util/span.hpp>
 
 namespace ac {
 
-template <bool Monotone = false, class Point = use_default, class CcwPolicy = comparable_ccw<>>
-struct andrew_monotone_chain : CcwPolicy {};
+template <class Policy>
+struct andrew_monotone_chain_policy {
+    andrew_monotone_chain_policy(const Policy& x) : policy{x} {}
 
-namespace detail {
-
-template <class T>
-static void set_right(std::bool_constant<true>, T& dst, index right) { dst.right_ = right; }
-
-template <class T>
-static void set_right(std::bool_constant<false>, T&, index) {}
-
-}  // namespace detail
+    const Policy& policy;
+};
 
 /**
  * Convex hull of a set of 2d points : O(N log N).
  * https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
  * Implementation reference: https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
  */
-template <bool M, class P, class AP, class T,
-          enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
-inline auto convex_hull(andrew_monotone_chain<M, P, AP> policy, multi_point<T>& points) {
-    sort(points);
-    using point_t = deduce_t<P, typename geometry_traits<multi_point<T>>::point>;
-    std::conditional_t<M, convex_monotone_polygon<point_t>, convex_polygon<point_t>> hull;
-    hull.reserve(points.size() + 1);
-    for (index phase = 0; phase < 2; ++phase) {  // Lower, then upper chain.
-        auto start = hull.size();
-        detail::set_right(std::bool_constant<M>(), hull, static_cast<index>(start));
-        for (const auto& point : points) {
-            while (hull.size() >= start + 2 &&
-                   ccw(policy, point, hull.back(), hull[hull.size() - 2]) <= 0)
-                hull.pop_back();
-            hull.push_back(point);
-        }
-        hull.pop_back();
-        reverse(points);
+template <class Policy, class T, enable_int_if<geometry_traits<T>::dimension == 2> = 0>
+inline span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span<T>& points) {
+    if (points.size() < 2) return points;
+    auto& policy = amcp.policy;
+    auto [a, b] = minmax_element(points, op::less_functor(policy));
+    auto comp = [l = make_line(*a, *b), &policy](const auto& p) { return ccw(policy, p, l) <= 0; };
+    index pivot = partition(points, comp) - points.begin();
+    ACTL_ASSERT(2 <= pivot);
+    sort(points.first(pivot), op::less_functor(policy));
+    index last = 1;
+    auto pop = [&](const auto& p) {
+        while (last != 0 && ccw(policy, p, points[last], points[last - 1]) <= 0) --last;
+    };
+    for (index i = 2, n = points.size(); i != n; ++i) {
+        // TODO: somehow output the right-top point when this condition is met.
+        if (i == pivot) sort(points.last(n - i), op::greater_functor(policy));
+        pop(points[i]);
+        points[++last] = points[i];
     }
-    if (hull.size() == 2 && hull[0] == hull[1]) hull.pop_back();
-    return hull;
+    pop(points[0]);
+    if (last == 1 && equal(policy, points[0], points[1])) --last;
+    return points.first(last + 1);
 }
 
-template <class T, enable_int_if<geometry_traits<multi_point<T>>::dimension == 2> = 0>
-inline auto convex_hull(use_default, multi_point<T>& points) {
-    return convex_hull(andrew_monotone_chain{}, points);
+template <class T>
+inline span<T> convex_hull(const span<T>& points) {
+    return convex_hull(andrew_monotone_chain_policy{default_policy}, points);
 }
 
 }  // namespace ac

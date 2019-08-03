@@ -77,6 +77,7 @@ template <class T>
 class monotone_polygon : public simple_polygon<T> {
 public:
     index right() const { return right_; }
+    void right(index value) { right_ = value; }
 
     index right_;
 };

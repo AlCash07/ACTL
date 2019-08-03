@@ -8,4 +8,3 @@
 #pragma once
 
 #include <actl/geometry/algorithm/convex_hull/andrew_monotone_chain.hpp>
-#include <actl/geometry/algorithm/convex_hull/convex_hull.hpp>

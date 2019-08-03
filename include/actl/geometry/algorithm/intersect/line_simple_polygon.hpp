@@ -23,7 +23,7 @@ namespace ac {
 template <class Policy, class T, class K, class U, class OutIter>
 inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T, 2, K>& l,
                          const simple_polygon<U>& poly, OutIter dst) {
-    const auto& policy = lcp.policy;
+    auto& policy = lcp.policy;
     // TODO: fix the case when polygon touches the line.
     ACTL_ASSERT(!degenerate(policy, l));
     auto vertex_sgn = [&](auto it) { return ccw(policy, *it, l); };

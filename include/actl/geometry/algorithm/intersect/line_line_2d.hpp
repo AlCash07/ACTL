@@ -46,7 +46,7 @@ inline bool cross_test(const Policy& policy, const line<T0, 2, K0>& lhs, const l
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
 inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T0, 2, K0>& lhs,
                          const line<T1, 2, K1>& rhs, OutIter dst) {
-    const auto& policy = lcp.policy;
+    auto& policy = lcp.policy;
     auto tarea = area(policy, rhs.vector, lhs.vector);
     if (equal(policy, tarea, 0)) return dst;
     auto v = lhs.start - rhs.start;
