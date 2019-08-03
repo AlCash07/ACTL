@@ -22,10 +22,10 @@ inline bool endpoint_test(const Policy& policy, uint8_t kind, const T& lhs, cons
     return false;
 }
 
-template <class Policy, index N, class T0, class K, class T1>
-inline bool line_test(const Policy& policy, const line<T0, N, K>& l, const T1& num, const T1& den) {
-    return endpoint_test(policy, l.start_kind(), 0, num) &&
-           endpoint_test(policy, l.end_kind(), num, den);
+template <class Policy, class T, class U>
+inline bool line_test(const Policy& policy, uint8_t kind, const T& num, const U& den) {
+    return endpoint_test(policy, endpoint::start(kind), 0, num) &&
+           endpoint_test(policy, endpoint::end(kind), num, den);
 }
 
 }  // namespace ac::detail

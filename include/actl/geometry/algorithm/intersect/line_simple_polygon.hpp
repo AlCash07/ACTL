@@ -17,14 +17,13 @@
 
 namespace ac {
 
-namespace detail {
-
 /**
  * Line with simple polygon intersection : O(N).
  */
 template <class Policy, class T, class K, class U, class OutIter>
-inline OutIter intersect_lsp(const Policy& policy, const line<T, 2, K>& l,
-                             const simple_polygon<U>& poly, OutIter dst) {
+inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T, 2, K>& l,
+                         const simple_polygon<U>& poly, OutIter dst) {
+    const auto& policy = lcp.policy;
     // TODO: fix the case when polygon touches the line.
     ACTL_ASSERT(!degenerate(policy, l));
     auto vertex_sgn = [&](auto it) { return ccw(policy, *it, l); };
@@ -41,30 +40,15 @@ inline OutIter intersect_lsp(const Policy& policy, const line<T, 2, K>& l,
             } else {
                 ok = next_sgn != prev_sgn;
             }
-            if (ok && between_endpoints(policy, *it, l))
-                *dst++ = project(line_scalar_policy{policy}, *it, l);
+            if (ok && between_endpoints(policy, *it, l)) *dst++ = project(lcp, *it, l);
         } else if (next_sgn == -it_sgn) {
-            dst = intersect(line_scalar_policy{policy}, l, make_line(*it, it[1]), dst);
+            dst = intersect(lcp, l, make_line(*it, it[1]), dst);
         }
         prev_sgn = it_sgn;
         it_sgn = next_sgn;
         ++it;
     }
     return dst;
-}
-
-}  // namespace detail
-
-template <class Policy, class T, class K, class U, class OutIter>
-inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T, 2, K>& l,
-                         const simple_polygon<U>& poly, OutIter dst) {
-    return detail::intersect_lsp(lcp.policy, l, poly, dst);
-}
-
-template <class Policy, class T, class K, class U, class OutIter>
-inline OutIter intersect(const Policy& policy, const line<T, 2, K>& l,
-                         const simple_polygon<U>& poly, OutIter dst) {
-    return detail::intersect_lsp(policy, l, poly, detail::scalar_to_point_adaptor{l, dst});
 }
 
 }  // namespace ac

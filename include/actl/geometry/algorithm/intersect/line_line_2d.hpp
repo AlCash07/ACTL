@@ -37,7 +37,8 @@ inline bool cross_test(const Policy& policy, const line<T0, 2, K0>& lhs, const l
         larea = -larea;
         rarea = -rarea;
     }
-    return line_test(policy, lhs, larea, tarea) && line_test(policy, rhs, rarea, tarea);
+    return line_test(policy, lhs.kind(), larea, tarea) &&
+           line_test(policy, rhs.kind(), rarea, tarea);
 }
 
 }  // namespace detail
