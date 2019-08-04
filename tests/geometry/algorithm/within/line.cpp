@@ -13,7 +13,7 @@ TEST("all cases") {
     auto test_points = [&points](uint8_t kind) {
         any_line<int> l{points[1], points[3], kind};
         std::vector<bool> w;
-        for (const auto& p : points) w.push_back(within(p, l));
+        for (const auto& p : points) w.push_back(within(p, l) == within::border);
         return w;
     };
     ASSERT_EQUAL(std::vector{true, true, true, true, true, false}, test_points(line_kind::free));

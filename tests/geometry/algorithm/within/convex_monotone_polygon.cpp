@@ -12,21 +12,21 @@
 TEST("octagon") {
     auto poly = get_octagon();
     for (auto p : poly) {
-        ASSERT_EQUAL(1, within(p, poly));
+        ASSERT_EQUAL(within::border, within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
              {-2, -2}, {2, -2}, {2, 2}, {-2, 2}, {0, -3}, {3, 0}, {0, 3}, {-3, 0}}) {
-        ASSERT_EQUAL(1, within(p, poly));
+        ASSERT_EQUAL(within::border, within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
              {0, 0}, {-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}}) {
-        ASSERT_EQUAL(2, within(p, poly));
+        ASSERT_EQUAL(within::inside, within(p, poly));
     }
     for (auto p : std::vector<point<int>>{{-6, -2}, {6, 2}, {0, -4}, {4, 0}, {0, 4}, {-4, 0}}) {
-        ASSERT_EQUAL(0, within(p, poly));
+        ASSERT_EQUAL(within::outside, within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
              {-3, -2}, {-2, -3}, {2, -3}, {3, -2}, {3, 2}, {2, 3}, {-2, 3}, {-3, 2}}) {
-        ASSERT_EQUAL(0, within(p, poly));
+        ASSERT_EQUAL(within::outside, within(p, poly));
     }
 }

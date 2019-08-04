@@ -1,5 +1,5 @@
 /***************************************************************************************************
- * Copyright 2017 Oleksandr Bacherikov.
+ * Copyright 2019 Oleksandr Bacherikov.
  *
  *             Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,13 +8,11 @@
 #pragma once
 
 #include <actl/geometry/algorithm/within/within.hpp>
-#include <actl/geometry/plane.hpp>
 
-namespace ac {
+namespace ac::detail {
 
-template <class Policy, index N, class T0, class T1>
-inline enum within within(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl) {
-    return equal(policy, pl(policy, p), 0) ? within::border : within::outside;
+inline enum within to_inclusion(int orientation) {
+    return static_cast<enum within>(1 - orientation + static_cast<int>(within::inside));
 }
 
-}  // namespace ac
+}  // namespace ac::detail

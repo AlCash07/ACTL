@@ -19,12 +19,12 @@ template <class Policy, class T0, class T1, class OutIter>
 inline OutIter tangents(const Policy& policy, const point<T0>& p, const circle<T1>& c,
                         OutIter dst) {
     switch (within(policy, p, c)) {
-        case 0: {
+        case within::outside: {
             auto dist = sqrt(policy, sqr(norm(policy, c.center - p)) - sqr(policy, c.radius));
             intersect(policy, make_circle(p, dist), c, dst);
             break;
         }
-        case 1:
+        case within::border:
             *dst++ = p;
     }
     return dst;
@@ -36,14 +36,14 @@ inline OutIter tangents(polar_angle_policy<Policy> pap, const point<T0>& p, cons
     auto& policy = pap.policy;
     auto center_vector = c.center - p;
     switch (within(policy, p, c)) {
-        case 0: {
+        case within::outside: {
             auto center_angle = angle(policy, center_vector);
             auto offset = adl::atan2(c.radius, norm(policy, center_vector));
             *dst++ = center_angle - offset;
             *dst++ = center_angle + offset;
             break;
         }
-        case 1:
+        case within::border:
             *dst++ = angle(policy, perpendicular(center_vector));
     }
     return dst;

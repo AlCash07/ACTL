@@ -15,7 +15,7 @@ namespace ac {
 
 template <class Policy, index N, class T, class U>
 inline bool crosses(const Policy& policy, const point<T, N>& lhs, const U& rhs) {
-    return within(policy, lhs, rhs) == 1;
+    return within(policy, lhs, rhs) == within::border;
 }
 
 }  // namespace ac

@@ -14,8 +14,8 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1>
-inline int within(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
-    return 1 - sgn(policy, distance(policy, p, s.center), s.radius);
+inline enum within within(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
+    return static_cast<enum within>(1 + sgn(policy, distance(policy, p, s.center), s.radius));
 }
 
 }  // namespace ac

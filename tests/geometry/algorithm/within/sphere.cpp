@@ -11,12 +11,12 @@
 TEST("2d") {
     circle<int> c{{0, 0}, 5};
     for (auto p : std::vector<point<int>>{{0, 0}, {-4, -2}, {3, -3}}) {
-        ASSERT_EQUAL(2, within(p, c));
+        ASSERT_EQUAL(within::inside, within(p, c));
     }
     for (auto p : std::vector<point<int>>{{-5, 0}, {-4, 3}, {3, -4}}) {
-        ASSERT_EQUAL(1, within(p, c));
+        ASSERT_EQUAL(within::border, within(p, c));
     }
     for (auto p : std::vector<point<int>>{{-3, 5}, {1, 5}, {6, 0}}) {
-        ASSERT_EQUAL(0, within(p, c));
+        ASSERT_EQUAL(within::outside, within(p, c));
     }
 }

@@ -11,9 +11,9 @@
 TEST("3d") {
     plane<int> pl{{1, 2, 3}, {1, 1, 1}};
     for (auto p : std::vector<point<int, 3>>{{1, 1, 1}, {4, 1, 0}, {-1, 2, 1}, {1, 4, -1}}) {
-        ASSERT_EQUAL(1, within(p, pl));
+        ASSERT_EQUAL(within::border, within(p, pl));
     }
     for (auto p : std::vector<point<int, 3>>{{0, 1, 1}, {4, 0, 0}, {-1, 2, 2}, {1, 5, -1}}) {
-        ASSERT_EQUAL(0, within(p, pl));
+        ASSERT_EQUAL(within::outside, within(p, pl));
     }
 }

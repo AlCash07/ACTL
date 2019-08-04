@@ -19,18 +19,18 @@ namespace ac {
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
  */
 template <class Policy, class T, class U>
-inline int within(const Policy& policy, const point<T>& p, const polygon<U>& triangle) {
+inline enum within within(const Policy& policy, const point<T>& p, const polygon<U>& triangle) {
     ACTL_ASSERT(triangle.size() == 3);
     int signs[3] = {};
     auto it = cyclic_begin(triangle);
     for (index i = 0; i < 3; ++i, ++it) {
         signs[i] = ccw(policy, p, it[1], it[0]);
     }
-    if (signs[0] == signs[1] && signs[1] == signs[2]) return 2;
+    if (signs[0] == signs[1] && signs[1] == signs[2]) return within::inside;
     for (index i = 0; i < 3; ++i) {
-        if (signs[i] * signs[i + 1 == 3 ? 0 : i + 1] == -1) return 0;
+        if (signs[i] * signs[i + 1 == 3 ? 0 : i + 1] == -1) return within::outside;
     }
-    return 1;
+    return within::border;
 }
 
 }  // namespace ac

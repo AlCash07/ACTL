@@ -11,11 +11,16 @@
 
 namespace ac {
 
-/**
- * Point inclusion test, returns 0 if outside, 1 if on the border, 2 if inside.
- */
+enum class within { inside, border, outside };
+
+template <class Device, class Format>
+inline index write(Device& od, Format& fmt, enum within x) {
+    constexpr const char* within_name[] = {"inside", "border", "outside"};
+    return write(od, fmt, within_name[static_cast<index>(x)]);
+}
+
 template <index N, class T, class U>
-inline int within(const point<T, N>& lhs, const U& rhs) {
+inline enum within within(const point<T, N>& lhs, const U& rhs) {
     return within(geometry_policy, lhs, rhs);
 }
 

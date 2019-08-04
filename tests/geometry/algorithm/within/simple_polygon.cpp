@@ -12,15 +12,15 @@
 TEST("star") {
     auto poly = get_star_polygon();
     for (auto p : poly) {
-        ASSERT_EQUAL(1, within(p, poly));
+        ASSERT_EQUAL(within::border, within(p, poly));
     }
     for (auto p : std::vector<point<int>>{{4, 2}, {-3, 2}}) {
-        ASSERT_EQUAL(1, within(p, poly));
+        ASSERT_EQUAL(within::border, within(p, poly));
     }
     for (auto p : std::vector<point<int>>{{0, 0}, {0, 4}, {-3, 1}, {-2, -3}, {2, -3}, {3, 1}}) {
-        ASSERT_EQUAL(2, within(p, poly));
+        ASSERT_EQUAL(within::inside, within(p, poly));
     }
     for (auto p : std::vector<point<int>>{{4, 1}, {1, 3}, {-4, 1}, {-3, -3}, {1, -3}, {0, -9}}) {
-        ASSERT_EQUAL(0, within(p, poly));
+        ASSERT_EQUAL(within::outside, within(p, poly));
     }
 }
