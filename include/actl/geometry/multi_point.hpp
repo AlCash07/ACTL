@@ -9,39 +9,8 @@
 
 #include <actl/geometry/point.hpp>
 #include <actl/geometry/traits.hpp>
-#include <actl/std/vector.hpp>
 
 namespace ac {
-
-namespace detail {
-
-template <class Range, bool = false>
-class multi_point : public Range {
-    static_assert(std::is_same_v<point_tag, geometry::tag_t<value_t<Range>>>,
-                  "multi_point must be a range of points");
-
-public:
-    using Range::Range;
-};
-
-template <class Point>
-class multi_point<Point, true> : public multi_point<std::vector<Point>> {
-public:
-    using multi_point<std::vector<Point>>::multi_point;
-};
-
-}  // namespace detail
-
-/**
- * Multi-point, a range of points.
- * @tparam T either a point (then std::vector is used as container) or a range of points.
- */
-template <class T>
-using multi_point = detail::multi_point<T, std::is_same_v<geometry::tag_t<T>, point_tag>>;
-
-template <class T>
-struct geometry_traits<multi_point<T>>
-    : geometry_traits_base<multi_point_tag, value_t<multi_point<T>>> {};
 
 namespace detail {
 

@@ -9,7 +9,6 @@
 
 #include <actl/geometry/algorithm/ccw/point_point.hpp>
 #include <actl/geometry/polygon.hpp>
-#include <algorithm>
 #include <limits>
 
 namespace ac {

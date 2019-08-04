@@ -7,33 +7,43 @@
 
 #pragma once
 
-#include <actl/geometry/multi_point.hpp>
+#include <actl/geometry/point.hpp>
 #include <actl/iterator/cyclic_iterator.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/std/vector.hpp>
 
 namespace ac {
+
+namespace detail {
+
+template <class Range, bool = std::is_same_v<geometry::tag_t<Range>, point_tag>>
+class polygon : public Range {
+    static_assert(std::is_same_v<point_tag, geometry::tag_t<value_t<Range>>>,
+                  "polygon must be a range of points");
+
+public:
+    struct is_polygon;
+
+    using Range::Range;
+};
+
+template <class Point>
+class polygon<Point, true> : public polygon<std::vector<Point>> {
+public:
+    using polygon<std::vector<Point>>::polygon;
+};
+
+}  // namespace detail
 
 /**
  * Polygon - closed polyline defined by the sequence of vertices, that all lie in the same plane.
  * Algorithms usually expect vertices to go in counter-clockwise order.
+ * @tparam T either a point (then std::vector is used as container) or a range of points.
  */
 template <class T>
-class polygon : public multi_point<T> {
-    using MP = multi_point<T>;
-
+class polygon : public detail::polygon<T> {
 public:
-    struct is_polygon;
-    using cyclic_iterator       = ac::cyclic_iterator<MP&>;
-    using const_cyclic_iterator = ac::cyclic_iterator<const MP&>;
-
-    using MP::MP;
-
-    auto cyclic(iterator_t<MP> it) { return cyclic_iterator{*this, it}; }
-
-    auto cyclic(iterator_t<const MP> it) const { return const_cyclic_iterator{*this, it}; }
-
-    auto cyclic_begin() { return cyclic(this->begin()); }
-    auto cyclic_begin() const { return cyclic(this->begin()); }
+    using detail::polygon<T>::polygon;
 };
 
 template <class T>
