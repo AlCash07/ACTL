@@ -39,8 +39,9 @@ public:
     template <class... Ts, enable_int_if<(... && std::is_convertible_v<Ts, T>)> = 0>
     constexpr point_base(Ts&&... xs) : coordinates_{T{std::forward<Ts>(xs)}...} {}
 
+    // TODO: make explicit when conversion is narrowing.
     template <class T1>
-    explicit constexpr point_base(const point<T1, N>& rhs) {
+    constexpr point_base(const point<T1, N>& rhs) {
         for (index i = 0; i < N; ++i) coordinates_[i] = static_cast<T>(rhs[i]);
     }
 
@@ -67,8 +68,26 @@ public:
     }
 
 private:
-    // TODO: this causes point to look like ([x, y]) in pretty format. Fit it.
-    INTROSPECT(coordinates_)
+    friend struct ac::io::serialization_access;
+
+    struct composite_io_tag;
+
+    template <class Device, class Format>
+    index serialize(Device& od, Format& fmt) const {
+        index res = 0;
+        for (index i = 0; i < N; ++i) res += write(od, fmt, coordinates_[i]);
+        return res;
+    }
+
+    template <class Device, class Format>
+    bool deserialize(Device& id, Format& fmt) {
+        for (index i = 0; i < N; ++i) {
+            if (!read(id, fmt, coordinates_[i])) return false;
+        }
+        return true;
+    }
+
+    DEFINE_HASH(coordinates_)
 
     T coordinates_[N];
 };

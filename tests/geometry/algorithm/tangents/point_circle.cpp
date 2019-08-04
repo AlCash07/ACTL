@@ -6,7 +6,17 @@
  **************************************************************************************************/
 
 #include <actl/geometry/algorithm/tangents/point_circle.hpp>
-#include <actl/geometry/algorithm/tangents/tangents.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") {
+    circle<int> c{{0, 0}, 2};
+    using vpi = std::vector<point<int>>;
+    std::vector<point<double>> res;
+    tangents(point{-1, 0}, c, std::back_inserter(res));
+    ASSERT_TRUE(res.empty());
+    tangents(point{-2, 0}, c, std::back_inserter(res));
+    ASSERT_EQUAL(vpi{{-2, 0}}, res, 1e-12);
+    res = {};
+    tangents(point{2, -2}, c, std::back_inserter(res));
+    ASSERT_EQUAL(vpi{{2, 0}, {0, -2}}, res, 1e-12);
+}

@@ -9,4 +9,3 @@
 
 #include <actl/geometry/algorithm/tangents/point_circle.hpp>
 #include <actl/geometry/algorithm/tangents/point_convex_polygon.hpp>
-#include <actl/geometry/algorithm/tangents/tangents.hpp>
