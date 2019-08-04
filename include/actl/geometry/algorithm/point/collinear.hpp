@@ -12,12 +12,6 @@
 
 namespace ac {
 
-template <class AreaPolicy>
-struct collinear_policy : AreaPolicy {};
-
-template <class P = use_default>
-using comparable_collinear = collinear_policy<comparable_area_points<P>>;
-
 template <class Policy, class T0, class T1>
 inline constexpr bool collinear(const Policy& policy, const point<T0>& lhs, const point<T1>& rhs) {
     return equal(policy, area(policy, lhs, rhs), 0);

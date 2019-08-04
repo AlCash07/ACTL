@@ -13,9 +13,6 @@
 
 namespace ac {
 
-template <class P = use_default>
-struct within_sphere : comparable_distance_point_point<P> {};
-
 template <class Policy, index N, class T0, class T1>
 inline int within(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
     return 1 - sgn(policy, distance(policy, p, s.center), s.radius);

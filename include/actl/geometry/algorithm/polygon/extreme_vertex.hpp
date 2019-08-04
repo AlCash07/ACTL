@@ -13,9 +13,6 @@
 
 namespace ac {
 
-template <class CcwPolicy = comparable_ccw<>>
-struct extreme_vertex_policy : CcwPolicy {};
-
 /**
  * Extreme (minimum ccw) point index with respect to the given direction : O(log N).
  * If there are two extreme vertices, the first one in counter-clockwise order is taken.

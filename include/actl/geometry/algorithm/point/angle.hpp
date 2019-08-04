@@ -12,10 +12,6 @@
 
 namespace ac {
 
-template <class P = use_default, class F = use_default,
-          class AreaPolicy = standard_area_points<P, F>>
-struct standard_angle : AreaPolicy {};
-
 /**
  * Counter-clockwise angle.
  */

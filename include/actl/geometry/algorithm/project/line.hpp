@@ -12,12 +12,6 @@
 
 namespace ac {
 
-template <class P = use_default, class F = use_default>
-struct project_line : geometry::policy {};
-
-template <class P = use_default, class F = use_default>
-struct project_line_scalar : geometry::policy {};
-
 template <class Policy, index N, class T0, class T1, class K>
 inline auto project(line_scalar_policy<Policy> lsp, const point<T0, N>& p,
                     const line<T1, N, K>& l) {

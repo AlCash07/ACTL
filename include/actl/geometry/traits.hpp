@@ -53,18 +53,6 @@ using scalar_t = std::common_type_t<typename geometry_traits<remove_cvref_t<Ts>>
 template <class T>
 using point_t = typename geometry_traits<remove_cvref_t<T>>::point;
 
-template <class P, class... Ts>
-using product_t = deduce_t<P, scalar_t<Ts...>>;
-
-template <class... Ts>
-struct float_type : float_type<std::common_type_t<Ts...>> {};
-
-template <class T>
-struct float_type<T> : std::conditional<std::is_integral_v<T>, double, T> {};
-
-template <class F, class... Ts>
-using float_t = deduce_t<F, typename float_type<Ts...>::type>;
-
 /* ID */
 
 // Never change the order of existing IDs! However, new ones can be inserted anywhere.
@@ -103,17 +91,6 @@ template <> struct id<convex_monotone_polygon_tag> : index_constant<convex_monot
 
 template <class T0, class T1>
 using enable_int_if_swap = enable_int_if<id<T1>::value < id<T0>::value>;
-
-/* Policy */
-
-struct policy : public op::policy {};
-
-template <class T>
-struct is_policy
-    : std::bool_constant<std::is_same_v<use_default, T> || std::is_base_of_v<policy, T>> {};
-
-template <class T>
-using disable_int_if_policy = enable_int_if<!is_policy<remove_cvref_t<T>>::value>;
 
 }  // namespace geometry
 

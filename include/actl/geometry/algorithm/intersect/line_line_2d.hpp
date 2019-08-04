@@ -14,9 +14,6 @@
 
 namespace ac {
 
-template <class AreaPolicy = comparable_area_points<>>
-struct intersect_line_line : AreaPolicy {};
-
 /**
  * This policy implies that lines are in general position (don't coincide but can be parallel).
  */

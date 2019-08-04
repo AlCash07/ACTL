@@ -12,12 +12,6 @@
 
 namespace ac {
 
-template <class P = use_default>
-struct comparable_norm : geometry::policy {};
-
-template <class P = use_default, class F = use_default>
-struct standard_norm : geometry::policy {};
-
 template <class Policy, index N, class T>
 inline auto norm(const Policy& policy, const point<T, N>& p) {
     return sqrt(policy, dot(policy, p));

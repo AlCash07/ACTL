@@ -14,9 +14,6 @@
 
 namespace ac {
 
-template <class P = use_default>
-struct intersect_circle_circle_point : geometry::policy {};
-
 template <class Policy, class T0, class T1, class OutIter>
 inline OutIter intersect(const Policy& policy, const circle<T0>& lhs, const circle<T1>& rhs,
                          OutIter dst) {

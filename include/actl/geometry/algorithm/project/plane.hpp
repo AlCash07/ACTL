@@ -12,9 +12,6 @@
 
 namespace ac {
 
-template <class P = use_default, class F = use_default>
-struct project_plane : geometry::policy {};
-
 template <class Policy, index N, class T0, class T1>
 inline auto project(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl) {
     auto t = ratio(policy, pl(policy, p), dot(policy, pl.normal));
