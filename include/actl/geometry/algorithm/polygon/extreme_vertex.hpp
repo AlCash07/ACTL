@@ -28,7 +28,7 @@ inline auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly,
         return ccw(policy, direction(*j), *j - *i);
     };
     auto is_extreme = [&](auto it) {
-        auto i = cyclic_iterator{it, poly};
+        auto i = cyclic_iterator{poly, it};
         int v = vertex_cmp(i + 1, i);
         return std::pair{0 <= v && vertex_cmp(i, i - 1) < 0, v};
     };

@@ -19,7 +19,7 @@ namespace ac {
  */
 template <class Policy, class T, enable_int_if_policy<Policy> = 0>
 inline int ccw(const Policy& policy, const simple_polygon<T>& poly) {
-    auto it = cyclic_iterator{min_element(poly, op::less_functor(policy)), poly};
+    auto it = cyclic_iterator{poly, min_element(poly, op::less_functor(policy))};
     return ccw(policy, it[-1], it[0], it[1]);
 }
 

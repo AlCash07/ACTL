@@ -28,9 +28,9 @@ public:
 
     using MP::MP;
 
-    auto cyclic(iterator_t<MP> it) { return cyclic_iterator{it, *this}; }
+    auto cyclic(iterator_t<MP> it) { return cyclic_iterator{*this, it}; }
 
-    auto cyclic(iterator_t<const MP> it) const { return const_cyclic_iterator{it, *this}; }
+    auto cyclic(iterator_t<const MP> it) const { return const_cyclic_iterator{*this, it}; }
 
     auto cyclic_begin() { return cyclic(this->begin()); }
     auto cyclic_begin() const { return cyclic(this->begin()); }

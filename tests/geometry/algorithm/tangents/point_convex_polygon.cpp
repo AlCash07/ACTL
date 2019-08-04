@@ -25,11 +25,11 @@ TEST("max polygon") {
         std::vector<decltype(poly.cbegin())> res;
         tangents(policy, p, poly, std::back_inserter(res));
         ASSERT_EQUAL(2, res.size());
-        auto it0 = cyclic_iterator{res[0], std::as_const(poly)};
+        auto it0 = cyclic_iterator{std::as_const(poly), res[0]};
         line<int> l0{p, *it0};
         ASSERT_TRUE(0 <= ccw(policy, it0[1], l0));
         ASSERT_TRUE(0 < ccw(policy, it0[-1], l0));
-        auto it1 = cyclic_iterator{res[1], std::as_const(poly)};
+        auto it1 = cyclic_iterator{std::as_const(poly), res[1]};
         line<int> l1{p, *it1};
         ASSERT_TRUE(0 > ccw(policy, it1[1], l1));
         ASSERT_TRUE(0 >= ccw(policy, it1[-1], l1));

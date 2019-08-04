@@ -17,15 +17,14 @@ namespace ac {
  * Iterator that moves from the last element to the first and vice versa.
  */
 template <class Range>
-class cyclic_iterator
-    : public iterator_adaptor<cyclic_iterator<Range>, iterator_t<std::remove_reference_t<Range>>> {
-    using It = iterator_t<std::remove_reference_t<Range>>;
+class cyclic_iterator : public iterator_adaptor<cyclic_iterator<Range>, iterator_t<Range>> {
+    using It = iterator_t<Range>;
 
     It& it() { return this->base_ref(); }
 
 public:
-    explicit cyclic_iterator(It it, Range range)
-        : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{std::move(range)} {
+    explicit cyclic_iterator(Range& range, It it)
+        : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{&range} {
         ACTL_ASSERT(!std::empty(range));
         if (it == end()) this->base_ref() = begin();
     }
@@ -33,8 +32,8 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    It begin() const { return std::begin(range_); }
-    It end() const { return std::end(range_); }
+    It begin() const { return std::begin(*range_); }
+    It end() const { return std::end(*range_); }
 
     void increment() {
         ++it();
@@ -47,7 +46,7 @@ private:
     }
 
     void advance(difference_t<It> n) {
-        auto cycle = static_cast<difference_t<It>>(std::size(range_));
+        auto cycle = static_cast<difference_t<It>>(std::size(*range_));
         ACTL_ASSERT(adl::abs(n) < cycle);
         if (n > 0) {
             it() += n - (n >= (end() - it()) ? cycle : 0);
@@ -57,19 +56,16 @@ private:
     }
 
     difference_t<It> distance_to(const cyclic_iterator& rhs) const {
-        auto distance = rhs.base() - this->base();
-        return distance >= 0 ? distance : distance + std::size(range_);
+        auto dist = rhs.base() - this->base();
+        return dist >= 0 ? dist : dist + static_cast<difference_t<It>>(std::size(*range_));
     }
 
-    Range range_;
+    Range* range_;
 };
 
-template <class It, class R>
-cyclic_iterator(It, R&&) -> cyclic_iterator<R>;
-
 template <class Range>
-inline auto cyclic_begin(Range&& range) {
-    return cyclic_iterator{range.begin(), range};
+inline auto cyclic_begin(Range& range) {
+    return cyclic_iterator{range, std::begin(range)};
 }
 
 }  // namespace ac
