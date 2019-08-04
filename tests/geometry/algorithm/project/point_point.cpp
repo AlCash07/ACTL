@@ -5,9 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/point/circumcenter.hpp>
+#include <actl/geometry/algorithm/project/point_point.hpp>
 #include <actl/test.hpp>
 
-TEST("default") {
-    ASSERT_EQUAL(point{3, 1}, circumcenter(point{0, 0}, point{4, 4}, point{6, 0}), 1e-12);
-}
+TEST("default") { ASSERT_EQUAL(point{2, 4}, project(point{9, 1}, point{2, 4})); }

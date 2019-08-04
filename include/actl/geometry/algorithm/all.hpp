@@ -17,7 +17,7 @@
 #include <actl/geometry/algorithm/point/all.hpp>
 #include <actl/geometry/algorithm/polygon/all.hpp>
 #include <actl/geometry/algorithm/project/all.hpp>
-#include <actl/geometry/algorithm/reflect.hpp>
+#include <actl/geometry/algorithm/reflect/all.hpp>
 #include <actl/geometry/algorithm/rotate/all.hpp>
 #include <actl/geometry/algorithm/tangents/all.hpp>
 #include <actl/geometry/algorithm/within/all.hpp>

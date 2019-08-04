@@ -1,20 +1,14 @@
 /***************************************************************************************************
- * Copyright 2017 Oleksandr Bacherikov.
+ * Copyright 2018 Oleksandr Bacherikov.
  *
  *             Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#pragma once
-
-#include <actl/geometry/algorithm/nearest/nearest.hpp>
 #include <actl/geometry/algorithm/project/point_plane.hpp>
+#include <actl/geometry/algorithm/reflect/point.hpp>
+#include <actl/test.hpp>
 
-namespace ac {
-
-template <class Policy, index N, class T0, class T1>
-inline auto nearest(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl) {
-    return std::pair{p, project(policy, p, pl)};
+TEST("plane") {
+    ASSERT_EQUAL(point{-2, -3, -2}, reflect(point{0, 1, 4}, plane<int>{{1, 2, 3}, 0}), 1e-12);
 }
-
-}  // namespace ac
