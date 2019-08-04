@@ -27,7 +27,8 @@ inline constexpr auto product(policy, const T& lhs, const U& rhs) {
 template <class P>
 struct product_policy : virtual policy {};
 
-template <class P, class T, class U>
+template <class P, class T, class U,
+          enable_int_if<std::is_convertible_v<T, P> && std::is_convertible_v<U, P>> = 0>
 inline constexpr auto product(product_policy<P>, const T& lhs, const U& rhs) {
     return static_cast<P>(lhs) * static_cast<P>(rhs);
 }
@@ -51,7 +52,8 @@ inline constexpr auto ratio(policy, const T& lhs, const U& rhs) {
 template <class R>
 struct ratio_policy : virtual policy {};
 
-template <class R, class T, class U>
+template <class R, class T, class U,
+          enable_int_if<std::is_convertible_v<T, R> && std::is_convertible_v<U, R>> = 0>
 inline constexpr auto ratio(ratio_policy<R>, const T& lhs, const U& rhs) {
     return static_cast<R>(lhs) / static_cast<R>(rhs);
 }

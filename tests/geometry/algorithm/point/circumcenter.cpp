@@ -8,4 +8,4 @@
 #include <actl/geometry/algorithm/point/circumcenter.hpp>
 #include <actl/test.hpp>
 
-TEST("") {}
+TEST("default") { ASSERT_EQUAL(point{3, 1}, circumcenter(point{0, 0}, point{4, 4}, point{6, 0})); }

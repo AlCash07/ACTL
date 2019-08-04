@@ -7,25 +7,26 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/ccw/point_point.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
 
 namespace ac {
 
-template <class F = use_default, class IntersectPolicy = intersect_line_line<>>
-struct circumcenter_policy : IntersectPolicy {};
-
-template <class F, class IP, class T0, class T1, class T2>
-inline auto circumcenter(const circumcenter_policy<F, IP>& policy, const point<T0>& a,
-                         const point<T1>& b, const point<T2>& c) {
-    point<geometry::float_t<F, T0, T1, T2>> res;
-    intersect(policy, make_line(a + b, perpendicular(a - b), true),
+template <class Policy, class T0, class T1, class T2>
+inline auto circumcenter(const Policy& policy, const point<T0>& a, const point<T1>& b,
+                         const point<T2>& c) {
+    ACTL_ASSERT(ccw(policy, a, b, c) != 0);
+    using T = geometry::scalar_t<T0, T1, T2>;
+    // TODO: use actual return type of intersect.
+    point<decltype(ratio(policy, T{}, T{}))> res;
+    intersect(general_position_policy{policy}, make_line(a + b, perpendicular(a - b), true),
               make_line(a + c, perpendicular(a - c), true), &res);
-    return res / 2;
+    return ratio(policy, res, 2);
 }
 
 template <class T0, class T1, class T2>
 inline auto circumcenter(const point<T0>& a, const point<T1>& b, const point<T2>& c) {
-    return circumcenter(circumcenter_policy{}, a, b, c);
+    return circumcenter(geometry_policy, a, b, c);
 }
 
 }  // namespace ac
