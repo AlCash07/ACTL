@@ -7,70 +7,47 @@
 
 #pragma once
 
+#include <actl/functional/sqrt.hpp>
+#include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/geometry/algorithm/point/angle.hpp>
 #include <actl/geometry/sphere.hpp>
-#include <actl/iterator/output_type.hpp>
-#include <actl/numeric/math.hpp>
 
 namespace ac {
-
-struct intersect_circle_circle_scalar : geometry::policy {};
 
 template <class P = use_default>
 struct intersect_circle_circle_point : geometry::policy {};
 
-// TODO: implement using cosine theorem.
-template <class T0, class T1, class OutIter>
-inline auto intersect(intersect_circle_circle_scalar, const circle<T0>& lhs, const circle<T1>& rhs,
-                      OutIter dst) {
-    using O = geometry::scalar_t<output_type_t<OutIter>>;
+template <class Policy, class T0, class T1, class OutIter>
+inline OutIter intersect(const Policy& policy, const circle<T0>& lhs, const circle<T1>& rhs,
+                         OutIter dst) {
     auto centers_vector = rhs.center - lhs.center;
-    auto centers_angle = angle(standard_angle<O, O>{}, centers_vector);
-    return dst;
-}
-
-template <class P, class T0, class T1, class OutIter>
-inline auto intersect(intersect_circle_circle_point<P>, const circle<T0>& lhs,
-                      const circle<T1>& rhs, OutIter dst) {
-    using X = geometry::product_t<P, T0, T1>;
-    using O = geometry::scalar_t<output_type_t<OutIter>>;
-    auto centers_vector = rhs.center - lhs.center;
-    auto centers_dist = dot(default_policy, centers_vector);
-    X lradius = static_cast<X>(lhs.radius);
-    X rradius = static_cast<X>(rhs.radius);
-    int sgn0 = sgn(centers_dist, sqr(lradius - rradius));
-    int sgn1 = sgn(sqr(lradius + rradius), centers_dist);
+    auto centers_dist2 = dot(policy, centers_vector);
+    int sgn0 = sgn(policy, centers_dist2, sqr(policy, lhs.radius - rhs.radius));
+    int sgn1 = sgn(policy, sqr(policy, lhs.radius + rhs.radius), centers_dist2);
     if (sgn0 < 0 || sgn1 < 0) return dst;
-    auto a = static_cast<O>(sqr(lradius) - sqr(rradius)) / centers_dist;
-    point<O> projection = lhs.center + centers_vector * (a + 1) / 2;
+    auto lradius2 = sqr(policy, lhs.radius);
+    auto rradius2 = sqr(policy, rhs.radius);
+    auto a = ratio(policy, lradius2 - rradius2, centers_dist2);
+    auto projection = lhs.center + product(policy, ratio(policy, a + 1, 2), centers_vector);
     if (sgn0 == 0 || sgn1 == 0) {
         *dst++ = projection;
     } else {
-        auto b = static_cast<O>(sqr(lradius) + sqr(rradius)) / centers_dist;
-        auto offset = adl::sqrt(2 * b - sqr(a) - 1) / 2;
-        *dst++ = projection - perpendicular(centers_vector) * offset;
-        *dst++ = projection + perpendicular(centers_vector) * offset;
+        auto b = ratio(policy, lradius2 + rradius2, centers_dist2);
+        auto offset = ratio(policy, sqrt(policy, product(policy, 2, b) - sqr(policy, a) - 1), 2);
+        auto offset_vector = product(policy, offset, perpendicular(centers_vector));
+        *dst++ = projection - offset_vector;
+        *dst++ = projection + offset_vector;
     }
     return dst;
 }
 
-namespace detail {
-
-template <class T0, class T1, class It>
-inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, scalar_tag) {
-    return ac::intersect(intersect_circle_circle_scalar{}, lhs, rhs, dst);
-}
-
-template <class T0, class T1, class It>
-inline auto intersect(const circle<T0>& lhs, const circle<T1>& rhs, It dst, point_tag) {
-    return ac::intersect(intersect_circle_circle_point{}, lhs, rhs, dst);
-}
-
-}  // namespace detail
-
-template <class T0, class T1, class OutIter>
-inline auto intersect(use_default, const circle<T0>& lhs, const circle<T1>& rhs, OutIter dst) {
-    return detail::intersect(lhs, rhs, dst, geometry::tag_t<output_type_t<OutIter>>{});
+template <class Policy, class T0, class T1, class OutIter>
+inline OutIter intersect(polar_angle_policy<Policy> pap, const circle<T0>& lhs,
+                         const circle<T1>& rhs, OutIter dst) {
+    auto centers_vector = rhs.center - lhs.center;
+    auto centers_angle = angle(pap.policy, centers_vector);
+    // TODO: implement using cosine theorem.
+    return dst;
 }
 
 }  // namespace ac

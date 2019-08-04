@@ -48,6 +48,11 @@ sphere(const point<T0, N>&, const T1&) -> sphere<geometry::scalar_t<T0, T1>, N>;
 template <index N, class T>
 struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T, N>> {};
 
+template <class Policy, index N, class T>
+inline constexpr bool degenerate(const Policy& policy, const sphere<T, N>& s) {
+    return !less(policy, 0, s.radius);
+}
+
 /* circle */
 
 template <class T>
@@ -57,5 +62,13 @@ template <class T0, class T1>
 inline constexpr auto make_circle(const point<T0>& center, const T1& radius) {
     return circle<geometry::scalar_t<T0, T1>>{center, radius};
 }
+
+// Policy to indicate that polar angle is expected instead of a point.
+template <class Policy>
+struct polar_angle_policy : virtual op::policy {
+    explicit polar_angle_policy(const Policy& x) : policy{x} {}
+
+    const Policy& policy;
+};
 
 }  // namespace ac
