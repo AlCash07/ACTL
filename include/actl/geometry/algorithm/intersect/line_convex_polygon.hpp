@@ -19,7 +19,7 @@ namespace ac {
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 271.
  */
 template <class Policy, class T, class K, class U, class OutIter>
-inline OutIter intersect(const line_scalar_policy<Policy>& lsp, const line<T, 2, K>& l,
+inline OutIter intersect(line_scalar_policy<Policy> lsp, const line<T, 2, K>& l,
                          const convex_polygon<U>& poly, OutIter dst) {
     auto& policy = lsp.policy;
     ACTL_ASSERT(!degenerate(policy, l));

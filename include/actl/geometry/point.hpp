@@ -14,7 +14,6 @@
 #include <actl/util/introspection.hpp>
 #include <actl/util/span.hpp>
 #include <functional>
-#include <initializer_list>
 
 namespace ac {
 
@@ -55,12 +54,6 @@ public:
 
     constexpr T& operator()(index i) { return (*this)[i]; }
     constexpr const T& operator()(index i) const { return (*this)[i]; }
-
-    explicit constexpr operator bool() const {
-        for (index i = 0; i < N; ++i)
-            if ((*this)[i]) return true;
-        return false;
-    }
 
     friend void swap(point_base& lhs, point_base& rhs) {
         using std::swap;
@@ -195,7 +188,7 @@ inline constexpr auto product(const Policy& policy, const T0& factor, const poin
 
 template <class Policy, index N, class T0, class T1>
 inline constexpr auto ratio(const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
-    ACTL_ASSERT(!equal(policy, factor, T1{0}));
+    ACTL_ASSERT(!equal(policy, factor, 0));
     return detail::apply<N>([&policy, &factor](const T0& x) { return ratio(policy, x, factor); },
                             lhs);
 }
@@ -227,7 +220,7 @@ inline constexpr auto dot(const point<T, N>& p) {
 template <class Policy, index N, class T>
 inline constexpr bool degenerate(const Policy& policy, const point<T, N>& p) {
     for (index i = 0; i < N; ++i) {
-        if (!equal(policy, p[i], T{})) return false;
+        if (!equal(policy, p[i], 0)) return false;
     }
     return true;
 }

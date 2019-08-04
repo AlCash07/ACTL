@@ -21,9 +21,9 @@ namespace ac {
  * Line with simple polygon intersection : O(N).
  */
 template <class Policy, class T, class K, class U, class OutIter>
-inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T, 2, K>& l,
+inline OutIter intersect(line_scalar_policy<Policy> lsp, const line<T, 2, K>& l,
                          const simple_polygon<U>& poly, OutIter dst) {
-    auto& policy = lcp.policy;
+    auto& policy = lsp.policy;
     // TODO: fix the case when polygon touches the line.
     ACTL_ASSERT(!degenerate(policy, l));
     auto vertex_sgn = [&](auto it) { return ccw(policy, *it, l); };
@@ -40,9 +40,9 @@ inline OutIter intersect(const line_scalar_policy<Policy>& lcp, const line<T, 2,
             } else {
                 ok = next_sgn != prev_sgn;
             }
-            if (ok && between_endpoints(policy, *it, l)) *dst++ = project(lcp, *it, l);
+            if (ok && between_endpoints(policy, *it, l)) *dst++ = project(lsp, *it, l);
         } else if (next_sgn == -it_sgn) {
-            dst = intersect(lcp, l, make_line(*it, it[1]), dst);
+            dst = intersect(lsp, l, make_line(*it, it[1]), dst);
         }
         prev_sgn = it_sgn;
         it_sgn = next_sgn;

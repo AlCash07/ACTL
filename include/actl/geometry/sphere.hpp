@@ -30,8 +30,6 @@ public:
     template <class T1>
     explicit constexpr sphere(const sphere<T1, N>& rhs) : sphere{rhs.center, rhs.radius} {}
 
-    explicit constexpr operator bool() const { return radius > T{0}; }
-
     friend void swap(sphere& lhs, sphere& rhs) {
         using std::swap;
         swap(lhs.center, rhs.center);

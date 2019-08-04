@@ -34,8 +34,6 @@ public:
     template <class T1>
     explicit constexpr plane(const plane<T1, N>& rhs) : plane{rhs.normal, rhs.d} {}
 
-    explicit constexpr operator bool() const { return normal; }
-
     friend void swap(plane& lhs, plane& rhs) {
         using std::swap;
         swap(lhs.normal, rhs.normal);

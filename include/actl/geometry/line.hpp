@@ -110,8 +110,6 @@ public:
         return *this;
     }
 
-    constexpr operator bool() const { return vector; }
-
     friend void swap(line& lhs, line& rhs) {
         using std::swap;
         swap(lhs.start, rhs.start);
