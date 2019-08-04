@@ -8,34 +8,31 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/geometry/algorithm/ccw/point_line.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
 #include <actl/geometry/algorithm/polygon/extreme_vertex.hpp>
 
 namespace ac {
 
-template <class AreaPolicy = comparable_area_points<>>
-struct intersect_line_convex_polygon : extreme_vertex_policy<ccw_policy<AreaPolicy>> {
-    intersect_line_line<AreaPolicy> intersect_policy;
-};
-
-namespace detail {
-
 /**
- * Line with convex polygon intersection: O(log N).
+ * Intersection of line with convex polygon: O(log N).
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 271.
  */
-template <class AP, class T0, class K, class T1, class It>
-inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const line<T0, 2, K>& line,
-                      const convex_polygon<T1>& polygon, It dst) {
-    ACTL_ASSERT(line);
-    auto right = polygon.cyclic(
-        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return line.vector; }));
-    auto left = polygon.cyclic(
-        extreme_vertex(policy, polygon, [&line](const point<T1>&) { return -line.vector; }));
-    auto vertex_sgn = [&](auto it) { return ccw(policy, *it, line); };
-    int right_sgn = vertex_sgn(right), left_sgn = vertex_sgn(left);
+template <class Policy, class T, class K, class U, class OutIter>
+inline OutIter intersect(const line_scalar_policy<Policy>& lsp, const line<T, 2, K>& l,
+                         const convex_polygon<U>& poly, OutIter dst) {
+    auto& policy = lsp.policy;
+    ACTL_ASSERT(!degenerate(policy, l));
+    auto right =
+        cyclic_iterator{poly, extreme_vertex(policy, poly, [&l](const auto&) { return l.vector; })};
+    auto left = cyclic_iterator{
+        poly, extreme_vertex(policy, poly, [&l](const auto&) { return -l.vector; })};
+    auto vertex_sgn = [&](auto it) { return ccw(policy, *it, l); };
+    int right_sgn = vertex_sgn(right);
+    int left_sgn = vertex_sgn(left);
     if (left_sgn < 0 || 0 < right_sgn) return dst;
-    auto intersect_chain = [&](auto first, auto last, int first_sgn, It dst) {
+    // TODO: in case line passes through exactly one vertex, it's reported twice. Fix this.
+    auto intersect_chain = [&](auto first, auto last, int first_sgn, OutIter dst) {
         while (first + 1 != last) {
             auto middle = first + (last - first) / 2;
             if (vertex_sgn(middle) == first_sgn) {
@@ -44,24 +41,10 @@ inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const lin
                 last = middle;
             }
         }
-        return intersect(policy.intersect_policy, line, make_line(*first, *last), dst);
+        return intersect(line_scalar_policy{policy}, l, make_line(*first, *last), dst);
     };
     dst = intersect_chain(left, right, left_sgn, dst);
     return intersect_chain(right, left, right_sgn, dst);
-}
-
-}  // namespace detail
-
-template <class AP, class T0, class K, class T1, class OutIter>
-inline auto intersect(const intersect_line_convex_polygon<AP>& policy, const line<T0, 2, K>& line,
-                      const convex_polygon<T1>& polygon, OutIter dst) {
-    return detail::intersect(policy, line, polygon, detail::adapt_iterator(line, dst));
-}
-
-template <class T0, class K, class T1, class OutIter>
-inline auto intersect(use_default, const line<T0, 2, K>& line, const convex_polygon<T1>& polygon,
-                      OutIter dst) {
-    return intersect(intersect_line_convex_polygon{}, line, polygon, dst);
 }
 
 }  // namespace ac

@@ -91,12 +91,12 @@ public:
 
     template <class T1 = T, class T2 = T>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
-        : start{a}, vector{vector ? point<T, N>{a} : point<T, N>{b - a}} {}
+        : start{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
 
     template <class T1 = T, class T2 = T>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, uint8_t kind,
                             bool vector = false)
-        : Kind{kind}, start{a}, vector{vector ? point<T, N>{a} : point<T, N>{b - a}} {}
+        : Kind{kind}, start{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
 
     template <class T1, class K1>
     explicit constexpr line(const line<T1, N, K1>& rhs)

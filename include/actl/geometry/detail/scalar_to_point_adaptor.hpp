@@ -21,13 +21,13 @@ public:
     using reference = void;
     using iterator_category = std::output_iterator_tag;
 
-    explicit scalar_to_point_adaptor(const Line& line, It it) : it_{it}, line_{line} {}
+    explicit scalar_to_point_adaptor(const Line& line, It it) : it_{it}, line_{&line} {}
 
     scalar_to_point_adaptor& operator = (const scalar_to_point_adaptor&) = default;
 
     template <class T>
     void operator = (const T& x) {
-        *it_ = line_(x);
+        *it_ = (*line_)(x);
     }
 
     scalar_to_point_adaptor& operator*() { return *this; }
@@ -38,7 +38,7 @@ public:
 
 private:
     It it_;
-    const Line& line_;
+    const Line* line_;
 };
 
 template <class Line, class It>
