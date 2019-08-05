@@ -46,7 +46,7 @@ inline OutIter intersect(line_scalar_policy<Policy> lsp, const line<T0, 2, K0>& 
     auto& policy = lsp.policy;
     auto tarea = area(policy, rhs.vector, lhs.vector);
     if (equal(policy, tarea, 0)) return dst;
-    auto v = lhs.start - rhs.start;
+    auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
     auto rarea = area(policy, v, lhs.vector);
     if (!detail::cross_test(policy, lhs, rhs, tarea, larea, rarea)) return dst;
@@ -65,7 +65,7 @@ template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
 inline OutIter intersect(const Policy& policy, const line<T0, 2, K0>& lhs,
                          const line<T1, 2, K1>& rhs, OutIter dst) {
     auto tarea = area(policy, rhs.vector, lhs.vector);
-    auto v = lhs.start - rhs.start;
+    auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
     if (equal(policy, tarea, 0)) {
         if (!equal(policy, larea, 0)) return dst;

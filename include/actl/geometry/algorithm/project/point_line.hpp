@@ -16,7 +16,7 @@ template <class Policy, index N, class T0, class T1, class K>
 inline auto project(line_scalar_policy<Policy> lsp, const point<T0, N>& p,
                     const line<T1, N, K>& l) {
     auto& policy = lsp.policy;
-    return ratio(policy, dot(policy, p - l.start, l.vector), dot(policy, l.vector));
+    return ratio(policy, dot(policy, p - l.begin, l.vector), dot(policy, l.vector));
 }
 
 template <class Policy, index N, class T0, class T1, class K>

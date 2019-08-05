@@ -12,62 +12,66 @@
 
 namespace ac {
 
-namespace endpoint {
+enum class endpoint : uint8_t { free = 0, closed = 1, open = 2 };
 
-enum : uint8_t { free = 0, closed = 1, open = 2 };
+enum class line_kind : uint8_t;
 
-inline constexpr uint8_t combine(uint8_t start, uint8_t end) {
-    return static_cast<uint8_t>(start | end << 2);
+inline constexpr uint8_t combine(endpoint begin, endpoint end) {
+    return static_cast<uint8_t>(static_cast<int>(begin) | static_cast<int>(end) << 2);
 }
-inline constexpr uint8_t start(uint8_t combined) { return static_cast<uint8_t>(combined & 3); }
-inline constexpr uint8_t end(uint8_t combined) { return static_cast<uint8_t>(combined >> 2); }
 
-}  // namespace endpoint
+inline constexpr endpoint begin(line_kind kind) {
+    return static_cast<endpoint>(static_cast<int>(kind) & 3);
+}
 
-namespace line_kind {
+inline constexpr endpoint end(line_kind kind) {
+    return static_cast<endpoint>(static_cast<int>(kind) >> 2);
+}
 
-enum : uint8_t {
-    free              = endpoint::combine(endpoint::free,   endpoint::free),
-    closed_ray        = endpoint::combine(endpoint::closed, endpoint::free),
-    open_ray          = endpoint::combine(endpoint::open,   endpoint::free),
-    closed_segment    = endpoint::combine(endpoint::closed, endpoint::closed),
-    half_open_segment = endpoint::combine(endpoint::open,   endpoint::closed),
-    open_segment      = endpoint::combine(endpoint::open,   endpoint::open)
+inline constexpr bool is_valid(line_kind kind) {
+    int s = static_cast<int>(begin(kind));
+    return static_cast<int>(end(kind)) <= s && s < 3;
+}
+
+enum class line_kind : uint8_t {
+    free              = combine(endpoint::free,   endpoint::free),
+    closed_ray        = combine(endpoint::closed, endpoint::free),
+    open_ray          = combine(endpoint::open,   endpoint::free),
+    closed_segment    = combine(endpoint::closed, endpoint::closed),
+    half_open_segment = combine(endpoint::open,   endpoint::closed),
+    open_segment      = combine(endpoint::open,   endpoint::open)
 };
 
-inline constexpr bool is_valid(uint8_t kind) {
-    uint8_t start = endpoint::start(kind);
-    return endpoint::end(kind) <= start && start < 3;
-}
+namespace detail {
 
-template <uint8_t Kind>
+template <line_kind Kind>
 struct static_kind {
-    static_kind(uint8_t kind = Kind) { (*this) = kind; }
+    static_kind(line_kind kind = Kind) { (*this) = kind; }
 
-    static constexpr uint8_t kind() { return Kind; }
+    static constexpr line_kind kind() { return Kind; }
 
-    void operator = (uint8_t kind) { ACTL_ASSERT(Kind == kind); }
+    void operator = (line_kind kind) { ACTL_ASSERT(Kind == kind); }
 };
 
 class any_kind {
 public:
-    any_kind(uint8_t kind = free) { (*this) = kind; }
+    any_kind(line_kind kind = line_kind::free) { (*this) = kind; }
 
-    void operator = (uint8_t kind) {
+    void operator = (line_kind kind) {
         ACTL_ASSERT(is_valid(kind));
         kind_ = kind;
     }
 
-    uint8_t kind() const { return kind_; }
+    line_kind kind() const { return kind_; }
 
 private:
-    uint8_t kind_;
+    line_kind kind_;
 
     friend struct ac::io::serialization_access;
 
     template <class Device, class Format>
     index serialize(Device& od, Format& fmt) const {
-        return write(od, fmt, kind_);
+        return write(od, fmt, static_cast<int>(kind_));
     }
 
     template <class Device, class Format>
@@ -76,55 +80,52 @@ private:
     }
 };
 
-}  // namespace line_kind
+}  // namespace detail
 
 /**
  * N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
  */
-template <class T, index N = 2, class Kind = line_kind::static_kind<line_kind::free>>
+template <class T, index N = 2, class Kind = detail::static_kind<line_kind::free>>
 class line : public Kind {
 public:
-    point<T, N> start;
+    point<T, N> begin;
     point<T, N> vector;
 
     constexpr line() = default;
 
     template <class T1 = T, class T2 = T>
     explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
-        : start{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
+        : begin{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
 
     template <class T1 = T, class T2 = T>
-    explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, uint8_t kind,
+    explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, line_kind kind,
                             bool vector = false)
-        : Kind{kind}, start{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
+        : Kind{kind}, begin{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
 
     template <class T1, class K1>
     explicit constexpr line(const line<T1, N, K1>& rhs)
-        : Kind{rhs.kind()}, start{rhs.start}, vector{rhs.vector} {}
+        : Kind{rhs.kind()}, begin{rhs.begin}, vector{rhs.vector} {}
 
     template <class T1, class K1>
     constexpr line& operator = (const line<T1, N, K1>& rhs) {
         Kind::operator=(rhs.kind());
-        start = rhs.start;
+        begin = rhs.begin;
         vector = rhs.vector;
         return *this;
     }
 
     friend void swap(line& lhs, line& rhs) {
         using std::swap;
-        swap(lhs.start, rhs.start);
+        swap(lhs.begin, rhs.begin);
         swap(lhs.vector, rhs.vector);
         swap(static_cast<Kind&>(lhs), rhs);
     }
 
-    constexpr point<T, N> end() const { return start + vector; }
-
-    constexpr uint8_t start_kind() const { return endpoint::start(this->kind()); }
-    constexpr uint8_t end_kind() const { return endpoint::end(this->kind()); }
+    constexpr point<T, N> end() const { return begin + vector; }
 
     template <class Policy, class T1>
     constexpr auto operator()(const Policy& policy, const T1& t) const {
-        return start + product(policy, t, vector);
+        return begin + product(policy, t, vector);
     }
 
     template <class T1>
@@ -136,17 +137,17 @@ private:
     Kind& base() { return *this; }
     const Kind& base() const { return *this; }
 
-    INTROSPECT(start, vector, base())
+    INTROSPECT(begin, vector, base())
 };
 
 template <class T, index N = 2>
-using ray = line<T, N, line_kind::static_kind<line_kind::closed_ray>>;
+using ray = line<T, N, detail::static_kind<line_kind::closed_ray>>;
 
 template <class T, index N = 2>
-using segment = line<T, N, line_kind::static_kind<line_kind::closed_segment>>;
+using segment = line<T, N, detail::static_kind<line_kind::closed_segment>>;
 
 template <class T, index N = 2>
-using any_line = line<T, N, line_kind::any_kind>;
+using any_line = line<T, N, detail::any_kind>;
 
 template <index N, class T, class K>
 struct geometry_traits<line<T, N, K>> : geometry_traits_base<line_tag, point<T, N>> {};
@@ -169,15 +170,15 @@ inline constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b,
 
 template <index N, class T0, class T1>
 inline constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
-                                    uint8_t kind = line_kind::free, bool vector = false) {
+                                    line_kind kind = line_kind::free, bool vector = false) {
     return any_line<geometry::scalar_t<T0, T1>, N>{a, b, kind, vector};
 }
 
 template <index N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
-inline constexpr Line make_any_line(const point<T0, N>& a, uint8_t akind,
-                                    const point<T1, N>& b, uint8_t bkind) {
+inline constexpr Line make_any_line(const point<T0, N>& a, endpoint akind,
+                                    const point<T1, N>& b, endpoint bkind) {
     if (akind < bkind) return make_any_line(b, bkind, a, akind);
-    return Line{a, b, endpoint::combine(akind, bkind)};
+    return Line{a, b, static_cast<line_kind>(combine(akind, bkind))};
 }
 
 template <class Policy, index N, class T, class K>

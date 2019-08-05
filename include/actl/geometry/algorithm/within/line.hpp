@@ -15,8 +15,8 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1, class K>
 inline enum within within(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
-    if (degenerate(policy, l)) return equal(policy, p, l.start) ? within::border : within::outside;
-    if (!collinear(policy, p - l.start, l.vector)) return within::outside;
+    if (degenerate(policy, l)) return equal(policy, p, l.begin) ? within::border : within::outside;
+    if (!collinear(policy, p - l.begin, l.vector)) return within::outside;
     return detail::between_endpoints(policy, p, l) ? within::border : within::outside;
 }
 

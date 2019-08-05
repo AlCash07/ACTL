@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Policy, class T0, class T1, class K, enable_int_if_policy<Policy> = 0>
 inline constexpr int ccw(const Policy& policy, const point<T0>& p, const line<T1, 2, K>& l) {
-    return ccw(policy, p - l.start, l.vector);
+    return ccw(policy, p - l.begin, l.vector);
 }
 
 }  // namespace ac

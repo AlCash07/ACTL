@@ -23,9 +23,9 @@ TEST("general position") {
 template <ac::index N, class T, class K1, class K2>
 inline bool equal_lines(const line<T, N, K1>& lhs, const line<T, N, K2>& rhs) {
     if (lhs.kind() != rhs.kind()) return false;
-    bool ok = lhs.start == rhs.start && lhs.vector == rhs.vector;
-    if (lhs.end_kind() == lhs.start_kind()) {
-        if (lhs.start == rhs.end() && lhs.vector == -rhs.vector) ok = true;
+    bool ok = lhs.begin == rhs.begin && lhs.vector == rhs.vector;
+    if (end(lhs.kind()) == begin(lhs.kind())) {
+        if (lhs.begin == rhs.end() && lhs.vector == -rhs.vector) ok = true;
     }
     return ok;
 }
@@ -48,11 +48,11 @@ TEST("segments interleaving") {
 }
 
 TEST("common all kinds") {
-    auto kinds = irange<uint8_t>(0, 3);
-    for (uint8_t s0 : kinds) {
-        for (uint8_t e0 : kinds) {
-            for (uint8_t s1 : kinds) {
-                for (uint8_t e1 : kinds) {
+    auto kinds = std::vector{endpoint::free, endpoint::closed, endpoint::open};
+    for (endpoint s0 : kinds) {
+        for (endpoint e0 : kinds) {
+            for (endpoint s1 : kinds) {
+                for (endpoint e1 : kinds) {
                     point p0{0, 0}, p1{2, 1}, p2{4, 2}, p3{6, 3};
                     auto l0 = make_any_line(p0, s0, p2, e0);
                     auto l1 = make_any_line(p1, s1, p3, e1);

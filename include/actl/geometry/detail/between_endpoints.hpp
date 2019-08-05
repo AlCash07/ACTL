@@ -14,10 +14,10 @@ namespace ac::detail {
 template <class Policy, index N, class T0, class T1, class K>
 inline bool between_endpoints(const Policy& policy, const point<T0, N>& p,
                               const line<T1, N, K>& l) {
-    if (l.end_kind() == endpoint::free)
-        return endpoint_test(policy, l.start_kind(), 0, dot(policy, p - l.start, l.vector));
-    if (l.kind() == line_kind::half_open_segment && equal(policy, p, l.start)) return false;
-    return endpoint_test(policy, l.end_kind(), 0, dot(policy, l.start - p, p - l.end()));
+    if (end(l.kind()) == endpoint::free)
+        return endpoint_test(policy, begin(l.kind()), 0, dot(policy, p - l.begin, l.vector));
+    if (l.kind() == line_kind::half_open_segment && equal(policy, p, l.begin)) return false;
+    return endpoint_test(policy, end(l.kind()), 0, dot(policy, l.begin - p, p - l.end()));
 }
 
 }  // namespace ac::detail

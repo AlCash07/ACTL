@@ -9,11 +9,11 @@
 #include <actl/test.hpp>
 
 TEST("general position all kinds") {
-    auto kinds = irange<uint8_t>(0, 3);
-    for (uint8_t s0 : kinds) {
-        for (uint8_t e0 : kinds) {
-            for (uint8_t s1 : kinds) {
-                for (uint8_t e1 : kinds) {
+    auto kinds = std::vector{endpoint::free, endpoint::closed, endpoint::open};
+    for (endpoint s0 : kinds) {
+        for (endpoint e0 : kinds) {
+            for (endpoint s1 : kinds) {
+                for (endpoint e1 : kinds) {
                     for (int x : irange(-2, 3)) {
                         for (int y : irange(-2, 3)) {
                             auto h = make_any_line(point{x - 1, 0}, s0, point{x + 1, 0}, e0);
