@@ -5,8 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/algorithm/point/bisector.hpp>
-#include <actl/geometry/algorithm/point/collinear.hpp>
 #include <actl/test.hpp>
 #include "geometry/epsilon.hpp"
 

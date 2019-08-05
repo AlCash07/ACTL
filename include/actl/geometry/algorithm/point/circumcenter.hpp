@@ -7,15 +7,15 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 
 namespace ac {
 
 template <class Policy, class T0, class T1, class T2>
 inline auto circumcenter(const Policy& policy, const point<T0>& a, const point<T1>& b,
                          const point<T2>& c) {
-    ACTL_ASSERT(ccw(policy, a, b, c) != 0);
+    ACTL_ASSERT(!collinear(policy, a, b, c));
     using T = geometry::scalar_t<T0, T1, T2>;
     // TODO: use actual return type of intersect.
     point<decltype(ratio(policy, T{}, T{}))> res;

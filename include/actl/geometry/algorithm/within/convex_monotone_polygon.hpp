@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/detail/to_inclusion.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <algorithm>
@@ -25,24 +25,22 @@ inline enum within within(const Policy& policy, const point<T>& p,
     const index right = poly.right();
     auto first = poly.begin();
     if (less(policy, p, poly[0]) || less(policy, first[right], p)) return within::outside;
-    switch (ccw(policy, p, first[right], poly[0])) {
-        case 0: {
+    switch (orientation(policy, p, first[right], poly[0])) {
+        case orientation2d::collinear: {
             if (equal(policy, p, poly[0]) || equal(policy, p, first[right])) return within::border;
             return right == 1 || right + 1 == poly.size() ? within::border : within::inside;
         }
-        case -1: {  // lower chain
+        case orientation2d::left: {  // lower chain
             auto lit = std::lower_bound(first + 1, first + right, p, op::less_functor(policy));
-            return detail::to_inclusion(ccw(policy, p, lit[0], lit[-1]));
+            return detail::to_inclusion(orientation(policy, p, lit[0], lit[-1]));
         }
-        case 1: {  // upper chain
+        case orientation2d::right: {  // upper chain
             auto uit = std::lower_bound(poly.rbegin(), poly.rend() - right - 1, p,
                                         op::less_functor(policy));
             return detail::to_inclusion(
-                ccw(policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]));
+                orientation(policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]));
         }
     }
-    ACTL_ASSERT(false);
-    return within::outside;
 }
 
 }  // namespace ac

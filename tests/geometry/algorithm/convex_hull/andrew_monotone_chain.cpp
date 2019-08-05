@@ -21,7 +21,7 @@ TEST("random", repeat = 10) {
     for (auto i : irange(hull.size())) {
         line<int> l{hull[i], hull[i + 1 < hull.size() ? i + 1 : 0]};
         for (const auto& p : points) {
-            ASSERT_TRUE(ccw(l, p) <= 0);
+            ASSERT_TRUE(!right_turn(l, p));
         }
     }
 }

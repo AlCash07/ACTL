@@ -10,7 +10,6 @@
 #include <actl/geometry/algorithm/point/angle.hpp>
 #include <actl/geometry/algorithm/point/bisector.hpp>
 #include <actl/geometry/algorithm/point/circumcenter.hpp>
-#include <actl/geometry/algorithm/point/collinear.hpp>
 #include <actl/geometry/algorithm/point/invert.hpp>
 #include <actl/geometry/algorithm/point/norm.hpp>
 #include <actl/geometry/algorithm/point/sort_by_angle.hpp>

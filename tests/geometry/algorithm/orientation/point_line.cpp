@@ -5,8 +5,12 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/geometry/algorithm/ccw/simple_polygon.hpp>
+#include <actl/geometry/algorithm/orientation/point_line.hpp>
 #include <actl/test.hpp>
-#include "geometry/polygons.hpp"
 
-TEST("star") { ASSERT_EQUAL(-1, ccw(get_star_polygon())); }
+TEST("default") {
+    line<int> l{{1, 1}, {3, 2}};
+    ASSERT_EQUAL(orientation2d::collinear, orientation(point{-1, 0}, l));
+    ASSERT_EQUAL(orientation2d::left, orientation(l, point{3, 3}));
+    ASSERT_EQUAL(orientation2d::right, orientation(l, point{3, 1}));
+}

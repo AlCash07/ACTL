@@ -18,8 +18,6 @@ inline bool endpoint_test(const Policy& policy, endpoint kind, const T& lhs, con
         case endpoint::closed: return !less(policy, rhs, lhs);
         case endpoint::open: return less(policy, lhs, rhs);
     }
-    ACTL_ASSERT(false);
-    return false;
 }
 
 template <class Policy, class T, class U>

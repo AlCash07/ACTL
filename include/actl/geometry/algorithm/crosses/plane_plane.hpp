@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/geometry/algorithm/crosses/crosses.hpp>
-#include <actl/geometry/algorithm/point/collinear.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/plane.hpp>
 
 namespace ac {

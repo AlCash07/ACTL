@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/convex_polygon.hpp>
-#include <actl/geometry/algorithm/ccw/point_line.hpp>
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
-#include <actl/geometry/algorithm/ccw/simple_polygon.hpp>
+#include <actl/geometry/algorithm/orientation/convex_polygon.hpp>
+#include <actl/geometry/algorithm/orientation/point_line.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/simple_polygon.hpp>

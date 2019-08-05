@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <limits>
 
@@ -37,10 +37,9 @@ inline int winding_number(const Policy& policy, const point<T>& p, const polygon
         } else {
             bool below = less(policy, i->y(), p.y());
             if (below != less(policy, j->y(), p.y())) {
-                int orientation = ccw(policy, p, *j, *i);
-                if (orientation == 0) return boundary;
-                if (below == (orientation > 0))
-                    res += below ? 1 : -1;
+                auto orient = orientation(policy, p, *j, *i);
+                if (orient == orientation2d::collinear) return boundary;
+                if (below == (orient == orientation2d::right)) res += below ? 1 : -1;
             }
         }
     }

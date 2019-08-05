@@ -7,16 +7,16 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/polygon.hpp>
 
 namespace ac {
 
 template <class Policy, class T, enable_int_if_policy<Policy> = 0>
-inline int ccw(const Policy& policy, const convex_polygon<T>& poly) {
-    if (poly.size() < 3) return 0;
+inline orientation2d orientation(const Policy& policy, const convex_polygon<T>& poly) {
+    if (poly.size() < 3) return orientation2d::collinear;
     auto it = poly.begin();
-    return ccw(policy, it[0], it[1], it[2]);
+    return orientation(policy, it[0], it[1], it[2]);
 }
 
 }  // namespace ac

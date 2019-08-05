@@ -8,9 +8,9 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/geometry/algorithm/ccw/point_line.hpp>
 #include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
+#include <actl/geometry/algorithm/orientation/point_line.hpp>
 #include <actl/geometry/algorithm/project/point_line.hpp>
 #include <actl/geometry/detail/between_endpoints.hpp>
 #include <actl/geometry/polygon.hpp>
@@ -26,7 +26,7 @@ inline OutIter intersect(line_scalar_policy<Policy> lsp, const line<T, 2, K>& l,
     auto& policy = lsp.policy;
     // TODO: fix the case when polygon touches the line.
     ACTL_ASSERT(!degenerate(policy, l));
-    auto vertex_sgn = [&](auto it) { return ccw(policy, *it, l); };
+    auto vertex_sgn = [&](auto it) { return static_cast<int>(orientation(policy, *it, l)); };
     auto it = cyclic_begin(poly);
     int prev_sgn = vertex_sgn(it - 1), it_sgn = vertex_sgn(it);
     for (auto n = poly.size(); n != 0; --n) {

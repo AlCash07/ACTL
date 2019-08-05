@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/multi_point.hpp>
 #include <algorithm>
 
@@ -29,7 +29,7 @@ void sort_by_angle(const Policy& policy, U& points, const point<T>& origin) {
         return y_compare(policy, origin, to_point(x));
     });
     auto comp = [to_point, &policy](ref lhs, ref rhs) {
-        return ccw(policy, to_point(lhs), to_point(rhs)) < 0;
+        return left_turn(policy, to_point(lhs), to_point(rhs));
     };
     std::sort(first, pivot, comp);
     std::sort(pivot, last, comp);
@@ -50,7 +50,7 @@ void sort_by_angle(const Policy& policy, U& points) {
         return y_compare(policy, value_t<U>{}, to_point(x));
     });
     auto comp = [to_point, &policy](ref lhs, ref rhs) {
-        return ccw(policy, to_point(lhs), to_point(rhs)) < 0;
+        return left_turn(policy, to_point(lhs), to_point(rhs));
     };
     std::sort(first, pivot, comp);
     std::sort(pivot, last, comp);

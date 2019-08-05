@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_line.hpp>
+#include <actl/geometry/algorithm/orientation/point_line.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/util/span.hpp>
@@ -31,13 +31,15 @@ inline span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span
     if (points.size() < 2) return points;
     auto& policy = amcp.policy;
     auto [a, b] = minmax_element(points, op::less_functor(policy));
-    auto comp = [l = make_line(*a, *b), &policy](const auto& p) { return ccw(policy, p, l) <= 0; };
+    auto comp = [l = make_line(*a, *b), &policy](const auto& p) {
+        return !right_turn(policy, p, l);
+    };
     index pivot = partition(points, comp) - points.begin();
     ACTL_ASSERT(2 <= pivot);
     sort(points.first(pivot), op::less_functor(policy));
     index last = 1;
     auto pop = [&](const auto& p) {
-        while (last != 0 && ccw(policy, p, points[last], points[last - 1]) <= 0) --last;
+        while (last != 0 && !right_turn(policy, p, points[last], points[last - 1])) --last;
     };
     for (index i = 2, n = points.size(); i != n; ++i) {
         // TODO: somehow output the right-top point when this condition is met.

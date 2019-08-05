@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/point/collinear.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/detail/between_endpoints.hpp>
 

@@ -7,27 +7,26 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/std/utility.hpp>
 
 namespace ac {
 
 /**
- * Extreme (minimum ccw) point index with respect to the given direction : O(log N).
+ * Extreme (minimum orientation) point index with respect to the given direction : O(log N).
  * If there are two extreme vertices, the first one in counter-clockwise order is taken.
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 270.
  */
 template <class Policy, class T, class Function>
 inline auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly,
                            Function direction) {
-    auto vertex_cmp = [&](auto i, auto j) {  // < 0 if i is before j
-        return ccw(policy, direction(*j), *j - *i);
-    };
+    auto vertex_cmp = [&](auto i, auto j) { return orientation(policy, direction(*j), *j - *i); };
     auto is_extreme = [&](auto it) {
         auto i = cyclic_iterator{poly, it};
-        int v = vertex_cmp(i + 1, i);
-        return std::pair{0 <= v && vertex_cmp(i, i - 1) < 0, v};
+        auto v = vertex_cmp(i + 1, i);
+        return std::pair{v != orientation2d::left && vertex_cmp(i, i - 1) == orientation2d::left,
+                         v};
     };
     auto first = poly.begin();
     auto [first_ok, first_sgn] = is_extreme(first);

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/std/utility.hpp>
 
@@ -23,7 +23,7 @@ inline auto antipodal_vertices(const Policy& policy, const convex_polygon<T>& po
         for (; j != poly.end(); ++j) {
             *dst++ = std::pair{i, j};
             auto vecj = *(j + 1 != poly.end() ? j + 1 : poly.begin()) - *j;
-            if (ccw(policy, i[1] - *i, vecj) >= 0) break;
+            if (!left_turn(policy, i[1] - *i, vecj)) break;
         }
     }
     return dst;

@@ -26,6 +26,8 @@ inline OutIter tangents(const Policy& policy, const point<T0>& p, const circle<T
         }
         case within::border:
             *dst++ = p;
+        case within::inside:
+            break;
     }
     return dst;
 }
@@ -45,6 +47,8 @@ inline OutIter tangents(polar_angle_policy<Policy> pap, const point<T0>& p, cons
         }
         case within::border:
             *dst++ = angle(policy, perpendicular(center_vector));
+        case within::inside:
+            break;
     }
     return dst;
 }

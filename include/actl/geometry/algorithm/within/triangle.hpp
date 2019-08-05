@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/polygon.hpp>
 
@@ -21,14 +21,15 @@ namespace ac {
 template <class Policy, class T, class U>
 inline enum within within(const Policy& policy, const point<T>& p, const polygon<U>& triangle) {
     ACTL_ASSERT(triangle.size() == 3);
-    int signs[3] = {};
+    orientation2d signs[3] = {};
     auto it = cyclic_begin(triangle);
     for (index i = 0; i < 3; ++i, ++it) {
-        signs[i] = ccw(policy, p, it[1], it[0]);
+        signs[i] = orientation(policy, p, it[1], it[0]);
     }
     if (signs[0] == signs[1] && signs[1] == signs[2]) return within::inside;
     for (index i = 0; i < 3; ++i) {
-        if (signs[i] * signs[i + 1 == 3 ? 0 : i + 1] == -1) return within::outside;
+        if (signs[i] != orientation2d::collinear && signs[i] == -signs[i + 1 == 3 ? 0 : i + 1])
+            return within::outside;
     }
     return within::border;
 }

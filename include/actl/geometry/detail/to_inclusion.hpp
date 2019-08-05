@@ -7,12 +7,13 @@
 
 #pragma once
 
+#include <actl/geometry/algorithm/orientation/orientation.hpp>
 #include <actl/geometry/algorithm/within/within.hpp>
 
 namespace ac::detail {
 
-inline enum within to_inclusion(int orientation) {
-    return static_cast<enum within>(1 - orientation + static_cast<int>(within::inside));
+inline enum within to_inclusion(orientation2d x) {
+    return static_cast<enum within>(1 - static_cast<int>(x) + static_cast<int>(within::inside));
 }
 
 }  // namespace ac::detail

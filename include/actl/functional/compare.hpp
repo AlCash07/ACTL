@@ -108,7 +108,7 @@ inline constexpr int sgn(const Policy& policy, const T& x, const U& y = {}) {
 template <class E, class T, class U = int>
 inline constexpr int sgn(const op::absolute_error<E>& policy, const T& x, const U& y = {}) {
     auto delta = x - y;
-    if (less(adl::abs(delta), policy.epsilon())) return 0;
+    if (adl::abs(delta) < policy.epsilon()) return 0;
     return delta < 0 ? -1 : 1;
 }
 

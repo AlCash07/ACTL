@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/geometry/algorithm/ccw/point_point.hpp>
+#include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/detail/to_inclusion.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <algorithm>
@@ -26,13 +26,13 @@ inline enum within within(const Policy& policy, const point<T>& p,
     auto first = poly.begin();
     if (less(policy, p, poly[0]) || less(policy, first[right], p)) return within::outside;
     auto lit = std::lower_bound(first + 1, first + right, p, op::less_functor(policy));
-    int orientation = ccw(policy, p, lit[0], lit[-1]);
-    if (orientation > 0) {
+    auto orient = orientation(policy, p, lit[0], lit[-1]);
+    if (orient == orientation2d::right) {
         auto uit =
             std::lower_bound(poly.rbegin(), poly.rend() - right - 1, p, op::less_functor(policy));
-        orientation = ccw(policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]);
+        orient = orientation(policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]);
     }
-    return detail::to_inclusion(orientation);
+    return detail::to_inclusion(orient);
 }
 
 }  // namespace ac
