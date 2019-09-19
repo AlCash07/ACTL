@@ -59,10 +59,9 @@ private:
 
 struct setspace {
     std::string_view value;
-};
 
-template <>
-struct is_manipulator<setspace> : std::true_type {};
+    struct is_manipulator;
+};
 
 template <class Device, class Format>
 inline index serialize(Device&, Format& fmt, setspace x) {

@@ -15,16 +15,14 @@
 namespace ac::io {
 
 template <flag_t Flag, bool Value>
-struct setf {};
-
-template <flag_t F, bool V>
-struct is_manipulator<setf<F, V>> : std::true_type {};
+struct setf {
+    struct is_manipulator;
+};
 
 template <flag_t Group, flag_t Flag>
-struct setg {};
-
-template <flag_t G, flag_t F>
-struct is_manipulator<setg<G, F>> : std::true_type {};
+struct setg {
+    struct is_manipulator;
+};
 
 // boolean as string or int
 constexpr setf<flags::boolalpha, true> boolalpha{};
@@ -91,13 +89,12 @@ inline bool deserialize(Device&, Format& fmt, setg<Group, Flag>) {
 // integer and real numbers base
 struct setbase {
     uint8_t value = 10;
+
+    struct is_manipulator;
 };
 constexpr setbase dec{10};
 constexpr setbase hex{16};
 constexpr setbase oct{8};
-
-template <>
-struct is_manipulator<setbase> : std::true_type {};
 
 template <class Device, class Format>
 inline bool deserialize(Device&, Format& fmt, setbase x) {
@@ -114,10 +111,9 @@ inline index serialize(Device&, Format& fmt, setbase x) {
 // number of digits after the decimal point
 struct setprecision {
     index value = 6;
-};
 
-template <>
-struct is_manipulator<setprecision> : std::true_type {};
+    struct is_manipulator;
+};
 
 template <class Device, class Format>
 inline index serialize(Device&, Format& fmt, setprecision x) {

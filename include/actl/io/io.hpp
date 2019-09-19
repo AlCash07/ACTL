@@ -203,7 +203,10 @@ inline bool read_size(Device& id, Format& fmt, T& size) {
 template <class T>
 struct is_composite : decltype(serialization_access{}.has_composite_io_tag<T>(0)) {};
 
-template <class T>
+template <class T, class = void>
 struct is_manipulator : std::false_type {};
+
+template <class T>
+struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
 
 }  // namespace ac::io

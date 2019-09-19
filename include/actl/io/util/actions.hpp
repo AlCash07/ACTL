@@ -12,17 +12,15 @@
 
 namespace ac::io {
 
-struct endl_t {};
+struct endl_t {
+    struct is_manipulator;
+};
 constexpr endl_t endl{};   // put '\n' and flush
 constexpr raw ends{'\0'};  // put '\0'
-struct flush_t {};
+struct flush_t {
+    struct is_manipulator;
+};
 constexpr flush_t flush{};
-
-template <>
-struct is_manipulator<endl_t> : std::true_type {};
-
-template <>
-struct is_manipulator<flush_t> : std::true_type {};
 
 template <class Device, class Format>
 inline index serialize(Device& od, Format& fmt, endl_t) {

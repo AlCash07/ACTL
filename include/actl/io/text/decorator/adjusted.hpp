@@ -93,10 +93,9 @@ constexpr setg<groups::adjustfield, flags::center> center{};
 // minimum width of an output unit
 struct setwidth {
     index value = 0;
-};
 
-template <>
-struct is_manipulator<setwidth> : std::true_type {};
+    struct is_manipulator;
+};
 
 template <class Device, class Format>
 inline index serialize(Device&, Format& fmt, setwidth x) {
@@ -110,10 +109,9 @@ struct setfill {
     explicit setfill(Char c) : value{c} {}
 
     Char value = ' ';
-};
 
-template <class C>
-struct is_manipulator<setfill<C>> : std::true_type {};
+    struct is_manipulator;
+};
 
 template <class Device, class Format, class Char>
 inline index serialize(Device&, Format& fmt, setfill<Char> x) {
