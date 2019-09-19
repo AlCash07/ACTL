@@ -54,8 +54,8 @@ template <class Device, class Format, class T,
           enable_int_if<
               !decltype(serialization_access{}.has_serialize<T, Device&, Format&>(0))::value &&
               !is_range_v<T> && !std::is_empty_v<T> && !std::is_same_v<T, io::char_t<Device>>> = 0>
-inline index serialize(Device& od, Format&, const T&) {
-    return od.write(char_span{"<unknown-type>"});
+inline index serialize(Device& od, Format& fmt, const T&) {
+    return write(od, fmt, "<unknown-type>"sv);
 }
 
 }  // namespace ac::io

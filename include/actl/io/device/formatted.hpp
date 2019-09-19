@@ -15,8 +15,11 @@ template <class Device, class Format = text>
 class formatted : public Device, public Format {
 public:
     using Device::Device;
-
-    Format& format() { return *this; }
 };
+
+template <class Device, class Format>
+inline Format& deduce_format(formatted<Device, Format>& dev) {
+    return dev;
+}
 
 }  // namespace ac::io

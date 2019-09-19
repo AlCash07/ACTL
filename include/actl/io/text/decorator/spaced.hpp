@@ -29,8 +29,8 @@ public:
 
     void reset() { separate_ = false; }
 
-    char_span<Char> space() const { return space_; }
-    void space(char_span<Char> x) { space_.assign(x.begin(), x.end()); }
+    cspan<Char> space() const { return space_; }
+    void space(cspan<Char> x) { space_.assign(x.begin(), x.end()); }
 
     template <class Device, class Spaced, class T, class Tag>
     friend std::enable_if_t<!is_manipulator<T>::value, index> serialize(Device& od, Spaced& fmt,
@@ -58,7 +58,7 @@ private:
 };
 
 struct setspace {
-    char_span<char> value;
+    std::string_view value;
 };
 
 template <>

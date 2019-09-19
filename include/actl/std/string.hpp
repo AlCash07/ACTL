@@ -10,16 +10,12 @@
 #include <actl/container/traits.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/io/util/till.hpp>
-#include <actl/string/traits.hpp>
 #include <string>
 
 namespace ac {
 
 template <class C, class T, class A>
 struct container_category<std::basic_string<C, T, A>> : contiguous_container_tag {};
-
-template <class C, class T, class A>
-struct is_string<std::basic_string<C, T, A>, C> : std::true_type {};
 
 namespace io {
 

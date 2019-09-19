@@ -42,7 +42,7 @@ protected:
     using base_t::ptr_;
 
 public:
-    using out_memory<Mode, Char, false>::out_memory;
+    using base_t::base_t;
 
     span<Char> output_data() const { return {ptr_, end()}; }
 

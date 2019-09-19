@@ -27,9 +27,9 @@ TEST("read char") {
     ASSERT_FALSE(read(id, a));
 }
 
-TEST("write span<char>") {
+TEST("write char array") {
     char s[7];
-    ASSERT_EQUAL(7, write(memory<bin | out>{s}, char_span{"aba"}, char_span{"cabad"}));
+    ASSERT_EQUAL(7, write(memory<out>{s}, "aba", "cabad"));
     ASSERT_EQUAL("abacaba"sv, s);
 }
 
@@ -43,9 +43,9 @@ TEST("read span<char>") {
     ASSERT_FALSE(read(id, span{a}));
 }
 
-TEST("read cspan<char>") {
+TEST("read string_view") {
     std::string s = "abacaba";
-    memory<bin | in> id{s};
-    ASSERT_TRUE(read(id, char_span{"aba"}));
-    ASSERT_FALSE(read(id, char_span{"caca"}));
+    memory<in> id{s};
+    ASSERT_TRUE(read(id, "aba"sv));
+    ASSERT_FALSE(read(id, "caca"sv));
 }

@@ -14,26 +14,22 @@
 namespace ac::io {
 
 template <class R, class Device>
-inline constexpr bool is_custom_range_v =
-    is_range_v<R> && !std::is_convertible_v<R, cspan<char_t<Device>>>;
+inline constexpr bool is_non_span_range_v =
+    is_range_v<R> && !is_span<R, char_t<Device>>::value && !is_span<R, const char_t<Device>>::value;
 
-template <class Device, class Format, class R, enable_int_if<is_custom_range_v<R, Device>> = 0>
+template <class Device, class Format, class R, enable_int_if<is_non_span_range_v<R, Device>> = 0>
 inline index serialize(Device& od, Format& fmt, const R& x) {
     index res{};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         res = write_size(od, fmt, x.size());
     }
-    if constexpr (is_contiguous_container_v<R>) {
-        return res + write(od, fmt, span{x});
-    } else {
-        for (const auto& value : x) {
-            res += write(od, fmt, value);
-        }
-        return res;
+    for (const auto& value : x) {
+        res += write(od, fmt, value);
     }
+    return res;
 }
 
-template <class Device, class Format, class R, enable_int_if<is_custom_range_v<R, Device>> = 0>
+template <class Device, class Format, class R, enable_int_if<is_non_span_range_v<R, Device>> = 0>
 inline bool deserialize(Device& id, Format& fmt, R& x) {
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         decltype(x.size()) size{};
@@ -49,14 +45,10 @@ inline bool deserialize(Device& id, Format& fmt, R& x) {
             x.resize(size);
         }
     }
-    if constexpr (is_contiguous_container_v<R>) {
-        return read(id, fmt, span{x});
-    } else {
-        for (auto& value : x) {
-            if (!read(id, fmt, value)) return false;
-        }
-        return true;
+    for (auto& value : x) {
+        if (!read(id, fmt, value)) return false;
     }
+    return true;
 }
 
 }  // namespace ac::io

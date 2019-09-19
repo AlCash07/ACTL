@@ -9,7 +9,6 @@
 
 #include <actl/assert.hpp>
 #include <actl/range/traits.hpp>
-#include <actl/string/traits.hpp>
 #include <actl/util/static_size.hpp>
 
 namespace ac {
@@ -116,19 +115,10 @@ struct static_size<span<T, N>> : index_constant<N> {};
 template <class T, index N = dynamic_size>
 using cspan = span<const T, N>;
 
-template <class Char>
-class char_span : public cspan<Char> {
-public:
-    using cspan<Char>::cspan;
+template <class S, class T>
+struct is_span : std::false_type {};
 
-    template <index N>
-    char_span(const Char (&array)[N]) : cspan<Char>{array, array[N - 1] ? N : N - 1} {}
-};
-
-template <class Range>
-char_span(Range&) -> char_span<std::remove_pointer_t<pointer_t<Range>>>;
-
-template <class C>
-struct is_string<char_span<C>, C> : std::true_type {};
+template <class T, index N>
+struct is_span<span<T, N>, T> : std::true_type {};
 
 }  // namespace ac

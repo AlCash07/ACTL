@@ -21,10 +21,8 @@ public:
     using Device::Device;
 
 protected:
-    using Char = char_t<Device>;
-
     Buffer buf_;
-    Char* ptr_ = std::data(buf_);
+    char_t<Device>* ptr_ = std::data(buf_);
 };
 
 template <class Device, class Buffer>
@@ -42,7 +40,7 @@ protected:
     }
 
 public:
-    using buffered_reader<Device, Buffer, false>::buffered_reader;
+    using base_t::base_t;
 
     cspan<Char> input_data() const { return {ptr_, end_}; }
 
@@ -54,7 +52,7 @@ public:
         return c;
     }
 
-    index read(span<Char> dst) {
+    index read(const span<Char>& dst) {
         Char* dstPtr = dst.data();
         index count = dst.size();
         index available = end_ - ptr_;
@@ -137,6 +135,8 @@ protected:
     }
 
 public:
+    using base_t::base_t;
+
     span<Char> output_data() const { return {ptr_, std::end(buf_)}; }
 
     index write(Char arg) {

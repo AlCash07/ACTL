@@ -11,7 +11,6 @@
 #include <actl/io/range.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/string/traits.hpp>
 
 namespace ac::io {
 
@@ -52,11 +51,11 @@ inline index serialize(Device& od, Format& fmt, const T& x, pretty_tag<Tag>) {
     };
     if constexpr (std::is_same_v<T, C>) {
         return write_raw('\'') + write_escaped(x) + write_raw('\'');
-    } else if constexpr (is_string_v<T, const C>) {
+    } else if constexpr (is_string<T, Device>::value) {
         index res = write_raw('"');
-        for (auto c : char_span{x}) res += write_escaped(c);
+        for (auto c : view_t<Device>{x}) res += write_escaped(c);
         return res + write_raw('"');
-    } else if constexpr (is_custom_range_v<T, Device>) {
+    } else if constexpr (is_non_span_range_v<T, Device>) {
         if constexpr (is_associative_container_v<T>) {
             index res = write_raw('{');
             if constexpr (is_simple_associative_container_v<T>) {

@@ -20,9 +20,11 @@ class in_file : public device<Mode, Char> {
     };
 
 public:
-    in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} { ACTL_ASSERT(file); }
+    explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} {
+        ACTL_ASSERT(file);
+    }
 
-    in_file(const char* filename)
+    explicit in_file(const char* filename)
         : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
     ~in_file() {

@@ -90,13 +90,9 @@ struct is_format : std::false_type {};
 template <class T>
 struct is_format<T, std::void_t<typename T::format_tag>> : std::true_type {};
 
-template <class Device>
-inline decltype(auto) deduce_format(Device& dev) {
-    if constexpr (is_bin<Device::mode>) {
-        return binary{};
-    } else {
-        return dev.format();
-    }
+template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
+inline binary deduce_format(Device& dev) {
+    return {};
 }
 
 /* Common types support */
@@ -139,8 +135,8 @@ inline bool deserialize(Device& id, Format&, span<char_t<Device>, N>& s) {
 }
 
 template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format&, cspan<char_t<Device>, N>& s) {
-    for (char c : s) {
+inline bool deserialize(Device& id, Format&, const cspan<char_t<Device>, N>& s) {
+    for (auto c : s) {
         if (id.peek() != c) return false;
         id.move(1);
     }
