@@ -70,8 +70,8 @@ public:
 
     constexpr span(T* first, T* last) : span{first, last - first} {}
 
-    template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-    constexpr span(Range& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
+    template <class Range, enable_int_if<is_contiguous_range_v<std::remove_reference_t<Range>>> = 0>
+    constexpr span(Range&& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
 
     constexpr T* begin() const { return data(); }
 
@@ -106,8 +106,8 @@ private:
     T* data_ = nullptr;
 };
 
-template <class Range>
-span(Range&) -> span<std::remove_pointer_t<pointer_t<Range>>, static_size_v<Range>>;
+template <class Range, class R = std::remove_reference_t<Range>>
+span(Range&&) -> span<std::remove_pointer_t<pointer_t<R>>, static_size_v<R>>;
 
 template <class T, index N>
 struct static_size<span<T, N>> : index_constant<N> {};
