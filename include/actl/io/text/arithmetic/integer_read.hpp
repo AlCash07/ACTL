@@ -20,15 +20,17 @@ inline bool read_uint2(D& id, UInt& x, uint8_t base) {
     UInt v, d;
     if (!read_digit<MaxBase>(id, v, base)) return false;
     const UInt safe = Max / base;
+    bool overflow = false;
     while (read_digit<MaxBase>(id, d, base)) {
         if (safe < v || (safe == v && Max % base < d)) {
-            x = Max;
-            return false;
+            v = Max;
+            overflow = true;
+        } else {
+            v = v * base + d;
         }
-        v = v * base + d;
     }
     x = v;
-    return true;
+    return !overflow;
 }
 
 template <auto Max, class D, class F, class UInt>
