@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/text/arithmetic/detail/peek_digit.hpp>
+#include <actl/io/text/arithmetic/detail/read_digit.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/util/type_traits.hpp>
 
@@ -18,11 +18,9 @@ namespace detail {
 template <uint8_t MaxBase, auto Max, class D, class UInt>
 inline bool read_uint2(D& id, UInt& x, uint8_t base) {
     UInt v, d;
-    if (!peek_digit<MaxBase>(id, v, base)) return false;
-    id.move(1);
+    if (!read_digit<MaxBase>(id, v, base)) return false;
     const UInt safe = Max / base;
-    while (peek_digit<MaxBase>(id, d, base)) {
-        id.move(1);
+    while (read_digit<MaxBase>(id, d, base)) {
         if (safe < v || (safe == v && Max % base < d)) {
             x = Max;
             return false;
@@ -39,7 +37,7 @@ inline bool read_uint(D& id, F& fmt, UInt& x) {
     if (id.peek() == '0') {
         id.move(1);
         UInt d;
-        peek_digit<36>(id, d, 0);
+        read_digit<36>(id, d, 0);
         if (d == 'x' - 'a' + 10) {
             if (base == 0) base = 16;
             if (base == 16) {

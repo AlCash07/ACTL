@@ -13,8 +13,8 @@
 
 namespace ac::io::detail {
 
-template <uint8_t MaxBase, class UInt, class D>
-inline bool peek_digit(D& id, UInt& x, uint8_t base) {
+template <uint8_t MaxBase, class D, class UInt>
+inline bool read_digit(D& id, UInt& x, uint8_t base) {
     if constexpr (MaxBase <= 10) {
         x = static_cast<UInt>(id.peek() - '0');
     } else {
@@ -29,7 +29,9 @@ inline bool peek_digit(D& id, UInt& x, uint8_t base) {
             x = std::numeric_limits<UInt>::max();
         }
     }
-    return x < base;
+    bool ok = x < base;
+    if (ok) id.move(1);
+    return ok;
 }
 
 }  // namespace ac::io::detail

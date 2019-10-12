@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
-#include <actl/io/text/arithmetic/detail/peek_digit.hpp>
+#include <actl/io/text/arithmetic/detail/read_digit.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/numeric/algorithm/binary_pow.hpp>
 #include <actl/std/utility.hpp>
@@ -31,8 +31,7 @@ inline bool deserialize(Device& id, Format& fmt, Float& x, text_tag) {
         UInt t{};
         index length{};
         unsigned int d;
-        while (length < max_length && detail::peek_digit<36>(id, d, base)) {
-            id.move(1);
+        while (length < max_length && detail::read_digit<36>(id, d, base)) {
             t = t * base + d;
             ++length;
         }
