@@ -37,7 +37,7 @@ inline bool less(const Policy& policy, const std::pair<T1, T2>& lhs, const std::
 namespace io {
 
 template <class T1, class T2>
-struct is_composite<std::pair<T1, T2>> : std::true_type {};
+struct is_tuple<std::pair<T1, T2>> : std::true_type {};
 
 template <class Device, class Format, class T1, class T2>
 inline index serialize(Device& od, Format& fmt, const std::pair<T1, T2>& x) {

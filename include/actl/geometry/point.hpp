@@ -63,7 +63,7 @@ public:
 private:
     friend struct ac::io::serialization_access;
 
-    struct composite_io_tag;
+    struct io_tuple_tag;
 
     template <class Device, class Format>
     index serialize(Device& od, Format& fmt) const {

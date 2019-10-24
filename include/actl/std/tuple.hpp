@@ -49,7 +49,7 @@ inline bool less(const Policy& policy, const std::tuple<Ts...>& lhs, const std::
 namespace io {
 
 template <class... Ts>
-struct is_composite<std::tuple<Ts...>> : std::true_type {};
+struct is_tuple<std::tuple<Ts...>> : std::true_type {};
 
 namespace detail {
 

@@ -69,7 +69,7 @@ inline index serialize(Device& od, Format& fmt, const T& x, pretty_tag<Tag>) {
         } else {
             return write_raw('[') + serialize(od, fmt, make_range(x), Tag{}) + write_raw(']');
         }
-    } else if constexpr (is_composite<T>::value) {
+    } else if constexpr (is_tuple<T>::value) {
         return write_raw('(') + serialize(od, fmt, x, Tag{}) + write_raw(')');
     } else {
         return serialize(od, fmt, x, Tag{});

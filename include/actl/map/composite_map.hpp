@@ -64,7 +64,7 @@ public:
     static constexpr bool iterable2 = map_traits<M1>::invertible && map_traits<M2>::iterable;
     using range_t = typename detail::cm_range<M1, M2, std::pair<K, R>, iterable1, iterable2>::type;
 
-    struct is_composite_map;
+    struct is_tuple_map;
 
     using traits =
         map_traits_base<K, R, map_value_t<M2>, map_traits<M1>::readable && map_traits<M2>::readable,
@@ -82,7 +82,7 @@ template <class... Ms>
 struct map_traits<const composite_map<Ms...>> : map_traits<composite_map<const Ms...>> {};
 
 template <class CM>
-struct map_ops<CM, std::void_t<typename CM::is_composite_map>> {
+struct map_ops<CM, std::void_t<typename CM::is_tuple_map>> {
     using K = map_key_t<CM>;
     using V = map_value_t<CM>;
 

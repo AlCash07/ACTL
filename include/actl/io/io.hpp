@@ -201,7 +201,7 @@ inline bool read_size(Device& id, Format& fmt, T& size) {
 /* Traits */
 
 template <class T>
-struct is_composite : decltype(serialization_access{}.has_composite_io_tag<T>(0)) {};
+struct is_tuple : decltype(serialization_access{}.has_io_tuple_tag<T>(0)) {};
 
 template <class T, class = void>
 struct is_manipulator : std::false_type {};
