@@ -10,6 +10,7 @@
 #include <actl/assert.hpp>
 #include <actl/functional/compare.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/std/array.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/span.hpp>
 #include <actl/util/type_traits.hpp>
@@ -30,8 +31,6 @@ struct static_array {
         ACTL_ASSERT(false);
         return {};
     }
-
-    static constexpr index product() { return 1; }
 };
 
 template <index I0, index... Is>
@@ -39,9 +38,10 @@ struct static_array<I0, Is...> {
     constexpr index operator[](index i) const {
         return i == 0 ? I0 : static_array<Is...>{}[i - 1];
     }
-
-    static constexpr index product() { return I0 * static_array<Is...>::product(); }
 };
+
+template <index... Is>
+inline constexpr index static_product_v = (1 * ... * Is);
 
 template <class T, index N>
 struct nd_initializer_list {
@@ -74,19 +74,19 @@ template <class Data>
 class ndarray_container;
 
 template <class T, index Size>
-class ndarray_container<T[Size]> {
+class ndarray_container<std::array<T, Size>> {
 public:
     using value_type = T;
 
     ndarray_container(index size) { ACTL_ASSERT(size == Size); }
 
-    T* data() { return data_; }
-    const T* data() const { return data_; }
+    T* data() { return data_.data(); }
+    const T* data() const { return data_.data(); }
 
     void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
 
 private:
-    T data_[Size];
+    std::array<T, Size> data_;
 };
 
 template <class T>
@@ -115,9 +115,10 @@ class ndarray_data : public ndarray_container<Data> {
 public:
     ndarray_data(index size) : base_t{size} {}
 
-    template <class InIter>
-    ndarray_data(index size, InIter it) : base_t{size} {
-        std::copy_n(it, size, this->data());
+    template <class InRange>
+    ndarray_data(index size, InRange data) : base_t{size} {
+        ACTL_ASSERT(size == static_cast<index>(std::size(data)));
+        std::copy_n(std::begin(data), size, this->data());
     }
 
     ndarray_data(index size, const T& value) : base_t{size} {
@@ -161,15 +162,15 @@ class ndarray_data<N, T*> {
 public:
     using value_type = T;
 
-    ndarray_data(index, T* data) : data_{data} {}
+    ndarray_data(index, T* ptr) : ptr_{ptr} {}
 
-    void swap(ndarray_data& rhs) { std::swap(data_, rhs.data_); }
+    T* data() { return ptr_; }
+    const T* data() const { return ptr_; }
 
-    T* data() { return data_; }
-    const T* data() const { return data_; }
+    void swap(ndarray_data& rhs) { std::swap(ptr_, rhs.ptr_); }
 
 private:
-    T* data_;
+    T* ptr_;
 };
 
 /* NDArray shape class, manages dimensions. */
@@ -181,11 +182,11 @@ struct ndarray_dims {
 };
 
 template <class Int, index N>
-struct ndarray_dims<Int[N]> {
+struct ndarray_dims<std::array<Int, N>> {
     ndarray_dims() = default;
-    ndarray_dims(std::initializer_list<Int> dims) { std::copy_n(dims.begin(), N, dims_); }
+    ndarray_dims(std::initializer_list<Int> dims) { std::copy_n(dims.begin(), N, dims_.begin()); }
 
-    Int dims_[N] = {};
+    std::array<Int, N> dims_ = {};
 };
 
 template <index N, class Data, class Dims>
@@ -251,7 +252,7 @@ public:
 
     static constexpr index rank() { return static_size_v<Dims>; }
 
-    static constexpr index size() { return static_array<Ds...>::product(); }
+    static constexpr index size() { return static_product_v<Ds...>; }
 
     static constexpr Dims dimensions() { return {}; }
 };
@@ -276,7 +277,7 @@ struct ndarray_reference<T, N, static_array<D0, Ds...>, true> {
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, index i) {
-        return type{ptr->data() + i * static_array<Ds...>::product()};
+        return type{ptr->data() + i * static_product_v<Ds...>};
     }
 };
 
@@ -404,11 +405,12 @@ inline void swap(ndarray_base<D, S>& lhs, ndarray_base<D, S>& rhs) {
 }
 
 template <class T, index... Ds>
-using ndarray_base_static = ndarray_base<T[static_array<Ds...>::product()], static_array<Ds...>>;
+using ndarray_base_static =
+    ndarray_base<std::array<T, static_product_v<Ds...>>, static_array<Ds...>>;
 
 template <index N>
 struct dimensions {
-    using type = int[N];
+    using type = std::array<int, N>;
 };
 
 template <>
