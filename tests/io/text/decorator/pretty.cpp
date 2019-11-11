@@ -15,7 +15,7 @@
 
 using namespace ac::io;
 
-using spts = spaced<pretty<text_static<bit(flags::boolalpha)>>>;
+using spts = std::tuple<spaced<>, pretty, text_static<bit(flags::boolalpha)>>;
 
 TEST("bool") { test_write("true false", spts{}, true, false); }
 

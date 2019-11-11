@@ -12,61 +12,46 @@
 
 namespace ac::io {
 
-template <class Tag>
-struct spaced_tag {
-    using base = Tag;
-};
-
-/**
- * Format that inserts delimiter between consecutive output units.
- */
-template <class Format, class Char = char, template <class> class Except = is_raw>
-class spaced : public Format {
-public:
-    using format_tag = spaced_tag<typename Format::format_tag>;
-
-    using Format::Format;
-
-    void reset() { separate_ = false; }
-
-    cspan<Char> space() const { return space_; }
-    void space(cspan<Char> x) { space_.assign(x.begin(), x.end()); }
-
-    template <class Device, class Spaced, class T, class Tag>
-    friend std::enable_if_t<!is_manipulator<T>::value, index> serialize(Device& od, Spaced& fmt,
-                                                                        const T& x,
-                                                                        spaced_tag<Tag>) {
-        index res{};
-        if constexpr (Except<T>::value) {
-            fmt.separate_ = false;
-            res = serialize(od, fmt, x, Tag{});
-            fmt.separate_ = false;
-        } else {
-            if (fmt.separate_) {
-                res = od.write(fmt.space());
-                fmt.reset();
-            }
-            res += serialize(od, fmt, x, Tag{});
-            fmt.separate_ = true;
-        }
-        return res;
-    }
-
-private:
-    std::basic_string<Char> space_ = " ";
-    bool separate_ = false;
-};
-
 struct setspace {
     std::string_view value;
 
     struct is_manipulator;
 };
 
-template <class Device, class Format>
-inline index serialize(Device&, Format& fmt, setspace x) {
-    fmt.space(x.value);
-    return 0;
-}
+/**
+ * Format that inserts delimiter between consecutive output units.
+ */
+template <class Char = char, template <class> class Except = is_raw>
+class spaced {
+public:
+    struct format_tag;
+
+    void reset() { separate_ = false; }
+
+    cspan<Char> space() const { return space_; }
+    void space(cspan<Char> x) { space_.assign(x.begin(), x.end()); }
+
+    template <class T, enable_int_if<!is_manipulator<T>::value> = 0>
+    friend decltype(auto) serialize(spaced& fmt, const T& x) {
+        if constexpr (Except<T>::value) {
+            fmt.separate_ = false;
+            return x;
+        } else {
+            tuple<cspan<Char>, const T&> res{{}, x};
+            if (fmt.separate_) {
+                std::get<0>(res) = fmt.space();
+            } else {
+                fmt.separate_ = true;
+            }
+            return res;
+        }
+    }
+
+    friend void serialize(spaced& fmt, setspace x) { fmt.space(x.value); }
+
+private:
+    std::basic_string<Char> space_ = " ";
+    bool separate_ = false;
+};
 
 }  // namespace ac::io

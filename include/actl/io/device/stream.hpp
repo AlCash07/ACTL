@@ -21,7 +21,7 @@ class ios_format {
 
 public:
     using char_type = typename Stream::char_type;
-    using format_tag = adjusted_tag<text_tag>;
+    struct format_tag;
 
     explicit ios_format(Stream& s) : s_{s} {}
 

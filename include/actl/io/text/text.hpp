@@ -12,14 +12,15 @@
 #include <actl/io/util/raw.hpp>
 #include <actl/io/util/skip.hpp>
 #include <actl/numeric/bit.hpp>
+#include <string_view>
 
 namespace ac::io {
 
+template <class T, class Char = char>
+inline constexpr bool is_string_v = std::is_convertible_v<T, std::basic_string_view<Char>>;
+
 template <class Device>
 using view_t = std::basic_string_view<char_t<Device>>;
-
-template <class T, class Device>
-struct is_string : std::is_convertible<T, view_t<Device>> {};
 
 const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat),
                              bit(flags::left) | bit(flags::right) | bit(flags::center)};
@@ -31,8 +32,6 @@ template <
 class text_static {
 public:
     using format_tag = text_tag;
-
-    static constexpr mode_t mode = 0;
 
     static constexpr flag_t flags() { return Flags; }
 
@@ -94,14 +93,9 @@ inline bool deserialize(Device& id, Format& fmt, view_t<Device>& x, text_tag) {
     return deserialize(id, fmt, cspan<char_t<Device>>{x});
 }
 
-template <class Device, class Format>
-inline index serialize(Device& od, Format& fmt, const view_t<Device>& x, text_tag) {
-    return write(od, fmt, span{x});
-}
-
-template <class Device, class Format, class S, enable_int_if<is_string<S, Device>::value> = 0>
-inline index serialize(Device& od, Format& fmt, const S& x, text_tag) {
-    return write(od, fmt, view_t<Device>{x});
+template <class Format, class S, enable_int_if_text<Format> = 0, enable_int_if<is_string_v<S>> = 0>
+inline auto serialize(Format& fmt, const S& s) {
+    return span{std::basic_string_view<value_t<S>>{s}};
 }
 
 template <class Device, class... Ts>

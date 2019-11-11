@@ -17,16 +17,38 @@
 
 namespace ac::io {
 
-template <class Device, class Format, class Float,
+namespace detail {
+
+class float_string {
+public:
+    span<char> reserve(index size) {
+        ptr_ = std::make_unique<char[]>(static_cast<size_t>(size));
+        return {ptr_.get(), size};
+    }
+
+    cspan<char>& data() { return data_; }
+    cspan<char> data() const { return data_; }
+
+    index size() const { return data_.size(); }
+
+private:
+    std::unique_ptr<char[]> ptr_;
+    cspan<char> data_;
+};
+
+template <class D, class F>
+inline index write_final(D& od, F& fmt, const float_string& x) {
+    return write_final(od, fmt, x.data());
+}
+
+}  // namespace detail
+
+template <class Format, class Float, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_floating_point_v<Float>> = 0>
-inline index serialize(Device& od, Format& fmt, Float x, text_tag) {
-    std::unique_ptr<char[]> s;
+inline auto serialize(Format& fmt, Float x) {
+    detail::float_string res;
+    span<char> s;
     char* first;
-    char* last;
-    auto reserve = [&](index size) {
-        s = std::make_unique<char[]>(static_cast<size_t>(1 + size));
-        first = last = s.get() + 1 + size;
-    };
     char sign{};
     if (std::signbit(x)) {
         sign = '-';
@@ -35,12 +57,12 @@ inline index serialize(Device& od, Format& fmt, Float x, text_tag) {
         if (fmt.getf(flags::showpos)) sign = '+';
     }
     if (std::isnan(x)) {
-        reserve(3);
-        first = last - 3;
+        s = res.reserve(4);
+        first = s.begin() + 1;
         std::memcpy(first, fmt.getf(flags::uppercase) ? "NAN" : "nan", 3);
     } else if (std::isinf(x)) {
-        reserve(3);
-        first = last - 3;
+        s = res.reserve(4);
+        first = s.begin() + 1;
         std::memcpy(first, fmt.getf(flags::uppercase) ? "INF" : "inf", 3);
     } else {
         using UInt = unsigned long long;
@@ -53,18 +75,19 @@ inline index serialize(Device& od, Format& fmt, Float x, text_tag) {
             ++integer_part;
             fractional_part = 0;
         }
-        reserve(
+        s = res.reserve(
             detail::digit_count(std::numeric_limits<UInt>::max(), base < 10 ? UInt{2} : UInt{10}) +
             1 + fmt.precision());
-        first = last - prec;
+        first = s.end() - prec;
         if (prec > 0) {
-            std::fill(first, detail::uitoa(last, fmt, fractional_part, base), '0');
+            std::fill(first, detail::uitoa(s.end(), fmt, fractional_part, base), '0');
         }
         if (0 < prec || fmt.getf(flags::showpoint)) *--first = '.';
         first = detail::uitoa(first, fmt, integer_part, base);
     }
     if (sign) *--first = sign;
-    return write(od, fmt, cspan<char>{first, last});
+    res.data() = {first, s.end()};
+    return res;
 }
 
 }  // namespace ac::io

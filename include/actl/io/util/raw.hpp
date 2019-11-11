@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/util/span.hpp>
+#include <actl/types.hpp>
 
 namespace ac::io {
 
@@ -26,7 +26,7 @@ template <class T>
 struct is_raw<raw<T>> : std::true_type {};
 
 template <class Device, class Format, class T>
-inline index serialize(Device& od, Format&, const raw<T>& x) {
+inline index write_final(Device& od, Format&, const raw<T>& x) {
     return od.write(x.value);
 }
 

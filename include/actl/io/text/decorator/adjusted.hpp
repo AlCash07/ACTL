@@ -13,15 +13,16 @@
 
 namespace ac::io {
 
-template <class Tag>
-struct adjusted_tag {
-    using base = Tag;
+template <class Char>
+struct repeat {
+    Char c;
+    index count;
 };
 
-template <class Format, class Char = char>
-class adjusted : public Format {
+template <class Char = char>
+class adjusted {
 public:
-    using format_tag = adjusted_tag<typename Format::format_tag>;
+    struct format_tag;
 
     index width() const { return width_; }
     void width(index value) {
@@ -46,19 +47,20 @@ inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
     return fmt.getf(flags::left) ? std::pair{p.second, p.first} : p;
 }
 
-template <class Device>
-inline void write_fill(Device& od, char_t<Device> c, index count) {
+template <class Device, class Format, class Char>
+inline index write_final(Device& od, Format& fmt, const repeat<Char>& x) {
+    index count = x.count;
     if constexpr (has_output_buffer<Device>::value) {
         auto s = od.output_data();
         if (count <= s.size()) {
-            std::fill_n(s.data(), count, c);
+            std::fill_n(s.data(), count, x.c);
             od.move(count);
         } else {
-            std::fill_n(s.data(), s.size(), c);
+            std::fill_n(s.data(), s.size(), x.c);
             od.move(s.size());
             count -= s.size();
             s = od.output_data();
-            std::fill_n(s.data(), std::min(count, s.size()), c);
+            std::fill_n(s.data(), std::min(count, s.size()), x.c);
             // Here we assume that s references device buffer and does not change.
             for (index n = count / s.size(); n > 0; --n) {
                 od.move(s.size());
@@ -66,23 +68,15 @@ inline void write_fill(Device& od, char_t<Device> c, index count) {
             od.move(count % s.size());
         }
     } else {
-        for (; 0 < count; --count) od.write(c);
+        for (; 0 < count; --count) od.write(x.c);
     }
+    return x.count;
 }
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device& od, Format& fmt, const cspan<char_t<Device>>& s, adjusted_tag<Tag>) {
-    if (fmt.width() <= 0 || fmt.width() <= s.size()) return od.write(s);
-    auto [l, r] = adjustment(fmt, s.size());
-    write_fill(od, fmt.fill(), l);
-    index res = od.write(s);
-    write_fill(od, fmt.fill(), r);
-    return l + res + r;
-}
-
-template <class Device, class Format, class Tag>
-inline index serialize(Device& od, Format& fmt, char_t<Device> c, adjusted_tag<Tag>) {
-    return serialize(od, fmt, cspan<char_t<Device>>{&c, 1}, adjusted_tag<Tag>{});
+template <class Char, class T>
+inline tuple<repeat<Char>, const T&, repeat<Char>> serialize(adjusted<Char>& fmt, const T& x) {
+    auto [l, r] = adjustment(fmt, x.size());
+    return {repeat{fmt.fill, l}, x, repeat{fmt.fill, r}};
 }
 
 // adjustment
@@ -97,10 +91,9 @@ struct setwidth {
     struct is_manipulator;
 };
 
-template <class Device, class Format>
-inline index serialize(Device&, Format& fmt, setwidth x) {
+template <class Char>
+inline void serialize(adjusted<Char>& fmt, setwidth x) {
     fmt.width(x.value);
-    return 0;
 }
 
 // character to pad units with less width
@@ -113,10 +106,9 @@ struct setfill {
     struct is_manipulator;
 };
 
-template <class Device, class Format, class Char>
-inline index serialize(Device&, Format& fmt, setfill<Char> x) {
+template <class Char>
+inline void serialize(adjusted<Char>& fmt, setfill<Char> x) {
     fmt.fill(x.value);
-    return 0;
 }
 
 }  // namespace ac::io

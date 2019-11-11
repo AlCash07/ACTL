@@ -22,13 +22,13 @@ struct flush_t {
 };
 constexpr flush_t flush{};
 
-template <class Device, class Format>
-inline index serialize(Device& od, Format& fmt, endl_t) {
-    return write(od, fmt, raw{'\n'}, flush);
+template <class Format>
+inline auto serialize(Format& fmt, endl_t) {
+    return tuple{raw{'\n'}, flush};
 }
 
 template <class Device, class Format>
-inline index serialize(Device& od, Format&, flush_t) {
+inline index write_final(Device& od, Format&, flush_t) {
     od.flush();
     return 0;
 }

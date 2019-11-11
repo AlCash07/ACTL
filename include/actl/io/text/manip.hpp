@@ -58,26 +58,24 @@ constexpr setf<flags::skipws, false> noskipws{};
 constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
 
-template <class Device, class Format, flag_t Flag, bool Value>
-inline index serialize(Device&, Format& fmt, setf<Flag, Value>) {
+template <class Format, flag_t Flag, bool Value>
+inline void serialize(Format& fmt, setf<Flag, Value>) {
     if constexpr (Value) {
         fmt.setf(Flag);
     } else {
         fmt.unsetf(Flag);
     }
-    return 0;
 }
 
 template <class Device, class Format, flag_t Flag, bool Value>
 inline bool deserialize(Device& id, Format& fmt, setf<Flag, Value>) {
-    serialize(id, fmt, setf<Flag, Value>{});
+    serialize(fmt, setf<Flag, Value>{});
     return true;
 }
 
-template <class Device, class Format, flag_t Group, flag_t Flag>
-inline index serialize(Device&, Format& fmt, setg<Group, Flag>) {
+template <class Format, flag_t Group, flag_t Flag>
+inline void serialize(Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
-    return 0;
 }
 
 template <class Device, class Format, flag_t Group, flag_t Flag>
@@ -102,10 +100,9 @@ inline bool deserialize(Device&, Format& fmt, setbase x) {
     return true;
 }
 
-template <class Device, class Format>
-inline index serialize(Device&, Format& fmt, setbase x) {
+template <class Format>
+inline void serialize(Format& fmt, setbase x) {
     fmt.base(x.value);
-    return 0;
 }
 
 // number of digits after the decimal point
@@ -115,10 +112,9 @@ struct setprecision {
     struct is_manipulator;
 };
 
-template <class Device, class Format>
-inline index serialize(Device&, Format& fmt, setprecision x) {
+template <class Format>
+inline void serialize(Format& fmt, setprecision x) {
     fmt.precision(x.value);
-    return 0;
 }
 
 }  // namespace ac::io

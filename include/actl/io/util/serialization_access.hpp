@@ -21,15 +21,15 @@ struct serialization_access {
     std::false_type has_io_tuple_tag(...);
 
     template <class T, class... Ts,
-              class = decltype(std::declval<const T>().serialize(std::declval<Ts>()...))>
-    std::true_type has_serialize(int);
+              class = decltype(std::declval<const T>().write_final(std::declval<Ts>()...))>
+    std::true_type has_write(int);
 
     template <class... Ts>
-    std::false_type has_serialize(...);
+    std::false_type has_write(...);
 
     template <class T, class... Ts>
-    static index write(const T& x, Ts&&... args) {
-        return x.serialize(args...);
+    static index write_final(const T& x, Ts&... args) {
+        return x.write_final(args...);
     }
 
     template <class T, class... Ts,
@@ -45,12 +45,11 @@ struct serialization_access {
     }
 };
 
-// Tag represents 0 or 1 types.
-template <class Device, class Format, class T, class... Tag,
-          enable_int_if<decltype(
-              serialization_access{}.has_serialize<T, Device&, Format&, Tag...>(0))::value> = 0>
-inline index serialize(Device& od, Format& fmt, const T& x, Tag... tag) {
-    return serialization_access::write(x, od, fmt, tag...);
+template <
+    class Device, class Format, class T,
+    enable_int_if<decltype(serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
+inline index write_final(Device& od, Format& fmt, const T& x) {
+    return serialization_access::write_final(x, od, fmt);
 }
 
 template <class Device, class Format, class T, class... Tag,

@@ -40,7 +40,7 @@ template <class T1, class T2>
 struct is_tuple<std::pair<T1, T2>> : std::true_type {};
 
 template <class Device, class Format, class T1, class T2>
-inline index serialize(Device& od, Format& fmt, const std::pair<T1, T2>& x) {
+inline index write_final(Device& od, Format& fmt, const std::pair<T1, T2>& x) {
     return write(od, fmt, x.first, x.second);
 }
 
