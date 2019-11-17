@@ -14,6 +14,7 @@ using namespace ac::io;
 
 template <class T>
 struct pair {
+    struct is_io_tuple;
     explicit pair(T x, T y) : x{x}, y{y} {}
     T x, y;
 };

@@ -53,17 +53,14 @@ inline index write_final(Device& od, Format&, const escaped_string<Char>& s) {
 }
 
 template <class It>
-struct map_range {
-    iterator_range<It> value;
+struct map_range : iterator_range<It> {
+    using iterator_range<It>::iterator_range;
 };
-
-template <class It>
-map_range(iterator_range<It>)->map_range<It>;
 
 template <class Device, class Format, class It>
 inline index write_final(Device& od, Format& fmt, map_range<It> r) {
     index res{};
-    for (const auto& [key, value] : r.value) {
+    for (const auto& [key, value] : r) {
         res += write(od, fmt, key, raw{':'}, value);
     }
     return res;
@@ -71,11 +68,10 @@ inline index write_final(Device& od, Format& fmt, map_range<It> r) {
 
 template <class AC>
 inline auto make_map_range(const AC& cont) {
-    auto res = make_range(cont);
     if constexpr (is_simple_associative_container_v<AC>) {
-        return res;
+        return make_range(cont);
     } else {
-        return map_range{res};
+        return map_range<iterator_t<const AC>>{cont.begin(), cont.end()};
     }
 }
 

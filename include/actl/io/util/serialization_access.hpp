@@ -14,11 +14,11 @@ namespace ac::io {
 
 struct serialization_access {
     // This is the simplest portable way I found to check for optional private members in T.
-    template <class T, class = typename T::io_tuple_tag>
-    std::true_type has_io_tuple_tag(int);
+    template <class T, class = typename T::is_io_tuple>
+    std::true_type is_io_tuple(int);
 
     template <class T>
-    std::false_type has_io_tuple_tag(...);
+    std::false_type is_io_tuple(...);
 
     template <class T, class... Ts,
               class = decltype(std::declval<const T>().write_final(std::declval<Ts>()...))>

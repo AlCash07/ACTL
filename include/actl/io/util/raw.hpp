@@ -19,12 +19,6 @@ struct raw {
 template <class T>
 raw(T) -> raw<T>;
 
-template <class T>
-struct is_raw : std::false_type {};
-
-template <class T>
-struct is_raw<raw<T>> : std::true_type {};
-
 template <class Device, class Format, class T>
 inline index write_final(Device& od, Format&, const raw<T>& x) {
     return od.write(x.value);

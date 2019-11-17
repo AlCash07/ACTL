@@ -12,46 +12,54 @@
 
 namespace ac::io {
 
+/**
+ * Format that inserts delimiter between consecutive output units.
+ */
+template <class Char = char>
+class spaced {
+public:
+    struct format_tag;
+
+    bool& separate() { return separate_; }
+
+    cspan<Char> space() const { return space_; }
+    void space(cspan<Char> x) { space_.assign(x.begin(), x.end()); }
+
+private:
+    std::basic_string<Char> space_ = " ";
+    bool separate_ = false;
+};
+
+template <class C, class T, enable_int_if<!is_manipulator<T>::value> = 0>
+inline tuple<cspan<C>, const T&> serialize(spaced<C>& fmt, const T& x) {
+    if (fmt.separate()) {
+        return {fmt.space(), x};
+    } else {
+        fmt.separate() = true;
+        return {{}, x};
+    }
+}
+
+template <class C, class T>
+inline decltype(auto) serialize(spaced<C>& fmt, const raw<T>& x) {
+    fmt.separate() = false;
+    return x;
+}
+
 struct setspace {
     std::string_view value;
 
     struct is_manipulator;
 };
 
-/**
- * Format that inserts delimiter between consecutive output units.
- */
-template <class Char = char, template <class> class Except = is_raw>
-class spaced {
-public:
-    struct format_tag;
+template <class C>
+inline void serialize(spaced<C>& fmt, setspace x) {
+    fmt.space(x.value);
+}
 
-    void reset() { separate_ = false; }
-
-    cspan<Char> space() const { return space_; }
-    void space(cspan<Char> x) { space_.assign(x.begin(), x.end()); }
-
-    template <class T, enable_int_if<!is_manipulator<T>::value> = 0>
-    friend decltype(auto) serialize(spaced& fmt, const T& x) {
-        if constexpr (Except<T>::value) {
-            fmt.separate_ = false;
-            return x;
-        } else {
-            tuple<cspan<Char>, const T&> res{{}, x};
-            if (fmt.separate_) {
-                std::get<0>(res) = fmt.space();
-            } else {
-                fmt.separate_ = true;
-            }
-            return res;
-        }
-    }
-
-    friend void serialize(spaced& fmt, setspace x) { fmt.space(x.value); }
-
-private:
-    std::basic_string<Char> space_ = " ";
-    bool separate_ = false;
-};
+template <class C>
+inline void change_depth(spaced<C>& fmt, bool deeper) {
+    fmt.separate() = !deeper;
+}
 
 }  // namespace ac::io

@@ -13,7 +13,7 @@
 // Defines serialize and deserialize functions for composite types.
 #define DEFINE_SERIALIZATION(...)                      \
     friend struct ac::io::serialization_access;        \
-    struct io_tuple_tag;                               \
+    struct is_io_tuple;                                \
     template <class Device, class Format>              \
     index write_final(Device& od, Format& fmt) const { \
         return write(od, fmt, __VA_ARGS__);            \

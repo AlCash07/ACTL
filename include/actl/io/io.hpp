@@ -16,14 +16,6 @@
 
 namespace ac::io {
 
-template <class... Ts>
-struct tuple : std::tuple<Ts...> {
-    using std::tuple<Ts...>::tuple;
-};
-
-template <class... Ts>
-tuple(Ts&&...)->tuple<Ts...>;
-
 /* Device */
 
 using mode_t = uint8_t;
@@ -133,10 +125,48 @@ struct format_traits<std::tuple<Ts...>, void> {
     }
 };
 
+template <class Format>
+inline void change_depth(Format&, bool deeper) {}
+
+template <class Format, size_t... Is>
+inline void change_depth(Format& fmt, bool deeper, std::index_sequence<Is...>) {
+    return (..., change_depth(std::get<Is>(fmt), deeper));
+}
+
+template <class... Formats>
+inline void change_depth(std::tuple<Formats...>& fmt, bool deeper) {
+    change_depth(fmt, deeper, std::make_index_sequence<sizeof...(Formats)>{});
+}
+
 template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
 inline binary deduce_format(Device& dev) {
     return {};
 }
+
+/* Argument traits */
+
+template <class... Ts>
+struct tuple : std::tuple<Ts...> {
+    using std::tuple<Ts...>::tuple;
+};
+
+template <class... Ts>
+tuple(Ts&&...) -> tuple<Ts...>;
+
+template <class T>
+struct is_tuple : decltype(serialization_access{}.is_io_tuple<T>(0)) {};
+
+template <class... Ts>
+struct is_tuple<std::tuple<Ts...>> : std::true_type {};
+
+template <class T>
+inline constexpr bool is_tuple_v = is_tuple<T>::value;
+
+template <class T, class = void>
+struct is_manipulator : std::false_type {};
+
+template <class T>
+struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
 
 /* Common types support */
 
@@ -214,7 +244,14 @@ inline index write_impl(D& od, F& fmt, const tuple<Ts...>& x) {
 template <size_t I, class D, class F, class T>
 inline index write_impl(D& od, F& fmt, const T& x) {
     if constexpr (I == format_traits<F>::size) {
-        return write_final(od, fmt, x);
+        if constexpr (is_range_v<T> || is_tuple_v<T>) {
+            change_depth(fmt, true);
+            index res = write_final(od, fmt, x);
+            change_depth(fmt, false);
+            return res;
+        } else {
+            return write_final(od, fmt, x);
+        }
     } else {
         auto& fmt_i = format_traits<F>::template get<I>(fmt);
         if constexpr (!decltype(can_serialize(fmt_i, x))::value) {
@@ -271,19 +308,5 @@ template <class Device, class Format, class T>
 inline bool read_size(Device& id, Format& fmt, T& size) {
     return read(id, fmt, size);
 }
-
-/* Traits */
-
-template <class T>
-struct is_tuple : decltype(serialization_access{}.has_io_tuple_tag<T>(0)) {};
-
-template <class... Ts>
-struct is_tuple<std::tuple<Ts...>> : std::true_type {};
-
-template <class T, class = void>
-struct is_manipulator : std::false_type {};
-
-template <class T>
-struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
 
 }  // namespace ac::io
