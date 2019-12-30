@@ -11,7 +11,7 @@
 #include "geometry/polygons.hpp"
 
 TEST("max polygon") {
-    op::product_policy<long long> policy;
+    op::cast_before<op::Mul, long long> policy;
     constexpr int M = 100'000'000;
     auto poly = get_max_convex_polygon(M);
     auto random_coordinate = [&]() {

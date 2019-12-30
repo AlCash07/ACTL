@@ -7,42 +7,39 @@
 
 #pragma once
 
+#include <actl/util/none.hpp>
 #include <actl/util/type_traits.hpp>
 
-namespace ac::op {
+namespace ac {
+namespace op {
+
+// Inherit from this class to enable ADL lookup to find operators in this namespace.
+// Template base class enables empty base class chaining to avoid type size increasing,
+// reference: https://www.boost.org/doc/libs/1_70_0/libs/utility/operators.htm#old_lib_note
+template <class B = none>
+struct base : B {
+    using B::B;
+};
 
 // Default operation policy.
-struct default_policy {
-    struct is_policy;
-};
+struct policy {};
+
+}  // namespace op
+
+inline constexpr op::policy default_policy;
 
 /* is_policy trait: defined by nested `struct is_policy;`. */
 
-template <class T, class = void>
-struct is_policy : std::false_type {};
+template <class T>
+inline constexpr bool is_policy_v = std::is_base_of_v<op::policy, remove_cvref_t<T>>;
 
 template <class T>
-struct is_policy<T, std::void_t<typename T::is_policy>> : std::true_type {};
+using enable_int_if_policy = enable_int_if<is_policy_v<T>>;
 
 template <class T>
-inline constexpr bool is_policy_v = is_policy<std::remove_reference_t<T>>::value;
+using disable_int_if_policy = enable_int_if<!is_policy_v<T>>;
 
-// Perform without policy that applies default policy.
-template <class Operation, class T, class... Ts, std::enable_if_t<!is_policy_v<T>, int> = 0>
-inline decltype(auto) perform(Operation, T&& x, Ts&&... xs) {
-    return perform(Operation{}, default_policy{}, std::forward<T>(x), std::forward<Ts>(xs)...);
-}
-
-// Base class for operations.
-template <class Derived>
-struct operation {
-    struct is_operation;
-
-    template <class... Ts>
-    inline decltype(auto) operator()(Ts&&... xs) const {
-        return perform(Derived{}, std::forward<Ts>(xs)...);
-    }
-};
+namespace op {
 
 /* is_operation trait: satisfied by deriving from operation. */
 
@@ -92,6 +89,65 @@ struct is_associative<T, std::void_t<typename T::is_associative>> : std::true_ty
 template <class T>
 inline constexpr bool is_associative_v = is_associative<T>::value;
 
+/* Operation perform */
+
+template <class, class... Ts>
+struct can_perform : std::false_type {};
+
+template <class... Ts>
+inline constexpr bool can_perform_v = can_perform<void, Ts...>::value;
+
+template <class... Ts>
+using enable_int_if_can_perform = enable_int_if<can_perform_v<Ts...>>;
+
+// Perform without policy that applies default policy.
+template <class Op, class T, class... Ts, disable_int_if_policy<T> = 0,
+          enable_int_if_can_perform<Op, policy, T, Ts...> = 0>
+inline decltype(auto) perform(Op op, T&& x, Ts&&... xs) {
+    return perform(op, policy{}, std::forward<T>(x), std::forward<Ts>(xs)...);
+}
+
+template <class... Ts>
+struct result_type {
+    using type = decltype(perform(std::declval<Ts>()...));
+};
+
+template <class... Ts>
+using result_t = typename result_type<Ts...>::type;
+
+template <class... Ts>
+struct can_perform<std::void_t<decltype(perform(std::declval<Ts>()...))>, Ts...> : std::true_type {};
+
+// Base class for operations.
+template <int Arity, class Derived>
+struct operation {
+    struct is_operation;
+
+    static constexpr int arity = Arity;
+
+    template <class... Ts, enable_int_if_can_perform<Derived, Ts...> = 0>
+    inline decltype(auto) operator()(Ts&&... xs) const {
+        return perform(Derived{}, std::forward<Ts>(xs)...);
+    }
+};
+
+// Base class for scalar operations.
+template <int Arity, class Derived>
+struct scalar_operation : operation<Arity, Derived> {
+    struct is_scalar_operation;
+};
+
+/* Operation is_scalar_operation trait: satisfied by deriving from scalar_operation. */
+
+template <class T, class = void>
+struct is_scalar_operation : std::false_type {};
+
+template <class T>
+struct is_scalar_operation<T, std::void_t<typename T::is_scalar_operation>> : std::true_type {};
+
+template <class T>
+inline constexpr bool is_scalar_operation_v = is_scalar_operation<T>::value;
+
 /* Inplace argument support */
 
 template <class T>
@@ -137,4 +193,5 @@ inline T simplify(inplace_argument<T> x) {
     return x.x;
 }
 
-}  // namespace ac::op
+}  // namespace op
+}  // namespace ac

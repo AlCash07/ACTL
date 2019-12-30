@@ -63,13 +63,15 @@ inline index serialize(Device& od, Format& fmt, const T&) {
 namespace ac::op {
 
 template <class T>
-struct abs_rel_error {
+struct abs_rel_error : virtual policy {
+    abs_rel_error(T eps) : eps{eps} {}
+
     T eps;
 };
 
 template <class E, class T, class U,
           enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
-inline bool equal(const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
+inline bool perform(Equal, const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
     E numerator = adl::abs(lhs - rhs);
     E denominator = std::max(std::max(adl::abs<E>(lhs), adl::abs<E>(rhs)), E{1});
     return numerator <= policy.eps * denominator;

@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include <actl/functional/policy.hpp>
+#include <actl/functional/arithmetic.hpp>
+#include <actl/functional/compare.hpp>
 #include <actl/numeric/math.hpp>
 
 namespace ac::op {
@@ -22,7 +23,7 @@ public:
 
     operator decltype(adl::sqrt(std::declval<T>()))() const { return adl::sqrt(sqr_); }
 
-    friend constexpr const T& sqr(const square_root& x) { return x.sqr_; }
+    friend constexpr const T& perform(Sqr, policy, const square_root& x) { return x.sqr_; }
 
 private:
     T sqr_;
@@ -41,15 +42,15 @@ inline auto sqrt(defer_sqrt, const T& x) {
 }
 
 template <class Policy, class T, class U>
-inline constexpr bool equal(const Policy& policy, const square_root<T>& lhs,
+inline constexpr bool perform(Equal, const Policy& policy, const square_root<T>& lhs,
                             const square_root<U>& rhs) {
-    return equal(policy, sqr(lhs), sqr(rhs));
+    return eq(policy, sqr(lhs), sqr(rhs));
 }
 
 template <class Policy, class T, class U>
-inline constexpr bool less(const Policy& policy, const square_root<T>& lhs,
+inline constexpr bool perform(Less, const Policy& policy, const square_root<T>& lhs,
                            const square_root<U>& rhs) {
-    return less(policy, sqr(lhs), sqr(rhs));
+    return lt(policy, sqr(lhs), sqr(rhs));
 }
 
 }  // namespace ac::op

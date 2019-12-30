@@ -164,32 +164,32 @@ inline constexpr auto operator - (const point<T0, N>& lhs, const point<T1, N>& r
 namespace op {
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr bool equal(const Policy& policy, const point<T0, N>& lhs,
-                            const point<T1, N>& rhs) {
-    return equal(policy, span{lhs}, span{rhs});
+inline constexpr bool perform(Equal, const Policy& policy, const point<T0, N>& lhs,
+                              const point<T1, N>& rhs) {
+    return eq(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr bool less(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return less(policy, span{lhs}, span{rhs});
+inline constexpr bool perform(Less, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+    return lt(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr auto product(const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
-    return detail::apply<N>([&policy, &factor](const T0& x) { return product(policy, x, factor); },
+inline constexpr auto perform(Mul, const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
+    return detail::apply<N>([&policy, &factor](const T0& x) { return mul(policy, x, factor); },
                             lhs);
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr auto product(const Policy& policy, const T0& factor, const point<T1, N>& rhs) {
-    return detail::apply<N>([&policy, &factor](const T1& x) { return product(policy, factor, x); },
+inline constexpr auto perform(Mul, const Policy& policy, const T0& factor, const point<T1, N>& rhs) {
+    return detail::apply<N>([&policy, &factor](const T1& x) { return mul(policy, factor, x); },
                             rhs);
 }
 
 template <class Policy, index N, class T0, class T1>
-inline constexpr auto ratio(const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
-    ACTL_ASSERT(!equal(policy, factor, 0));
-    return detail::apply<N>([&policy, &factor](const T0& x) { return ratio(policy, x, factor); },
+inline constexpr auto perform(Div, const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
+    ACTL_ASSERT(!eq(policy, factor, 0));
+    return detail::apply<N>([&policy, &factor](const T0& x) { return div(policy, x, factor); },
                             lhs);
 }
 
@@ -197,7 +197,7 @@ inline constexpr auto ratio(const Policy& policy, const point<T0, N>& lhs, const
 
 template <class Policy, index N, class T0, class T1>
 inline constexpr auto dot(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    op::product_t<Policy, T0, T1> res = 0;
+    op::result_t<op::Mul, Policy, T0, T1> res = 0;
     for (index i = 0; i < N; ++i) res += product(policy, lhs[i], rhs[i]);
     return res;
 }
@@ -220,7 +220,7 @@ inline constexpr auto dot(const point<T, N>& p) {
 template <class Policy, index N, class T>
 inline constexpr bool degenerate(const Policy& policy, const point<T, N>& p) {
     for (index i = 0; i < N; ++i) {
-        if (!equal(policy, p[i], 0)) return false;
+        if (!op::eq(policy, p[i], 0)) return false;
     }
     return true;
 }

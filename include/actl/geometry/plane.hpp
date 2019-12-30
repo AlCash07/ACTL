@@ -29,7 +29,7 @@ public:
 
     template <class T1 = T, class T2 = T>
     explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& p)
-        : plane{normal, dot(op::product_policy<T>{}, normal, p)} {}
+        : plane{normal, dot(op::cast_before<op::Mul, T>{}, normal, p)} {}
 
     template <class T1>
     explicit constexpr plane(const plane<T1, N>& rhs) : plane{rhs.normal, rhs.d} {}

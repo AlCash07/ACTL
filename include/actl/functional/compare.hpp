@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/policy.hpp>
+#include <actl/functional/operation.hpp>
 #include <actl/numeric/math.hpp>
 #include <actl/range/traits.hpp>
 #include <algorithm>
@@ -16,27 +16,38 @@ namespace ac {
 
 namespace op {
 
-// class E should provide public `T epsilon()`;
-template <class E>
-struct absolute_error : E, virtual policy {};
+struct Sgn : scalar_operation<1, Sgn> {};
 
-DEFINE_HAS_BINARY_OPERATOR(eq, ==)
-DEFINE_HAS_OVERLOAD(equal)
+struct Equal : scalar_operation<2, Equal> {
+    struct is_commutative;
+};
 
-template <class T, class U, enable_int_if<!has_equal_v<T, U> && has_eq_v<T, U>> = 0>
-inline constexpr bool equal(policy, const T& lhs, const U& rhs) {
+struct Less : scalar_operation<2, Less> {};
+
+struct Max : scalar_operation<2, Max> {
+    struct is_commutative;
+    struct is_associative;
+};
+
+struct Min : scalar_operation<2, Min> {
+    struct is_commutative;
+    struct is_associative;
+};
+
+// inline constexpr Sgn sgn;
+inline constexpr Equal eq;
+inline constexpr Less lt;
+inline constexpr Max max;
+inline constexpr Min min;
+
+template <class T, class U, enable_int_if<!can_perform_v<Equal, policy, T, U>> = 0>
+inline constexpr auto perform(Equal, policy, const T& lhs, const U& rhs) -> decltype(lhs == rhs) {
     return lhs == rhs;
 }
 
-template <class E, class T, class U>
-inline constexpr bool equal(const absolute_error<E>& policy, const T& lhs, const U& rhs) {
-    return less(policy, adl::abs(rhs - lhs), policy.epsilon());
-}
-
-template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
-inline bool equal(const Policy& policy, const R0& lhs, const R1& rhs) {
-    return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs),
-                      equal_functor(policy));
+template <class... Ts>
+inline constexpr auto equal(Ts&&... xs) {
+    return eq(std::forward<Ts>(xs)...);
 }
 
 template <class Policy>
@@ -44,9 +55,15 @@ inline auto equal_functor(Policy& policy) {
     return [&policy](const auto& x, const auto& y) { return equal(policy, x, y); };
 }
 
-template <class T, class U, enable_int_if<has_equal_v<T, U>> = 0>
-inline constexpr bool operator == (const T& lhs, const U& rhs) {
-    return equal(default_policy, lhs, rhs);
+template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
+inline bool perform(Equal, const Policy& policy, const R0& lhs, const R1& rhs) {
+    return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs),
+                      equal_functor(policy));
+}
+
+template <class T, class U>
+inline constexpr auto operator == (const T& lhs, const U& rhs) -> decltype(eq(lhs, rhs)) {
+    return eq(lhs, rhs);
 }
 
 template <class T, class U>
@@ -54,16 +71,18 @@ inline constexpr bool operator != (const T& lhs, const U& rhs) {
     return !(lhs == rhs);
 }
 
-DEFINE_HAS_BINARY_OPERATOR(lt, <)
-DEFINE_HAS_OVERLOAD(less)
-
-template <class T, class U, enable_int_if<!has_less_v<T, U> && has_lt_v<T, U>> = 0>
-inline constexpr bool less(policy, const T& lhs, const U& rhs) {
+template <class T, class U, enable_int_if<!can_perform_v<Less, policy, T, U>> = 0>
+inline constexpr auto perform(Less, policy, const T& lhs, const U& rhs) -> decltype(lhs < rhs) {
     return lhs < rhs;
 }
 
+template <class T, class U>
+inline constexpr auto less(policy, const T& lhs, const U& rhs) {
+    return lt(lhs, rhs);
+}
+
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
-inline bool less(const Policy& policy, const R0& lhs, const R1& rhs) {
+inline bool perform(Less, const Policy& policy, const R0& lhs, const R1& rhs) {
     return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
                                         std::end(rhs), less_functor(policy));
 }
@@ -78,24 +97,33 @@ inline auto greater_functor(Policy& policy) {
     return [&policy](const auto& x, const auto& y) { return less(policy, y, x); };
 }
 
-template <class T, class U, enable_int_if<has_less_v<T, U>> = 0>
-inline constexpr bool operator < (const T& lhs, const U& rhs) {
-    return less(default_policy, lhs, rhs);
+template <class T, class U>
+inline constexpr auto operator < (const T& lhs, const U& rhs) -> decltype(lt(lhs, rhs)) {
+    return lt(lhs, rhs);
 }
 
 template <class T, class U>
-inline constexpr bool operator > (const T& lhs, const U& rhs) {
+inline constexpr auto operator > (const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
     return rhs < lhs;
 }
 
 template <class T, class U>
-inline constexpr bool operator <= (const T& lhs, const U& rhs) {
+inline constexpr auto operator <= (const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
     return !(lhs > rhs);
 }
 
 template <class T, class U>
-inline constexpr bool operator >= (const T& lhs, const U& rhs) {
+inline constexpr auto operator >= (const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
     return !(lhs < rhs);
+}
+
+// class E should provide public `T epsilon()`;
+template <class E>
+struct absolute_error : E, virtual policy {};
+
+template <class E, class T, class U>
+inline constexpr auto perform(Equal, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
+    return lt(policy, adl::abs(rhs - lhs), policy.epsilon());
 }
 
 }  // namespace op

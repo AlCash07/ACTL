@@ -94,6 +94,6 @@ using enable_int_if_swap = enable_int_if<id<T1>::value < id<T0>::value>;
 
 }  // namespace geometry
 
-inline op::ratio_policy<double> geometry_policy;
+inline op::cast_before<op::Div, double> geometry_policy;
 
 }  // namespace ac
