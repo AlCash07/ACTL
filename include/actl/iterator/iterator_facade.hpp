@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <actl/functional/compare.hpp>
+#include <actl/functional/comparison.hpp>
 #include <actl/util/type_traits.hpp>
 #include <iterator>
 #include <memory>

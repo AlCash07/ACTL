@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/compare.hpp>
+#include <actl/functional/comparison.hpp>
 #include <actl/io/io.hpp>
 #include <actl/numeric/hash.hpp>
 #include <utility>

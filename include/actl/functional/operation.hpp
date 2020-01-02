@@ -41,16 +41,25 @@ using disable_int_if_policy = enable_int_if<!is_policy_v<T>>;
 
 namespace op {
 
-/* is_operation trait: defined by nested `struct is_operation;`. */
+struct base_operation_tag {};
+
+/* Every operation mush define nested `struct operation_tag;`. */
 
 template <class T, class = void>
-struct is_operation : std::false_type {};
+struct operation_tag {
+    using type = void;
+};
 
 template <class T>
-struct is_operation<T, std::void_t<typename T::is_operation>> : std::true_type {};
+struct operation_tag<T, std::void_t<typename T::operation_tag>> {
+    using type = typename T::operation_tag;
+};
 
 template <class T>
-inline constexpr bool is_operation_v = is_operation<T>::value;
+using operation_tag_t = typename operation_tag<T>::type;
+
+template <class T>
+inline constexpr bool is_operation_v = !std::is_same<operation_tag_t<T>, void>::value;
 
 /* Operation arity trait: defined by nested `static constexpr int arity = N;`. */
 
@@ -143,9 +152,9 @@ template <class... Ts>
 struct can_perform<std::void_t<decltype(perform(std::declval<Ts>()...))>, Ts...> : std::true_type {};
 
 // Base class for operations.
-template <int Arity, class Derived>
+template <class Derived, int Arity>
 struct operation {
-    struct is_operation;
+    using operation_tag = base_operation_tag;
 
     static constexpr int arity = Arity;
 
@@ -155,22 +164,13 @@ struct operation {
     }
 };
 
+struct scalar_operation_tag : base_operation_tag {};
+
 // Base class for scalar operations.
-template <int Arity, class Derived>
-struct scalar_operation : operation<Arity, Derived> {
-    struct is_scalar_operation;
+template <class Derived, int Arity>
+struct scalar_operation : operation<Derived, Arity> {
+    using operation_tag = scalar_operation_tag;
 };
-
-/* Operation is_scalar_operation trait: satisfied by deriving from scalar_operation. */
-
-template <class T, class = void>
-struct is_scalar_operation : std::false_type {};
-
-template <class T>
-struct is_scalar_operation<T, std::void_t<typename T::is_scalar_operation>> : std::true_type {};
-
-template <class T>
-inline constexpr bool is_scalar_operation_v = is_scalar_operation<T>::value;
 
 /* Inplace argument support */
 

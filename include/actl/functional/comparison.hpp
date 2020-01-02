@@ -16,11 +16,19 @@ namespace ac {
 
 namespace op {
 
-struct Sgn : scalar_operation<1, Sgn> {};
+struct comparison_operation_tag : scalar_operation_tag {};
 
-struct Cmp3Way : scalar_operation<2, Cmp3Way> {};
+// Base class for scalar operations.
+template <class Derived, int Arity>
+struct comparison_operation : scalar_operation<Derived, Arity> {
+    using operation_tag = comparison_operation_tag;
+};
 
-struct Equal : scalar_operation<2, Equal> {
+struct Sgn : scalar_operation<Sgn, 1> {};
+
+struct Cmp3Way : comparison_operation<Cmp3Way, 2> {};
+
+struct Equal : comparison_operation<Equal, 2> {
     struct is_commutative;
 
     template <class T, class U>
@@ -29,19 +37,19 @@ struct Equal : scalar_operation<2, Equal> {
     }
 };
 
-struct Less : scalar_operation<2, Less> {
+struct Less : comparison_operation<Less, 2> {
     template <class T, class U>
     static constexpr auto fallback(const T& x, const U& y) -> decltype(x < y) {
         return x < y;
     }
 };
 
-struct Max : scalar_operation<2, Max> {
+struct Max : scalar_operation<Max, 2> {
     struct is_commutative;
     struct is_associative;
 };
 
-struct Min : scalar_operation<2, Min> {
+struct Min : scalar_operation<Min, 2> {
     struct is_commutative;
     struct is_associative;
 };
@@ -127,20 +135,10 @@ inline constexpr int perform(Sgn, const absolute_error<E>& policy, const T& x) {
     return x < 0 ? -1 : 1;
 }
 
-template <class E, class T, class U>
-inline constexpr auto perform(Cmp3Way, const absolute_error<E>& policy, const T& lhs,
-                              const U& rhs) {
-    return sgn(policy, sub(policy, lhs, rhs));
-}
-
-template <class E, class T, class U>
-inline constexpr bool perform(Equal, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
-    return cmp3way(policy, lhs, rhs) == 0;
-}
-
-template <class E, class T, class U>
-inline constexpr bool perform(Less, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
-    return cmp3way(policy, lhs, rhs) < 0;
+template <class Op, class E, class T, class U,
+          enable_int_if<std::is_base_of_v<comparison_operation_tag, operation_tag_t<Op>>> = 0>
+inline constexpr auto perform(Op op, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
+    return op(sgn(policy, sub(policy, lhs, rhs)), 0);
 }
 
 }  // namespace op

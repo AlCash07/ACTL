@@ -11,16 +11,24 @@
 
 namespace ac::op {
 
-struct Neg : scalar_operation<1, Neg> {
+struct arithmetic_operation_tag : scalar_operation_tag {};
+
+// Base class for scalar operations.
+template <class Derived, int Arity>
+struct arithmetic_operation : scalar_operation<Derived, Arity> {
+    using operation_tag = arithmetic_operation_tag;
+};
+
+struct Neg : arithmetic_operation<Neg, 1> {
     template <class T>
     static constexpr auto fallback(const T& x) -> decltype(-x) {
         return -x;
     }
 };
 
-struct Sqr : scalar_operation<1, Sqr> {};
+struct Sqr : arithmetic_operation<Sqr, 1> {};
 
-struct Add : scalar_operation<2, Add> {
+struct Add : arithmetic_operation<Add, 2> {
     struct is_commutative;
     struct is_associative;
 
@@ -30,14 +38,14 @@ struct Add : scalar_operation<2, Add> {
     }
 };
 
-struct Div : scalar_operation<2, Div> {
+struct Div : arithmetic_operation<Div, 2> {
     template <class T, class U>
     static constexpr auto fallback(const T& x, const U& y) -> decltype(x / y) {
         return x / y;
     }
 };
 
-struct Mul : scalar_operation<2, Mul> {
+struct Mul : arithmetic_operation<Mul, 2> {
     struct is_commutative;
     struct is_associative;
 
@@ -47,7 +55,7 @@ struct Mul : scalar_operation<2, Mul> {
     }
 };
 
-struct Sub : scalar_operation<2, Sub> {
+struct Sub : arithmetic_operation<Sub, 2> {
     template <class T, class U>
     static constexpr auto fallback(const T& x, const U& y) -> decltype(x - y) {
         return x - y;
