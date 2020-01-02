@@ -42,7 +42,7 @@ inline bool perform(Less op, const Policy& policy, const std::tuple<Ts...>& lhs,
     if constexpr (I == sizeof...(Ts)) {
         return false;
     } else {
-        int v = sgn(policy, std::get<I>(lhs), std::get<I>(rhs));
+        int v = cmp3way(policy, std::get<I>(lhs), std::get<I>(rhs));
         return v < 0 || (v == 0 && perform<I + 1>(op, policy, lhs, rhs));
     }
 }

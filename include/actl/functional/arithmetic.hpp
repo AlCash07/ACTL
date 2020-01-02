@@ -74,7 +74,7 @@ inline constexpr auto operator - (const T& x) -> decltype(neg(x)) {
 
 template <class T, class U>
 inline constexpr auto operator + (const T& lhs, const U& rhs) -> decltype(add(lhs, rhs)) {
-    return div(lhs, rhs);
+    return add(lhs, rhs);
 }
 
 template <class T, class U>

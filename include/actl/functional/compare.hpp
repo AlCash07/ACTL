@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/operation.hpp>
+#include <actl/functional/arithmetic.hpp>
 #include <actl/numeric/math.hpp>
 #include <actl/range/traits.hpp>
 #include <algorithm>
@@ -17,6 +17,8 @@ namespace ac {
 namespace op {
 
 struct Sgn : scalar_operation<1, Sgn> {};
+
+struct Cmp3Way : scalar_operation<2, Cmp3Way> {};
 
 struct Equal : scalar_operation<2, Equal> {
     struct is_commutative;
@@ -44,13 +46,24 @@ struct Min : scalar_operation<2, Min> {
     struct is_associative;
 };
 
-// inline constexpr Sgn sgn;
+inline constexpr Sgn sgn;
 
+inline constexpr Cmp3Way cmp3way;
 inline constexpr Equal equal;
 inline constexpr Less less;
 
 inline constexpr Max max;
 inline constexpr Min min;
+
+template <class Policy, class T>
+inline constexpr auto perform(Sgn, const Policy& policy, const T& x) {
+    return cmp3way(policy, x, 0);
+}
+
+template <class Policy, class T, class U>
+inline constexpr int perform(Cmp3Way, const Policy& policy, const T& lhs, const U& rhs) {
+    return (int)less(policy, rhs, lhs) - (int)less(policy, lhs, rhs);
+}
 
 template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
 inline bool perform(Equal, const Policy& policy, const R0& lhs, const R1& rhs) {
@@ -108,29 +121,29 @@ inline constexpr auto operator >= (const T& lhs, const U& rhs) -> decltype(!(lhs
 template <class E>
 struct absolute_error : E, virtual policy {};
 
+template <class E, class T>
+inline constexpr int perform(Sgn, const absolute_error<E>& policy, const T& x) {
+    if (less(adl::abs(x), policy.epsilon())) return 0;
+    return x < 0 ? -1 : 1;
+}
+
 template <class E, class T, class U>
-inline constexpr auto perform(Equal, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
-    return less(policy, adl::abs(rhs - lhs), policy.epsilon());
+inline constexpr auto perform(Cmp3Way, const absolute_error<E>& policy, const T& lhs,
+                              const U& rhs) {
+    return sgn(policy, sub(policy, lhs, rhs));
+}
+
+template <class E, class T, class U>
+inline constexpr bool perform(Equal, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
+    return cmp3way(policy, lhs, rhs) == 0;
+}
+
+template <class E, class T, class U>
+inline constexpr bool perform(Less, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
+    return cmp3way(policy, lhs, rhs) < 0;
 }
 
 }  // namespace op
-
-template <class Policy, class T, class U = int, enable_int_if_policy<Policy> = 0>
-inline constexpr int sgn(const Policy& policy, const T& x, const U& y = {}) {
-    return (int)op::less(policy, y, x) - (int)op::less(policy, x, y);
-}
-
-template <class E, class T, class U = int>
-inline constexpr int sgn(const op::absolute_error<E>& policy, const T& x, const U& y = {}) {
-    auto delta = x - y;
-    if (adl::abs(delta) < policy.epsilon()) return 0;
-    return delta < 0 ? -1 : 1;
-}
-
-template <class T, class U = int, disable_int_if_policy<T> = 0>
-inline constexpr int sgn(const T& x, const U& y = {}) {
-    return sgn(default_policy, x, y);
-}
 
 template <class Policy, class T, class U>
 inline constexpr T& smax(const Policy& policy, T& x, const U& y) {

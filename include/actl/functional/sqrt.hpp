@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/functional/arithmetic.hpp>
 #include <actl/functional/compare.hpp>
 #include <actl/numeric/math.hpp>
 

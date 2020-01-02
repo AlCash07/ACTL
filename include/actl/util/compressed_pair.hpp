@@ -86,7 +86,7 @@ inline auto perform(Equal, const Policy& policy, const compressed_pair<T1, T2>& 
 template <class Policy, class T1, class T2>
 inline auto perform(Less, const Policy& policy, const compressed_pair<T1, T2>& lhs,
                     const compressed_pair<T1, T2>& rhs) {
-    int v = sgn(policy, lhs.first(), rhs.first());
+    int v = cmp3way(policy, lhs.first(), rhs.first());
     return v < 0 || (v == 0 && less(policy, lhs.second(), rhs.second()));
 }
 

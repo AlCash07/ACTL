@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/arithmetic.hpp>
 #include <actl/functional/compare.hpp>
 #include <actl/geometry/traits.hpp>
 #include <actl/util/introspection.hpp>
@@ -270,7 +269,7 @@ using point2d = point<T, 2>;
 
 template <class Policy, class T0, class T1>
 inline constexpr bool y_compare(const Policy& policy, const point<T0>& lhs, const point<T1>& rhs) {
-    int v = sgn(policy, lhs[1], rhs[1]);
+    int v = cmp3way(policy, lhs[1], rhs[1]);
     return v < 0 || (v == 0 && less(policy, lhs[0], rhs[0]));
 }
 
