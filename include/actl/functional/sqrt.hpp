@@ -44,13 +44,13 @@ inline auto sqrt(defer_sqrt, const T& x) {
 template <class Policy, class T, class U>
 inline constexpr bool perform(Equal, const Policy& policy, const square_root<T>& lhs,
                             const square_root<U>& rhs) {
-    return eq(policy, sqr(lhs), sqr(rhs));
+    return equal(policy, sqr(lhs), sqr(rhs));
 }
 
 template <class Policy, class T, class U>
 inline constexpr bool perform(Less, const Policy& policy, const square_root<T>& lhs,
                            const square_root<U>& rhs) {
-    return lt(policy, sqr(lhs), sqr(rhs));
+    return less(policy, sqr(lhs), sqr(rhs));
 }
 
 }  // namespace ac::op

@@ -41,7 +41,7 @@ using disable_int_if_policy = enable_int_if<!is_policy_v<T>>;
 
 namespace op {
 
-/* is_operation trait: satisfied by deriving from operation. */
+/* is_operation trait: defined by nested `struct is_operation;`. */
 
 template <class T, class = void>
 struct is_operation : std::false_type {};
@@ -100,11 +100,35 @@ inline constexpr bool can_perform_v = can_perform<void, Ts...>::value;
 template <class... Ts>
 using enable_int_if_can_perform = enable_int_if<can_perform_v<Ts...>>;
 
-// Perform without policy that applies default policy.
-template <class Op, class T, class... Ts, disable_int_if_policy<T> = 0,
-          enable_int_if_can_perform<Op, policy, T, Ts...> = 0>
-inline decltype(auto) perform(Op op, T&& x, Ts&&... xs) {
-    return perform(op, policy{}, std::forward<T>(x), std::forward<Ts>(xs)...);
+// Uses fallback implementation if there's no other way.
+template <class Op, class Policy, class... Ts, enable_int_if<!can_perform_v<Op, Policy, Ts...>> = 0>
+inline constexpr auto perform(Op, const Policy&, Ts&&... xs)
+    -> decltype(Op::fallback(std::forward<Ts>(xs)...)) {
+    return Op::fallback(std::forward<Ts>(xs)...);
+}
+
+// Applies default policy if no policy is specified.
+template <class Op, class T, class... Ts, disable_int_if_policy<T> = 0>
+inline constexpr auto perform(Op op, T&& x, Ts&&... xs)
+    -> decltype(perform(op, default_policy, std::forward<T>(x), std::forward<Ts>(xs)...)) {
+    return perform(op, default_policy, std::forward<T>(x), std::forward<Ts>(xs)...);
+}
+
+// Operation with only policy argument results in a function object.
+template <class Op, class Policy, enable_int_if_policy<Policy> = 0>
+inline constexpr auto perform(Op, const Policy& policy) {
+    return [&policy](auto&&... xs) {
+        return perform(Op{}, policy, std::forward<decltype(xs)>(xs)...);
+    };
+}
+
+template <class Op, class T>
+struct cast_before : virtual policy {};
+
+template <class Op, class T, class... Ts>
+inline constexpr auto perform(Op op, cast_before<Op, T>, const Ts&... xs)
+    -> decltype(perform(op, default_policy, static_cast<T>(xs)...)) {
+    return perform(op, default_policy, static_cast<T>(xs)...);
 }
 
 template <class... Ts>
@@ -125,7 +149,7 @@ struct operation {
 
     static constexpr int arity = Arity;
 
-    template <class... Ts, enable_int_if_can_perform<Derived, Ts...> = 0>
+    template <class... Ts>
     inline decltype(auto) operator()(Ts&&... xs) const {
         return perform(Derived{}, std::forward<Ts>(xs)...);
     }

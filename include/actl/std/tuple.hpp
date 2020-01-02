@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functional/compare.hpp>
 #include <actl/io/io.hpp>
 #include <tuple>
 
@@ -25,22 +26,24 @@ inline constexpr size_t hash_value(const std::tuple<Ts...>& x) {
 namespace op {
 
 template <size_t I = 0, class Policy, class... Ts, class... Us>
-inline bool equal(const Policy& policy, const std::tuple<Ts...>& lhs,
-                  const std::tuple<Us...>& rhs) {
+inline bool perform(Equal op, const Policy& policy, const std::tuple<Ts...>& lhs,
+                    const std::tuple<Us...>& rhs) {
     if constexpr (I == sizeof...(Ts)) {
         return true;
     } else {
-        return equal(policy, std::get<I>(lhs), std::get<I>(rhs)) && equal<I + 1>(policy, lhs, rhs);
+        return equal(policy, std::get<I>(lhs), std::get<I>(rhs)) &&
+               perform<I + 1>(op, policy, lhs, rhs);
     }
 }
 
 template <size_t I = 0, class Policy, class... Ts, class... Us>
-inline bool less(const Policy& policy, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
+inline bool perform(Less op, const Policy& policy, const std::tuple<Ts...>& lhs,
+                    const std::tuple<Us...>& rhs) {
     if constexpr (I == sizeof...(Ts)) {
         return false;
     } else {
         int v = sgn(policy, std::get<I>(lhs), std::get<I>(rhs));
-        return v < 0 || (v == 0 && less<I + 1>(policy, lhs, rhs));
+        return v < 0 || (v == 0 && perform<I + 1>(op, policy, lhs, rhs));
     }
 }
 

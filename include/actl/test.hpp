@@ -107,19 +107,19 @@ struct assert_impl {
 
     template <class T, class U>
     inline void check_equal(const T& expected, const U& actual) const {
-        if (equal(default_policy, expected, actual)) return;
+        if (op::equal(default_policy, expected, actual)) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U>
     inline void check_not_equal(const T& not_expected, const U& actual) const {
-        if (!equal(default_policy, not_expected, actual)) return;
+        if (!op::equal(default_policy, not_expected, actual)) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U, class E>
     inline void check_equal(const T& expected, const U& actual, E eps) const {
-        if (equal(op::abs_rel_error<E>{eps}, expected, actual)) return;
+        if (op::equal(op::abs_rel_error<E>{eps}, expected, actual)) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 

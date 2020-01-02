@@ -166,12 +166,12 @@ namespace op {
 template <class Policy, index N, class T0, class T1>
 inline constexpr bool perform(Equal, const Policy& policy, const point<T0, N>& lhs,
                               const point<T1, N>& rhs) {
-    return eq(policy, span{lhs}, span{rhs});
+    return equal(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
 inline constexpr bool perform(Less, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    return lt(policy, span{lhs}, span{rhs});
+    return less(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
@@ -188,7 +188,7 @@ inline constexpr auto perform(Mul, const Policy& policy, const T0& factor, const
 
 template <class Policy, index N, class T0, class T1>
 inline constexpr auto perform(Div, const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
-    ACTL_ASSERT(!eq(policy, factor, 0));
+    ACTL_ASSERT(!equal(policy, factor, 0));
     return detail::apply<N>([&policy, &factor](const T0& x) { return div(policy, x, factor); },
                             lhs);
 }
