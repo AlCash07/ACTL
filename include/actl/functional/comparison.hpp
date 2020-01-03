@@ -9,8 +9,6 @@
 
 #include <actl/functional/arithmetic.hpp>
 #include <actl/numeric/math.hpp>
-#include <actl/range/traits.hpp>
-#include <algorithm>
 
 namespace ac {
 
@@ -73,12 +71,6 @@ inline constexpr int perform(Cmp3Way, const Policy& policy, const T& lhs, const 
     return (int)less(policy, rhs, lhs) - (int)less(policy, lhs, rhs);
 }
 
-template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
-inline bool perform(Equal, const Policy& policy, const R0& lhs, const R1& rhs) {
-    return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs),
-                      equal(policy));
-}
-
 template <class T, class U>
 inline constexpr auto operator == (const T& lhs, const U& rhs) -> decltype(equal(lhs, rhs)) {
     return equal(lhs, rhs);
@@ -87,12 +79,6 @@ inline constexpr auto operator == (const T& lhs, const U& rhs) -> decltype(equal
 template <class T, class U>
 inline constexpr bool operator != (const T& lhs, const U& rhs) {
     return !(lhs == rhs);
-}
-
-template <class Policy, class R0, class R1, enable_int_if<is_range_v<R0> && is_range_v<R1>> = 0>
-inline bool perform(Less, const Policy& policy, const R0& lhs, const R1& rhs) {
-    return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
-                                        std::end(rhs), less(policy));
 }
 
 template <class Policy, class T, class U>
