@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/comparison.hpp>
+#include <actl/functional/scalar.hpp>
 #include <actl/util/introspection.hpp>
 
 namespace ac {

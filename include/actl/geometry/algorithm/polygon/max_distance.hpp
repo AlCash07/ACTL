@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/comparison.hpp>
+#include <actl/functional/scalar.hpp>
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/algorithm/polygon/antipodal_vertices.hpp>
 #include <actl/iterator/function_output_iterator.hpp>

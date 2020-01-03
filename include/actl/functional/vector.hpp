@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/comparison.hpp>
+#include <actl/functional/scalar.hpp>
 #include <actl/range/traits.hpp>
 #include <algorithm>
 

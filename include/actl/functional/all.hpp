@@ -7,6 +7,6 @@
 
 #pragma once
 
-#include <actl/functional/comparison.hpp>
+#include <actl/functional/scalar.hpp>
 #include <actl/functional/traits.hpp>
 #include <actl/functional/vector.hpp>

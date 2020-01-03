@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/comparison.hpp>
+#include <actl/functional/scalar.hpp>
 
 struct epsilon9 {
     static constexpr double epsilon() { return 1e-9; }
