@@ -16,7 +16,6 @@ namespace ac::op {
 
 struct arithmetic_operation_tag : scalar_operation_tag {};
 
-// Base class for scalar operations.
 template <class Derived, int Arity>
 struct arithmetic_operation : scalar_operation<Derived, Arity> {
     using operation_tag = arithmetic_operation_tag;
@@ -24,7 +23,7 @@ struct arithmetic_operation : scalar_operation<Derived, Arity> {
 
 struct Neg : arithmetic_operation<Neg, 1> {
     template <class T>
-    static constexpr auto fallback(const T& x) -> decltype(-x) {
+    static constexpr auto eval(const T& x) -> decltype(-x) {
         return -x;
     }
 };
@@ -36,14 +35,14 @@ struct Add : arithmetic_operation<Add, 2> {
     struct is_associative;
 
     template <class T, class U>
-    static constexpr auto fallback(const T& x, const U& y) -> decltype(x + y) {
+    static constexpr auto eval(const T& x, const U& y) -> decltype(x + y) {
         return x + y;
     }
 };
 
 struct Div : arithmetic_operation<Div, 2> {
     template <class T, class U>
-    static constexpr auto fallback(const T& x, const U& y) -> decltype(x / y) {
+    static constexpr auto eval(const T& x, const U& y) -> decltype(x / y) {
         return x / y;
     }
 };
@@ -53,14 +52,14 @@ struct Mul : arithmetic_operation<Mul, 2> {
     struct is_associative;
 
     template <class T, class U>
-    static constexpr auto fallback(const T& x, const U& y) -> decltype(x * y) {
+    static constexpr auto eval(const T& x, const U& y) -> decltype(x * y) {
         return x * y;
     }
 };
 
 struct Sub : arithmetic_operation<Sub, 2> {
     template <class T, class U>
-    static constexpr auto fallback(const T& x, const U& y) -> decltype(x - y) {
+    static constexpr auto eval(const T& x, const U& y) -> decltype(x - y) {
         return x - y;
     }
 };
@@ -73,9 +72,9 @@ inline constexpr Div div;
 inline constexpr Mul mul;
 inline constexpr Sub sub;
 
-template <class Policy, class T>
-inline constexpr auto perform(Sqr, const Policy& policy, const T& x) {
-    return mul(policy, x, x);
+template <class T>
+inline constexpr auto perform(Sqr, const T& x) {
+    return mul(x, x);
 }
 
 template <class T>
@@ -107,7 +106,6 @@ inline constexpr auto operator - (const T& lhs, const U& rhs) -> decltype(sub(lh
 
 struct comparison_operation_tag : scalar_operation_tag {};
 
-// Base class for scalar operations.
 template <class Derived, int Arity>
 struct comparison_operation : scalar_operation<Derived, Arity> {
     using operation_tag = comparison_operation_tag;
@@ -121,14 +119,14 @@ struct Equal : comparison_operation<Equal, 2> {
     struct is_commutative;
 
     template <class T, class U>
-    static constexpr auto fallback(const T& x, const U& y) -> decltype(x == y) {
+    static constexpr auto eval(const T& x, const U& y) -> decltype(x == y) {
         return x == y;
     }
 };
 
 struct Less : comparison_operation<Less, 2> {
     template <class T, class U>
-    static constexpr auto fallback(const T& x, const U& y) -> decltype(x < y) {
+    static constexpr auto eval(const T& x, const U& y) -> decltype(x < y) {
         return x < y;
     }
 };
@@ -152,13 +150,13 @@ inline constexpr Less less;
 inline constexpr Max max;
 inline constexpr Min min;
 
-template <class Policy, class T>
-inline constexpr auto perform(Sgn, const Policy& policy, const T& x) {
-    return cmp3way(policy, x, 0);
+template <class T>
+inline constexpr auto perform(Sgn, const T& x) {
+    return cmp3way(x, 0);
 }
 
 template <class Policy, class T, class U>
-inline constexpr int perform(Cmp3Way, const Policy& policy, const T& lhs, const U& rhs) {
+inline constexpr int perform(const Policy& policy, Cmp3Way, const T& lhs, const U& rhs) {
     return (int)less(policy, rhs, lhs) - (int)less(policy, lhs, rhs);
 }
 
@@ -173,12 +171,12 @@ inline constexpr bool operator != (const T& lhs, const U& rhs) {
 }
 
 template <class Policy, class T, class U>
-inline constexpr decltype(auto) perform(Max, const Policy& policy, const T& lhs, const U& rhs) {
+inline constexpr decltype(auto) perform(const Policy& policy, Max, const T& lhs, const U& rhs) {
     return less(policy, lhs, rhs) ? rhs : lhs;
 }
 
 template <class Policy, class T, class U>
-inline constexpr decltype(auto) perform(Min, const Policy& policy, const T& lhs, const U& rhs) {
+inline constexpr decltype(auto) perform(const Policy& policy, Min, const T& lhs, const U& rhs) {
     return less(policy, rhs, lhs) ? rhs : lhs;
 }
 
@@ -207,15 +205,15 @@ template <class E>
 struct absolute_error : E, virtual policy {};
 
 template <class E, class T>
-inline constexpr int perform(Sgn, const absolute_error<E>& policy, const T& x) {
+inline constexpr int perform(const absolute_error<E>& policy, Sgn, const T& x) {
     if (less(adl::abs(x), policy.epsilon())) return 0;
     return x < 0 ? -1 : 1;
 }
 
 template <class Op, class E, class T, class U,
           enable_int_if<std::is_base_of_v<comparison_operation_tag, operation_tag_t<Op>>> = 0>
-inline constexpr auto perform(Op op, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
-    return op(sgn(policy, sub(policy, lhs, rhs)), 0);
+inline constexpr auto perform(const absolute_error<E>& policy, Op op, const T& lhs, const U& rhs) {
+    return op(sgn(policy, sub(lhs, rhs)), 0);
 }
 
 }  // namespace ac::op

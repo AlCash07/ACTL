@@ -9,6 +9,7 @@
 
 #include <actl/util/none.hpp>
 #include <actl/util/type_traits.hpp>
+#include <tuple>
 
 namespace ac {
 namespace op {
@@ -40,6 +41,31 @@ template <class T>
 using disable_int_if_policy = enable_int_if<!is_policy_v<T>>;
 
 namespace op {
+
+template <class Policy, class T>
+inline auto& eval(const Policy& policy, const T& x) {
+    return x;
+}
+
+template <class... Ts>
+struct result_type {
+    using type = decltype(eval(std::declval<Ts>()...));
+};
+
+template <class... Ts>
+using result_t = typename result_type<Ts...>::type;
+
+template <class... Ts>
+struct have_policy : std::bool_constant<is_policy_v<nth_t<0, Ts...>>> {};
+
+template <>
+struct have_policy<> : std::false_type {};
+
+template <class... Ts>
+inline constexpr bool have_policy_v = have_policy<Ts...>::value;
+
+template <class... Ts>
+inline constexpr index argument_count_v = sizeof...(Ts) - have_policy_v<Ts...>;
 
 struct base_operation_tag {};
 
@@ -98,6 +124,73 @@ struct is_associative<T, std::void_t<typename T::is_associative>> : std::true_ty
 template <class T>
 inline constexpr bool is_associative_v = is_associative<T>::value;
 
+/* Inplace argument support */
+
+template <class T>
+struct inplace_argument {
+    T x;
+};
+
+template <class T>
+struct is_inplace : std::false_type {};
+
+template <class T>
+struct is_inplace<inplace_argument<T>> : std::true_type {};
+
+template <class... Ts>
+inline constexpr index inplace_argument_count_v = (... + is_inplace<Ts>::value);
+
+template <class Policy, class T>
+inline decltype(auto) eval(const Policy& policy, const inplace_argument<T>& x) {
+    return eval(policy, x.x);
+}
+
+/* Expression */
+
+// S is always std::make_index_sequence<sizeof...(Ts)>> to simplify arguments traversal.
+template <class Op, class S, class... Ts>
+struct expression {
+    std::tuple<Ts...> args;
+
+    using result_type = result_t<policy, Op, result_t<policy, Ts>...>;
+
+    operator result_type() const { return eval(*this); }
+};
+
+template <class Policy, class Op, class S, class... Ts>
+struct result_type<Policy, const expression<Op, S, Ts...>&> {
+    using type = typename expression<Op, S, Ts...>::result_type;
+};
+
+template <class T, class U = remove_cvref_t<T>>
+using value_if_arithmetic = std::conditional_t<std::is_arithmetic_v<U>, U, T>;
+
+template <class Op, class... Ts>
+inline auto make_expression(Ts&&... xs) {
+    return expression<Op, std::make_index_sequence<sizeof...(Ts)>, value_if_arithmetic<Ts>...>{
+        {std::forward<Ts>(xs)...}};
+}
+
+template <class Op, class... Ts>
+inline constexpr bool make_expr_v = inplace_argument_count_v<Ts...> == 0 &&
+                                    arity_v<Op> == sizeof...(Ts);
+
+template <class Op, class... Ts, enable_int_if<make_expr_v<Op, Ts...>> = 0>
+inline auto dispatch(Op, Ts&&... xs) {
+    return make_expression<Op>(std::forward<Ts>(xs)...);
+}
+
+template <class Policy, class Op, size_t... Is, class... Ts>
+inline decltype(auto) eval(const Policy& policy,
+                           const expression<Op, std::index_sequence<Is...>, Ts...>& e) {
+    return eval(policy, Op{}, eval(policy, std::get<Is>(e.args))...);
+}
+
+template <class Op, class S, class... Ts>
+inline decltype(auto) eval(const expression<Op, S, Ts...>& e) {
+    return eval(default_policy, e);
+}
+
 /* Operation perform */
 
 template <class, class... Ts>
@@ -109,26 +202,23 @@ inline constexpr bool can_perform_v = can_perform<void, Ts...>::value;
 template <class... Ts>
 using enable_int_if_can_perform = enable_int_if<can_perform_v<Ts...>>;
 
-// Uses fallback implementation if there's no other way.
-template <class Op, class Policy, class... Ts, enable_int_if<!can_perform_v<Op, Policy, Ts...>> = 0>
-inline constexpr auto perform(Op, const Policy&, Ts&&... xs)
-    -> decltype(Op::fallback(std::forward<Ts>(xs)...)) {
-    return Op::fallback(std::forward<Ts>(xs)...);
-}
-
 // Applies default policy if no policy is specified.
-template <class Op, class T, class... Ts, disable_int_if_policy<T> = 0>
-inline constexpr auto perform(Op op, T&& x, Ts&&... xs)
-    -> decltype(perform(op, default_policy, std::forward<T>(x), std::forward<Ts>(xs)...)) {
-    return perform(op, default_policy, std::forward<T>(x), std::forward<Ts>(xs)...);
-}
+// template <class Op, class... Ts, enable_int_if<!make_expr_v<Op, Ts...> && !have_policy_v<Ts...>>
+// = 0> inline constexpr decltype(auto) perform(Op op, Ts&&... xs) {
+//     return perform(op, default_policy, std::forward<Ts>(xs)...);
+// }
 
 // Operation with only policy argument results in a function object.
-template <class Op, class Policy, enable_int_if_policy<Policy> = 0>
-inline constexpr auto perform(Op, const Policy& policy) {
-    return [&policy](auto&&... xs) {
-        return perform(Op{}, policy, std::forward<decltype(xs)>(xs)...);
-    };
+template <class Policy, class Op, enable_int_if<is_operation_v<Op>> = 0>
+inline constexpr auto dispatch(const Policy& policy, Op) {
+    return
+        [&policy](auto&&... xs) { return eval(policy, Op{}, std::forward<decltype(xs)>(xs)...); };
+}
+
+// Default evaluation provided by operation.
+template <class Op, class Policy, class... Ts>
+inline constexpr auto perform(Op, const Policy&, const Ts&... xs) -> decltype(Op::eval(xs...)) {
+    return Op::eval(xs...);
 }
 
 template <class Op, class T>
@@ -141,14 +231,6 @@ inline constexpr auto perform(Op op, cast_before<Op, T>, const Ts&... xs)
 }
 
 template <class... Ts>
-struct result_type {
-    using type = decltype(perform(std::declval<Ts>()...));
-};
-
-template <class... Ts>
-using result_t = typename result_type<Ts...>::type;
-
-template <class... Ts>
 struct can_perform<std::void_t<decltype(perform(std::declval<Ts>()...))>, Ts...> : std::true_type {};
 
 // Base class for operations.
@@ -158,64 +240,28 @@ struct operation {
 
     static constexpr int arity = Arity;
 
-    template <class... Ts>
-    inline decltype(auto) operator()(Ts&&... xs) const {
-        return perform(Derived{}, std::forward<Ts>(xs)...);
+    template <class T, class... Ts>
+    inline decltype(auto) operator()(T&& x, Ts&&... xs) const {
+        if constexpr (is_policy_v<T>) {
+            return dispatch(x, Derived{}, std::forward<Ts>(xs)...);
+        } else {
+            return dispatch(Derived{}, std::forward<Ts>(xs)...);
+        }
     }
 };
 
 struct scalar_operation_tag : base_operation_tag {};
 
-// Base class for scalar operations.
 template <class Derived, int Arity>
 struct scalar_operation : operation<Derived, Arity> {
     using operation_tag = scalar_operation_tag;
 };
 
-/* Inplace argument support */
-
-template <class T>
-struct inplace_argument {
-    T x;
-};
-
-template <class... Ts>
-struct inplace_argument_index;
-
-template <>
-struct inplace_argument_index<> : index_constant<-1> {};
-
-template <class T, class... Ts>
-struct inplace_argument_index<inplace_argument<T>, Ts...> : index_constant<0> {
-    static_assert(inplace_argument_index<Ts...>::value == -1,
-                  "more than one inplace argument specified");
-};
-
-template <class T, class... Ts>
-struct inplace_argument_index<T, Ts...> {
-    static constexpr int next = inplace_argument_index<Ts...>::value;
-
-    static constexpr int value = next == -1 ? -1 : next + 1;
-};
-
-template <size_t I, class T, class... Ts>
-inline auto& get_ith(T& x, Ts&... xs) {
-    if constexpr (I == 0) {
-        return x;
-    } else {
-        return get_ith<I - 1>(xs...);
-    }
-}
-
-template <class T>
-inline decltype(auto) simplify(T&& x) {
-    return std::forward<T>(x);
-}
-
-template <class T>
-inline T simplify(inplace_argument<T> x) {
-    return x.x;
-}
-
 }  // namespace op
+
+template <class T>
+inline op::inplace_argument<T> inplace(T&& x) {
+    return {std::forward<T>(x)};
+}
+
 }  // namespace ac

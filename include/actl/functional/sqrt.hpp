@@ -22,7 +22,7 @@ public:
 
     operator decltype(adl::sqrt(std::declval<T>()))() const { return adl::sqrt(sqr_); }
 
-    friend constexpr const T& perform(Sqr, policy, const square_root& x) { return x.sqr_; }
+    friend constexpr const T& perform(policy, Sqr, const square_root& x) { return x.sqr_; }
 
 private:
     T sqr_;
@@ -40,16 +40,14 @@ inline auto sqrt(defer_sqrt, const T& x) {
     return square_root{x};
 }
 
-template <class Policy, class T, class U>
-inline constexpr bool perform(Equal, const Policy& policy, const square_root<T>& lhs,
-                            const square_root<U>& rhs) {
-    return equal(policy, sqr(lhs), sqr(rhs));
+template <class T, class U>
+inline constexpr auto perform(Equal, const square_root<T>& lhs, const square_root<U>& rhs) {
+    return equal(sqr(lhs), sqr(rhs));
 }
 
-template <class Policy, class T, class U>
-inline constexpr bool perform(Less, const Policy& policy, const square_root<T>& lhs,
-                           const square_root<U>& rhs) {
-    return less(policy, sqr(lhs), sqr(rhs));
+template <class T, class U>
+inline constexpr auto perform(Less, const square_root<T>& lhs, const square_root<U>& rhs) {
+    return less(sqr(lhs), sqr(rhs));
 }
 
 }  // namespace ac::op

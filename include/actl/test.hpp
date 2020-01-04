@@ -71,7 +71,7 @@ struct abs_rel_error : virtual policy {
 
 template <class E, class T, class U,
           enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
-inline bool perform(Equal, const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
+inline bool perform(const abs_rel_error<E>& policy, Equal, const T& lhs, const U& rhs) {
     E numerator = adl::abs(lhs - rhs);
     E denominator = std::max(std::max(adl::abs<E>(lhs), adl::abs<E>(rhs)), E{1});
     return numerator <= policy.eps * denominator;
