@@ -78,27 +78,27 @@ inline constexpr auto perform(Sqr, const T& x) {
 }
 
 template <class T>
-inline constexpr auto operator - (const T& x) -> decltype(neg(x)) {
+inline constexpr auto operator - (const T& x) {
     return neg(x);
 }
 
 template <class T, class U>
-inline constexpr auto operator + (const T& lhs, const U& rhs) -> decltype(add(lhs, rhs)) {
+inline constexpr auto operator + (const T& lhs, const U& rhs) {
     return add(lhs, rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator / (const T& lhs, const U& rhs) -> decltype(div(lhs, rhs)) {
+inline constexpr auto operator / (const T& lhs, const U& rhs) {
     return div(lhs, rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator * (const T& lhs, const U& rhs) -> decltype(mul(lhs, rhs)) {
+inline constexpr auto operator * (const T& lhs, const U& rhs) {
     return mul(lhs, rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator - (const T& lhs, const U& rhs) -> decltype(sub(lhs, rhs)) {
+inline constexpr auto operator - (const T& lhs, const U& rhs) {
     return sub(lhs, rhs);
 }
 
@@ -161,13 +161,8 @@ inline constexpr int perform(const Policy& policy, Cmp3Way, const T& lhs, const 
 }
 
 template <class T, class U>
-inline constexpr auto operator == (const T& lhs, const U& rhs) -> decltype(equal(lhs, rhs)) {
+inline constexpr auto operator == (const T& lhs, const U& rhs) {
     return equal(lhs, rhs);
-}
-
-template <class T, class U>
-inline constexpr bool operator != (const T& lhs, const U& rhs) {
-    return !(lhs == rhs);
 }
 
 template <class Policy, class T, class U>
@@ -181,23 +176,8 @@ inline constexpr decltype(auto) perform(const Policy& policy, Min, const T& lhs,
 }
 
 template <class T, class U>
-inline constexpr auto operator < (const T& lhs, const U& rhs) -> decltype(less(lhs, rhs)) {
+inline constexpr auto operator < (const T& lhs, const U& rhs) {
     return less(lhs, rhs);
-}
-
-template <class T, class U>
-inline constexpr auto operator > (const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
-    return rhs < lhs;
-}
-
-template <class T, class U>
-inline constexpr auto operator <= (const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
-    return !(lhs > rhs);
-}
-
-template <class T, class U>
-inline constexpr auto operator >= (const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
-    return !(lhs < rhs);
 }
 
 // class E should provide public `T epsilon()`;
@@ -206,14 +186,14 @@ struct absolute_error : E, virtual policy {};
 
 template <class E, class T>
 inline constexpr int perform(const absolute_error<E>& policy, Sgn, const T& x) {
-    if (less(adl::abs(x), policy.epsilon())) return 0;
+    if (less(adl::abs(eval(policy, x)), policy.epsilon())) return 0;
     return x < 0 ? -1 : 1;
 }
 
 template <class Op, class E, class T, class U,
           enable_int_if<std::is_base_of_v<comparison_operation_tag, operation_tag_t<Op>>> = 0>
 inline constexpr auto perform(const absolute_error<E>& policy, Op op, const T& lhs, const U& rhs) {
-    return op(sgn(policy, sub(lhs, rhs)), 0);
+    return op(default_policy, sgn(policy, sub(lhs, rhs)), 0);
 }
 
 }  // namespace ac::op
