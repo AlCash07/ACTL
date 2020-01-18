@@ -77,27 +77,27 @@ inline constexpr auto perform(Sqr, const T& x) {
     return mul(x, x);
 }
 
-template <class T>
+template <class T, enable_adl<T> = 0>
 inline constexpr auto operator - (const T& x) {
     return neg(x);
 }
 
-template <class T, class U>
+template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator + (const T& lhs, const U& rhs) {
     return add(lhs, rhs);
 }
 
-template <class T, class U>
+template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator / (const T& lhs, const U& rhs) {
     return div(lhs, rhs);
 }
 
-template <class T, class U>
+template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator * (const T& lhs, const U& rhs) {
     return mul(lhs, rhs);
 }
 
-template <class T, class U>
+template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator - (const T& lhs, const U& rhs) {
     return sub(lhs, rhs);
 }
@@ -160,7 +160,7 @@ inline constexpr int perform(const Policy& policy, Cmp3Way, const T& lhs, const 
     return (int)less(policy, rhs, lhs) - (int)less(policy, lhs, rhs);
 }
 
-template <class T, class U>
+template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator == (const T& lhs, const U& rhs) {
     return equal(lhs, rhs);
 }
@@ -175,7 +175,7 @@ inline constexpr decltype(auto) perform(const Policy& policy, Min, const T& lhs,
     return less(policy, rhs, lhs) ? rhs : lhs;
 }
 
-template <class T, class U>
+template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator < (const T& lhs, const U& rhs) {
     return less(lhs, rhs);
 }
@@ -184,16 +184,17 @@ inline constexpr auto operator < (const T& lhs, const U& rhs) {
 template <class E>
 struct absolute_error : E, virtual policy {};
 
-template <class E, class T>
+template <class E, class T, enable_int_if<std::is_floating_point_v<T>> = 0>
 inline constexpr int perform(const absolute_error<E>& policy, Sgn, const T& x) {
     if (less(adl::abs(eval(policy, x)), policy.epsilon())) return 0;
     return x < 0 ? -1 : 1;
 }
 
 template <class Op, class E, class T, class U,
-          enable_int_if<std::is_base_of_v<comparison_operation_tag, operation_tag_t<Op>>> = 0>
+          enable_int_if<std::is_base_of_v<comparison_operation_tag, operation_tag_t<Op>> &&
+                        (std::is_floating_point_v<T> || std::is_floating_point_v<U>)> = 0>
 inline constexpr auto perform(const absolute_error<E>& policy, Op op, const T& lhs, const U& rhs) {
-    return op(default_policy, sgn(policy, sub(lhs, rhs)), 0);
+    return op(sgn(sub(lhs, rhs)), 0);
 }
 
 }  // namespace ac::op

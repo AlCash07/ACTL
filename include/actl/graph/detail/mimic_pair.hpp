@@ -79,11 +79,11 @@ inline decltype(auto) get_key(const T& x) {
     }
 }
 
-template <class Op, class T, class U,
+template <class Policy, class Op, class T, class U,
           enable_int_if<std::is_same_v<Op, Equal> || std::is_same_v<Op, Less>> = 0,
           enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto perform(Op op, const T& lhs, const U& rhs) {
-    return op(get_key(lhs), get_key(rhs));
+inline auto perform(const Policy& policy, Op op, const T& lhs, const U& rhs) {
+    return op(policy, get_key(lhs), get_key(rhs));
 }
 
 }  // namespace op

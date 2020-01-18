@@ -19,6 +19,9 @@ struct base : operators::base<B> {
     using operators::base<B>::base;
 };
 
+template <class... Ts>
+using enable_adl = enable_int_if<(... || is_template_base_of_v<base, Ts>)>;
+
 // Default operation policy.
 struct policy {};
 
@@ -102,8 +105,8 @@ struct can_perform : std::false_type {};
 // Drop policy if operation isn't specialized for it.
 template <class Policy, class... Ts,
           enable_int_if<is_policy_v<Policy> && !can_perform<void, Policy, Ts...>::value> = 0>
-inline constexpr decltype(auto) perform(const Policy&, Ts&&... xs) {
-    return perform(std::forward<Ts>(xs)...);
+inline constexpr decltype(auto) perform(const Policy&, const Ts&... xs) {
+    return perform(xs...);
 }
 
 template <class, class... Ts>
@@ -111,7 +114,6 @@ struct has_fallback : std::false_type {};
 
 template <class Op, class... Ts>
 struct has_fallback<std::void_t<decltype(Op::eval(std::declval<Ts>()...))>, Op, Ts...> :
-    // std::true_type {};
     std::bool_constant<!is_expression<decltype(Op::eval(std::declval<Ts>()...))>::value> {};
 
 // Default evaluation provided by operation.
@@ -134,9 +136,9 @@ inline constexpr auto perform(cast_before<Op, T>, Op op, const Ts&... xs)
     return perform(default_policy, op, static_cast<T>(xs)...);
 }
 
-template <class Policy, class T>
-inline auto& eval(const Policy& policy, const T& x) {
-    return x;
+template <class Policy, class T, enable_int_if<!is_expression<T>::value> = 0>
+inline T eval(const Policy& policy, T&& x) {
+    return std::forward<T>(x);
 }
 
 template <class... Ts>
@@ -148,7 +150,7 @@ template <class... Ts>
 using result_t = typename result_type<Ts...>::type;
 
 template <class Op, class Policy, class... Ts>
-inline constexpr decltype(auto) eval_recursive(const Policy& policy, Ts&&... xs) {
+inline constexpr decltype(auto) eval_recursive(const Policy& policy, const Ts&... xs) {
     return eval(policy, perform(policy, Op{}, eval(policy, xs)...));
 }
 
@@ -188,9 +190,9 @@ struct expression {
 template <class... Ts>
 struct is_expression<expression<Ts...>> : std::true_type {};
 
-template <class Policy, class... Ts>
-struct result_type<Policy, const expression<Ts...>&> {
-    using type = typename expression<Ts...>::result_type;
+template <class Policy, class Op, class S, class... Ts>
+struct result_type<Policy, const expression<Op, S, Ts...>&> {
+    using type = decltype(eval_recursive<Op>(std::declval<Policy>(), std::declval<Ts>()...));
 };
 
 template <class T, class U = remove_cvref_t<T>>
@@ -224,7 +226,7 @@ struct operation {
     decltype(auto) operator()(Ts&&... xs) const {
         static_assert(sizeof...(Ts) > 0);
         if constexpr (is_policy_v<nth_t<0, Ts...>>) {
-            return dispatch(std::forward<Ts>(xs)...);
+            return dispatch(xs...);
         }
         if constexpr (arity_v<Derived> == sizeof...(Ts) && inplace_argument_count_v<Ts...> == 0) {
             return make_expression<Derived>(std::forward<Ts>(xs)...);
@@ -235,14 +237,12 @@ struct operation {
 
 private:
     template <class Policy, class... Ts>
-    decltype(auto) dispatch(const Policy& policy, Ts&&... xs) const {
+    decltype(auto) dispatch(const Policy& policy, const Ts&... xs) const {
         if constexpr (sizeof...(Ts) == 0) {
             // Operation with only policy argument results in a function object.
-            return [&policy](auto&&... xs) {
-                return eval_recursive<Derived>(policy, std::forward<decltype(xs)>(xs)...);
-            };
+            return [&policy](auto&&... xs) { return eval_recursive<Derived>(policy, xs...); };
         } else {
-            return eval_recursive<Derived>(policy, std::forward<Ts>(xs)...);
+            return eval_recursive<Derived>(policy, xs...);
         }
     }
 };
