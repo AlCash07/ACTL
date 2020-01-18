@@ -33,15 +33,15 @@ struct Add : arithmetic_operation<Add, 2> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T, class U>
-    static constexpr auto eval(const T& x, const U& y) -> decltype(x + y) {
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x + y) {
         return x + y;
     }
 };
 
 struct Div : arithmetic_operation<Div, 2> {
-    template <class T, class U>
-    static constexpr auto eval(const T& x, const U& y) -> decltype(x / y) {
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x / y) {
         return x / y;
     }
 };
@@ -50,15 +50,15 @@ struct Mul : arithmetic_operation<Mul, 2> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T, class U>
-    static constexpr auto eval(const T& x, const U& y) -> decltype(x * y) {
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x * y) {
         return x * y;
     }
 };
 
 struct Sub : arithmetic_operation<Sub, 2> {
-    template <class T, class U>
-    static constexpr auto eval(const T& x, const U& y) -> decltype(x - y) {
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x - y) {
         return x - y;
     }
 };
@@ -117,15 +117,15 @@ struct Cmp3Way : comparison_operation<Cmp3Way, 2> {};
 struct Equal : comparison_operation<Equal, 2> {
     struct is_commutative;
 
-    template <class T, class U>
-    static constexpr auto eval(const T& x, const U& y) -> decltype(x == y) {
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x == y) {
         return x == y;
     }
 };
 
 struct Less : comparison_operation<Less, 2> {
-    template <class T, class U>
-    static constexpr auto eval(const T& x, const U& y) -> decltype(x < y) {
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x < y) {
         return x < y;
     }
 };
@@ -151,7 +151,7 @@ inline constexpr Min min;
 
 template <class T>
 inline constexpr auto perform(Sgn, const T& x) {
-    return cmp3way(x, 0);
+    return cmp3way(x, T{0});
 }
 
 template <class Policy, class T, class U>

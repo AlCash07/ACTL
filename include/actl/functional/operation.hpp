@@ -240,6 +240,10 @@ private:
 
 struct scalar_operation_tag : base_operation_tag {};
 
+template <class T>
+inline constexpr bool is_scalar_operation_v =
+    std::is_base_of_v<scalar_operation_tag, operation_tag_t<T>>;
+
 template <class Derived, int Arity>
 struct scalar_operation : operation<Derived, Arity> {
     using operation_tag = scalar_operation_tag;

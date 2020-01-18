@@ -20,7 +20,7 @@ TEST("empty") {
 TEST("array") {
     int a[N] = {};
     span s{a};
-    ASSERT_EQUAL(a, s.data());
+    ASSERT_EQUAL(static_cast<int*>(a), s.data());
     static_assert(N == s.size());
 }
 

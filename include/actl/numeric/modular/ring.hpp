@@ -103,7 +103,7 @@ struct ring_element : Ring {
 
     constexpr ring_element() : value(value_type()) {}
 
-    operator value_type() const { return value; }
+    explicit operator value_type() const { return value; }
 
     template <class... Args>
     constexpr ring_element(const value_type& value, Args&&... args) 

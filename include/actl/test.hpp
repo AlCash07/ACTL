@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functional/policies.hpp>
 #include <actl/functional/vector.hpp>
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
@@ -107,13 +108,13 @@ struct assert_impl {
 
     template <class T, class U>
     inline void check_equal(const T& expected, const U& actual) const {
-        if (op::equal(expected, actual)) return;
+        if (op::equal(op::allow_promotion{}, expected, actual)) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U>
     inline void check_not_equal(const T& not_expected, const U& actual) const {
-        if (!op::equal(not_expected, actual)) return;
+        if (!op::equal(op::allow_promotion{}, not_expected, actual)) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 

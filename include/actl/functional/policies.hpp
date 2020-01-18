@@ -9,8 +9,27 @@
 
 #include <actl/functional/scalar.hpp>
 #include <actl/numeric/math.hpp>
+#include <actl/range/traits.hpp>
 
 namespace ac::op {
+
+struct allow_promotion : virtual policy {};
+
+template <class, class... Ts>
+struct can_promote : std::false_type {};
+
+template <class... Ts>
+struct can_promote<std::void_t<std::common_type_t<Ts...>>, Ts...> {
+    using T = std::common_type_t<Ts...>;
+
+    static constexpr bool value = !is_range_v<T> && (... || !std::is_same_v<T, Ts>);
+};
+
+template <class Op, class... Ts,
+          enable_int_if<is_scalar_operation_v<Op> && can_promote<void, Ts...>::value> = 0>
+inline auto perform(allow_promotion, Op op, const Ts&... xs) {
+    return op(static_cast<std::common_type_t<Ts...>>(xs)...);
+}
 
 template <class Op, class T>
 struct cast_before : virtual policy {};
