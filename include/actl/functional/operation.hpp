@@ -127,15 +127,6 @@ template <class... Ts>
 struct can_perform<std::void_t<decltype(perform(std::declval<Ts>()...))>, Ts...> : std::true_type {
 };
 
-template <class Op, class T>
-struct cast_before : virtual policy {};
-
-template <class T, class Op, class... Ts>
-inline constexpr auto perform(cast_before<Op, T>, Op op, const Ts&... xs)
-    -> decltype(perform(default_policy, op, static_cast<T>(xs)...)) {
-    return perform(default_policy, op, static_cast<T>(xs)...);
-}
-
 template <class Policy, class T, enable_int_if<!is_expression<T>::value> = 0>
 inline T eval(const Policy& policy, T&& x) {
     return std::forward<T>(x);

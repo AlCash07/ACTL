@@ -20,33 +20,11 @@ TEST("same type arithmetics") {
     ASSERT_EQUAL(4, op::sub(6, 2));
 }
 
-constexpr double eps = 1e-9;
-
-struct Eps {
-    static constexpr double epsilon() { return eps; }
-};
-
-inline op::absolute_error<Eps> eps_policy;
-
 TEST("op::sgn") {
     ASSERT_EQUAL(1, op::sgn(std::numeric_limits<int>::max()));
     ASSERT_EQUAL(-1, op::sgn(std::numeric_limits<int>::min()));
     ASSERT_EQUAL(1, op::sgn(std::numeric_limits<unsigned int>::max()));
     ASSERT_EQUAL(0, op::sgn(0));
-}
-
-TEST("op::equal") {
-    ASSERT_TRUE(op::equal(0.0, 0.0));
-    ASSERT_FALSE(op::equal(0.0, eps / 2));
-    ASSERT_TRUE(op::equal(eps_policy, 0.0, eps / 2));
-    ASSERT_FALSE(op::equal(eps_policy, 0.0, eps));
-}
-
-TEST("op::less") {
-    ASSERT_FALSE(op::less(0.0, -eps));
-    ASSERT_TRUE(op::less(-eps / 2, 0.0));
-    ASSERT_FALSE(op::less(eps_policy, -eps / 2, 0.0));
-    ASSERT_TRUE(op::less(eps_policy, -eps, 0.0));
 }
 
 TEST("op::cmp3way") {

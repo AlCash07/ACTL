@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/functional/operation.hpp>
-#include <actl/numeric/math.hpp>
 
 namespace ac::op {
 
@@ -178,23 +177,6 @@ inline constexpr decltype(auto) perform(const Policy& policy, Min, const T& lhs,
 template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator < (const T& lhs, const U& rhs) {
     return less(lhs, rhs);
-}
-
-// class E should provide public `T epsilon()`;
-template <class E>
-struct absolute_error : E, virtual policy {};
-
-template <class E, class T, enable_int_if<std::is_floating_point_v<T>> = 0>
-inline constexpr int perform(const absolute_error<E>& policy, Sgn, const T& x) {
-    if (less(adl::abs(eval(policy, x)), policy.epsilon())) return 0;
-    return x < 0 ? -1 : 1;
-}
-
-template <class Op, class E, class T, class U,
-          enable_int_if<std::is_base_of_v<comparison_operation_tag, operation_tag_t<Op>> &&
-                        (std::is_floating_point_v<T> || std::is_floating_point_v<U>)> = 0>
-inline constexpr auto perform(const absolute_error<E>& policy, Op op, const T& lhs, const U& rhs) {
-    return op(sgn(sub(lhs, rhs)), 0);
 }
 
 }  // namespace ac::op
