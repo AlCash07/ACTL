@@ -234,6 +234,77 @@ inline constexpr auto operator || (const T& lhs, const U& rhs) {
     return logical_or(lhs, rhs);
 }
 
+/* Bit operations */
+
+struct bit_operation_tag : scalar_operation_tag {};
+
+template <class Derived, int Arity>
+struct bit_operation : scalar_operation<Derived, Arity> {
+    using operation_tag = bit_operation_tag;
+};
+
+struct BitNot : bit_operation<BitNot, 1> {
+    template <class T>
+    static constexpr auto eval(const T& x) -> decltype(~x) {
+        return ~x;
+    }
+};
+
+struct BitAnd : bit_operation<BitAnd, 2> {
+    struct is_associative;
+    struct is_commutative;
+
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x & y) {
+        return x & y;
+    }
+};
+
+struct BitOr : bit_operation<BitOr, 2> {
+    struct is_associative;
+    struct is_commutative;
+
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x | y) {
+        return x | y;
+    }
+};
+
+struct BitXor : bit_operation<BitXor, 2> {
+    struct is_associative;
+    struct is_commutative;
+
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x ^ y) {
+        return x ^ y;
+    }
+};
+
+inline constexpr BitNot bit_not;
+inline constexpr BitAnd bit_and;
+inline constexpr BitOr bit_or;
+inline constexpr BitXor bit_xor;
+
+template <class T, enable_adl<T> = 0>
+inline constexpr auto operator ~ (const T& x) {
+    return bit_not(x);
+}
+
+template <class T, class U, enable_adl<T, U> = 0>
+inline constexpr auto operator & (const T& lhs, const U& rhs) {
+    return bit_and(lhs, rhs);
+}
+
+template <class T, class U, enable_adl<T, U> = 0>
+inline constexpr auto operator | (const T& lhs, const U& rhs) {
+    return bit_or(lhs, rhs);
+}
+
+template <class T, class U, enable_adl<T, U> = 0>
+inline constexpr auto operator ^ (const T& lhs, const U& rhs) {
+    return bit_xor(lhs, rhs);
+}
+
 }  // namespace ac::op
 
 namespace ac {

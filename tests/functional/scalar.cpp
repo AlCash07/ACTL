@@ -41,6 +41,12 @@ TEST("logical") {
     ASSERT_EQUAL(false, op::logical_or(false, false));
 }
 
+TEST("bit") {
+    ASSERT_EQUAL(-1, op::bit_not(0));
+    ASSERT_EQUAL(1, op::bit_and(3, 5));
+    ASSERT_EQUAL(7, op::bit_or(3, 5));
+}
+
 TEST("smax") {
     int x = 4;
     ASSERT_EQUAL(5, smax(x, 5));
