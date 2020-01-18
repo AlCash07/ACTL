@@ -30,8 +30,8 @@ struct Neg : arithmetic_operation<Neg, 1> {
 struct Sqr : arithmetic_operation<Sqr, 1> {};
 
 struct Add : arithmetic_operation<Add, 2> {
-    struct is_commutative;
     struct is_associative;
+    struct is_commutative;
 
     template <class T, class U>
     static constexpr auto eval(const T& x, const U& y) -> decltype(x + y) {
@@ -47,8 +47,8 @@ struct Div : arithmetic_operation<Div, 2> {
 };
 
 struct Mul : arithmetic_operation<Mul, 2> {
-    struct is_commutative;
     struct is_associative;
+    struct is_commutative;
 
     template <class T, class U>
     static constexpr auto eval(const T& x, const U& y) -> decltype(x * y) {
@@ -131,13 +131,13 @@ struct Less : comparison_operation<Less, 2> {
 };
 
 struct Max : scalar_operation<Max, 2> {
-    struct is_commutative;
     struct is_associative;
+    struct is_commutative;
 };
 
 struct Min : scalar_operation<Min, 2> {
-    struct is_commutative;
     struct is_associative;
+    struct is_commutative;
 };
 
 inline constexpr Sgn sgn;
@@ -177,6 +177,61 @@ inline constexpr decltype(auto) perform(const Policy& policy, Min, const T& lhs,
 template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator < (const T& lhs, const U& rhs) {
     return less(lhs, rhs);
+}
+
+/* Logical operations */
+
+struct logical_operation_tag : scalar_operation_tag {};
+
+template <class Derived, int Arity>
+struct logical_operation : scalar_operation<Derived, Arity> {
+    using operation_tag = logical_operation_tag;
+};
+
+struct LogicalNot : logical_operation<LogicalNot, 1> {
+    template <class T>
+    static constexpr auto eval(const T& x) -> decltype(!x) {
+        return !x;
+    }
+};
+
+struct LogicalAnd : logical_operation<LogicalAnd, 2> {
+    struct is_associative;
+    struct is_commutative;
+
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x && y) {
+        return x && y;
+    }
+};
+
+struct LogicalOr : logical_operation<LogicalOr, 2> {
+    struct is_associative;
+    struct is_commutative;
+
+    template <class T>
+    static constexpr auto eval(const T& x, const T& y) -> decltype(x || y) {
+        return x || y;
+    }
+};
+
+inline constexpr LogicalNot logical_not;
+inline constexpr LogicalAnd logical_and;
+inline constexpr LogicalOr logical_or;
+
+template <class T, enable_adl<T> = 0>
+inline constexpr auto operator ! (const T& x) {
+    return logical_not(x);
+}
+
+template <class T, class U, enable_adl<T, U> = 0>
+inline constexpr auto operator && (const T& lhs, const U& rhs) {
+    return logical_and(lhs, rhs);
+}
+
+template <class T, class U, enable_adl<T, U> = 0>
+inline constexpr auto operator || (const T& lhs, const U& rhs) {
+    return logical_or(lhs, rhs);
 }
 
 }  // namespace ac::op

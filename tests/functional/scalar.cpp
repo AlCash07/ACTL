@@ -9,7 +9,7 @@
 #include <actl/test.hpp>
 #include <limits>
 
-TEST("same type arithmetics") {
+TEST("arithmetics") {
     ASSERT_EQUAL(-6, op::neg(6));
     ASSERT_EQUAL(2, op::neg(-2));
     ASSERT_EQUAL(36, op::sqr(6));
@@ -30,6 +30,15 @@ TEST("op::sgn") {
 TEST("op::cmp3way") {
     ASSERT_EQUAL(1, op::cmp3way(0, -1));
     ASSERT_EQUAL(-1, op::cmp3way(0u, 1u));
+}
+
+TEST("logical") {
+    ASSERT_EQUAL(true, op::logical_not(false));
+    ASSERT_EQUAL(false, op::logical_not(true));
+    ASSERT_EQUAL(true, op::logical_and(true, true));
+    ASSERT_EQUAL(false, op::logical_and(true, false));
+    ASSERT_EQUAL(true, op::logical_or(true, false));
+    ASSERT_EQUAL(false, op::logical_or(false, false));
 }
 
 TEST("smax") {

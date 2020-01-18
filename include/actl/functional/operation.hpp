@@ -68,19 +68,6 @@ struct arity<T, std::void_t<decltype(T::arity)>> : index_constant<T::arity> {};
 template <class T>
 inline constexpr index arity_v = arity<T>::value;
 
-/* Operation is_commutative trait: defined by nested `struct is_commutative;`. */
-
-template <class T, class = void>
-struct is_commutative : std::false_type {};
-
-template <class T>
-struct is_commutative<T, std::void_t<typename T::is_commutative>> : std::true_type {
-    static_assert(arity_v<T> == 2, "only binary operation can be commutative");
-};
-
-template <class T>
-inline constexpr bool is_commutative_v = is_commutative<T>::value;
-
 /* Operation is_associative trait: defined by nested `struct is_associative;`. */
 
 template <class T, class = void>
@@ -93,6 +80,19 @@ struct is_associative<T, std::void_t<typename T::is_associative>> : std::true_ty
 
 template <class T>
 inline constexpr bool is_associative_v = is_associative<T>::value;
+
+/* Operation is_commutative trait: defined by nested `struct is_commutative;`. */
+
+template <class T, class = void>
+struct is_commutative : std::false_type {};
+
+template <class T>
+struct is_commutative<T, std::void_t<typename T::is_commutative>> : std::true_type {
+    static_assert(arity_v<T> == 2, "only binary operation can be commutative");
+};
+
+template <class T>
+inline constexpr bool is_commutative_v = is_commutative<T>::value;
 
 /* Operation execution */
 
