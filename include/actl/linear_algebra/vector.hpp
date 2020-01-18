@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/vector.hpp>
+#include <actl/functional/range.hpp>
 
 namespace ac::op {
 

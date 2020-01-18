@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/functional/policies.hpp>
-#include <actl/functional/vector.hpp>
+#include <actl/functional/range.hpp>
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
 #include <actl/numeric/math.hpp>

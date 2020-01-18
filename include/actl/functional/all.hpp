@@ -8,6 +8,6 @@
 #pragma once
 
 #include <actl/functional/policies.hpp>
+#include <actl/functional/range.hpp>
 #include <actl/functional/scalar.hpp>
 #include <actl/functional/traits.hpp>
-#include <actl/functional/vector.hpp>
