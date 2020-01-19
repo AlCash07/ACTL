@@ -25,14 +25,12 @@ inline constexpr size_t hash_value(const std::tuple<Ts...>& x) {
 
 namespace op {
 
-template <size_t I = 0, class Policy, class... Ts, class... Us>
-inline auto perform(const Policy& policy, Equal op, const std::tuple<Ts...>& lhs,
-                    const std::tuple<Us...>& rhs) {
+template <size_t I = 0, class... Ts, class... Us>
+inline auto perform(Equal op, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
     if constexpr (I == sizeof...(Ts)) {
         return true;
     } else {
-        return equal(policy, std::get<I>(lhs), std::get<I>(rhs)) &&
-               perform<I + 1>(policy, op, lhs, rhs);
+        return equal(std::get<I>(lhs), std::get<I>(rhs)) && perform<I + 1>(op, lhs, rhs);
     }
 }
 

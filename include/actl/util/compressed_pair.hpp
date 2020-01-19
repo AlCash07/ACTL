@@ -77,10 +77,9 @@ private:
 
 namespace op {
 
-template <class Policy, class T1, class T2>
-inline auto perform(const Policy& policy, Equal, const compressed_pair<T1, T2>& lhs,
-                    const compressed_pair<T1, T2>& rhs) {
-    return equal(policy, lhs.first(), rhs.first()) && equal(policy, lhs.second(), rhs.second());
+template <class T1, class T2>
+inline auto perform(Equal, const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+    return equal(lhs.first(), rhs.first()) && equal(lhs.second(), rhs.second());
 }
 
 template <class Policy, class T1, class T2>
