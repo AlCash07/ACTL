@@ -46,7 +46,7 @@ inline auto nearest(const Policy& policy, const span<Point>& points, const span<
     copy(tmp.first(n), points.begin());
     index count = 0;
     for (const auto& p : points) {
-        if (less(policy, adl::abs(p.x() - middle_x), res.first)) {
+        if (less(policy, op::abs(p.x() - middle_x), res.first)) {
             for (index i = count - 1; i >= 0; --i) {
                 if (!less(policy, p.y() - tmp[i].y(), res.first)) break;
                 auto dist = distance(policy, p, tmp[i]);

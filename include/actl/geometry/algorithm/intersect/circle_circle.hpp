@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/sqrt.hpp>
+#include <actl/functional/math.hpp>
 #include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/geometry/algorithm/point/angle.hpp>
 #include <actl/geometry/sphere.hpp>

@@ -7,11 +7,11 @@
 
 #pragma once
 
+#include <actl/functional/math.hpp>
 #include <actl/functional/policies.hpp>
 #include <actl/functional/range.hpp>
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
-#include <actl/numeric/math.hpp>
 #include <actl/numeric/random/random.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/irange.hpp>
@@ -73,8 +73,8 @@ struct abs_rel_error : virtual policy {
 template <class E, class T, class U,
           enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
 inline bool perform(const abs_rel_error<E>& policy, Equal, const T& lhs, const U& rhs) {
-    E numerator = adl::abs(lhs - rhs);
-    E denominator = std::max(std::max(adl::abs<E>(lhs), adl::abs<E>(rhs)), E{1});
+    E numerator = abs(lhs - rhs);
+    E denominator = max(max(abs(static_cast<E>(lhs)), abs(static_cast<E>(rhs))), E{1});
     return numerator <= policy.eps * denominator;
 }
 

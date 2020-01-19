@@ -16,7 +16,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 inline bool crosses(const Policy& policy, const plane<T0, N>& pl, const sphere<T1, N>& s) {
-    auto dist = adl::abs(pl(policy, s.center));
+    auto dist = op::abs(pl(policy, s.center));
     return !less(policy, dist, product(policy, s.radius, norm(policy, pl.normal)));
 }
 

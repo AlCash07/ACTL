@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functional/math.hpp>
 #include <actl/functional/policies.hpp>
 #include <actl/functional/range.hpp>
 #include <actl/functional/scalar.hpp>

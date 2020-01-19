@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/functional/math.hpp>
 #include <actl/functional/scalar.hpp>
-#include <actl/numeric/math.hpp>
 #include <actl/range/traits.hpp>
 
 namespace ac::op {
@@ -46,12 +46,12 @@ struct absolute_error : E, virtual policy {};
 
 template <class E, class T, enable_int_if<std::is_floating_point_v<T>> = 0>
 inline constexpr int perform(const absolute_error<E>& policy, Sgn, const T& x) {
-    if (less(adl::abs(eval(policy, x)), policy.epsilon())) return 0;
+    if (less(abs(x), policy.epsilon())) return 0;
     return x < 0 ? -1 : 1;
 }
 
 template <class Op, class E, class T, class U,
-          enable_int_if<std::is_base_of_v<comparison_operation_tag, operation_tag_t<Op>> &&
+          enable_int_if<is_comparison_operation_v<Op> &&
                         (std::is_floating_point_v<T> || std::is_floating_point_v<U>)> = 0>
 inline constexpr auto perform(const absolute_error<E>& policy, Op op, const T& lhs, const U& rhs) {
     return op(sgn(sub(lhs, rhs)), 0);

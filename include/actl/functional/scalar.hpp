@@ -105,6 +105,10 @@ inline constexpr auto operator - (const T& lhs, const U& rhs) {
 
 struct comparison_operation_tag : scalar_operation_tag {};
 
+template <class T>
+inline constexpr bool is_comparison_operation_v =
+    std::is_base_of_v<comparison_operation_tag, operation_tag_t<T>>;
+
 template <class Derived, int Arity>
 struct comparison_operation : scalar_operation<Derived, Arity> {
     using operation_tag = comparison_operation_tag;

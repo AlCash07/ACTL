@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/sqrt.hpp>
+#include <actl/functional/math.hpp>
 #include <actl/geometry/point.hpp>
 
 namespace ac {
