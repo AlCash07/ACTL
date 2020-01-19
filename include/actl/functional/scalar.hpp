@@ -14,21 +14,21 @@ namespace ac::op {
 template <class To>
 struct Cast : scalar_operation<Cast<To>, 1> {
     template <class T>
-    static constexpr auto eval(const T& x) -> decltype(static_cast<To>(x)) {
+    static constexpr auto perform(const T& x) -> decltype(static_cast<To>(x)) {
         return static_cast<To>(x);
     }
 };
 
 struct Copy : scalar_operation<Copy, 1> {
     template <class T>
-    static constexpr auto& eval(const T& x) {
+    static constexpr auto perform(const T& x) {
         return x;
     }
 };
 
 struct Ternary : scalar_operation<Ternary, 3> {
     template <class B, class T, class U>
-    static constexpr auto eval(const B& condition, const T& lhs, const U& rhs)
+    static constexpr auto perform(const B& condition, const T& lhs, const U& rhs)
         -> decltype(condition ? lhs : rhs) {
         return condition ? lhs : rhs;
     }
@@ -50,7 +50,7 @@ struct arithmetic_operation : scalar_operation<Derived, Arity> {
 
 struct Neg : arithmetic_operation<Neg, 1> {
     template <class T>
-    static constexpr auto eval(const T& x) -> decltype(-x) {
+    static constexpr auto perform(const T& x) -> decltype(-x) {
         return -x;
     }
 };
@@ -60,14 +60,14 @@ struct Add : arithmetic_operation<Add, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x + y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x + y) {
         return x + y;
     }
 };
 
 struct Div : arithmetic_operation<Div, 2> {
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x / y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x / y) {
         return x / y;
     }
 };
@@ -77,14 +77,14 @@ struct Mul : arithmetic_operation<Mul, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x * y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x * y) {
         return x * y;
     }
 };
 
 struct Sub : arithmetic_operation<Sub, 2> {
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x - y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x - y) {
         return x - y;
     }
 };
@@ -139,14 +139,14 @@ struct Equal : comparison_operation<Equal, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x == y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x == y) {
         return x == y;
     }
 };
 
 struct Less : comparison_operation<Less, 2> {
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x < y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x < y) {
         return x < y;
     }
 };
@@ -181,7 +181,7 @@ struct logical_operation : scalar_operation<Derived, Arity> {
 
 struct LogicalNot : logical_operation<LogicalNot, 1> {
     template <class T>
-    static constexpr auto eval(const T& x) -> decltype(!x) {
+    static constexpr auto perform(const T& x) -> decltype(!x) {
         return !x;
     }
 };
@@ -191,7 +191,7 @@ struct LogicalAnd : logical_operation<LogicalAnd, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x && y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x && y) {
         return x && y;
     }
 };
@@ -201,7 +201,7 @@ struct LogicalOr : logical_operation<LogicalOr, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x || y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x || y) {
         return x || y;
     }
 };
@@ -236,7 +236,7 @@ struct bit_operation : scalar_operation<Derived, Arity> {
 
 struct BitNot : bit_operation<BitNot, 1> {
     template <class T>
-    static constexpr auto eval(const T& x) -> decltype(~x) {
+    static constexpr auto perform(const T& x) -> decltype(~x) {
         return ~x;
     }
 };
@@ -246,7 +246,7 @@ struct BitAnd : bit_operation<BitAnd, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x & y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x & y) {
         return x & y;
     }
 };
@@ -256,7 +256,7 @@ struct BitOr : bit_operation<BitOr, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x | y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x | y) {
         return x | y;
     }
 };
@@ -266,7 +266,7 @@ struct BitXor : bit_operation<BitXor, 2> {
     struct is_commutative;
 
     template <class T>
-    static constexpr auto eval(const T& x, const T& y) -> decltype(x ^ y) {
+    static constexpr auto perform(const T& x, const T& y) -> decltype(x ^ y) {
         return x ^ y;
     }
 };

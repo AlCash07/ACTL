@@ -20,22 +20,22 @@ struct math_operation : scalar_operation<Derived, Arity> {
     using operation_tag = math_operation_tag;
 };
 
-#define MATH_OP1(name, op)                                               \
-    struct name : math_operation<name, 1> {                              \
-        template <class T>                                               \
-        static constexpr auto eval(const T& x) -> decltype(std::op(x)) { \
-            return std::op(x);                                           \
-        }                                                                \
-    };                                                                   \
+#define MATH_OP1(name, op)                                                  \
+    struct name : math_operation<name, 1> {                                 \
+        template <class T>                                                  \
+        static constexpr auto perform(const T& x) -> decltype(std::op(x)) { \
+            return std::op(x);                                              \
+        }                                                                   \
+    };                                                                      \
     inline constexpr name op;
 
-#define MATH_OP2(name, op)                                                              \
-    struct name : math_operation<name, 2> {                                             \
-        template <class T>                                                              \
-        static constexpr auto eval(const T& x, const T& y) -> decltype(std::op(x, y)) { \
-            return std::op(x, y);                                                       \
-        }                                                                               \
-    };                                                                                  \
+#define MATH_OP2(name, op)                                                                 \
+    struct name : math_operation<name, 2> {                                                \
+        template <class T>                                                                 \
+        static constexpr auto perform(const T& x, const T& y) -> decltype(std::op(x, y)) { \
+            return std::op(x, y);                                                          \
+        }                                                                                  \
+    };                                                                                     \
     inline constexpr name op;
 
 MATH_OP1(Abs, abs)

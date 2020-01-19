@@ -17,8 +17,6 @@ struct Eps {
 inline op::absolute_error<Eps> eps_policy;
 
 TEST("op::equal") {
-    ASSERT_TRUE(op::equal(0.0, 0.0));
-    ASSERT_FALSE(op::equal(0.0, eps / 2));
     ASSERT_TRUE(op::equal(eps_policy, 0.0, eps / 2));
     ASSERT_FALSE(op::equal(eps_policy, 0.0, eps));
 }
