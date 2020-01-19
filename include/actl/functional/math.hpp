@@ -49,7 +49,7 @@ MATH_OP2(Atan2, atan2)
 #undef MATH_OP2
 
 template <class T, enable_int_if<std::is_unsigned_v<T>> = 0>
-inline constexpr const T& perform(policy, Abs, const T& x) {
+inline constexpr const T& perform(Abs, const T& x) {
     return x;
 }
 

@@ -11,6 +11,34 @@
 
 namespace ac::op {
 
+template <class To>
+struct Cast : scalar_operation<Cast<To>, 1> {
+    template <class T>
+    static constexpr auto eval(const T& x) -> decltype(static_cast<To>(x)) {
+        return static_cast<To>(x);
+    }
+};
+
+struct Copy : scalar_operation<Copy, 1> {
+    template <class T>
+    static constexpr auto& eval(const T& x) {
+        return x;
+    }
+};
+
+struct Ternary : scalar_operation<Ternary, 3> {
+    template <class B, class T, class U>
+    static constexpr auto eval(const B& condition, const T& lhs, const U& rhs)
+        -> decltype(condition ? lhs : rhs) {
+        return condition ? lhs : rhs;
+    }
+};
+
+template <class T>
+inline constexpr Cast<T> cast;
+inline constexpr Copy copy;
+inline constexpr Ternary ternary;
+
 /* Arithmetic operations */
 
 struct arithmetic_operation_tag : scalar_operation_tag {};
@@ -26,8 +54,6 @@ struct Neg : arithmetic_operation<Neg, 1> {
         return -x;
     }
 };
-
-struct Sqr : arithmetic_operation<Sqr, 1> {};
 
 struct Add : arithmetic_operation<Add, 2> {
     struct is_associative;
@@ -64,17 +90,10 @@ struct Sub : arithmetic_operation<Sub, 2> {
 };
 
 inline constexpr Neg neg;
-inline constexpr Sqr sqr;
-
 inline constexpr Add add;
 inline constexpr Div div;
 inline constexpr Mul mul;
 inline constexpr Sub sub;
-
-template <class T>
-inline constexpr auto perform(Sqr, const T& x) {
-    return mul(x, x);
-}
 
 template <class T, enable_adl<T> = 0>
 inline constexpr auto operator - (const T& x) {
@@ -114,8 +133,6 @@ struct comparison_operation : scalar_operation<Derived, Arity> {
     using operation_tag = comparison_operation_tag;
 };
 
-struct Sgn : scalar_operation<Sgn, 1> {};
-
 struct Cmp3Way : comparison_operation<Cmp3Way, 2> {};
 
 struct Equal : comparison_operation<Equal, 2> {
@@ -134,48 +151,18 @@ struct Less : comparison_operation<Less, 2> {
     }
 };
 
-struct Max : scalar_operation<Max, 2> {
-    struct is_associative;
-    struct is_commutative;
-};
-
-struct Min : scalar_operation<Min, 2> {
-    struct is_associative;
-    struct is_commutative;
-};
-
-inline constexpr Sgn sgn;
-
 inline constexpr Cmp3Way cmp3way;
 inline constexpr Equal equal;
 inline constexpr Less less;
 
-inline constexpr Max max;
-inline constexpr Min min;
-
-template <class T>
-inline constexpr auto perform(Sgn, const T& x) {
-    return cmp3way(x, T{0});
-}
-
-template <class Policy, class T, class U>
-inline constexpr int perform(const Policy& policy, Cmp3Way, const T& lhs, const U& rhs) {
-    return (int)less(policy, rhs, lhs) - (int)less(policy, lhs, rhs);
+template <class T, class U>
+inline constexpr auto perform(Cmp3Way, const T& lhs, const U& rhs) {
+    return cast<int>(less(rhs, lhs)) - cast<int>(less(lhs, rhs));
 }
 
 template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator == (const T& lhs, const U& rhs) {
     return equal(lhs, rhs);
-}
-
-template <class Policy, class T, class U>
-inline constexpr decltype(auto) perform(const Policy& policy, Max, const T& lhs, const U& rhs) {
-    return less(policy, lhs, rhs) ? rhs : lhs;
-}
-
-template <class Policy, class T, class U>
-inline constexpr decltype(auto) perform(const Policy& policy, Min, const T& lhs, const U& rhs) {
-    return less(policy, rhs, lhs) ? rhs : lhs;
 }
 
 template <class T, class U, enable_adl<T, U> = 0>
@@ -308,6 +295,47 @@ template <class T, class U, enable_adl<T, U> = 0>
 inline constexpr auto operator ^ (const T& lhs, const U& rhs) {
     return bit_xor(lhs, rhs);
 }
+
+/* Derived operations */
+
+struct Max : scalar_operation<Max, 2> {
+    struct is_associative;
+    struct is_commutative;
+};
+
+struct Min : scalar_operation<Min, 2> {
+    struct is_associative;
+    struct is_commutative;
+};
+
+struct Sgn : scalar_operation<Sgn, 1> {};
+
+struct Sqr : scalar_operation<Sqr, 1> {};
+
+template <class T, class U>
+inline constexpr auto perform(Max, const T& lhs, const U& rhs) {
+    return ternary(less(lhs, rhs), rhs, lhs);
+}
+
+template <class T, class U>
+inline constexpr auto perform(Min, const T& lhs, const U& rhs) {
+    return ternary(less(rhs, lhs), rhs, lhs);
+}
+
+template <class T>
+inline constexpr auto perform(Sgn, const T& x) {
+    return cmp3way(x, T{0});
+}
+
+template <class T>
+inline constexpr auto perform(Sqr, const T& x) {
+    return mul(x, x);
+}
+
+inline constexpr Max max;
+inline constexpr Min min;
+inline constexpr Sgn sgn;
+inline constexpr Sqr sqr;
 
 }  // namespace ac::op
 

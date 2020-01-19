@@ -28,7 +28,7 @@ struct can_promote<std::void_t<std::common_type_t<Ts...>>, Ts...> {
 template <class Op, class... Ts,
           enable_int_if<is_scalar_operation_v<Op> && can_promote<void, Ts...>::value> = 0>
 inline auto perform(allow_promotion, Op op, const Ts&... xs) {
-    return op(static_cast<std::common_type_t<Ts...>>(xs)...);
+    return op(cast<std::common_type_t<Ts...>>(xs)...);
 }
 
 template <class Op, class T>

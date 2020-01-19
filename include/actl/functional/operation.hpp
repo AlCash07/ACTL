@@ -113,8 +113,9 @@ template <class, class... Ts>
 struct has_fallback : std::false_type {};
 
 template <class Op, class... Ts>
-struct has_fallback<std::void_t<decltype(Op::eval(std::declval<Ts>()...))>, Op, Ts...> :
-    std::bool_constant<!is_expression<decltype(Op::eval(std::declval<Ts>()...))>::value> {};
+struct has_fallback<std::void_t<decltype(Op::eval(std::declval<Ts>()...))>, Op, Ts...>
+    : std::bool_constant<
+          !is_expression<remove_cvref_t<decltype(Op::eval(std::declval<Ts>()...))>>::value> {};
 
 // Default evaluation provided by operation.
 template <class Op, class... Ts,

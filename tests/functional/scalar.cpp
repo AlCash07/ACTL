@@ -12,19 +12,10 @@
 TEST("arithmetics") {
     ASSERT_EQUAL(-6, op::neg(6));
     ASSERT_EQUAL(2, op::neg(-2));
-    ASSERT_EQUAL(36, op::sqr(6));
-    ASSERT_EQUAL(4, op::sqr(-2));
     ASSERT_EQUAL(8, op::add(6, 2));
     ASSERT_EQUAL(3, op::div(6, 2));
     ASSERT_EQUAL(12, op::mul(6, 2));
     ASSERT_EQUAL(4, op::sub(6, 2));
-}
-
-TEST("op::sgn") {
-    ASSERT_EQUAL(1, op::sgn(std::numeric_limits<int>::max()));
-    ASSERT_EQUAL(-1, op::sgn(std::numeric_limits<int>::min()));
-    ASSERT_EQUAL(1, op::sgn(std::numeric_limits<unsigned int>::max()));
-    ASSERT_EQUAL(0, op::sgn(0));
 }
 
 TEST("op::cmp3way") {
@@ -45,6 +36,18 @@ TEST("bit") {
     ASSERT_EQUAL(-1, op::bit_not(0));
     ASSERT_EQUAL(1, op::bit_and(3, 5));
     ASSERT_EQUAL(7, op::bit_or(3, 5));
+}
+
+TEST("op::sgn") {
+    ASSERT_EQUAL(1, op::sgn(std::numeric_limits<int>::max()));
+    ASSERT_EQUAL(-1, op::sgn(std::numeric_limits<int>::min()));
+    ASSERT_EQUAL(1, op::sgn(std::numeric_limits<unsigned int>::max()));
+    ASSERT_EQUAL(0, op::sgn(0));
+}
+
+TEST("op::sqr") {
+    ASSERT_EQUAL(36, op::sqr(6));
+    ASSERT_EQUAL(4, op::sqr(-2));
 }
 
 TEST("smax") {
