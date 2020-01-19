@@ -181,11 +181,6 @@ struct expression {
 template <class... Ts>
 struct is_expression<expression<Ts...>> : std::true_type {};
 
-template <class Policy, class Op, class S, class... Ts>
-struct result_type<Policy, const expression<Op, S, Ts...>&> {
-    using type = decltype(eval_recursive<Op>(std::declval<Policy>(), std::declval<Ts>()...));
-};
-
 template <class T, class U = remove_cvref_t<T>>
 using value_if_arithmetic = std::conditional_t<std::is_arithmetic_v<U>, U, T>;
 

@@ -57,4 +57,32 @@ inline constexpr auto perform(const absolute_error<E>& policy, Op op, const T& l
     return op(sgn(sub(lhs, rhs)), 0);
 }
 
+/**
+ * Comparable square root with deferred call to sqrt.
+ */
+template <class T>
+class square_root {
+public:
+    constexpr explicit square_root(const T& value = {}) : sqr_{value} {}
+
+    operator decltype(eval(sqrt(std::declval<T>())))() const { return eval(sqrt(sqr_)); }
+
+    friend constexpr const T& eval(policy, Sqr, const square_root& x) { return x.sqr_; }
+
+    template <class Op, enable_int_if<is_comparison_operation_v<Op>> = 0>
+    friend constexpr auto perform(Op op, const square_root& lhs, const square_root& rhs) {
+        return op(lhs.sqr_, rhs.sqr_);
+    }
+
+private:
+    T sqr_;
+};
+
+struct defer_sqrt : virtual policy {};
+
+template <class T>
+inline auto perform(defer_sqrt, Sqrt, const T& x) {
+    return square_root{x};
+}
+
 }  // namespace ac::op
