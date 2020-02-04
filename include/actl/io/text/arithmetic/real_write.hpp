@@ -26,10 +26,9 @@ public:
         return {ptr_.get(), size};
     }
 
-    cspan<char>& data() { return data_; }
-    cspan<char> data() const { return data_; }
+    explicit operator cspan<char>() const { return data_; }
 
-    index size() const { return data_.size(); }
+    void set_span(cspan<char> value) { data_ = value; }
 
 private:
     std::unique_ptr<char[]> ptr_;
@@ -38,7 +37,7 @@ private:
 
 template <class D, class F>
 inline index write_final(D& od, F& fmt, const float_string& x) {
-    return write_final(od, fmt, x.data());
+    return write_final(od, fmt, cspan<char>{x});
 }
 
 }  // namespace detail
@@ -86,7 +85,7 @@ inline auto serialize(Format& fmt, Float x) {
         first = detail::uitoa(first, fmt, integer_part, base);
     }
     if (sign) *--first = sign;
-    res.data() = {first, s.end()};
+    res.set_span({first, s.end()});
     return res;
 }
 

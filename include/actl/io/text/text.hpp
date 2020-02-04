@@ -22,8 +22,7 @@ inline constexpr bool is_string_v = std::is_convertible_v<T, std::basic_string_v
 template <class Device>
 using view_t = std::basic_string_view<char_t<Device>>;
 
-const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat),
-                             bit(flags::left) | bit(flags::right) | bit(flags::center)};
+const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat)};
 
 template <
     flag_t Flags = bit(flags::skipws),

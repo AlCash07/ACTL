@@ -24,9 +24,6 @@ enum : flag_t {
     scientific,
     hexfloat,
     showpoint,
-    left,
-    right,
-    center,
     skipws,
     unitbuf
 };
@@ -35,7 +32,7 @@ enum : flag_t {
 
 namespace groups {
 
-enum : flag_t { floatfield, adjustfield };
+enum : flag_t { floatfield };
 
 }  // namespace groups
 

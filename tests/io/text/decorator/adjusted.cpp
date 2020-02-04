@@ -14,43 +14,37 @@ using namespace ac::io;
 
 using pii = std::pair<ac::index, ac::index>;
 
-#if 0
-TEST("adjustment::default") {
-    std::tuple<adjusted<>, text_static<>> fmt;
-    fmt.width(4);
+TEST("adjustment::left") {
+    adjusted fmt;
+    fmt.width = 4;
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{0, 3}, adjustment(fmt, 1));
 }
 
 TEST("adjustment::right") {
-    std::tuple<adjusted<>, text_static<bit(flags::right)>> fmt;
-    fmt.width(4);
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
-    ASSERT_EQUAL(pii{0, 3}, adjustment(fmt, 1));
-}
-
-TEST("adjustment::left") {
-    std::tuple<adjusted<>, text_static<bit(flags::left)>> fmt;
-    fmt.width(4);
+    adjusted fmt;
+    fmt.where = adjust_to::right;
+    fmt.width = 4;
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{3, 0}, adjustment(fmt, 1));
 }
 
 TEST("adjustment::center") {
-    std::tuple<adjusted<>, text_static<bit(flags::center)>> fmt;
-    fmt.width(4);
+    adjusted fmt;
+    fmt.where = adjust_to::center;
+    fmt.width = 4;
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{1, 1}, adjustment(fmt, 2));
     ASSERT_EQUAL(pii{1, 2}, adjustment(fmt, 1));
 }
 
-TEST("adjustment::centerleft") {
-    std::tuple<adjusted<>, text_static<bit(flags::center) | bit(flags::left)>> fmt;
-    fmt.width(4);
+TEST("adjustment::center_right") {
+    adjusted fmt;
+    fmt.where = adjust_to::center_right;
+    fmt.width = 4;
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{1, 1}, adjustment(fmt, 2));
@@ -58,11 +52,12 @@ TEST("adjustment::centerleft") {
 }
 
 TEST("fill") {
-    std::tuple<adjusted<>, text_static<bit(flags::center)>> fmt;
-    char s[10];
+    std::tuple<text_static<>, adjusted<>> fmt;
+    char s[14];
     memory<out> od{s};
+    write(od, fmt, adjust_to::center);
     ASSERT_EQUAL(4, write(od, fmt, setwidth{4}, setfill{'*'}, 'a'));
     ASSERT_EQUAL(6, write(od, fmt, "bacaba"));
-    ASSERT_EQUAL("*a**bacaba"sv, s);
+    ASSERT_EQUAL(4, write(od, fmt, 42));
+    ASSERT_EQUAL("*a**bacaba*42*"sv, s);
 }
-#endif

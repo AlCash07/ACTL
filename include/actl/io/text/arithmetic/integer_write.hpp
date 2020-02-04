@@ -24,10 +24,10 @@ public:
 
     span<char, Size> available() { return {data_, Size}; }
 
-    span<char> data() { return available().last(size()); }
-    cspan<char> data() const { return {std::end(data_) - 1 - size(), size()}; }
-
-    index size() const { return data_[Size]; }
+    explicit operator cspan<char>() const {
+        const index size = data_[Size];
+        return {std::end(data_) - 1 - size, size};
+    }
 
 private:
     char data_[Size + 1];
@@ -35,7 +35,7 @@ private:
 
 template <class D, class F, uint8_t Size>
 inline index write_final(D& od, F& fmt, const int_string<Size>& x) {
-    return write_final(od, fmt, x.data());
+    return write_final(od, fmt, cspan<char>{x});
 }
 
 }  // namespace detail
