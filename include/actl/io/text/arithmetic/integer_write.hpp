@@ -44,10 +44,9 @@ template <class Format, class Int, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_integral_v<Int> && !std::is_same_v<Int, char> &&
                         !std::is_same_v<Int, bool>> = 0>
 inline auto serialize(Format& fmt, Int x) {
-    auto base = fmt.base();
-    ACTL_ASSERT(base == 0 || (2 <= base && base <= 36));
-    if (base == 0) base = 10;
     using UInt = std::make_unsigned_t<Int>;
+    UInt base = fmt.base;
+    if (base == 0) base = 10;
     detail::int_string<1 + detail::digit_count(std::numeric_limits<UInt>::max(), UInt{2})> s;
     auto last = s.available().end();
     if constexpr (std::is_signed_v<Int>) {
@@ -55,7 +54,7 @@ inline auto serialize(Format& fmt, Int x) {
             last = detail::uitoa(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
             *--last = '-';
         } else {
-            last = detail::uitoa(last, fmt, x, base);
+            last = detail::uitoa(last, fmt, static_cast<UInt>(x), base);
             if (fmt.getf(flags::showpos)) *--last = '+';
         }
     } else {

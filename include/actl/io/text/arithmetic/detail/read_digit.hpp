@@ -14,7 +14,7 @@
 namespace ac::io::detail {
 
 template <uint8_t MaxBase, class D, class UInt>
-inline bool read_digit(D& id, UInt& x, uint8_t base) {
+inline bool read_digit(D& id, UInt& x, UInt base) {
     if constexpr (MaxBase <= 10) {
         x = static_cast<UInt>(id.peek() - '0');
     } else {

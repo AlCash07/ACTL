@@ -65,23 +65,23 @@ inline auto serialize(Format& fmt, Float x) {
         std::memcpy(first, fmt.getf(flags::uppercase) ? "INF" : "inf", 3);
     } else {
         using UInt = unsigned long long;
-        auto base = fmt.base();
-        auto prec = fmt.precision();
-        auto base_power = binary_pow(UInt{base}, prec);
+        UInt base = fmt.base;
+        index precision = fmt.precision;
+        auto base_power = binary_pow(base, precision);
         auto integer_part = static_cast<UInt>(x);
-        auto fractional_part = static_cast<UInt>((x - integer_part) * base_power + Float{1} / 2);
+        auto fractional_part = static_cast<UInt>((x - integer_part) * base_power + Float{0.5});
         if (fractional_part >= base_power) {
             ++integer_part;
             fractional_part = 0;
         }
         s = res.reserve(
             detail::digit_count(std::numeric_limits<UInt>::max(), base < 10 ? UInt{2} : UInt{10}) +
-            1 + fmt.precision());
-        first = s.end() - prec;
-        if (prec > 0) {
+            1 + std::max(index{0}, precision));
+        first = s.end() - precision;
+        if (0 < precision) {
             std::fill(first, detail::uitoa(s.end(), fmt, fractional_part, base), '0');
         }
-        if (0 < prec || fmt.getf(flags::showpoint)) *--first = '.';
+        if (0 < precision || fmt.getf(flags::showpoint)) *--first = '.';
         first = detail::uitoa(first, fmt, integer_part, base);
     }
     if (sign) *--first = sign;

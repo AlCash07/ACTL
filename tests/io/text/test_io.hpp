@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/io/device/string.hpp>
-#include <actl/io/text/manip.hpp>
 #include <actl/test.hpp>
 
 template <class... Ts>

@@ -6,7 +6,6 @@
  **************************************************************************************************/
 
 #include <actl/io/text/arithmetic/real_write.hpp>
-#include <actl/io/text/manip.hpp>
 #include <actl/test.hpp>
 #include "io/text/test_io.hpp"
 
