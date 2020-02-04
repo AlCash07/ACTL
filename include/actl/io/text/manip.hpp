@@ -50,10 +50,6 @@ constexpr setg<groups::floatfield, flags::hexfloat> hexfloat{};
 constexpr setf<flags::showpoint, true> showpoint{};
 constexpr setf<flags::showpoint, false> noshowpoint{};
 
-// flush after each unit
-constexpr setf<flags::unitbuf, true> unitbuf{};
-constexpr setf<flags::unitbuf, false> nounitbuf{};
-
 template <class Format, flag_t Flag, bool Value>
 inline void serialize(Format& fmt, setf<Flag, Value>) {
     if constexpr (Value) {

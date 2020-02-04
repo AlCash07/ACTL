@@ -23,8 +23,7 @@ enum : flag_t {
     fixed,
     scientific,
     hexfloat,
-    showpoint,
-    unitbuf
+    showpoint
 };
 
 }  // namespace flags
