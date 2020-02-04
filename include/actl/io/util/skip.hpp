@@ -10,11 +10,9 @@
 #include <actl/io/io.hpp>
 #include <actl/io/util/predicate.hpp>
 #include <actl/string/ctype.hpp>
+#include <actl/string/traits.hpp>
 
 namespace ac::io {
-
-template <class T, class Char = char>
-inline constexpr bool is_string_v = std::is_convertible_v<T, std::basic_string_view<Char>>;
 
 template <class T>
 struct skip : public predicate<T> {
