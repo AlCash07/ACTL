@@ -24,7 +24,6 @@ enum : flag_t {
     scientific,
     hexfloat,
     showpoint,
-    skipws,
     unitbuf
 };
 

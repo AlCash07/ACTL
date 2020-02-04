@@ -68,7 +68,7 @@ inline index write_final(Device& od, Format& fmt, const std::tuple<Ts...>& x) {
 }
 
 template <class Device, class Format, class... Ts>
-inline bool deserialize(Device& id, Format& fmt, std::tuple<Ts...>& x) {
+inline bool read_final(Device& id, Format& fmt, std::tuple<Ts...>& x) {
     return detail::read_tuple(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 

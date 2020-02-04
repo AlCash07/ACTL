@@ -47,7 +47,7 @@ inline index read_till(Device& id, till<span<char_t<Device>, N>, P> x) {
 }
 
 template <class Device, class Format, class P, index N>
-inline bool deserialize(Device& id, Format&, till<span<char_t<Device>, N>, P> x) {
+inline bool read_final(Device& id, Format&, till<span<char_t<Device>, N>, P> x) {
     read_till(id, x);
     return true;
 }

@@ -176,7 +176,7 @@ inline index write_final(Device&, Format&, const T&) {
 }
 
 template <class Device, class Format, class T, enable_int_if<std::is_empty_v<T>> = 0>
-inline bool deserialize(Device&, Format&, T&) {
+inline bool read_final(Device&, Format&, T&) {
     return true;
 }
 
@@ -188,30 +188,29 @@ inline index write_final(Device& od, Format&, T byte) {
     return od.write(byte);
 }
 
-template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, char_t<Device>& c) {
-    c = id.get();
+template <class Device, class Format, class T, enable_int_if_byte<T> = 0>
+inline bool read_final(Device& id, Format&, T& byte) {
+    byte = static_cast<T>(id.get());
     return !id.eof();
 }
 
 template <class Device, class Format, index N>
-inline index write_final(Device& od, Format&, const span<char_t<Device>, N>& s) {
+inline index write_final(Device& od, Format&, span<char_t<Device>, N> s) {
     return od.write(s);
 }
 
 template <class Device, class Format, index N>
-inline index write_final(Device& od, Format&, const cspan<char_t<Device>, N>& s) {
+inline index write_final(Device& od, Format&, cspan<char_t<Device>, N> s) {
     return od.write(s);
 }
 
-// TODO: add overloads taking const span&.
 template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format&, span<char_t<Device>, N>& s) {
+inline bool read_final(Device& id, Format&, span<char_t<Device>, N> s) {
     return id.read(s) == s.size();
 }
 
 template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format&, const cspan<char_t<Device>, N>& s) {
+inline bool read_final(Device& id, Format&, cspan<char_t<Device>, N> s) {
     for (auto c : s) {
         if (id.peek() != c) return false;
         id.move(1);
@@ -265,17 +264,54 @@ inline index write_impl(D& od, F& fmt, const T& x) {
     }
 }
 
+template <class... Ts>
+constexpr auto can_deserialize(Ts&... xs) -> decltype(deserialize(xs...), std::true_type{});
+
+constexpr std::false_type can_deserialize(...);
+
+template <size_t I, class D, class F, class T>
+inline bool read_impl(D& od, F& fmt, T& x);
+
+template <size_t I, class D, class F, class T, size_t... Is>
+inline bool read_impl_tuple(D& od, F& fmt, T& x, std::index_sequence<Is...>) {
+    return (... && read_impl<I>(od, fmt, std::get<Is>(x)));
+}
+
+template <size_t I, class D, class F, class... Ts>
+inline bool read_impl(D& od, F& fmt, tuple<Ts...>& x) {
+    return read_impl_tuple<I>(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
+}
+
+template <size_t I, class D, class F, class T>
+inline bool read_impl(D& od, F& fmt, T& x) {
+    if constexpr (I == format_traits<F>::size) {
+        if constexpr (is_range_v<T> || is_tuple_v<T>) {
+            change_depth(fmt, true);
+            bool res = read_final(od, fmt, x);
+            change_depth(fmt, false);
+            return res;
+        } else {
+            return read_final(od, fmt, x);
+        }
+    } else {
+        auto& fmt_i = format_traits<F>::template get<I>(fmt);
+        if constexpr (decltype(can_deserialize(od, fmt_i, x))::value) {
+            return deserialize(od, fmt_i, x);
+        } else if constexpr (decltype(can_deserialize(fmt_i, x))::value) {
+            if constexpr (std::is_same_v<decltype(deserialize(fmt_i, x)), void>) {
+                deserialize(fmt_i, x);
+                return true;
+            } else {
+                decltype(auto) y = deserialize(fmt_i, x);
+                return read_impl<I + 1>(od, fmt, y);
+            }
+        } else {
+            return read_impl<I + 1>(od, fmt, x);
+        }
+    }
+}
+
 }  // namespace detail
-
-template <class Device, class Format, class T>
-inline bool deserialize(Device& id, Format& fmt, T& x, none) {
-    return deserialize(id, fmt, x);
-}
-
-template <class Device, class Format, class T, class Tag>
-inline bool deserialize(Device& id, Format& fmt, T& x, Tag) {
-    return deserialize(id, fmt, x, typename Tag::base{});
-}
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into
  * lvalue references, because I/O doesn't operate with rvalues. */
@@ -291,9 +327,8 @@ inline index write(Device&& od, Format&& fmt, const Ts&... args) {
 
 template <class Device, class Format, class... Ts>
 inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
-    using F = std::remove_reference_t<Format>;
-    if constexpr (is_format_v<F>) {
-        return (... && deserialize(id, fmt, args, typename F::format_tag{}));
+    if constexpr (is_format_v<std::remove_reference_t<Format>>) {
+        return (... && detail::read_impl<0>(id, fmt, args));
     } else {
         return read(id, deduce_format(id), fmt, args...);
     }

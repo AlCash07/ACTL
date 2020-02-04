@@ -16,10 +16,9 @@
 
 namespace ac::io {
 
-template <class Device, class Format, class Float,
+template <class Device, class Format, class Float, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_floating_point_v<Float>> = 0>
-inline bool deserialize(Device& id, Format& fmt, Float& x, text_tag) {
-    if (fmt.getf(flags::skipws)) read(id, fmt, ws);
+inline bool deserialize(Device& id, Format& fmt, Float& x) {
     char c = id.peek();
     bool negative = c == '-';
     if (negative || c == '+') id.move(1);

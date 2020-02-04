@@ -30,8 +30,8 @@ private:
     bool separate_ = false;
 };
 
-template <class C, class T, enable_int_if<!is_manipulator<T>::value> = 0>
-inline tuple<cspan<C>, const T&> serialize(spaced<C>& fmt, const T& x) {
+template <class C, class T, enable_int_if<!is_manipulator<std::remove_const_t<T>>::value> = 0>
+inline tuple<cspan<C>, T&> deserialize(spaced<C>& fmt, T& x) {
     if (fmt.separate()) {
         return {fmt.space(), x};
     } else {
@@ -41,9 +41,14 @@ inline tuple<cspan<C>, const T&> serialize(spaced<C>& fmt, const T& x) {
 }
 
 template <class C, class T>
-inline decltype(auto) serialize(spaced<C>& fmt, const raw<T>& x) {
+inline decltype(auto) deserialize(spaced<C>& fmt, const raw<T>& x) {
     fmt.separate() = false;
     return x;
+}
+
+template <class C, class T>
+inline auto serialize(spaced<C>& fmt, const T& x) -> decltype(deserialize(fmt, x)) {
+    return deserialize(fmt, x);
 }
 
 struct setspace {

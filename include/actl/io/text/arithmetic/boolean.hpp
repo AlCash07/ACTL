@@ -34,8 +34,8 @@ inline cspan<char> serialize(Format& fmt, Bool x) {
     }
 }
 
-template <class Device, class Format>
-inline bool deserialize(Device& id, Format& fmt, bool& x, text_tag) {
+template <class Device, class Format, enable_int_if_text<Format> = 0>
+inline bool deserialize(Device& id, Format& fmt, bool& x) {
     char_t<Device> c;
     if (!read(id, fmt, c)) return false;
     if (fmt.getf(flags::boolalpha)) {

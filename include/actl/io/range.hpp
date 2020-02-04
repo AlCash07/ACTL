@@ -30,7 +30,7 @@ inline constexpr bool is_non_span_range_v =
     is_range_v<R> && !is_span<R, char_t<Device>>::value && !is_span<R, const char_t<Device>>::value;
 
 template <class Device, class Format, class R, enable_int_if<is_non_span_range_v<R, Device>> = 0>
-inline bool deserialize(Device& id, Format& fmt, R& x) {
+inline bool read_final(Device& id, Format& fmt, R& x) {
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         decltype(x.size()) size{};
         if (!read_size(id, fmt, size)) return false;

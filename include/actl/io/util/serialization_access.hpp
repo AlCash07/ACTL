@@ -52,11 +52,11 @@ inline index write_final(Device& od, Format& fmt, const T& x) {
     return serialization_access::write_final(x, od, fmt);
 }
 
-template <class Device, class Format, class T, class... Tag,
-          enable_int_if<decltype(
-              serialization_access{}.has_deserialize<T, Device&, Format&, Tag...>(0))::value> = 0>
-inline bool deserialize(Device& id, Format& fmt, T& x, Tag... tag) {
-    return serialization_access::read(x, id, fmt, tag...);
+template <class Device, class Format, class T,
+          enable_int_if<
+              decltype(serialization_access{}.has_deserialize<T, Device&, Format&>(0))::value> = 0>
+inline bool read_final(Device& id, Format& fmt, T& x) {
+    return serialization_access::read(x, id, fmt);
 }
 
 }  // namespace ac::io

@@ -50,10 +50,6 @@ constexpr setg<groups::floatfield, flags::hexfloat> hexfloat{};
 constexpr setf<flags::showpoint, true> showpoint{};
 constexpr setf<flags::showpoint, false> noshowpoint{};
 
-// skip whitespace before each input unit
-constexpr setf<flags::skipws, true> skipws{};
-constexpr setf<flags::skipws, false> noskipws{};
-
 // flush after each unit
 constexpr setf<flags::unitbuf, true> unitbuf{};
 constexpr setf<flags::unitbuf, false> nounitbuf{};
