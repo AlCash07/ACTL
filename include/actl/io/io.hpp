@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/io/util/serialization_access.hpp>
+#include <actl/std/tuple.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/span.hpp>
 #include <actl/util/type_traits.hpp>
@@ -36,11 +37,6 @@ inline constexpr bool is_out = (Mode & (out | app)) > 0;
 
 template <mode_t Mode>
 inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
-
-template <mode_t Mode>
-using default_char_t = char;
-// TODO: uncomment when wchar and std::byte support is added.
-// using default_char_t = std::conditional_t<is_bin<Mode>, std::byte, char>;
 
 template <class Device>
 using char_t = typename Device::char_type;
@@ -76,103 +72,236 @@ struct has_output_buffer<T, std::void_t<decltype(std::declval<T>().output_data()
 /* Format */
 
 struct binary {
-    using format_tag = binary;
-    using base = none;
+    struct format_tag;
 };
 
-struct text_tag {
-    using base = none;
-};
+template <class T, class Tag, class = void>
+struct has_format_tag : std::false_type {};
+
+template <class T, class Tag>
+struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
+    : std::is_same<typename T::format_tag, Tag> {};
 
 template <class T, class = void>
-struct is_format : std::false_type {};
+struct format_traits {
+    static constexpr size_t size = 0;
+};
 
 template <class T>
-struct is_format<T, std::void_t<typename T::format_tag>> : std::true_type {};
+inline constexpr bool is_format_v = format_traits<T>::size > 0;
+
+template <class T>
+struct format_traits<T, std::void_t<typename T::format_tag>> {
+    static constexpr size_t size = 1;
+
+    template <size_t I>
+    static T& get(T& x) {
+        static_assert(I == 0);
+        return x;
+    }
+};
+
+template <class... Ts>
+struct format_traits<std::tuple<Ts...>, void> {
+    static constexpr size_t size =
+        (... && is_format_v<std::remove_reference_t<Ts>>) ? sizeof...(Ts) : 0;
+
+    template <size_t I, class T>
+    static auto& get(T& x) {
+        return std::get<I>(x);
+    }
+};
+
+template <class Format>
+inline void change_depth(Format&, bool deeper) {}
+
+template <class Format, size_t... Is>
+inline void change_depth(Format& fmt, bool deeper, std::index_sequence<Is...>) {
+    return (..., change_depth(std::get<Is>(fmt), deeper));
+}
+
+template <class... Formats>
+inline void change_depth(std::tuple<Formats...>& fmt, bool deeper) {
+    change_depth(fmt, deeper, std::make_index_sequence<sizeof...(Formats)>{});
+}
 
 template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
 inline binary deduce_format(Device& dev) {
     return {};
 }
 
+/* Argument traits */
+
+template <class... Ts>
+struct batch : std::tuple<Ts...> {
+    using std::tuple<Ts...>::tuple;
+};
+
+template <class... Ts>
+batch(Ts&&...) -> batch<Ts...>;
+
+template <class T>
+struct is_tuple : decltype(serialization_access{}.is_io_tuple<T>(0)) {};
+
+template <class... Ts>
+struct is_tuple<std::tuple<Ts...>> : std::true_type {};
+
+template <class T>
+inline constexpr bool is_tuple_v = is_tuple<T>::value;
+
+template <class T, class = void>
+struct is_manipulator : std::false_type {};
+
+template <class T>
+struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
+
 /* Common types support */
 
 template <class Device, class Format, class T, enable_int_if<std::is_empty_v<T>> = 0>
-inline index serialize(Device&, Format&, const T&) {
+inline index write_final(Device&, Format&, const T&) {
     return 0;
 }
 
 template <class Device, class Format, class T, enable_int_if<std::is_empty_v<T>> = 0>
-inline bool deserialize(Device&, Format&, T&) {
+inline bool read_final(Device&, Format&, T&) {
     return true;
 }
 
-template <class Device, class Format>
-inline index serialize(Device& od, Format&, char_t<Device> c) {
-    return od.write(c);
+template <class T>
+using enable_int_if_byte = enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
+
+template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
+inline index write_final(Device& od, Format&, B byte) {
+    return od.write(static_cast<char_t<Device>>(byte));
 }
 
-template <class Device, class Format>
-inline bool deserialize(Device& id, Format&, char_t<Device>& c) {
-    c = id.get();
+template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
+inline bool read_final(Device& id, Format&, B& byte) {
+    byte = static_cast<B>(id.get());
     return !id.eof();
 }
 
-template <class Device, class Format, index N>
-inline index serialize(Device& od, Format&, const span<char_t<Device>, N>& s) {
-    return od.write(s);
+template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+inline index write_final(Device& od, Format&, span<B, N> s) {
+    return od.write({reinterpret_cast<const char_t<Device>*>(s.data()), s.size()});
 }
 
-template <class Device, class Format, index N>
-inline index serialize(Device& od, Format&, const cspan<char_t<Device>, N>& s) {
-    return od.write(s);
+template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+inline bool read_final(Device& id, Format&, span<B, N>& s) {
+    return id.read({reinterpret_cast<char_t<Device>*>(s.data()), s.size()}) == s.size();
 }
 
-// TODO: add overloads taking const span&.
-template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format&, span<char_t<Device>, N>& s) {
-    return id.read(s) == s.size();
-}
-
-template <class Device, class Format, index N>
-inline bool deserialize(Device& id, Format&, const cspan<char_t<Device>, N>& s) {
+template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+inline bool read_final(Device& id, Format&, cspan<B, N>& s) {
     for (auto c : s) {
-        if (id.peek() != c) return false;
+        if (static_cast<B>(id.peek()) != c) return false;
         id.move(1);
     }
     return true;
 }
 
-/* Default forwarding */
+/* Processing argument with multiple formats */
 
-template <class Device, class Format, class T>
-inline index serialize(Device& od, Format& fmt, const T& x, none) {
-    return serialize(od, fmt, x);
+namespace detail {
+
+template <class... T>
+constexpr auto can_serialize(T&... xs) -> decltype(serialize(xs...), std::true_type{});
+
+constexpr std::false_type can_serialize(...);
+
+template <size_t I, class D, class F, class T>
+inline index write_impl(D& od, F& fmt, const T& x);
+
+template <size_t I, class D, class F, class T, size_t... Is>
+inline index write_impl_tuple(D& od, F& fmt, const T& x, std::index_sequence<Is...>) {
+    return (... + write_impl<I>(od, fmt, std::get<Is>(x)));
 }
 
-template <class Device, class Format, class T>
-inline bool deserialize(Device& id, Format& fmt, T& x, none) {
-    return deserialize(id, fmt, x);
+template <size_t I, class D, class F, class... Ts>
+inline index write_impl(D& od, F& fmt, const batch<Ts...>& x) {
+    return write_impl_tuple<I>(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
-template <class Device, class Format, class T, class Tag>
-inline index serialize(Device& od, Format& fmt, const T& x, Tag) {
-    return serialize(od, fmt, x, typename Tag::base{});
+template <size_t I, class D, class F, class T>
+inline index write_impl(D& od, F& fmt, const T& x) {
+    if constexpr (I == format_traits<F>::size) {
+        if constexpr (is_range_v<T> || is_tuple_v<T>) {
+            change_depth(fmt, true);
+            index res = write_final(od, fmt, x);
+            change_depth(fmt, false);
+            return res;
+        } else {
+            return write_final(od, fmt, x);
+        }
+    } else {
+        auto& fmt_i = format_traits<F>::template get<I>(fmt);
+        if constexpr (!decltype(can_serialize(fmt_i, x))::value) {
+            return write_impl<I + 1>(od, fmt, x);
+        } else if constexpr (std::is_same_v<decltype(serialize(fmt_i, x)), void>) {
+            serialize(fmt_i, x);
+            return 0;
+        } else {
+            return write_impl<I + 1>(od, fmt, serialize(fmt_i, x));
+        }
+    }
 }
 
-template <class Device, class Format, class T, class Tag>
-inline bool deserialize(Device& id, Format& fmt, T& x, Tag) {
-    return deserialize(id, fmt, x, typename Tag::base{});
+template <class... Ts>
+constexpr auto can_deserialize(Ts&... xs) -> decltype(deserialize(xs...), std::true_type{});
+
+constexpr std::false_type can_deserialize(...);
+
+template <size_t I, class D, class F, class T>
+inline bool read_impl(D& od, F& fmt, T& x);
+
+template <size_t I, class D, class F, class T, size_t... Is>
+inline bool read_impl_tuple(D& od, F& fmt, T& x, std::index_sequence<Is...>) {
+    return (... && read_impl<I>(od, fmt, std::get<Is>(x)));
 }
+
+template <size_t I, class D, class F, class... Ts>
+inline bool read_impl(D& od, F& fmt, batch<Ts...>& x) {
+    return read_impl_tuple<I>(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
+}
+
+template <size_t I, class D, class F, class T>
+inline bool read_impl(D& od, F& fmt, T& x) {
+    if constexpr (I == format_traits<F>::size) {
+        if constexpr (is_range_v<T> || is_tuple_v<T>) {
+            change_depth(fmt, true);
+            bool res = read_final(od, fmt, x);
+            change_depth(fmt, false);
+            return res;
+        } else {
+            return read_final(od, fmt, x);
+        }
+    } else {
+        auto& fmt_i = format_traits<F>::template get<I>(fmt);
+        if constexpr (decltype(can_deserialize(od, fmt_i, x))::value) {
+            return deserialize(od, fmt_i, x);
+        } else if constexpr (decltype(can_deserialize(fmt_i, x))::value) {
+            if constexpr (std::is_same_v<decltype(deserialize(fmt_i, x)), void>) {
+                deserialize(fmt_i, x);
+                return true;
+            } else {
+                decltype(auto) y = deserialize(fmt_i, x);
+                return read_impl<I + 1>(od, fmt, y);
+            }
+        } else {
+            return read_impl<I + 1>(od, fmt, x);
+        }
+    }
+}
+
+}  // namespace detail
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into
  * lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
 inline index write(Device&& od, Format&& fmt, const Ts&... args) {
-    using F = std::remove_reference_t<Format>;
-    if constexpr (is_format<F>::value) {
-        return (... + serialize(od, fmt, args, typename F::format_tag{}));
+    if constexpr (is_format_v<std::remove_reference_t<Format>>) {
+        return (... + detail::write_impl<0>(od, fmt, args));
     } else {
         return write(od, deduce_format(od), fmt, args...);
     }
@@ -180,9 +309,8 @@ inline index write(Device&& od, Format&& fmt, const Ts&... args) {
 
 template <class Device, class Format, class... Ts>
 inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
-    using F = std::remove_reference_t<Format>;
-    if constexpr (is_format<F>::value) {
-        return (... && deserialize(id, fmt, args, typename F::format_tag{}));
+    if constexpr (is_format_v<std::remove_reference_t<Format>>) {
+        return (... && detail::read_impl<0>(id, fmt, args));
     } else {
         return read(id, deduce_format(id), fmt, args...);
     }
@@ -197,16 +325,5 @@ template <class Device, class Format, class T>
 inline bool read_size(Device& id, Format& fmt, T& size) {
     return read(id, fmt, size);
 }
-
-/* Traits */
-
-template <class T>
-struct is_tuple : decltype(serialization_access{}.has_io_tuple_tag<T>(0)) {};
-
-template <class T, class = void>
-struct is_manipulator : std::false_type {};
-
-template <class T>
-struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
 
 }  // namespace ac::io

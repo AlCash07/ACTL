@@ -12,50 +12,37 @@
 
 namespace ac::io {
 
-template <class Tag>
-struct spaced_tag {
-    using base = Tag;
-};
-
 /**
  * Format that inserts delimiter between consecutive output units.
  */
-template <class Format, class Char = char, template <class> class Except = is_raw>
-class spaced : public Format {
-public:
-    using format_tag = spaced_tag<typename Format::format_tag>;
+template <class Char = char>
+struct spaced {
+    struct format_tag;
 
-    using Format::Format;
-
-    void reset() { separate_ = false; }
-
-    cspan<Char> space() const { return space_; }
-    void space(cspan<Char> x) { space_.assign(x.begin(), x.end()); }
-
-    template <class Device, class Spaced, class T, class Tag>
-    friend std::enable_if_t<!is_manipulator<T>::value, index> serialize(Device& od, Spaced& fmt,
-                                                                        const T& x,
-                                                                        spaced_tag<Tag>) {
-        index res{};
-        if constexpr (Except<T>::value) {
-            fmt.separate_ = false;
-            res = serialize(od, fmt, x, Tag{});
-            fmt.separate_ = false;
-        } else {
-            if (fmt.separate_) {
-                res = od.write(fmt.space());
-                fmt.reset();
-            }
-            res += serialize(od, fmt, x, Tag{});
-            fmt.separate_ = true;
-        }
-        return res;
-    }
-
-private:
-    std::basic_string<Char> space_ = " ";
-    bool separate_ = false;
+    bool separate = false;
+    std::basic_string<Char> space = " ";
 };
+
+template <class C, class T, enable_int_if<!is_manipulator<std::remove_const_t<T>>::value> = 0>
+inline batch<cspan<C>, T&> deserialize(spaced<C>& fmt, T& x) {
+    if (fmt.separate) {
+        return {span{fmt.space}, x};
+    } else {
+        fmt.separate = true;
+        return {{}, x};
+    }
+}
+
+template <class C, class T>
+inline decltype(auto) deserialize(spaced<C>& fmt, const raw<T>& x) {
+    fmt.separate = false;
+    return x;
+}
+
+template <class C, class T>
+inline auto serialize(spaced<C>& fmt, const T& x) -> decltype(deserialize(fmt, x)) {
+    return deserialize(fmt, x);
+}
 
 struct setspace {
     std::string_view value;
@@ -63,10 +50,14 @@ struct setspace {
     struct is_manipulator;
 };
 
-template <class Device, class Format>
-inline index serialize(Device&, Format& fmt, setspace x) {
-    fmt.space(x.value);
-    return 0;
+template <class C>
+inline void serialize(spaced<C>& fmt, setspace x) {
+    fmt.space = x.value;
+}
+
+template <class C>
+inline void change_depth(spaced<C>& fmt, bool deeper) {
+    fmt.separate = !deeper;
 }
 
 }  // namespace ac::io

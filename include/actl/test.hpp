@@ -18,7 +18,7 @@
 
 namespace ac {
 
-inline io::formatted<io::file<io::out>, io::spaced<io::text>> cout{stdout};
+inline io::formatted<io::file<io::out>, std::tuple<io::spaced<>, io::text>> cout{stdout};
 
 }  // namespace ac
 
@@ -50,11 +50,12 @@ using namespace ac;
 
 namespace ac::io {
 
-template <class Device, class Format, class T,
-          enable_int_if<
-              !decltype(serialization_access{}.has_serialize<T, Device&, Format&>(0))::value &&
-              !is_range_v<T> && !std::is_empty_v<T> && !std::is_same_v<T, io::char_t<Device>>> = 0>
-inline index serialize(Device& od, Format& fmt, const T&) {
+template <
+    class Device, class Format, class T,
+    enable_int_if<!(decltype(serialization_access{}.has_write<T, Device&, Format&>(0))::value ||
+                    is_range_v<T> || is_tuple<T>::value || std::is_empty_v<T> ||
+                    std::is_arithmetic_v<T>)> = 0>
+inline index write_final(Device& od, Format& fmt, const T&) {
     return write(od, fmt, "<unknown-type>"sv);
 }
 
@@ -84,7 +85,7 @@ namespace detail {
 template <class T>
 inline std::string to_string(const T& value) {
     std::string s;
-    io::spaced<io::pretty<io::text_static<bit(io::flags::boolalpha)>>> fmt;
+    std::tuple<io::spaced<>, io::pretty, io::text_static<bit(io::flags::boolalpha)>> fmt;
     io::write(io::string<io::app>{s}, fmt, io::setspace{", "}, value);
     return s;
 }

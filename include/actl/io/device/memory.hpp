@@ -96,7 +96,7 @@ public:
     }
 };
 
-template <mode_t Mode, class Char = default_char_t<Mode>>
+template <mode_t Mode, class Char = char>
 using memory = in_memory<Mode, Char>;
 
 }  // namespace ac::io

@@ -16,21 +16,20 @@
 
 namespace ac::io {
 
-template <class Device, class Format, class Float,
+template <class Device, class Format, class Float, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_floating_point_v<Float>> = 0>
-inline bool deserialize(Device& id, Format& fmt, Float& x, text_tag) {
-    if (fmt.getf(flags::skipws)) read(id, fmt, ws);
+inline bool deserialize(Device& id, Format& fmt, Float& x) {
     char c = id.peek();
     bool negative = c == '-';
     if (negative || c == '+') id.move(1);
-    auto base = fmt.base();
-    if (base == 0) base = 10;
     using UInt = unsigned long long;
-    const index max_length = detail::digit_count(std::numeric_limits<UInt>::max(), UInt{base}) - 1;
+    UInt base = fmt.base;
+    if (base == 0) base = 10;
+    const index max_length = detail::digit_count(std::numeric_limits<UInt>::max(), base) - 1;
     auto read_part = [&]() {
         UInt t{};
         index length{};
-        unsigned int d;
+        UInt d;
         while (length < max_length && detail::read_digit<36>(id, d, base)) {
             t = t * base + d;
             ++length;
@@ -45,7 +44,7 @@ inline bool deserialize(Device& id, Format& fmt, Float& x, text_tag) {
     while (true) {
         auto [p, length] = read_part();
         if (length == 0) break;
-        x = x * binary_pow(UInt{base}, length) + p;
+        x = x * binary_pow(base, length) + p;
     }
     if (id.peek() == '.') {
         id.move(1);
@@ -53,7 +52,7 @@ inline bool deserialize(Device& id, Format& fmt, Float& x, text_tag) {
         while (true) {
             auto [p, length] = read_part();
             if (length == 0) break;
-            power /= binary_pow(UInt{base}, length);
+            power /= binary_pow(base, length);
             x += p * power;
         }
     }

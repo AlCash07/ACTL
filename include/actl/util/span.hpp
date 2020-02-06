@@ -106,8 +106,10 @@ private:
     T* data_ = nullptr;
 };
 
-template <class Range, class R = std::remove_reference_t<Range>>
-span(Range&&) -> span<std::remove_pointer_t<pointer_t<R>>, static_size_v<R>>;
+template <class Range>
+span(Range &&)
+    ->span<std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
+           static_size_v<std::remove_reference_t<Range>>>;
 
 template <class T, index N>
 struct static_size<span<T, N>> : index_constant<N> {};

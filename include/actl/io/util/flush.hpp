@@ -8,29 +8,28 @@
 #pragma once
 
 #include <actl/io/io.hpp>
-#include <actl/io/util/raw.hpp>
 
 namespace ac::io {
 
-struct endl_t {
-    struct is_manipulator;
-};
-constexpr endl_t endl{};   // put '\n' and flush
-constexpr raw ends{'\0'};  // put '\0'
 struct flush_t {
     struct is_manipulator;
 };
 constexpr flush_t flush{};
 
 template <class Device, class Format>
-inline index serialize(Device& od, Format& fmt, endl_t) {
-    return write(od, fmt, raw{'\n'}, flush);
-}
-
-template <class Device, class Format>
-inline index serialize(Device& od, Format&, flush_t) {
+inline index write_final(Device& od, Format&, flush_t) {
     od.flush();
     return 0;
+}
+
+// Format that flushes after each unit.
+struct auto_flush {
+    struct format_tag;
+};
+
+template <class T>
+inline auto serialize(auto_flush&, const T& x) {
+    return batch{x, flush_t{}};
 }
 
 }  // namespace ac::io
