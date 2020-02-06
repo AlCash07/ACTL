@@ -12,9 +12,13 @@
 #include <actl/io/util/raw.hpp>
 #include <actl/numeric/bit.hpp>
 #include <actl/string/traits.hpp>
-#include <string_view>
 
 namespace ac::io {
+
+struct text_tag {};
+
+template <class T>
+using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
 
 using flag_t = uint32_t;
 

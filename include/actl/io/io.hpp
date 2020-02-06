@@ -72,12 +72,7 @@ struct has_output_buffer<T, std::void_t<decltype(std::declval<T>().output_data()
 /* Format */
 
 struct binary {
-    using format_tag = binary;
-    using base = none;
-};
-
-struct text_tag {
-    using base = none;
+    struct format_tag;
 };
 
 template <class T, class Tag, class = void>
@@ -86,9 +81,6 @@ struct has_format_tag : std::false_type {};
 template <class T, class Tag>
 struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
     : std::is_same<typename T::format_tag, Tag> {};
-
-template <class T>
-using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
 
 template <class T, class = void>
 struct format_traits {
