@@ -16,33 +16,26 @@ namespace ac::io {
  * Format that inserts delimiter between consecutive output units.
  */
 template <class Char = char>
-class spaced {
-public:
+struct spaced {
     struct format_tag;
 
-    bool& separate() { return separate_; }
-
-    cspan<Char> space() const { return space_; }
-    void space(cspan<Char> x) { space_.assign(x.begin(), x.end()); }
-
-private:
-    std::basic_string<Char> space_ = " ";
-    bool separate_ = false;
+    bool separate = false;
+    std::basic_string<Char> space = " ";
 };
 
 template <class C, class T, enable_int_if<!is_manipulator<std::remove_const_t<T>>::value> = 0>
 inline tuple<cspan<C>, T&> deserialize(spaced<C>& fmt, T& x) {
-    if (fmt.separate()) {
-        return {fmt.space(), x};
+    if (fmt.separate) {
+        return {span{fmt.space}, x};
     } else {
-        fmt.separate() = true;
+        fmt.separate = true;
         return {{}, x};
     }
 }
 
 template <class C, class T>
 inline decltype(auto) deserialize(spaced<C>& fmt, const raw<T>& x) {
-    fmt.separate() = false;
+    fmt.separate = false;
     return x;
 }
 
@@ -59,12 +52,12 @@ struct setspace {
 
 template <class C>
 inline void serialize(spaced<C>& fmt, setspace x) {
-    fmt.space(x.value);
+    fmt.space = x.value;
 }
 
 template <class C>
 inline void change_depth(spaced<C>& fmt, bool deeper) {
-    fmt.separate() = !deeper;
+    fmt.separate = !deeper;
 }
 
 }  // namespace ac::io

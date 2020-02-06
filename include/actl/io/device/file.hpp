@@ -72,7 +72,7 @@ public:
     }
 };
 
-template <mode_t Mode, class Char = default_char_t<Mode>, bool = is_out<Mode>>
+template <mode_t Mode, class Char = std::byte, bool = is_out<Mode>>
 class file : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;
@@ -83,7 +83,7 @@ class file<Mode, Char, true> : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;
 
-    index write(Char c) { return std::fputc(c, this->file_) != EOF ? 1 : 0; }
+    index write(Char c) { return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0; }
 
     index write(const cspan<Char>& src) {
         return static_cast<index>(

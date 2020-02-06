@@ -16,6 +16,8 @@ namespace ac::io {
 
 struct pretty {
     struct format_tag;
+
+    std::basic_string<char> key_value_separator = ":";
 };
 
 namespace detail {
@@ -54,24 +56,25 @@ inline index write_final(Device& od, Format&, const escaped_string<Char>& s) {
 
 template <class It>
 struct map_range : iterator_range<It> {
-    using iterator_range<It>::iterator_range;
+    cspan<char> key_value_separator;
 };
 
 template <class Device, class Format, class It>
 inline index write_final(Device& od, Format& fmt, map_range<It> r) {
     index res{};
     for (const auto& [key, value] : r) {
-        res += write(od, fmt, key, raw{':'}, value);
+        res += write(od, fmt, key, raw{r.key_value_separator}, value);
     }
     return res;
 }
 
 template <class AC>
-inline auto make_map_range(const AC& cont) {
+inline auto make_map_range(pretty& fmt, const AC& cont) {
     if constexpr (is_simple_associative_container_v<AC>) {
         return make_range(cont);
     } else {
-        return map_range<iterator_t<const AC>>{cont.begin(), cont.end()};
+        return map_range<iterator_t<const AC>>{{cont.begin(), cont.end()},
+                                               span{fmt.key_value_separator}};
     }
 }
 
@@ -88,8 +91,8 @@ inline auto serialize(pretty, const S& s) {
 }
 
 template <class AC, enable_int_if<is_associative_container_v<AC>> = 0>
-inline auto serialize(pretty, const AC& cont) {
-    return tuple{raw{'{'}, detail::make_map_range(cont), raw{'}'}};
+inline auto serialize(pretty& fmt, const AC& cont) {
+    return tuple{raw{'{'}, detail::make_map_range(fmt, cont), raw{'}'}};
 }
 
 template <class SC, enable_int_if<is_sequence_container_v<SC>> = 0>

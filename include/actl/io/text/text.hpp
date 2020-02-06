@@ -66,9 +66,6 @@ struct precision_t {
     constexpr operator index() const { return value; }
 };
 
-template <class Device>
-using view_t = std::basic_string_view<char_t<Device>>;
-
 const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat)};
 
 template <flag_t Flags = 0, uint8_t Base = 10, index Precision = 6>

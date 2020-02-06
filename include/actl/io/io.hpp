@@ -38,11 +38,6 @@ inline constexpr bool is_out = (Mode & (out | app)) > 0;
 template <mode_t Mode>
 inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
 
-template <mode_t Mode>
-using default_char_t = char;
-// TODO: uncomment when wchar and std::byte support is added.
-// using default_char_t = std::conditional_t<is_bin<Mode>, std::byte, char>;
-
 template <class Device>
 using char_t = typename Device::char_type;
 
@@ -183,36 +178,31 @@ inline bool read_final(Device&, Format&, T&) {
 template <class T>
 using enable_int_if_byte = enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
 
-template <class Device, class Format, class T, enable_int_if_byte<T> = 0>
-inline index write_final(Device& od, Format&, T byte) {
-    return od.write(byte);
+template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
+inline index write_final(Device& od, Format&, B byte) {
+    return od.write(static_cast<char_t<Device>>(byte));
 }
 
-template <class Device, class Format, class T, enable_int_if_byte<T> = 0>
-inline bool read_final(Device& id, Format&, T& byte) {
-    byte = static_cast<T>(id.get());
+template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
+inline bool read_final(Device& id, Format&, B& byte) {
+    byte = static_cast<B>(id.get());
     return !id.eof();
 }
 
-template <class Device, class Format, index N>
-inline index write_final(Device& od, Format&, span<char_t<Device>, N> s) {
-    return od.write(s);
+template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+inline index write_final(Device& od, Format&, span<B, N> s) {
+    return od.write({reinterpret_cast<const char_t<Device>*>(s.data()), s.size()});
 }
 
-template <class Device, class Format, index N>
-inline index write_final(Device& od, Format&, cspan<char_t<Device>, N> s) {
-    return od.write(s);
+template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+inline bool read_final(Device& id, Format&, span<B, N>& s) {
+    return id.read({reinterpret_cast<char_t<Device>*>(s.data()), s.size()}) == s.size();
 }
 
-template <class Device, class Format, index N>
-inline bool read_final(Device& id, Format&, span<char_t<Device>, N> s) {
-    return id.read(s) == s.size();
-}
-
-template <class Device, class Format, index N>
-inline bool read_final(Device& id, Format&, cspan<char_t<Device>, N> s) {
+template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+inline bool read_final(Device& id, Format&, cspan<B, N>& s) {
     for (auto c : s) {
-        if (id.peek() != c) return false;
+        if (static_cast<B>(id.peek()) != c) return false;
         id.move(1);
     }
     return true;
@@ -222,8 +212,8 @@ inline bool read_final(Device& id, Format&, cspan<char_t<Device>, N> s) {
 
 namespace detail {
 
-template <class F, class T>
-constexpr auto can_serialize(F& fmt, const T& x) -> decltype(serialize(fmt, x), std::true_type{});
+template <class... T>
+constexpr auto can_serialize(T&... xs) -> decltype(serialize(xs...), std::true_type{});
 
 constexpr std::false_type can_serialize(...);
 
