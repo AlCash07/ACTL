@@ -82,27 +82,27 @@ inline auto make_map_range(pretty& fmt, const AC& cont) {
 
 template <class C, enable_int_if<std::is_same_v<C, char>> = 0>
 inline auto serialize(pretty, const C& c) {
-    return tuple{raw{'\''}, detail::escaped_string<char>{{&c, 1}}, raw{'\''}};
+    return batch{raw{'\''}, detail::escaped_string<char>{{&c, 1}}, raw{'\''}};
 }
 
 template <class S, enable_int_if<is_string_v<S>> = 0>
 inline auto serialize(pretty, const S& s) {
-    return tuple{raw{'\"'}, detail::escaped_string<char>{s}, raw{'\"'}};
+    return batch{raw{'\"'}, detail::escaped_string<char>{s}, raw{'\"'}};
 }
 
 template <class AC, enable_int_if<is_associative_container_v<AC>> = 0>
 inline auto serialize(pretty& fmt, const AC& cont) {
-    return tuple{raw{'{'}, detail::make_map_range(fmt, cont), raw{'}'}};
+    return batch{raw{'{'}, detail::make_map_range(fmt, cont), raw{'}'}};
 }
 
 template <class SC, enable_int_if<is_sequence_container_v<SC>> = 0>
 inline auto serialize(pretty, const SC& cont) {
-    return tuple{raw{'['}, make_range(cont), raw{']'}};
+    return batch{raw{'['}, make_range(cont), raw{']'}};
 }
 
 template <class T, enable_int_if<is_tuple<T>::value> = 0>
 inline auto serialize(pretty, const T& x) {
-    return tuple{raw{'('}, x, raw{')'}};
+    return batch{raw{'('}, x, raw{')'}};
 }
 
 }  // namespace ac::io

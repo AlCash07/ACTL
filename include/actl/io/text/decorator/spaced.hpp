@@ -24,7 +24,7 @@ struct spaced {
 };
 
 template <class C, class T, enable_int_if<!is_manipulator<std::remove_const_t<T>>::value> = 0>
-inline tuple<cspan<C>, T&> deserialize(spaced<C>& fmt, T& x) {
+inline batch<cspan<C>, T&> deserialize(spaced<C>& fmt, T& x) {
     if (fmt.separate) {
         return {span{fmt.space}, x};
     } else {

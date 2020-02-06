@@ -33,7 +33,7 @@ struct skipws {
 
 template <class T, enable_int_if<std::is_arithmetic_v<T> || is_string_v<T>> = 0>
 inline auto deserialize(skipws&, T& x) {
-    return tuple{ws, x};
+    return batch{ws, x};
 }
 
 }  // namespace ac::io

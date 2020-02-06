@@ -133,12 +133,12 @@ inline binary deduce_format(Device& dev) {
 /* Argument traits */
 
 template <class... Ts>
-struct tuple : std::tuple<Ts...> {
+struct batch : std::tuple<Ts...> {
     using std::tuple<Ts...>::tuple;
 };
 
 template <class... Ts>
-tuple(Ts&&...) -> tuple<Ts...>;
+batch(Ts&&...) -> batch<Ts...>;
 
 template <class T>
 struct is_tuple : decltype(serialization_access{}.is_io_tuple<T>(0)) {};
@@ -218,7 +218,7 @@ inline index write_impl_tuple(D& od, F& fmt, const T& x, std::index_sequence<Is.
 }
 
 template <size_t I, class D, class F, class... Ts>
-inline index write_impl(D& od, F& fmt, const tuple<Ts...>& x) {
+inline index write_impl(D& od, F& fmt, const batch<Ts...>& x) {
     return write_impl_tuple<I>(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
@@ -260,7 +260,7 @@ inline bool read_impl_tuple(D& od, F& fmt, T& x, std::index_sequence<Is...>) {
 }
 
 template <size_t I, class D, class F, class... Ts>
-inline bool read_impl(D& od, F& fmt, tuple<Ts...>& x) {
+inline bool read_impl(D& od, F& fmt, batch<Ts...>& x) {
     return read_impl_tuple<I>(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 

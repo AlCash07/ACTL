@@ -29,7 +29,7 @@ struct auto_flush {
 
 template <class T>
 inline auto serialize(auto_flush&, const T& x) {
-    return tuple{x, flush_t{}};
+    return batch{x, flush_t{}};
 }
 
 }  // namespace ac::io
