@@ -53,7 +53,7 @@ struct static_array<T, I0, Is...> {
 template <class T, T... Is>
 struct static_size<static_array<T, Is...>> : index_constant<sizeof...(Is)> {};
 
-/* Partially static array */
+/* Partially static array where each element can have dymanic value */
 
 template <class T, size_t D, T... Is>
 class semi_static_array {

@@ -22,7 +22,7 @@ namespace ac {
 namespace detail {
 
 template <class Data, class Dimensions>
-class ndarray_base;
+class tensor_base;
 
 template <class T, index N>
 struct nd_initializer_list {
@@ -55,35 +55,35 @@ inline index compute_product(const cspan<Int>& x) {
 /* NDArray container class, supports array and std::unique_ptr as data. */
 
 template <class Data>
-class ndarray_container;
+class tensor_container;
 
 template <class T, index Size>
-class ndarray_container<std::array<T, Size>> {
+class tensor_container<std::array<T, Size>> {
 public:
     using value_type = T;
 
-    ndarray_container(index size) { ACTL_ASSERT(size == Size); }
+    tensor_container(index size) { ACTL_ASSERT(size == Size); }
 
     T* data() { return data_.data(); }
     const T* data() const { return data_.data(); }
 
-    void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
+    void swap(tensor_container& rhs) { std::swap(data_, rhs.data_); }
 
 private:
     std::array<T, Size> data_;
 };
 
 template <class T>
-class ndarray_container<std::unique_ptr<T[]>> {
+class tensor_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
 
-    ndarray_container(index size) : data_{new T[static_cast<size_t>(size)]} {}
+    tensor_container(index size) : data_{new T[static_cast<size_t>(size)]} {}
 
     T* data() { return data_.get(); }
     const T* data() const { return data_.get(); }
 
-    void swap(ndarray_container& rhs) { std::swap(data_, rhs.data_); }
+    void swap(tensor_container& rhs) { std::swap(data_, rhs.data_); }
 
 private:
     std::unique_ptr<T[]> data_;
@@ -92,25 +92,25 @@ private:
 /* NDArray data class, supports container or pointer as data. */
 
 template <index N, class Data>
-class ndarray_data : public ndarray_container<Data> {
-    using base_t = ndarray_container<Data>;
+class tensor_data : public tensor_container<Data> {
+    using base_t = tensor_container<Data>;
     using T = value_t<base_t>;
 
 public:
-    ndarray_data(index size) : base_t{size} {}
+    tensor_data(index size) : base_t{size} {}
 
     template <class InRange>
-    ndarray_data(index size, InRange data) : base_t{size} {
+    tensor_data(index size, InRange data) : base_t{size} {
         ACTL_ASSERT(size == static_cast<index>(std::size(data)));
         std::copy_n(std::begin(data), size, this->data());
     }
 
-    ndarray_data(index size, const T& value) : base_t{size} {
+    tensor_data(index size, const T& value) : base_t{size} {
         std::fill_n(this->data(), size, value);
     }
 
     template <class Dims>
-    ndarray_data(index size, const nd_initializer_list_t<T, N>& il, Dims dims) : base_t{size} {
+    tensor_data(index size, const nd_initializer_list_t<T, N>& il, Dims dims) : base_t{size} {
         index strides[std::max(N - 1, (index)1)];  // array of size 0 is not standard-compliant
         if constexpr (N >= 2) {
             strides[N - 2] = dims[N - 1];
@@ -121,7 +121,7 @@ public:
         std::fill(end, this->data() + size, T{});
     }
 
-    void swap(ndarray_data& rhs) { base_t::swap(rhs); }
+    void swap(tensor_data& rhs) { base_t::swap(rhs); }
 
 private:
     template <index I, class Dims>
@@ -142,16 +142,16 @@ private:
 };
 
 template <index N, class T>
-class ndarray_data<N, T*> {
+class tensor_data<N, T*> {
 public:
     using value_type = T;
 
-    ndarray_data(index, T* ptr) : ptr_{ptr} {}
+    tensor_data(index, T* ptr) : ptr_{ptr} {}
 
     T* data() { return ptr_; }
     const T* data() const { return ptr_; }
 
-    void swap(ndarray_data& rhs) { std::swap(ptr_, rhs.ptr_); }
+    void swap(tensor_data& rhs) { std::swap(ptr_, rhs.ptr_); }
 
 private:
     T* ptr_;
@@ -161,22 +161,22 @@ private:
 
 // This class is needed to guarantee dims construction before data to avoid undefined behavior.
 template <class Dims>
-struct ndarray_dims {
+struct tensor_dims {
     Dims dims_;
 };
 
 template <class Int, index N>
-struct ndarray_dims<std::array<Int, N>> {
-    ndarray_dims() = default;
-    ndarray_dims(std::initializer_list<Int> dims) { std::copy_n(dims.begin(), N, dims_.begin()); }
+struct tensor_dims<std::array<Int, N>> {
+    tensor_dims() = default;
+    tensor_dims(std::initializer_list<Int> dims) { std::copy_n(dims.begin(), N, dims_.begin()); }
 
     std::array<Int, N> dims_ = {};
 };
 
 template <index N, class Data, class Dims>
-class ndarray_shape : private ndarray_dims<Dims>, public ndarray_data<N, Data> {
-    using base_dims = ndarray_dims<Dims>;
-    using base_data = ndarray_data<N, Data>;
+class tensor_shape : private tensor_dims<Dims>, public tensor_data<N, Data> {
+    using base_dims = tensor_dims<Dims>;
+    using base_data = tensor_data<N, Data>;
     using Int = value_t<Dims>;
     using T = value_t<base_data>;
 
@@ -184,19 +184,19 @@ class ndarray_shape : private ndarray_dims<Dims>, public ndarray_data<N, Data> {
 
 public:
     template <class... Ts>
-    explicit ndarray_shape(const Dims& dims, Ts... args)
+    explicit tensor_shape(const Dims& dims, Ts... args)
         : base_dims{dims}, base_data{size(), args...} {}
 
     template <class... Ts>
-    explicit ndarray_shape(Dims&& dims, Ts... args)
+    explicit tensor_shape(Dims&& dims, Ts... args)
         : base_dims{std::move(dims)}, base_data{size(), args...} {}
 
     template <class... Ts>
-    explicit ndarray_shape(std::conditional_t<N == 1, Int, std::initializer_list<Int>> dims,
+    explicit tensor_shape(std::conditional_t<N == 1, Int, std::initializer_list<Int>> dims,
                            Ts... args)
         : base_dims{dims}, base_data{size(), args...} {}
 
-    explicit ndarray_shape(nd_initializer_list_t<T, N> il)
+    explicit tensor_shape(nd_initializer_list_t<T, N> il)
         : base_dims{}, base_data{(compute_dimensions<0>(il), size()), il, std::data(dims_)} {}
 
     constexpr index rank() const { return static_cast<index>(std::size(dims_)); }
@@ -205,7 +205,7 @@ public:
 
     const Dims& dimensions() const { return dims_; }
 
-    void swap(ndarray_shape& rhs) {
+    void swap(tensor_shape& rhs) {
         using std::swap;
         swap(dims_, rhs.dims_);
         base_data::swap(rhs);
@@ -222,16 +222,16 @@ private:
 };
 
 template <index N, class Data, index... Ds>
-class ndarray_shape<N, Data, static_array<index, Ds...>> : public ndarray_data<N, Data> {
-    using base_t = ndarray_data<N, Data>;
+class tensor_shape<N, Data, static_array<index, Ds...>> : public tensor_data<N, Data> {
+    using base_t = tensor_data<N, Data>;
     using Dims = static_array<index, Ds...>;
 
 public:
     template <class... Ts>
-    explicit ndarray_shape(Ts... args) : base_t{size(), args...} {}
+    explicit tensor_shape(Ts... args) : base_t{size(), args...} {}
 
     template <bool B = 0 < N, enable_int_if<B> = 0>
-    explicit ndarray_shape(nd_initializer_list_t<value_t<base_t>, N> il)
+    explicit tensor_shape(nd_initializer_list_t<value_t<base_t>, N> il)
         : base_t{size(), il, dimensions()} {}
 
     static constexpr index rank() { return static_size_v<Dims>; }
@@ -244,48 +244,48 @@ public:
 /* NDArray subscript operator implementation */
 
 template <class T, index N, class Dims, bool = 1 < N>
-struct ndarray_reference {
+struct tensor_reference {
     using Int = value_t<Dims>;
-    using type = ndarray_base<T*, span<Int, N - 1>>;
+    using type = tensor_base<T*, span<Int, N - 1>>;
 
-    template <class NDArrayPtr>
-    static type get(NDArrayPtr ptr, index i) {
+    template <class TensorPtr>
+    static type get(TensorPtr ptr, index i) {
         span<Int, N - 1> dims{std::data(ptr->dimensions()) + 1, N - 1};
         return type{dims, ptr->data() + i * compute_product(dims)};
     }
 };
 
 template <class T, index N, index D0, index... Ds>
-struct ndarray_reference<T, N, static_array<index, D0, Ds...>, true> {
-    using type = ndarray_base<T*, static_array<index, Ds...>>;
+struct tensor_reference<T, N, static_array<index, D0, Ds...>, true> {
+    using type = tensor_base<T*, static_array<index, Ds...>>;
 
-    template <class NDArrayPtr>
-    static type get(NDArrayPtr ptr, index i) {
+    template <class TensorPtr>
+    static type get(TensorPtr ptr, index i) {
         return type{ptr->data() + i * static_product_v<Ds...>};
     }
 };
 
 template <class T, class Dims>
-struct ndarray_reference<T, 1, Dims, false> {
+struct tensor_reference<T, 1, Dims, false> {
     using type = T&;
 
-    template <class NDArrayPtr>
-    static type get(NDArrayPtr ptr, index i) {
+    template <class TensorPtr>
+    static type get(TensorPtr ptr, index i) {
         return ptr->data()[i];
     }
 };
 
 template <class T, index N, class Dims>
-using ndarray_reference_t = typename ndarray_reference<T, N, Dims>::type;
+using tensor_reference_t = typename tensor_reference<T, N, Dims>::type;
 
 template <index N, class Data, class Dims>
-class ndarray_subscript : public ndarray_shape<N, Data, Dims> {
-    using base_t = ndarray_shape<N, Data, Dims>;
+class tensor_subscript : public tensor_shape<N, Data, Dims> {
+    using base_t = tensor_shape<N, Data, Dims>;
     using T = value_t<base_t>;
 
 public:
-    using reference       = ndarray_reference_t<T, N, Dims>;
-    using const_reference = ndarray_reference_t<const T, N, Dims>;
+    using reference       = tensor_reference_t<T, N, Dims>;
+    using const_reference = tensor_reference_t<const T, N, Dims>;
 
     using base_t::base_t;
 
@@ -296,18 +296,18 @@ public:
 
     reference operator[](index i) {
         ACTL_ASSERT(0 <= i && i < dimension(0));
-        return ndarray_reference<T, N, Dims>::get(this, i);
+        return tensor_reference<T, N, Dims>::get(this, i);
     }
 
     const_reference operator[](index i) const {
         ACTL_ASSERT(0 <= i && i < dimension(0));
-        return ndarray_reference<const T, N, Dims>::get(this, i);
+        return tensor_reference<const T, N, Dims>::get(this, i);
     }
 };
 
 template <class Data, class Dims>
-class ndarray_subscript<0, Data, Dims> : public ndarray_shape<0, Data, static_array<index>> {
-    using base_t = ndarray_shape<0, Data, static_array<index>>;
+class tensor_subscript<0, Data, Dims> : public tensor_shape<0, Data, static_array<index>> {
+    using base_t = tensor_shape<0, Data, static_array<index>>;
     using T = value_t<base_t>;
 
 public:
@@ -320,8 +320,8 @@ public:
 /* Base class, defines type aliases and secondary interface methods. */
 
 template <class Data, class Dims>
-class ndarray_base : public ndarray_subscript<static_size_v<Dims>, Data, Dims> {
-    using base_t = ndarray_subscript<static_size_v<Dims>, Data, Dims>;
+class tensor_base : public tensor_subscript<static_size_v<Dims>, Data, Dims> {
+    using base_t = tensor_subscript<static_size_v<Dims>, Data, Dims>;
     using T = value_t<base_t>;
 
 public:
@@ -384,13 +384,13 @@ private:
 };
 
 template <class D, class S>
-inline void swap(ndarray_base<D, S>& lhs, ndarray_base<D, S>& rhs) {
+inline void swap(tensor_base<D, S>& lhs, tensor_base<D, S>& rhs) {
     lhs.swap(rhs);
 }
 
 template <class T, index... Ds>
-using ndarray_base_fixed =
-    ndarray_base<std::array<T, static_product_v<Ds...>>, static_array<index, Ds...>>;
+using tensor_base_fixed =
+    tensor_base<std::array<T, static_product_v<Ds...>>, static_array<index, Ds...>>;
 
 template <index N>
 struct dimensions {
@@ -415,8 +415,8 @@ using dimensions_t = typename dimensions<N>::type;
 namespace op {
 
 template <class Policy, class D0, class S0, class D1, class S1>
-inline bool equal(const Policy& policy, const detail::ndarray_base<D0, S0>& lhs,
-                  const detail::ndarray_base<D1, S1>& rhs) {
+inline bool equal(const Policy& policy, const detail::tensor_base<D0, S0>& lhs,
+                  const detail::tensor_base<D1, S1>& rhs) {
     if (lhs.rank() != rhs.rank()) return false;
     for (index i = 0; i < lhs.rank(); ++i) {
         if (lhs.dimension(i) != rhs.dimension(i)) return false;
@@ -430,8 +430,8 @@ inline bool equal(const Policy& policy, const detail::ndarray_base<D0, S0>& lhs,
  * N-dimensional array with dimensions completely or partially known at compile time.
  */
 template <class T, index... Dimensions>
-class ndarray_fixed : public detail::ndarray_base_fixed<T, Dimensions...> {
-    using base_t = detail::ndarray_base_fixed<T, Dimensions...>;
+class tensor_fixed : public detail::tensor_base_fixed<T, Dimensions...> {
+    using base_t = detail::tensor_base_fixed<T, Dimensions...>;
 
 public:
     using base_t::base_t;
@@ -441,31 +441,31 @@ public:
  * N-dimensional array.
  */
 template <class T, index N = dynamic_size, class Dims = detail::dimensions_t<N>>
-class ndarray : public detail::ndarray_base<std::unique_ptr<T[]>, Dims> {
-    using base_t = detail::ndarray_base<std::unique_ptr<T[]>, Dims>;
+class tensor : public detail::tensor_base<std::unique_ptr<T[]>, Dims> {
+    using base_t = detail::tensor_base<std::unique_ptr<T[]>, Dims>;
 
 public:
     using base_t::base_t;
 };
 
 template <class T, class Dims>
-class ndarray<T, 0, Dims> : public ndarray_fixed<T> {
+class tensor<T, 0, Dims> : public tensor_fixed<T> {
 public:
-    using ndarray_fixed<T>::ndarray_fixed;
+    using tensor_fixed<T>::tensor_fixed;
 };
 
 /**
  * View of an N-dimensional array.
  */
 template <class T, index N = dynamic_size, class Dims = detail::dimensions_t<N>>
-class ndarray_view : public detail::ndarray_base<T*, Dims> {
-    using base_t = detail::ndarray_base<T*, Dims>;
+class tensor_view : public detail::tensor_base<T*, Dims> {
+    using base_t = detail::tensor_base<T*, Dims>;
 
 public:
     using base_t::base_t;
 
     template <class Data, class Dimensions>
-    ndarray_view& operator = (const detail::ndarray_base<Data, Dimensions>& rhs) {
+    tensor_view& operator = (const detail::tensor_base<Data, Dimensions>& rhs) {
         ACTL_ASSERT(this->size() == rhs.size());
         copy(*this, rhs.begin());
         return *this;
