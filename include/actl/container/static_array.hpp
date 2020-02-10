@@ -55,7 +55,7 @@ struct static_size<static_array<T, Is...>> : index_constant<sizeof...(Is)> {};
 
 /* Partially static array where each element can have dymanic value */
 
-template <class T, size_t D, T... Is>
+template <class T, T... Is>
 class semi_static_array {
 public:
     template <class A>
@@ -82,29 +82,10 @@ public:
     }
 
 private:
-    std::array<T, D> a_;
-};
-
-template <class T, size_t D, T... Is>
-struct static_size<semi_static_array<T, D, Is...>> : index_constant<sizeof...(Is)> {};
-
-template <class T, size_t D, T... Is>
-struct part_static_array_impl {
-    using type = semi_static_array<T, D, Is...>;
+    std::array<T, (0 + ... + (Is == dynamic_size))> a_;
 };
 
 template <class T, T... Is>
-struct part_static_array_impl<T, 0, Is...> {
-    using type = static_array<T, Is...>;
-};
-
-template <class T, T I0, T... Is>
-struct part_static_array_impl<T, 1 + sizeof...(Is), I0, Is...> {
-    using type = std::array<T, 1 + sizeof...(Is)>;
-};
-
-template <class T, T... Is>
-using part_static_array =
-    typename part_static_array_impl<T, (0 + ... + (Is == dynamic_size)), Is...>::type;
+struct static_size<semi_static_array<T, Is...>> : index_constant<sizeof...(Is)> {};
 
 }  // namespace ac

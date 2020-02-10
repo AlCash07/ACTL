@@ -11,7 +11,6 @@
 #include <actl/container/static_array.hpp>
 #include <actl/functional/compare.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/std/array.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/span.hpp>
 #include <actl/util/type_traits.hpp>
@@ -388,9 +387,19 @@ inline void swap(tensor_base<D, S>& lhs, tensor_base<D, S>& rhs) {
     lhs.swap(rhs);
 }
 
-template <class T, index... Ds>
-using tensor_base_fixed =
-    tensor_base<std::array<T, static_product_v<Ds...>>, static_array<index, Ds...>>;
+template <class T, size_t D, index... Dims>
+struct tensor_fixed {
+    using type = tensor_base<std::unique_ptr<T[]>, semi_static_array<int, Dims...>>;
+};
+
+template <class T, index... Dims>
+struct tensor_fixed<T, 0, Dims...> {
+    static constexpr index size = static_product_v<Dims...>;
+
+    using type =
+        tensor_base<std::conditional_t<16 < size, std::unique_ptr<T[]>, std::array<T, size>>,
+                    static_array<index, Dims...>>;
+};
 
 template <index N>
 struct dimensions {
@@ -409,6 +418,14 @@ struct dimensions<dynamic_size> {
 
 template <index N>
 using dimensions_t = typename dimensions<N>::type;
+
+template <class T, index N>
+struct tensor {
+    using type = tensor_base<std::unique_ptr<T[]>, dimensions_t<N>>;
+};
+
+template <class T>
+struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
 }  // namespace detail
 
@@ -430,46 +447,19 @@ inline bool equal(const Policy& policy, const detail::tensor_base<D0, S0>& lhs,
  * N-dimensional array with dimensions completely or partially known at compile time.
  */
 template <class T, index... Dimensions>
-class tensor_fixed : public detail::tensor_base_fixed<T, Dimensions...> {
-    using base_t = detail::tensor_base_fixed<T, Dimensions...>;
-
-public:
-    using base_t::base_t;
-};
+using tensor_fixed =
+    typename detail::tensor_fixed<T, (0 + ... + (Dimensions == dynamic_size)), Dimensions...>::type;
 
 /**
  * N-dimensional array.
  */
-template <class T, index N = dynamic_size, class Dims = detail::dimensions_t<N>>
-class tensor : public detail::tensor_base<std::unique_ptr<T[]>, Dims> {
-    using base_t = detail::tensor_base<std::unique_ptr<T[]>, Dims>;
-
-public:
-    using base_t::base_t;
-};
-
-template <class T, class Dims>
-class tensor<T, 0, Dims> : public tensor_fixed<T> {
-public:
-    using tensor_fixed<T>::tensor_fixed;
-};
+template <class T, index N = dynamic_size>
+using tensor = typename detail::tensor<T, N>::type;
 
 /**
  * View of an N-dimensional array.
  */
-template <class T, index N = dynamic_size, class Dims = detail::dimensions_t<N>>
-class tensor_view : public detail::tensor_base<T*, Dims> {
-    using base_t = detail::tensor_base<T*, Dims>;
-
-public:
-    using base_t::base_t;
-
-    template <class Data, class Dimensions>
-    tensor_view& operator = (const detail::tensor_base<Data, Dimensions>& rhs) {
-        ACTL_ASSERT(this->size() == rhs.size());
-        copy(*this, rhs.begin());
-        return *this;
-    }
-};
+template <class T, index N = dynamic_size>
+using tensor_view = detail::tensor_base<T*, detail::dimensions_t<N>>;
 
 }  // namespace ac
