@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/container/static_array.hpp>
 #include <actl/functional/compare.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/array.hpp>
@@ -22,26 +23,6 @@ namespace detail {
 
 template <class Data, class Dimensions>
 class ndarray_base;
-
-/* Helper types. */
-
-template <index...>
-struct static_array {
-    index operator[](index) const {
-        ACTL_ASSERT(false);
-        return {};
-    }
-};
-
-template <index I0, index... Is>
-struct static_array<I0, Is...> {
-    constexpr index operator[](index i) const {
-        return i == 0 ? I0 : static_array<Is...>{}[i - 1];
-    }
-};
-
-template <index... Is>
-inline constexpr index static_product_v = (1 * ... * Is);
 
 template <class T, index N>
 struct nd_initializer_list {
@@ -60,6 +41,9 @@ struct nd_initializer_list<T, dynamic_size> {
 
 template <class T, index N>
 using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
+
+template <index... Is>
+inline constexpr index static_product_v = (1 * ... * Is);
 
 template <class Int>
 inline index compute_product(const cspan<Int>& x) {
@@ -238,9 +222,9 @@ private:
 };
 
 template <index N, class Data, index... Ds>
-class ndarray_shape<N, Data, static_array<Ds...>> : public ndarray_data<N, Data> {
+class ndarray_shape<N, Data, static_array<index, Ds...>> : public ndarray_data<N, Data> {
     using base_t = ndarray_data<N, Data>;
-    using Dims = static_array<Ds...>;
+    using Dims = static_array<index, Ds...>;
 
 public:
     template <class... Ts>
@@ -272,8 +256,8 @@ struct ndarray_reference {
 };
 
 template <class T, index N, index D0, index... Ds>
-struct ndarray_reference<T, N, static_array<D0, Ds...>, true> {
-    using type = ndarray_base<T*, static_array<Ds...>>;
+struct ndarray_reference<T, N, static_array<index, D0, Ds...>, true> {
+    using type = ndarray_base<T*, static_array<index, Ds...>>;
 
     template <class NDArrayPtr>
     static type get(NDArrayPtr ptr, index i) {
@@ -322,8 +306,8 @@ public:
 };
 
 template <class Data, class Dims>
-class ndarray_subscript<0, Data, Dims> : public ndarray_shape<0, Data, static_array<>> {
-    using base_t = ndarray_shape<0, Data, static_array<>>;
+class ndarray_subscript<0, Data, Dims> : public ndarray_shape<0, Data, static_array<index>> {
+    using base_t = ndarray_shape<0, Data, static_array<index>>;
     using T = value_t<base_t>;
 
 public:
@@ -405,8 +389,8 @@ inline void swap(ndarray_base<D, S>& lhs, ndarray_base<D, S>& rhs) {
 }
 
 template <class T, index... Ds>
-using ndarray_base_static =
-    ndarray_base<std::array<T, static_product_v<Ds...>>, static_array<Ds...>>;
+using ndarray_base_fixed =
+    ndarray_base<std::array<T, static_product_v<Ds...>>, static_array<index, Ds...>>;
 
 template <index N>
 struct dimensions {
@@ -415,7 +399,7 @@ struct dimensions {
 
 template <>
 struct dimensions<0> {
-    using type = static_array<>;
+    using type = static_array<index>;
 };
 
 template <>
@@ -442,15 +426,12 @@ inline bool equal(const Policy& policy, const detail::ndarray_base<D0, S0>& lhs,
 
 }  // namespace op
 
-template <index... Is>
-struct static_size<detail::static_array<Is...>> : index_constant<sizeof...(Is)> {};
-
 /**
- * N-dimensional array with fixed dimensions.
+ * N-dimensional array with dimensions completely or partially known at compile time.
  */
 template <class T, index... Dimensions>
-class ndarray_static : public detail::ndarray_base_static<T, Dimensions...> {
-    using base_t = detail::ndarray_base_static<T, Dimensions...>;
+class ndarray_fixed : public detail::ndarray_base_fixed<T, Dimensions...> {
+    using base_t = detail::ndarray_base_fixed<T, Dimensions...>;
 
 public:
     using base_t::base_t;
@@ -468,9 +449,9 @@ public:
 };
 
 template <class T, class Dims>
-class ndarray<T, 0, Dims> : public ndarray_static<T> {
+class ndarray<T, 0, Dims> : public ndarray_fixed<T> {
 public:
-    using ndarray_static<T>::ndarray_static;
+    using ndarray_fixed<T>::ndarray_fixed;
 };
 
 /**
