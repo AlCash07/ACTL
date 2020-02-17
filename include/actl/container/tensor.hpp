@@ -56,12 +56,12 @@ inline index compute_product(const cspan<Int>& x) {
 template <class Data>
 class tensor_container;
 
-template <class T, index Size>
+template <class T, size_t Size>
 class tensor_container<std::array<T, Size>> {
 public:
     using value_type = T;
 
-    tensor_container(index size) { ACTL_ASSERT(size == Size); }
+    tensor_container(index size) { ACTL_ASSERT(size == index{Size}); }
 
     T* data() { return data_.data(); }
     const T* data() const { return data_.data(); }
@@ -359,26 +359,26 @@ public:
 
     template <class... Ints>
     reference operator()(Ints... is) {
-        return this->data()[getIndex<0>(0, is...)];
+        return this->data()[get_index<0>(0, is...)];
     }
 
     template <class... Ints>
     const_reference operator()(Ints... is) const {
-        return this->data()[getIndex<0>(0, is...)];
+        return this->data()[get_index<0>(0, is...)];
     }
 
 private:
     template <index I>
-    index getIndex(index res) const {
+    index get_index(index res) const {
         ACTL_ASSERT(I == this->rank());
         return res;
     }
 
     template <index I, class... Ints>
-    index getIndex(index res, index i, Ints... is) const {
+    index get_index(index res, index i, Ints... is) const {
         ACTL_ASSERT(0 <= i && i < this->dimension(I));
         if constexpr (I > 0) res *= this->dimension(I);
-        return getIndex<I + 1>(res + i, is...);
+        return get_index<I + 1>(res + i, is...);
     }
 };
 
