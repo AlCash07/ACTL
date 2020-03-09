@@ -43,7 +43,7 @@ struct static_array {
 template <class T, T... Is>
 struct static_size<static_array<T, Is...>> : index_constant<sizeof...(Is)> {};
 
-/* Partially static array where each element can have dymanic value */
+/* Partially static array where each element can have dynamic value */
 
 template <class T, T... Is>
 class semi_static_array {
@@ -74,7 +74,7 @@ class semi_static_array {
 
 public:
     template <class R>
-    explicit constexpr semi_static_array(R&& range) {
+    explicit semi_static_array(R&& range) {
         auto it = begin();
         for (const auto& x : range) {
             if (it.get() == dynamic_size) {
@@ -92,7 +92,7 @@ public:
 
     static constexpr index size() { return index{sizeof...(Is)}; }
 
-    constexpr T operator[](index i) const {
+    T operator[](index i) const {
         auto it = begin();
         std::advance(it, i);
         return *it;
