@@ -60,26 +60,7 @@ public:
     }
 
 private:
-    friend struct ac::io::serialization_access;
-
-    struct io_tuple_tag;
-
-    template <class Device, class Format>
-    index serialize(Device& od, Format& fmt) const {
-        index res = 0;
-        for (index i = 0; i < N; ++i) res += write(od, fmt, coordinates_[i]);
-        return res;
-    }
-
-    template <class Device, class Format>
-    bool deserialize(Device& id, Format& fmt) {
-        for (index i = 0; i < N; ++i) {
-            if (!read(id, fmt, coordinates_[i])) return false;
-        }
-        return true;
-    }
-
-    DEFINE_HASH(coordinates_)
+    INTROSPECT(span{coordinates_})
 
     T coordinates_[N];
 };

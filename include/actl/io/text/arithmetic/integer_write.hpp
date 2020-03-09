@@ -16,39 +16,52 @@ namespace ac::io {
 
 namespace detail {
 
-template <uint8_t MinBase, class D, class F, class Int>
-inline index write_int(D& od, F& fmt, Int x, uint8_t base) {
-    using UInt = std::make_unsigned_t<Int>;
-    char_t<D> s[1 + digit_count(std::numeric_limits<UInt>::max(), UInt{MinBase})];
-    auto last = std::end(s);
-    if constexpr (std::is_signed_v<Int>) {
-        if (x < 0) {
-            last = uitoa(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
-            *--last = '-';
-        } else {
-            last = uitoa(last, fmt, x, base);
-            if (fmt.getf(flags::showpos)) *--last = '+';
-        }
-    } else {
-        last = uitoa(last, fmt, x, base);
+template <uint8_t Size>
+class int_string {
+public:
+    void set_size(index size) { data_[Size] = static_cast<char>(size); }
+    void set_start(const char* x) { set_size(data_ + Size - x); }
+
+    span<char, Size> available() { return {data_, Size}; }
+
+    explicit operator cspan<char>() const {
+        const index size = data_[Size];
+        return {std::end(data_) - 1 - size, size};
     }
-    return write(od, fmt, cspan<char_t<D>>{last, std::end(s)});
+
+private:
+    char data_[Size + 1];
+};
+
+template <class D, class F, uint8_t Size>
+inline index write_final(D& od, F& fmt, const int_string<Size>& x) {
+    return write_final(od, fmt, cspan<char>{x});
 }
 
 }  // namespace detail
 
-template <class Device, class Format, class Int,
-          enable_int_if<std::is_integral_v<Int> && !std::is_same_v<Int, char_t<Device>>> = 0>
-inline index serialize(Device& od, Format& fmt, Int x, text_tag) {
-    auto base = fmt.base();
-    ACTL_ASSERT(base == 0 || (2 <= base && base <= 36));
-    if (base == 0 || base == 10) {
-        return detail::write_int<10>(od, fmt, x, 10);
-    } else if (base < 7) {
-        return detail::write_int<2>(od, fmt, x, base);
+template <class Format, class Int, enable_int_if_text<Format> = 0,
+          enable_int_if<std::is_integral_v<Int> && !std::is_same_v<Int, char> &&
+                        !std::is_same_v<Int, bool>> = 0>
+inline auto serialize(Format& fmt, Int x) {
+    using UInt = std::make_unsigned_t<Int>;
+    UInt base = fmt.base;
+    if (base == 0) base = 10;
+    detail::int_string<1 + detail::digit_count(std::numeric_limits<UInt>::max(), UInt{2})> s;
+    auto last = s.available().end();
+    if constexpr (std::is_signed_v<Int>) {
+        if (x < 0) {
+            last = detail::uitoa(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
+            *--last = '-';
+        } else {
+            last = detail::uitoa(last, fmt, static_cast<UInt>(x), base);
+            if (fmt.getf(flags::showpos)) *--last = '+';
+        }
     } else {
-        return detail::write_int<7>(od, fmt, x, base);
+        last = detail::uitoa(last, fmt, x, base);
     }
+    s.set_start(last);
+    return s;
 }
 
 }  // namespace ac::io

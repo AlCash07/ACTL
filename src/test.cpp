@@ -151,7 +151,7 @@ int run(int argc, const char* argv[]) {
             if (i > 1) io::write(cerr, ", ");
             io::write(cerr, to_string(argv[i]));
         }
-        io::write(cerr, ".\n", io::endl);
+        io::write(cerr, ".\n\n", io::flush);
         return run(1, argv);
     }
     auto common_prefix = tests_per_file.begin()->first;
@@ -175,7 +175,7 @@ int run(int argc, const char* argv[]) {
         for (auto test_ptr : tests) {
             failed += static_cast<int>(!test_ptr->run());
         }
-        io::write(cerr, io::endl);
+        io::write(cerr, '\n', io::flush);
     }
     if (failed == 0) {
         io::writeln(cerr, "Passed all ", total, " tests.");

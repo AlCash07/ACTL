@@ -16,7 +16,7 @@ namespace ac::io {
 namespace detail {
 
 template <uint8_t MaxBase, auto Max, class D, class UInt>
-inline bool read_uint2(D& id, UInt& x, uint8_t base) {
+inline bool read_uint2(D& id, UInt& x, UInt base) {
     UInt v, d;
     if (!read_digit<MaxBase>(id, v, base)) return false;
     const UInt safe = Max / base;
@@ -35,11 +35,11 @@ inline bool read_uint2(D& id, UInt& x, uint8_t base) {
 
 template <auto Max, class D, class F, class UInt>
 inline bool read_uint(D& id, F& fmt, UInt& x) {
-    uint8_t base = fmt.base();
+    UInt base = fmt.base;
     if (id.peek() == '0') {
         id.move(1);
         UInt d;
-        read_digit<36>(id, d, 0);
+        read_digit<36>(id, d, UInt{0});
         if (d == 'x' - 'a' + 10) {
             if (base == 0) base = 16;
             if (base == 16) {
@@ -65,10 +65,9 @@ inline bool read_uint(D& id, F& fmt, UInt& x) {
 
 }  // namespace detail
 
-template <class Device, class Format, class Int,
+template <class Device, class Format, class Int, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_integral_v<Int> && !std::is_same_v<Int, char_t<Device>>> = 0>
-inline bool deserialize(Device& id, Format& fmt, Int& x, text_tag) {
-    if (fmt.getf(flags::skipws)) read(id, fmt, ws);
+inline bool deserialize(Device& id, Format& fmt, Int& x) {
     if constexpr (std::is_signed_v<Int>) {
         using UInt = std::make_unsigned_t<Int>;
         UInt ux;

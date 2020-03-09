@@ -14,22 +14,22 @@ namespace ac::io {
 
 struct serialization_access {
     // This is the simplest portable way I found to check for optional private members in T.
-    template <class T, class = typename T::io_tuple_tag>
-    std::true_type has_io_tuple_tag(int);
+    template <class T, class = typename T::is_io_tuple>
+    std::true_type is_io_tuple(int);
 
     template <class T>
-    std::false_type has_io_tuple_tag(...);
+    std::false_type is_io_tuple(...);
 
     template <class T, class... Ts,
-              class = decltype(std::declval<const T>().serialize(std::declval<Ts>()...))>
-    std::true_type has_serialize(int);
+              class = decltype(std::declval<const T>().write_final(std::declval<Ts>()...))>
+    std::true_type has_write(int);
 
     template <class... Ts>
-    std::false_type has_serialize(...);
+    std::false_type has_write(...);
 
     template <class T, class... Ts>
-    static index write(const T& x, Ts&&... args) {
-        return x.serialize(args...);
+    static index write_final(const T& x, Ts&... args) {
+        return x.write_final(args...);
     }
 
     template <class T, class... Ts,
@@ -45,19 +45,18 @@ struct serialization_access {
     }
 };
 
-// Tag represents 0 or 1 types.
-template <class Device, class Format, class T, class... Tag,
-          enable_int_if<decltype(
-              serialization_access{}.has_serialize<T, Device&, Format&, Tag...>(0))::value> = 0>
-inline index serialize(Device& od, Format& fmt, const T& x, Tag... tag) {
-    return serialization_access::write(x, od, fmt, tag...);
+template <
+    class Device, class Format, class T,
+    enable_int_if<decltype(serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
+inline index write_final(Device& od, Format& fmt, const T& x) {
+    return serialization_access::write_final(x, od, fmt);
 }
 
-template <class Device, class Format, class T, class... Tag,
-          enable_int_if<decltype(
-              serialization_access{}.has_deserialize<T, Device&, Format&, Tag...>(0))::value> = 0>
-inline bool deserialize(Device& id, Format& fmt, T& x, Tag... tag) {
-    return serialization_access::read(x, id, fmt, tag...);
+template <class Device, class Format, class T,
+          enable_int_if<
+              decltype(serialization_access{}.has_deserialize<T, Device&, Format&>(0))::value> = 0>
+inline bool read_final(Device& id, Format& fmt, T& x) {
+    return serialization_access::read(x, id, fmt);
 }
 
 }  // namespace ac::io

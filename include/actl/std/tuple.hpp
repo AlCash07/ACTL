@@ -49,9 +49,6 @@ inline auto perform(const Policy& policy, Less op, const std::tuple<Ts...>& lhs,
 
 namespace io {
 
-template <class... Ts>
-struct is_tuple<std::tuple<Ts...>> : std::true_type {};
-
 namespace detail {
 
 template <class D, class F, class T, size_t... Is>
@@ -67,12 +64,12 @@ inline bool read_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
 }  // namespace detail
 
 template <class Device, class Format, class... Ts>
-inline index serialize(Device& od, Format& fmt, const std::tuple<Ts...>& x) {
+inline index write_final(Device& od, Format& fmt, const std::tuple<Ts...>& x) {
     return detail::write_tuple(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
 template <class Device, class Format, class... Ts>
-inline bool deserialize(Device& id, Format& fmt, std::tuple<Ts...>& x) {
+inline bool read_final(Device& id, Format& fmt, std::tuple<Ts...>& x) {
     return detail::read_tuple(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 

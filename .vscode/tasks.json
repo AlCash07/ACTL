@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "cmake",
+            "label": "configure",
             "type": "shell",
             "options": {
                 "cwd": "${workspaceRoot}"
@@ -30,7 +30,6 @@
                 "--target", "tests",
             ],
             "group": "build",
-            "dependsOn": ["cmake"]
         },
         {
             "label": "run",

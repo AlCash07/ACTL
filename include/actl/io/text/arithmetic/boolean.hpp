@@ -13,20 +13,29 @@ namespace ac::io {
 
 constexpr char true_s[4] = {'t', 'r', 'u', 'e'};
 constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
+constexpr char zero_s[1] = {'0'};
+constexpr char one_s[1] = {'1'};
 
-template <class Device, class Format>
-inline index serialize(Device& od, Format& fmt, bool x, text_tag) {
-    using C = char_t<Device>;
+template <class Format, class Bool, enable_int_if_text<Format> = 0,
+          enable_int_if<std::is_same_v<Bool, bool>> = 0>
+inline cspan<char> serialize(Format& fmt, Bool x) {
     if (fmt.getf(flags::boolalpha)) {
-        return x ? write(od, fmt, cspan<C>{true_s}) : write(od, fmt, cspan<C>{false_s});
+        if (x) {
+            return true_s;
+        } else {
+            return false_s;
+        }
     } else {
-        const C c = x ? '1' : '0';
-        return write(od, fmt, cspan<C>{&c, 1});
+        if (x) {
+            return one_s;
+        } else {
+            return zero_s;
+        }
     }
 }
 
-template <class Device, class Format>
-inline bool deserialize(Device& id, Format& fmt, bool& x, text_tag) {
+template <class Device, class Format, enable_int_if_text<Format> = 0>
+inline bool deserialize(Device& id, Format& fmt, bool& x) {
     char_t<Device> c;
     if (!read(id, fmt, c)) return false;
     if (fmt.getf(flags::boolalpha)) {

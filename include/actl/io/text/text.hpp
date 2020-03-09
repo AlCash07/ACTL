@@ -8,39 +8,82 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/io/text/flags.hpp>
+#include <actl/io/io.hpp>
 #include <actl/io/util/raw.hpp>
-#include <actl/io/util/skip.hpp>
 #include <actl/numeric/bit.hpp>
+#include <actl/string/traits.hpp>
 
 namespace ac::io {
 
-template <class Device>
-using view_t = std::basic_string_view<char_t<Device>>;
+struct text_tag {};
 
-template <class T, class Device>
-struct is_string : std::is_convertible<T, view_t<Device>> {};
+template <class T>
+using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
 
-const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat),
-                             bit(flags::left) | bit(flags::right) | bit(flags::center)};
+using flag_t = uint32_t;
 
-template <
-    flag_t Flags = bit(flags::skipws),
-    uint8_t Base = 10,
-    index Precision = 6>
+namespace flags {
+
+enum : flag_t {
+    boolalpha,
+    showbase,
+    showpos,
+    uppercase,
+    fixed,
+    scientific,
+    hexfloat,
+    showpoint
+};
+
+}  // namespace flags
+
+namespace groups {
+
+enum : flag_t { floatfield };
+
+}  // namespace groups
+
+// Integer and real numbers base.
+class base_t {
+public:
+    struct is_manipulator;
+
+    explicit constexpr base_t() = default;
+
+    template <class T>
+    explicit constexpr base_t(T x) : value_{static_cast<uint8_t>(x)} {
+        ACTL_ASSERT(x == 0 || 1 < x && x <= 36);
+    }
+
+    constexpr operator uint8_t() const { return value_; }
+
+private:
+    uint8_t value_ = 10;
+};
+
+// Number of digits after the decimal point.
+struct precision_t {
+    struct is_manipulator;
+
+    index value = 6;
+
+    constexpr operator index() const { return value; }
+};
+
+const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat)};
+
+template <flag_t Flags = 0, uint8_t Base = 10, index Precision = 6>
 class text_static {
 public:
     using format_tag = text_tag;
-
-    static constexpr mode_t mode = 0;
 
     static constexpr flag_t flags() { return Flags; }
 
     static constexpr bool getf(flag_t flag) { return has_bit(Flags, flag); }
 
-    static constexpr uint8_t base() { return Base; }
+    static constexpr base_t base = base_t{Base};
 
-    static constexpr index precision() { return Precision; }
+    static constexpr precision_t precision = precision_t{Precision};
 };
 
 class text {
@@ -58,24 +101,11 @@ public:
         flags_ = set_bits(flags_, group_bits[group], bit(flag));
     }
 
-    uint8_t base() const { return base_; }
-    void base(uint8_t value) {
-        ACTL_ASSERT(value == 0 || 1 < value && value <= 36);
-        base_ = value;
-    }
-
-    index precision() const { return precision_; }
-    void precision(index value) {
-        ACTL_ASSERT(0 <= value);
-        precision_ = value;
-    }
+    base_t base;
+    precision_t precision;
 
 protected:
-    using ts = text_static<>;
-
-    flag_t flags_ = ts::flags();
-    uint8_t base_ = ts::base();
-    index precision_ = ts::precision();
+    flag_t flags_ = text_static<>::flags();
 };
 
 template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
@@ -83,30 +113,106 @@ inline text_static<> deduce_format(Device& dev) {
     return {};
 }
 
-template <class Device, class Format>
-inline bool deserialize(Device& id, Format& fmt, char_t<Device>& c, text_tag) {
-    if (fmt.getf(flags::skipws)) read(id, fmt, ws);
-    return deserialize(id, fmt, c);
-}
-
-template <class Device, class Format>
-inline bool deserialize(Device& id, Format& fmt, view_t<Device>& x, text_tag) {
-    return deserialize(id, fmt, cspan<char_t<Device>>{x});
-}
-
-template <class Device, class Format>
-inline index serialize(Device& od, Format& fmt, const view_t<Device>& x, text_tag) {
-    return write(od, fmt, span{x});
-}
-
-template <class Device, class Format, class S, enable_int_if<is_string<S, Device>::value> = 0>
-inline index serialize(Device& od, Format& fmt, const S& x, text_tag) {
-    return write(od, fmt, view_t<Device>{x});
+template <class Format, class S, enable_int_if_text<Format> = 0, enable_int_if<is_string_v<S>> = 0>
+inline auto serialize(Format& fmt, const S& s) {
+    return span{std::basic_string_view<value_t<S>>{s}};
 }
 
 template <class Device, class... Ts>
 inline index writeln(Device&& od, Ts&&... args) {
     return write(od, args..., raw{'\n'});
+}
+
+template <class Format, class Char, enable_int_if_text<Format> = 0>
+inline auto deserialize(Format& fmt, std::basic_string_view<Char>& x) {
+    return span{x};
+}
+
+/* I/O manipulators analogous to https://en.cppreference.com/w/cpp/io/manip */
+
+template <flag_t Flag, bool Value>
+struct setf {
+    struct is_manipulator;
+};
+
+template <flag_t Group, flag_t Flag>
+struct setg {
+    struct is_manipulator;
+};
+
+// boolean as string or int
+constexpr setf<flags::boolalpha, true> boolalpha{};
+constexpr setf<flags::boolalpha, false> noboolalpha{};
+
+// prepend integer number base prefix
+constexpr setf<flags::showbase, true> showbase{};
+constexpr setf<flags::showbase, false> noshowbase{};
+
+// prepend '+' before positive integer and real numbers
+constexpr setf<flags::showpos, true> showpos{};
+constexpr setf<flags::showpos, false> noshowpos{};
+
+// case for special characters in integer and real numbers representation
+constexpr setf<flags::uppercase, true> uppercase{};
+constexpr setf<flags::uppercase, false> nouppercase{};
+
+// real numbers format
+constexpr setg<groups::floatfield, 0> defaultfloat{};
+constexpr setg<groups::floatfield, flags::fixed> fixed{};
+constexpr setg<groups::floatfield, flags::scientific> scientific{};
+constexpr setg<groups::floatfield, flags::hexfloat> hexfloat{};
+
+// always show decimal point
+constexpr setf<flags::showpoint, true> showpoint{};
+constexpr setf<flags::showpoint, false> noshowpoint{};
+
+template <class Format, flag_t Flag, bool Value>
+inline void serialize(Format& fmt, setf<Flag, Value>) {
+    if constexpr (Value) {
+        fmt.setf(Flag);
+    } else {
+        fmt.unsetf(Flag);
+    }
+}
+
+template <class Device, class Format, flag_t Flag, bool Value>
+inline bool deserialize(Device& id, Format& fmt, setf<Flag, Value>) {
+    serialize(fmt, setf<Flag, Value>{});
+    return true;
+}
+
+template <class Format, flag_t Group, flag_t Flag>
+inline void serialize(Format& fmt, setg<Group, Flag>) {
+    fmt.setf(Flag, Group);
+}
+
+template <class Device, class Format, flag_t Group, flag_t Flag>
+inline bool deserialize(Device&, Format& fmt, setg<Group, Flag>) {
+    fmt.setf(Flag, Group);
+    return true;
+}
+
+using setbase = base_t;
+constexpr setbase dec{10};
+constexpr setbase hex{16};
+constexpr setbase oct{8};
+
+template <class Device, class Format>
+inline bool deserialize(Device&, Format& fmt, setbase x) {
+    fmt.base = x;
+    return true;
+}
+
+template <class Format>
+inline void serialize(Format& fmt, setbase x) {
+    fmt.base = x;
+}
+
+using setprecision = precision_t;
+
+template <class Format>
+inline void serialize(Format& fmt, setprecision x) {
+    fmt.precision = x;
 }
 
 }  // namespace ac::io

@@ -8,87 +8,55 @@
 #pragma once
 
 #include <actl/io/io.hpp>
-#include <actl/io/text/manip.hpp>
+#include <actl/io/util/repeat.hpp>
 #include <actl/std/utility.hpp>
 
 namespace ac::io {
 
-template <class Tag>
-struct adjusted_tag {
-    using base = Tag;
-};
+enum class adjust_to : uint8_t { left = 0, right = 1, center = 2, center_right = 3 };
 
-template <class Format, class Char = char>
-class adjusted : public Format {
-public:
-    using format_tag = adjusted_tag<typename Format::format_tag>;
+template <class Char = char>
+struct adjusted {
+    struct format_tag;
 
-    index width() const { return width_; }
-    void width(index value) {
-        ACTL_ASSERT(0 <= value);
-        width_ = value;
-    }
-
-    Char fill() const { return fill_; }
-    void fill(Char value) { fill_ = value; }
-
-protected:
-    index width_ = 0;
-    Char fill_ = ' ';
+    index width = 0;
+    adjust_to where = adjust_to::left;
+    Char fill = ' ';
 };
 
 template <class Format>
 inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
-    size = fmt.width() - size;
+    size = fmt.width - size;
     if (size <= 0) return {0, 0};
-    auto p =
-        fmt.getf(flags::center) ? std::pair{size / 2, size - size / 2} : std::pair{index{}, size};
-    return fmt.getf(flags::left) ? std::pair{p.second, p.first} : p;
+    auto p = (static_cast<uint8_t>(fmt.where) & static_cast<uint8_t>(adjust_to::center)) != 0
+                 ? std::pair{size / 2, size - size / 2}
+                 : std::pair{index{}, size};
+    return (static_cast<uint8_t>(fmt.where) & static_cast<uint8_t>(adjust_to::right)) != 0
+               ? std::pair{p.second, p.first}
+               : p;
 }
 
-template <class Device>
-inline void write_fill(Device& od, char_t<Device> c, index count) {
-    if constexpr (has_output_buffer<Device>::value) {
-        auto s = od.output_data();
-        if (count <= s.size()) {
-            std::fill_n(s.data(), count, c);
-            od.move(count);
-        } else {
-            std::fill_n(s.data(), s.size(), c);
-            od.move(s.size());
-            count -= s.size();
-            s = od.output_data();
-            std::fill_n(s.data(), std::min(count, s.size()), c);
-            // Here we assume that s references device buffer and does not change.
-            for (index n = count / s.size(); n > 0; --n) {
-                od.move(s.size());
-            }
-            od.move(count % s.size());
-        }
-    } else {
-        for (; 0 < count; --count) od.write(c);
-    }
+template <class Char, class T, enable_int_if<std::is_constructible_v<cspan<Char>, T>> = 0>
+inline auto serialize(adjusted<Char>& fmt, const T& x) {
+    auto [l, r] = adjustment(fmt, cspan<Char>{x}.size());
+    return batch{repeat{fmt.fill, l}, x, repeat{fmt.fill, r}};
 }
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device& od, Format& fmt, const cspan<char_t<Device>>& s, adjusted_tag<Tag>) {
-    if (fmt.width() <= 0 || fmt.width() <= s.size()) return od.write(s);
-    auto [l, r] = adjustment(fmt, s.size());
-    write_fill(od, fmt.fill(), l);
-    index res = od.write(s);
-    write_fill(od, fmt.fill(), r);
-    return l + res + r;
+template <class Char>
+inline auto serialize(adjusted<Char>& fmt, Char x) {
+    auto [l, r] = adjustment(fmt, 1);
+    return batch{repeat{fmt.fill, l}, x, repeat{fmt.fill, r}};
 }
 
-template <class Device, class Format, class Tag>
-inline index serialize(Device& od, Format& fmt, char_t<Device> c, adjusted_tag<Tag>) {
-    return serialize(od, fmt, cspan<char_t<Device>>{&c, 1}, adjusted_tag<Tag>{});
-}
+/* Manipulators */
 
-// adjustment
-constexpr setg<groups::adjustfield, flags::left> left{};
-constexpr setg<groups::adjustfield, flags::right> right{};
-constexpr setg<groups::adjustfield, flags::center> center{};
+template <>
+struct is_manipulator<adjust_to> : std::true_type {};
+
+template <class Char>
+inline void serialize(adjusted<Char>& fmt, adjust_to value) {
+    fmt.where = value;
+}
 
 // minimum width of an output unit
 struct setwidth {
@@ -97,10 +65,9 @@ struct setwidth {
     struct is_manipulator;
 };
 
-template <class Device, class Format>
-inline index serialize(Device&, Format& fmt, setwidth x) {
-    fmt.width(x.value);
-    return 0;
+template <class Char>
+inline void serialize(adjusted<Char>& fmt, setwidth x) {
+    fmt.width = x.value;
 }
 
 // character to pad units with less width
@@ -113,10 +80,9 @@ struct setfill {
     struct is_manipulator;
 };
 
-template <class Device, class Format, class Char>
-inline index serialize(Device&, Format& fmt, setfill<Char> x) {
-    fmt.fill(x.value);
-    return 0;
+template <class Char>
+inline void serialize(adjusted<Char>& fmt, setfill<Char> x) {
+    fmt.fill = x.value;
 }
 
 }  // namespace ac::io

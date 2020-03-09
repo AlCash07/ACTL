@@ -10,6 +10,7 @@
 #include <actl/container/traits.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/io/util/till.hpp>
+#include <actl/string/ctype.hpp>
 #include <string>
 
 namespace ac {
@@ -19,10 +20,9 @@ struct container_category<std::basic_string<C, T, A>> : contiguous_container_tag
 
 namespace io {
 
-template <class Device, class Format, class T, class A, class P>
+template <class Device, class Format, class T, class A, class P, enable_int_if_text<Format> = 0>
 inline bool deserialize(Device& id, Format& fmt,
-                        io::till<std::basic_string<io::char_t<Device>, T, A>&, P> x, io::text_tag) {
-    if (fmt.getf(io::flags::skipws)) io::read(id, fmt, io::skip{x.terminator});
+                        io::till<std::basic_string<io::char_t<Device>, T, A>&, P> x) {
     index length = std::max(index{16}, static_cast<index>(x.value.capacity()));
     for (index last = 0;; length = last += length) {
         x.value.resize(static_cast<size_t>(last + length));
@@ -35,10 +35,9 @@ inline bool deserialize(Device& id, Format& fmt,
     }
 }
 
-template <class Device, class Format, class T, class A>
-inline bool deserialize(Device& id, Format& fmt, std::basic_string<io::char_t<Device>, T, A>& x,
-                        io::text_tag) {
-    return deserialize(id, fmt, io::till{x, is_space}, io::text_tag{});
+template <class Device, class Format, class T, class A, enable_int_if_text<Format> = 0>
+inline bool deserialize(Device& id, Format& fmt, std::basic_string<io::char_t<Device>, T, A>& x) {
+    return deserialize(id, fmt, io::till{x, is_space});
 }
 
 }  // namespace io

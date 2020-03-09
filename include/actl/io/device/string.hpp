@@ -86,13 +86,13 @@ public:
 
     void move(index offset) {
         pos_ += offset;
-        ACTL_ASSERT(0 <= pos_ && pos_ <= static_cast<size_t>(s_.size()));
+        ACTL_ASSERT(0 <= pos_ && pos_ <= static_cast<index>(s_.size()));
     }
 
     bool eof() const { return static_cast<index>(s_.size()) < pos_; }
 };
 
-template <mode_t Mode, class Char = default_char_t<Mode>>
+template <mode_t Mode, class Char = char>
 using string = in_string<Mode, Char>;
 
 }  // namespace ac::io
