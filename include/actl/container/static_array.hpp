@@ -8,7 +8,6 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/compare.hpp>
 #include <actl/iterator/iterator_facade.hpp>
 #include <actl/std/array.hpp>
 

@@ -212,7 +212,7 @@ struct operation {
         if constexpr (is_policy_v<nth_t<0, Ts...>>) {
             return dispatch(xs...);
         }
-        if constexpr (arity_v<Derived> == sizeof...(Ts) && inplace_argument_count_v<Ts...> == 0) {
+        if constexpr (arity == sizeof...(Ts) && inplace_argument_count_v<Ts...> == 0) {
             return make_expression<Derived>(std::forward<Ts>(xs)...);
         } else {
             // static_assert(false);
