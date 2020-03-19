@@ -11,6 +11,22 @@
 
 namespace ac::op {
 
+struct scalar_operation_tag : base_operation_tag {};
+
+template <class T>
+inline constexpr bool is_scalar_operation_v =
+    std::is_base_of_v<scalar_operation_tag, operation_tag_t<T>>;
+
+template <class Derived, int Arity>
+struct scalar_operation : operation<Derived, Arity> {
+    using operation_tag = scalar_operation_tag;
+};
+
+template <class Policy, class Op, class... Ts, enable_int_if<is_operation_v<Op>> = 0>
+inline constexpr decltype(auto) eval(scalar_tag, const Policy& policy, Op op, const Ts&... xs) {
+    return eval(policy, perform(policy, op, eval(policy, xs)...));
+}
+
 template <class To>
 struct Cast : scalar_operation<Cast<To>, 1> {
     template <class T>

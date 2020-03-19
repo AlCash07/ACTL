@@ -22,6 +22,8 @@ class mimic_pair : public compressed_pair<T1, T2> {
 
 public:
     struct is_mimic_pair;
+    using value_type = std::conditional_t<I == 1, T1, T2>;
+
     static_assert(I == 1 || I == 2);
 
     using base_t::base_t;
@@ -64,15 +66,18 @@ namespace ac {
 
 namespace op {
 
-template <class T, class = void>
-struct is_mimic_pair : std::false_type {};
+struct mimic_tag {
+    struct has_nested;
+};
 
 template <class T>
-struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type {};
+struct category_impl<T, std::void_t<typename T::is_mimic_pair>> {
+    using type = mimic_tag;
+};
 
 template <class T>
 inline decltype(auto) get_key(const T& x) {
-    if constexpr (is_mimic_pair<T>::value) {
+    if constexpr (std::is_same_v<category_t<T>, mimic_tag>) {
         return x.key();
     } else {
         return x;
@@ -80,10 +85,9 @@ inline decltype(auto) get_key(const T& x) {
 }
 
 template <class Policy, class Op, class T, class U,
-          enable_int_if<std::is_same_v<Op, Equal> || std::is_same_v<Op, Less>> = 0,
-          enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto perform(const Policy& policy, Op op, const T& lhs, const U& rhs) {
-    return op(policy, get_key(lhs), get_key(rhs));
+          enable_int_if<std::is_same_v<Op, Equal> || std::is_same_v<Op, Less>> = 0>
+inline auto eval(mimic_tag, const Policy& policy, Op op, const T& lhs, const U& rhs) {
+    return eval_dispatch(policy, op, get_key(lhs), get_key(rhs));
 }
 
 }  // namespace op

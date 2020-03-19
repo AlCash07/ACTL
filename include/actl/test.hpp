@@ -71,9 +71,9 @@ struct abs_rel_error : virtual policy {
     T eps;
 };
 
-template <class E, class T, class U,
-          enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
-inline bool perform(const abs_rel_error<E>& policy, Equal, const T& lhs, const U& rhs) {
+template <class E, class T, class U>
+inline bool eval(arithmetic_tag, const abs_rel_error<E>& policy, Equal, const T& lhs,
+                 const U& rhs) {
     E numerator = abs(lhs - rhs);
     E denominator = max(max(abs(static_cast<E>(lhs)), abs(static_cast<E>(rhs))), E{1});
     return numerator <= policy.eps * denominator;

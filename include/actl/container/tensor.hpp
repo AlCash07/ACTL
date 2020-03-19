@@ -432,8 +432,8 @@ struct tensor<T, 0> : tensor_fixed<T, 0> {};
 namespace op {
 
 template <class Policy, class D0, class S0, class D1, class S1>
-inline bool perform(const Policy& policy, Equal, const detail::tensor_base<D0, S0>& lhs,
-                    const detail::tensor_base<D1, S1>& rhs) {
+inline bool perform(const Policy& policy, Equal, const ac::detail::tensor_base<D0, S0>& lhs,
+                    const ac::detail::tensor_base<D1, S1>& rhs) {
     if (lhs.rank() != rhs.rank()) return false;
     for (index i = 0; i < lhs.rank(); ++i) {
         if (lhs.dimension(i) != rhs.dimension(i)) return false;

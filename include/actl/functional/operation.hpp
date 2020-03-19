@@ -34,6 +34,68 @@ inline constexpr bool is_policy_v = std::is_base_of_v<op::policy, remove_cvref_t
 
 namespace op {
 
+/* Argument traits */
+
+struct scalar_tag {};
+
+template <class T, class = void>
+struct category_impl {
+    using type = scalar_tag;
+};
+
+template <class T>
+struct category : category_impl<T> {};
+
+template <class T>
+using category_t = typename category<remove_cvref_t<T>>::type;
+
+struct arithmetic_tag : scalar_tag {};
+
+template <class T>
+struct category_impl<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
+    using type = arithmetic_tag;
+};
+
+template <class T, class U>
+struct is_wider_category : std::is_base_of<T, U> {};
+
+namespace detail {
+
+template <class Tag, int Depth>
+struct cdp {  // category-depth pair
+    using type = Tag;
+};
+
+template <class T0, int D0, class T1, int D1>
+inline constexpr auto operator || (cdp<T0, D0> lhs, cdp<T1, D1> rhs) {
+    if constexpr (D0 == D1) {
+        if constexpr (std::is_same_v<T0, T1> || is_wider_category<T0, T1>::value) {
+            return lhs;
+        } else {
+            static_assert(is_wider_category<T1, T0>::value,
+                          "arguments have incompatible categories");
+            return rhs;
+        }
+    } else if constexpr (D0 < D1) {
+        return rhs;
+    } else {
+        return lhs;
+    }
+}
+
+template <class T, class = void>
+struct depth : index_constant<0> {};
+
+template <class T>
+struct depth<T, std::void_t<typename category_t<T>::has_nested>>
+    : index_constant<depth<value_t<T>>::value + 1> {};
+
+template <class... Ts>
+using major_category = typename remove_cvref_t<decltype(
+    (... || std::declval<cdp<category_t<Ts>, depth<remove_cvref_t<Ts>>::value>>()))>::type;
+
+}  // namespace detail
+
 struct base_operation_tag {};
 
 /* Every operation mush define nested `struct operation_tag;`. */
@@ -138,9 +200,9 @@ inline T eval(const Policy& policy, T&& x) {
     return std::forward<T>(x);
 }
 
-template <class Policy, class Op, class... Ts, enable_int_if<is_operation_v<Op>> = 0>
-inline constexpr decltype(auto) eval(const Policy& policy, Op op, const Ts&... xs) {
-    return eval(policy, perform(policy, op, eval(policy, xs)...));
+template <class Policy, class Op, class... Ts>
+inline constexpr decltype(auto) eval_dispatch(const Policy& policy, Op op, const Ts&... xs) {
+    return eval(detail::major_category<result_t<Policy, const Ts&>...>{}, policy, op, xs...);
 }
 
 /* Inplace argument support */
@@ -171,7 +233,7 @@ template <class Op, class S, class... Ts>
 struct expression {
     std::tuple<Ts...> args;
 
-    using result_type = decltype(eval(default_policy, Op{}, std::declval<Ts>()...));
+    using result_type = decltype(eval_dispatch(default_policy, Op{}, std::declval<Ts>()...));
 
     operator result_type() const { return eval(*this); }
 };
@@ -191,7 +253,7 @@ inline auto make_expression(Ts&&... xs) {
 template <class Policy, class Op, size_t... Is, class... Ts>
 inline decltype(auto) eval(const Policy& policy,
                            const expression<Op, std::index_sequence<Is...>, Ts...>& e) {
-    return eval(policy, Op{}, std::get<Is>(e.args)...);
+    return eval_dispatch(policy, Op{}, std::get<Is>(e.args)...);
 }
 
 template <class Op, class S, class... Ts>
@@ -224,22 +286,11 @@ private:
     decltype(auto) dispatch(const Policy& policy, const Ts&... xs) const {
         if constexpr (sizeof...(Ts) == 0) {
             // Operation with only policy argument results in a function object.
-            return [&policy](auto&&... xs) { return eval(policy, Derived{}, xs...); };
+            return [&policy](auto&&... xs) { return eval_dispatch(policy, Derived{}, xs...); };
         } else {
-            return eval(policy, Derived{}, xs...);
+            return eval_dispatch(policy, Derived{}, xs...);
         }
     }
-};
-
-struct scalar_operation_tag : base_operation_tag {};
-
-template <class T>
-inline constexpr bool is_scalar_operation_v =
-    std::is_base_of_v<scalar_operation_tag, operation_tag_t<T>>;
-
-template <class Derived, int Arity>
-struct scalar_operation : operation<Derived, Arity> {
-    using operation_tag = scalar_operation_tag;
 };
 
 }  // namespace op
