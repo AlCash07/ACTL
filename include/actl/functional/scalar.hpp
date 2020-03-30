@@ -22,7 +22,7 @@ struct scalar_operation : operation<Derived, Arity> {
     using operation_tag = scalar_operation_tag;
 };
 
-template <class Policy, class Op, class... Ts, enable_int_if<is_operation_v<Op>> = 0>
+template <class Policy, class Op, class... Ts, enable_int_if<is_scalar_operation_v<Op>> = 0>
 inline constexpr decltype(auto) eval(scalar_tag, const Policy& policy, Op op, const Ts&... xs) {
     return eval(policy, perform(policy, op, eval(policy, xs)...));
 }

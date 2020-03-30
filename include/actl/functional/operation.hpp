@@ -36,6 +36,14 @@ namespace op {
 
 /* Argument traits */
 
+template <class T>
+struct raw {
+    using type = T;
+};
+
+template <class T>
+using raw_t = typename raw<remove_cvref_t<T>>::type;
+
 struct scalar_tag {};
 
 template <class T, class = void>
@@ -47,7 +55,7 @@ template <class T>
 struct category : category_impl<T> {};
 
 template <class T>
-using category_t = typename category<remove_cvref_t<T>>::type;
+using category_t = typename category<raw_t<T>>::type;
 
 struct arithmetic_tag : scalar_tag {};
 
@@ -92,7 +100,7 @@ struct depth<T, std::void_t<typename category_t<T>::has_nested>>
 
 template <class... Ts>
 using major_category = typename remove_cvref_t<decltype(
-    (... || std::declval<cdp<category_t<Ts>, depth<remove_cvref_t<Ts>>::value>>()))>::type;
+    (... || std::declval<cdp<category_t<Ts>, depth<raw_t<Ts>>::value>>()))>::type;
 
 }  // namespace detail
 
@@ -170,13 +178,6 @@ inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
 template <class, class... Ts>
 struct can_perform : std::false_type {};
 
-// Drop policy if operation isn't specialized for it.
-template <class Policy, class... Ts,
-          enable_int_if<is_policy_v<Policy> && !can_perform<void, Policy, Ts...>::value> = 0>
-inline constexpr decltype(auto) perform(const Policy&, const Ts&... xs) {
-    return perform(xs...);
-}
-
 template <class, class... Ts>
 struct has_fallback : std::false_type {};
 
@@ -184,11 +185,14 @@ template <class Op, class... Ts>
 struct has_fallback<std::void_t<decltype(Op::perform(std::declval<Ts>()...))>, Op, Ts...>
     : std::bool_constant<!is_expression_v<decltype(Op::perform(std::declval<Ts>()...))>> {};
 
-// Default evaluation provided by operation.
-template <class Op, class... Ts,
-          enable_int_if<is_operation_v<Op> && has_fallback<void, Op, Ts...>::value> = 0>
-inline constexpr auto perform(Op, const Ts&... xs) {
-    return Op::perform(xs...);
+// Drop policy if operation isn't specialized for it.
+template <class Op, class... Ts, enable_int_if<!can_perform<void, policy, Op, Ts...>::value> = 0>
+inline constexpr decltype(auto) perform(policy, Op op, const Ts&... xs) {
+    if constexpr (has_fallback<void, Op, Ts...>::value) {
+        return Op::perform(xs...);
+    } else {
+        return perform(op, xs...);
+    }
 }
 
 template <class... Ts>
@@ -210,6 +214,11 @@ inline constexpr decltype(auto) eval_dispatch(const Policy& policy, Op op, const
 template <class T>
 struct inplace_argument {
     T x;
+};
+
+template <class T>
+struct raw<inplace_argument<T>> {
+    using type = raw_t<T>;
 };
 
 template <class T>
