@@ -14,18 +14,7 @@
 namespace ac {
 namespace op {
 
-template <class B = none>
-struct base : operators::base<B> {
-    using operators::base<B>::base;
-};
-
 using operators::pass;
-
-template <class T>
-struct enable_adl : is_template_base_of<base, T> {};
-
-template <class... Ts>
-using int_if_adl = enable_int_if<(... || enable_adl<remove_cvref_t<Ts>>::value)>;
 
 // Default operation policy.
 struct policy {};
@@ -201,12 +190,11 @@ struct has_fallback : std::false_type {};
 
 template <class Op, class... Ts>
 struct has_fallback<std::void_t<decltype(Op::perform(std::declval<Ts>()...))>, Op, Ts...>
-    : std::bool_constant<!is_expression_v<decltype(Op::perform(std::declval<Ts>()...))>> {};
+    : std::true_type {};
 
 // Drop policy if operation isn't specialized for it.
 template <class Op, class... Ts,
-          enable_int_if<!can_perform<void, policy, Op, Ts...>::value &&
-                        (has_fallback<void, Op, Ts...>::value ||
+          enable_int_if<(has_fallback<void, Op, Ts...>::value ||
                          can_perform<void, Op, Ts...>::value)> = 0>
 inline constexpr decltype(auto) perform(policy, Op op, const Ts&... xs) {
     if constexpr (has_fallback<void, Op, Ts...>::value) {
@@ -278,7 +266,7 @@ struct expr_traits<false, Op, Ts...> : expr_traits<true, Op, policy, Ts...> {};
 
 // S is always std::make_index_sequence<sizeof...(Ts)>> to simplify arguments traversal.
 template <class Op, class S, class... Ts>
-struct expression {
+struct expression : operators::base<> {
     std::tuple<Ts...> args;
 
     static constexpr bool has_policy = is_policy_v<nth_t<0, Ts...>>;
@@ -294,16 +282,13 @@ struct expression {
 template <class... Ts>
 struct is_expression<expression<Ts...>> : std::true_type {};
 
-template <class... Ts>
-struct enable_adl<expression<Ts...>> : std::true_type {};
-
 template <class T, class U = remove_cvref_t<T>>
 using value_if_arithmetic = std::conditional_t<std::is_arithmetic_v<U>, U, T>;
 
 template <class Op, class... Ts>
 inline auto make_expression(Ts&&... xs) {
     return expression<Op, std::make_index_sequence<sizeof...(Ts)>, value_if_arithmetic<Ts>...>{
-        {std::forward<Ts>(xs)...}};
+        {}, {std::forward<Ts>(xs)...}};
 }
 
 template <class Policy, class Op, size_t... Is, class... Ts>

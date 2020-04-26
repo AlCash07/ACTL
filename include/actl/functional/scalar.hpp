@@ -141,27 +141,27 @@ inline constexpr Div div;
 inline constexpr Mul mul;
 inline constexpr Sub sub;
 
-template <class T, int_if_adl<T> = 0>
+template <class T>
 inline constexpr auto operator - (T&& x) {
     return neg(pass<T>(x));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator + (T&& lhs, U&& rhs) {
     return add(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator / (T&& lhs, U&& rhs) {
     return div(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator * (T&& lhs, U&& rhs) {
     return mul(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator - (T&& lhs, U&& rhs) {
     return sub(pass<T>(lhs), pass<U>(rhs));
 }
@@ -207,12 +207,12 @@ inline constexpr auto perform(Cmp3Way, const T& lhs, const U& rhs) {
     return cast<int>(less(rhs, lhs)) - cast<int>(less(lhs, rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator == (T&& lhs, U&& rhs) {
     return equal(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator < (T&& lhs, U&& rhs) {
     return less(pass<T>(lhs), pass<U>(rhs));
 }
@@ -257,17 +257,17 @@ inline constexpr LogicalNot logical_not;
 inline constexpr LogicalAnd logical_and;
 inline constexpr LogicalOr logical_or;
 
-template <class T, int_if_adl<T> = 0>
+template <class T>
 inline constexpr auto operator ! (T&& x) {
     return logical_not(pass<T>(x));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator && (T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator || (const T& lhs, const U& rhs) {
     return logical_or(pass<T>(lhs), pass<U>(rhs));
 }
@@ -323,22 +323,22 @@ inline constexpr BitAnd bit_and;
 inline constexpr BitOr bit_or;
 inline constexpr BitXor bit_xor;
 
-template <class T, int_if_adl<T> = 0>
+template <class T>
 inline constexpr auto operator ~ (T&& x) {
     return bit_not(pass<T>(x));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator & (T&& lhs, U&& rhs) {
     return bit_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator | (T&& lhs, U&& rhs) {
     return bit_or(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, int_if_adl<T, U> = 0>
+template <class T, class U>
 inline constexpr auto operator ^ (T&& lhs, U&& rhs) {
     return bit_xor(pass<T>(lhs), pass<U>(rhs));
 }

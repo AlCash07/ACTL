@@ -42,6 +42,31 @@ private:
     size_t hash() const { return hash_value(key()); }
 };
 
+template <class T, class = void>
+struct is_mimic_pair : std::false_type {};
+
+template <class T>
+struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type {};
+
+template <class T>
+inline decltype(auto) get_key(const T& x) {
+    if constexpr (is_mimic_pair<T>::value) {
+        return x.key();
+    } else {
+        return x;
+    }
+}
+
+template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
+inline auto operator == (const T& lhs, const U& rhs) {
+    return op::equal(get_key(lhs), get_key(rhs));
+}
+
+template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
+inline auto operator < (const T& lhs, const U& rhs) {
+    return op::less(get_key(lhs), get_key(rhs));
+}
+
 template <class Key>
 class second_map {
     using R = decltype(std::declval<Key>().second());
@@ -63,38 +88,6 @@ inline auto get_second(Map&& map) {
 }  // namespace ac::detail
 
 namespace ac {
-
-namespace op {
-
-struct mimic_tag {
-    struct has_nested;
-};
-
-template <class T>
-struct category_impl<T, std::void_t<typename T::is_mimic_pair>> {
-    using type = mimic_tag;
-};
-
-template <class T>
-inline decltype(auto) get_key(const T& x) {
-    if constexpr (std::is_same_v<category_t<T>, mimic_tag>) {
-        return x.key();
-    } else {
-        return x;
-    }
-}
-
-template <class Op>
-struct calculator<mimic_tag, Op, std::enable_if_t<is_comparison_operation_v<Op>>> {
-    static auto can_eval(...) -> std::true_type;
-
-    template <class Policy, class T, class U>
-    static auto evaluate(const Policy& policy, const T& lhs, const U& rhs) {
-        return eval(Op{}(policy, get_key(lhs), get_key(rhs)));
-    }
-};
-
-}  // namespace op
 
 template <class K>
 struct map_traits<detail::second_map<K>> : detail::second_map<K>::traits {};

@@ -38,8 +38,8 @@ private:
 namespace detail {
 
 template <class T>
-struct cpb1 : op::base<ebo<T>> {
-    using op::base<ebo<T>>::base;
+struct cpb1 : operators::base<ebo<T>> {
+    using operators::base<ebo<T>>::base;
 };
 
 template <class T>
@@ -75,12 +75,17 @@ private:
     INTROSPECT(first(), second())
 };
 
-namespace op {
+template <class T1, class T2>
+inline auto operator == (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+    return op::equal(lhs.first(), rhs.first()) && op::equal(lhs.second(), rhs.second());
+}
 
 template <class T1, class T2>
-inline auto perform(Equal, const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
-    return equal(lhs.first(), rhs.first()) && equal(lhs.second(), rhs.second());
+inline auto operator < (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+    return op::less(lhs, rhs);
 }
+
+namespace op {
 
 template <class Policy, class T1, class T2>
 inline auto perform(const Policy& policy, Less, const compressed_pair<T1, T2>& lhs,
