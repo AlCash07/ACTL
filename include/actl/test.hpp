@@ -72,7 +72,7 @@ struct abs_rel_error : virtual policy {
 };
 
 template <class E, class T, class U>
-inline bool perform(const abs_rel_error<E>& policy, Equal, const T& lhs, const U& rhs) {
+inline bool perform_policy(Equal, const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
     E numerator = abs(lhs - rhs);
     E denominator = max(max(abs(static_cast<E>(lhs)), abs(static_cast<E>(rhs))), E{1});
     return numerator <= policy.eps * denominator;

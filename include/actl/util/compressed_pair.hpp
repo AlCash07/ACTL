@@ -88,8 +88,8 @@ inline auto operator < (const compressed_pair<T1, T2>& lhs, const compressed_pai
 namespace op {
 
 template <class Policy, class T1, class T2>
-inline auto perform(const Policy& policy, Less, const compressed_pair<T1, T2>& lhs,
-                    const compressed_pair<T1, T2>& rhs) {
+inline auto perform_policy(Less, const Policy& policy, const compressed_pair<T1, T2>& lhs,
+                           const compressed_pair<T1, T2>& rhs) {
     int v = cmp3way(policy, lhs.first(), rhs.first());
     return v < 0 || (v == 0 && (bool)less(policy, lhs.second(), rhs.second()));
 }

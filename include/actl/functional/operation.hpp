@@ -182,31 +182,16 @@ struct is_expression : std::false_type {};
 template <class T>
 inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
 
-template <class, class... Ts>
-struct can_perform : std::false_type {};
-
-template <class, class... Ts>
-struct has_fallback : std::false_type {};
-
 template <class Op, class... Ts>
-struct has_fallback<std::void_t<decltype(Op::perform(std::declval<Ts>()...))>, Op, Ts...>
-    : std::true_type {};
-
-// Drop policy if operation isn't specialized for it.
-template <class Op, class... Ts,
-          enable_int_if<(has_fallback<void, Op, Ts...>::value ||
-                         can_perform<void, Op, Ts...>::value)> = 0>
-inline constexpr decltype(auto) perform(policy, Op op, const Ts&... xs) {
-    if constexpr (has_fallback<void, Op, Ts...>::value) {
-        return Op::perform(xs...);
-    } else {
-        return perform(op, xs...);
-    }
+inline constexpr auto perform(Op op, const Ts&... xs) -> decltype(Op::perform(xs...)) {
+    return Op::perform(xs...);
 }
 
-template <class... Ts>
-struct can_perform<std::void_t<decltype(perform(std::declval<Ts>()...))>, Ts...> : std::true_type {
-};
+// Drop policy if operation isn't specialized for it.
+template <class Op, class... Ts>
+inline constexpr auto perform_policy(Op op, policy, const Ts&... xs) -> decltype(perform(op, xs...)) {
+    return perform(op, xs...);
+}
 
 template <class Policy, class T, enable_int_if<!is_expression_v<T>> = 0>
 inline T eval(const Policy& policy, T&& x) {

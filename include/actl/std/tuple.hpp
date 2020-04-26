@@ -35,13 +35,13 @@ inline auto perform(Equal op, const std::tuple<Ts...>& lhs, const std::tuple<Us.
 }
 
 template <size_t I = 0, class Policy, class... Ts, class... Us>
-inline auto perform(const Policy& policy, Less op, const std::tuple<Ts...>& lhs,
+inline auto perform_policy(Less op, const Policy& policy, const std::tuple<Ts...>& lhs,
                     const std::tuple<Us...>& rhs) {
     if constexpr (I == sizeof...(Ts)) {
         return false;
     } else {
         int v = cmp3way(policy, std::get<I>(lhs), std::get<I>(rhs));
-        return v < 0 || (v == 0 && perform<I + 1>(policy, op, lhs, rhs));
+        return v < 0 || (v == 0 && perform<I + 1>(op, policy, lhs, rhs));
     }
 }
 

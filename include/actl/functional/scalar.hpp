@@ -27,13 +27,13 @@ struct calculator<
     Tag, Op, std::enable_if_t<std::is_base_of_v<scalar_tag, Tag> && is_scalar_operation_v<Op>>> {
     template <class Policy, class... Ts>
     static auto can_eval(const Policy& policy, const Ts&... xs)
-        -> decltype(eval(policy, perform(policy, Op{}, eval(policy, xs)...)), std::true_type{});
+        -> decltype(eval(policy, perform_policy(Op{}, policy, eval(policy, xs)...)), std::true_type{});
     
     static auto can_eval(...) -> std::false_type; 
 
     template <class Policy, class... Ts>
     static constexpr decltype(auto) evaluate(const Policy& policy, const Ts&... xs) {
-        return eval(policy, perform(policy, Op{}, eval(policy, xs)...));
+        return eval(policy, perform_policy(Op{}, policy, eval(policy, xs)...));
     }
 
     template <class T, class... Ts>
@@ -75,7 +75,7 @@ struct Copy : scalar_operation<Copy> {
 struct Ternary : scalar_operation<Ternary> {
     template <class B, class T, class U>
     static constexpr auto perform(const B& condition, const T& lhs, const U& rhs)
-        -> decltype(condition ? lhs : rhs) {
+        -> remove_cvref_t<decltype(condition ? lhs : rhs)> {
         return condition ? lhs : rhs;
     }
 };
@@ -179,8 +179,6 @@ struct comparison_operation : scalar_operation<Derived> {
     using operation_tag = comparison_operation_tag;
 };
 
-struct Cmp3Way : comparison_operation<Cmp3Way> {};
-
 struct Equal : comparison_operation<Equal> {
     struct is_commutative;
 
@@ -197,15 +195,17 @@ struct Less : comparison_operation<Less> {
     }
 };
 
-inline constexpr Cmp3Way cmp3way;
 inline constexpr Equal equal;
 inline constexpr Less less;
 
-// TODO: figure out a way to correctly handle rvalues here.
-template <class T, class U>
-inline constexpr auto perform(Cmp3Way, const T& lhs, const U& rhs) {
-    return cast<int>(less(rhs, lhs)) - cast<int>(less(lhs, rhs));
-}
+struct Cmp3Way : comparison_operation<Cmp3Way> {
+    // TODO: figure out a way to correctly handle rvalues here.
+    template <class T, class U>
+    static constexpr auto perform(const T& lhs, const U& rhs) {
+        return cast<int>(less(rhs, lhs)) - cast<int>(less(lhs, rhs));
+    }
+};
+inline constexpr Cmp3Way cmp3way;
 
 template <class T, class U>
 inline constexpr auto operator == (T&& lhs, U&& rhs) {
@@ -348,36 +348,36 @@ inline constexpr auto operator ^ (T&& lhs, U&& rhs) {
 struct Max : scalar_operation<Max> {
     struct is_associative;
     struct is_commutative;
+
+    template <class T, class U>
+    static constexpr auto perform(const T& lhs, const U& rhs) {
+        return ternary(less(lhs, rhs), rhs, lhs);
+    }
 };
 
 struct Min : scalar_operation<Min> {
     struct is_associative;
     struct is_commutative;
+
+    template <class T, class U>
+    static constexpr auto perform(const T& lhs, const U& rhs) {
+        return ternary(less(rhs, lhs), rhs, lhs);
+    }
 };
 
-struct Sgn : scalar_operation<Sgn> {};
+struct Sgn : scalar_operation<Sgn> {
+    template <class T>
+    static constexpr auto perform(const T& x) {
+        return cmp3way(x, T{0});
+    }
+};
 
-struct Sqr : scalar_operation<Sqr> {};
-
-template <class T, class U>
-inline constexpr auto perform(Max, const T& lhs, const U& rhs) {
-    return ternary(less(lhs, rhs), rhs, lhs);
-}
-
-template <class T, class U>
-inline constexpr auto perform(Min, const T& lhs, const U& rhs) {
-    return ternary(less(rhs, lhs), rhs, lhs);
-}
-
-template <class T>
-inline constexpr auto perform(Sgn, const T& x) {
-    return cmp3way(x, T{0});
-}
-
-template <class T>
-inline constexpr auto perform(Sqr, const T& x) {
-    return mul(x, x);
-}
+struct Sqr : scalar_operation<Sqr> {
+    template <class T>
+    static constexpr auto perform(const T& x) {
+        return mul(x, x);
+    }
+};
 
 inline constexpr Max max;
 inline constexpr Min min;
