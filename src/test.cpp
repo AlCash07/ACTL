@@ -158,12 +158,13 @@ int run(int argc, const char* argv[]) {
     size_t common_prefix_size = common_prefix.size();
     for (auto file_and_tests : tests_per_file) {
         const auto& filename = file_and_tests.first;
-        smin(common_prefix_size, filename.size());
-        for (size_t i = 0; i < common_prefix_size; ++i)
+        op::min(inplace(common_prefix_size), filename.size());
+        for (size_t i = 0; i < common_prefix_size; ++i) {
             if (filename[i] != common_prefix[i]) {
                 common_prefix_size = i;
                 break;
             }
+        }
     }
     int failed = 0;
     for (auto file_and_tests : tests_per_file) {

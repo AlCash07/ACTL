@@ -9,6 +9,20 @@
 #include <actl/test.hpp>
 #include <limits>
 
+TEST("inplace parameter") {
+    int x = 4;
+    ASSERT_EQUAL(5, op::max(5, inplace(x)));
+    ASSERT_EQUAL(5, x);
+    ASSERT_EQUAL(5, op::max(inplace(x), 3));
+    ASSERT_EQUAL(5, x);
+}
+
+TEST("output parameter") {
+    int res{};
+    ASSERT_EQUAL(6, op::add(out(res), 2, 4));
+    ASSERT_EQUAL(6, res);
+}
+
 TEST("arithmetics") {
     ASSERT_EQUAL(-6, op::neg(6));
     ASSERT_EQUAL(2, op::neg(-2));
@@ -48,20 +62,4 @@ TEST("op::sgn") {
 TEST("op::sqr") {
     ASSERT_EQUAL(36, op::sqr(6));
     ASSERT_EQUAL(4, op::sqr(-2));
-}
-
-TEST("smax") {
-    int x = 4;
-    ASSERT_EQUAL(5, smax(x, 5));
-    ASSERT_EQUAL(5, x);
-    ASSERT_EQUAL(5, smax(x, 3));
-    ASSERT_EQUAL(5, x);
-}
-
-TEST("smin") {
-    int x = 4;
-    ASSERT_EQUAL(4, smin(x, 5));
-    ASSERT_EQUAL(4, x);
-    ASSERT_EQUAL(3, smin(x, 3));
-    ASSERT_EQUAL(3, x);
 }

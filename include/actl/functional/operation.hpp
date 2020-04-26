@@ -42,14 +42,16 @@ inline constexpr bool is_policy_v = std::is_base_of_v<op::policy, remove_cvref_t
 template <bool In, class T>
 struct out {
     T x;
+
+    explicit out(T&& x) : x{std::forward<T>(x)} {}
 };
 
 template <class T>
 out(T&&) -> out<false, T>;
 
 template <class T>
-inline out<true, T> inplace(T&& x) {
-    return {std::forward<T>(x)};
+inline auto inplace(T&& x) {
+    return out<true, T>{std::forward<T>(x)};
 }
 
 namespace op {
@@ -239,7 +241,7 @@ inline T eval(const Policy& policy, T&& x) {
 }
 
 template <class Policy, class T>
-inline decltype(auto) eval(const Policy& policy, out<true, T> x) {
+inline decltype(auto) eval(const Policy& policy, const out<true, T>& x) {
     return eval(policy, x.x);
 }
 

@@ -34,7 +34,7 @@ struct calculator<
     template <class Policy, class... Ts>
     static constexpr decltype(auto) evaluate(const Policy& policy, const Ts&... xs) {
         return eval(policy, perform(policy, Op{}, eval(policy, xs)...));
-}
+    }
 
     template <class T, class... Ts>
     static auto& get_dst(T&, Ts&... xs) {
@@ -52,7 +52,7 @@ struct calculator<
     }
 
     template <class Policy, class T, class... Ts>
-    static constexpr T& assign(const Policy& policy, out<false, T> dst, const Ts&... xs) {
+    static constexpr T& assign(const Policy& policy, out<false, T>& dst, Ts&... xs) {
         return dst.x = evaluate(policy, xs...);
     }
 };
@@ -385,27 +385,3 @@ inline constexpr Sgn sgn;
 inline constexpr Sqr sqr;
 
 }  // namespace ac::op
-
-namespace ac {
-
-template <class Policy, class T, class U>
-inline constexpr T& smax(const Policy& policy, T& x, const U& y) {
-    return op::less(policy, x, y) ? x = y : x;
-}
-
-template <class T, class U>
-inline constexpr T& smax(T& x, const U& y) {
-    return smax(default_policy, x, y);
-}
-
-template <class Policy, class T, class U>
-inline constexpr T& smin(const Policy& policy, T& x, const U& y) {
-    return op::less(policy, y, x) ? x = y : x;
-}
-
-template <class T, class U>
-inline constexpr T& smin(T& x, const U& y) {
-    return smin(default_policy, x, y);
-}
-
-}  // namespace ac
