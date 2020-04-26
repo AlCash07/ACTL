@@ -19,6 +19,8 @@ struct base : operators::base<B> {
     using operators::base<B>::base;
 };
 
+using operators::pass;
+
 template <class T>
 struct enable_adl : is_template_base_of<base, T> {};
 
@@ -233,7 +235,7 @@ struct can_perform<std::void_t<decltype(perform(std::declval<Ts>()...))>, Ts...>
 
 template <class Policy, class T, enable_int_if<!is_expression_v<T>> = 0>
 inline T eval(const Policy& policy, T&& x) {
-    return std::forward<T>(x);
+    return pass<T>(x);
 }
 
 template <class Policy, class T>
@@ -353,7 +355,7 @@ struct operation {
             if constexpr (have_policy && sizeof...(Ts) == 1) {
                 return make_function(xs...);
             } else {
-                return make_expression<Derived>(std::forward<Ts>(xs)...);
+                return make_expression<Derived>(pass<Ts>(xs)...);
             }
         }
     }
