@@ -36,7 +36,7 @@ inline auto perform(Equal op, const std::tuple<Ts...>& lhs, const std::tuple<Us.
 
 template <size_t I = 0, class Policy, class... Ts, class... Us>
 inline auto perform_policy(Less op, const Policy& policy, const std::tuple<Ts...>& lhs,
-                    const std::tuple<Us...>& rhs) {
+                           const std::tuple<Us...>& rhs) {
     if constexpr (I == sizeof...(Ts)) {
         return false;
     } else {

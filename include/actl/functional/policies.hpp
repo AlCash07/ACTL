@@ -53,7 +53,8 @@ inline constexpr int perform_policy(Sgn, const absolute_error<E>& policy, const 
 template <class Op, class E, class T, class U,
           enable_int_if<is_comparison_operation_v<Op> &&
                         (std::is_floating_point_v<T> || std::is_floating_point_v<U>)> = 0>
-inline constexpr auto perform_policy(Op op, const absolute_error<E>& policy, const T& lhs, const U& rhs) {
+inline constexpr auto perform_policy(Op op, const absolute_error<E>& policy, const T& lhs,
+                                     const U& rhs) {
     return op(sgn(sub(lhs, rhs)), 0);
 }
 
