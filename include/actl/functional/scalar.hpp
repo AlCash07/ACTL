@@ -22,10 +22,39 @@ struct scalar_operation : operation<Derived, Arity> {
     using operation_tag = scalar_operation_tag;
 };
 
-template <class Policy, class Op, class... Ts, enable_int_if<is_scalar_operation_v<Op>> = 0>
-inline constexpr decltype(auto) eval(scalar_tag, const Policy& policy, Op op, const Ts&... xs) {
-    return eval(policy, perform(policy, op, eval(policy, xs)...));
+template <class Tag, class Op>
+struct calculator<Tag, Op, std::enable_if_t<std::is_base_of_v<scalar_tag, Tag> && is_scalar_operation_v<Op>>> {
+    template <class Policy, class... Ts>
+    static auto can_eval(const Policy& policy, const Ts&... xs) -> 
+        decltype(eval(policy, perform(policy, Op{}, eval(policy, xs)...)), std::true_type{});
+    
+    static auto can_eval(...) -> std::false_type; 
+
+    template <class Policy, class... Ts>
+    static constexpr decltype(auto) evaluate(const Policy& policy, const Ts&... xs) {
+        return eval(policy, perform(policy, Op{}, eval(policy, xs)...));
 }
+
+    template <class T, class... Ts>
+    static auto& get_dst(T&, Ts&... xs) {
+        return get_dst(xs...);
+    }
+
+    template <bool In, class T, class... Ts>
+    static T& get_dst(out<In, T>& x, Ts&... xs) {
+        return x.x;
+    }
+
+    template <class Policy, class... Ts>
+    static constexpr auto& assign(const Policy& policy, Ts&... xs) {
+        return get_dst(xs...) = evaluate(policy, xs...);
+    }
+
+    template <class Policy, class T, class... Ts>
+    static constexpr T& assign(const Policy& policy, out<false, T> dst, const Ts&... xs) {
+        return dst.x = evaluate(policy, xs...);
+    }
+};
 
 template <class To>
 struct Cast : scalar_operation<Cast<To>, 1> {
@@ -111,29 +140,29 @@ inline constexpr Div div;
 inline constexpr Mul mul;
 inline constexpr Sub sub;
 
-template <class T, enable_adl<T> = 0>
+template <class T, int_if_adl<T> = 0>
 inline constexpr auto operator - (const T& x) {
     return neg(x);
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator + (const T& lhs, const U& rhs) {
     return add(lhs, rhs);
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator / (const T& lhs, const U& rhs) {
     return div(lhs, rhs);
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator * (const T& lhs, const U& rhs) {
     return mul(lhs, rhs);
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
-inline constexpr auto operator - (const T& lhs, const U& rhs) {
-    return sub(lhs, rhs);
+template <class T, class U, int_if_adl<T, U> = 0>
+inline constexpr auto operator - (T&& lhs, U&& rhs) {
+    return sub(std::forward<T>(lhs), std::forward<U>(rhs));
 }
 
 /* Comparison operations */
@@ -176,12 +205,12 @@ inline constexpr auto perform(Cmp3Way, const T& lhs, const U& rhs) {
     return cast<int>(less(rhs, lhs)) - cast<int>(less(lhs, rhs));
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
-inline constexpr auto operator == (const T& lhs, const U& rhs) {
-    return equal(lhs, rhs);
+template <class T, class U, int_if_adl<T, U> = 0>
+inline constexpr auto operator == (T&& lhs, U&& rhs) {
+    return equal(std::forward<T>(lhs), std::forward<U>(rhs));
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator < (const T& lhs, const U& rhs) {
     return less(lhs, rhs);
 }
@@ -226,17 +255,17 @@ inline constexpr LogicalNot logical_not;
 inline constexpr LogicalAnd logical_and;
 inline constexpr LogicalOr logical_or;
 
-template <class T, enable_adl<T> = 0>
-inline constexpr auto operator ! (const T& x) {
-    return logical_not(x);
+template <class T, int_if_adl<T> = 0>
+inline constexpr auto operator ! (T&& x) {
+    return logical_not(std::forward<T>(x));
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
-inline constexpr auto operator && (const T& lhs, const U& rhs) {
-    return logical_and(lhs, rhs);
+template <class T, class U, int_if_adl<T, U> = 0>
+inline constexpr auto operator && (T&& lhs, U&& rhs) {
+    return logical_and(std::forward<T>(lhs), std::forward<U>(rhs));
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator || (const T& lhs, const U& rhs) {
     return logical_or(lhs, rhs);
 }
@@ -292,22 +321,22 @@ inline constexpr BitAnd bit_and;
 inline constexpr BitOr bit_or;
 inline constexpr BitXor bit_xor;
 
-template <class T, enable_adl<T> = 0>
+template <class T, int_if_adl<T> = 0>
 inline constexpr auto operator ~ (const T& x) {
     return bit_not(x);
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator & (const T& lhs, const U& rhs) {
     return bit_and(lhs, rhs);
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator | (const T& lhs, const U& rhs) {
     return bit_or(lhs, rhs);
 }
 
-template <class T, class U, enable_adl<T, U> = 0>
+template <class T, class U, int_if_adl<T, U> = 0>
 inline constexpr auto operator ^ (const T& lhs, const U& rhs) {
     return bit_xor(lhs, rhs);
 }

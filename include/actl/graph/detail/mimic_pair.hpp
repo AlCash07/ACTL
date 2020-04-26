@@ -84,11 +84,15 @@ inline decltype(auto) get_key(const T& x) {
     }
 }
 
-template <class Policy, class Op, class T, class U,
-          enable_int_if<std::is_same_v<Op, Equal> || std::is_same_v<Op, Less>> = 0>
-inline auto eval(mimic_tag, const Policy& policy, Op op, const T& lhs, const U& rhs) {
-    return eval_dispatch(policy, op, get_key(lhs), get_key(rhs));
-}
+template <class Op>
+struct calculator<mimic_tag, Op, std::enable_if_t<is_comparison_operation_v<Op>>> {
+    static auto can_eval(...) -> std::true_type;
+
+    template <class Policy, class T, class U>
+    static auto evaluate(const Policy& policy, const T& lhs, const U& rhs) {
+        return eval(Op{}(policy, get_key(lhs), get_key(rhs)));
+    }
+};
 
 }  // namespace op
 

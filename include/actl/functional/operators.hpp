@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/util/none.hpp>
+#include <utility>
 
 namespace ac::operators {
 
@@ -20,8 +21,9 @@ struct base : B {
 };
 
 template <class T, class U>
-inline constexpr auto operator != (const T& lhs, const U& rhs) -> decltype(!(lhs == rhs)) {
-    return !(lhs == rhs);
+inline constexpr auto operator != (T&& lhs, U&& rhs) 
+-> decltype(!(std::forward<T>(lhs) == std::forward<U>(rhs))) {
+    return !(std::forward<T>(lhs) == std::forward<U>(rhs));
 }
 
 template <class T, class U>

@@ -46,7 +46,7 @@ struct absolute_error : E, virtual policy {};
 
 template <class E, class T, enable_int_if<std::is_floating_point_v<T>> = 0>
 inline constexpr int perform(const absolute_error<E>& policy, Sgn, const T& x) {
-    if (less(abs(x), policy.epsilon())) return 0;
+    if (eval(less(abs(x), policy.epsilon()))) return 0;
     return x < 0 ? -1 : 1;
 }
 
@@ -67,7 +67,7 @@ public:
 
     operator decltype(eval(sqrt(std::declval<T>())))() const { return eval(sqrt(sqr_)); }
 
-    friend constexpr const T& eval(policy, Sqr, const square_root& x) { return x.sqr_; }
+    friend constexpr const T& eval(Sqr, policy, const square_root& x) { return x.sqr_; }
 
     template <class Op, enable_int_if<is_comparison_operation_v<Op>> = 0>
     friend constexpr auto perform(Op op, const square_root& lhs, const square_root& rhs) {

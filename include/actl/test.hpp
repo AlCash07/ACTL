@@ -72,8 +72,7 @@ struct abs_rel_error : virtual policy {
 };
 
 template <class E, class T, class U>
-inline bool eval(arithmetic_tag, const abs_rel_error<E>& policy, Equal, const T& lhs,
-                 const U& rhs) {
+inline bool perform(const abs_rel_error<E>& policy, Equal, const T& lhs, const U& rhs) {
     E numerator = abs(lhs - rhs);
     E denominator = max(max(abs(static_cast<E>(lhs)), abs(static_cast<E>(rhs))), E{1});
     return numerator <= policy.eps * denominator;
@@ -109,25 +108,27 @@ struct assert_impl {
 
     template <class T, class U>
     inline void check_equal(const T& expected, const U& actual) const {
-        if (op::equal(op::allow_promotion{}, expected, actual)) return;
+        if (eval(op::allow_promotion{}, op::equal(expected, actual))) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U>
     inline void check_not_equal(const T& not_expected, const U& actual) const {
-        if (!op::equal(op::allow_promotion{}, not_expected, actual)) return;
+        if (!eval(op::allow_promotion{}, op::equal(not_expected, actual))) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U, class E>
     inline void check_equal(const T& expected, const U& actual, E eps) const {
-        if (op::equal(op::abs_rel_error<E>{eps}, expected, actual)) return;
+        if (eval(op::abs_rel_error<E>{eps}, op::equal(expected, actual))) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
-    inline void check_true(bool condition) const { check_equal(true, condition); }
+    template <class T>
+    inline void check_true(const T& condition) const { check_equal(true, condition); }
 
-    inline void check_false(bool condition) const { check_equal(false, condition); }
+    template <class T>
+    inline void check_false(const T& condition) const { check_equal(false, condition); }
 
     template <class T>
     inline void check_sets(std::vector<T> expected, std::vector<T> actual) const {

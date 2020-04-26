@@ -13,7 +13,7 @@ using namespace ac::io;
 
 TEST("write pair") {
     char s[3];
-    ASSERT_TRUE(2 <= write(memory<bin | out>{s}, std::pair{'a', 'c'}, std::pair{'b', 'c'}));
+    ASSERT_TRUE(2 <= write(memory<bin | io::out>{s}, std::pair{'a', 'c'}, std::pair{'b', 'c'}));
     ASSERT_EQUAL("ac"sv, span{s, 2});
 }
 
