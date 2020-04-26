@@ -125,10 +125,14 @@ struct assert_impl {
     }
 
     template <class T>
-    inline void check_true(const T& condition) const { check_equal(true, condition); }
+    inline void check_true(const T& condition) const {
+        check_equal(true, condition);
+    }
 
     template <class T>
-    inline void check_false(const T& condition) const { check_equal(false, condition); }
+    inline void check_false(const T& condition) const {
+        check_equal(false, condition);
+    }
 
     template <class T>
     inline void check_sets(std::vector<T> expected, std::vector<T> actual) const {

@@ -23,10 +23,11 @@ struct scalar_operation : operation<Derived, Arity> {
 };
 
 template <class Tag, class Op>
-struct calculator<Tag, Op, std::enable_if_t<std::is_base_of_v<scalar_tag, Tag> && is_scalar_operation_v<Op>>> {
+struct calculator<
+    Tag, Op, std::enable_if_t<std::is_base_of_v<scalar_tag, Tag> && is_scalar_operation_v<Op>>> {
     template <class Policy, class... Ts>
-    static auto can_eval(const Policy& policy, const Ts&... xs) -> 
-        decltype(eval(policy, perform(policy, Op{}, eval(policy, xs)...)), std::true_type{});
+    static auto can_eval(const Policy& policy, const Ts&... xs)
+        -> decltype(eval(policy, perform(policy, Op{}, eval(policy, xs)...)), std::true_type{});
     
     static auto can_eval(...) -> std::false_type; 
 

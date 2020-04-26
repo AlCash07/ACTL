@@ -215,8 +215,10 @@ struct has_fallback<std::void_t<decltype(Op::perform(std::declval<Ts>()...))>, O
     : std::bool_constant<!is_expression_v<decltype(Op::perform(std::declval<Ts>()...))>> {};
 
 // Drop policy if operation isn't specialized for it.
-template <class Op, class... Ts, enable_int_if<!can_perform<void, policy, Op, Ts...>::value && 
-    (has_fallback<void, Op, Ts...>::value || can_perform<void, Op, Ts...>::value)> = 0>
+template <class Op, class... Ts,
+          enable_int_if<!can_perform<void, policy, Op, Ts...>::value &&
+                        (has_fallback<void, Op, Ts...>::value ||
+                         can_perform<void, Op, Ts...>::value)> = 0>
 inline constexpr decltype(auto) perform(policy, Op op, const Ts&... xs) {
     if constexpr (has_fallback<void, Op, Ts...>::value) {
         return Op::perform(xs...);
@@ -252,7 +254,7 @@ struct calc<Op, Policy, Ts...> {
     using type = calculator<detail::major_category<result_t<Policy, const Ts&>...>, Op>;
 };
 
-}
+}  // namespace detail
 
 template <class... Ts>
 using calculator_t = typename detail::calc<Ts...>::type;
@@ -283,7 +285,7 @@ struct expr_traits {
 template <class Op, class... Ts>
 struct expr_traits<false, Op, Ts...> : expr_traits<true, Op, policy, Ts...> {};
 
-}
+}  // namespace detail
 
 // S is always std::make_index_sequence<sizeof...(Ts)>> to simplify arguments traversal.
 template <class Op, class S, class... Ts>
@@ -295,7 +297,9 @@ struct expression {
     using traits = detail::expr_traits<has_policy, Op, Ts...>;
 
     template <bool B = traits::can_eval, enable_int_if<B> = 0>
-    operator typename traits::type() const { return eval(*this); }
+    operator typename traits::type() const {
+        return eval(*this);
+    }
 };
 
 template <class... Ts>
