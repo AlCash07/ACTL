@@ -29,13 +29,13 @@ struct math_operation : scalar_operation<Derived> {
     };                                                               \
     inline constexpr name op;
 
-#define MATH_OP2(name, op)                                                   \
-    struct name : math_operation<name> {                                     \
-        template <class T>                                                   \
-        static constexpr auto perform(T x, T y) -> decltype(std::op(x, y)) { \
-            return std::op(x, y);                                            \
-        }                                                                    \
-    };                                                                       \
+#define MATH_OP2(name, op)                                                           \
+    struct name : math_operation<name> {                                             \
+        template <class T>                                                           \
+        static constexpr auto perform(T lhs, T rhs) -> decltype(std::op(lhs, rhs)) { \
+            return std::op(lhs, rhs);                                                \
+        }                                                                            \
+    };                                                                               \
     inline constexpr name op;
 
 MATH_OP1(Abs, abs)
@@ -49,7 +49,7 @@ MATH_OP2(Atan2, atan2)
 #undef MATH_OP2
 
 template <class T, enable_int_if<std::is_unsigned_v<T>> = 0>
-inline constexpr const T& perform(Abs, const T& x) {
+inline constexpr T perform(Abs, T x) {
     return x;
 }
 
