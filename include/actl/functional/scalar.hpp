@@ -17,8 +17,8 @@ template <class T>
 inline constexpr bool is_scalar_operation_v =
     std::is_base_of_v<scalar_operation_tag, operation_tag_t<T>>;
 
-template <class Derived, int Arity>
-struct scalar_operation : operation<Derived, Arity> {
+template <class Derived>
+struct scalar_operation : operation<Derived> {
     using operation_tag = scalar_operation_tag;
 };
 
@@ -58,21 +58,21 @@ struct calculator<
 };
 
 template <class To>
-struct Cast : scalar_operation<Cast<To>, 1> {
+struct Cast : scalar_operation<Cast<To>> {
     template <class T>
     static constexpr auto perform(const T& x) -> decltype(static_cast<To>(x)) {
         return static_cast<To>(x);
     }
 };
 
-struct Copy : scalar_operation<Copy, 1> {
+struct Copy : scalar_operation<Copy> {
     template <class T>
     static constexpr auto perform(const T& x) {
         return x;
     }
 };
 
-struct Ternary : scalar_operation<Ternary, 3> {
+struct Ternary : scalar_operation<Ternary> {
     template <class B, class T, class U>
     static constexpr auto perform(const B& condition, const T& lhs, const U& rhs)
         -> decltype(condition ? lhs : rhs) {
@@ -89,19 +89,19 @@ inline constexpr Ternary ternary;
 
 struct arithmetic_operation_tag : scalar_operation_tag {};
 
-template <class Derived, int Arity>
-struct arithmetic_operation : scalar_operation<Derived, Arity> {
+template <class Derived>
+struct arithmetic_operation : scalar_operation<Derived> {
     using operation_tag = arithmetic_operation_tag;
 };
 
-struct Neg : arithmetic_operation<Neg, 1> {
+struct Neg : arithmetic_operation<Neg> {
     template <class T>
     static constexpr auto perform(const T& x) -> decltype(-x) {
         return -x;
     }
 };
 
-struct Add : arithmetic_operation<Add, 2> {
+struct Add : arithmetic_operation<Add> {
     struct is_associative;
     struct is_commutative;
 
@@ -111,14 +111,14 @@ struct Add : arithmetic_operation<Add, 2> {
     }
 };
 
-struct Div : arithmetic_operation<Div, 2> {
+struct Div : arithmetic_operation<Div> {
     template <class T>
     static constexpr auto perform(const T& x, const T& y) -> decltype(x / y) {
         return x / y;
     }
 };
 
-struct Mul : arithmetic_operation<Mul, 2> {
+struct Mul : arithmetic_operation<Mul> {
     struct is_associative;
     struct is_commutative;
 
@@ -128,7 +128,7 @@ struct Mul : arithmetic_operation<Mul, 2> {
     }
 };
 
-struct Sub : arithmetic_operation<Sub, 2> {
+struct Sub : arithmetic_operation<Sub> {
     template <class T>
     static constexpr auto perform(const T& x, const T& y) -> decltype(x - y) {
         return x - y;
@@ -174,14 +174,14 @@ template <class T>
 inline constexpr bool is_comparison_operation_v =
     std::is_base_of_v<comparison_operation_tag, operation_tag_t<T>>;
 
-template <class Derived, int Arity>
-struct comparison_operation : scalar_operation<Derived, Arity> {
+template <class Derived>
+struct comparison_operation : scalar_operation<Derived> {
     using operation_tag = comparison_operation_tag;
 };
 
-struct Cmp3Way : comparison_operation<Cmp3Way, 2> {};
+struct Cmp3Way : comparison_operation<Cmp3Way> {};
 
-struct Equal : comparison_operation<Equal, 2> {
+struct Equal : comparison_operation<Equal> {
     struct is_commutative;
 
     template <class T>
@@ -190,7 +190,7 @@ struct Equal : comparison_operation<Equal, 2> {
     }
 };
 
-struct Less : comparison_operation<Less, 2> {
+struct Less : comparison_operation<Less> {
     template <class T>
     static constexpr auto perform(const T& x, const T& y) -> decltype(x < y) {
         return x < y;
@@ -221,19 +221,19 @@ inline constexpr auto operator < (T&& lhs, U&& rhs) {
 
 struct logical_operation_tag : scalar_operation_tag {};
 
-template <class Derived, int Arity>
-struct logical_operation : scalar_operation<Derived, Arity> {
+template <class Derived>
+struct logical_operation : scalar_operation<Derived> {
     using operation_tag = logical_operation_tag;
 };
 
-struct LogicalNot : logical_operation<LogicalNot, 1> {
+struct LogicalNot : logical_operation<LogicalNot> {
     template <class T>
     static constexpr auto perform(const T& x) -> decltype(!x) {
         return !x;
     }
 };
 
-struct LogicalAnd : logical_operation<LogicalAnd, 2> {
+struct LogicalAnd : logical_operation<LogicalAnd> {
     struct is_associative;
     struct is_commutative;
 
@@ -243,7 +243,7 @@ struct LogicalAnd : logical_operation<LogicalAnd, 2> {
     }
 };
 
-struct LogicalOr : logical_operation<LogicalOr, 2> {
+struct LogicalOr : logical_operation<LogicalOr> {
     struct is_associative;
     struct is_commutative;
 
@@ -276,19 +276,19 @@ inline constexpr auto operator || (const T& lhs, const U& rhs) {
 
 struct bit_operation_tag : scalar_operation_tag {};
 
-template <class Derived, int Arity>
-struct bit_operation : scalar_operation<Derived, Arity> {
+template <class Derived>
+struct bit_operation : scalar_operation<Derived> {
     using operation_tag = bit_operation_tag;
 };
 
-struct BitNot : bit_operation<BitNot, 1> {
+struct BitNot : bit_operation<BitNot> {
     template <class T>
     static constexpr auto perform(const T& x) -> decltype(~x) {
         return ~x;
     }
 };
 
-struct BitAnd : bit_operation<BitAnd, 2> {
+struct BitAnd : bit_operation<BitAnd> {
     struct is_associative;
     struct is_commutative;
 
@@ -298,7 +298,7 @@ struct BitAnd : bit_operation<BitAnd, 2> {
     }
 };
 
-struct BitOr : bit_operation<BitOr, 2> {
+struct BitOr : bit_operation<BitOr> {
     struct is_associative;
     struct is_commutative;
 
@@ -308,7 +308,7 @@ struct BitOr : bit_operation<BitOr, 2> {
     }
 };
 
-struct BitXor : bit_operation<BitXor, 2> {
+struct BitXor : bit_operation<BitXor> {
     struct is_associative;
     struct is_commutative;
 
@@ -345,19 +345,19 @@ inline constexpr auto operator ^ (T&& lhs, U&& rhs) {
 
 /* Derived operations */
 
-struct Max : scalar_operation<Max, 2> {
+struct Max : scalar_operation<Max> {
     struct is_associative;
     struct is_commutative;
 };
 
-struct Min : scalar_operation<Min, 2> {
+struct Min : scalar_operation<Min> {
     struct is_associative;
     struct is_commutative;
 };
 
-struct Sgn : scalar_operation<Sgn, 1> {};
+struct Sgn : scalar_operation<Sgn> {};
 
-struct Sqr : scalar_operation<Sqr, 1> {};
+struct Sqr : scalar_operation<Sqr> {};
 
 template <class T, class U>
 inline constexpr auto perform(Max, const T& lhs, const U& rhs) {

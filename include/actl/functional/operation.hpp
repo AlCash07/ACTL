@@ -160,26 +160,13 @@ inline constexpr bool is_operation_v = !std::is_same<operation_tag_t<T>, void>::
 template <class T>
 using enable_int_if_operation = enable_int_if<is_operation_v<T>>;
 
-/* Operation arity trait: defined by nested `static constexpr int arity = N;`. */
-
-template <class T, class = void>
-struct arity : index_constant<0> {};
-
-template <class T>
-struct arity<T, std::void_t<decltype(T::arity)>> : index_constant<T::arity> {};
-
-template <class T>
-inline constexpr index arity_v = arity<T>::value;
-
 /* Operation is_associative trait: defined by nested `struct is_associative;`. */
 
 template <class T, class = void>
 struct is_associative : std::false_type {};
 
 template <class T>
-struct is_associative<T, std::void_t<typename T::is_associative>> : std::true_type {
-    static_assert(arity_v<T> == 2, "only binary operation can be associative");
-};
+struct is_associative<T, std::void_t<typename T::is_associative>> : std::true_type {};
 
 template <class T>
 inline constexpr bool is_associative_v = is_associative<T>::value;
@@ -190,9 +177,7 @@ template <class T, class = void>
 struct is_commutative : std::false_type {};
 
 template <class T>
-struct is_commutative<T, std::void_t<typename T::is_commutative>> : std::true_type {
-    static_assert(arity_v<T> == 2, "only binary operation can be commutative");
-};
+struct is_commutative<T, std::void_t<typename T::is_commutative>> : std::true_type {};
 
 template <class T>
 inline constexpr bool is_commutative_v = is_commutative<T>::value;
@@ -337,11 +322,9 @@ inline decltype(auto) eval(const expression<Ts...>& e) {
 }
 
 // Base class for operations.
-template <class Derived, int Arity>
+template <class Derived>
 struct operation {
     using operation_tag = base_operation_tag;
-
-    static constexpr int arity = Arity;
 
     template <class... Ts>
     decltype(auto) operator()(Ts&&... xs) const {
