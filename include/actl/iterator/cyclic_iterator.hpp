@@ -47,7 +47,7 @@ private:
 
     void advance(difference_t<It> n) {
         auto cycle = static_cast<difference_t<It>>(std::size(*range_));
-        ACTL_ASSERT(op::abs(n) < cycle);
+        ACTL_ASSERT(math::abs(n) < cycle);
         if (n > 0) {
             it() += n - (n >= (end() - it()) ? cycle : 0);
         } else {

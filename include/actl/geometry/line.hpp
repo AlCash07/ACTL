@@ -189,7 +189,7 @@ inline constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l) {
 // Policy to indicate that scalar is expected instead of a point. This scalar can be passed to line
 // operator () to get the point.
 template <class Policy>
-struct line_scalar_policy : virtual op::policy {
+struct line_scalar_policy : virtual math::policy {
     explicit line_scalar_policy(const Policy& x) : policy{x} {}
 
     const Policy& policy;

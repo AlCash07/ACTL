@@ -12,19 +12,19 @@
 #include <tuple>
 
 namespace ac {
-namespace op {
+namespace math {
 
 using operators::pass;
 
 // Default operation policy.
 struct policy {};
 
-}  // namespace op
+}  // namespace math
 
-inline constexpr op::policy default_policy;
+inline constexpr math::policy default_policy;
 
 template <class T>
-inline constexpr bool is_policy_v = std::is_base_of_v<op::policy, remove_cvref_t<T>>;
+inline constexpr bool is_policy_v = std::is_base_of_v<math::policy, remove_cvref_t<T>>;
 
 /* Output and inplace parameters */
 
@@ -43,7 +43,7 @@ inline auto inplace(T&& x) {
     return out<true, T>{std::forward<T>(x)};
 }
 
-namespace op {
+namespace math {
 
 /* Argument traits */
 
@@ -324,5 +324,5 @@ private:
     }
 };
 
-}  // namespace op
+}  // namespace math
 }  // namespace ac

@@ -77,15 +77,15 @@ private:
 
 template <class T1, class T2>
 inline auto operator == (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
-    return op::equal(lhs.first(), rhs.first()) && op::equal(lhs.second(), rhs.second());
+    return math::equal(lhs.first(), rhs.first()) && math::equal(lhs.second(), rhs.second());
 }
 
 template <class T1, class T2>
 inline auto operator < (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
-    return op::less(lhs, rhs);
+    return math::less(lhs, rhs);
 }
 
-namespace op {
+namespace math {
 
 template <class Policy, class T1, class T2>
 inline auto perform_policy(Less, const Policy& policy, const compressed_pair<T1, T2>& lhs,
@@ -94,6 +94,6 @@ inline auto perform_policy(Less, const Policy& policy, const compressed_pair<T1,
     return v < 0 || (v == 0 && (bool)less(policy, lhs.second(), rhs.second()));
 }
 
-}  // namespace op
+}  // namespace math
 
 }  // namespace ac

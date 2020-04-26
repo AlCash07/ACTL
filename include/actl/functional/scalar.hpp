@@ -9,7 +9,7 @@
 
 #include <actl/functional/operation.hpp>
 
-namespace ac::op {
+namespace ac::math {
 
 struct scalar_operation_tag : base_operation_tag {};
 
@@ -378,4 +378,4 @@ struct Sqr : scalar_operation<Sqr> {
 };
 inline constexpr Sqr sqr;
 
-}  // namespace ac::op
+}  // namespace ac::math

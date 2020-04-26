@@ -11,7 +11,7 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace ac::op {
+namespace ac::math {
 
 struct math_operation_tag : scalar_operation_tag {};
 
@@ -53,4 +53,4 @@ inline constexpr T perform(Abs, T x) {
     return x;
 }
 
-}  // namespace ac::op
+}  // namespace ac::math

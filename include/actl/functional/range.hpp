@@ -11,7 +11,7 @@
 #include <actl/range/traits.hpp>
 #include <algorithm>
 
-namespace ac::op {
+namespace ac::math {
 
 struct range_tag {
     struct has_nested;
@@ -44,4 +44,4 @@ struct calculator<range_tag, Less> {
     }
 };
 
-}  // namespace ac::op
+}  // namespace ac::math

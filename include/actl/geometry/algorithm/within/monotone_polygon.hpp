@@ -25,11 +25,11 @@ inline enum within within(const Policy& policy, const point<T>& p,
     const index right = poly.right();
     auto first = poly.begin();
     if (less(policy, p, poly[0]) || less(policy, first[right], p)) return within::outside;
-    auto lit = std::lower_bound(first + 1, first + right, p, op::less_functor(policy));
+    auto lit = std::lower_bound(first + 1, first + right, p, math::less_functor(policy));
     auto orient = orientation(policy, p, lit[0], lit[-1]);
     if (orient == orientation2d::right) {
         auto uit =
-            std::lower_bound(poly.rbegin(), poly.rend() - right - 1, p, op::less_functor(policy));
+            std::lower_bound(poly.rbegin(), poly.rend() - right - 1, p, math::less_functor(policy));
         orient = orientation(policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]);
     }
     return detail::to_inclusion(orient);

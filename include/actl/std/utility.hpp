@@ -19,7 +19,7 @@ inline constexpr size_t hash_value(const std::pair<T1, T2>& x) {
     return hash_value(x.first, x.second);
 }
 
-namespace op {
+namespace math {
 
 template <class T1, class T2>
 inline auto perform(Equal, const std::pair<T1, T2>& lhs, const std::pair<T1, T2>& rhs) {
@@ -33,7 +33,7 @@ inline auto perform_policy(Less, const Policy& policy, const std::pair<T1, T2>& 
     return v < 0 || (v == 0 && less(policy, lhs.second, rhs.second));
 }
 
-}  // namespace op
+}  // namespace math
 
 namespace io {
 

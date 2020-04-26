@@ -35,7 +35,7 @@ TEST("general position all kinds") {
                             }
                             ASSERT_EQUAL(expected, crosses(h, v));
                             ASSERT_EQUAL(expected,
-                                         crosses(general_position_policy{op::policy{}}, h, v));
+                                         crosses(general_position_policy{math::policy{}}, h, v));
                         }
                     }
                 }

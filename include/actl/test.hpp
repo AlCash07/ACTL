@@ -62,7 +62,7 @@ inline index write_final(Device& od, Format& fmt, const T&) {
 
 }  // namespace ac::io
 
-namespace ac::op {
+namespace ac::math {
 
 template <class T>
 struct abs_rel_error : virtual policy {
@@ -78,7 +78,7 @@ inline bool perform_policy(Equal, const abs_rel_error<E>& policy, const T& lhs, 
     return numerator <= policy.eps * denominator;
 }
 
-}  // namespace ac::op
+}  // namespace ac::math
 
 namespace ac::tests {
 
@@ -108,19 +108,19 @@ struct assert_impl {
 
     template <class T, class U>
     inline void check_equal(const T& expected, const U& actual) const {
-        if (eval(op::allow_promotion{}, op::equal(expected, actual))) return;
+        if (eval(math::allow_promotion{}, math::equal(expected, actual))) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U>
     inline void check_not_equal(const T& not_expected, const U& actual) const {
-        if (!eval(op::allow_promotion{}, op::equal(not_expected, actual))) return;
+        if (!eval(math::allow_promotion{}, math::equal(not_expected, actual))) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U, class E>
     inline void check_equal(const T& expected, const U& actual, E eps) const {
-        if (eval(op::abs_rel_error<E>{eps}, op::equal(expected, actual))) return;
+        if (eval(math::abs_rel_error<E>{eps}, math::equal(expected, actual))) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 

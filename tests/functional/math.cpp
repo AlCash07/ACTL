@@ -10,10 +10,10 @@
 #include <limits>
 
 TEST("abs") {
-    ASSERT_EQUAL(0, op::abs(0));
+    ASSERT_EQUAL(0, math::abs(0));
     constexpr auto int_max = std::numeric_limits<int>::max();
-    ASSERT_EQUAL(int_max, op::abs(int_max));
-    ASSERT_EQUAL(int_max, op::abs(-int_max));
+    ASSERT_EQUAL(int_max, math::abs(int_max));
+    ASSERT_EQUAL(int_max, math::abs(-int_max));
     constexpr auto uint_max = std::numeric_limits<unsigned int>::max();
-    ASSERT_EQUAL(uint_max, op::abs(uint_max));
+    ASSERT_EQUAL(uint_max, math::abs(uint_max));
 }

@@ -21,7 +21,7 @@ template <class Policy, class T>
 inline auto max_distance(const Policy& policy, const convex_polygon<T>& poly) {
     decltype(distance(policy, poly[0], poly[0])) res = 0;
     antipodal_vertices(policy, poly, function_output_iterator{[&](auto pair) {
-                           op::max(inplace(res), distance(policy, *pair.first, *pair.second));
+                           math::max(inplace(res), distance(policy, *pair.first, *pair.second));
                        }});
     return res;
 }

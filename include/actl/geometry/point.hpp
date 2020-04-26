@@ -26,7 +26,7 @@ class point;
  * N-dimensional point base class implementing common functionality.
  */
 template <class T, index N>
-class point_base : op::base<> {
+class point_base : math::base<> {
 public:
     using value_type = T;
     using reference = T&;
@@ -141,7 +141,7 @@ inline constexpr auto operator - (const point<T0, N>& lhs, const point<T1, N>& r
     return detail::apply<N>(std::minus{}, lhs, rhs);
 }
 
-namespace op {
+namespace math {
 
 template <class Policy, index N, class T0, class T1>
 inline constexpr bool perform(Equal, const Policy& policy, const point<T0, N>& lhs,
@@ -173,11 +173,11 @@ inline constexpr auto perform(Div, const Policy& policy, const point<T0, N>& lhs
                             lhs);
 }
 
-}  // namespace op
+}  // namespace math
 
 template <class Policy, index N, class T0, class T1>
 inline constexpr auto dot(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
-    op::result_t<op::Mul, Policy, T0, T1> res = 0;
+    math::result_t<math::Mul, Policy, T0, T1> res = 0;
     for (index i = 0; i < N; ++i) res += product(policy, lhs[i], rhs[i]);
     return res;
 }
@@ -200,7 +200,7 @@ inline constexpr auto dot(const point<T, N>& p) {
 template <class Policy, index N, class T>
 inline constexpr bool degenerate(const Policy& policy, const point<T, N>& p) {
     for (index i = 0; i < N; ++i) {
-        if (!op::eq(policy, p[i], 0)) return false;
+        if (!math::eq(policy, p[i], 0)) return false;
     }
     return true;
 }

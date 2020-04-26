@@ -9,6 +9,6 @@
 
 #include <actl/functional/range.hpp>
 
-namespace ac::op {
+namespace ac::math {
 
-}  // namespace ac::op
+}  // namespace ac::math

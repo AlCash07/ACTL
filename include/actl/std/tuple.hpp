@@ -23,7 +23,7 @@ inline constexpr size_t hash_value(const std::tuple<Ts...>& x) {
     return hash_tuple(x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
-namespace op {
+namespace math {
 
 template <size_t I = 0, class... Ts, class... Us>
 inline auto perform(Equal op, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
@@ -45,7 +45,7 @@ inline auto perform_policy(Less op, const Policy& policy, const std::tuple<Ts...
     }
 }
 
-}  // namespace op
+}  // namespace math
 
 namespace io {
 

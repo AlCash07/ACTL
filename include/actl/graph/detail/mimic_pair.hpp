@@ -59,12 +59,12 @@ inline decltype(auto) get_key(const T& x) {
 
 template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
 inline auto operator == (const T& lhs, const U& rhs) {
-    return op::equal(get_key(lhs), get_key(rhs));
+    return math::equal(get_key(lhs), get_key(rhs));
 }
 
 template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
 inline auto operator < (const T& lhs, const U& rhs) {
-    return op::less(get_key(lhs), get_key(rhs));
+    return math::less(get_key(lhs), get_key(rhs));
 }
 
 template <class Key>

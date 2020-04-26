@@ -214,7 +214,7 @@ private:
     template <index I>
     void compute_dimensions(nd_initializer_list_t<T, N - I> il) {
         if constexpr (I < N) {
-            op::max(inplace(dims_[I]), static_cast<Int>(il.size()));
+            math::max(inplace(dims_[I]), static_cast<Int>(il.size()));
             for (auto i : il) compute_dimensions<I + 1>(i);
         }
     }
@@ -429,7 +429,7 @@ struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
 }  // namespace detail
 
-namespace op {
+namespace math {
 
 template <class Policy, class D0, class S0, class D1, class S1>
 inline bool perform_policy(Equal, const Policy& policy, const ac::detail::tensor_base<D0, S0>& lhs,
@@ -441,7 +441,7 @@ inline bool perform_policy(Equal, const Policy& policy, const ac::detail::tensor
     return equal(policy, span{lhs}, span{rhs});
 }
 
-}  // namespace op
+}  // namespace math
 
 /**
  * N-dimensional array with dimensions completely or partially known at compile time.

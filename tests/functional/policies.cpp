@@ -14,16 +14,16 @@ struct Eps {
     static constexpr double epsilon() { return eps; }
 };
 
-inline op::absolute_error<Eps> eps_policy;
+inline math::absolute_error<Eps> eps_policy;
 
-TEST("op::equal") {
-    ASSERT_TRUE(op::equal(eps_policy, 0.0, eps / 2));
-    ASSERT_FALSE(op::equal(eps_policy, 0.0, eps));
+TEST("math::equal") {
+    ASSERT_TRUE(math::equal(eps_policy, 0.0, eps / 2));
+    ASSERT_FALSE(math::equal(eps_policy, 0.0, eps));
 }
 
-TEST("op::less") {
-    ASSERT_FALSE(op::less(0.0, -eps));
-    ASSERT_TRUE(op::less(-eps / 2, 0.0));
-    ASSERT_FALSE(op::less(eps_policy, -eps / 2, 0.0));
-    ASSERT_TRUE(op::less(eps_policy, -eps, 0.0));
+TEST("math::less") {
+    ASSERT_FALSE(math::less(0.0, -eps));
+    ASSERT_TRUE(math::less(-eps / 2, 0.0));
+    ASSERT_FALSE(math::less(eps_policy, -eps / 2, 0.0));
+    ASSERT_TRUE(math::less(eps_policy, -eps, 0.0));
 }

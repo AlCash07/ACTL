@@ -11,7 +11,7 @@
 #include <actl/functional/scalar.hpp>
 #include <actl/range/traits.hpp>
 
-namespace ac::op {
+namespace ac::math {
 
 struct allow_promotion : virtual policy {};
 
@@ -86,4 +86,4 @@ inline auto perform(Sqrt, defer_sqrt, const T& x) {
     return square_root{x};
 }
 
-}  // namespace ac::op
+}  // namespace ac::math

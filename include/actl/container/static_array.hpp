@@ -23,7 +23,7 @@ struct static_array {
 
     template <class R>
     explicit constexpr static_array(R&& range) {
-        ACTL_ASSERT(op::equal(array, range));
+        ACTL_ASSERT(math::equal(array, range));
     }
 
     static constexpr auto begin() { return array.begin(); }
