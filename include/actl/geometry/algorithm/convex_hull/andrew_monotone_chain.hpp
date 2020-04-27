@@ -30,13 +30,13 @@ template <class Policy, class T, enable_int_if<geometry_traits<T>::dimension == 
 inline span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span<T>& points) {
     if (points.size() < 2) return points;
     auto& policy = amcp.policy;
-    auto [a, b] = minmax_element(points, math::less_functor(policy));
+    auto [a, b] = minmax_element(points, math::less(policy));
     auto comp = [l = make_line(*a, *b), &policy](const auto& p) {
         return !right_turn(policy, p, l);
     };
     index pivot = partition(points, comp) - points.begin();
     ACTL_ASSERT(2 <= pivot);
-    sort(points.first(pivot), math::less_functor(policy));
+    sort(points.first(pivot), math::less(policy));
     index last = 1;
     auto pop = [&](const auto& p) {
         while (last != 0 && !right_turn(policy, p, points[last], points[last - 1])) --last;
