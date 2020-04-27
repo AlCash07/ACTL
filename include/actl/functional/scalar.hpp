@@ -226,6 +226,11 @@ inline constexpr auto operator + (T&& lhs, U&& rhs) {
     return add(pass<T>(lhs), pass<U>(rhs));
 }
 
+template <class T, class U>
+inline constexpr decltype(auto) operator += (T& lhs, const U& rhs) {
+    return add(inplace(lhs), rhs);
+}
+
 struct Div : arithmetic_operation<Div> {
     template <class T>
     static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs / rhs) {
@@ -237,6 +242,11 @@ inline constexpr Div div;
 template <class T, class U>
 inline constexpr auto operator / (T&& lhs, U&& rhs) {
     return div(pass<T>(lhs), pass<U>(rhs));
+}
+
+template <class T, class U>
+inline constexpr decltype(auto) operator /= (T& lhs, const U& rhs) {
+    return div(inplace(lhs), rhs);
 }
 
 struct Mul : arithmetic_operation<Mul> {
@@ -255,6 +265,11 @@ inline constexpr auto operator * (T&& lhs, U&& rhs) {
     return mul(pass<T>(lhs), pass<U>(rhs));
 }
 
+template <class T, class U>
+inline constexpr decltype(auto) operator *= (T& lhs, const U& rhs) {
+    return mul(inplace(lhs), rhs);
+}
+
 struct Sub : arithmetic_operation<Sub> {
     template <class T>
     static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs - rhs) {
@@ -266,6 +281,11 @@ inline constexpr Sub sub;
 template <class T, class U>
 inline constexpr auto operator - (T&& lhs, U&& rhs) {
     return sub(pass<T>(lhs), pass<U>(rhs));
+}
+
+template <class T, class U>
+inline constexpr decltype(auto) operator -= (T& lhs, const U& rhs) {
+    return sub(inplace(lhs), rhs);
 }
 
 /* Bit operations */
@@ -306,6 +326,11 @@ inline constexpr auto operator & (T&& lhs, U&& rhs) {
     return bit_and(pass<T>(lhs), pass<U>(rhs));
 }
 
+template <class T, class U>
+inline constexpr decltype(auto) operator &= (T& lhs, const U& rhs) {
+    return bit_and(inplace(lhs), rhs);
+}
+
 struct BitOr : bit_operation<BitOr> {
     struct is_associative;
     struct is_commutative;
@@ -322,6 +347,11 @@ inline constexpr auto operator | (T&& lhs, U&& rhs) {
     return bit_or(pass<T>(lhs), pass<U>(rhs));
 }
 
+template <class T, class U>
+inline constexpr decltype(auto) operator |= (T& lhs, const U& rhs) {
+    return bit_or(inplace(lhs), rhs);
+}
+
 struct BitXor : bit_operation<BitXor> {
     struct is_associative;
     struct is_commutative;
@@ -336,6 +366,11 @@ inline constexpr BitXor bit_xor;
 template <class T, class U>
 inline constexpr auto operator ^ (T&& lhs, U&& rhs) {
     return bit_xor(pass<T>(lhs), pass<U>(rhs));
+}
+
+template <class T, class U>
+inline constexpr decltype(auto) operator ^= (T& lhs, const U& rhs) {
+    return bit_xor(inplace(lhs), rhs);
 }
 
 /* Derived operations */
