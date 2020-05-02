@@ -79,13 +79,6 @@ struct category : category_impl<T> {};
 template <class T>
 using category_t = typename category<raw_t<T>>::type;
 
-struct arithmetic_tag : scalar_tag {};
-
-template <class T>
-struct category_impl<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
-    using type = arithmetic_tag;
-};
-
 template <class T, class U>
 struct is_wider_category : std::is_base_of<T, U> {};
 
@@ -189,7 +182,8 @@ inline constexpr auto perform(Op op, const Ts&... xs) -> decltype(Op::perform(xs
 
 // Drop policy if operation isn't specialized for it.
 template <class Op, class... Ts>
-inline constexpr auto perform_policy(Op op, policy, const Ts&... xs) -> decltype(perform(op, xs...)) {
+inline constexpr auto perform_policy(Op op, policy, const Ts&... xs)
+    -> decltype(perform(op, xs...)) {
     return perform(op, xs...);
 }
 
@@ -203,9 +197,6 @@ inline decltype(auto) eval(const Policy& policy, const out<true, T>& x) {
     return eval(policy, x.x);
 }
 
-template <class Tag, class Op, class = void>
-struct calculator;
-
 namespace detail {
 
 template <class... Ts>
@@ -213,7 +204,8 @@ struct calc;
 
 template <class Op, class Policy, class... Ts>
 struct calc<Op, Policy, Ts...> {
-    using type = calculator<detail::major_category<result_t<Policy, const Ts&>...>, Op>;
+    using type = decltype(get_calculator(Op{}, operation_tag_t<Op>{},
+                                         major_category<result_t<Policy, const Ts&>...>{}));
 };
 
 }  // namespace detail

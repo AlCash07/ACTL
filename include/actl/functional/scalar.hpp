@@ -11,6 +11,13 @@
 
 namespace ac::math {
 
+struct arithmetic_tag : scalar_tag {};
+
+template <class T>
+struct category_impl<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
+    using type = arithmetic_tag;
+};
+
 struct scalar_operation_tag : base_operation_tag {};
 
 template <class T>
@@ -22,13 +29,13 @@ struct scalar_operation : operation<Derived> {
     using operation_tag = scalar_operation_tag;
 };
 
-template <class Tag, class Op>
-struct calculator<
-    Tag, Op, std::enable_if_t<std::is_base_of_v<scalar_tag, Tag> && is_scalar_operation_v<Op>>> {
+template <class Op>
+struct scalar_calculator {
     template <class Policy, class... Ts>
     static auto can_eval(const Policy& policy, const Ts&... xs)
-        -> decltype(eval(policy, perform_policy(Op{}, policy, eval(policy, xs)...)), std::true_type{});
-    
+        -> decltype(eval(policy, perform_policy(Op{}, policy, eval(policy, xs)...)),
+                    std::true_type{});
+
     static auto can_eval(...) -> std::false_type; 
 
     template <class Policy, class... Ts>
@@ -56,6 +63,9 @@ struct calculator<
         return dst.x = evaluate(policy, xs...);
     }
 };
+
+template <class Op>
+inline scalar_calculator<Op> get_calculator(Op, scalar_operation_tag, scalar_tag);
 
 template <class To>
 struct Cast : scalar_operation<Cast<To>> {

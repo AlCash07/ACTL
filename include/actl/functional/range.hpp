@@ -22,8 +22,11 @@ struct category_impl<T, std::enable_if_t<is_range_v<T>>> {
     using type = range_tag;
 };
 
+template <class Op>
+struct range_calculator;
+
 template <>
-struct calculator<range_tag, Equal> {
+struct range_calculator<Equal> {
     static auto can_eval(...) -> std::true_type;
 
     template <class Policy, class R0, class R1>
@@ -34,7 +37,7 @@ struct calculator<range_tag, Equal> {
 };
 
 template <>
-struct calculator<range_tag, Less> {
+struct range_calculator<Less> {
     static auto can_eval(...) -> std::true_type;
 
     template <class Policy, class R0, class R1>
@@ -43,5 +46,8 @@ struct calculator<range_tag, Less> {
                                             std::end(rhs), less(policy));
     }
 };
+
+template <class Op>
+inline range_calculator<Op> get_calculator(Op, comparison_operation_tag, range_tag);
 
 }  // namespace ac::math
