@@ -20,36 +20,24 @@ struct base : B {
     using B::B;
 };
 
-// pass is the same as std::forward except it converts reference into const reference
-template <class T>
-inline T&& pass(std::remove_reference_t<T>& x) {
-    return static_cast<T&&>(x);
-}
-
-template <class T>
-inline const T&& pass(std::remove_reference_t<T>&& x) {
-    static_assert(!std::is_lvalue_reference_v<T>, "can not pass an rvalue as an lvalue");
-    return static_cast<const T&&>(x);
+template <class T, class U>
+inline constexpr auto operator != (const T& lhs, const U& rhs) -> decltype(!(lhs == rhs)) {
+    return !(lhs == rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator != (T&& lhs, U&& rhs) -> decltype(!(pass<T>(lhs) == pass<U>(rhs))) {
-    return !(pass<T>(lhs) == pass<U>(rhs));
+inline constexpr auto operator > (const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
+    return rhs < lhs;
 }
 
 template <class T, class U>
-inline constexpr auto operator > (T&& lhs, U&& rhs) -> decltype(pass<U>(rhs) < pass<T>(lhs)) {
-    return pass<U>(rhs) < pass<T>(lhs);
+inline constexpr auto operator <= (const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
+    return !(lhs > rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator <= (T&& lhs, U&& rhs) -> decltype(!(pass<T>(lhs) > pass<U>(rhs))) {
-    return !(pass<T>(lhs) > pass<U>(rhs));
-}
-
-template <class T, class U>
-inline constexpr auto operator >= (T&& lhs, U&& rhs) -> decltype(!(pass<T>(lhs) < pass<U>(rhs))) {
-    return !(pass<T>(lhs) < pass<U>(rhs));
+inline constexpr auto operator >= (const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
+    return !(lhs < rhs);
 }
 
 }  // namespace ac::operators

@@ -7,14 +7,11 @@
 
 #pragma once
 
-#include <actl/functional/operators.hpp>
 #include <actl/util/type_traits.hpp>
 #include <tuple>
 
 namespace ac {
 namespace math {
-
-using operators::pass;
 
 // Default operation policy.
 struct policy {};
@@ -110,12 +107,15 @@ template <class T, class = void>
 struct depth : index_constant<0> {};
 
 template <class T>
+inline constexpr index depth_v = depth<raw_t<T>>::value;
+
+template <class T>
 struct depth<T, std::void_t<typename category_t<T>::has_nested>>
-    : index_constant<depth<value_t<T>>::value + 1> {};
+    : index_constant<depth_v<value_t<T>> + 1> {};
 
 template <class... Ts>
 using major_category = typename remove_cvref_t<decltype(
-    (... || std::declval<cdp<category_t<Ts>, depth<raw_t<Ts>>::value>>()))>::type;
+    (... || std::declval<cdp<category_t<Ts>, depth_v<Ts>>>()))>::type;
 
 }  // namespace detail
 
@@ -175,6 +175,18 @@ struct is_expression : std::false_type {};
 template <class T>
 inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
 
+// pass is the same as std::forward except it converts reference into const reference
+template <class T>
+inline constexpr T&& pass(std::remove_reference_t<T>& x) {
+    return static_cast<T&&>(x);
+}
+
+template <class T>
+inline constexpr const T&& pass(std::remove_reference_t<T>&& x) {
+    static_assert(!std::is_lvalue_reference_v<T>, "can not pass an rvalue as an lvalue");
+    return static_cast<const T&&>(x);
+}
+
 template <class Op, class... Ts>
 inline constexpr auto perform(Op op, const Ts&... xs) -> decltype(Op::perform(xs...)) {
     return Op::perform(xs...);
@@ -187,9 +199,14 @@ inline constexpr auto perform_policy(Op op, policy, const Ts&... xs)
     return perform(op, xs...);
 }
 
-template <class Policy, class T, enable_int_if<!is_expression_v<T>> = 0>
-inline T eval(const Policy& policy, T&& x) {
-    return pass<T>(x);
+template <class Policy, class T>
+inline constexpr T eval(const Policy& policy, const T& x) {
+    return x;
+}
+
+template <class Policy, class T, size_t N>
+inline auto& eval(const Policy& policy, const T (&x)[N]) {
+    return x;
 }
 
 template <class Policy, class T>
@@ -243,12 +260,15 @@ struct expr_traits<false, Op, Ts...> : expr_traits<true, Op, policy, Ts...> {};
 
 // S is always std::make_index_sequence<sizeof...(Ts)>> to simplify arguments traversal.
 template <class Op, class S, class... Ts>
-struct expression : operators::base<> {
+struct expression {
     std::tuple<Ts...> args;
 
     static constexpr bool has_policy = is_policy_v<nth_t<0, Ts...>>;
 
     using traits = detail::expr_traits<has_policy, Op, Ts...>;
+
+    template <class... Us>
+    explicit constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...} {}
 
     template <bool B = traits::can_eval, enable_int_if<B> = 0>
     operator typename traits::type() const {
@@ -263,14 +283,14 @@ template <class T, class U = remove_cvref_t<T>>
 using value_if_arithmetic = std::conditional_t<std::is_arithmetic_v<U>, U, T>;
 
 template <class Op, class... Ts>
-inline auto make_expression(Ts&&... xs) {
+inline constexpr auto make_expression(Ts&&... xs) {
     return expression<Op, std::make_index_sequence<sizeof...(Ts)>, value_if_arithmetic<Ts>...>{
-        {}, {std::forward<Ts>(xs)...}};
+        std::forward<Ts>(xs)...};
 }
 
 template <class Policy, class Op, size_t... Is, class... Ts>
-inline decltype(auto) eval(const Policy& policy,
-                           const expression<Op, std::index_sequence<Is...>, Ts...>& e) {
+inline constexpr decltype(auto) eval(const Policy& policy,
+                                     const expression<Op, std::index_sequence<Is...>, Ts...>& e) {
     if constexpr (expression<Op, std::index_sequence<Is...>, Ts...>::has_policy) {
         return calculator_t<Op, Ts...>::evaluate(std::get<Is>(e.args)...);
     } else {
@@ -279,7 +299,7 @@ inline decltype(auto) eval(const Policy& policy,
 }
 
 template <class... Ts>
-inline decltype(auto) eval(const expression<Ts...>& e) {
+inline constexpr decltype(auto) eval(const expression<Ts...>& e) {
     return eval(default_policy, e);
 }
 
@@ -289,7 +309,7 @@ struct operation {
     using operation_tag = base_operation_tag;
 
     template <class... Ts>
-    decltype(auto) operator()(Ts&&... xs) const {
+    constexpr decltype(auto) operator()(Ts&&... xs) const {
         static_assert(sizeof...(Ts) > 0);
         constexpr bool have_policy = is_policy_v<nth_t<0, Ts...>>;
         if constexpr ((... || is_out<remove_cvref_t<Ts>>::value)) {

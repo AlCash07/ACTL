@@ -63,3 +63,14 @@ TEST("math::sqr") {
     ASSERT_EQUAL(36, math::sqr(6));
     ASSERT_EQUAL(4, math::sqr(-2));
 }
+
+TEST("math::common") {
+    using one = std::integral_constant<int, 1>;
+    static_assert(std::is_same_v<none, decltype(eval(math::common(none{}, none{}, none{})))>);
+    static_assert(1 == eval(math::common(none{}, one{}, none{})).value);
+    static_assert(1 == eval(math::common(one{})).value);
+    static_assert(1 == eval(math::common(one{}, one{}, one{})).value);
+    int x = 1;
+    static_assert(std::is_same_v<one, decltype(eval(math::common(x, one{}, x)))>);
+    ASSERT_EQUAL(2, math::common(2, 2, 2));
+}

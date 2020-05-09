@@ -7,7 +7,9 @@
 
 #pragma once
 
+#include <actl/assert.hpp>
 #include <actl/functional/operation.hpp>
+#include <actl/util/none.hpp>
 
 namespace ac::math {
 
@@ -197,6 +199,26 @@ struct Cmp3Way : comparison_operation<Cmp3Way> {
     }
 };
 inline constexpr Cmp3Way cmp3way;
+
+template <class T, class U>
+inline constexpr auto operator != (T&& lhs, U&& rhs) {
+    return !(pass<T>(lhs) == pass<U>(rhs));
+}
+
+template <class T, class U>
+inline constexpr auto operator > (T&& lhs, U&& rhs) {
+    return pass<U>(rhs) < pass<T>(lhs);
+}
+
+template <class T, class U>
+inline constexpr auto operator <= (T&& lhs, U&& rhs) {
+    return !(pass<T>(lhs) > pass<U>(rhs));
+}
+
+template <class T, class U>
+inline constexpr auto operator >= (T&& lhs, U&& rhs) {
+    return !(pass<T>(lhs) < pass<U>(rhs));
+}
 
 /* Arithmetic operations */
 
@@ -422,5 +444,53 @@ struct Sqr : scalar_operation<Sqr> {
     }
 };
 inline constexpr Sqr sqr;
+
+struct Common : scalar_operation<Common> {
+    template <class T>
+    static constexpr T perform(T x) {
+        return x;
+    }
+
+    template <class T>
+    static T perform(T x, T y) {
+        ACTL_ASSERT(x == y);
+        return x;
+    }
+
+    static constexpr auto perform(none, none) { return none{}; }
+
+    template <class T>
+    static constexpr T perform(T x, none) {
+        return x;
+    }
+
+    template <class U>
+    static constexpr U perform(none, U y) {
+        return y;
+    }
+
+    template <class T, T X>
+    static constexpr auto perform(std::integral_constant<T, X> x, std::integral_constant<T, X>) {
+        return x;
+    }
+
+    template <class T, T X, class U, enable_int_if<std::is_integral_v<U>> = 0>
+    static auto perform(std::integral_constant<T, X> x, U y) {
+        ACTL_ASSERT(X == y);
+        return x;
+    }
+
+    template <class T, class U, U Y, enable_int_if<std::is_integral_v<T>> = 0>
+    static auto perform(T x, std::integral_constant<U, Y> y) {
+        return perform(y, x);
+    }
+
+    template <class T0, class T1, class T2, class... Ts>
+    static constexpr auto perform(T0 x0, T1 x1, T2 x2, Ts... xs)
+        -> decltype(Common::perform(Common::perform(x0, x1), x2, xs...)) {
+        return Common::perform(Common::perform(x0, x1), x2, xs...);
+    }
+};
+inline constexpr Common common;
 
 }  // namespace ac::math
