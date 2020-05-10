@@ -71,32 +71,61 @@ struct category_impl {
 };
 
 template <class T>
+struct category_impl<T, std::void_t<typename T::category>> {
+    using type = typename T::category;
+};
+
+template <class T>
 struct category : category_impl<T> {};
 
 template <class T>
 using category_t = typename category<raw_t<T>>::type;
 
-template <class T, class U>
-struct is_wider_category : std::is_base_of<T, U> {};
+struct operation_tag {};
+
+template <class T>
+inline constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
 
 namespace detail {
+
+template <class Tag, class = void>
+struct category_depth : index_constant<0> {};
+
+template <class T>
+inline constexpr index category_depth_v = category_depth<T>::value;
+
+template <class Tag>
+struct category_depth<Tag, std::void_t<typename Tag::base>> 
+    : index_constant<1 + category_depth_v<typename Tag::base>> {};
+
+template <class T, class U>
+inline constexpr auto common_category(T, U) {
+    constexpr index DT = category_depth_v<T>;
+    constexpr index DU = category_depth_v<U>;
+    if constexpr (DT == DU) {
+        if constexpr (std::is_same_v<T, U>) {
+            return T{};
+        } else {
+            static_assert(DT > 0, "incompatible categories");
+            return common_category(typename T::base{}, typename U::base{});
+        }
+    } else if constexpr (DT < DU) {
+        return common_category(T{}, typename U::base{});
+    } else {
+        return common_category(typename T::base{}, U{});
+    }
+}
 
 template <class Tag, int Depth>
 struct cdp {  // category-depth pair
     using type = Tag;
 };
 
-template <class T0, int D0, class T1, int D1>
-inline constexpr auto operator || (cdp<T0, D0> lhs, cdp<T1, D1> rhs) {
-    if constexpr (D0 == D1) {
-        if constexpr (std::is_same_v<T0, T1> || is_wider_category<T0, T1>::value) {
-            return lhs;
-        } else {
-            static_assert(is_wider_category<T1, T0>::value,
-                          "arguments have incompatible categories");
-            return rhs;
-        }
-    } else if constexpr (D0 < D1) {
+template <class T, int DT, class U, int DU>
+inline constexpr auto operator || (cdp<T, DT> lhs, cdp<U, DU> rhs) {
+    if constexpr (DT == DU) {
+        return cdp<decltype(common_category(T{}, U{})), DT>{};
+    } else if constexpr (DT < DU) {
         return rhs;
     } else {
         return lhs;
@@ -104,43 +133,23 @@ inline constexpr auto operator || (cdp<T0, D0> lhs, cdp<T1, D1> rhs) {
 }
 
 template <class T, class = void>
-struct depth : index_constant<0> {};
+struct type_depth : index_constant<0> {};
 
 template <class T>
-inline constexpr index depth_v = depth<raw_t<T>>::value;
+inline constexpr index type_depth_v = type_depth<raw_t<T>>::value;
 
 template <class T>
-struct depth<T, std::void_t<typename category_t<T>::has_nested>>
-    : index_constant<depth_v<value_t<T>> + 1> {};
+struct type_depth<T, std::void_t<typename category_t<T>::has_nested>>
+    : index_constant<type_depth_v<value_t<T>> + 1> {};
+
+template <>
+struct type_depth<operation_tag> : index_constant<std::numeric_limits<index>::max()> {};
 
 template <class... Ts>
 using major_category = typename remove_cvref_t<decltype(
-    (... || std::declval<cdp<category_t<Ts>, depth_v<Ts>>>()))>::type;
+    (... || std::declval<cdp<category_t<Ts>, type_depth_v<Ts>>>()))>::type;
 
 }  // namespace detail
-
-struct base_operation_tag {};
-
-/* Every operation mush define nested `struct operation_tag;`. */
-
-template <class T, class = void>
-struct operation_tag {
-    using type = void;
-};
-
-template <class T>
-struct operation_tag<T, std::void_t<typename T::operation_tag>> {
-    using type = typename T::operation_tag;
-};
-
-template <class T>
-using operation_tag_t = typename operation_tag<T>::type;
-
-template <class T>
-inline constexpr bool is_operation_v = !std::is_same<operation_tag_t<T>, void>::value;
-
-template <class T>
-using enable_int_if_operation = enable_int_if<is_operation_v<T>>;
 
 /* Operation is_associative trait: defined by nested `struct is_associative;`. */
 
@@ -168,12 +177,6 @@ inline constexpr bool is_commutative_v = is_commutative<T>::value;
 
 template <class... Ts>
 using result_t = decltype(eval(std::declval<Ts>()...));
-
-template <class T>
-struct is_expression : std::false_type {};
-
-template <class T>
-inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
 
 // pass is the same as std::forward except it converts reference into const reference
 template <class T>
@@ -221,8 +224,7 @@ struct calc;
 
 template <class Op, class Policy, class... Ts>
 struct calc<Op, Policy, Ts...> {
-    using type = decltype(get_calculator(Op{}, operation_tag_t<Op>{},
-                                         major_category<result_t<Policy, const Ts&>...>{}));
+    using type = decltype(get_calculator(Op{}, major_category<result_t<Policy, const Ts&>...>{}));
 };
 
 }  // namespace detail
@@ -276,9 +278,6 @@ struct expression {
     }
 };
 
-template <class... Ts>
-struct is_expression<expression<Ts...>> : std::true_type {};
-
 template <class T, class U = remove_cvref_t<T>>
 using value_if_arithmetic = std::conditional_t<std::is_arithmetic_v<U>, U, T>;
 
@@ -304,9 +303,12 @@ inline constexpr decltype(auto) eval(const expression<Ts...>& e) {
 }
 
 // Base class for operations.
-template <class Derived>
+template <class Derived, index Arity, class ArgumentsTag>
 struct operation {
-    using operation_tag = base_operation_tag;
+    using category = operation_tag;
+    using arguments_tag = ArgumentsTag;
+
+    static constexpr index arity = Arity;
 
     template <class... Ts>
     constexpr decltype(auto) operator()(Ts&&... xs) const {

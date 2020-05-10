@@ -51,7 +51,7 @@ inline constexpr int perform_policy(Sgn, const absolute_error<E>& policy, const 
 }
 
 template <class Op, class E, class T, class U,
-          enable_int_if<is_comparison_operation_v<Op> &&
+          enable_int_if<is_comparison_v<Op> &&
                         (std::is_floating_point_v<T> || std::is_floating_point_v<U>)> = 0>
 inline constexpr auto perform_policy(Op op, const absolute_error<E>& policy, const T& lhs,
                                      const U& rhs) {
@@ -70,7 +70,7 @@ public:
 
     friend constexpr const T& perform(Sqr, const square_root& x) { return x.sqr_; }
 
-    template <class Op, enable_int_if<is_comparison_operation_v<Op>> = 0>
+    template <class Op, enable_int_if<is_comparison_v<Op>> = 0>
     friend constexpr auto perform(Op op, const square_root& lhs, const square_root& rhs) {
         return op(lhs.sqr_, rhs.sqr_);
     }

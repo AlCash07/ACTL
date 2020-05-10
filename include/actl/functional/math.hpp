@@ -13,15 +13,20 @@
 
 namespace ac::math {
 
-struct math_operation_tag : scalar_operation_tag {};
-
-template <class Derived>
-struct math_operation : scalar_operation<Derived> {
-    using operation_tag = math_operation_tag;
+struct Abs : operation<Abs, 1, arithmetic_tag> {
+    template <class T>
+    static constexpr T perform(T x) {
+        if constexpr (std::is_unsigned_v<T>) {
+            return x;
+        } else {
+            return std::abs(x);
+        }
+    }
 };
+inline constexpr Abs abs;
 
 #define MATH_OP1(name, op)                                           \
-    struct name : math_operation<name> {                             \
+    struct name : operation<name, 1, float_tag> {                    \
         template <class T>                                           \
         static constexpr auto perform(T x) -> decltype(std::op(x)) { \
             return std::op(x);                                       \
@@ -30,7 +35,7 @@ struct math_operation : scalar_operation<Derived> {
     inline constexpr name op;
 
 #define MATH_OP2(name, op)                                                           \
-    struct name : math_operation<name> {                                             \
+    struct name : operation<name, 2, float_tag> {                                    \
         template <class T>                                                           \
         static constexpr auto perform(T lhs, T rhs) -> decltype(std::op(lhs, rhs)) { \
             return std::op(lhs, rhs);                                                \
@@ -38,7 +43,6 @@ struct math_operation : scalar_operation<Derived> {
     };                                                                               \
     inline constexpr name op;
 
-MATH_OP1(Abs, abs)
 MATH_OP1(Cos, cos)
 MATH_OP1(Sin, sin)
 MATH_OP1(Sqrt, sqrt)
@@ -47,10 +51,5 @@ MATH_OP2(Atan2, atan2)
 
 #undef MATH_OP1
 #undef MATH_OP2
-
-template <class T, enable_int_if<std::is_unsigned_v<T>> = 0>
-inline constexpr T perform(Abs, T x) {
-    return x;
-}
 
 }  // namespace ac::math
