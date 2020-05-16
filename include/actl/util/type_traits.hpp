@@ -30,6 +30,18 @@ using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 template <bool B>
 using enable_int_if = std::enable_if_t<B, int>;
 
+template <class... Ts>
+struct are_same : std::false_type {};
+
+template <class T>
+struct are_same<T> : std::true_type {};
+
+template <class T, class... Ts>
+struct are_same<T, T, Ts...> : are_same<T, Ts...> {};
+
+template <class... Ts>
+inline constexpr bool are_same_v = are_same<Ts...>::value;
+
 namespace detail {
 
 // Implementation reference: https://en.cppreference.com/w/cpp/types/is_base_of
