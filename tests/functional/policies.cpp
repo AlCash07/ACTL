@@ -17,13 +17,13 @@ struct Eps {
 inline math::absolute_error<Eps> eps_policy;
 
 TEST("math::equal") {
-    ASSERT_TRUE(math::equal(eps_policy, 0.0, eps / 2));
-    ASSERT_FALSE(math::equal(eps_policy, 0.0, eps));
+    ASSERT_TRUE(eval(math::equal(0.0, eps / 2), eps_policy));
+    ASSERT_FALSE(eval(math::equal(0.0, eps), eps_policy));
 }
 
 TEST("math::less") {
     ASSERT_FALSE(math::less(0.0, -eps));
     ASSERT_TRUE(math::less(-eps / 2, 0.0));
-    ASSERT_FALSE(math::less(eps_policy, -eps / 2, 0.0));
-    ASSERT_TRUE(math::less(eps_policy, -eps, 0.0));
+    ASSERT_FALSE(eval(math::less(-eps / 2, 0.0), eps_policy));
+    ASSERT_TRUE(eval(math::less(-eps, 0.0), eps_policy));
 }

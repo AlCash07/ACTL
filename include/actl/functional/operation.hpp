@@ -81,11 +81,6 @@ struct category : category_impl<T> {};
 template <class T>
 using category_t = typename category<raw_t<T>>::type;
 
-struct operation_tag {};
-
-template <class T>
-inline constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
-
 namespace detail {
 
 template <class Tag, class = void>
@@ -142,14 +137,16 @@ template <class T>
 struct type_depth<T, std::void_t<typename category_t<T>::has_nested>>
     : index_constant<type_depth_v<value_t<T>> + 1> {};
 
-template <>
-struct type_depth<operation_tag> : index_constant<std::numeric_limits<index>::max()> {};
-
 template <class... Ts>
 using major_category = typename remove_cvref_t<decltype(
     (... || std::declval<cdp<category_t<Ts>, type_depth_v<Ts>>>()))>::type;
 
 }  // namespace detail
+
+struct operation_tag {};
+
+template <class T>
+inline constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
 
 /* Operation is_associative trait: defined by nested `struct is_associative;`. */
 
@@ -202,19 +199,19 @@ inline constexpr auto perform_policy(Op op, policy, const Ts&... xs)
     return perform(op, xs...);
 }
 
-template <class Policy, class T>
-inline constexpr T eval(const Policy& policy, const T& x) {
+template <class T, class... Ts>
+inline constexpr T eval(const T& x, const Ts&...) {
     return x;
 }
 
-template <class Policy, class T, size_t N>
-inline auto& eval(const Policy& policy, const T (&x)[N]) {
+template <class T, size_t N, class... Ts>
+inline auto& eval(const T (&x)[N], const Ts&...) {
     return x;
 }
 
-template <class Policy, class T>
-inline decltype(auto) eval(const Policy& policy, const out<true, T>& x) {
-    return eval(policy, x.x);
+template <class T, class... Ts>
+inline decltype(auto) eval(const out<true, T>& x, const Ts&...) {
+    return x.x;
 }
 
 namespace detail {
@@ -224,7 +221,7 @@ struct calc;
 
 template <class Op, class Policy, class... Ts>
 struct calc<Op, Policy, Ts...> {
-    using type = decltype(get_calculator(Op{}, major_category<result_t<Policy, const Ts&>...>{}));
+    using type = decltype(get_calculator(Op{}, major_category<result_t<const Ts&, Policy>...>{}));
 };
 
 }  // namespace detail
@@ -246,7 +243,7 @@ struct expr_result<true, Op, Ts...> {
     using type = decltype(calculator_t<Op, Ts...>::evaluate(std::declval<Ts>()...));
 };
 
-template <bool, class Op, class... Ts>
+template <class Op, class... Ts>
 struct expr_traits {
     using C = calculator_t<Op, Ts...>;
 
@@ -255,9 +252,6 @@ struct expr_traits {
     using type = typename expr_result<can_eval, Op, Ts...>::type;
 };
 
-template <class Op, class... Ts>
-struct expr_traits<false, Op, Ts...> : expr_traits<true, Op, policy, Ts...> {};
-
 }  // namespace detail
 
 // S is always std::make_index_sequence<sizeof...(Ts)>> to simplify arguments traversal.
@@ -265,9 +259,7 @@ template <class Op, class S, class... Ts>
 struct expression {
     std::tuple<Ts...> args;
 
-    static constexpr bool has_policy = is_policy_v<nth_t<0, Ts...>>;
-
-    using traits = detail::expr_traits<has_policy, Op, Ts...>;
+    using traits = detail::expr_traits<Op, policy, Ts...>;
 
     template <class... Us>
     explicit constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...} {}
@@ -287,19 +279,15 @@ inline constexpr auto make_expression(Ts&&... xs) {
         std::forward<Ts>(xs)...};
 }
 
-template <class Policy, class Op, size_t... Is, class... Ts>
-inline constexpr decltype(auto) eval(const Policy& policy,
-                                     const expression<Op, std::index_sequence<Is...>, Ts...>& e) {
-    if constexpr (expression<Op, std::index_sequence<Is...>, Ts...>::has_policy) {
-        return calculator_t<Op, Ts...>::evaluate(std::get<Is>(e.args)...);
-    } else {
-        return calculator_t<Op, Policy, Ts...>::evaluate(policy, std::get<Is>(e.args)...);
-    }
+template <class Op, size_t... Is, class... Ts, class Policy>
+inline constexpr decltype(auto) eval(const expression<Op, std::index_sequence<Is...>, Ts...>& e,
+                                     const Policy& policy) {
+    return calculator_t<Op, Policy, Ts...>::evaluate(policy, std::get<Is>(e.args)...);
 }
 
 template <class... Ts>
 inline constexpr decltype(auto) eval(const expression<Ts...>& e) {
-    return eval(default_policy, e);
+    return eval(e, default_policy);
 }
 
 // Base class for operations.
@@ -309,6 +297,10 @@ struct operation {
     using arguments_tag = ArgumentsTag;
 
     static constexpr index arity = Arity;
+
+    template <class... Ts>
+    static constexpr bool can_perform = ((sizeof...(Ts) == arity && are_same_v<Ts...>)&&... &&
+                                         std::is_base_of_v<arguments_tag, category_t<Ts>>);
 
     template <class... Ts>
     constexpr decltype(auto) operator()(Ts&&... xs) const {

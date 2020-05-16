@@ -47,14 +47,14 @@ template <class Op>
 struct scalar_calculator {
     template <class Policy, class... Ts>
     static auto can_eval(const Policy& policy, const Ts&... xs)
-        -> decltype(eval(policy, perform_policy(Op{}, policy, eval(policy, xs)...)),
+        -> decltype(eval(perform_policy(Op{}, policy, eval(xs, policy)...), policy),
                     std::true_type{});
 
-    static auto can_eval(...) -> std::false_type; 
+    static auto can_eval(...) -> std::false_type;
 
     template <class Policy, class... Ts>
     static constexpr decltype(auto) evaluate(const Policy& policy, const Ts&... xs) {
-        return eval(policy, perform_policy(Op{}, policy, eval(policy, xs)...));
+        return eval(perform_policy(Op{}, policy, eval(xs, policy)...), policy);
     }
 
     template <class T, class... Ts>
@@ -82,26 +82,26 @@ template <class Op, enable_int_if<is_scalar_operation_v<Op>> = 0>
 inline scalar_calculator<Op> get_calculator(Op, scalar_tag);
 
 template <class To>
-struct Cast : operation<Cast<To>, 1, scalar_tag> {
+struct Cast : operation<Cast<To>, 1, arithmetic_tag> {
     template <class T>
-    static constexpr auto perform(const T& x) -> decltype(static_cast<To>(x)) {
+    static constexpr auto perform(T x) -> decltype(static_cast<To>(x)) {
         return static_cast<To>(x);
     }
 };
 template <class T>
 inline constexpr Cast<T> cast;
 
-struct Copy : operation<Copy, 1, scalar_tag> {
+struct Copy : operation<Copy, 1, arithmetic_tag> {
     template <class T>
-    static constexpr auto perform(const T& x) {
+    static constexpr T perform(T x) {
         return x;
     }
 };
 inline constexpr Copy copy;
 
-struct Ternary : operation<Ternary, 3, scalar_tag> {
-    template <class B, class T, class U>
-    static constexpr auto perform(const B& condition, const T& lhs, const U& rhs)
+struct Ternary : operation<Ternary, 3, arithmetic_tag> {
+    template <class T>
+    static constexpr auto perform(bool condition, T lhs, T rhs)
         -> remove_cvref_t<decltype(condition ? lhs : rhs)> {
         return condition ? lhs : rhs;
     }
@@ -440,6 +440,9 @@ struct Sqr : operation<Sqr, 2, scalar_tag> {
 inline constexpr Sqr sqr;
 
 struct Common : operation<Common, 2, scalar_tag> {
+    struct is_associative;
+    struct is_commutative;
+
     template <class T>
     static constexpr T perform(T x) {
         return x;

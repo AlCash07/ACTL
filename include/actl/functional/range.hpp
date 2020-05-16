@@ -48,7 +48,7 @@ struct range_calculator<Less> {
     }
 };
 
-template <class Op, enable_int_if<is_scalar_operation_v<Op>> = 0>
+template <class Op, enable_int_if<is_comparison_v<Op>> = 0>
 inline range_calculator<Op> get_calculator(Op, range_tag);
 
 }  // namespace ac::math

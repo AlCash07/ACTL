@@ -108,19 +108,19 @@ struct assert_impl {
 
     template <class T, class U>
     inline void check_equal(const T& expected, const U& actual) const {
-        if (eval(math::allow_promotion{}, math::equal(expected, actual))) return;
+        if (eval(math::equal(expected, actual), math::allow_promotion{})) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U>
     inline void check_not_equal(const T& not_expected, const U& actual) const {
-        if (!eval(math::allow_promotion{}, math::equal(not_expected, actual))) return;
+        if (!eval(math::equal(not_expected, actual), math::allow_promotion{})) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U, class E>
     inline void check_equal(const T& expected, const U& actual, E eps) const {
-        if (eval(math::abs_rel_error<E>{eps}, math::equal(expected, actual))) return;
+        if (eval(math::equal(expected, actual), math::abs_rel_error<E>{eps})) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
