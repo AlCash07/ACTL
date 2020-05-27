@@ -11,8 +11,8 @@
 
 TEST("free_function") {
     auto map = function_map{std::strlen};
-    ASSERT_EQUAL(0u, get(map, ""));
-    ASSERT_EQUAL(3u, get(map, "map"));
+    ASSERT_EQUAL(0ul, get(map, ""));
+    ASSERT_EQUAL(3ul, get(map, "map"));
 }
 
 TEST("lambda") {

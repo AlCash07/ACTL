@@ -56,8 +56,8 @@ TEST("fill") {
     char s[14];
     memory<io::out> od{s};
     write(od, fmt, adjust_to::center);
-    ASSERT_EQUAL(4, write(od, fmt, setwidth{4}, setfill{'*'}, 'a'));
-    ASSERT_EQUAL(6, write(od, fmt, "bacaba"));
-    ASSERT_EQUAL(4, write(od, fmt, 42));
+    ASSERT_EQUAL(4l, write(od, fmt, setwidth{4}, setfill{'*'}, 'a'));
+    ASSERT_EQUAL(6l, write(od, fmt, "bacaba"));
+    ASSERT_EQUAL(4l, write(od, fmt, 42));
     ASSERT_EQUAL("*a**bacaba*42*"sv, s);
 }

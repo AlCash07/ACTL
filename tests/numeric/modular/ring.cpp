@@ -23,8 +23,8 @@ TEST("static_quotient_ring::arithmetic", repeat = 1000) {
     ASSERT_EQUAL(x * z - y * z, (x - y) * z);
     ASSERT_EQUAL(x / z - y / z, (x - y) / z);
     ASSERT_EQUAL(x, binary_pow(x, ring::mod()));
-    ASSERT_EQUAL(1u, x / x);
+    ASSERT_EQUAL(int_mod{1}, x / x);
     ASSERT_THROWS(x / int_mod());
     ASSERT_THROWS(int_modulo<1000>(347) / int_modulo<1000>(222));
-    ASSERT_EQUAL(1u, int_modulo<256>(13) / int_modulo<256>(13));
+    ASSERT_EQUAL(int_modulo<256>{1}, int_modulo<256>(13) / int_modulo<256>(13));
 }

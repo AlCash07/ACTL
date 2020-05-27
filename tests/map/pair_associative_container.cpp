@@ -35,7 +35,7 @@ inline void test_associative_map(Map&& map) {
 TEST("reference") {
     auto map = get_map();
     test_associative_map<true>(map);
-    ASSERT_EQUAL(4u, map.size());
+    ASSERT_EQUAL(4ul, map.size());
     ASSERT_EQUAL(2, map[3]);
 }
 

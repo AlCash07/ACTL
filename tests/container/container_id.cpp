@@ -38,16 +38,16 @@ TEST("id_key") {
     std::set<int> c = {0, 2, 4};
     std::set<sid> s;
     s.insert(id_begin(c));
-    ASSERT_EQUAL(1u, s.size());
+    ASSERT_EQUAL(1ul, s.size());
     s.insert(id_end(c));
-    ASSERT_EQUAL(2u, s.size());
+    ASSERT_EQUAL(2ul, s.size());
     s.insert(id_begin(c));
-    ASSERT_EQUAL(2u, s.size());
+    ASSERT_EQUAL(2ul, s.size());
     hash_set<sid> us;
     us.insert(id_begin(c));
-    ASSERT_EQUAL(1u, us.size());
+    ASSERT_EQUAL(1ul, us.size());
     us.insert(id_end(c));
-    ASSERT_EQUAL(2u, us.size());
+    ASSERT_EQUAL(2ul, us.size());
     us.insert(id_begin(c));
-    ASSERT_EQUAL(2u, us.size());
+    ASSERT_EQUAL(2ul, us.size());
 }

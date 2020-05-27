@@ -16,7 +16,7 @@ TEST("none") {
     ASSERT_EQUAL(4, graph.add_vertex());
     ASSERT_EQUAL(2, graph.nth_vertex(2));
     graph.remove_vertex(2);
-    ASSERT_EQUAL(4, graph.vertex_count());
+    ASSERT_EQUAL(4l, graph.vertex_count());
     int i = 0;
     for (auto v : graph.vertices()) {
         ASSERT_EQUAL(i, v);
@@ -24,7 +24,7 @@ TEST("none") {
     }
     ASSERT_TRUE(std::is_same_v<void, decltype(graph[0])>);
     graph = {};
-    ASSERT_EQUAL(0, graph.vertex_count());
+    ASSERT_EQUAL(0l, graph.vertex_count());
 }
 
 template <class VC>
@@ -32,7 +32,7 @@ void test_vertex_list() {
     vertex_list<VC> graph;
     auto vs = test_vertices(graph);
     graph.remove_vertex(vs[1]);
-    ASSERT_EQUAL((int)vs.size() - 1, graph.vertex_count());
+    ASSERT_EQUAL((long)vs.size() - 1, graph.vertex_count());
 }
 
 TEST("bundle") {
