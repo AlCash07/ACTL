@@ -23,32 +23,31 @@ struct category_impl<T, std::enable_if_t<is_range_v<T>>> {
     using type = range_tag;
 };
 
-template <class Op>
-struct range_calculator;
-
-template <>
-struct range_calculator<Equal> {
-    static auto can_eval(...) -> std::true_type;
-
-    template <class Policy, class R0, class R1>
-    static bool evaluate(const Policy& policy, const R0& lhs, const R1& rhs) {
-        return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs),
-                          equal(policy));
+struct EqualRange {
+    template <class EqualOp, class T, class U>
+    static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
+        return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
     }
 };
+constexpr operation_composer<EqualRange> equal_range;
 
-template <>
-struct range_calculator<Less> {
-    static auto can_eval(...) -> std::true_type;
+template <class T, class U>
+struct resolved_operation<Equal, range_tag, T, U> {
+    using type = composite_operation<EqualRange, resolved_nested_t<Equal, T, U>>;
+};
 
-    template <class Policy, class R0, class R1>
-    static bool evaluate(const Policy& policy, const R0& lhs, const R1& rhs) {
+struct LexicographicalCompareRange {
+    template <class LessOp, class T, class U>
+    static bool evaluate(const LessOp& op, const T& lhs, const U& rhs) {
         return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
-                                            std::end(rhs), less(policy));
+                                            std::end(rhs), op);
     }
 };
+constexpr operation_composer<LexicographicalCompareRange> lexicographical_compare_range;
 
-template <class Op, enable_int_if<is_comparison_v<Op>> = 0>
-inline range_calculator<Op> get_calculator(Op, range_tag);
+template <class T, class U>
+struct resolved_operation<Less, range_tag, T, U> {
+    using type = composite_operation<LexicographicalCompareRange, resolved_nested_t<Less, T, U>>;
+};
 
 }  // namespace ac::math

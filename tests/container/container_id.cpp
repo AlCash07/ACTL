@@ -7,6 +7,7 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/container/hash_set.hpp>
+#include <actl/functional/range.hpp>
 #include <actl/std/all.hpp>
 #include <actl/test.hpp>
 

@@ -7,11 +7,13 @@
 
 #pragma once
 
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/tuple.hpp>
 #include <actl/io/io.hpp>
-#include <tuple>
 
 namespace ac {
+
+template <class... Ts>
+struct is_tuple<std::tuple<Ts...>> : std::true_type {};
 
 template <class T, size_t... Is>
 inline constexpr size_t hash_tuple(const T& x, std::index_sequence<Is...>) {
@@ -22,30 +24,6 @@ template <class... Ts>
 inline constexpr size_t hash_value(const std::tuple<Ts...>& x) {
     return hash_tuple(x, std::make_index_sequence<sizeof...(Ts)>{});
 }
-
-namespace math {
-
-template <size_t I = 0, class... Ts, class... Us>
-inline auto perform(Equal op, const std::tuple<Ts...>& lhs, const std::tuple<Us...>& rhs) {
-    if constexpr (I == sizeof...(Ts)) {
-        return true;
-    } else {
-        return equal(std::get<I>(lhs), std::get<I>(rhs)) && perform<I + 1>(op, lhs, rhs);
-    }
-}
-
-template <size_t I = 0, class Policy, class... Ts, class... Us>
-inline auto perform_policy(Less op, const Policy& policy, const std::tuple<Ts...>& lhs,
-                           const std::tuple<Us...>& rhs) {
-    if constexpr (I == sizeof...(Ts)) {
-        return false;
-    } else {
-        int v = cmp3way(policy, std::get<I>(lhs), std::get<I>(rhs));
-        return v < 0 || (v == 0 && perform<I + 1>(op, policy, lhs, rhs));
-    }
-}
-
-}  // namespace math
 
 namespace io {
 

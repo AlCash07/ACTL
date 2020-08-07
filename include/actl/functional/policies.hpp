@@ -13,6 +13,7 @@
 
 namespace ac::math {
 
+#if 0
 struct allow_promotion : virtual policy {};
 
 template <class, class... Ts>
@@ -85,5 +86,6 @@ template <class T>
 inline auto perform(Sqrt, defer_sqrt, const T& x) {
     return square_root{x};
 }
+#endif
 
 }  // namespace ac::math

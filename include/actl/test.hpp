@@ -65,17 +65,23 @@ inline index write_final(Device& od, Format& fmt, const T&) {
 namespace ac::math {
 
 template <class T>
-struct abs_rel_error : virtual policy {
+struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2, scalar_tag> {
+    struct is_policy;
+
     abs_rel_error(T eps) : eps{eps} {}
 
     T eps;
+
+    bool eval_scalar(T lhs, T rhs) const {
+        T numerator = abs(lhs - rhs);
+        T denominator = max(max(abs(lhs), abs(rhs)), T{1});
+        return numerator <= eps * denominator;
+    }
 };
 
-template <class E, class T, class U>
-inline bool perform_policy(Equal, const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
-    E numerator = abs(lhs - rhs);
-    E denominator = max(max(abs(static_cast<E>(lhs)), abs(static_cast<E>(rhs))), E{1});
-    return numerator <= policy.eps * denominator;
+template <class T>
+inline auto apply_policy(Equal, const abs_rel_error<T>& policy) {
+    return policy;
 }
 
 }  // namespace ac::math
@@ -120,7 +126,7 @@ struct assert_impl {
 
     template <class T, class U, class E>
     inline void check_equal(const T& expected, const U& actual, E eps) const {
-        if (eval(math::equal(expected, actual), math::abs_rel_error<E>{eps})) return;
+        if (eval(math::equal(math::abs_rel_error<E>{eps})(expected, actual))) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/functional/operators.hpp>
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/tuple.hpp>
 #include <actl/util/introspection.hpp>
 
 namespace ac {
@@ -77,6 +77,19 @@ private:
 };
 
 template <class T1, class T2>
+struct is_tuple<compressed_pair<T1, T2>> : std::true_type {};
+
+template <size_t I, class T1, class T2>
+inline auto& get(const compressed_pair<T1, T2>& p) {
+    if constexpr (I == 0) {
+        return p.first();
+    } else {
+        static_assert(I == 1);
+        return p.second();
+    }
+}
+
+template <class T1, class T2>
 inline auto operator == (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
     return math::equal(lhs.first(), rhs.first()) && math::equal(lhs.second(), rhs.second());
 }
@@ -86,15 +99,23 @@ inline auto operator < (const compressed_pair<T1, T2>& lhs, const compressed_pai
     return math::less(lhs, rhs);
 }
 
-namespace math {
-
-template <class Policy, class T1, class T2>
-inline auto perform_policy(Less, const Policy& policy, const compressed_pair<T1, T2>& lhs,
-                           const compressed_pair<T1, T2>& rhs) {
-    int v = eval(cmp3way(lhs.first(), rhs.first()), policy);
-    return v < 0 || (v == 0 && eval(less(lhs.second(), rhs.second()), policy));
-}
-
-}  // namespace math
-
 }  // namespace ac
+
+namespace std {
+
+template <class T1, class T2>
+struct tuple_size<ac::compressed_pair<T1, T2>> {
+    static constexpr size_t value = 2;
+};
+
+template <class T1, class T2>
+struct tuple_element<0, ac::compressed_pair<T1, T2>> {
+    using type = T1;
+};
+
+template <class T1, class T2>
+struct tuple_element<1, ac::compressed_pair<T1, T2>> {
+    using type = T2;
+};
+
+}  // namespace std

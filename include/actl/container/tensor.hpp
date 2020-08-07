@@ -9,7 +9,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/static_array.hpp>
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/range.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/span.hpp>
@@ -431,15 +431,28 @@ struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
 namespace math {
 
-template <class Policy, class D0, class S0, class D1, class S1>
-inline bool perform_policy(Equal, const Policy& policy, const ac::detail::tensor_base<D0, S0>& lhs,
-                           const ac::detail::tensor_base<D1, S1>& rhs) {
-    if (lhs.rank() != rhs.rank()) return false;
-    for (index i = 0; i < lhs.rank(); ++i) {
-        if (lhs.dimension(i) != rhs.dimension(i)) return false;
+struct tensor_tag {};
+
+template <class T, class D>
+struct category_impl<T, ac::detail::tensor_base<T, D>> {
+    using type = tensor_tag;
+};
+
+struct EqualTensor {
+    template <class EqualOp, class T, class U>
+    static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
+        if (lhs.rank() != rhs.rank()) return false;
+        for (index i = 0; i < lhs.rank(); ++i) {
+            if (lhs.dimension(i) != rhs.dimension(i)) return false;
+        }
+        return op(span{lhs}, span{rhs});
     }
-    return equal(policy, span{lhs}, span{rhs});
-}
+};
+
+template <class T, class U>
+struct resolved_operation<Equal, tensor_tag, T, U> {
+    using type = composite_operation<EqualTensor, resolved_nested_t<Equal, T, U>>;
+};
 
 }  // namespace math
 

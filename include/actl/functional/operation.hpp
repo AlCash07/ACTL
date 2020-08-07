@@ -10,45 +10,9 @@
 #include <actl/util/type_traits.hpp>
 #include <tuple>
 
-namespace ac {
-namespace math {
-
-// Default operation policy.
-struct policy {};
-
-}  // namespace math
-
-inline constexpr math::policy default_policy;
-
-template <class T>
-inline constexpr bool is_policy_v = std::is_base_of_v<math::policy, remove_cvref_t<T>>;
-
-/* Output and inplace parameters */
-
-template <bool In, class T>
-struct out {
-    T x;
-
-    explicit out(T&& x) : x{std::forward<T>(x)} {}
-};
-
-template <class T>
-out(T&&) -> out<false, T>;
-
-template <class T>
-inline auto inplace(T&& x) {
-    return out<true, T>{std::forward<T>(x)};
-}
-
-namespace math {
+namespace ac::math {
 
 /* Argument traits */
-
-template <class T>
-struct is_out : std::false_type {};
-
-template <bool In, class T>
-struct is_out<out<In, T>> : std::true_type {};
 
 template <class T>
 struct raw {
@@ -57,11 +21,6 @@ struct raw {
 
 template <class T>
 using raw_t = typename raw<remove_cvref_t<T>>::type;
-
-template <bool In, class T>
-struct raw<out<In, T>> {
-    using type = raw_t<T>;
-};
 
 struct scalar_tag {};
 
@@ -114,6 +73,7 @@ inline constexpr auto common_category(T, U) {
 template <class Tag, int Depth>
 struct cdp {  // category-depth pair
     using type = Tag;
+    static constexpr int value = Depth;
 };
 
 template <class T, int DT, class U, int DU>
@@ -138,8 +98,24 @@ struct type_depth<T, std::void_t<typename category_t<T>::has_nested>>
     : index_constant<type_depth_v<value_t<T>> + 1> {};
 
 template <class... Ts>
-using major_category = typename remove_cvref_t<decltype(
-    (... || std::declval<cdp<category_t<Ts>, type_depth_v<Ts>>>()))>::type;
+using major_cdp =
+    remove_cvref_t<decltype((... || std::declval<cdp<category_t<Ts>, type_depth_v<Ts>>>()))>;
+
+template <class... Ts>
+using major_category = typename major_cdp<Ts...>::type;
+
+template <bool B, class T>
+struct value_if {
+    using type = value_t<raw_t<T>>;
+};
+
+template <class T>
+struct value_if<false, T> {
+    using type = T;
+};
+
+template <bool B, class T>
+using value_if_t = typename value_if<B, T>::type;
 
 }  // namespace detail
 
@@ -172,9 +148,6 @@ inline constexpr bool is_commutative_v = is_commutative<T>::value;
 
 /* Operation execution */
 
-template <class... Ts>
-using result_t = decltype(eval(std::declval<Ts>()...));
-
 // pass is the same as std::forward except it converts reference into const reference
 template <class T>
 inline constexpr T&& pass(std::remove_reference_t<T>& x) {
@@ -187,19 +160,10 @@ inline constexpr const T&& pass(std::remove_reference_t<T>&& x) {
     return static_cast<const T&&>(x);
 }
 
-template <class Op, class... Ts>
-inline constexpr auto perform(Op op, const Ts&... xs) -> decltype(Op::perform(xs...)) {
-    return Op::perform(xs...);
-}
+template <class T>
+struct is_expression : std::false_type {};
 
-// Drop policy if operation isn't specialized for it.
-template <class Op, class... Ts>
-inline constexpr auto perform_policy(Op op, policy, const Ts&... xs)
-    -> decltype(perform(op, xs...)) {
-    return perform(op, xs...);
-}
-
-template <class T, class... Ts>
+template <class T, class... Ts, enable_int_if<!is_expression<T>::value> = 0>
 inline constexpr T eval(const T& x, const Ts&...) {
     return x;
 }
@@ -209,126 +173,220 @@ inline auto& eval(const T (&x)[N], const Ts&...) {
     return x;
 }
 
-template <class T, class... Ts>
-inline decltype(auto) eval(const out<true, T>& x, const Ts&...) {
-    return x.x;
-}
-
-namespace detail {
-
-template <class... Ts>
-struct calc;
-
-template <class Op, class Policy, class... Ts>
-struct calc<Op, Policy, Ts...> {
-    using type = decltype(get_calculator(Op{}, major_category<result_t<const Ts&, Policy>...>{}));
-};
-
-}  // namespace detail
-
-template <class... Ts>
-using calculator_t = typename detail::calc<Ts...>::type;
-
 /* Expression */
 
-namespace detail {
-
-template <bool, class... Ts>
-struct expr_result {
-    using type = void;
-};
-
-template <class Op, class... Ts>
-struct expr_result<true, Op, Ts...> {
-    using type = decltype(calculator_t<Op, Ts...>::evaluate(std::declval<Ts>()...));
-};
-
-template <class Op, class... Ts>
-struct expr_traits {
-    using C = calculator_t<Op, Ts...>;
-
-    static constexpr bool can_eval = decltype(C::can_eval(std::declval<Ts>()...))::value;
-
-    using type = typename expr_result<can_eval, Op, Ts...>::type;
-};
-
-}  // namespace detail
-
 // S is always std::make_index_sequence<sizeof...(Ts)>> to simplify arguments traversal.
-template <class Op, class S, class... Ts>
+template <class S, class Op, class... Ts>
 struct expression {
-    std::tuple<Ts...> args;
-
-    using traits = detail::expr_traits<Op, policy, Ts...>;
+    std::tuple<Op, Ts...> args;
 
     template <class... Us>
     explicit constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...} {}
 
-    template <bool B = traits::can_eval, enable_int_if<B> = 0>
-    operator typename traits::type() const {
+    operator decltype(std::declval<Op>().evaluate(std::declval<Ts>()...))() const {
         return eval(*this);
     }
 };
 
+template <class... Ts>
+struct is_expression<expression<Ts...>> : std::true_type {};
+
 template <class T, class U = remove_cvref_t<T>>
 using value_if_arithmetic = std::conditional_t<std::is_arithmetic_v<U>, U, T>;
 
-template <class Op, class... Ts>
+template <class... Ts>
 inline constexpr auto make_expression(Ts&&... xs) {
-    return expression<Op, std::make_index_sequence<sizeof...(Ts)>, value_if_arithmetic<Ts>...>{
+    return expression<std::make_index_sequence<sizeof...(Ts) - 1>, value_if_arithmetic<Ts>...>{
         std::forward<Ts>(xs)...};
 }
 
-template <class Op, size_t... Is, class... Ts, class Policy>
-inline constexpr decltype(auto) eval(const expression<Op, std::index_sequence<Is...>, Ts...>& e,
-                                     const Policy& policy) {
-    return calculator_t<Op, Policy, Ts...>::evaluate(policy, std::get<Is>(e.args)...);
+template <size_t... Is, class... Ts>
+inline constexpr decltype(auto) eval(const expression<std::index_sequence<Is...>, Ts...>& e) {
+    return eval(std::get<0>(e.args).evaluate(std::get<Is + 1>(e.args)...));
 }
 
 template <class... Ts>
-inline constexpr decltype(auto) eval(const expression<Ts...>& e) {
-    return eval(e, default_policy);
+struct category_impl<expression<Ts...>> {
+    using type = category_t<decltype(eval(std::declval<expression<Ts...>>()))>;
+};
+
+/* Output and inplace arguments */
+
+template <bool In, class T>
+struct out {
+    T x;
+};
+
+template <class T, bool NotIn = false>
+struct is_out : std::false_type {};
+
+template <bool In, class T, bool NotIn>
+struct is_out<out<In, T>, NotIn> : std::bool_constant<!(NotIn && In)> {};
+
+template <bool In, class T>
+struct raw<out<In, T>> {
+    using type = raw_t<T>;
+};
+
+template <class T>
+inline constexpr const T& remove_inplace(const out<true, T>& x) {
+    return x.x;
 }
 
+template <class T>
+inline constexpr const T& remove_inplace(const T& x) {
+    return x;
+}
+
+template <class T, class... Ts>
+inline constexpr auto& find_dst(T&, Ts&... xs) {
+    return find_dst(xs...);
+}
+
+template <class T, class... Ts>
+inline constexpr T& find_dst(out<true, T>& x, Ts&... xs) {
+    return x.x;
+}
+
+/* Policy support */
+
+template <class T, class = void>
+struct is_policy : std::false_type {};
+
+template <class T>
+struct is_policy<T, std::void_t<typename T::is_policy>> : std::true_type {};
+
+template <class T>
+inline constexpr bool is_policy_v = is_policy<T>::value;
+
+template <class Op, class Policy, class = void>
+struct can_apply_policy : std::false_type {};
+
+template <class Op, class Policy>
+struct can_apply_policy<
+    Op, Policy, std::void_t<decltype(apply_policy(std::declval<Op>(), std::declval<Policy>()))>>
+    : std::true_type {};
+
+/* Operation resolution */
+
+template <class Op, class Category, class... Ts>
+struct resolved_operation {
+    using type = Op;
+};
+
+template <class Op, class... Ts>
+using resolved_operation_t =
+    typename resolved_operation<Op, detail::major_category<Ts...>, raw_t<Ts>...>::type;
+
+template <class Op, class... Ts>
+using resolved_nested_t = resolved_operation_t<
+    Op, detail::value_if_t<detail::type_depth_v<Ts> == detail::major_cdp<Ts...>::value, Ts>...>;
+
 // Base class for operations.
-template <class Derived, index Arity, class ArgumentsTag>
-struct operation {
-    using category = operation_tag;
-    using arguments_tag = ArgumentsTag;
+template <class Derived>
+struct operation;
 
-    static constexpr index arity = Arity;
-
-    template <class... Ts>
-    static constexpr bool can_perform = ((sizeof...(Ts) == arity && are_same_v<Ts...>)&&... &&
-                                         std::is_base_of_v<arguments_tag, category_t<Ts>>);
+template <class Op, class Policy>
+struct tuned_operation : operation<tuned_operation<Op, Policy>> {
+    std::tuple<Op, Policy> t;
 
     template <class... Ts>
-    constexpr decltype(auto) operator()(Ts&&... xs) const {
-        static_assert(sizeof...(Ts) > 0);
-        constexpr bool have_policy = is_policy_v<nth_t<0, Ts...>>;
-        if constexpr ((... || is_out<remove_cvref_t<Ts>>::value)) {
-            if constexpr (have_policy) {
-                return calculator_t<Derived, Ts...>::assign(xs...);
-            } else {
-                return calculator_t<Derived, policy, Ts...>::assign(default_policy, xs...);
-            }
-        } else {
-            if constexpr (have_policy && sizeof...(Ts) == 1) {
-                return make_function(xs...);
-            } else {
-                return make_expression<Derived>(pass<Ts>(xs)...);
-            }
-        }
+    explicit tuned_operation(Ts&&... xs) : t{std::forward<Ts>(xs)...} {}
+};
+
+template <class... Ts>
+struct operation_resolver {
+    template <class Op>
+    static constexpr auto resolve(Op) {
+        return resolved_operation_t<Op, Ts...>{};
     }
 
-private:
-    template <class Policy>
-    auto make_function(const Policy& policy) const {
-        return [&policy](auto&&... xs) { 
-            return calculator_t<Derived, Policy, decltype(xs)...>::evaluate(policy, xs...); 
-        };
+    template <class Op, class Policy>
+    static constexpr auto resolve(const tuned_operation<Op, Policy>& op) {
+        auto resolved_op = resolve(std::get<0>(op.t));
+        if constexpr (can_apply_policy<decltype(resolved_op), Policy>::value) {
+            return apply_policy(resolved_op, std::get<1>(op.t));
+        } else {
+            return std::move(resolved_op);
+        }
     }
 };
 
-}  // namespace math
+template <class Derived>
+struct operation {
+    using category = operation_tag;
+
+    constexpr const Derived& derived() const { return static_cast<const Derived&>(*this); }
+
+    template <class... Ts, class T = remove_cvref_t<nth_t<0, Ts...>>,
+              enable_int_if<!is_out<T, true>::value && !is_policy_v<T>> = 0>
+    constexpr decltype(auto) operator()(Ts&&... xs) const {
+        auto op = operation_resolver<Ts...>::resolve(derived());
+        if constexpr ((... || is_out<remove_cvref_t<Ts>>::value)) {
+            static_assert(1 == (... + is_out<remove_cvref_t<Ts>>::value),
+                          "single inplace argument expected");
+            auto& dst = find_dst(xs...);
+            op.assign(dst, remove_inplace(xs)...);
+            return dst;
+        } else {
+            return make_expression(std::move(op), std::forward<Ts>(xs)...);
+        }
+    }
+
+    template <class T, class... Ts>
+    constexpr T operator()(out<false, T> dst, const Ts&... xs) const {
+        operation_resolver<T, Ts...>::resolve(derived()).assign(dst.x, xs...);
+        return dst.x;
+    }
+
+    template <class Policy, enable_int_if<is_policy_v<Policy>> = 0>
+    constexpr auto operator()(Policy&& policy) const {
+        return tuned_operation<Derived, Policy>{derived(), std::forward<Policy>(policy)};
+    }
+};
+
+template <class OuterOp, class InnerOp>
+struct composite_operation : operation<composite_operation<OuterOp, InnerOp>>, private InnerOp {
+    template <class... Ts>
+    explicit composite_operation(Ts&&... xs) : InnerOp{std::forward<Ts>(xs)...} {}
+
+    constexpr const InnerOp& inner() const { return static_cast<const InnerOp&>(*this); }
+
+    using operation<composite_operation<OuterOp, InnerOp>>::operator();
+
+    template <class... Ts>
+    constexpr auto evaluate(const Ts&... xs) const {
+        return OuterOp::evaluate(inner(), xs...);
+    }
+};
+
+template <class OuterOp>
+struct operation_composer {
+    template <class InnerOp>
+    constexpr auto operator()(InnerOp&& op) const {
+        return composite_operation<OuterOp, remove_cvref_t<InnerOp>>{op};
+    }
+};
+
+template <class Outer, class Inner, class Policy>
+inline constexpr auto apply_policy(const composite_operation<Outer, Inner>& op,
+                                   const Policy& policy)
+    -> decltype(operation_composer<Outer>{}(apply_policy(op.inner(), policy))) {
+    return operation_composer<Outer>{}(apply_policy(op.inner(), policy));
+}
+
+}  // namespace ac::math
+
+namespace ac {
+
+template <class T>
+inline math::out<false, T> out(T&& x) {
+    return {std::forward<T>(x)};
+}
+
+template <class T>
+inline math::out<true, T> inplace(T&& x) {
+    return {std::forward<T>(x)};
+}
+
 }  // namespace ac

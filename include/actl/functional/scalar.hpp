@@ -39,70 +39,41 @@ struct category_impl<bool> {
     using type = boolean_tag;
 };
 
-template <class T>
-inline constexpr bool is_scalar_operation_v =
-    std::is_base_of_v<scalar_tag, typename T::arguments_tag>;
-
-template <class Op>
-struct scalar_calculator {
-    template <class Policy, class... Ts>
-    static auto can_eval(const Policy& policy, const Ts&... xs)
-        -> decltype(eval(perform_policy(Op{}, policy, eval(xs, policy)...), policy),
-                    std::true_type{});
-
-    static auto can_eval(...) -> std::false_type;
-
-    template <class Policy, class... Ts>
-    static constexpr decltype(auto) evaluate(const Policy& policy, const Ts&... xs) {
-        return eval(perform_policy(Op{}, policy, eval(xs, policy)...), policy);
+template <class Op, index Arity, class ArgumentsTag>
+struct scalar_operation : operation<Op> {
+    template <class... Ts>
+    constexpr auto evaluate(const Ts&... xs) const {
+        static_assert((... && std::is_base_of_v<ArgumentsTag, category_t<Ts>>));
+        return this->derived().eval_scalar(eval(xs)...);
     }
 
     template <class T, class... Ts>
-    static auto& get_dst(T&, Ts&... xs) {
-        return get_dst(xs...);
-    }
-
-    template <bool In, class T, class... Ts>
-    static T& get_dst(out<In, T>& x, Ts&... xs) {
-        return x.x;
-    }
-
-    template <class Policy, class... Ts>
-    static constexpr auto& assign(const Policy& policy, Ts&... xs) {
-        return get_dst(xs...) = evaluate(policy, xs...);
-    }
-
-    template <class Policy, class T, class... Ts>
-    static constexpr T& assign(const Policy& policy, out<false, T>& dst, Ts&... xs) {
-        return dst.x = evaluate(policy, xs...);
+    constexpr void assign(T& dst, const Ts&... xs) const {
+        dst = evaluate(xs...);
     }
 };
 
-template <class Op, enable_int_if<is_scalar_operation_v<Op>> = 0>
-inline scalar_calculator<Op> get_calculator(Op, scalar_tag);
-
 template <class To>
-struct Cast : operation<Cast<To>, 1, arithmetic_tag> {
+struct Cast : scalar_operation<Cast<To>, 1, arithmetic_tag> {
     template <class T>
-    static constexpr auto perform(T x) -> decltype(static_cast<To>(x)) {
+    static constexpr To eval_scalar(T x) {
         return static_cast<To>(x);
     }
 };
 template <class T>
 inline constexpr Cast<T> cast;
 
-struct Copy : operation<Copy, 1, arithmetic_tag> {
+struct Copy : scalar_operation<Copy, 1, arithmetic_tag> {
     template <class T>
-    static constexpr T perform(T x) {
+    static constexpr T eval_scalar(T x) {
         return x;
     }
 };
 inline constexpr Copy copy;
 
-struct Ternary : operation<Ternary, 3, arithmetic_tag> {
+struct Ternary : scalar_operation<Ternary, 3, arithmetic_tag> {
     template <class T>
-    static constexpr auto perform(bool condition, T lhs, T rhs)
-        -> remove_cvref_t<decltype(condition ? lhs : rhs)> {
+    static constexpr T eval_scalar(bool condition, T lhs, T rhs) {
         return condition ? lhs : rhs;
     }
 };
@@ -110,11 +81,8 @@ inline constexpr Ternary ternary;
 
 /* Logical operations */
 
-struct LogicalNot : operation<LogicalNot, 1, boolean_tag> {
-    template <class T>
-    static constexpr auto perform(const T& x) -> decltype(!x) {
-        return !x;
-    }
+struct LogicalNot : scalar_operation<LogicalNot, 1, boolean_tag> {
+    static constexpr bool eval_scalar(bool x) { return !x; }
 };
 inline constexpr LogicalNot logical_not;
 
@@ -123,14 +91,11 @@ inline constexpr auto operator ! (T&& x) {
     return logical_not(pass<T>(x));
 }
 
-struct LogicalAnd : operation<LogicalAnd, 2, boolean_tag> {
+struct LogicalAnd : scalar_operation<LogicalAnd, 2, boolean_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs && rhs) {
-        return lhs && rhs;
-    }
+    static constexpr bool eval_scalar(bool lhs, bool rhs) { return lhs && rhs; }
 };
 inline constexpr LogicalAnd logical_and;
 
@@ -139,14 +104,11 @@ inline constexpr auto operator && (T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct LogicalOr : operation<LogicalOr, 2, boolean_tag> {
+struct LogicalOr : scalar_operation<LogicalOr, 2, boolean_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs || rhs) {
-        return lhs || rhs;
-    }
+    static constexpr bool eval_scalar(bool lhs, bool rhs) { return lhs || rhs; }
 };
 inline constexpr LogicalOr logical_or;
 
@@ -166,12 +128,12 @@ struct is_comparison<T, std::void_t<typename T::is_comparison>> : std::true_type
 template <class T>
 inline constexpr bool is_comparison_v = is_comparison<T>::value;
 
-struct Equal : operation<Equal, 2, scalar_tag> {
+struct Equal : scalar_operation<Equal, 2, scalar_tag> {
     struct is_commutative;
     struct is_comparison;
 
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs == rhs) {
+    static constexpr bool eval_scalar(T lhs, T rhs) {
         return lhs == rhs;
     }
 };
@@ -182,11 +144,11 @@ inline constexpr auto operator == (T&& lhs, U&& rhs) {
     return equal(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct Less : operation<Less, 1, scalar_tag> {
+struct Less : scalar_operation<Less, 1, scalar_tag> {
     struct is_comparison;
 
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs < rhs) {
+    static constexpr bool eval_scalar(T lhs, T rhs) {
         return lhs < rhs;
     }
 };
@@ -197,12 +159,11 @@ inline constexpr auto operator < (T&& lhs, U&& rhs) {
     return less(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct Cmp3Way : operation<Cmp3Way, 2, scalar_tag> {
+struct Cmp3Way : scalar_operation<Cmp3Way, 2, scalar_tag> {
     struct is_comparison;
 
-    // TODO: figure out a way to correctly handle rvalues here.
-    template <class T, class U>
-    static constexpr auto perform(const T& lhs, const U& rhs) {
+    template <class T>
+    static constexpr int eval_scalar(T lhs, T rhs) {
         return cast<int>(less(rhs, lhs)) - cast<int>(less(lhs, rhs));
     }
 };
@@ -230,9 +191,9 @@ inline constexpr auto operator >= (T&& lhs, U&& rhs) {
 
 /* Arithmetic operations */
 
-struct Neg : operation<Neg, 2, arithmetic_tag> {
+struct Neg : scalar_operation<Neg, 2, arithmetic_tag> {
     template <class T>
-    static constexpr auto perform(const T& x) -> decltype(-x) {
+    static constexpr T eval_scalar(T x) {
         return -x;
     }
 };
@@ -243,12 +204,12 @@ inline constexpr auto operator - (T&& x) {
     return neg(pass<T>(x));
 }
 
-struct Add : operation<Add, 2, arithmetic_tag> {
+struct Add : scalar_operation<Add, 2, arithmetic_tag> {
     struct is_associative;
     struct is_commutative;
 
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs + rhs) {
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return lhs + rhs;
     }
 };
@@ -264,9 +225,9 @@ inline constexpr decltype(auto) operator += (T& lhs, const U& rhs) {
     return add(inplace(lhs), rhs);
 }
 
-struct Div : operation<Div, 2, arithmetic_tag> {
+struct Div : scalar_operation<Div, 2, arithmetic_tag> {
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs / rhs) {
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return lhs / rhs;
     }
 };
@@ -282,12 +243,12 @@ inline constexpr decltype(auto) operator /= (T& lhs, const U& rhs) {
     return div(inplace(lhs), rhs);
 }
 
-struct Mul : operation<Mul, 2, arithmetic_tag> {
+struct Mul : scalar_operation<Mul, 2, arithmetic_tag> {
     struct is_associative;
     struct is_commutative;
 
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs * rhs) {
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return lhs * rhs;
     }
 };
@@ -303,9 +264,9 @@ inline constexpr decltype(auto) operator *= (T& lhs, const U& rhs) {
     return mul(inplace(lhs), rhs);
 }
 
-struct Sub : operation<Sub, 2, arithmetic_tag> {
+struct Sub : scalar_operation<Sub, 2, arithmetic_tag> {
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs - rhs) {
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return lhs - rhs;
     }
 };
@@ -323,9 +284,9 @@ inline constexpr decltype(auto) operator -= (T& lhs, const U& rhs) {
 
 /* Bit operations */
 
-struct BitNot : operation<BitNot, 2, integral_tag> {
+struct BitNot : scalar_operation<BitNot, 2, integral_tag> {
     template <class T>
-    static constexpr auto perform(const T& x) -> decltype(~x) {
+    static constexpr T eval_scalar(T x) {
         return ~x;
     }
 };
@@ -336,12 +297,12 @@ inline constexpr auto operator ~ (T&& x) {
     return bit_not(pass<T>(x));
 }
 
-struct BitAnd : operation<BitAnd, 2, integral_tag> {
+struct BitAnd : scalar_operation<BitAnd, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs & rhs) {
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return lhs & rhs;
     }
 };
@@ -357,12 +318,12 @@ inline constexpr decltype(auto) operator &= (T& lhs, const U& rhs) {
     return bit_and(inplace(lhs), rhs);
 }
 
-struct BitOr : operation<BitOr, 2, integral_tag> {
+struct BitOr : scalar_operation<BitOr, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs | rhs) {
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return lhs | rhs;
     }
 };
@@ -378,12 +339,12 @@ inline constexpr decltype(auto) operator |= (T& lhs, const U& rhs) {
     return bit_or(inplace(lhs), rhs);
 }
 
-struct BitXor : operation<BitXor, 2, integral_tag> {
+struct BitXor : scalar_operation<BitXor, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
     template <class T>
-    static constexpr auto perform(const T& lhs, const T& rhs) -> decltype(lhs ^ rhs) {
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return lhs ^ rhs;
     }
 };
@@ -401,91 +362,91 @@ inline constexpr decltype(auto) operator ^= (T& lhs, const U& rhs) {
 
 /* Derived operations */
 
-struct Max : operation<Max, 2, scalar_tag> {
+struct Max : scalar_operation<Max, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T, class U>
-    static constexpr auto perform(const T& lhs, const U& rhs) {
+    template <class T>
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return ternary(less(lhs, rhs), rhs, lhs);
     }
 };
 inline constexpr Max max;
 
-struct Min : operation<Min, 2, scalar_tag> {
+struct Min : scalar_operation<Min, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T, class U>
-    static constexpr auto perform(const T& lhs, const U& rhs) {
+    template <class T>
+    static constexpr T eval_scalar(T lhs, T rhs) {
         return ternary(less(rhs, lhs), rhs, lhs);
     }
 };
 inline constexpr Min min;
 
-struct Sgn : operation<Sgn, 2, scalar_tag> {
+struct Sgn : scalar_operation<Sgn, 2, scalar_tag> {
     template <class T>
-    static constexpr auto perform(const T& x) {
+    static constexpr int eval_scalar(T x) {
         return cmp3way(x, T{0});
     }
 };
 inline constexpr Sgn sgn;
 
-struct Sqr : operation<Sqr, 2, scalar_tag> {
+struct Sqr : scalar_operation<Sqr, 2, scalar_tag> {
     template <class T>
-    static constexpr auto perform(const T& x) {
+    static constexpr auto eval_scalar(T x) {
         return mul(x, x);
     }
 };
 inline constexpr Sqr sqr;
 
-struct Common : operation<Common, 2, scalar_tag> {
+struct Common : scalar_operation<Common, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
     template <class T>
-    static constexpr T perform(T x) {
+    static constexpr T eval_scalar(T x) {
         return x;
     }
 
     template <class T>
-    static T perform(T x, T y) {
+    static T eval_scalar(T x, T y) {
         ACTL_ASSERT(x == y);
         return x;
     }
 
-    static constexpr auto perform(none, none) { return none{}; }
+    static constexpr auto eval_scalar(none, none) { return none{}; }
 
     template <class T>
-    static constexpr T perform(T x, none) {
+    static constexpr T eval_scalar(T x, none) {
         return x;
     }
 
     template <class U>
-    static constexpr U perform(none, U y) {
+    static constexpr U eval_scalar(none, U y) {
         return y;
     }
 
     template <class T, T X>
-    static constexpr auto perform(std::integral_constant<T, X> x, std::integral_constant<T, X>) {
+    static constexpr auto eval_scalar(std::integral_constant<T, X> x,
+                                      std::integral_constant<T, X>) {
         return x;
     }
 
     template <class T, T X, class U, enable_int_if<std::is_integral_v<U>> = 0>
-    static auto perform(std::integral_constant<T, X> x, U y) {
+    static auto eval_scalar(std::integral_constant<T, X> x, U y) {
         ACTL_ASSERT(X == y);
         return x;
     }
 
     template <class T, class U, U Y, enable_int_if<std::is_integral_v<T>> = 0>
-    static auto perform(T x, std::integral_constant<U, Y> y) {
-        return perform(y, x);
+    static auto eval_scalar(T x, std::integral_constant<U, Y> y) {
+        return eval_scalar(y, x);
     }
 
     template <class T0, class T1, class T2, class... Ts>
-    static constexpr auto perform(T0 x0, T1 x1, T2 x2, Ts... xs)
-        -> decltype(Common::perform(Common::perform(x0, x1), x2, xs...)) {
-        return Common::perform(Common::perform(x0, x1), x2, xs...);
+    static constexpr auto eval_scalar(T0 x0, T1 x1, T2 x2, Ts... xs) {
+        return eval_scalar(eval_scalar(x0, x1), x2, xs...);
     }
 };
 inline constexpr Common common;
