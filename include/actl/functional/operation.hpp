@@ -215,6 +215,18 @@ struct category_impl<expression<Ts...>> {
 template <bool In, class T>
 struct out {
     T x;
+
+    constexpr operator T() { return x; }
+
+    template <class U>
+    out& operator=(const U& y);
+
+    template <size_t... Is, class... Ts>
+    out& operator=(const expression<std::index_sequence<Is...>, Ts...>& e) {
+        static_assert(!In, "use output instead of inplace argument for assignment");
+        std::get<0>(e.args)(*this, std::get<Is + 1>(e.args)...);
+        return *this;
+    }
 };
 
 template <class T, bool NotIn = false>

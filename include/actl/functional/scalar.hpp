@@ -71,6 +71,14 @@ struct Copy : scalar_operation<Copy, 1, arithmetic_tag> {
 };
 inline constexpr Copy copy;
 
+template <bool In, class T>
+template <class U>
+inline out<In, T>& out<In, T>::operator=(const U& y) {
+    static_assert(!In, "use output instead of inplace argument for assignment");
+    copy(*this, y);
+    return *this;
+}
+
 struct Ternary : scalar_operation<Ternary, 3, arithmetic_tag> {
     template <class T>
     static constexpr T eval_scalar(bool condition, T lhs, T rhs) {
