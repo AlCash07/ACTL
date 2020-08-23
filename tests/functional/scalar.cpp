@@ -21,20 +21,8 @@ TEST("output parameter") {
     int res{};
     ASSERT_EQUAL(6, math::add(out(res), 2, 4));
     ASSERT_EQUAL(6, res);
-}
-
-TEST("arithmetics") {
-    ASSERT_EQUAL(-6, math::neg(6));
-    ASSERT_EQUAL(2, math::neg(-2));
-    ASSERT_EQUAL(8, math::add(6, 2));
-    ASSERT_EQUAL(3, math::div(6, 2));
-    ASSERT_EQUAL(12, math::mul(6, 2));
-    ASSERT_EQUAL(4, math::sub(6, 2));
-}
-
-TEST("math::cmp3way") {
-    ASSERT_EQUAL(1, math::cmp3way(0, -1));
-    ASSERT_EQUAL(-1, math::cmp3way(0u, 1u));
+    out(res) = math::add(2, res);
+    ASSERT_EQUAL(8, res);
 }
 
 TEST("logical") {
@@ -44,6 +32,27 @@ TEST("logical") {
     ASSERT_EQUAL(false, math::logical_and(true, false));
     ASSERT_EQUAL(true, math::logical_or(true, false));
     ASSERT_EQUAL(false, math::logical_or(false, false));
+}
+
+TEST("comparison") {
+    ASSERT_EQUAL(true, math::equal(2, 2));
+    ASSERT_EQUAL(false, math::equal(2, 6));
+    ASSERT_EQUAL(false, math::not_equal(2, 2));
+    ASSERT_EQUAL(true, math::not_equal(2, 6));
+}
+
+TEST("math::cmp3way") {
+    ASSERT_EQUAL(1, math::cmp3way(0, -1));
+    ASSERT_EQUAL(-1, math::cmp3way(0u, 1u));
+}
+
+TEST("arithmetic") {
+    ASSERT_EQUAL(-6, math::neg(6));
+    ASSERT_EQUAL(2, math::neg(-2));
+    ASSERT_EQUAL(8, math::add(6, 2));
+    ASSERT_EQUAL(3, math::div(6, 2));
+    ASSERT_EQUAL(12, math::mul(6, 2));
+    ASSERT_EQUAL(4, math::sub(6, 2));
 }
 
 TEST("bit") {

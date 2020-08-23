@@ -152,6 +152,13 @@ inline constexpr auto operator == (T&& lhs, U&& rhs) {
     return equal(pass<T>(lhs), pass<U>(rhs));
 }
 
+inline constexpr auto not_equal = !equal;
+
+template <class T, class U>
+inline constexpr auto operator != (T&& lhs, U&& rhs) {
+    return not_equal(pass<T>(lhs), pass<U>(rhs));
+}
+
 struct Less : scalar_operation<Less, 1, scalar_tag> {
     struct is_comparison;
 
@@ -176,11 +183,6 @@ struct Cmp3Way : scalar_operation<Cmp3Way, 2, scalar_tag> {
     }
 };
 inline constexpr Cmp3Way cmp3way;
-
-template <class T, class U>
-inline constexpr auto operator != (T&& lhs, U&& rhs) {
-    return !(pass<T>(lhs) == pass<U>(rhs));
-}
 
 template <class T, class U>
 inline constexpr auto operator > (T&& lhs, U&& rhs) {

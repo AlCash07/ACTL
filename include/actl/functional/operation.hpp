@@ -161,43 +161,87 @@ inline constexpr const T&& pass(std::remove_reference_t<T>&& x) {
 }
 
 template <class T>
-struct is_expression : std::false_type {};
-
-template <class T, class... Ts, enable_int_if<!is_expression<T>::value> = 0>
-inline constexpr T eval(const T& x, const Ts&...) {
+inline constexpr T eval(const T& x) {
     return x;
 }
 
-template <class T, size_t N, class... Ts>
-inline auto& eval(const T (&x)[N], const Ts&...) {
+template <class T, size_t N>
+inline auto& eval(const T (&x)[N]) {
     return x;
 }
 
 /* Expression */
 
+// Base class for operations.
+template <class Derived>
+struct operation;
+
+namespace detail {
+
+template <class Op, class... Ts>
+struct result {
+    using type = decltype(std::declval<Op>().evaluate(std::declval<Ts>()...));
+    using tag = category_t<type>;
+};
+
+}  // namespace detail
+
+template <class Derived, class Tag>
+struct expression_base {};
+
 // S is always std::make_index_sequence<sizeof...(Ts)>> to simplify arguments traversal.
 template <class S, class Op, class... Ts>
-struct expression {
+struct expression
+    : expression_base<expression<S, Op, Ts...>, typename detail::result<Op, Ts...>::tag> {
+    std::tuple<Op, Ts...> args;
+
+    operator typename detail::result<Op, Ts...>::type() const { return eval(*this); }
+};
+
+template <class S, class Op, class... Ts>
+struct expression_operation : operation<expression_operation<S, Op, Ts...>> {
     std::tuple<Op, Ts...> args;
 
     template <class... Us>
-    explicit constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...} {}
+    constexpr auto evaluate(const Us&... xs) const {
+        return eval(expand_expression(*this, xs...));
+    }
 
-    operator decltype(std::declval<Op>().evaluate(std::declval<Ts>()...))() const {
-        return eval(*this);
+    template <class T, class... Us>
+    constexpr void assign(T& dst, const Us&... xs) const {
+        out(dst) = expand_expression(*this, xs...);
     }
 };
 
-template <class... Ts>
-struct is_expression<expression<Ts...>> : std::true_type {};
-
 template <class T, class U = remove_cvref_t<T>>
-using value_if_arithmetic = std::conditional_t<std::is_arithmetic_v<U>, U, T>;
+using value_if_small = std::conditional_t<std::is_empty_v<U> || std::is_arithmetic_v<U>, U, T>;
 
 template <class... Ts>
 inline constexpr auto make_expression(Ts&&... xs) {
-    return expression<std::make_index_sequence<sizeof...(Ts) - 1>, value_if_arithmetic<Ts>...>{
-        std::forward<Ts>(xs)...};
+    static_assert((... + is_operation_v<Ts>) != 0);
+    if constexpr ((... + is_operation_v<Ts>) == 1) {
+        return expression<std::make_index_sequence<sizeof...(Ts) - 1>, value_if_small<Ts>...>{
+            {}, {std::forward<Ts>(xs)...}};
+    } else {
+        return expression_operation<std::make_index_sequence<sizeof...(Ts) - 1>,
+                                    value_if_small<Ts>...>{{}, {std::forward<Ts>(xs)...}};
+    }
+}
+
+template <class Op, class... Ts>
+inline constexpr decltype(auto) expand_expression(const Op& op, const Ts&... xs) {
+    if constexpr (!is_operation_v<Op>) {
+        return op;
+    } else {
+        return make_expression(op, xs...);
+    }
+}
+
+template <size_t... Is, class Op, class... Ts, class... Us>
+inline constexpr auto expand_expression(
+    const expression_operation<std::index_sequence<Is...>, Op, Ts...>& eo, const Us&... xs) {
+    return make_expression(std::get<0>(eo.args),
+                           expand_expression(std::get<Is + 1>(eo.args), xs...)...);
 }
 
 template <size_t... Is, class... Ts>
@@ -205,9 +249,9 @@ inline constexpr decltype(auto) eval(const expression<std::index_sequence<Is...>
     return eval(std::get<0>(e.args).evaluate(std::get<Is + 1>(e.args)...));
 }
 
-template <class... Ts>
-struct category_impl<expression<Ts...>> {
-    using type = category_t<decltype(eval(std::declval<expression<Ts...>>()))>;
+template <class S, class... Ts>
+struct category_impl<expression<S, Ts...>> {
+    using type = typename detail::result<Ts...>::tag;
 };
 
 /* Output and inplace arguments */
@@ -294,10 +338,6 @@ template <class Op, class... Ts>
 using resolved_nested_t = resolved_operation_t<
     Op, detail::value_if_t<detail::type_depth_v<Ts> == detail::major_cdp<Ts...>::value, Ts>...>;
 
-// Base class for operations.
-template <class Derived>
-struct operation;
-
 template <class Op, class Policy>
 struct tuned_operation : operation<tuned_operation<Op, Policy>> {
     std::tuple<Op, Policy> t;
@@ -359,6 +399,8 @@ struct operation {
 
 template <class OuterOp, class InnerOp>
 struct composite_operation : operation<composite_operation<OuterOp, InnerOp>>, private InnerOp {
+    using category = operation_tag;
+
     template <class... Ts>
     explicit composite_operation(Ts&&... xs) : InnerOp{std::forward<Ts>(xs)...} {}
 
