@@ -42,23 +42,25 @@ struct EqualTuple {
 };
 constexpr operation_composer<EqualTuple> equal_tuple;
 
-template <class... Ts>
-struct tuple_op {};
+template <class T, class... Ts>
+struct tuple_op_resolver : tuple_op_resolver<tuple_indices_t<T>, T, Ts...> {};
 
-template <size_t... Is, class Op, class T, class U>
-struct tuple_op<std::index_sequence<Is...>, Op, T, U> {
+template <size_t... Is, class T, class U>
+struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
     static_assert(std::tuple_size_v<T> == std::tuple_size_v<U>);
 
-    using type = std::tuple<
-        resolved_operation_t<Op, std::tuple_element_t<Is, T>, std::tuple_element_t<Is, U>>...>;
+    template <class Op>
+    static constexpr auto resolve(const Op& op) {
+        return std::tuple{
+            op.template resolve<std::tuple_element_t<Is, T>, std::tuple_element_t<Is, U>>()...};
+    }
 };
 
-template <class Op, class T, class... Ts>
-using tuple_op_t = typename tuple_op<tuple_indices_t<T>, Op, T, Ts...>::type;
-
 template <class T, class U>
-struct resolved_operation<Equal, tuple_tag, T, U> {
-    using type = composite_operation<EqualTuple, tuple_op_t<Equal, T, U>>;
+struct operation_resolver<Equal, tuple_tag, T, U> {
+    static constexpr auto resolve(Equal op) {
+        return equal_tuple(tuple_op_resolver<T, U>::resolve(op));
+    }
 };
 
 struct LexicographicalCompareTuple {
@@ -76,8 +78,10 @@ struct LexicographicalCompareTuple {
 constexpr operation_composer<LexicographicalCompareTuple> lexicographical_compare_tuple;
 
 template <class T, class U>
-struct resolved_operation<Less, tuple_tag, T, U> {
-    using type = composite_operation<LexicographicalCompareTuple, tuple_op_t<Cmp3Way, T, U>>;
+struct operation_resolver<Less, tuple_tag, T, U> {
+    static constexpr auto resolve(Less) {
+        return lexicographical_compare_tuple(tuple_op_resolver<T, U>::resolve(cmp3way));
+    };
 };
 
 }  // namespace ac::math

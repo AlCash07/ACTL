@@ -450,8 +450,10 @@ struct EqualTensor {
 };
 
 template <class T, class U>
-struct resolved_operation<Equal, tensor_tag, T, U> {
-    using type = composite_operation<EqualTensor, resolved_nested_t<Equal, T, U>>;
+struct operation_resolver<Equal, tensor_tag, T, U> {
+    static constexpr auto resolve(Equal op) {
+        return operation_composer<EqualTensor>(op.resolve_nested<T, U>());
+    }
 };
 
 }  // namespace math

@@ -32,8 +32,8 @@ struct EqualRange {
 constexpr operation_composer<EqualRange> equal_range;
 
 template <class T, class U>
-struct resolved_operation<Equal, range_tag, T, U> {
-    using type = composite_operation<EqualRange, resolved_nested_t<Equal, T, U>>;
+struct operation_resolver<Equal, range_tag, T, U> {
+    static constexpr auto resolve(Equal op) { return equal_range(op.resolve_nested<T, U>()); }
 };
 
 struct LexicographicalCompareRange {
@@ -46,8 +46,10 @@ struct LexicographicalCompareRange {
 constexpr operation_composer<LexicographicalCompareRange> lexicographical_compare_range;
 
 template <class T, class U>
-struct resolved_operation<Less, range_tag, T, U> {
-    using type = composite_operation<LexicographicalCompareRange, resolved_nested_t<Less, T, U>>;
+struct operation_resolver<Less, range_tag, T, U> {
+    static constexpr auto resolve(Less op) {
+        return lexicographical_compare_range(op.resolve_nested<T, U>());
+    }
 };
 
 }  // namespace ac::math
