@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/range.hpp>
+#include <actl/functional/composite/range.hpp>
 
 namespace ac::math {
 

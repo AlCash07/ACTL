@@ -14,6 +14,9 @@
 
 namespace ac {
 
+template <class T>
+struct is_tuple : std::false_type {};
+
 template <bool B, class T>
 struct add_const_if : std::conditional<B, const T, T> {};
 

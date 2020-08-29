@@ -7,13 +7,10 @@
 
 #pragma once
 
-#include <actl/functional/operation/composite_operation.hpp>
+#include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
 
 namespace ac {
-
-template <class T>
-struct is_tuple : std::false_type {};
 
 template <class T>
 using tuple_indices_t = std::make_index_sequence<std::tuple_size_v<T>>;

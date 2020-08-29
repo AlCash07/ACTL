@@ -7,8 +7,8 @@
 
 #pragma once
 
+#include <actl/functional/composite/tuple.hpp>
 #include <actl/functional/operators.hpp>
-#include <actl/functional/tuple.hpp>
 #include <actl/util/introspection.hpp>
 
 namespace ac {

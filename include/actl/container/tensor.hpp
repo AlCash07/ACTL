@@ -9,7 +9,8 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/static_array.hpp>
-#include <actl/functional/range.hpp>
+#include <actl/functional/composite/range.hpp>
+#include <actl/functional/scalar/derived.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/span.hpp>
