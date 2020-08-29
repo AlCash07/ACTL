@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/scalar/scalar_operation.hpp>
 #include <cmath>
 #include <cstdlib>
 

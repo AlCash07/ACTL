@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/scalar/all.hpp>
 #include <actl/util/type_traits.hpp>
 #include <actl/util/use_default.hpp>
 

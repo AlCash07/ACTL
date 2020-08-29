@@ -5,7 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/scalar/all.hpp>
 #include <actl/test.hpp>
 
 TEST("inplace parameter") {

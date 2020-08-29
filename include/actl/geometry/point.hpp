@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/scalar/all.hpp>
 #include <actl/geometry/traits.hpp>
 #include <actl/util/introspection.hpp>
 #include <actl/util/span.hpp>

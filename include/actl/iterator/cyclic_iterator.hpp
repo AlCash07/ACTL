@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/math.hpp>
+#include <actl/functional/scalar/math.hpp>
 #include <actl/iterator/iterator_adaptor.hpp>
 
 namespace ac {

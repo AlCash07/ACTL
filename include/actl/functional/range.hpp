@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/functional/operation/composite_operation.hpp>
-#include <actl/functional/scalar.hpp>
+#include <actl/functional/scalar/all.hpp>
 #include <actl/range/traits.hpp>
 #include <algorithm>
 
