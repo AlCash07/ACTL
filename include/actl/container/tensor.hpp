@@ -450,7 +450,7 @@ struct EqualTensor {
 };
 
 template <class T, class U>
-struct operation_resolver<Equal, tensor_tag, T, U> {
+struct overload<Equal, tensor_tag, T, U> {
     static constexpr auto resolve(Equal op) {
         return operation_composer<EqualTensor>(op.resolve_nested<T, U>());
     }

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functional/operation/composite_operation.hpp>
 #include <actl/functional/scalar.hpp>
 
 namespace ac {
@@ -57,7 +58,7 @@ struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
 };
 
 template <class T, class U>
-struct operation_resolver<Equal, tuple_tag, T, U> {
+struct overload<Equal, tuple_tag, T, U> {
     static constexpr auto resolve(Equal op) {
         return equal_tuple(tuple_op_resolver<T, U>::resolve(op));
     }
@@ -78,7 +79,7 @@ struct LexicographicalCompareTuple {
 constexpr operation_composer<LexicographicalCompareTuple> lexicographical_compare_tuple;
 
 template <class T, class U>
-struct operation_resolver<Less, tuple_tag, T, U> {
+struct overload<Less, tuple_tag, T, U> {
     static constexpr auto resolve(Less) {
         return lexicographical_compare_tuple(tuple_op_resolver<T, U>::resolve(cmp3way));
     };

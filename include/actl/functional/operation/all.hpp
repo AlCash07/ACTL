@@ -1,5 +1,5 @@
 /***************************************************************************************************
- * Copyright 2019 Oleksandr Bacherikov.
+ * Copyright 2020 Oleksandr Bacherikov.
  *
  *             Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,9 +7,5 @@
 
 #pragma once
 
-#include <actl/functional/math.hpp>
-#include <actl/functional/operation/all.hpp>
-#include <actl/functional/policies.hpp>
-#include <actl/functional/range.hpp>
-#include <actl/functional/scalar.hpp>
-#include <actl/functional/traits.hpp>
+#include <actl/functional/operation/composite_operation.hpp>
+#include <actl/functional/operation/operation.hpp>

@@ -1,0 +1,47 @@
+/***************************************************************************************************
+ * Copyright 2020 Oleksandr Bacherikov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
+#pragma once
+
+#include <actl/functional/operation/tuned_operation.hpp>
+
+namespace ac::math {
+
+template <class Op, class = void>
+struct default_overload {
+    static constexpr const Op& resolve(const Op& op) { return op; }
+};
+
+template <class Op>
+struct default_overload<Op, std::void_t<decltype(Op::formula)>> {
+    static constexpr auto resolve(Op) { return Op::formula; }
+};
+
+template <class Op, class Category, class... Ts>
+struct overload : default_overload<Op> {};
+
+// TODO: figure out a way to overload on the operation type and pass variadic template pack without
+// this helper structure.
+template <class... Ts>
+struct overload_helper {
+    template <class Op>
+    static constexpr decltype(auto) resolve(const Op& op) {
+        return overload<Op, detail::major_category<Ts...>, raw_t<Ts>...>::resolve(op);
+    }
+
+    template <class Op, class Policy>
+    static constexpr decltype(auto) resolve(const tuned_operation<Op, Policy>& op) {
+        decltype(auto) resolved_op = resolve(std::get<0>(op.t));
+        if constexpr (can_apply_policy<decltype(resolved_op), Policy>::value) {
+            return apply_policy(resolved_op, std::get<1>(op.t));
+        } else {
+            return std::forward<decltype(resolved_op)>(resolved_op);
+        }
+    }
+};
+
+}  // namespace ac::math

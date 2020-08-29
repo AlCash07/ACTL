@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/functional/math.hpp>
+#include <actl/functional/operation/composite_operation.hpp>
 #include <actl/functional/scalar.hpp>
 
 namespace ac::math {

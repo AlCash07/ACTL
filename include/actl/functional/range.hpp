@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/functional/operation/composite_operation.hpp>
 #include <actl/functional/scalar.hpp>
 #include <actl/range/traits.hpp>
 #include <algorithm>
@@ -32,7 +33,7 @@ struct EqualRange {
 constexpr operation_composer<EqualRange> equal_range;
 
 template <class T, class U>
-struct operation_resolver<Equal, range_tag, T, U> {
+struct overload<Equal, range_tag, T, U> {
     static constexpr auto resolve(Equal op) { return equal_range(op.resolve_nested<T, U>()); }
 };
 
@@ -46,7 +47,7 @@ struct LexicographicalCompareRange {
 constexpr operation_composer<LexicographicalCompareRange> lexicographical_compare_range;
 
 template <class T, class U>
-struct operation_resolver<Less, range_tag, T, U> {
+struct overload<Less, range_tag, T, U> {
     static constexpr auto resolve(Less op) {
         return lexicographical_compare_range(op.resolve_nested<T, U>());
     }

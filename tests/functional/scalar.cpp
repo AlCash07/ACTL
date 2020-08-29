@@ -9,24 +9,6 @@
 #include <actl/test.hpp>
 #include <limits>
 
-TEST("inplace parameter") {
-    int x = 4;
-    ASSERT_EQUAL(5, math::max(5, inplace(x)));
-    ASSERT_EQUAL(5, x);
-    ASSERT_EQUAL(5, math::max(inplace(x), 3));
-    ASSERT_EQUAL(5, x);
-    ASSERT_EQUAL(2, inplace(x) -= 3);
-    ASSERT_EQUAL(2, x);
-}
-
-TEST("output parameter") {
-    int res{};
-    ASSERT_EQUAL(6, math::add(out(res), 2, 4));
-    ASSERT_EQUAL(6, res);
-    out(res) = math::add(2, res);
-    ASSERT_EQUAL(8, res);
-}
-
 TEST("math::common") {
     using one = std::integral_constant<int, 1>;
     static_assert(std::is_same_v<none, decltype(eval(math::common(none{}, none{}, none{})))>);

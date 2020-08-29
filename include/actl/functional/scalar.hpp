@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/operation.hpp>
+#include <actl/functional/operation/operation.hpp>
 #include <actl/util/none.hpp>
 
 namespace ac::math {
@@ -50,7 +50,7 @@ struct scalar_operation : operation<Op> {
     }
 
     template <class T, class... Ts>
-    constexpr void assign(T& dst, const Ts&... xs) const {
+    constexpr void evaluate_to(T& dst, const Ts&... xs) const {
         dst = evaluate(xs...);
     }
 };
@@ -154,12 +154,9 @@ struct Copy : scalar_operation<Copy, 1, arithmetic_tag> {
 };
 inline constexpr Copy copy;
 
-template <bool In, class T>
-template <class U>
-inline out<In, T>& out<In, T>::operator=(const U& y) {
-    static_assert(!In, "use output instead of inplace argument for assignment");
-    copy(*this, y);
-    return *this;
+template <class T, class U>
+inline constexpr void assign(out<false, T>& dst, const U& y) {
+    copy(dst, y);
 }
 
 struct Ternary : scalar_operation<Ternary, 3, arithmetic_tag> {
