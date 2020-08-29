@@ -41,6 +41,8 @@ struct category_impl<bool> {
 
 template <class Op, index Arity, class ArgumentsTag>
 struct scalar_operation : operation<Op> {
+    struct is_scalar_operation;
+
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
         static_assert((... && std::is_base_of_v<ArgumentsTag, category_t<Ts>>));
@@ -52,6 +54,15 @@ struct scalar_operation : operation<Op> {
         dst = evaluate(xs...);
     }
 };
+
+template <class T, class = void>
+struct is_scalar_operation : std::false_type {};
+
+template <class T>
+struct is_scalar_operation<T, std::void_t<typename T::is_scalar_operation>> : std::true_type {};
+
+template <class T>
+inline constexpr bool is_scalar_operation_v = is_scalar_operation<T>::value;
 
 template <index I, index N>
 struct Arg {

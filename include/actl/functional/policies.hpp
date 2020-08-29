@@ -9,29 +9,33 @@
 
 #include <actl/functional/math.hpp>
 #include <actl/functional/scalar.hpp>
-#include <actl/range/traits.hpp>
 
 namespace ac::math {
 
-#if 0
-struct allow_promotion : virtual policy {};
-
-template <class, class... Ts>
-struct can_promote : std::false_type {};
-
-template <class... Ts>
-struct can_promote<std::void_t<std::common_type_t<Ts...>>, Ts...> {
-    using T = std::common_type_t<Ts...>;
-
-    static constexpr bool value = !is_range_v<T> && (... || !std::is_same_v<T, Ts>);
+struct allow_promotion {
+    struct is_policy;
 };
 
-template <class Op, class... Ts,
-          enable_int_if<is_scalar_operation_v<Op> && can_promote<void, Ts...>::value> = 0>
-inline auto perform_policy(Op op, allow_promotion, const Ts&... xs) {
-    return op(cast<std::common_type_t<Ts...>>(xs)...);
+struct Promotion {
+    template <class T, class U>
+    static constexpr auto evaluate(Ternary op, bool condition, const T& lhs, const U& rhs) {
+        using CT = std::common_type_t<T, U>;
+        return op.evaluate(condition, cast<CT>(lhs), cast<CT>(rhs));
+    }
+
+    template <class Op, class... Ts>
+    static constexpr auto evaluate(const Op& op, const Ts&... xs) {
+        using CT = std::common_type_t<Ts...>;
+        return op.evaluate(cast<CT>(xs)...);
+    }
+};
+
+template <class Op, enable_int_if<is_scalar_operation_v<Op>> = 0>
+inline constexpr auto apply_policy(const Op& op, allow_promotion) {
+    return operation_composer<Promotion>{}(op);
 }
 
+#if 0
 template <class Op, class T>
 struct cast_before : virtual policy {};
 

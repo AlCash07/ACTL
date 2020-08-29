@@ -8,6 +8,10 @@
 #include <actl/functional/policies.hpp>
 #include <actl/test.hpp>
 
+TEST("allow_promotion") {
+    static_assert(3LL == math::add(math::allow_promotion{})(1, 2LL));
+}
+
 #if 0
 constexpr double eps = 1e-9;
 

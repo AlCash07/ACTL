@@ -341,6 +341,14 @@ struct can_apply_policy<
     Op, Policy, std::void_t<decltype(apply_policy(std::declval<Op>(), std::declval<Policy>()))>>
     : std::true_type {};
 
+template <class Op, class Policy>
+struct tuned_operation : operation<tuned_operation<Op, Policy>> {
+    std::tuple<Op, Policy> t;
+
+    template <class... Ts>
+    explicit constexpr tuned_operation(Ts&&... xs) : t{std::forward<Ts>(xs)...} {}
+};
+
 /* Operation overload resolution */
 
 template <class Op, class = void>
@@ -355,14 +363,6 @@ struct default_operation_resolver<Op, std::void_t<decltype(Op::formula)>> {
 
 template <class Op, class Category, class... Ts>
 struct operation_resolver : default_operation_resolver<Op> {};
-
-template <class Op, class Policy>
-struct tuned_operation : operation<tuned_operation<Op, Policy>> {
-    std::tuple<Op, Policy> t;
-
-    template <class... Ts>
-    explicit tuned_operation(Ts&&... xs) : t{std::forward<Ts>(xs)...} {}
-};
 
 template <class... Ts>
 struct operation_resolver_helper {
@@ -432,7 +432,7 @@ struct composite_operation : operation<composite_operation<OuterOp, InnerOp>>, p
     using category = operation_tag;
 
     template <class... Ts>
-    explicit composite_operation(Ts&&... xs) : InnerOp{std::forward<Ts>(xs)...} {}
+    explicit constexpr composite_operation(Ts&&... xs) : InnerOp{std::forward<Ts>(xs)...} {}
 
     constexpr const InnerOp& inner() const { return static_cast<const InnerOp&>(*this); }
 
