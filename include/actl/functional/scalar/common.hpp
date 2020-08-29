@@ -108,12 +108,12 @@ inline constexpr void assign(out<false, T>& dst, const U& y) {
     copy(dst, y);
 }
 
-struct Ternary : scalar_operation<Ternary, 3, arithmetic_tag> {
+struct Select : scalar_operation<Select, 3, arithmetic_tag> {
     template <class T>
     static constexpr T eval_scalar(bool condition, T lhs, T rhs) {
         return condition ? lhs : rhs;
     }
 };
-inline constexpr Ternary ternary;
+inline constexpr Select select;
 
 }  // namespace ac::math

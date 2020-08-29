@@ -18,7 +18,7 @@ struct Max : scalar_operation<Max, 2, scalar_tag> {
 
     template <class T>
     static constexpr T eval_scalar(T lhs, T rhs) {
-        return ternary(less(lhs, rhs), rhs, lhs);
+        return select(less(lhs, rhs), rhs, lhs);
     }
 };
 inline constexpr Max max;
@@ -29,7 +29,7 @@ struct Min : scalar_operation<Min, 2, scalar_tag> {
 
     template <class T>
     static constexpr T eval_scalar(T lhs, T rhs) {
-        return ternary(less(rhs, lhs), rhs, lhs);
+        return select(less(rhs, lhs), rhs, lhs);
     }
 };
 inline constexpr Min min;
