@@ -5,12 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/functional/policies.hpp>
+#include <actl/functional/policy/absolute_error.hpp>
 #include <actl/test.hpp>
-
-TEST("allow_promotion") {
-    static_assert(3LL == math::add(math::allow_promotion{})(1, 2LL));
-}
 
 #if 0
 constexpr double eps = 1e-9;
@@ -21,15 +17,17 @@ struct Eps {
 
 inline math::absolute_error<Eps> eps_policy;
 
-TEST("math::equal") {
-    ASSERT_TRUE(eval(math::equal(0.0, eps / 2), eps_policy));
-    ASSERT_FALSE(eval(math::equal(0.0, eps), eps_policy));
+TEST("equal") {
+    constexpr auto abs_equal = math::equal(eps_policy);
+    ASSERT_TRUE(abs_equal(0.0, eps / 2));
+    ASSERT_FALSE(abs_equal(0.0, eps)));
 }
 
-TEST("math::less") {
+TEST("less") {
+    constexpr auto abs_less = math::less(eps_policy);
     ASSERT_FALSE(math::less(0.0, -eps));
     ASSERT_TRUE(math::less(-eps / 2, 0.0));
-    ASSERT_FALSE(eval(math::less(-eps / 2, 0.0), eps_policy));
-    ASSERT_TRUE(eval(math::less(-eps, 0.0), eps_policy));
+    ASSERT_FALSE(abs_less(-eps / 2, 0.0));
+    ASSERT_TRUE(abs_less(-eps, 0.0));
 }
 #endif

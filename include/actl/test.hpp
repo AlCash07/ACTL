@@ -7,9 +7,8 @@
 
 #pragma once
 
-#include <actl/functional/composite/range.hpp>
-#include <actl/functional/policies.hpp>
-#include <actl/functional/scalar/math.hpp>
+#include <actl/functional/composite/all.hpp>
+#include <actl/functional/scalar/all.hpp>
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
 #include <actl/numeric/random/random.hpp>
