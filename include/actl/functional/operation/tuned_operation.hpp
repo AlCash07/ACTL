@@ -36,4 +36,13 @@ struct can_apply_policy<
     Op, Policy, std::void_t<decltype(apply_policy(std::declval<Op>(), std::declval<Policy>()))>>
     : std::true_type {};
 
+template <class Op, class Policy>
+inline constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {
+    if constexpr (can_apply_policy<remove_cvref_t<Op>, Policy>::value) {
+        return apply_policy(std::forward<Op>(op), policy);
+    } else {
+        return std::forward<Op>(op);
+    }
+}
+
 }  // namespace ac::math

@@ -47,17 +47,17 @@ template <size_t... Is, class T, class U>
 struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
     static_assert(std::tuple_size_v<T> == std::tuple_size_v<U>);
 
-    template <class Op>
-    static constexpr auto resolve(const Op& op) {
-        return std::tuple{
-            op.template resolve<std::tuple_element_t<Is, T>, std::tuple_element_t<Is, U>>()...};
+    template <class Composer, class Op>
+    static constexpr auto resolve(Composer composer, const Op& op) {
+        return composer(
+            op.template resolve<std::tuple_element_t<Is, T>, std::tuple_element_t<Is, U>>()...);
     }
 };
 
 template <class T, class U>
 struct overload<Equal, tuple_tag, T, U> {
     static constexpr auto resolve(Equal op) {
-        return equal_tuple(tuple_op_resolver<T, U>::resolve(op));
+        return tuple_op_resolver<T, U>::resolve(equal_tuple, op);
     }
 };
 
@@ -78,7 +78,7 @@ constexpr operation_composer<LexicographicalCompareTuple> lexicographical_compar
 template <class T, class U>
 struct overload<Less, tuple_tag, T, U> {
     static constexpr auto resolve(Less) {
-        return lexicographical_compare_tuple(tuple_op_resolver<T, U>::resolve(cmp3way));
+        return tuple_op_resolver<T, U>::resolve(lexicographical_compare_tuple, cmp3way);
     };
 };
 

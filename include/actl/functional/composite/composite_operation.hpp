@@ -11,36 +11,45 @@
 
 namespace ac::math {
 
-template <class OuterOp, class InnerOp>
-struct composite_operation : operation<composite_operation<OuterOp, InnerOp>>, private InnerOp {
-    using category = operation_tag;
-
+template <class OuterOp, class... InnerOps>
+struct composite_operation : operation<composite_operation<OuterOp, InnerOps...>>,
+                             private std::tuple<InnerOps...> {
     template <class... Ts>
-    explicit constexpr composite_operation(Ts&&... xs) : InnerOp{std::forward<Ts>(xs)...} {}
+    explicit constexpr composite_operation(Ts&&... xs)
+        : std::tuple<InnerOps...>{std::forward<Ts>(xs)...} {}
 
-    constexpr const InnerOp& inner() const { return static_cast<const InnerOp&>(*this); }
-
-    using operation<composite_operation<OuterOp, InnerOp>>::operator();
+    constexpr const std::tuple<InnerOps...>& inner() const { return *this; }
 
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
-        return OuterOp::evaluate(inner(), xs...);
+        if constexpr (sizeof...(InnerOps) == 1) {
+            return OuterOp::evaluate(std::get<0>(inner()), xs...);
+        } else {
+            return OuterOp::evaluate(inner(), xs...);
+        }
     }
 };
 
 template <class OuterOp>
 struct operation_composer {
-    template <class InnerOp>
-    constexpr auto operator()(InnerOp&& op) const {
-        return composite_operation<OuterOp, remove_cvref_t<InnerOp>>{std::forward<InnerOp>(op)};
+    template <class... InnerOps>
+    constexpr auto operator()(InnerOps&&... ops) const {
+        return composite_operation<OuterOp, value_if_small<InnerOps>...>{
+            std::forward<InnerOps>(ops)...};
     }
 };
 
-template <class Outer, class Inner, class Policy>
-inline constexpr auto apply_policy(const composite_operation<Outer, Inner>& op,
-                                   const Policy& policy)
-    -> decltype(operation_composer<Outer>{}(apply_policy(op.inner(), policy))) {
-    return operation_composer<Outer>{}(apply_policy(op.inner(), policy));
+template <class Outer, class... Inner, class Policy, size_t... Is>
+inline constexpr auto apply_policy_to_composite(const composite_operation<Outer, Inner...>& op,
+                                                const Policy& policy, std::index_sequence<Is...>) {
+    return operation_composer<Outer>{}(apply_policy_if_can(std::get<Is>(op.inner()), policy)...);
+}
+
+template <class Outer, class... Inner, class Policy,
+          enable_int_if<(... || can_apply_policy<Inner, Policy>::value)> = 0>
+inline constexpr auto apply_policy(const composite_operation<Outer, Inner...>& op,
+                                   const Policy& policy) {
+    return apply_policy_to_composite(op, policy, std::make_index_sequence<sizeof...(Inner)>{});
 }
 
 }  // namespace ac::math

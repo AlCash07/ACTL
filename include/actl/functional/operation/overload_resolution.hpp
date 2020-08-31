@@ -35,12 +35,7 @@ struct overload_helper {
 
     template <class Op, class Policy>
     static constexpr decltype(auto) resolve(const tuned_operation<Op, Policy>& op) {
-        decltype(auto) resolved_op = resolve(std::get<0>(op.t));
-        if constexpr (can_apply_policy<decltype(resolved_op), Policy>::value) {
-            return apply_policy(resolved_op, std::get<1>(op.t));
-        } else {
-            return std::forward<decltype(resolved_op)>(resolved_op);
-        }
+        return apply_policy_if_can(resolve(std::get<0>(op.t)), std::get<1>(op.t));
     }
 };
 
