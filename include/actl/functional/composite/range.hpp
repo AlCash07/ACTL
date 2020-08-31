@@ -38,19 +38,32 @@ struct overload<Equal, range_tag, T, U> {
 };
 
 struct LexicographicalCompareRange {
-    template <class LessOp, class T, class U>
-    static bool evaluate(const LessOp& op, const T& lhs, const U& rhs) {
-        return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
-                                            std::end(rhs), op);
+    template <class Cmp3WayOp, class T, class U>
+    static int evaluate(const Cmp3WayOp& op, const T& lhs, const U& rhs) {
+        // Can't use std::lexicographical_compare because it doesn't compare 3-way.
+        auto lfirst = std::begin(lhs);
+        auto llast = std::end(lhs);
+        auto rfirst = std::begin(rhs);
+        auto rlast = std::end(rhs);
+        for (; (lfirst != llast) && (rfirst != rlast); ++lfirst, ++rfirst) {
+            const int v = op(*lfirst, *rfirst);
+            if (v != 0) return v;
+        }
+        return cast<int>(lfirst == llast) - cast<int>(rfirst == rlast);
     }
 };
 constexpr operation_composer<LexicographicalCompareRange> lexicographical_compare_range;
 
 template <class T, class U>
-struct overload<Less, range_tag, T, U> {
-    static constexpr auto resolve(Less op) {
+struct overload<Cmp3Way, range_tag, T, U> {
+    static constexpr auto resolve(Cmp3Way op) {
         return lexicographical_compare_range(op.resolve_nested<T, U>());
     }
+};
+
+template <class T, class U>
+struct overload<Less, range_tag, T, U> {
+    static constexpr auto resolve(Less) { return cmp3way < 0; }
 };
 
 }  // namespace ac::math

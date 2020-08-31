@@ -40,14 +40,14 @@ using category_t = typename category<raw_t<T>>::type;
 namespace detail {
 
 template <class Tag, class = void>
-struct category_depth : index_constant<0> {};
+struct category_level : index_constant<0> {};
 
 template <class T>
-inline constexpr index category_depth_v = category_depth<T>::value;
+inline constexpr index category_level_v = category_level<T>::value;
 
 template <class Tag>
-struct category_depth<Tag, std::void_t<typename Tag::base>>
-    : index_constant<1 + category_depth_v<typename Tag::base>> {};
+struct category_level<Tag, std::void_t<typename Tag::base>>
+    : index_constant<1 + category_level_v<typename Tag::base>> {};
 
 template <bool B, class T>
 struct value_if {

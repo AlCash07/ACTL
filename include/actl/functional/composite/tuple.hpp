@@ -62,24 +62,29 @@ struct overload<Equal, tuple_tag, T, U> {
 };
 
 struct LexicographicalCompareTuple {
-    template <size_t I = 0, class Cmp3Ops, class T, class U>
-    static bool evaluate(const Cmp3Ops& ops, const T& lhs, const U& rhs) {
-        if constexpr (I == std::tuple_size_v<T>) {
-            return false;
+    template <size_t I = 0, class Cmp3WayOps, class T, class U>
+    static int evaluate(const Cmp3WayOps& ops, const T& lhs, const U& rhs) {
+        using std::get;
+        int v = get<I>(ops)(get<I>(lhs), get<I>(rhs));
+        if constexpr (I + 1 == std::tuple_size_v<T>) {
+            return v;
         } else {
-            using std::get;
-            int v = get<I>(ops)(get<I>(lhs), get<I>(rhs));
-            return v < 0 || (v == 0 && evaluate<I + 1>(ops, lhs, rhs));
+            return select(v == 0, evaluate<I + 1>(ops, lhs, rhs), v);
         }
     }
 };
 constexpr operation_composer<LexicographicalCompareTuple> lexicographical_compare_tuple;
 
 template <class T, class U>
-struct overload<Less, tuple_tag, T, U> {
-    static constexpr auto resolve(Less) {
-        return tuple_op_resolver<T, U>::resolve(lexicographical_compare_tuple, cmp3way);
+struct overload<Cmp3Way, tuple_tag, T, U> {
+    static constexpr auto resolve(Cmp3Way op) {
+        return tuple_op_resolver<T, U>::resolve(lexicographical_compare_tuple, op);
     };
+};
+
+template <class T, class U>
+struct overload<Less, tuple_tag, T, U> {
+    static constexpr auto resolve(Less) { return cmp3way < 0; }
 };
 
 }  // namespace ac::math

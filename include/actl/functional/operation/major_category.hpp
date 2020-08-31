@@ -13,8 +13,8 @@ namespace ac::math::detail {
 
 template <class T, class U>
 inline constexpr auto common_category(T, U) {
-    constexpr index DT = category_depth_v<T>;
-    constexpr index DU = category_depth_v<U>;
+    constexpr index DT = category_level_v<T>;
+    constexpr index DU = category_level_v<U>;
     if constexpr (DT == DU) {
         if constexpr (std::is_same_v<T, U>) {
             return T{};
@@ -29,13 +29,13 @@ inline constexpr auto common_category(T, U) {
     }
 }
 
-template <class Tag, int Depth>
+template <class Tag, index Depth>
 struct cdp {  // category-depth pair
     using type = Tag;
-    static constexpr int value = Depth;
+    static constexpr index value = Depth;
 };
 
-template <class T, int DT, class U, int DU>
+template <class T, index DT, class U, index DU>
 inline constexpr auto operator || (cdp<T, DT> lhs, cdp<U, DU> rhs) {
     if constexpr (DT == DU) {
         return cdp<decltype(common_category(T{}, U{})), DT>{};

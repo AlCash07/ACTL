@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include <actl/functional/operation/argument_traits.hpp>
+#include <actl/functional/operation/major_category.hpp>
+#include <limits>
 
 namespace ac::math {
 
@@ -19,6 +20,14 @@ struct operation_tag {};
 
 template <class T>
 inline constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
+
+namespace detail {
+
+template <class T>
+struct type_depth<T, std::enable_if_t<is_operation_v<T>>>
+    : index_constant<std::numeric_limits<index>::max()> {};
+
+}  // namespace detail
 
 /* Operation is_associative trait: defined by nested `struct is_associative;`. */
 
