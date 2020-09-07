@@ -64,6 +64,9 @@ using value_if_t = typename value_if<B, T>::type;
 
 }  // namespace detail
 
+template <class T, class U = remove_cvref_t<T>>
+using value_if_small = std::conditional_t<std::is_empty_v<U> || std::is_arithmetic_v<U>, U, T>;
+
 // pass is the same as std::forward except it converts reference into const reference
 template <class T>
 inline constexpr T&& pass(std::remove_reference_t<T>& x) {

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/functional/operation/expression.hpp>
+#include <actl/functional/operation/expression_operation.hpp>
 #include <actl/functional/operation/overload_resolution.hpp>
 
 namespace ac::math {

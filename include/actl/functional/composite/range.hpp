@@ -49,7 +49,7 @@ struct LexicographicalCompareRange {
             const int v = op(*lfirst, *rfirst);
             if (v != 0) return v;
         }
-        return cast<int>(lfirst == llast) - cast<int>(rfirst == rlast);
+        return cast<int>(rfirst != rlast) - cast<int>(lfirst != llast);
     }
 };
 constexpr operation_composer<LexicographicalCompareRange> lexicographical_compare_range;
