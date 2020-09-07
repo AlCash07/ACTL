@@ -9,6 +9,7 @@
 
 #include <actl/functional/operation/operation_traits.hpp>
 #include <actl/functional/operation/output_argument.hpp>
+#include <actl/functional/operation/tuned_operation.hpp>
 #include <tuple>
 
 namespace ac::math {
@@ -28,6 +29,8 @@ struct expression_base {};
 
 template <class... Ts>
 struct expression : expression_base<expression<Ts...>, typename detail::result<Ts...>::tag> {
+    using category = typename detail::result<Ts...>::tag;
+
     std::tuple<Ts...> args;
 
     constexpr operator typename detail::result<Ts...>::type() const { return eval(*this); }
@@ -78,9 +81,9 @@ struct expression_helper : expression_helper<std::make_index_sequence<sizeof...(
 template <size_t... Is>
 struct expression_helper<std::index_sequence<Is...>> {
     template <class EO, class... Us>
-    static constexpr auto expand_impl(const EO& eo, const Us&... xs) {
-        return make_expression(std::get<0>(eo.args),
-                               expand_expression(std::get<Is + 1>(eo.args), xs...)...);
+    static constexpr auto expand_impl(const EO& eop, const Us&... xs) {
+        return make_expression(std::get<0>(eop.args),
+                               expand_expression(std::get<Is + 1>(eop.args), xs...)...);
     }
 
     template <class E>
@@ -92,11 +95,17 @@ struct expression_helper<std::index_sequence<Is...>> {
     static constexpr void assign_impl(T& dst, const E& e) {
         std::get<0>(e.args)(dst, std::get<Is + 1>(e.args)...);
     }
+
+    template <class EO, class Policy>
+    static constexpr auto apply_policy_impl(const EO& eop, const Policy policy) {
+        return make_expression(apply_policy_if_can(std::get<0>(eop.args), policy),
+                               apply_policy_if_can(std::get<Is + 1>(eop.args), policy)...);
+    }
 };
 
 template <class... Ts, class... Us>
-inline constexpr auto expand_expression(const expression_op<Ts...>& eo, const Us&... xs) {
-    return expression_helper<Ts...>::expand_impl(eo, xs...);
+inline constexpr auto expand_expression(const expression_op<Ts...>& eop, const Us&... xs) {
+    return expression_helper<Ts...>::expand_impl(eop, xs...);
 }
 
 template <class... Ts>
@@ -109,9 +118,10 @@ inline constexpr void assign(out<false, T>& dst, const expression<Ts...>& e) {
     expression_helper<Ts...>::assign_impl(dst, e);
 }
 
-template <class... Ts>
-struct category_impl<expression<Ts...>> {
-    using type = typename detail::result<Ts...>::tag;
-};
+template <class... Ts, class Policy,
+          enable_int_if<(... || can_apply_policy<Ts, Policy>::value)> = 0>
+inline constexpr auto apply_policy(const expression_op<Ts...>& eop, const Policy& policy) {
+    return expression_helper<Ts...>::apply_policy_impl(eop, policy);
+}
 
 }  // namespace ac::math

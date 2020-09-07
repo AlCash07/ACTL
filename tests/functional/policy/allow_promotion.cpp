@@ -18,3 +18,9 @@ TEST("nested composite operation") {
     const std::vector<std::pair<int, unsigned short>> rhs{{2, 3}, {5, 8}};
     ASSERT_TRUE(math::equal(math::allow_promotion{})(lhs, rhs));
 }
+
+TEST("nested expression operation") {
+    constexpr auto sum3 = math::add + 3LL;
+    static_assert(6LL == sum3(1LL, 2LL));
+    static_assert(6LL == sum3(math::allow_promotion{})(short{1}, int{2}));
+}

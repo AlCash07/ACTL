@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/functional/operation/operation_traits.hpp>
+#include <tuple>
 
 namespace ac::math {
 
