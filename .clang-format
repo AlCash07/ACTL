@@ -10,11 +10,11 @@ CompactNamespaces: true
 DerivePointerAlignment: false
 IncludeCategories:
   - Regex:         '^<actl/.*\.hpp>'
-    Priority:      1
+    SortPriority:  1
   - Regex:         '^<.*\.h>'
-    Priority:      2
+    SortPriority:  2
   - Regex:         '^<.*'
-    Priority:      3
+    SortPriority:  3
 IndentWidth:          4
 ObjCBlockIndentWidth: 4
 TabWidth:             4
