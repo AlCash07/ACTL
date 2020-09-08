@@ -7,8 +7,9 @@
 
 #pragma once
 
+#include <actl/functional/scalar/arithmetic.hpp>
 #include <actl/functional/scalar/comparison.hpp>
-#include <actl/functional/scalar/derived.hpp>
+#include <actl/functional/scalar/math.hpp>
 
 namespace ac::math {
 
@@ -18,18 +19,14 @@ struct absolute_error : E {
     struct is_policy;
 };
 
-template <class E, class T, enable_int_if<std::is_floating_point_v<T>> = 0>
-inline constexpr int perform_policy(Sgn, const absolute_error<E>& policy, const T& x) {
-    if (eval(less(abs(x), policy.epsilon()))) return 0;
-    return x < 0 ? -1 : 1;
+template <class E>
+inline constexpr auto apply_policy(Equal, const absolute_error<E>& policy) {
+    return abs(sub) <= policy.epsilon();
 }
 
-template <class Op, class E, class T, class U,
-          enable_int_if<is_comparison_v<Op> &&
-                        (std::is_floating_point_v<T> || std::is_floating_point_v<U>)> = 0>
-inline constexpr auto perform_policy(Op op, const absolute_error<E>& policy, const T& lhs,
-                                     const U& rhs) {
-    return op(sgn(sub(lhs, rhs)), 0);
+template <class E>
+inline constexpr auto apply_policy(Less, const absolute_error<E>& policy) {
+    return policy.epsilon() < rhs_ - lhs_;
 }
 
 }  // namespace ac::math

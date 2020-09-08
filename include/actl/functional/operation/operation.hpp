@@ -40,7 +40,7 @@ struct operation {
         return dst.x;
     }
 
-    template <class Policy, enable_int_if<is_policy_v<Policy>> = 0>
+    template <class Policy, enable_int_if<is_policy_v<remove_cvref_t<Policy>>> = 0>
     constexpr auto operator()(Policy&& policy) const {
         return tuned_operation<Derived, Policy>{derived(), std::forward<Policy>(policy)};
     }
