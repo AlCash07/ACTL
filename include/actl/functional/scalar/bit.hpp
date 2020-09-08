@@ -28,8 +28,8 @@ struct BitAnd : scalar_operation<BitAnd, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs & rhs;
     }
 };
@@ -49,8 +49,8 @@ struct BitOr : scalar_operation<BitOr, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs | rhs;
     }
 };
@@ -70,8 +70,8 @@ struct BitXor : scalar_operation<BitXor, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs ^ rhs;
     }
 };

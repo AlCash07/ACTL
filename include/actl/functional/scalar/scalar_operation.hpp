@@ -18,7 +18,10 @@ struct scalar_operation : operation<Op> {
 
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
-        static_assert((... && std::is_base_of_v<ArgumentsTag, category_t<Ts>>));
+        if constexpr ((... && std::is_base_of_v<arithmetic_tag, category_t<Ts>>)) {
+            static_assert(are_same_v<remove_cvref_t<decltype(eval(xs))>...> &&
+                          (... && std::is_base_of_v<ArgumentsTag, category_t<Ts>>));
+        }
         return this->derived().eval_scalar(eval(xs)...);
     }
 

@@ -38,8 +38,8 @@ inline constexpr Abs abs;
 
 #define MATH_OP2(name, op)                                \
     struct name : scalar_operation<name, 2, float_tag> {  \
-        template <class T>                                \
-        static constexpr auto eval_scalar(T lhs, T rhs) { \
+        template <class T, class U>                       \
+        static constexpr auto eval_scalar(T lhs, U rhs) { \
             using std::op;                                \
             return op(lhs, rhs);                          \
         }                                                 \

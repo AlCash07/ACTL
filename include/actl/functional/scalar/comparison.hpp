@@ -21,8 +21,8 @@ inline constexpr bool is_comparison_v = is_template_base_of_v<comparison_operati
 struct Equal : comparison_operation<Equal> {
     struct is_commutative;
 
-    template <class T>
-    static constexpr bool eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr bool eval_scalar(T lhs, U rhs) {
         return lhs == rhs;
     }
 };
@@ -46,8 +46,8 @@ inline constexpr auto operator != (T&& lhs, U&& rhs) {
 }
 
 struct Less : comparison_operation<Less> {
-    template <class T>
-    static constexpr bool eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr bool eval_scalar(T lhs, U rhs) {
         return lhs < rhs;
     }
 };

@@ -13,7 +13,7 @@ namespace ac::math {
 
 struct Neg : scalar_operation<Neg, 2, arithmetic_tag> {
     template <class T>
-    static constexpr T eval_scalar(T x) {
+    static constexpr auto eval_scalar(T x) {
         return -x;
     }
 };
@@ -28,8 +28,8 @@ struct Add : scalar_operation<Add, 2, arithmetic_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs + rhs;
     }
 };
@@ -46,8 +46,8 @@ inline constexpr decltype(auto) operator += (T& lhs, const U& rhs) {
 }
 
 struct Sub : scalar_operation<Sub, 2, arithmetic_tag> {
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs - rhs;
     }
 };
@@ -67,8 +67,8 @@ struct Mul : scalar_operation<Mul, 2, arithmetic_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs * rhs;
     }
 };
@@ -85,8 +85,8 @@ inline constexpr decltype(auto) operator *= (T& lhs, const U& rhs) {
 }
 
 struct Div : scalar_operation<Div, 2, arithmetic_tag> {
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs / rhs;
     }
 };

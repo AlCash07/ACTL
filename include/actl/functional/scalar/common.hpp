@@ -13,6 +13,9 @@
 
 namespace ac::math {
 
+constexpr std::integral_constant<int, 0> zero;
+constexpr std::integral_constant<int, 1> one;
+
 template <index I, index N>
 struct Arg {
     using category = operation_tag;
@@ -23,7 +26,7 @@ struct Arg {
         if constexpr (I == 0) {
             return std::forward<T>(x);
         } else {
-            return Arg < I - 1, N == -1 ? -1 : N - 1 > {}(std::forward<Ts>(xs)...);
+            return Arg<I - 1, (N == -1 ? -1 : N - 1)>{}(std::forward<Ts>(xs)...);
         }
     }
 };
@@ -109,9 +112,9 @@ inline constexpr void assign(out<false, T>& dst, const U& y) {
 }
 
 struct Select : scalar_operation<Select, 3, arithmetic_tag> {
-    template <class T>
-    static constexpr T eval_scalar(bool condition, T lhs, T rhs) {
-        return condition ? lhs : rhs;
+    template <class T, class U>
+    constexpr auto evaluate(bool condition, const T& lhs, const U& rhs) const {
+        return condition ? eval(lhs) : eval(rhs);
     }
 };
 inline constexpr Select select;

@@ -16,9 +16,9 @@ struct Max : scalar_operation<Max, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
-        return select(less(lhs, rhs), rhs, lhs);
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
+        return eval(select(less(lhs, rhs), rhs, lhs));
     }
 };
 inline constexpr Max max;
@@ -27,18 +27,15 @@ struct Min : scalar_operation<Min, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
-    template <class T>
-    static constexpr T eval_scalar(T lhs, T rhs) {
-        return select(less(rhs, lhs), rhs, lhs);
+    template <class T, class U>
+    static constexpr auto eval_scalar(T lhs, U rhs) {
+        return eval(select(less(rhs, lhs), rhs, lhs));
     }
 };
 inline constexpr Min min;
 
 struct Sgn : scalar_operation<Sgn, 1, scalar_tag> {
-    template <class T>
-    static constexpr int eval_scalar(T x) {
-        return cmp3way(x, T{0});
-    }
+    static constexpr auto formula = cmp3way(x_, zero);
 };
 inline constexpr Sgn sgn;
 
