@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/sqrt.hpp>
+#include <actl/functional/scalar/math.hpp>
 #include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/geometry/algorithm/point/angle.hpp>
 #include <actl/geometry/sphere.hpp>
@@ -19,8 +19,8 @@ inline OutIter intersect(const Policy& policy, const circle<T0>& lhs, const circ
                          OutIter dst) {
     auto centers_vector = rhs.center - lhs.center;
     auto centers_dist2 = dot(policy, centers_vector);
-    int sgn0 = sgn(policy, centers_dist2, sqr(policy, lhs.radius - rhs.radius));
-    int sgn1 = sgn(policy, sqr(policy, lhs.radius + rhs.radius), centers_dist2);
+    int sgn0 = cmp3way(policy, centers_dist2, sqr(policy, lhs.radius - rhs.radius));
+    int sgn1 = cmp3way(policy, sqr(policy, lhs.radius + rhs.radius), centers_dist2);
     if (sgn0 < 0 || sgn1 < 0) return dst;
     auto lradius2 = sqr(policy, lhs.radius);
     auto rradius2 = sqr(policy, rhs.radius);

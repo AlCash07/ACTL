@@ -7,15 +7,15 @@
 
 #pragma once
 
+#include <actl/functional/scalar/math.hpp>
 #include <actl/geometry/algorithm/rotate/rotate.hpp>
-#include <actl/numeric/math.hpp>
 
 namespace ac {
 
 template <class Policy, class T0, class T1>
 inline auto rotate(const Policy& policy, const point<T0>& p, const T1& angle) {
-    auto sin = adl::sin(angle);
-    auto cos = adl::cos(angle);
+    auto sin = math::sin(angle);
+    auto cos = math::cos(angle);
     return point{dot(policy, point{cos, sin}, p), dot(policy, point{sin, cos}, p)};
 }
 

@@ -10,6 +10,6 @@
 
 TEST("default") {
     plane<int, 2> pl{{-1, 2}, {1, 1}};
-    ASSERT_EQUAL(adl::sqrt(5.0), distance(pl, point{2, 4}), 1e-12);
-    ASSERT_EQUAL(adl::sqrt(5.0), distance(pl, point{4, 0}), 1e-12);
+    ASSERT_EQUAL(math::sqrt(5.0), distance(pl, point{2, 4}), 1e-12);
+    ASSERT_EQUAL(math::sqrt(5.0), distance(pl, point{4, 0}), 1e-12);
 }

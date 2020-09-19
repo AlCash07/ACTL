@@ -7,5 +7,8 @@
 
 #pragma once
 
-#include <actl/functional/compare.hpp>
+#include <actl/functional/composite/all.hpp>
+#include <actl/functional/operation/operation.hpp>
+#include <actl/functional/policy/all.hpp>
+#include <actl/functional/scalar/all.hpp>
 #include <actl/functional/traits.hpp>

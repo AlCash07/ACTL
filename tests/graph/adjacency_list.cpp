@@ -15,8 +15,8 @@ TEST("none") {
     adjacency_list<directed> graph(2);
     graph.add_edge(0, 2);
     graph.add_vertex();
-    ASSERT_EQUAL(4, graph.vertex_count());
-    ASSERT_EQUAL(1, graph.edge_count());
+    ASSERT_EQUAL(4l, graph.vertex_count());
+    ASSERT_EQUAL(1l, graph.edge_count());
 }
 
 template <class Dir, class OEC, class EC, class VC>

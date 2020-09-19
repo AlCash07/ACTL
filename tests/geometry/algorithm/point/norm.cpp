@@ -10,7 +10,7 @@
 
 TEST("default") { ASSERT_EQUAL(1.414213562373095, norm(point{1, 1}), 1e-12); }
 
-struct norm_policy : virtual op::product_policy<long long>, virtual op::defer_sqrt {};
+struct norm_policy : virtual math::cast_before<math::Mul, long long>, virtual math::defer_sqrt {};
 
 TEST("deferred") {
     constexpr int x = 2'000'000'000;

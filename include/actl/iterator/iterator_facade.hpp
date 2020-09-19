@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <actl/functional/compare.hpp>
+#include <actl/functional/operators.hpp>
 #include <actl/util/type_traits.hpp>
 #include <iterator>
 #include <memory>
@@ -77,7 +77,7 @@ template <class Iterator, class Category, class Value, class Reference, class Di
 class it_facade;
 
 template <class It, class V, class R, class D>
-class it_facade<It, std::output_iterator_tag, V, R, D> : op::base<> {
+class it_facade<It, std::output_iterator_tag, V, R, D> : operators::base<> {
 public:
     using value_type        = V;
     using reference         = R;

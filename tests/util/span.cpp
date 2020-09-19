@@ -8,19 +8,19 @@
 #include <actl/test.hpp>
 #include <actl/util/span.hpp>
 
-constexpr int N = 9;
+constexpr ac::index N = 9;
 
 TEST("empty") {
     span<int> s;
-    ASSERT_EQUAL(nullptr, s.data());
+    ASSERT_TRUE(!s.data());
     span<int, 0> s0;
-    ASSERT_EQUAL(nullptr, s0.data());
+    ASSERT_TRUE(!s0.data());
 }
 
 TEST("array") {
     int a[N] = {};
     span s{a};
-    ASSERT_EQUAL(a, s.data());
+    ASSERT_EQUAL(static_cast<int*>(a), s.data());
     static_assert(N == s.size());
 }
 

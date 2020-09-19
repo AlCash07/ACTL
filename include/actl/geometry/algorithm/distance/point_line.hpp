@@ -18,7 +18,7 @@ inline auto distance(const Policy& policy, const point<T0, N>& p, const line<T1,
         return norm(policy, p - l.begin);
     if (end(l.kind()) != endpoint::free && less(policy, 0, dot(policy, p - l.end(), l.vector)))
         return norm(policy, p - l.end());
-    return ratio(policy, adl::abs(area(policy, p, l)), norm(policy, l.vector));
+    return ratio(policy, math::abs(area(policy, p, l)), norm(policy, l.vector));
 }
 
 }  // namespace ac

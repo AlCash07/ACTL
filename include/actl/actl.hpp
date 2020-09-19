@@ -16,6 +16,7 @@
 #include <actl/graph/all.hpp>
 #include <actl/io/all.hpp>
 #include <actl/iterator/all.hpp>
+#include <actl/linear_algebra/all.hpp>
 #include <actl/macros.hpp>
 #include <actl/map/all.hpp>
 #include <actl/numeric/all.hpp>

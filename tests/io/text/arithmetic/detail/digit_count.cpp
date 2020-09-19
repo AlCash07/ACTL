@@ -10,8 +10,8 @@
 
 TEST("digit_count") {
     using io::detail::digit_count;
-    ASSERT_EQUAL(2, digit_count(8, 3));
-    ASSERT_EQUAL(9, digit_count(999'999'999, 10));
-    ASSERT_EQUAL(10, digit_count(1'000'000'000, 10));
-    ASSERT_EQUAL(64, digit_count(std::numeric_limits<unsigned long long>::max(), 2ull));
+    ASSERT_EQUAL(2l, digit_count(8, 3));
+    ASSERT_EQUAL(9l, digit_count(999'999'999, 10));
+    ASSERT_EQUAL(10l, digit_count(1'000'000'000, 10));
+    ASSERT_EQUAL(64l, digit_count(std::numeric_limits<unsigned long long>::max(), 2ull));
 }

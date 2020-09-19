@@ -13,7 +13,7 @@ using namespace ac::io;
 
 TEST("write char") {
     char s[2];
-    ASSERT_EQUAL(2, write(memory<bin | out>{s}, 'a', 'b', 'c'));
+    ASSERT_EQUAL(2l, write(memory<bin | io::out>{s}, 'a', 'b', 'c'));
     ASSERT_EQUAL("ab"sv, s);
 }
 
@@ -29,7 +29,7 @@ TEST("read char") {
 
 TEST("write char array") {
     char s[7];
-    ASSERT_EQUAL(7, write(memory<out>{s}, "aba", "cabad"));
+    ASSERT_EQUAL(7l, write(memory<io::out>{s}, "aba", "cabad"));
     ASSERT_EQUAL("abacaba"sv, s);
 }
 

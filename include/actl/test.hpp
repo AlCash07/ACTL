@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/functional/compare.hpp>
+#include <actl/functional/composite/all.hpp>
+#include <actl/functional/scalar/all.hpp>
 #include <actl/io/all.hpp>
 #include <actl/macros.hpp>
-#include <actl/numeric/math.hpp>
 #include <actl/numeric/random/random.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/irange.hpp>
@@ -61,22 +61,29 @@ inline index write_final(Device& od, Format& fmt, const T&) {
 
 }  // namespace ac::io
 
-namespace ac::op {
+namespace ac::math {
 
 template <class T>
-struct abs_rel_error {
+struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2, scalar_tag> {
+    struct is_policy;
+
+    abs_rel_error(T eps) : eps{eps} {}
+
     T eps;
+
+    bool eval_scalar(T lhs, T rhs) const {
+        T numerator = abs(lhs - rhs);
+        T denominator = max(max(abs(lhs), abs(rhs)), T{1});
+        return numerator <= eps * denominator;
+    }
 };
 
-template <class E, class T, class U,
-          enable_int_if<std::is_arithmetic_v<T> && std::is_arithmetic_v<U>> = 0>
-inline bool equal(const abs_rel_error<E>& policy, const T& lhs, const U& rhs) {
-    E numerator = adl::abs(lhs - rhs);
-    E denominator = std::max(std::max(adl::abs<E>(lhs), adl::abs<E>(rhs)), E{1});
-    return numerator <= policy.eps * denominator;
+template <class T>
+inline auto apply_policy(Equal, const abs_rel_error<T>& policy) {
+    return policy;
 }
 
-}  // namespace ac::op
+}  // namespace ac::math
 
 namespace ac::tests {
 
@@ -106,25 +113,31 @@ struct assert_impl {
 
     template <class T, class U>
     inline void check_equal(const T& expected, const U& actual) const {
-        if (equal(default_policy, expected, actual)) return;
+        if (eval(math::equal(expected, actual))) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U>
     inline void check_not_equal(const T& not_expected, const U& actual) const {
-        if (!equal(default_policy, not_expected, actual)) return;
+        if (!eval(math::equal(not_expected, actual))) return;
         throw message<NotExpected>(not_expected) + message<Actual>(actual) + message<Line>(line);
     }
 
     template <class T, class U, class E>
     inline void check_equal(const T& expected, const U& actual, E eps) const {
-        if (equal(op::abs_rel_error<E>{eps}, expected, actual)) return;
+        if (eval(math::equal(math::abs_rel_error<E>{eps})(expected, actual))) return;
         throw message<Expected>(expected) + message<Actual>(actual) + message<Line>(line);
     }
 
-    inline void check_true(bool condition) const { check_equal(true, condition); }
+    template <class T>
+    inline void check_true(const T& condition) const {
+        check_equal(true, condition);
+    }
 
-    inline void check_false(bool condition) const { check_equal(false, condition); }
+    template <class T>
+    inline void check_false(const T& condition) const {
+        check_equal(false, condition);
+    }
 
     template <class T>
     inline void check_sets(std::vector<T> expected, std::vector<T> actual) const {

@@ -19,7 +19,7 @@ inline std::vector<V> test_vertices(Graph& graph) {
     vs.push_back(graph.add_vertex(0, "v0"));
     vs.push_back(graph.add_vertex(1, "v1"));
     vs.push_back(graph.add_vertex(2, "v2"));
-    ASSERT_EQUAL(3, graph.vertex_count());
+    ASSERT_EQUAL(3l, graph.vertex_count());
     auto [v3, ok] = graph.try_add_vertex(1, "v3");
     ASSERT_EQUAL(!is_unique_associative_container_v<typename Graph::vertex_container>, ok);
     if (ok) vs.push_back(v3);

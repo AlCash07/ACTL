@@ -46,7 +46,7 @@ inline auto nearest(const Policy& policy, const span<Point>& points, const span<
     copy(tmp.first(n), points.begin());
     index count = 0;
     for (const auto& p : points) {
-        if (less(policy, adl::abs(p.x() - middle_x), res.first)) {
+        if (less(policy, math::abs(p.x() - middle_x), res.first)) {
             for (index i = count - 1; i >= 0; --i) {
                 if (!less(policy, p.y() - tmp[i].y(), res.first)) break;
                 auto dist = distance(policy, p, tmp[i]);
@@ -67,7 +67,7 @@ template <class Policy, class T,
           enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
 inline auto nearest(const Policy& policy, T& points) {
     ACTL_ASSERT(points.size() > 1);
-    sort(points, op::less_functor(policy));
+    sort(points, math::less(policy));
     for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j) {
         if (equal(policy, *i, *j)) return std::pair{*i, *j};
     }

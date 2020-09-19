@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/functional/sqrt.hpp>
 #include <actl/util/component_set.hpp>
 #include <actl/util/compressed_pair.hpp>
 #include <actl/util/introspection.hpp>

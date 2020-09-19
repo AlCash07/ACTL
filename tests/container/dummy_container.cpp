@@ -11,13 +11,13 @@
 TEST("basic") {
     dummy_container c(3);
     c.emplace_back(1);
-    ASSERT_EQUAL(4, c.size());
+    ASSERT_EQUAL(4l, c.size());
     c.erase(0);
     c.erase(1);
-    ASSERT_EQUAL(2, c.size());
+    ASSERT_EQUAL(2l, c.size());
     c = {};
     ASSERT_TRUE(c.empty());
     c.resize(3);
-    ASSERT_EQUAL(3, c.size());
+    ASSERT_EQUAL(3l, c.size());
     ASSERT_FALSE(c.empty());
 }

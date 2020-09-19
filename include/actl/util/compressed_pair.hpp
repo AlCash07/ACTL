@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include <actl/functional/compare.hpp>
+#include <actl/functional/composite/tuple.hpp>
+#include <actl/functional/operators.hpp>
 #include <actl/util/introspection.hpp>
 
 namespace ac {
@@ -38,8 +39,8 @@ private:
 namespace detail {
 
 template <class T>
-struct cpb1 : op::base<ebo<T>> {
-    using op::base<ebo<T>>::base;
+struct cpb1 : operators::base<ebo<T>> {
+    using operators::base<ebo<T>>::base;
 };
 
 template <class T>
@@ -75,21 +76,46 @@ private:
     INTROSPECT(first(), second())
 };
 
-namespace op {
+template <class T1, class T2>
+struct is_tuple<compressed_pair<T1, T2>> : std::true_type {};
 
-template <class Policy, class T1, class T2>
-inline auto equal(const Policy& policy, const compressed_pair<T1, T2>& lhs,
-                  const compressed_pair<T1, T2>& rhs) {
-    return equal(policy, lhs.first(), rhs.first()) && equal(policy, lhs.second(), rhs.second());
+template <size_t I, class T1, class T2>
+inline auto& get(const compressed_pair<T1, T2>& p) {
+    if constexpr (I == 0) {
+        return p.first();
+    } else {
+        static_assert(I == 1);
+        return p.second();
+    }
 }
 
-template <class Policy, class T1, class T2>
-inline auto less(const Policy& policy, const compressed_pair<T1, T2>& lhs,
-                 const compressed_pair<T1, T2>& rhs) {
-    int v = sgn(policy, lhs.first(), rhs.first());
-    return v < 0 || (v == 0 && less(policy, lhs.second(), rhs.second()));
+template <class T1, class T2>
+inline auto operator == (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+    return math::equal(lhs.first(), rhs.first()) && math::equal(lhs.second(), rhs.second());
 }
 
-}  // namespace op
+template <class T1, class T2>
+inline auto operator < (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+    return math::less(lhs, rhs);
+}
 
 }  // namespace ac
+
+namespace std {
+
+template <class T1, class T2>
+struct tuple_size<ac::compressed_pair<T1, T2>> {
+    static constexpr size_t value = 2;
+};
+
+template <class T1, class T2>
+struct tuple_element<0, ac::compressed_pair<T1, T2>> {
+    using type = T1;
+};
+
+template <class T1, class T2>
+struct tuple_element<1, ac::compressed_pair<T1, T2>> {
+    using type = T2;
+};
+
+}  // namespace std

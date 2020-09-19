@@ -13,8 +13,8 @@ using namespace ac::io;
 
 TEST("write") {
     char s[5];
-    ASSERT_TRUE(3 <=
-                write(memory<bin | out>{s}, std::tuple{'a', 'c', 'a'}, std::tuple{'b', 'a', 'c'}));
+    ASSERT_TRUE(
+        3 <= write(memory<bin | io::out>{s}, std::tuple{'a', 'c', 'a'}, std::tuple{'b', 'a', 'c'}));
     ASSERT_EQUAL("aca"sv, span{s, 3});
 }
 

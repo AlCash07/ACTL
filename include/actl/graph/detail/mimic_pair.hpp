@@ -22,6 +22,8 @@ class mimic_pair : public compressed_pair<T1, T2> {
 
 public:
     struct is_mimic_pair;
+    using value_type = std::conditional_t<I == 1, T1, T2>;
+
     static_assert(I == 1 || I == 2);
 
     using base_t::base_t;
@@ -39,6 +41,31 @@ private:
 
     size_t hash() const { return hash_value(key()); }
 };
+
+template <class T, class = void>
+struct is_mimic_pair : std::false_type {};
+
+template <class T>
+struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type {};
+
+template <class T>
+inline decltype(auto) get_key(const T& x) {
+    if constexpr (is_mimic_pair<T>::value) {
+        return x.key();
+    } else {
+        return x;
+    }
+}
+
+template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
+inline auto operator == (const T& lhs, const U& rhs) {
+    return math::equal(get_key(lhs), get_key(rhs));
+}
+
+template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
+inline auto operator < (const T& lhs, const U& rhs) {
+    return math::less(get_key(lhs), get_key(rhs));
+}
 
 template <class Key>
 class second_map {
@@ -61,37 +88,6 @@ inline auto get_second(Map&& map) {
 }  // namespace ac::detail
 
 namespace ac {
-
-namespace op {
-
-template <class T, class = void>
-struct is_mimic_pair : std::false_type {};
-
-template <class T>
-struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type {};
-
-template <class T>
-inline decltype(auto) get_key(const T& x) {
-    if constexpr (is_mimic_pair<T>::value) {
-        return x.key();
-    } else {
-        return x;
-    }
-}
-
-template <class Policy, class T, class U,
-          enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto equal(const Policy& policy, const T& lhs, const U& rhs) {
-    return equal(policy, get_key(lhs), get_key(rhs));
-}
-
-template <class Policy, class T, class U,
-          enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto less(const Policy& policy, const T& lhs, const U& rhs) {
-    return less(policy, get_key(lhs), get_key(rhs));
-}
-
-}  // namespace op
 
 template <class K>
 struct map_traits<detail::second_map<K>> : detail::second_map<K>::traits {};

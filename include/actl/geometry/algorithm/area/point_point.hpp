@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/functional/sqrt.hpp>
+#include <actl/functional/scalar/math.hpp>
 #include <actl/geometry/algorithm/area/area.hpp>
 #include <actl/geometry/point.hpp>
 

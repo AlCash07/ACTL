@@ -8,42 +8,10 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/compare.hpp>
+#include <actl/container/array/static_array.hpp>
 #include <actl/iterator/iterator_facade.hpp>
-#include <actl/std/array.hpp>
 
 namespace ac {
-
-/* Static array (with all the elements known at compile time) */
-
-template <class T, T... Is>
-struct static_array {
-    static constexpr std::array<T, sizeof...(Is)> array = {Is...};
-
-    explicit constexpr static_array() = default;
-
-    template <class R>
-    explicit constexpr static_array(R&& range) {
-        ACTL_ASSERT(op::equal(array, range));
-    }
-
-    static constexpr auto begin() { return array.begin(); }
-    static constexpr auto end() { return array.end(); }
-
-    static constexpr const T* data() { return array.data(); }
-
-    static constexpr index size() { return index{array.size()}; }
-
-    constexpr T operator[](index i) const {
-        ACTL_ASSERT(0 <= i && i < size());
-        return array[(size_t)i];
-    }
-};
-
-template <class T, T... Is>
-struct static_size<static_array<T, Is...>> : index_constant<sizeof...(Is)> {};
-
-/* Partially static array where each element can have dynamic value */
 
 template <class T, T... Is>
 class semi_static_array {

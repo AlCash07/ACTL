@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/functional/compare.hpp>
+#include <actl/functional/scalar/all.hpp>
 
 struct epsilon9 {
     static constexpr double epsilon() { return 1e-9; }
 };
 
-inline ac::op::absolute_error<epsilon9> absolute_error9;
+inline ac::math::absolute_error<epsilon9> absolute_error9;

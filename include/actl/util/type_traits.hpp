@@ -14,6 +14,9 @@
 
 namespace ac {
 
+template <class T>
+struct is_tuple : std::false_type {};
+
 template <bool B, class T>
 struct add_const_if : std::conditional<B, const T, T> {};
 
@@ -23,12 +26,51 @@ using add_const_if_t = typename add_const_if<B, T>::type;
 template <index N>
 using index_constant = std::integral_constant<index, N>;
 
+template <class T>
+struct is_index_constant : std::false_type {};
+
+template <index N>
+struct is_index_constant<index_constant<N>> : std::true_type {};
+
 // TODO: use std::remove_cvref_t when C++20 is out.
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 template <bool B>
 using enable_int_if = std::enable_if_t<B, int>;
+
+template <class... Ts>
+struct are_same : std::false_type {};
+
+template <class T>
+struct are_same<T> : std::true_type {};
+
+template <class T, class... Ts>
+struct are_same<T, T, Ts...> : are_same<T, Ts...> {};
+
+template <class... Ts>
+inline constexpr bool are_same_v = are_same<Ts...>::value;
+
+namespace detail {
+
+// Implementation reference: https://en.cppreference.com/w/cpp/types/is_base_of
+template <template <class...> class B, class... Ts>
+std::true_type test_base(const B<Ts...>*);
+
+template <template <class...> class>
+std::false_type test_base(const void*);
+
+}  // namespace detail
+
+template <template <class...> class B, class D, class = void>
+struct is_template_base_of : std::true_type {};
+
+template <template <class...> class B, class D>
+struct is_template_base_of<B, D, std::void_t<decltype(detail::test_base<B>(std::declval<D*>()))>>
+    : decltype(detail::test_base<B>(std::declval<D*>())) {};
+
+template <template <class...> class B, class D>
+inline constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;
 
 /* nth_type */
 

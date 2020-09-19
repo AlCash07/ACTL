@@ -15,19 +15,19 @@ TEST("input") {
     ASSERT_EQUAL('b', id.get());
     id.move(-1);
     char dst[9];
-    ASSERT_EQUAL(4, id.read({dst, 5}));
+    ASSERT_EQUAL(4l, id.read({dst, 5}));
     ASSERT_EQUAL("bcde"sv, std::string(dst, dst + 4));
     s += 'f';
-    ASSERT_EQUAL(1, id.read({dst, 3}));
+    ASSERT_EQUAL(1l, id.read({dst, 3}));
     ASSERT_EQUAL("f"sv, std::string(dst, dst + 1));
-    ASSERT_EQUAL(0, id.read({dst, 3}));
+    ASSERT_EQUAL(0l, id.read({dst, 3}));
     ASSERT_EQUAL('\0', id.get());
 }
 
 TEST("output") {
     std::string s;
     io::string<io::app> od{s};
-    ASSERT_TRUE(od.write('a'));
-    ASSERT_EQUAL(3, od.write({"bcd", 3}));
+    ASSERT_EQUAL(1l, od.write('a'));
+    ASSERT_EQUAL(3l, od.write({"bcd", 3}));
     ASSERT_EQUAL("abcd"sv, s);
 }

@@ -9,7 +9,7 @@
 #include <actl/test.hpp>
 
 TEST("all cases") {
-    op::defer_sqrt policy;
+    math::defer_sqrt policy;
     circle<int> c{{0, 0}, 5};
     ASSERT_FALSE(crosses(policy, c, circle<int>{{0, 2}, 2}));
     ASSERT_TRUE(crosses(policy, c, circle<int>{{0, 3}, 2}));

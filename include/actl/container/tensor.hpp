@@ -8,8 +8,9 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/container/static_array.hpp>
-#include <actl/functional/compare.hpp>
+#include <actl/container/array/semi_static_array.hpp>
+#include <actl/functional/composite/range.hpp>
+#include <actl/functional/scalar/derived.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/util/span.hpp>
@@ -214,7 +215,7 @@ private:
     template <index I>
     void compute_dimensions(nd_initializer_list_t<T, N - I> il) {
         if constexpr (I < N) {
-            smax(dims_[I], static_cast<Int>(il.size()));
+            math::max(inplace(dims_[I]), static_cast<Int>(il.size()));
             for (auto i : il) compute_dimensions<I + 1>(i);
         }
     }
@@ -429,19 +430,34 @@ struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
 }  // namespace detail
 
-namespace op {
+namespace math {
 
-template <class Policy, class D0, class S0, class D1, class S1>
-inline bool equal(const Policy& policy, const detail::tensor_base<D0, S0>& lhs,
-                  const detail::tensor_base<D1, S1>& rhs) {
-    if (lhs.rank() != rhs.rank()) return false;
-    for (index i = 0; i < lhs.rank(); ++i) {
-        if (lhs.dimension(i) != rhs.dimension(i)) return false;
+struct tensor_tag {};
+
+template <class T, class D>
+struct category_impl<T, ac::detail::tensor_base<T, D>> {
+    using type = tensor_tag;
+};
+
+struct EqualTensor {
+    template <class EqualOp, class T, class U>
+    static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
+        if (lhs.rank() != rhs.rank()) return false;
+        for (index i = 0; i < lhs.rank(); ++i) {
+            if (lhs.dimension(i) != rhs.dimension(i)) return false;
+        }
+        return op(span{lhs}, span{rhs});
     }
-    return equal(policy, span{lhs}, span{rhs});
-}
+};
 
-}  // namespace op
+template <class T, class U>
+struct overload<Equal, tensor_tag, T, U> {
+    static constexpr auto resolve(Equal op) {
+        return operation_composer<EqualTensor>(op.resolve_nested<T, U>());
+    }
+};
+
+}  // namespace math
 
 /**
  * N-dimensional array with dimensions completely or partially known at compile time.
