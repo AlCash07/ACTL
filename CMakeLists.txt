@@ -8,7 +8,7 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(TESTS_DIR ${CMAKE_SOURCE_DIR}/tests)
 set(BENCHMARK_DIR ${CMAKE_SOURCE_DIR}/benchmark)
 
-add_definitions(-DACTL_DEBUG)
+add_definitions(-DACTL_DEBUG -ftemplate-backtrace-limit=0)
 if(NOT MSVC)
     add_definitions(-D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC
     -Wall -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align
@@ -28,6 +28,7 @@ source_group(TREE ${SRC_DIR} FILES ${SRC_FILES})
 add_library(src ${SRC_FILES})
 
 file(GLOB_RECURSE TEST_FILES ${TESTS_DIR}/*)
+list(FILTER TEST_FILES EXCLUDE REGEX ${TESTS_DIR}/geometry/*.*)
 source_group(TREE ${TESTS_DIR} FILES ${TEST_FILES})
 add_executable(tests ${TEST_FILES})
 target_include_directories(tests PRIVATE ${TESTS_DIR})
