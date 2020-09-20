@@ -13,32 +13,20 @@
 
 namespace ac {
 
-namespace detail {
-
 template <index N>
-class span_size {
+class size_holder {
 public:
-    static_assert(N > 0);
+    static_assert(N >= 0);
 
-    constexpr span_size([[maybe_unused]] index n) { ACTL_ASSERT(n == N); }
+    constexpr size_holder(index n [[maybe_unused]]) { ACTL_ASSERT(n == N); }
 
     static constexpr index size() { return N; }
 };
 
 template <>
-class span_size<0> {
+class size_holder<dynamic_size> {
 public:
-    constexpr span_size() = default;
-    constexpr span_size([[maybe_unused]] index n) { ACTL_ASSERT(n == 0); }
-
-    static constexpr index size() { return 0; }
-};
-
-template <>
-class span_size<dynamic_size> {
-public:
-    constexpr span_size() = default;
-    constexpr span_size(index n) : size_{n} { ACTL_ASSERT(n >= 0); }
+    constexpr size_holder(index n) : size_{n} { ACTL_ASSERT(n >= 0); }
 
     constexpr index size() const { return size_; }
 
@@ -46,12 +34,8 @@ private:
     index size_ = 0;
 };
 
-}  // namespace detail
-
 template <class T, index N = dynamic_size>
-class span : detail::span_size<N> {
-    using base_t = detail::span_size<N>;
-
+class span {
 public:
     using element_type    = T;
     using value_type      = std::remove_cv_t<T>;
@@ -60,17 +44,17 @@ public:
     using pointer         = T*;
     using reference       = T&;
     using iterator        = pointer;
-    using const_iterator  = iterator;
 
     static constexpr index extent = N;
 
-    constexpr span() = default;
+    template <index M = N, enable_int_if<M <= 0> = 0>
+    constexpr span() : storage_{nullptr, 0} {}
 
-    constexpr span(T* ptr, index count) : base_t{count}, data_{ptr} {}
+    constexpr span(T* ptr, index count) : storage_{ptr, count} {}
 
     constexpr span(T* first, T* last) : span{first, last - first} {}
 
-    template <class Range, enable_int_if<is_contiguous_range_v<std::remove_reference_t<Range>>> = 0>
+    template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
     constexpr span(Range&& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
 
     constexpr T* begin() const { return data(); }
@@ -86,9 +70,9 @@ public:
         return data()[i];
     }
 
-    constexpr T* data() const { return data_; }
+    constexpr T* data() const { return storage_.data; }
 
-    using base_t::size;
+    constexpr index size() const { return storage_.size(); }
 
     constexpr bool empty() const { return size() == 0; }
 
@@ -103,13 +87,17 @@ public:
     }
 
 private:
-    T* data_ = nullptr;
+    struct storage_t : size_holder<N> {
+        T* data;
+        constexpr storage_t(T* ptr, index count) : size_holder<N>{count}, data{ptr} {}
+    };
+
+    storage_t storage_;
 };
 
-template <class Range>
-span(Range &&)
-    ->span<std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
-           static_size_v<std::remove_reference_t<Range>>>;
+template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
+span(Range &&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
+                       static_size_v<std::remove_reference_t<Range>>>;
 
 template <class T, index N>
 struct static_size<span<T, N>> : index_constant<N> {};
