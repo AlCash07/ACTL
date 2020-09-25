@@ -175,10 +175,9 @@ inline void serialize(Format& fmt, setf<Flag, Value>) {
     }
 }
 
-template <class Device, class Format, flag_t Flag, bool Value>
-inline bool deserialize(Device& id, Format& fmt, setf<Flag, Value>) {
+template <class Format, flag_t Flag, bool Value>
+inline void deserialize(Format& fmt, setf<Flag, Value>) {
     serialize(fmt, setf<Flag, Value>{});
-    return true;
 }
 
 template <class Format, flag_t Group, flag_t Flag>
@@ -186,10 +185,9 @@ inline void serialize(Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
 }
 
-template <class Device, class Format, flag_t Group, flag_t Flag>
-inline bool deserialize(Device&, Format& fmt, setg<Group, Flag>) {
+template <class Format, flag_t Group, flag_t Flag>
+inline void deserialize(Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
-    return true;
 }
 
 using setbase = base_t;
@@ -197,10 +195,9 @@ constexpr setbase dec{10};
 constexpr setbase hex{16};
 constexpr setbase oct{8};
 
-template <class Device, class Format>
-inline bool deserialize(Device&, Format& fmt, setbase x) {
+template <class Format>
+inline void deserialize(Format& fmt, setbase x) {
     fmt.base = x;
-    return true;
 }
 
 template <class Format>

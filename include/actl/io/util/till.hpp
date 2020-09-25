@@ -46,8 +46,8 @@ inline index read_till(Device& id, till<span<char_t<Device>, N>, P> x) {
     return i;
 }
 
-template <class Device, class Format, class P, index N>
-inline bool read_final(Device& id, Format&, till<span<char_t<Device>, N>, P> x) {
+template <class Device, class Format, class T, class P>
+inline bool read_final(Device& id, Format&, till<T, P> x) {
     read_till(id, x);
     return true;
 }
