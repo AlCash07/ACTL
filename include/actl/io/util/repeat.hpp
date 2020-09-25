@@ -14,6 +14,7 @@ namespace ac::io {
 
 template <class Char>
 struct repeat {
+    explicit repeat() : c{}, count{0} {}
     explicit repeat(Char c, index count) : c{c}, count{count} {}
 
     Char c;
@@ -41,7 +42,7 @@ inline index write_final(Device& od, Format& fmt, const repeat<Char>& x) {
             od.move(count % s.size());
         }
     } else {
-        for (; 0 < count; --count) od.write(x.c);
+        for (; 0 < count; --count) od.write(static_cast<char_t<Device>>(x.c));
     }
     return x.count;
 }

@@ -204,10 +204,10 @@ inline bool read_final(Device& id, Format&, cspan<B, N>& s) {
 
 namespace detail {
 
-template <class... T>
-constexpr auto can_serialize(T&... xs) -> decltype(serialize(xs...), std::true_type{});
+template <class... Ts>
+auto can_serialize(Ts&... xs) -> decltype(serialize(xs...), std::true_type{});
 
-constexpr std::false_type can_serialize(...);
+std::false_type can_serialize(...);
 
 template <size_t I, class D, class F, class T>
 inline index write_impl(D& od, F& fmt, const T& x);
@@ -247,9 +247,9 @@ inline index write_impl(D& od, F& fmt, const T& x) {
 }
 
 template <class... Ts>
-constexpr auto can_deserialize(Ts&... xs) -> decltype(deserialize(xs...), std::true_type{});
+auto can_deserialize(Ts&... xs) -> decltype(deserialize(xs...), std::true_type{});
 
-constexpr std::false_type can_deserialize(...);
+std::false_type can_deserialize(...);
 
 template <size_t I, class D, class F, class T>
 inline bool read_impl(D& od, F& fmt, T& x);
