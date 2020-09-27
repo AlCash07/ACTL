@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/io/core/parser_executor.hpp>
+#include <actl/io/text/parser/float_unchecked.hpp>
 #include <actl/io/text/parser/integral.hpp>
 #include <actl/io/text/text.hpp>
 
@@ -17,6 +18,12 @@ template <class Format, class Int, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_integral_v<Int> && !is_char_v<Int>> = 0>
 inline auto deserialize(Format& fmt, Int& x) {
     return parser_executor{x, integral_parser<Int>{fmt.base}};
+}
+
+template <class Format, class Float, enable_int_if_text<Format> = 0,
+          enable_int_if<std::is_floating_point_v<Float>> = 0>
+inline auto deserialize(Format& fmt, Float& x) {
+    return parser_executor{x, float_unchecked_parser<Float>{fmt.base}};
 }
 
 }  // namespace ac::io

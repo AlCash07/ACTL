@@ -5,8 +5,9 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/io/text/arithmetic/real_read.hpp>
+#include <actl/io/text/parser/arithmetic.hpp>
 #include <actl/test.hpp>
+
 #include "io/text/test_io.hpp"
 
 using namespace ac::io;

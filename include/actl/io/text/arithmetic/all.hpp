@@ -9,5 +9,4 @@
 
 #include <actl/io/text/arithmetic/boolean.hpp>
 #include <actl/io/text/arithmetic/integer_write.hpp>
-#include <actl/io/text/arithmetic/real_read.hpp>
 #include <actl/io/text/arithmetic/real_write.hpp>

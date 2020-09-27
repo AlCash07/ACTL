@@ -34,13 +34,17 @@ public:
             return max;
     }
 
-    template <class UInt>
-    auto value(UInt x) const {
-        using Int = std::make_signed_t<UInt>;
-        if constexpr (Signed)
-            return negate ? ~static_cast<Int>(x - 1) : static_cast<Int>(x);
-        else
-            return x;
+    template <class T>
+    auto value(T x) const {
+        if constexpr (std::is_floating_point_v<T>) {
+            return negate ? -x : x;
+        } else {
+            using Int = std::make_signed_t<T>;
+            if constexpr (Signed)
+                return negate ? ~static_cast<Int>(x - 1) : static_cast<Int>(x);
+            else
+                return x;
+        }
     }
 };
 
