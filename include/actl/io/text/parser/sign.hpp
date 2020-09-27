@@ -1,0 +1,47 @@
+/***************************************************************************************************
+ * Copyright 2020 Oleksandr Bacherikov.
+ *
+ *             Distributed under the Boost Software License, Version 1.0.
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ **************************************************************************************************/
+
+#pragma once
+
+#include <actl/util/span.hpp>
+
+namespace ac::io {
+
+template <bool Signed>
+class sign_parser {
+    bool negate = false;
+
+public:
+    index parse(cspan<char> s) {
+        char c = s[0];
+        if constexpr (Signed)
+            if (c == '-')
+                return negate = true;
+        return c == '+';
+    }
+
+    template <class Int>
+    auto max_abs() const {
+        using UInt = std::make_unsigned_t<Int>;
+        constexpr auto max = std::numeric_limits<UInt>::max();
+        if constexpr (Signed)
+            return max / 2 + UInt{negate};
+        else
+            return max;
+    }
+
+    template <class UInt>
+    auto value(UInt x) const {
+        using Int = std::make_signed_t<UInt>;
+        if constexpr (Signed)
+            return negate ? ~static_cast<Int>(x - 1) : static_cast<Int>(x);
+        else
+            return x;
+    }
+};
+
+}  // namespace ac::io

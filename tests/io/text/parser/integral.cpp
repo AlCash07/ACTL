@@ -5,7 +5,8 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/io/text/arithmetic/integer_read.hpp>
+#include <actl/io/text/parser/arithmetic.hpp>
+
 #include "io/text/test_io.hpp"
 
 using namespace ac::io;
@@ -60,6 +61,8 @@ TEST("read long long") {
 TEST("determine base") {
     text f;
     test_read<true>(10, "10", f, setbase{0});
+    test_read<true>(2, "0b10", f);
+    test_read<true>(-2, "-0B10", f);
     test_read<true>(8, "010", f);
     test_read<true>(-16, "-0x10", f);
     test_read<true>(16, "0X10", f);

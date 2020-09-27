@@ -86,6 +86,13 @@ public:
         return {end() - n, n};
     }
 
+    constexpr span<T> subspan(index offset, index count) const {
+        ACTL_ASSERT(0 <= offset && 0 <= count && offset + count <= size());
+        return {data() + offset, count};
+    }
+
+    constexpr span<T> subspan(index offset) const { return subspan(offset, size() - offset); }
+
 private:
     struct storage_t : size_holder<N> {
         T* data;

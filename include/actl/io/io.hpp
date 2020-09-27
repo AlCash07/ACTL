@@ -200,6 +200,14 @@ inline bool read_final(Device& id, Format&, cspan<B, N>& s) {
     return true;
 }
 
+/* Function support */
+
+template <class Device, class Format, class T,
+          enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
+inline bool read_final(Device& id, Format&, T& s) {
+    return s(id);
+}
+
 /* Processing argument with multiple formats */
 
 namespace detail {

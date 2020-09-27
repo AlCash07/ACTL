@@ -9,4 +9,5 @@
 
 #include <actl/io/text/arithmetic/all.hpp>
 #include <actl/io/text/decorator/all.hpp>
+#include <actl/io/text/parser/arithmetic.hpp>
 #include <actl/io/text/text.hpp>

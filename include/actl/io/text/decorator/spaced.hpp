@@ -24,12 +24,12 @@ struct spaced {
 };
 
 template <class C, class T, enable_int_if<!is_manipulator<std::remove_const_t<T>>::value> = 0>
-inline batch<raw<cspan<C>>, T&> serialize(spaced<C>& fmt, T& x) {
+inline batch<span<const C>, T&> serialize(spaced<C>& fmt, T& x) {
     if (fmt.separate) {
-        return {raw{cspan<C>{fmt.space}}, x};
+        return {{fmt.space}, x};
     } else {
         fmt.separate = true;
-        return {raw{cspan<C>{}}, x};
+        return {{}, x};
     }
 }
 
