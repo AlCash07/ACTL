@@ -14,7 +14,7 @@
 namespace ac::io {
 
 template <class Format, class Int, enable_int_if_text<Format> = 0,
-          enable_int_if<std::is_integral_v<Int> && !std::is_same_v<Int, char>> = 0>
+          enable_int_if<std::is_integral_v<Int> && !is_char_v<Int>> = 0>
 inline auto deserialize(Format& fmt, Int& x) {
     return parser_executor{x, integral_parser<Int>{fmt.base}};
 }
