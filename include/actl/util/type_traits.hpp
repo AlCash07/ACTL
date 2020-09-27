@@ -39,6 +39,12 @@ using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 template <bool B>
 using enable_int_if = std::enable_if_t<B, int>;
 
+template <class T, class... Ts>
+constexpr bool is_one_of_v = (... || std::is_same_v<T, Ts>);
+
+template <class T>
+constexpr bool is_char_v = is_one_of_v<T, char, wchar_t, char16_t, char32_t>;
+
 template <class... Ts>
 struct are_same : std::false_type {};
 
