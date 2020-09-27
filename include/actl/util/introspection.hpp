@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/util/serialization_access.hpp>
+#include <actl/io/core/serialization_access.hpp>
 #include <actl/numeric/util/hash_access.hpp>
 
 // Defines serialize and deserialize functions for composite types.

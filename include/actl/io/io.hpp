@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/io/util/serialization_access.hpp>
+#include <actl/io/core/serialization_access.hpp>
 #include <actl/std/tuple.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/span.hpp>
