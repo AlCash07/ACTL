@@ -7,15 +7,17 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
+#include <actl/range/contiguous_range_facade.hpp>
 #include <actl/std/array.hpp>
 
 namespace ac {
 
 template <class T, T... Is>
-struct static_array {
+class static_array
+    : public contiguous_range_facade<static_array<T, Is...>, range_types<const T*, index>> {
     static constexpr std::array<T, sizeof...(Is)> array = {Is...};
 
+public:
     explicit constexpr static_array() = default;
 
     template <class R>
@@ -23,17 +25,9 @@ struct static_array {
         ACTL_ASSERT(math::equal(array, range));
     }
 
-    static constexpr auto begin() { return array.begin(); }
-    static constexpr auto end() { return array.end(); }
-
     static constexpr const T* data() { return array.data(); }
 
     static constexpr index size() { return index{array.size()}; }
-
-    constexpr T operator[](index i) const {
-        ACTL_ASSERT(0 <= i && i < size());
-        return array[(size_t)i];
-    }
 };
 
 template <class T, T... Is>

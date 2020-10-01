@@ -10,38 +10,57 @@
 #include <actl/assert.hpp>
 #include <actl/container/array/static_array.hpp>
 #include <actl/iterator/iterator_facade.hpp>
+#include <actl/range/range_facade.hpp>
 
 namespace ac {
 
 template <class T, T... Is>
-class semi_static_array {
+class semi_static_array;
+
+namespace detail {
+
+template <class T, T... Is>
+class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>,
+                                            iterator_types<std::bidirectional_iterator_tag, T, T>> {
+    friend class semi_static_array<T, Is...>;
+    friend struct ac::iterator_core_access;
+
+    explicit ssa_iterator(index i, const T* ait) : i_{i}, ait_{ait} {}
+
+    T get() const { return static_array<T, Is...>{}[i_]; }
+
+    T dereference() const { return get() == dynamic_size ? *ait_ : get(); }
+
+    void increment() {
+        if (get() == dynamic_size)
+            ++ait_;
+        ++i_;
+    }
+
+    void decrement() {
+        if (get() == dynamic_size)
+            --ait_;
+        --i_;
+    }
+
+    bool equals(const ssa_iterator& rhs) const { return i_ == rhs.i_; }
+
+    index i_;
+    const T* ait_;
+};
+
+}  // namespace detail
+
+template <class T, T... Is>
+class semi_static_array : public range_facade<semi_static_array<T, Is...>,
+                                              range_types<detail::ssa_iterator<T, Is...>, index>> {
     using array_t = std::array<T, (0 + ... + (Is == dynamic_size))>;
-
-    class iterator
-        : public iterator_facade<iterator, iterator_types<std::forward_iterator_tag, T, T, index>> {
-        friend class semi_static_array;
-        friend struct iterator_core_access;
-
-        iterator(index i, iterator_t<const array_t> ait) : i_{i}, ait_{ait} {}
-
-        T get() const { return static_array<T, Is...>{}[i_]; }
-
-        T dereference() const { return get() == dynamic_size ? *ait_ : get(); }
-
-        void increment() {
-            if (get() == dynamic_size) ++ait_;
-            ++i_;
-        }
-
-        bool equals(const iterator& rhs) const { return i_ == rhs.i_; }
-
-        index i_;
-        iterator_t<const array_t> ait_;
-    };
 
     array_t a_;
 
 public:
+    using iterator = detail::ssa_iterator<T, Is...>;
+
     template <class R>
     explicit semi_static_array(R&& range) {
         auto it = begin();
@@ -56,8 +75,8 @@ public:
         ACTL_ASSERT(it == end());
     }
 
-    iterator begin() const { return iterator{0, a_.begin()}; }
-    iterator end() const { return iterator{size(), a_.end()}; }
+    auto begin() const { return iterator{0, a_.begin()}; }
+    auto end() const { return iterator{size(), a_.end()}; }
 
     static constexpr index size() { return index{sizeof...(Is)}; }
 

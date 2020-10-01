@@ -24,28 +24,28 @@ namespace detail {
 template <class D, class T, class C>
 class rng_facade : public T {
 public:
-    ENABLE_NON_CONST auto cbegin() const { return derived().begin(); }
-    ENABLE_NON_CONST auto cend() const { return derived().end(); }
+    ENABLE_NON_CONST constexpr auto cbegin() const { return derived().begin(); }
+    ENABLE_NON_CONST constexpr auto cend() const { return derived().end(); }
 
-    bool empty() const { return derived().begin() == derived().end(); }
-    ENABLE_NON_CONST bool empty() { return derived().begin() == derived().end(); }
+    constexpr bool empty() const { return derived().begin() == derived().end(); }
+    ENABLE_NON_CONST constexpr bool empty() { return derived().begin() == derived().end(); }
 
-    explicit operator bool() const { return !empty(); }
-    ENABLE_NON_CONST explicit operator bool() { return !empty(); }
+    explicit constexpr operator bool() const { return !empty(); }
+    ENABLE_NON_CONST explicit constexpr operator bool() { return !empty(); }
 
-    decltype(auto) front() const {
+    constexpr decltype(auto) front() const {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
-    ENABLE_NON_CONST decltype(auto) front() {
+    ENABLE_NON_CONST constexpr decltype(auto) front() {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
 protected:
-    const D& derived() const { return static_cast<const D&>(*this); }
-    D& derived() { return static_cast<D&>(*this); }
+    constexpr const D& derived() const { return static_cast<const D&>(*this); }
+    constexpr D& derived() { return static_cast<D&>(*this); }
 };
 
 template <class T, class = void>
@@ -65,21 +65,25 @@ template <class D, class T>
 class rng_facade<D, T, std::bidirectional_iterator_tag>
     : public rng_facade<D, T, std::forward_iterator_tag> {
 public:
-    auto rbegin() const { return crev_it_t<T>{this->derived().end()}; }
-    ENABLE_NON_CONST auto rbegin() { return typename T::reverse_iterator{this->derived().end()}; }
-    ENABLE_NON_CONST auto crbegin() const { return rbegin(); }
+    constexpr auto rbegin() const { return crev_it_t<T>{this->derived().end()}; }
+    ENABLE_NON_CONST constexpr auto rbegin() {
+        return typename T::reverse_iterator{this->derived().end()};
+    }
+    ENABLE_NON_CONST constexpr auto crbegin() const { return rbegin(); }
 
-    auto rend() const { return crev_it_t<T>{this->derived().begin()}; }
-    ENABLE_NON_CONST auto rend() { return typename T::reverse_iterator{this->derived().begin()}; }
-    ENABLE_NON_CONST auto crend() const { return rend(); }
+    constexpr auto rend() const { return crev_it_t<T>{this->derived().begin()}; }
+    ENABLE_NON_CONST constexpr auto rend() {
+        return typename T::reverse_iterator{this->derived().begin()};
+    }
+    ENABLE_NON_CONST constexpr auto crend() const { return rend(); }
 
-    decltype(auto) back() const {
+    constexpr decltype(auto) back() const {
         ACTL_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
     }
 
-    ENABLE_NON_CONST decltype(auto) back() {
+    ENABLE_NON_CONST constexpr decltype(auto) back() {
         ACTL_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
@@ -95,19 +99,21 @@ class rng_facade<D, T, std::random_access_iterator_tag>
 public:
     using typename base_t::size_type;
 
-    decltype(auto) operator[](size_type n) const {
+    constexpr decltype(auto) operator[](size_type n) const {
         ACTL_ASSERT(0 <= n && n < size());
         return derived().begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
-    ENABLE_NON_CONST decltype(auto) operator[](size_type n) {
+    ENABLE_NON_CONST constexpr decltype(auto) operator[](size_type n) {
         ACTL_ASSERT(0 <= n && n < size());
         return derived().begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
-    auto size() const { return static_cast<size_type>(derived().end() - derived().begin()); }
+    constexpr auto size() const {
+        return static_cast<size_type>(derived().end() - derived().begin());
+    }
 
-    ENABLE_NON_CONST auto size() {
+    ENABLE_NON_CONST constexpr auto size() {
         return static_cast<size_type>(derived().end() - derived().begin());
     }
 };

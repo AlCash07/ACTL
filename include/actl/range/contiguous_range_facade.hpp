@@ -15,8 +15,8 @@ namespace ac {
 
 template <class Range, class Types>
 class contiguous_range_facade : public range_facade<contiguous_range_facade<Range, Types>, Types> {
-    Range& derived() { return static_cast<Range&>(*this); }
-    const Range& derived() const { return static_cast<const Range&>(*this); }
+    constexpr Range& derived() { return static_cast<Range&>(*this); }
+    constexpr const Range& derived() const { return static_cast<const Range&>(*this); }
 
 public:
     constexpr decltype(auto) begin() const { return derived().data(); }
