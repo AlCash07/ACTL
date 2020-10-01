@@ -48,7 +48,7 @@ template <
     class Difference = std::ptrdiff_t>
 struct iterator_types {
     using iterator_category = Category;
-    using value_type = Value;
+    using value_type = std::remove_cv_t<Value>;
     using reference = Reference;
     using pointer = typename detail::operator_arrow_dispatch<Reference>::type;
     using difference_type = Difference;

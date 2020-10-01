@@ -63,9 +63,8 @@ public:
     }
 
 protected:
-    It& derived() { return *static_cast<It*>(this); }
-
-    const It& derived() const { return *static_cast<const It*>(this); }
+    It& derived() { return static_cast<It&>(*this); }
+    const It& derived() const { return static_cast<const It&>(*this); }
 };
 
 template <class It, class T>
