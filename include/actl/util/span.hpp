@@ -8,20 +8,15 @@
 #pragma once
 
 #include <actl/container/size_holder.hpp>
+#include <actl/range/range_facade.hpp>
 #include <actl/range/traits.hpp>
 
 namespace ac {
 
 template <class T, index N = dynamic_size>
-class span {
+class span : public range_facade<span<T, N>, range_types<T*, index>> {
 public:
-    using element_type    = T;
-    using value_type      = std::remove_cv_t<T>;
-    using index_type      = index;
-    using difference_type = index;
-    using pointer         = T*;
-    using reference       = T&;
-    using iterator        = pointer;
+    using element_type = T;
 
     static constexpr index extent = N;
 
@@ -39,20 +34,9 @@ public:
 
     constexpr T* end() const { return data() + size(); }
 
-    constexpr T& front() const { return data()[0]; }
-
-    constexpr T& back() const { return data()[size() - 1]; }
-
-    constexpr T& operator[](index i) const {
-        ACTL_ASSERT(0 <= i && i < size());
-        return data()[i];
-    }
-
     constexpr T* data() const { return storage_.data; }
 
     constexpr index size() const { return storage_.size(); }
-
-    constexpr bool empty() const { return size() == 0; }
 
     constexpr span<T> first(index n) const {
         ACTL_ASSERT(0 <= n && n <= size());
