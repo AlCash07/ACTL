@@ -8,13 +8,13 @@
 #pragma once
 
 #include <actl/container/size_holder.hpp>
-#include <actl/range/range_facade.hpp>
+#include <actl/range/contiguous_range_facade.hpp>
 #include <actl/range/traits.hpp>
 
 namespace ac {
 
 template <class T, index N = dynamic_size>
-class span : public range_facade<span<T, N>, range_types<T*, index>> {
+class span : public contiguous_range_facade<span<T, N>, range_types<T*, index>> {
 public:
     using element_type = T;
 
@@ -30,26 +30,22 @@ public:
     template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
     constexpr span(Range&& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
 
-    constexpr T* begin() const { return data(); }
-
-    constexpr T* end() const { return data() + size(); }
-
     constexpr T* data() const { return storage_.data; }
 
     constexpr index size() const { return storage_.size(); }
 
     constexpr span<T> first(index n) const {
         ACTL_ASSERT(0 <= n && n <= size());
-        return {begin(), n};
+        return {data(), n};
     }
 
     constexpr span<T> last(index n) const {
         ACTL_ASSERT(0 <= n && n <= size());
-        return {end() - n, n};
+        return {this->end() - n, n};
     }
 
     constexpr span<T> subspan(index offset, index count) const {
-        ACTL_ASSERT(0 <= offset && 0 <= count && offset + count <= size());
+        ACTL_ASSERT(0 <= offset && offset + count <= size());
         return {data() + offset, count};
     }
 
