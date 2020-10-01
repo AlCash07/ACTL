@@ -15,8 +15,7 @@ namespace ac {
 
 namespace detail {
 
-class flag_output_iterator : public iterator_facade<flag_output_iterator, std::output_iterator_tag,
-                                                    void, const flag_output_iterator&, void> {
+class flag_output_iterator : public iterator_facade<flag_output_iterator, output_iterator_types> {
 public:
     bool flag = false;
 

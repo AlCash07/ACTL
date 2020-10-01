@@ -66,7 +66,7 @@ public:
     constexpr T& back() const { return data()[size() - 1]; }
 
     constexpr T& operator[](index i) const {
-        ACTL_ASSERT(data() && 0 <= i && i < size());
+        ACTL_ASSERT(0 <= i && i < size());
         return data()[i];
     }
 
@@ -96,7 +96,9 @@ public:
 private:
     struct storage_t : size_holder<N> {
         T* data;
-        constexpr storage_t(T* ptr, index count) : size_holder<N>{count}, data{ptr} {}
+        constexpr storage_t(T* ptr, index count) : size_holder<N>{count}, data{ptr} {
+            ACTL_ASSERT(ptr || count == 0);
+        }
     };
 
     storage_t storage_;

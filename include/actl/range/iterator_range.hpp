@@ -17,6 +17,8 @@ namespace ac {
 template <class It>
 class iterator_range : public range_facade<iterator_range<It>, It> {
 public:
+    using iterator = It;
+
     iterator_range() = default;
 
     iterator_range(It begin, It end) : begin_{begin}, end_{end} {}

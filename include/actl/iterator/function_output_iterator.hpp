@@ -17,8 +17,7 @@ namespace ac {
  */
 template <class Function>
 class function_output_iterator
-    : public iterator_facade<function_output_iterator<Function>, std::output_iterator_tag, void,
-                             const function_output_iterator<Function>&, void> {
+    : public iterator_facade<function_output_iterator<Function>, output_iterator_types> {
 public:
     explicit function_output_iterator(const Function& f = {}) : f_{f} {}
 

@@ -103,7 +103,8 @@ public:
     using base_t::base_t;
 
     template <class E>
-    class edge_iterator : public iterator_facade<edge_iterator<E>, std::input_iterator_tag, E, E> {
+    class edge_iterator
+        : public iterator_facade<edge_iterator<E>, iterator_types<std::input_iterator_tag, E, E>> {
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
 

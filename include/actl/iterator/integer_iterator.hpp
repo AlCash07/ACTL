@@ -13,13 +13,13 @@
 
 namespace ac {
 
+template <class Int>
+using integer_iterator_types =
+    iterator_types<std::random_access_iterator_tag, Int, const Int&, Int>;
+
 template <class Int, bool Increment = true>
 class integer_iterator
-    : public iterator_facade<integer_iterator<Int, Increment>,
-                             std::random_access_iterator_tag,
-                             Int,
-                             const Int&,
-                             Int> {
+    : public iterator_facade<integer_iterator<Int, Increment>, integer_iterator_types<Int>> {
 public:
     explicit integer_iterator() = default;
 
@@ -45,11 +45,7 @@ private:
 
 template <class Int>
 class integer_iterator_with_step
-    : public iterator_facade<integer_iterator_with_step<Int>,
-                             std::random_access_iterator_tag,
-                             Int,
-                             const Int&,
-                             Int> {
+    : public iterator_facade<integer_iterator_with_step<Int>, integer_iterator_types<Int>> {
 public:
     explicit integer_iterator_with_step() = default;
 

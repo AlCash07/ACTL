@@ -19,9 +19,11 @@ struct edge_inverter {
     E operator()(E e) const { return E{e.target(), e.source(), e.bundle()}; }
 };
 
+template <class G>
+using edge_it_types = iterator_types<std::input_iterator_tag, edge_t<G>, edge_t<G>>;
+
 template <class G, class It>
-class adj_list_out_edge_it : public iterator_facade<adj_list_out_edge_it<G, It>,
-                                                    std::input_iterator_tag, edge_t<G>, edge_t<G>> {
+class adj_list_out_edge_it : public iterator_facade<adj_list_out_edge_it<G, It>, edge_it_types<G>> {
     friend struct ac::iterator_core_access;
 
     edge_t<G> dereference() const { return g_->get_edge(u_, *it_); }
@@ -43,8 +45,7 @@ public:
 };
 
 template <class G>
-class adj_list_edge_it
-    : public iterator_facade<adj_list_edge_it<G>, std::input_iterator_tag, edge_t<G>, edge_t<G>> {
+class adj_list_edge_it : public iterator_facade<adj_list_edge_it<G>, edge_it_types<G>> {
     friend struct ac::iterator_core_access;
 
     edge_t<G> dereference() const { return g_->get_edge(u_, *it_); }

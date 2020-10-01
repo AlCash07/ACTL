@@ -15,24 +15,24 @@
 
 namespace ac {
 
-template <class Derived,
-          class Iterator,
-          class Category  = use_default,
-          class Value     = use_default,
-          class Reference = use_default,
-          class Distance  = use_default>
+template <
+    class Derived,
+    class Iterator,
+    class Category  = use_default,
+    class Value     = use_default,
+    class Reference = use_default,
+    class Distance  = use_default>
 class iterator_adaptor;
 
 namespace detail {
 
 template <class Derived, class It, class C, class V, class R, class D>
 struct iterator_adaptor_base {
-    using type = iterator_facade<
-        Derived,
+    using type = iterator_facade<Derived, iterator_types<
         deduce_t<C, typename std::iterator_traits<It>::iterator_category>,
         deduce_t<V, value_t<It>>,
         deduce_t<R, reference_t<It>>,
-        deduce_t<D, difference_t<It>>>;
+        deduce_t<D, difference_t<It>>>>;
 };
 
 }  // namespace detail

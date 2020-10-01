@@ -17,7 +17,8 @@ template <class T, T... Is>
 class semi_static_array {
     using array_t = std::array<T, (0 + ... + (Is == dynamic_size))>;
 
-    class iterator : public iterator_facade<iterator, std::forward_iterator_tag, T, T, index> {
+    class iterator
+        : public iterator_facade<iterator, iterator_types<std::forward_iterator_tag, T, T, index>> {
         friend class semi_static_array;
         friend struct iterator_core_access;
 

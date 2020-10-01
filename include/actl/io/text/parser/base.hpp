@@ -62,6 +62,7 @@ public:
                     ++i;
                     state = states::done;
                 }
+            case states::done:;
         }
         return i;
     }

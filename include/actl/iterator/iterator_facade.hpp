@@ -12,18 +12,10 @@
 #pragma once
 
 #include <actl/functional/operators.hpp>
+#include <actl/iterator/iterator_types.hpp>
 #include <actl/util/type_traits.hpp>
-#include <iterator>
-#include <memory>
 
 namespace ac {
-
-template <class Derived,
-          class Category,
-          class Value,
-          class Reference = Value&,
-          class Distance  = std::ptrdiff_t>
-class iterator_facade;
 
 struct iterator_core_access {
     template <class It>
@@ -53,38 +45,11 @@ struct iterator_core_access {
 
 namespace detail {
 
-template <class Ref>
-struct operator_arrow_dispatch {  // proxy references
-    struct proxy {
-        explicit proxy(const Ref& ref) : ref_{ref} {}
-        Ref* operator->() { return std::addressof(ref_); }
-        Ref ref_;
-    };
-
-    using type = proxy;
-
-    static type apply(const Ref& x) { return type(x); }
-};
-
-template <class T>
-struct operator_arrow_dispatch<T&> {  // "real" references
-    using type = T*;
-
-    static type apply(T& x) { return std::addressof(x); }
-};
-
-template <class Iterator, class Category, class Value, class Reference, class Distance>
-class it_facade;
-
-template <class It, class V, class R, class D>
-class it_facade<It, std::output_iterator_tag, V, R, D> : operators::base<> {
+template <class It, class T, class C>
+class it_facade : public operators::base<T> {
 public:
-    using value_type        = V;
-    using reference         = R;
-    using pointer           = typename operator_arrow_dispatch<R>::type;
-    using difference_type   = D;
-
-    R operator*() const { return iterator_core_access::dereference(derived()); }
+    // We don't return reference here because it's void for output iterators.
+    decltype(auto) operator*() const { return iterator_core_access::dereference(derived()); }
 
     It& operator++() {
         iterator_core_access::increment(derived());
@@ -103,22 +68,24 @@ protected:
     const It& derived() const { return *static_cast<const It*>(this); }
 };
 
-template <class It, class V, class R, class D>
-class it_facade<It, std::input_iterator_tag, V, R, D>
-    : public it_facade<It, std::output_iterator_tag, V, R, D> {
-public:
-    using typename it_facade<It, std::output_iterator_tag, V, R, D>::pointer;
+template <class It, class T>
+class it_facade<It, T, std::input_iterator_tag>
+    : public it_facade<It, T, std::output_iterator_tag> {
+    using base_t = it_facade<It, T, std::output_iterator_tag>;
 
-    pointer operator->() const { return operator_arrow_dispatch<R>::apply(*this->derived()); }
+public:
+    typename base_t::pointer operator->() const {
+        return operator_arrow_dispatch<typename base_t::reference>::apply(*this->derived());
+    }
 };
 
-template <class It, class V, class R, class D>
-class it_facade<It, std::forward_iterator_tag, V, R, D>
-    : public it_facade<It, std::input_iterator_tag, V, R, D> {};
+template <class It, class T>
+class it_facade<It, T, std::forward_iterator_tag>
+    : public it_facade<It, T, std::input_iterator_tag> {};
 
-template <class It, class V, class R, class D>
-class it_facade<It, std::bidirectional_iterator_tag, V, R, D>
-    : public it_facade<It, std::forward_iterator_tag, V, R, D> {
+template <class It, class T>
+class it_facade<It, T, std::bidirectional_iterator_tag>
+    : public it_facade<It, T, std::forward_iterator_tag> {
 public:
     It& operator--() {
         iterator_core_access::decrement(this->derived());
@@ -132,11 +99,14 @@ public:
     }
 };
 
-template <class It, class V, class R, class D>
-class it_facade<It, std::random_access_iterator_tag, V, R, D>
-    : public it_facade<It, std::bidirectional_iterator_tag, V, R, D> {
+template <class It, class T>
+class it_facade<It, T, std::random_access_iterator_tag>
+    : public it_facade<It, T, std::bidirectional_iterator_tag> {
+    using base_t = it_facade<It, T, std::bidirectional_iterator_tag>;
+    using D = typename base_t::difference_type;
+
 public:
-    R operator[](D n) const { return *(this->derived() + n); }
+    typename base_t::reference operator[](D n) const { return *(this->derived() + n); }
 
     It& operator += (D n) {
         iterator_core_access::advance(this->derived(), n);
@@ -155,31 +125,31 @@ public:
 
 }  // namespace detail
 
-template <class It, class C, class V, class R, class D>
-class iterator_facade : public detail::it_facade<It, C, V, R, D> {
-public:
-    using iterator_category = C;
-};
+template <class Derived, class Types>
+class iterator_facade
+    : public detail::it_facade<Derived, Types, typename Types::iterator_category> {};
 
-#define ITERATOR_OPERATOR(type, op, expr)                                 \
-    template <class It, class C, class V, class R, class D>               \
-    inline type operator op(const iterator_facade<It, C, V, R, D>& lhs,   \
-                            const iterator_facade<It, C, V, R, D>& rhs) { \
-        return expr;                                                      \
+#define ITERATOR_OPERATOR(type, op, expr)                        \
+    template <class It, class T>                                 \
+    inline type operator op(const iterator_facade<It, T>& lhs,   \
+                            const iterator_facade<It, T>& rhs) { \
+        return expr;                                             \
     }
 
 ITERATOR_OPERATOR(bool, ==,
                   iterator_core_access::equal(*static_cast<const It*>(&lhs),
                                               *static_cast<const It*>(&rhs)))
 
-ITERATOR_OPERATOR(D, -,
+ITERATOR_OPERATOR(auto, -,
                   iterator_core_access::distance_to(*static_cast<const It*>(&rhs),
                                                     *static_cast<const It*>(&lhs)))
 
 ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
-template <class It, class C, class V, class R, class D>
-inline It operator + (D n, const iterator_facade<It, C, V, R, D>& rhs) {
+#undef ITERATOR_OPERATOR
+
+template <class It, class T>
+inline It operator + (typename T::difference_type n, const iterator_facade<It, T>& rhs) {
     return rhs + n;
 }
 
