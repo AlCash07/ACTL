@@ -7,18 +7,12 @@
 
 #pragma once
 
-#include <iterator>
+#include <actl/iterator/iterator_types.hpp>
 
 namespace ac {
 
-struct dummy_output_iterator {
+struct dummy_output_iterator : output_iterator_types {
     using R = dummy_output_iterator&;
-
-    using iterator_category = std::output_iterator_tag;
-    using value_type        = void;
-    using reference         = void;
-    using pointer           = void;
-    using difference_type   = void;
 
     template <class T>
     R operator = (const T&) { return *this; }

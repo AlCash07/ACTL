@@ -12,14 +12,16 @@
 
 namespace ac {
 
+template <class T>
+using iterator_category_t = typename std::iterator_traits<T>::iterator_category;
+
 namespace detail {
 
 template <class T, class = void>
 struct is_iterator : std::false_type {};
 
 template <class T>
-struct is_iterator<T, std::void_t<typename std::iterator_traits<T>::iterator_category>>
-    : std::true_type {};
+struct is_iterator<T, std::void_t<iterator_category_t<T>>> : std::true_type {};
 
 }  // namespace detail
 
@@ -41,8 +43,7 @@ template <class T>
 struct is_const_iterator<T, false> : std::false_type {};
 
 template <class T, class Category, bool = is_iterator_v<T>>
-struct has_iterator_category
-    : std::is_same<Category, typename std::iterator_traits<T>::iterator_category> {};
+struct has_iterator_category : std::is_same<Category, iterator_category_t<T>> {};
 
 template <class T, class Category>
 struct has_iterator_category<T, Category, false> : std::false_type {};
