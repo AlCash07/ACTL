@@ -24,38 +24,62 @@ namespace detail {
 template <class D, class T, class C>
 class rng_facade : public T {
 public:
-    ENABLE_NON_CONST bool empty() { return derived().begin() == derived().end(); }
+    ENABLE_NON_CONST auto cbegin() const { return derived().begin(); }
+    ENABLE_NON_CONST auto cend() const { return derived().end(); }
+
     bool empty() const { return derived().begin() == derived().end(); }
+    ENABLE_NON_CONST bool empty() { return derived().begin() == derived().end(); }
 
-    ENABLE_NON_CONST explicit operator bool() { return !empty(); }
     explicit operator bool() const { return !empty(); }
-
-    ENABLE_NON_CONST decltype(auto) front() {
-        ACTL_ASSERT(!empty());
-        return *derived().begin();
-    }
+    ENABLE_NON_CONST explicit operator bool() { return !empty(); }
 
     decltype(auto) front() const {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
+    ENABLE_NON_CONST decltype(auto) front() {
+        ACTL_ASSERT(!empty());
+        return *derived().begin();
+    }
+
 protected:
-    D& derived() { return static_cast<D&>(*this); }
     const D& derived() const { return static_cast<const D&>(*this); }
+    D& derived() { return static_cast<D&>(*this); }
 };
+
+template <class T, class = void>
+struct crev_it {
+    using type = typename T::reverse_iterator;
+};
+
+template <class T>
+struct crev_it<T, std::void_t<typename T::const_reverse_iterator>> {
+    using type = typename T::const_reverse_iterator;
+};
+
+template <class T>
+using crev_it_t = typename crev_it<T>::type;
 
 template <class D, class T>
 class rng_facade<D, T, std::bidirectional_iterator_tag>
     : public rng_facade<D, T, std::forward_iterator_tag> {
 public:
-    ENABLE_NON_CONST decltype(auto) back() {
+    auto rbegin() const { return crev_it_t<T>{this->derived().end()}; }
+    ENABLE_NON_CONST auto rbegin() { return typename T::reverse_iterator{this->derived().end()}; }
+    ENABLE_NON_CONST auto crbegin() const { return rbegin(); }
+
+    auto rend() const { return crev_it_t<T>{this->derived().begin()}; }
+    ENABLE_NON_CONST auto rend() { return typename T::reverse_iterator{this->derived().begin()}; }
+    ENABLE_NON_CONST auto crend() const { return rend(); }
+
+    decltype(auto) back() const {
         ACTL_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
     }
 
-    decltype(auto) back() const {
+    ENABLE_NON_CONST decltype(auto) back() {
         ACTL_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
@@ -71,20 +95,21 @@ class rng_facade<D, T, std::random_access_iterator_tag>
 public:
     using typename base_t::size_type;
 
-    ENABLE_NON_CONST decltype(auto) operator[](size_type n) {
-        ACTL_ASSERT(0 <= n && n < size());
-        return derived().begin()[static_cast<typename base_t::difference_type>(n)];
-    }
-
     decltype(auto) operator[](size_type n) const {
         ACTL_ASSERT(0 <= n && n < size());
         return derived().begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
+    ENABLE_NON_CONST decltype(auto) operator[](size_type n) {
+        ACTL_ASSERT(0 <= n && n < size());
+        return derived().begin()[static_cast<typename base_t::difference_type>(n)];
+    }
+
+    auto size() const { return static_cast<size_type>(derived().end() - derived().begin()); }
+
     ENABLE_NON_CONST auto size() {
         return static_cast<size_type>(derived().end() - derived().begin());
     }
-    auto size() const { return static_cast<size_type>(derived().end() - derived().begin()); }
 };
 
 #undef ENABLE_NON_CONST
