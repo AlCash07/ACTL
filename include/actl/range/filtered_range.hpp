@@ -20,7 +20,9 @@ class filter_iterator;
 
 template <class Range, class Predicate>
 class filtered_range
-    : public range_facade<filtered_range<Range, Predicate>, filter_iterator<Range, Predicate>> {
+    : public range_facade<
+          filtered_range<Range, Predicate>,
+          range_types<filter_iterator<Range, Predicate>, size_type_t<remove_cvref_t<Range>>>> {
 public:
     using iterator = filter_iterator<Range, Predicate>;
 
