@@ -6,7 +6,13 @@
  **************************************************************************************************/
 
 #include <actl/container/array/semi_static_array.hpp>
-#include <actl/test.hpp>
+
+#include "regular.hpp"
+
+TEST("regular") {
+    using ssa = semi_static_array<int, 2, -1, 3, -1>;
+    test_regular_type(ssa{5, 4}, ssa{4, 4});
+}
 
 TEST("contents") {
     std::array a{3, 5, 4, 2};

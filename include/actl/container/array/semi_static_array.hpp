@@ -54,12 +54,19 @@ class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>,
 template <class T, T... Is>
 class semi_static_array : public range_facade<semi_static_array<T, Is...>,
                                               range_types<detail::ssa_iterator<T, Is...>, index>> {
-    using array_t = std::array<T, (0 + ... + (Is == dynamic_size))>;
+    static constexpr size_t N = (0 + ... + (Is == dynamic_size));
+    using array_t = std::array<T, N>;
 
     array_t a_;
 
 public:
     using iterator = detail::ssa_iterator<T, Is...>;
+
+    explicit constexpr semi_static_array() = default;
+
+    template <class... Ts,
+              enable_int_if<((sizeof...(Ts) == N) && ... && std::is_convertible_v<Ts, T>)> = 0>
+    explicit constexpr semi_static_array(Ts&&... xs) : a_{std::forward<Ts>(xs)...} {}
 
     template <class R>
     explicit semi_static_array(R&& range) {
@@ -85,6 +92,8 @@ public:
         std::advance(it, i);
         return *it;
     }
+
+    friend void swap(semi_static_array& lhs, semi_static_array& rhs) { lhs.a_.swap(rhs.a_); }
 };
 
 template <class T, T... Is>
