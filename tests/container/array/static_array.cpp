@@ -6,7 +6,12 @@
  **************************************************************************************************/
 
 #include <actl/container/array/static_array.hpp>
-#include <actl/test.hpp>
+
+#include "regular.hpp"
+
+TEST("regular") {
+    test_regular_traits<static_array<int, 1, 3>>();
+}
 
 TEST("empty") {
     constexpr static_array<int> sa{};
