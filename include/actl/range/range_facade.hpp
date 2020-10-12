@@ -19,26 +19,26 @@ namespace ac {
 
 namespace detail {
 
-#define ENABLE_NON_CONST template <class U = T, class = typename U::const_iterator>
+#define ENABLE_IF_HAS_CONST template <class U = T, class = typename U::const_iterator>
 
 template <class D, class T, class C>
 class rng_facade : public T {
 public:
-    ENABLE_NON_CONST constexpr auto cbegin() const { return derived().begin(); }
-    ENABLE_NON_CONST constexpr auto cend() const { return derived().end(); }
+    ENABLE_IF_HAS_CONST constexpr auto cbegin() const { return derived().begin(); }
+    ENABLE_IF_HAS_CONST constexpr auto cend() const { return derived().end(); }
 
     constexpr bool empty() const { return derived().begin() == derived().end(); }
-    ENABLE_NON_CONST constexpr bool empty() { return derived().begin() == derived().end(); }
+    ENABLE_IF_HAS_CONST constexpr bool empty() { return derived().begin() == derived().end(); }
 
     explicit constexpr operator bool() const { return !empty(); }
-    ENABLE_NON_CONST explicit constexpr operator bool() { return !empty(); }
+    ENABLE_IF_HAS_CONST explicit constexpr operator bool() { return !empty(); }
 
     constexpr decltype(auto) front() const {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
-    ENABLE_NON_CONST constexpr decltype(auto) front() {
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) front() {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
@@ -66,16 +66,16 @@ class rng_facade<D, T, std::bidirectional_iterator_tag>
     : public rng_facade<D, T, std::forward_iterator_tag> {
 public:
     constexpr auto rbegin() const { return crev_it_t<T>{this->derived().end()}; }
-    ENABLE_NON_CONST constexpr auto rbegin() {
+    ENABLE_IF_HAS_CONST constexpr auto rbegin() {
         return typename T::reverse_iterator{this->derived().end()};
     }
-    ENABLE_NON_CONST constexpr auto crbegin() const { return rbegin(); }
+    ENABLE_IF_HAS_CONST constexpr auto crbegin() const { return rbegin(); }
 
     constexpr auto rend() const { return crev_it_t<T>{this->derived().begin()}; }
-    ENABLE_NON_CONST constexpr auto rend() {
+    ENABLE_IF_HAS_CONST constexpr auto rend() {
         return typename T::reverse_iterator{this->derived().begin()};
     }
-    ENABLE_NON_CONST constexpr auto crend() const { return rend(); }
+    ENABLE_IF_HAS_CONST constexpr auto crend() const { return rend(); }
 
     constexpr decltype(auto) back() const {
         ACTL_ASSERT(!this->empty());
@@ -83,7 +83,7 @@ public:
         return *--last;
     }
 
-    ENABLE_NON_CONST constexpr decltype(auto) back() {
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) back() {
         ACTL_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
@@ -104,7 +104,7 @@ public:
         return derived().begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
-    ENABLE_NON_CONST constexpr decltype(auto) operator[](size_type n) {
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) operator[](size_type n) {
         ACTL_ASSERT(0 <= n && n < size());
         return derived().begin()[static_cast<typename base_t::difference_type>(n)];
     }
@@ -113,12 +113,12 @@ public:
         return static_cast<size_type>(derived().end() - derived().begin());
     }
 
-    ENABLE_NON_CONST constexpr auto size() {
+    ENABLE_IF_HAS_CONST constexpr auto size() {
         return static_cast<size_type>(derived().end() - derived().begin());
     }
 };
 
-#undef ENABLE_NON_CONST
+#undef ENABLE_IF_HAS_CONST
 
 }  // namespace detail
 
