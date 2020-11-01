@@ -9,38 +9,48 @@
 
 namespace ac::io {
 
+template <class Device, class Parser>
+bool parsed_available_data(Device& id, Parser& parser) {
+    auto s = id.input_data();
+    if (s.empty())
+        return false;
+    auto offset = parser.parse(s);
+    id.move(offset);
+    return offset == s.size();
+}
+
 template <class T, class Parser>
-class parser_executor {
-    template <class Device>
-    bool parsed_available(Device& id) {
-        auto s = id.input_data();
-        if (s.empty())
-            return false;
-        auto offset = parser.parse(s);
-        id.move(offset);
-        return offset == s.size();
-    }
-
-    bool finalize() {
-        bool ok = parser.ready();
-        if (ok)
-            dst = parser.value();
-        return ok;
-    }
-
-public:
+struct parser_executor {
     T& dst;
     Parser parser;
 
     template <class Device>
     bool operator()(Device& id) {
-        while (parsed_available(id))
+        while (parsed_available_data(id, parser))
             ;
-        return finalize();
+        bool ok = parser.ready();
+        if (ok)
+            dst = parser.value();
+        return ok;
+    }
+};
+
+template <class Parser>
+struct parser_executor<void, Parser> {
+    Parser parser;
+
+    template <class Device>
+    bool operator()(Device& id) {
+        while (parsed_available_data(id, parser))
+            ;
+        return parser.ready();
     }
 };
 
 template <class T, class P>
 parser_executor(T&, P) -> parser_executor<T, P>;
+
+template <class P>
+parser_executor(P) -> parser_executor<void, P>;
 
 }  // namespace ac::io

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <actl/io/core/const_data_parser.hpp>
+#include <actl/io/core/parser_executor.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/std/tuple.hpp>
 #include <actl/util/none.hpp>
@@ -193,11 +195,8 @@ inline bool read_final(Device& id, Format&, span<B, N>& s) {
 
 template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
 inline bool read_final(Device& id, Format&, cspan<B, N>& s) {
-    for (auto c : s) {
-        if (static_cast<B>(id.peek()) != c) return false;
-        id.move(1);
-    }
-    return true;
+    span sc{reinterpret_cast<const char*>(s.data()), s.size()};
+    return parser_executor{const_data_parser{sc}}(id);
 }
 
 /* Function support */

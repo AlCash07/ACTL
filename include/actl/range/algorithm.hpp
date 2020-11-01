@@ -25,6 +25,11 @@ inline difference_t<Range> count(const Range& src, const T& value) {
     return std::count(std::begin(src), std::end(src), value);
 }
 
+template <class Range0, class Range1>
+inline std::pair<iterator_t<Range0>, iterator_t<Range1>> mismatch(const Range0& lhs, const Range1& rhs) {
+    return std::mismatch(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
+}
+
 template <class Range, class OutIter>
 inline OutIter copy(const Range& src, OutIter dst) {
     return std::copy(std::begin(src), std::end(src), dst);
