@@ -8,11 +8,17 @@
 #pragma once
 
 #include <actl/io/core/parser_executor.hpp>
+#include <actl/io/text/parser/boolean.hpp>
 #include <actl/io/text/parser/float_unchecked.hpp>
 #include <actl/io/text/parser/integral.hpp>
 #include <actl/io/text/text.hpp>
 
 namespace ac::io {
+
+template <class Format, enable_int_if_text<Format> = 0>
+inline auto deserialize(Format& fmt, bool& x) {
+    return parser_executor{x, boolean_parser{fmt.getf(flags::boolalpha)}};
+}
 
 template <class Format, class Int, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_integral_v<Int> && !is_char_v<Int>> = 0>

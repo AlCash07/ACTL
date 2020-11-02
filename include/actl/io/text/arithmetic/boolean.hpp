@@ -13,8 +13,8 @@ namespace ac::io {
 
 constexpr char true_s[4] = {'t', 'r', 'u', 'e'};
 constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
-constexpr char zero_s[1] = {'0'};
-constexpr char one_s[1] = {'1'};
+constexpr char zero_c = '0';
+constexpr char one_c = '1';
 
 template <class Format, class Bool, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_same_v<Bool, bool>> = 0>
@@ -27,30 +27,10 @@ inline cspan<char> serialize(Format& fmt, Bool x) {
         }
     } else {
         if (x) {
-            return one_s;
+            return {&one_c, 1};
         } else {
-            return zero_s;
+            return {&zero_c, 1};
         }
-    }
-}
-
-template <class Device, class Format, enable_int_if_text<Format> = 0>
-inline bool deserialize(Device& id, Format& fmt, bool& x) {
-    char_t<Device> c;
-    if (!read(id, fmt, c)) return false;
-    if (fmt.getf(flags::boolalpha)) {
-        x = c == 't';
-        switch (c) {
-            case 't':
-                return read(id, fmt, span{std::begin(true_s) + 1, std::end(true_s)});
-            case 'f':
-                return read(id, fmt, span{std::begin(false_s) + 1, std::end(false_s)});
-            default:
-                return false;
-        }
-    } else {
-        x = c == '1';
-        return c == '0' || c == '1';
     }
 }
 
