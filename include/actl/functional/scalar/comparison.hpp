@@ -65,7 +65,7 @@ inline constexpr Greater greater;
 
 template <class T, class U>
 inline constexpr auto operator > (T&& lhs, U&& rhs) {
-    return greater(pass<U>(lhs), pass<T>(rhs));
+    return greater(pass<T>(lhs), pass<U>(rhs));
 }
 
 struct LessEqual : comparison_operation<LessEqual> {
