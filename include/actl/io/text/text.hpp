@@ -167,7 +167,7 @@ constexpr setf<flags::showpoint, true> showpoint{};
 constexpr setf<flags::showpoint, false> noshowpoint{};
 
 template <class Format, flag_t Flag, bool Value>
-inline void serialize(Format& fmt, setf<Flag, Value>) {
+inline void manipulate(Format& fmt, setf<Flag, Value>) {
     if constexpr (Value) {
         fmt.setf(Flag);
     } else {
@@ -175,18 +175,8 @@ inline void serialize(Format& fmt, setf<Flag, Value>) {
     }
 }
 
-template <class Format, flag_t Flag, bool Value>
-inline void deserialize(Format& fmt, setf<Flag, Value>) {
-    serialize(fmt, setf<Flag, Value>{});
-}
-
 template <class Format, flag_t Group, flag_t Flag>
-inline void serialize(Format& fmt, setg<Group, Flag>) {
-    fmt.setf(Flag, Group);
-}
-
-template <class Format, flag_t Group, flag_t Flag>
-inline void deserialize(Format& fmt, setg<Group, Flag>) {
+inline void manipulate(Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
 }
 
@@ -196,19 +186,14 @@ constexpr setbase hex{16};
 constexpr setbase oct{8};
 
 template <class Format>
-inline void deserialize(Format& fmt, setbase x) {
-    fmt.base = x;
-}
-
-template <class Format>
-inline void serialize(Format& fmt, setbase x) {
+inline void manipulate(Format& fmt, setbase x) {
     fmt.base = x;
 }
 
 using setprecision = precision_t;
 
 template <class Format>
-inline void serialize(Format& fmt, setprecision x) {
+inline void manipulate(Format& fmt, setprecision x) {
     fmt.precision = x;
 }
 

@@ -51,13 +51,13 @@ struct setspace {
 };
 
 template <class C>
-inline void serialize(spaced<C>& fmt, setspace x) {
+inline void manipulate(spaced<C>& fmt, setspace x) {
     fmt.space = x.value;
 }
 
 template <class C>
-inline void manipulate(spaced<C>& fmt, level_change lc) {
-    fmt.separate = !lc.deeper;
+inline void manipulate(spaced<C>& fmt, level_change x) {
+    fmt.separate = !x.deeper;
 }
 
 }  // namespace ac::io

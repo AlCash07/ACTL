@@ -54,8 +54,8 @@ template <>
 struct is_manipulator<adjust_to> : std::true_type {};
 
 template <class Char>
-inline void serialize(adjusted<Char>& fmt, adjust_to value) {
-    fmt.where = value;
+inline void manipulate(adjusted<Char>& fmt, adjust_to x) {
+    fmt.where = x;
 }
 
 // minimum width of an output unit
@@ -66,7 +66,7 @@ struct setwidth {
 };
 
 template <class Char>
-inline void serialize(adjusted<Char>& fmt, setwidth x) {
+inline void manipulate(adjusted<Char>& fmt, setwidth x) {
     fmt.width = x.value;
 }
 
@@ -81,7 +81,7 @@ struct setfill {
 };
 
 template <class Char>
-inline void serialize(adjusted<Char>& fmt, setfill<Char> x) {
+inline void manipulate(adjusted<Char>& fmt, setfill<Char> x) {
     fmt.fill = x.value;
 }
 

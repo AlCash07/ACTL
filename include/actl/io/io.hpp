@@ -219,7 +219,10 @@ inline index write_impl(D& od, F& fmt, const batch<Ts...>& x) {
 
 template <size_t I, class D, class F, class T>
 inline index write_impl(D& od, F& fmt, const T& x) {
-    if constexpr (I == format_traits<F>::size) {
+    if constexpr (is_manipulator<T>::value) {
+        manipulate(fmt, x);
+        return 0;
+    } else if constexpr (I == format_traits<F>::size) {
         if constexpr (is_range_v<T> || is_tuple_v<T>) {
             manipulate(fmt, level_change{true});
             index res = write_final(od, fmt, x);
@@ -232,9 +235,6 @@ inline index write_impl(D& od, F& fmt, const T& x) {
         auto& fmt_i = format_traits<F>::template get<I>(fmt);
         if constexpr (!decltype(can_serialize(fmt_i, x))::value) {
             return write_impl<I + 1>(od, fmt, x);
-        } else if constexpr (std::is_same_v<decltype(serialize(fmt_i, x)), void>) {
-            serialize(fmt_i, x);
-            return 0;
         } else {
             return write_impl<I + 1>(od, fmt, serialize(fmt_i, x));
         }
@@ -261,7 +261,10 @@ inline bool read_impl(D& od, F& fmt, batch<Ts...>& x) {
 
 template <size_t I, class D, class F, class T>
 inline bool read_impl(D& od, F& fmt, T& x) {
-    if constexpr (I == format_traits<F>::size) {
+    if constexpr (is_manipulator<T>::value) {
+        manipulate(fmt, x);
+        return true;
+    } else if constexpr (I == format_traits<F>::size) {
         if constexpr (is_range_v<T> || is_tuple_v<T>) {
             manipulate(fmt, level_change{true});
             bool res = read_final(od, fmt, x);
@@ -272,16 +275,9 @@ inline bool read_impl(D& od, F& fmt, T& x) {
         }
     } else {
         auto& fmt_i = format_traits<F>::template get<I>(fmt);
-        if constexpr (decltype(can_deserialize(od, fmt_i, x))::value) {
-            return deserialize(od, fmt_i, x);
-        } else if constexpr (decltype(can_deserialize(fmt_i, x))::value) {
-            if constexpr (std::is_same_v<decltype(deserialize(fmt_i, x)), void>) {
-                deserialize(fmt_i, x);
-                return true;
-            } else {
-                decltype(auto) y = deserialize(fmt_i, x);
-                return read_impl<I + 1>(od, fmt, y);
-            }
+        if constexpr (decltype(can_deserialize(fmt_i, x))::value) {
+            decltype(auto) y = deserialize(fmt_i, x);
+            return read_impl<I + 1>(od, fmt, y);
         } else {
             return read_impl<I + 1>(od, fmt, x);
         }

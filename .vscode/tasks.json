@@ -40,7 +40,8 @@
             },
             "command": "${workspaceRoot}/build/Debug/tests",
             "args": [
-                "-regex", ".*",
+                "-regex",
+                ".*",
             ],
             "group": "test",
             "dependsOn": ["build"]
