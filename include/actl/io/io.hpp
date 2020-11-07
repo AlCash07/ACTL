@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/io/core/const_data_parser.hpp>
+#include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/parser_executor.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/std/tuple.hpp>
@@ -114,18 +115,11 @@ struct format_traits<std::tuple<Ts...>, void> {
     }
 };
 
-template <class Format>
-inline void change_depth(Format&, bool deeper) {}
+struct level_change {
+    bool deeper;
 
-template <class Format, size_t... Is>
-inline void change_depth(Format& fmt, bool deeper, std::index_sequence<Is...>) {
-    return (..., change_depth(std::get<Is>(fmt), deeper));
-}
-
-template <class... Formats>
-inline void change_depth(std::tuple<Formats...>& fmt, bool deeper) {
-    change_depth(fmt, deeper, std::make_index_sequence<sizeof...(Formats)>{});
-}
+    struct is_manipulator;
+};
 
 template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
 inline binary deduce_format(Device& dev) {
@@ -150,12 +144,6 @@ struct is_tuple<std::tuple<Ts...>> : std::true_type {};
 
 template <class T>
 inline constexpr bool is_tuple_v = is_tuple<T>::value;
-
-template <class T, class = void>
-struct is_manipulator : std::false_type {};
-
-template <class T>
-struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
 
 /* Common types support */
 
@@ -233,9 +221,9 @@ template <size_t I, class D, class F, class T>
 inline index write_impl(D& od, F& fmt, const T& x) {
     if constexpr (I == format_traits<F>::size) {
         if constexpr (is_range_v<T> || is_tuple_v<T>) {
-            change_depth(fmt, true);
+            manipulate(fmt, level_change{true});
             index res = write_final(od, fmt, x);
-            change_depth(fmt, false);
+            manipulate(fmt, level_change{false});
             return res;
         } else {
             return write_final(od, fmt, x);
@@ -275,9 +263,9 @@ template <size_t I, class D, class F, class T>
 inline bool read_impl(D& od, F& fmt, T& x) {
     if constexpr (I == format_traits<F>::size) {
         if constexpr (is_range_v<T> || is_tuple_v<T>) {
-            change_depth(fmt, true);
+            manipulate(fmt, level_change{true});
             bool res = read_final(od, fmt, x);
-            change_depth(fmt, false);
+            manipulate(fmt, level_change{false});
             return res;
         } else {
             return read_final(od, fmt, x);

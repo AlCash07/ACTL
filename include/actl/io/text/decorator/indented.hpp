@@ -44,9 +44,9 @@ inline auto deserialize(indented<C>& fmt, const T& x) -> decltype(serialize(fmt,
 }
 
 template <class C>
-inline void change_depth(indented<C>& fmt, bool deeper) {
-    if (deeper) fmt.indent = true;
-    fmt.level += deeper ? 1 : -1;
+inline void manipulate(indented<C>& fmt, level_change lc) {
+    if (lc.deeper) fmt.indent = true;
+    fmt.level += lc.deeper ? 1 : -1;
 }
 
 }  // namespace ac::io

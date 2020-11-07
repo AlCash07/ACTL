@@ -56,8 +56,8 @@ inline void serialize(spaced<C>& fmt, setspace x) {
 }
 
 template <class C>
-inline void change_depth(spaced<C>& fmt, bool deeper) {
-    fmt.separate = !deeper;
+inline void manipulate(spaced<C>& fmt, level_change lc) {
+    fmt.separate = !lc.deeper;
 }
 
 }  // namespace ac::io
