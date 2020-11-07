@@ -56,7 +56,7 @@ inline void manipulate(spaced<C>& fmt, setspace x) {
 }
 
 template <class C>
-inline void manipulate(spaced<C>& fmt, level_change x) {
+inline void manipulate(spaced<C>& fmt, change_level x) {
     fmt.separate = !x.deeper;
 }
 

@@ -115,7 +115,7 @@ struct format_traits<std::tuple<Ts...>, void> {
     }
 };
 
-struct level_change {
+struct change_level {
     bool deeper;
 
     struct is_manipulator;
@@ -224,9 +224,9 @@ inline index write_impl(D& od, F& fmt, const T& x) {
         return 0;
     } else if constexpr (I == format_traits<F>::size) {
         if constexpr (is_range_v<T> || is_tuple_v<T>) {
-            manipulate(fmt, level_change{true});
+            manipulate(fmt, change_level{true});
             index res = write_final(od, fmt, x);
-            manipulate(fmt, level_change{false});
+            manipulate(fmt, change_level{false});
             return res;
         } else {
             return write_final(od, fmt, x);
@@ -266,9 +266,9 @@ inline bool read_impl(D& od, F& fmt, T& x) {
         return true;
     } else if constexpr (I == format_traits<F>::size) {
         if constexpr (is_range_v<T> || is_tuple_v<T>) {
-            manipulate(fmt, level_change{true});
+            manipulate(fmt, change_level{true});
             bool res = read_final(od, fmt, x);
-            manipulate(fmt, level_change{false});
+            manipulate(fmt, change_level{false});
             return res;
         } else {
             return read_final(od, fmt, x);

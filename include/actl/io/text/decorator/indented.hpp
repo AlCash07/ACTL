@@ -44,7 +44,7 @@ inline auto deserialize(indented<C>& fmt, const T& x) -> decltype(serialize(fmt,
 }
 
 template <class C>
-inline void manipulate(indented<C>& fmt, level_change x) {
+inline void manipulate(indented<C>& fmt, change_level x) {
     if (x.deeper) fmt.indent = true;
     fmt.level += x.deeper ? 1 : -1;
 }
