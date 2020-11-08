@@ -43,7 +43,7 @@ inline index write_final(D& od, F& fmt, const int_string<Size>& x) {
 template <class Format, class Int, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_integral_v<Int> && !std::is_same_v<Int, char> &&
                         !std::is_same_v<Int, bool>> = 0>
-inline auto serialize(Format& fmt, Int x) {
+auto encode(Format& fmt, Int x) {
     using UInt = std::make_unsigned_t<Int>;
     UInt base = fmt.base;
     if (base == 0) base = 10;

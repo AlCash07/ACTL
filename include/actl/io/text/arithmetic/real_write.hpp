@@ -44,7 +44,7 @@ inline index write_final(D& od, F& fmt, const float_string& x) {
 
 template <class Format, class Float, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_floating_point_v<Float>> = 0>
-inline auto serialize(Format& fmt, Float x) {
+auto encode(Format& fmt, Float x) {
     detail::float_string res;
     span<char> s;
     char* first;

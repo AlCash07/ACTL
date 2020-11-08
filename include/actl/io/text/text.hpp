@@ -114,18 +114,13 @@ inline text_static<> deduce_format(Device& dev) {
 }
 
 template <class Format, class S, enable_int_if_text<Format> = 0, enable_int_if<is_string_v<S>> = 0>
-inline auto serialize(Format& fmt, const S& s) {
+auto encode(Format& fmt, const S& s) {
     return span{std::basic_string_view<value_t<S>>{s}};
 }
 
 template <class Device, class... Ts>
 inline index writeln(Device&& od, Ts&&... args) {
     return write(od, args..., raw{'\n'});
-}
-
-template <class Format, class Char, enable_int_if_text<Format> = 0>
-inline auto deserialize(Format& fmt, std::basic_string_view<Char>& x) {
-    return span{x};
 }
 
 /* I/O manipulators analogous to https://en.cppreference.com/w/cpp/io/manip */

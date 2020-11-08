@@ -28,7 +28,7 @@ struct auto_flush {
 };
 
 template <class T>
-inline auto serialize(auto_flush&, const T& x) {
+auto encode(auto_flush&, const T& x) {
     return batch{x, flush_t{}};
 }
 

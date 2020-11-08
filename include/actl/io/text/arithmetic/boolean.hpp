@@ -18,7 +18,7 @@ constexpr char one_c = '1';
 
 template <class Format, class Bool, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_same_v<Bool, bool>> = 0>
-inline cspan<char> serialize(Format& fmt, Bool x) {
+cspan<char> encode(Format& fmt, Bool x) {
     if (fmt.getf(flags::boolalpha)) {
         if (x) {
             return true_s;

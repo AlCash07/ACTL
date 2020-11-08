@@ -37,13 +37,13 @@ inline constexpr std::pair<index, index> adjustment(Format& fmt, index size) {
 }
 
 template <class Char, class T, enable_int_if<std::is_constructible_v<cspan<Char>, T>> = 0>
-inline auto serialize(adjusted<Char>& fmt, const T& x) {
+auto encode(adjusted<Char>& fmt, const T& x) {
     auto [l, r] = adjustment(fmt, cspan<Char>{x}.size());
     return batch{repeat{fmt.fill, l}, x, repeat{fmt.fill, r}};
 }
 
 template <class Char>
-inline auto serialize(adjusted<Char>& fmt, Char x) {
+auto encode(adjusted<Char>& fmt, Char x) {
     auto [l, r] = adjustment(fmt, 1);
     return batch{repeat{fmt.fill, l}, std::move(x), repeat{fmt.fill, r}};
 }

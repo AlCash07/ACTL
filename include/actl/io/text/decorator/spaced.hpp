@@ -24,7 +24,7 @@ struct spaced {
 };
 
 template <class C, class T, enable_int_if<!is_manipulator<std::remove_const_t<T>>::value> = 0>
-inline batch<span<const C>, T&> serialize(spaced<C>& fmt, T& x) {
+batch<span<const C>, T&> encode(spaced<C>& fmt, T& x) {
     if (fmt.separate) {
         return {{fmt.space}, x};
     } else {
@@ -34,14 +34,9 @@ inline batch<span<const C>, T&> serialize(spaced<C>& fmt, T& x) {
 }
 
 template <class C, class T>
-inline decltype(auto) serialize(spaced<C>& fmt, const raw<T>& x) {
+decltype(auto) encode(spaced<C>& fmt, const raw<T>& x) {
     fmt.separate = false;
     return x;
-}
-
-template <class C, class T>
-inline auto deserialize(spaced<C>& fmt, const T& x) -> decltype(serialize(fmt, x)) {
-    return serialize(fmt, x);
 }
 
 struct setspace {

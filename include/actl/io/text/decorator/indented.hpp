@@ -24,7 +24,7 @@ struct indented {
 };
 
 template <class C, class T, enable_int_if<!is_range_v<T>> = 0>
-inline batch<raw<cspan<C>>, repeat<C>, T&> serialize(indented<C>& fmt, T& x) {
+batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x) {
     if (!fmt.indent) {
         fmt.indent = true;
         return {raw{cspan<C>{}}, repeat<C>{}, x};
@@ -34,13 +34,8 @@ inline batch<raw<cspan<C>>, repeat<C>, T&> serialize(indented<C>& fmt, T& x) {
 }
 
 template <class C, class T>
-inline decltype(auto) serialize(indented<C>& fmt, const raw<T>& x) {
+decltype(auto) encode(indented<C>& fmt, const raw<T>& x) {
     return x;
-}
-
-template <class C, class T>
-inline auto deserialize(indented<C>& fmt, const T& x) -> decltype(serialize(fmt, x)) {
-    return serialize(fmt, x);
 }
 
 template <class C>

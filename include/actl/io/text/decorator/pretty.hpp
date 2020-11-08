@@ -83,27 +83,27 @@ inline auto make_map_range(pretty& fmt, const AC& cont) {
 }  // namespace detail
 
 template <class C, enable_int_if<std::is_same_v<C, char>> = 0>
-inline auto serialize(pretty, const C& c) {
+auto encode(pretty, const C& c) {
     return batch{'\'', detail::escaped_string<char>{{&c, 1}}, '\''};
 }
 
 template <class S, enable_int_if<is_string_v<S>> = 0>
-inline auto serialize(pretty, const S& s) {
+auto encode(pretty, const S& s) {
     return batch{'\"', detail::escaped_string<char>{s}, '\"'};
 }
 
 template <class AC, enable_int_if<is_associative_container_v<AC>> = 0>
-inline auto serialize(pretty& fmt, const AC& cont) {
+auto encode(pretty& fmt, const AC& cont) {
     return batch{'{', detail::make_map_range(fmt, cont), '}'};
 }
 
 template <class SC, enable_int_if<!is_string_v<SC> && is_sequence_container_v<SC>> = 0>
-inline auto serialize(pretty, const SC& cont) {
+auto encode(pretty, const SC& cont) {
     return batch{'[', make_range(cont), ']'};
 }
 
 template <class T, enable_int_if<is_tuple<T>::value> = 0>
-inline auto serialize(pretty, const T& x) {
+auto encode(pretty, const T& x) {
     return batch{'(', x, ')'};
 }
 

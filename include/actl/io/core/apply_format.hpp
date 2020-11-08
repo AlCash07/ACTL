@@ -16,27 +16,27 @@ namespace ac::io {
     auto can_##f(Ts&... xs)->decltype(f(xs...), std::true_type{}); \
     std::false_type can_##f(...);
 
-DEFINE_CAN(serialize)
-DEFINE_CAN(deserialize)
+DEFINE_CAN(encode)
+DEFINE_CAN(make_parser)
 
 #undef DEFINE_CAN
 
 template <class Format, class T>
 decltype(auto) apply_format_write(Format& fmt, const T& x) {
-    if constexpr (decltype(can_serialize(fmt, x))::value) {
-        return serialize(fmt, x);
-    } else {
+    if constexpr (decltype(can_encode(fmt, x))::value)
+        return encode(fmt, x);
+    else
         return x;
-    }
 }
 
 template <class Format, class T>
 decltype(auto) apply_format_read(Format& fmt, T& x) {
-    if constexpr (decltype(can_deserialize(fmt, x))::value) {
-        return deserialize(fmt, x);
-    } else {
+    if constexpr (decltype(can_make_parser(fmt, x))::value)
+        return make_parser(fmt, x);
+    else if constexpr (decltype(can_encode(fmt, x))::value)
+        return encode(fmt, x);
+    else
         return x;
-    }
 }
 
 }  // namespace ac::io

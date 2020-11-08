@@ -10,7 +10,7 @@
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/numeric/util/hash_access.hpp>
 
-// Defines serialize and deserialize functions for composite types.
+// Defines write_final and read_final functions for composite types.
 #define DEFINE_SERIALIZATION(...)                      \
     friend struct ac::io::serialization_access;        \
     struct is_io_tuple;                                \

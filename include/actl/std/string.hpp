@@ -35,7 +35,7 @@ inline void read_till(Device& id, till<std::basic_string<C, T, A>&, P> x) {
 }
 
 template <class Format, class C, class T, class A, enable_int_if_text<Format> = 0>
-inline auto deserialize(Format& fmt, std::basic_string<C, T, A>& x) {
+auto make_parser(Format& fmt, std::basic_string<C, T, A>& x) {
     return till{x, is_space};
 }
 
