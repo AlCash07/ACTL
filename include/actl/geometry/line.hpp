@@ -70,12 +70,12 @@ private:
     friend struct ac::io::serialization_access;
 
     template <class Device, class Format>
-    index serialize(Device& od, Format& fmt) const {
+    index write_final(Device& od, Format& fmt) const {
         return write(od, fmt, static_cast<int>(kind_));
     }
 
     template <class Device, class Format>
-    bool deserialize(Device& id, Format& fmt) {
+    bool read_final(Device& id, Format& fmt) {
         return read(id, fmt, kind_) && is_valid(kind_);
     }
 };

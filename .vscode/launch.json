@@ -11,7 +11,10 @@
             "preLaunchTask": "build",
             "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/build/Debug/tests",
-            "args": ["-regex", ".*"],
+            "args": [
+                "-regex",
+                ".*"
+            ],
             "stopAtEntry": false,
             "environment": [],
             "externalConsole": false,

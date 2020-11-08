@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <actl/io/core/apply_format.hpp>
 #include <actl/io/core/const_data_parser.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/parser_executor.hpp>
@@ -199,11 +200,6 @@ inline bool read_final(Device& id, Format&, T& s) {
 
 namespace detail {
 
-template <class... Ts>
-auto can_serialize(Ts&... xs) -> decltype(serialize(xs...), std::true_type{});
-
-std::false_type can_serialize(...);
-
 template <size_t I, class D, class F, class T>
 inline index write_impl(D& od, F& fmt, const T& x);
 
@@ -232,55 +228,42 @@ inline index write_impl(D& od, F& fmt, const T& x) {
             return write_final(od, fmt, x);
         }
     } else {
-        auto& fmt_i = format_traits<F>::template get<I>(fmt);
-        if constexpr (!decltype(can_serialize(fmt_i, x))::value) {
-            return write_impl<I + 1>(od, fmt, x);
-        } else {
-            return write_impl<I + 1>(od, fmt, serialize(fmt_i, x));
-        }
+        return write_impl<I + 1>(od, fmt,
+                                 apply_format_write(format_traits<F>::template get<I>(fmt), x));
     }
 }
 
-template <class... Ts>
-auto can_deserialize(Ts&... xs) -> decltype(deserialize(xs...), std::true_type{});
-
-std::false_type can_deserialize(...);
-
 template <size_t I, class D, class F, class T>
-inline bool read_impl(D& od, F& fmt, T& x);
+inline bool read_impl(D& id, F& fmt, T&& x);
 
 template <size_t I, class D, class F, class T, size_t... Is>
-inline bool read_impl_tuple(D& od, F& fmt, T& x, std::index_sequence<Is...>) {
-    return (... && read_impl<I>(od, fmt, std::get<Is>(x)));
+inline bool read_impl_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
+    return (... && read_impl<I>(id, fmt, std::get<Is>(x)));
 }
 
 template <size_t I, class D, class F, class... Ts>
-inline bool read_impl(D& od, F& fmt, batch<Ts...>& x) {
-    return read_impl_tuple<I>(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
+inline bool read_impl(D& id, F& fmt, batch<Ts...>&& x) {
+    return read_impl_tuple<I>(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
 template <size_t I, class D, class F, class T>
-inline bool read_impl(D& od, F& fmt, T& x) {
-    if constexpr (is_manipulator<T>::value) {
+inline bool read_impl(D& id, F& fmt, T&& x) {
+    using U = std::remove_reference_t<T>;
+    if constexpr (is_manipulator<U>::value) {
         manipulate(fmt, x);
         return true;
     } else if constexpr (I == format_traits<F>::size) {
-        if constexpr (is_range_v<T> || is_tuple_v<T>) {
+        if constexpr (is_range_v<U> || is_tuple_v<U>) {
             manipulate(fmt, change_level{true});
-            bool res = read_final(od, fmt, x);
+            bool res = read_final(id, fmt, x);
             manipulate(fmt, change_level{false});
             return res;
         } else {
-            return read_final(od, fmt, x);
+            return read_final(id, fmt, x);
         }
     } else {
-        auto& fmt_i = format_traits<F>::template get<I>(fmt);
-        if constexpr (decltype(can_deserialize(fmt_i, x))::value) {
-            decltype(auto) y = deserialize(fmt_i, x);
-            return read_impl<I + 1>(od, fmt, y);
-        } else {
-            return read_impl<I + 1>(od, fmt, x);
-        }
+        return read_impl<I + 1>(id, fmt,
+                                apply_format_read(format_traits<F>::template get<I>(fmt), x));
     }
 }
 

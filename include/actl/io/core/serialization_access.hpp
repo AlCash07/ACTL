@@ -33,15 +33,15 @@ struct serialization_access {
     }
 
     template <class T, class... Ts,
-              class = decltype(std::declval<T>().deserialize(std::declval<Ts>()...))>
-    std::true_type has_deserialize(int);
+              class = decltype(std::declval<T>().read_final(std::declval<Ts>()...))>
+    std::true_type has_read(int);
 
     template <class... Ts>
-    std::false_type has_deserialize(...);
+    std::false_type has_read(...);
 
     template <class T, class... Ts>
     static bool read(T& x, Ts&&... args) {
-        return x.deserialize(args...);
+        return x.read_final(args...);
     }
 };
 
@@ -52,9 +52,9 @@ inline index write_final(Device& od, Format& fmt, const T& x) {
     return serialization_access::write_final(x, od, fmt);
 }
 
-template <class Device, class Format, class T,
-          enable_int_if<
-              decltype(serialization_access{}.has_deserialize<T, Device&, Format&>(0))::value> = 0>
+template <
+    class Device, class Format, class T,
+    enable_int_if<decltype(serialization_access{}.has_read<T, Device&, Format&>(0))::value> = 0>
 inline bool read_final(Device& id, Format& fmt, T& x) {
     return serialization_access::read(x, id, fmt);
 }

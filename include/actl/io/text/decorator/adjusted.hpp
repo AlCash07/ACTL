@@ -45,7 +45,7 @@ inline auto serialize(adjusted<Char>& fmt, const T& x) {
 template <class Char>
 inline auto serialize(adjusted<Char>& fmt, Char x) {
     auto [l, r] = adjustment(fmt, 1);
-    return batch{repeat{fmt.fill, l}, x, repeat{fmt.fill, r}};
+    return batch{repeat{fmt.fill, l}, std::move(x), repeat{fmt.fill, r}};
 }
 
 /* Manipulators */

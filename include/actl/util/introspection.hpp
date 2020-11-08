@@ -19,7 +19,7 @@
         return write(od, fmt, __VA_ARGS__);            \
     }                                                  \
     template <class Device, class Format>              \
-    bool deserialize(Device& id, Format& fmt) {        \
+    bool read_final(Device& id, Format& fmt) {         \
         return read(id, fmt, __VA_ARGS__);             \
     }
 
