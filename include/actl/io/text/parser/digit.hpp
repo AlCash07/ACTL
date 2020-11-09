@@ -20,15 +20,14 @@ inline UInt to_digit(char c) {
     if constexpr (kind == digit) {
         return static_cast<UInt>(c - '0');
     } else {
-        if (is_digit(c)) {
+        if (is_digit(c))
             return static_cast<UInt>(c - '0');
-        } else if (is_upper(c)) {
+        else if (is_upper(c))
             return static_cast<UInt>(c - 'A' + 10);
-        } else if (is_lower(c)) {
+        else if (is_lower(c))
             return static_cast<UInt>(c - 'a' + 10);
-        } else {
+        else
             return std::numeric_limits<UInt>::max();
-        }
     }
 }
 

@@ -163,11 +163,10 @@ constexpr setf<flags::showpoint, false> noshowpoint{};
 
 template <class Format, flag_t Flag, bool Value>
 inline void manipulate(Format& fmt, setf<Flag, Value>) {
-    if constexpr (Value) {
+    if constexpr (Value)
         fmt.setf(Flag);
-    } else {
+    else
         fmt.unsetf(Flag);
-    }
 }
 
 template <class Format, flag_t Group, flag_t Flag>

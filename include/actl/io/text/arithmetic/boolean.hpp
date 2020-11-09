@@ -19,19 +19,13 @@ constexpr char one_c = '1';
 template <class Format, class Bool, enable_int_if_text<Format> = 0,
           enable_int_if<std::is_same_v<Bool, bool>> = 0>
 cspan<char> encode(Format& fmt, Bool x) {
-    if (fmt.getf(flags::boolalpha)) {
-        if (x) {
+    if (fmt.getf(flags::boolalpha))
+        if (x)
             return true_s;
-        } else {
+        else
             return false_s;
-        }
-    } else {
-        if (x) {
-            return {&one_c, 1};
-        } else {
-            return {&zero_c, 1};
-        }
-    }
+    else
+        return {x ? &one_c : &zero_c, 1};
 }
 
 }  // namespace ac::io
