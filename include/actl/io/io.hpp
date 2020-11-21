@@ -8,11 +8,12 @@
 #pragma once
 
 #include <actl/io/core/apply_format.hpp>
+#include <actl/io/core/batch.hpp>
+#include <actl/io/core/composed_format.hpp>
 #include <actl/io/core/const_data_parser.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/parser_executor.hpp>
 #include <actl/io/core/serialization_access.hpp>
-#include <actl/std/tuple.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/span.hpp>
 #include <actl/util/type_traits.hpp>
@@ -79,72 +80,17 @@ struct binary {
     struct format_tag;
 };
 
+template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
+inline binary deduce_format(Device& dev) {
+    return {};
+}
+
 template <class T, class Tag, class = void>
 struct has_format_tag : std::false_type {};
 
 template <class T, class Tag>
 struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
     : std::is_same<typename T::format_tag, Tag> {};
-
-template <class T, class = void>
-struct format_traits {
-    static constexpr size_t size = 0;
-};
-
-template <class T>
-inline constexpr bool is_format_v = format_traits<T>::size > 0;
-
-template <class T>
-struct format_traits<T, std::void_t<typename T::format_tag>> {
-    static constexpr size_t size = 1;
-
-    template <size_t I>
-    static T& get(T& x) {
-        static_assert(I == 0);
-        return x;
-    }
-};
-
-template <class... Ts>
-struct format_traits<std::tuple<Ts...>, void> {
-    static constexpr size_t size =
-        (... && is_format_v<std::remove_reference_t<Ts>>) ? sizeof...(Ts) : 0;
-
-    template <size_t I, class T>
-    static auto& get(T& x) {
-        return std::get<I>(x);
-    }
-};
-
-struct change_level {
-    bool deeper;
-
-    struct is_manipulator;
-};
-
-template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
-inline binary deduce_format(Device& dev) {
-    return {};
-}
-
-/* Argument traits */
-
-template <class... Ts>
-struct batch : std::tuple<Ts...> {
-    using std::tuple<Ts...>::tuple;
-};
-
-template <class... Ts>
-batch(Ts&&...) -> batch<Ts...>;
-
-template <class T>
-struct is_tuple : decltype(serialization_access{}.is_io_tuple<T>(0)) {};
-
-template <class... Ts>
-struct is_tuple<std::tuple<Ts...>> : std::true_type {};
-
-template <class T>
-inline constexpr bool is_tuple_v = is_tuple<T>::value;
 
 /* Common types support */
 
@@ -196,86 +142,13 @@ inline bool read_final(Device& id, Format&, T& s) {
     return s(id);
 }
 
-/* Processing argument with multiple formats */
-
-namespace detail {
-
-template <size_t I, class D, class F, class T>
-inline index write_impl(D& od, F& fmt, const T& x);
-
-template <size_t I, class D, class F, class T, size_t... Is>
-inline index write_impl_tuple(D& od, F& fmt, const T& x, std::index_sequence<Is...>) {
-    return (... + write_impl<I>(od, fmt, std::get<Is>(x)));
-}
-
-template <size_t I, class D, class F, class... Ts>
-inline index write_impl(D& od, F& fmt, const batch<Ts...>& x) {
-    return write_impl_tuple<I>(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
-}
-
-template <size_t I, class D, class F, class T>
-inline index write_impl(D& od, F& fmt, const T& x) {
-    if constexpr (is_manipulator<T>::value) {
-        manipulate(fmt, x);
-        return 0;
-    } else if constexpr (I == format_traits<F>::size) {
-        if constexpr (is_range_v<T> || is_tuple_v<T>) {
-            manipulate(fmt, change_level{true});
-            index res = write_final(od, fmt, x);
-            manipulate(fmt, change_level{false});
-            return res;
-        } else {
-            return write_final(od, fmt, x);
-        }
-    } else {
-        return write_impl<I + 1>(od, fmt,
-                                 apply_format_write(format_traits<F>::template get<I>(fmt), x));
-    }
-}
-
-template <size_t I, class D, class F, class T>
-inline bool read_impl(D& id, F& fmt, T&& x);
-
-template <size_t I, class D, class F, class T, size_t... Is>
-inline bool read_impl_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
-    return (... && read_impl<I>(id, fmt, std::get<Is>(x)));
-}
-
-template <size_t I, class D, class F, class... Ts>
-inline bool read_impl(D& id, F& fmt, batch<Ts...>&& x) {
-    return read_impl_tuple<I>(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
-}
-
-template <size_t I, class D, class F, class T>
-inline bool read_impl(D& id, F& fmt, T&& x) {
-    using U = std::remove_reference_t<T>;
-    if constexpr (is_manipulator<U>::value) {
-        manipulate(fmt, x);
-        return true;
-    } else if constexpr (I == format_traits<F>::size) {
-        if constexpr (is_range_v<U> || is_tuple_v<U>) {
-            manipulate(fmt, change_level{true});
-            bool res = read_final(id, fmt, x);
-            manipulate(fmt, change_level{false});
-            return res;
-        } else {
-            return read_final(id, fmt, x);
-        }
-    } else {
-        return read_impl<I + 1>(id, fmt,
-                                apply_format_read(format_traits<F>::template get<I>(fmt), x));
-    }
-}
-
-}  // namespace detail
-
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into
  * lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
 inline index write(Device&& od, Format&& fmt, const Ts&... args) {
-    if constexpr (is_format_v<std::remove_reference_t<Format>>) {
-        return (... + detail::write_impl<0>(od, fmt, args));
+    if constexpr (is_format_v<Format>) {
+        return (... + detail::write_impl(od, fmt, fmt, args));
     } else {
         return write(od, deduce_format(od), fmt, args...);
     }
@@ -283,8 +156,8 @@ inline index write(Device&& od, Format&& fmt, const Ts&... args) {
 
 template <class Device, class Format, class... Ts>
 inline bool read(Device&& id, Format&& fmt, Ts&&... args) {
-    if constexpr (is_format_v<std::remove_reference_t<Format>>) {
-        return (... && detail::read_impl<0>(id, fmt, args));
+    if constexpr (is_format_v<Format>) {
+        return (... && detail::read_impl(id, fmt, fmt, args));
     } else {
         return read(id, deduce_format(id), fmt, args...);
     }

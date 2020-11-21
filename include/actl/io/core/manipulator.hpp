@@ -20,14 +20,10 @@ struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_ty
 template <class Format, class Manipulator>
 inline void manipulate(Format&, const Manipulator&) {}
 
-template <class Format, class Manipulator, size_t... Is>
-inline void manipulate(Format& fmt, const Manipulator& m, std::index_sequence<Is...>) {
-    return (..., manipulate(std::get<Is>(fmt), m));
-}
+struct change_level {
+    bool deeper;
 
-template <class... Formats, class Manipulator>
-void manipulate(std::tuple<Formats...>& fmt, const Manipulator& m) {
-    manipulate(fmt, m, std::make_index_sequence<sizeof...(Formats)>{});
-}
+    struct is_manipulator;
+};
 
 }  // namespace ac::io

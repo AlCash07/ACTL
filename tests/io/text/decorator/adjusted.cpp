@@ -52,7 +52,7 @@ TEST("adjustment::center_right") {
 }
 
 TEST("fill") {
-    std::tuple<text_static<>, adjusted<>> fmt;
+    auto fmt = text_static{} >>= adjusted{};
     char s[14];
     memory<io::out> od{s};
     write(od, fmt, adjust_to::center);

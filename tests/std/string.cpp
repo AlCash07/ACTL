@@ -21,7 +21,7 @@ using namespace ac::io;
 TEST("read") {
     std::string s = "  01234567890123456789 0123456789";
     std::string x;
-    ASSERT_TRUE(read(memory<in>{s}, std::tuple<skipws, text>{}, x));
+    ASSERT_TRUE(read(memory<in>{s}, skipws{} >>= text{}, x));
     ASSERT_EQUAL("01234567890123456789"sv, x);
 }
 

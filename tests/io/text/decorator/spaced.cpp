@@ -25,12 +25,12 @@ inline ac::index write_final(D& od, F& fmt, const pair<T>& x) {
 }
 
 TEST("nested") {
-    std::tuple<spaced<>, text> f;
+    auto f = spaced{} >>= text{};
     test_write("((2, 1), (4, 3)), (1, 3)", f, setspace{", "}, pair{pair{2, 1}, pair{4, 3}},
                pair{1, 3});
 }
 
 TEST("vector") {
-    std::tuple<spaced<>, text> f;
+    auto f = spaced{} >>= text{};
     test_write("5 3 2 1", f, std::vector{5, 3, 2, 1});
 }

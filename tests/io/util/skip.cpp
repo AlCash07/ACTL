@@ -15,7 +15,7 @@ TEST("whitespace skip") {
     std::string s = " \n\ta\n";
     memory<in> id{s};
     char a, b;
-    ASSERT_TRUE(read(id, std::tuple<skipws, text>{}, a));
+    ASSERT_TRUE(read(id, skipws{} >>= text{}, a));
     ASSERT_TRUE(read(id, text{}, b));
     ASSERT_EQUAL('a', a);
     ASSERT_EQUAL('\n', b);

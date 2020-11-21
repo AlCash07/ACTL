@@ -92,7 +92,7 @@ namespace detail {
 template <class T>
 inline std::string to_string(const T& value) {
     std::string s;
-    std::tuple<io::spaced<>, io::pretty, io::text_static<bit(io::flags::boolalpha)>> fmt;
+    auto fmt = io::spaced{} >>= io::pretty{} >>= io::text_static<bit(io::flags::boolalpha)>{};
     io::write(io::string<io::app>{s}, fmt, io::setspace{", "}, value);
     return s;
 }
