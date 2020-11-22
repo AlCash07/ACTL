@@ -21,12 +21,6 @@ TEST("bool") { test_write("true false", spts(), true, false); }
 
 TEST("int") { test_write("123", spts(), 123); }
 
-TEST("char") { test_write("'0' '\\n'", spts(), '0', '\n'); }
-
-TEST("string") {
-    test_write("\"\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\0rz\"", spts(), "\0\a\b\t\n\v\f\r\"\'\\0rz"sv);
-}
-
 TEST("tuple") { test_write("(3 2 1 0)", spts(), std::tuple{3, 2, 1, 0}); }
 
 TEST("sequence") { test_write("[3 2 1 0]", spts(), std::vector{3, 2, 1, 0}); }
