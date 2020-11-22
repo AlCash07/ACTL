@@ -92,7 +92,8 @@ namespace detail {
 template <class T>
 inline std::string to_string(const T& value) {
     std::string s;
-    auto fmt = io::spaced{} >>= io::escaped{} >>= io::pretty{} >>= io::text_static<bit(io::flags::boolalpha)>{};
+    auto fmt = io::spaced{} >>= io::escaped{} >>= io::braced{} >>=
+        io::text_static<bit(io::flags::boolalpha)>{};
     io::write(io::string<io::app>{s}, fmt, io::setspace{", "}, value);
     return s;
 }

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/io/text/decorator/adjusted.hpp>
+#include <actl/io/text/decorator/braced.hpp>
 #include <actl/io/text/decorator/escaped.hpp>
 #include <actl/io/text/decorator/indented.hpp>
-#include <actl/io/text/decorator/pretty.hpp>
 #include <actl/io/text/decorator/spaced.hpp>
