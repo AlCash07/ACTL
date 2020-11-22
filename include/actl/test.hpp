@@ -18,7 +18,7 @@
 
 namespace ac {
 
-inline io::formatted<io::file<io::out>, composed<io::spaced<>, io::text>> cout{stdout};
+inline io::formatted<io::file<io::out>, io::composite_format<io::spaced<>, io::text>> cout{stdout};
 
 }  // namespace ac
 

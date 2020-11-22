@@ -9,7 +9,7 @@
 
 #include <actl/io/core/apply_format.hpp>
 #include <actl/io/core/batch.hpp>
-#include <actl/io/core/composed_format.hpp>
+#include <actl/io/core/composite_format.hpp>
 #include <actl/io/core/const_data_parser.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/parser_executor.hpp>
