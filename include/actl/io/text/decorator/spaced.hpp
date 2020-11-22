@@ -7,51 +7,60 @@
 
 #pragma once
 
-#include <actl/io/text/text.hpp>
-#include <actl/std/string.hpp>
+#include <actl/io/core/batch.hpp>
+#include <actl/util/span.hpp>
 
 namespace ac::io {
 
-/**
- * Format that inserts delimiter between consecutive output units.
- */
-template <class Char = char>
+/// Format that inserts delimiter between consecutive output units.
+template <class Space, class Colon = Space>
 struct spaced {
-    struct format_tag;
-
+    Space space;
+    Colon colon;
     bool separate = false;
-    std::basic_string<Char> space = " ";
+
+    explicit constexpr spaced(Space space, Colon colon)
+        : space{std::move(space)}, colon{std::move(colon)} {}
+
+    template <class S = Space, enable_int_if<are_same_v<S, Colon>> = 0>
+    explicit constexpr spaced(const Space& space) : spaced{space, space} {}
+
+    template <class S = Space, enable_int_if<are_same_v<char, S, Colon>> = 0>
+    explicit constexpr spaced() : spaced{' '} {}
+
+    struct format_tag;
 };
 
-template <class C, class T, enable_int_if<!is_manipulator<std::remove_const_t<T>>::value> = 0>
-batch<span<const C>, T&> encode(spaced<C>& fmt, T& x) {
-    if (fmt.separate) {
-        return {{fmt.space}, x};
+spaced() -> spaced<char>;
+
+template <class T>
+auto as_cspan(const T& x) {
+    if constexpr (is_contiguous_range_v<T>) {
+        return span<const value_t<T>>{x};
     } else {
-        fmt.separate = true;
-        return {{}, x};
+        return span{&x, 1};
     }
 }
 
-template <class C, class T>
-decltype(auto) encode(spaced<C>& fmt, const raw<T>& x) {
+template <class S, class C, class T>
+auto encode(spaced<S, C>& fmt, T& x) {
+    using Res = batch<decltype(as_cspan(fmt.space)), T&>;
+    if (fmt.separate) {
+        return Res{as_cspan(fmt.space), x};
+    } else {
+        fmt.separate = true;
+        return Res{{}, x};
+    }
+}
+
+template <class S, class C, class T>
+decltype(auto) encode(spaced<S, C>& fmt, const raw<T>& x) {
     fmt.separate = false;
     return x;
 }
 
-struct setspace {
-    std::string_view value;
-
-    struct is_manipulator;
-};
-
-template <class C>
-inline void manipulate(spaced<C>& fmt, setspace x) {
-    fmt.space = x.value;
-}
-
-template <class C>
-inline void manipulate(spaced<C>& fmt, change_level x) {
+template <class S, class C>
+void manipulate(spaced<S, C>& fmt, change_level x) {
     fmt.separate = !x.deeper;
 }
 

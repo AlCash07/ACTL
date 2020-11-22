@@ -20,14 +20,13 @@ struct pair {
 };
 
 template <class D, class F, class T>
-inline ac::index write_final(D& od, F& fmt, const pair<T>& x) {
+ac::index write_final(D& od, F& fmt, const pair<T>& x) {
     return od.write('(') + write(od, fmt, x.x, x.y) + od.write(')');
 }
 
 TEST("nested") {
-    auto f = spaced{} >>= text{};
-    test_write("((2, 1), (4, 3)), (1, 3)", f, setspace{", "}, pair{pair{2, 1}, pair{4, 3}},
-               pair{1, 3});
+    auto f = spaced{", "sv} >>= text{};
+    test_write("((2, 1), (4, 3)), (1, 3)", f, pair{pair{2, 1}, pair{4, 3}}, pair{1, 3});
 }
 
 TEST("vector") {

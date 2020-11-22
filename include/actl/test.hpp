@@ -18,7 +18,8 @@
 
 namespace ac {
 
-inline io::formatted<io::file<io::out>, io::composite_format<io::spaced<>, io::text>> cout{stdout};
+inline io::formatted<io::file<io::out>, io::composite_format<io::spaced<char>, io::text>> cout{
+    stdout};
 
 }  // namespace ac
 
@@ -92,9 +93,9 @@ namespace detail {
 template <class T>
 inline std::string to_string(const T& value) {
     std::string s;
-    auto fmt = io::spaced{} >>= io::escaped{} >>= io::braced{} >>=
+    auto fmt = io::spaced{", "sv} >>= io::escaped{} >>= io::braced{} >>=
         io::text_static<bit(io::flags::boolalpha)>{};
-    io::write(io::string<io::app>{s}, fmt, io::setspace{", "}, value);
+    io::write(io::string<io::app>{s}, fmt, value);
     return s;
 }
 
