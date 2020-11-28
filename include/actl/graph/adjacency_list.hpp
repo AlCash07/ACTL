@@ -269,8 +269,8 @@ public:
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    template <class... Ts, bool UA = is_unique_associative_container_v<VC>, class T = value_t<VC>,
-              enable_int_if<UA> = 0>
+    template <class... Ts, bool Unique = is_unique_range_v<VC>, class T = value_t<VC>,
+              enable_int_if<Unique> = 0>
     edge add_edge(const T& u, const T& v, Ts&&... args) {
         return add_edge(add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);
     }

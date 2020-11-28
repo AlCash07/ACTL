@@ -12,9 +12,8 @@ TEST("map::category") {
     using C = std::map<int, int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
-    ASSERT_TRUE(is_sorted_associative_container_v<C>);
-    ASSERT_TRUE(is_unique_associative_container_v<C>);
-    ASSERT_FALSE(is_multiple_associative_container_v<C>);
+    ASSERT_TRUE(is_sorted_range_v<C>);
+    ASSERT_TRUE(is_unique_range_v<C>);
     ASSERT_FALSE(is_simple_associative_container_v<C>);
     ASSERT_TRUE(is_pair_associative_container_v<C>);
 }
@@ -23,9 +22,8 @@ TEST("multimap::category") {
     using C = std::multimap<int, int>;
     ASSERT_FALSE(is_sequence_container_v<C>);
     ASSERT_TRUE(is_associative_container_v<C>);
-    ASSERT_TRUE(is_sorted_associative_container_v<C>);
-    ASSERT_FALSE(is_unique_associative_container_v<C>);
-    ASSERT_TRUE(is_multiple_associative_container_v<C>);
+    ASSERT_TRUE(is_sorted_range_v<C>);
+    ASSERT_FALSE(is_unique_range_v<C>);
     ASSERT_FALSE(is_simple_associative_container_v<C>);
     ASSERT_TRUE(is_pair_associative_container_v<C>);
 }

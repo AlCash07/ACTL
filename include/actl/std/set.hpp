@@ -13,13 +13,20 @@
 namespace ac {
 
 template <class T, class C, class A>
-struct container_category<std::set<T, C, A>> : virtual sorted_associative_container_tag,
-                                               virtual simple_associative_container_tag,
-                                               virtual unique_associative_container_tag {};
+struct container_category<std::set<T, C, A>> : virtual simple_associative_container_tag {};
 
 template <class T, class C, class A>
-struct container_category<std::multiset<T, C, A>> : virtual sorted_associative_container_tag,
-                                                    virtual simple_associative_container_tag,
-                                                    virtual multiple_associative_container_tag {};
+struct range_traits<std::set<T, C, A>> {
+    struct is_sorted;
+    struct is_unique;
+};
+
+template <class T, class C, class A>
+struct container_category<std::multiset<T, C, A>> : virtual simple_associative_container_tag {};
+
+template <class T, class C, class A>
+struct range_traits<std::multiset<T, C, A>> {
+    struct is_sorted;
+};
 
 }  // namespace ac

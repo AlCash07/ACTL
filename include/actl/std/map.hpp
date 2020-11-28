@@ -14,14 +14,20 @@
 namespace ac {
 
 template <class K, class T, class C, class A>
-struct container_category<std::map<K, T, C, A>> : virtual sorted_associative_container_tag,
-                                                  virtual pair_associative_container_tag,
-                                                  virtual unique_associative_container_tag {};
+struct container_category<std::map<K, T, C, A>> : virtual pair_associative_container_tag {};
 
 template <class K, class T, class C, class A>
-struct container_category<std::multimap<K, T, C, A>> : virtual sorted_associative_container_tag,
-                                                       virtual pair_associative_container_tag,
-                                                       virtual multiple_associative_container_tag {
+struct range_traits<std::map<K, T, C, A>> {
+    struct is_sorted;
+    struct is_unique;
+};
+
+template <class K, class T, class C, class A>
+struct container_category<std::multimap<K, T, C, A>> : virtual pair_associative_container_tag {};
+
+template <class K, class T, class C, class A>
+struct range_traits<std::multimap<K, T, C, A>> {
+    struct is_sorted;
 };
 
 }  // namespace ac

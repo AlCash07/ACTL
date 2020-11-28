@@ -16,7 +16,7 @@ namespace detail {
 
 template <class T>
 using enable_if_upac_t =
-    std::enable_if_t<is_unique_associative_container_v<T> && is_pair_associative_container_v<T>>;
+    std::enable_if_t<is_unique_range_v<T> && is_pair_associative_container_v<T>>;
 
 }  // namespace detail
 

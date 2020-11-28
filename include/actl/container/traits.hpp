@@ -10,6 +10,7 @@
 #pragma once
 
 #include <actl/container/dummy_container.hpp>
+#include <actl/range/traits.hpp>
 #include <actl/util/rebind.hpp>
 #include <actl/util/type_traits.hpp>
 
@@ -25,11 +26,6 @@ struct random_access_container_tag : virtual sequence_container_tag {};
 struct contiguous_container_tag : virtual random_access_container_tag {};
 
 struct associative_container_tag : virtual container_tag {};
-
-struct sorted_associative_container_tag : virtual associative_container_tag {};
-
-struct unique_associative_container_tag : virtual associative_container_tag {};
-struct multiple_associative_container_tag : virtual associative_container_tag {};
 
 struct simple_associative_container_tag : virtual associative_container_tag {};
 struct pair_associative_container_tag : virtual associative_container_tag {};
@@ -65,18 +61,6 @@ inline constexpr bool is_contiguous_container_v = has_container_tag_v<C, contigu
 template <class C>
 inline constexpr bool is_associative_container_v =
     has_container_tag_v<C, associative_container_tag>;
-
-template <class C>
-inline constexpr bool is_sorted_associative_container_v =
-    has_container_tag_v<C, sorted_associative_container_tag>;
-
-template <class C>
-inline constexpr bool is_unique_associative_container_v =
-    has_container_tag_v<C, unique_associative_container_tag>;
-
-template <class C>
-inline constexpr bool is_multiple_associative_container_v =
-    has_container_tag_v<C, multiple_associative_container_tag>;
 
 template <class C>
 inline constexpr bool is_simple_associative_container_v =

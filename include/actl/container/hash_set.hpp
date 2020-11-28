@@ -23,11 +23,14 @@ template <class T, class H = hash_function<>, class E = std::equal_to<>,
 using hash_multiset = std::unordered_multiset<T, H, E, A>;
 
 template <class T, class H, class E, class A>
-struct container_category<hash_set<T, H, E, A>> : virtual simple_associative_container_tag,
-                                                  virtual unique_associative_container_tag {};
+struct container_category<hash_set<T, H, E, A>> : virtual simple_associative_container_tag {};
 
 template <class T, class H, class E, class A>
-struct container_category<hash_multiset<T, H, E, A>>
-    : virtual simple_associative_container_tag, virtual multiple_associative_container_tag {};
+struct range_traits<hash_set<T, H, E, A>> {
+    struct is_unique;
+};
+
+template <class T, class H, class E, class A>
+struct container_category<hash_multiset<T, H, E, A>> : virtual simple_associative_container_tag {};
 
 }  // namespace ac

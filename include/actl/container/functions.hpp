@@ -15,10 +15,10 @@
 namespace ac {
 
 template <class C, class... Ts>
-inline std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
+std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
     if constexpr (is_associative_container_v<C>) {
         auto res = cont.emplace(std::forward<Ts>(args)...);
-        if constexpr (is_unique_associative_container_v<C>) {
+        if constexpr (is_unique_range_v<C>) {
             return {res.first, res.second};
         } else {
             return {res, true};
@@ -32,7 +32,7 @@ inline std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
 }
 
 template <class C, class T>
-inline void erase(C& cont, const T& value) {
+void erase(C& cont, const T& value) {
     if constexpr (is_associative_container_v<C>) {
         cont.erase(value);
     } else {
@@ -41,8 +41,8 @@ inline void erase(C& cont, const T& value) {
 }
 
 template <class C, class T>
-inline iterator_t<C> find(C& cont, const T& value) {
-    if constexpr (is_sorted_associative_container_v<C>) {
+iterator_t<C> find(C& cont, const T& value) {
+    if constexpr (is_associative_container_v<C> && is_sorted_range_v<C>) {
         // TODO: make this case work for hash containers.
         // This requires C++20 with find for transparently comparable key.
         return cont.find(value);
