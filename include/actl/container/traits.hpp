@@ -42,8 +42,10 @@ struct container_category<T[N]> : contiguous_container_tag {};
 template <>
 struct container_category<dummy_container> : random_access_container_tag {};
 
-template <class C>
-inline constexpr bool is_container_v = std::is_base_of_v<container_tag, container_category<C>>;
+template <>
+struct range_traits<dummy_container> {
+    struct is_container;
+};
 
 template <class C, class Tag>
 inline constexpr bool has_container_tag_v = std::is_base_of_v<Tag, container_category<C>>;

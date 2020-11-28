@@ -40,6 +40,20 @@ struct range_traits {};
 template <class T>
 struct range_traits<const T> : range_traits<T> {};
 
+template <class T, size_t N>
+struct range_traits<T[N]> {
+    struct is_container;
+};
+
+template <class T, class = void>
+struct is_container : std::false_type {};
+
+template <class T>
+struct is_container<T, std::void_t<typename range_traits<T>::is_container>> : std::true_type {};
+
+template <class T>
+constexpr bool is_container_v = is_container<T>::value;
+
 template <class T, class = void>
 struct is_sorted_range : std::false_type {};
 

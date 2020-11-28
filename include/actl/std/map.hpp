@@ -18,6 +18,7 @@ struct container_category<std::map<K, T, C, A>> : virtual pair_associative_conta
 
 template <class K, class T, class C, class A>
 struct range_traits<std::map<K, T, C, A>> {
+    struct is_container;
     struct is_sorted;
     struct is_unique;
 };
@@ -27,6 +28,7 @@ struct container_category<std::multimap<K, T, C, A>> : virtual pair_associative_
 
 template <class K, class T, class C, class A>
 struct range_traits<std::multimap<K, T, C, A>> {
+    struct is_container;
     struct is_sorted;
 };
 

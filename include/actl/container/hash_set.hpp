@@ -27,10 +27,16 @@ struct container_category<hash_set<T, H, E, A>> : virtual simple_associative_con
 
 template <class T, class H, class E, class A>
 struct range_traits<hash_set<T, H, E, A>> {
+    struct is_container;
     struct is_unique;
 };
 
 template <class T, class H, class E, class A>
 struct container_category<hash_multiset<T, H, E, A>> : virtual simple_associative_container_tag {};
+
+template <class T, class H, class E, class A>
+struct range_traits<hash_multiset<T, H, E, A>> {
+    struct is_container;
+};
 
 }  // namespace ac

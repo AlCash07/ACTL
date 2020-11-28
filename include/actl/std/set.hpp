@@ -17,6 +17,7 @@ struct container_category<std::set<T, C, A>> : virtual simple_associative_contai
 
 template <class T, class C, class A>
 struct range_traits<std::set<T, C, A>> {
+    struct is_container;
     struct is_sorted;
     struct is_unique;
 };
@@ -26,6 +27,7 @@ struct container_category<std::multiset<T, C, A>> : virtual simple_associative_c
 
 template <class T, class C, class A>
 struct range_traits<std::multiset<T, C, A>> {
+    struct is_container;
     struct is_sorted;
 };
 

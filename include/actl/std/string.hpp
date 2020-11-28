@@ -18,6 +18,11 @@ namespace ac {
 template <class C, class T, class A>
 struct container_category<std::basic_string<C, T, A>> : contiguous_container_tag {};
 
+template <class C, class T, class A>
+struct range_traits<std::basic_string<C, T, A>> {
+    struct is_container;
+};
+
 namespace io {
 
 template <class Device, class C, class T, class A, class P>

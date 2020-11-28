@@ -25,3 +25,10 @@ TEST("is_contiguous_range") {
     ASSERT_TRUE(is_contiguous_range_v<std::vector<int>>);
     ASSERT_FALSE(is_contiguous_range_v<std::list<int>>);
 }
+
+TEST("is_container") {
+    ASSERT_FALSE(is_container_v<int>);
+    ASSERT_FALSE(is_container_v<int*>);
+    ASSERT_FALSE(is_container_v<int[]>);
+    ASSERT_TRUE(is_container_v<int[2]>);
+}
