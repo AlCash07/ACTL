@@ -36,7 +36,7 @@ public:
     using vertex_iterator = container_id_iterator<vertex_container>;
 
 private:
-    static constexpr bool RA = is_random_access_container_v<vertex_container>;
+    static constexpr bool RA = is_random_access_range_v<vertex_container>;
 
 public:
     vertex_list() = default;

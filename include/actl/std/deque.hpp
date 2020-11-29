@@ -13,9 +13,6 @@
 namespace ac {
 
 template <class T, class A>
-struct container_category<std::deque<T, A>> : random_access_container_tag {};
-
-template <class T, class A>
 struct range_traits<std::deque<T, A>> {
     struct is_container;
 };

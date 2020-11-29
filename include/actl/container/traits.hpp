@@ -19,12 +19,6 @@ namespace ac {
 // Virtual inheritance is used because of inheritance diamonds.
 struct container_tag {};
 
-struct sequence_container_tag : virtual container_tag {};
-
-struct random_access_container_tag : virtual sequence_container_tag {};
-
-struct contiguous_container_tag : virtual random_access_container_tag {};
-
 struct associative_container_tag : virtual container_tag {};
 
 struct simple_associative_container_tag : virtual associative_container_tag {};
@@ -36,26 +30,8 @@ struct container_category {};
 template <class C>
 struct container_category<const C> : container_category<C> {};
 
-template <class T, size_t N>
-struct container_category<T[N]> : contiguous_container_tag {};
-
-template <>
-struct container_category<dummy_container> : random_access_container_tag {};
-
-template <>
-struct range_traits<dummy_container> {
-    struct is_container;
-};
-
 template <class C, class Tag>
 inline constexpr bool has_container_tag_v = std::is_base_of_v<Tag, container_category<C>>;
-
-template <class C>
-inline constexpr bool is_sequence_container_v = has_container_tag_v<C, sequence_container_tag>;
-
-template <class C>
-inline constexpr bool is_random_access_container_v =
-    has_container_tag_v<C, random_access_container_tag>;
 
 template <class C>
 inline constexpr bool is_associative_container_v =
@@ -68,6 +44,9 @@ inline constexpr bool is_simple_associative_container_v =
 template <class C>
 inline constexpr bool is_pair_associative_container_v =
     has_container_tag_v<C, pair_associative_container_tag>;
+
+template <class C>
+inline constexpr bool is_sequence_container_v = is_container_v<C> && !is_associative_container_v<C>;
 
 template <class C, class To>
 using rebind_container_t = std::conditional_t<std::is_same_v<C, none> || std::is_same_v<To, none>,

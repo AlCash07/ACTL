@@ -11,6 +11,8 @@
 #include <actl/std/utility.hpp>
 #include <actl/types.hpp>
 #include <actl/util/none.hpp>
+#include <actl/range/traits.hpp>
+#include <actl/iterator/integer_iterator.hpp>
 
 namespace ac {
 
@@ -23,8 +25,8 @@ public:
     using value_type      = none;
     using reference       = none;
     using const_reference = none;
-    using iterator        = index;
-    using const_iterator  = index;
+    using iterator        = integer_iterator<index>;
+    using const_iterator  = integer_iterator<index>;
 
     constexpr dummy_container() = default;
     explicit constexpr dummy_container(index size) : n_{size} {}
@@ -33,8 +35,8 @@ public:
 
     constexpr bool empty() const { return size() == 0; }
 
-    constexpr index begin() const { return 0; }
-    constexpr index end() const { return size(); }
+    constexpr auto begin() const { return iterator{0}; }
+    constexpr auto end() const { return iterator{size()}; }
 
     none operator[](index) const { return none{}; }
 
@@ -56,6 +58,11 @@ private:
     size_t hash() const { return hash_value(size()); }
 
     index n_ = 0;
+};
+
+template <>
+struct range_traits<dummy_container> {
+    struct is_container;
 };
 
 }  // namespace ac

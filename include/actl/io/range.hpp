@@ -31,7 +31,7 @@ inline bool read_final(Device& id, Format& fmt, R& x) {
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         decltype(x.size()) size{};
         if (!read_size(id, fmt, size)) return false;
-        if constexpr (!is_random_access_container_v<R>) {
+        if constexpr (!is_random_access_range_v<R>) {
             for (; size > 0; --size) {
                 value_t<R> value;
                 if (!read(id, fmt, value)) return false;

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/util/type_traits.hpp>
-#include <iterator>
+#include <actl/iterator/traits.hpp>
 
 namespace ac {
 
@@ -22,6 +22,15 @@ struct is_range<T,
 
 template <class T>
 constexpr bool is_range_v = is_range<T&>::value;  // & is needed for C arrays
+
+template <class T, class Category, bool = is_range_v<T>>
+struct has_range_iterator : std::is_base_of<Category, iterator_category_t<iterator_t<T>>> {};
+
+template <class T, class Category>
+struct has_range_iterator<T, Category, false> : std::false_type {};
+
+template <class C>
+constexpr bool is_random_access_range_v = has_range_iterator<C, std::random_access_iterator_tag>::value;
 
 template <class T, class = void>
 struct is_contiguous_range : std::false_type {};

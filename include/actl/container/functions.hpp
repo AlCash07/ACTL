@@ -23,7 +23,7 @@ std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
         } else {
             return {res, true};
         }
-    } else if constexpr (is_random_access_container_v<C>) {
+    } else if constexpr (is_random_access_range_v<C>) {
         cont.emplace_back(std::forward<Ts>(args)...);
         return {cont.end() - 1, true};
     } else {

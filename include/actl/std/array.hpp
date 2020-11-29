@@ -15,9 +15,6 @@
 namespace ac {
 
 template <class T, size_t N>
-struct container_category<std::array<T, N>> : contiguous_container_tag {};
-
-template <class T, size_t N>
 struct range_traits<std::array<T, N>> {
     struct is_container;
 };

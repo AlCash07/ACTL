@@ -19,26 +19,26 @@ namespace ac {
 
 struct iterator_core_access {
     template <class It>
-    static reference_t<It> dereference(const It& it) {
+    static constexpr reference_t<It> dereference(const It& it) {
         return it.dereference();
     }
 
     template <class It>
-    static void increment(It& it) { it.increment(); }
+    static constexpr void increment(It& it) { it.increment(); }
 
     template <class It>
-    static void decrement(It& it) { it.decrement(); }
+    static constexpr void decrement(It& it) { it.decrement(); }
 
     template <class It1, class It2>
-    static bool equal(const It1& it1, const It2& it2) { return it1.equals(it2); }
+    static constexpr bool equal(const It1& it1, const It2& it2) { return it1.equals(it2); }
 
     template <class It>
-    static void advance(It& it, difference_t<It> n) {
+    static constexpr void advance(It& it, difference_t<It> n) {
         it.advance(n);
     }
 
     template <class It1, class It2>
-    static difference_t<It1> distance_to(const It1& it1, const It2& it2) {
+    static constexpr difference_t<It1> distance_to(const It1& it1, const It2& it2) {
         return it1.distance_to(it2);
     }
 };
@@ -49,22 +49,22 @@ template <class It, class T, class C>
 class it_facade : public operators::base<T> {
 public:
     // We don't return reference here because it's void for output iterators.
-    decltype(auto) operator*() const { return iterator_core_access::dereference(derived()); }
+    constexpr decltype(auto) operator*() const { return iterator_core_access::dereference(derived()); }
 
-    It& operator++() {
+    constexpr It& operator++() {
         iterator_core_access::increment(derived());
         return derived();
     }
 
-    It operator++(int) {
+    constexpr It operator++(int) {
         It copy = derived();
         ++*this;
         return copy;
     }
 
 protected:
-    It& derived() { return static_cast<It&>(*this); }
-    const It& derived() const { return static_cast<const It&>(*this); }
+    constexpr It& derived() { return static_cast<It&>(*this); }
+    constexpr const It& derived() const { return static_cast<const It&>(*this); }
 };
 
 template <class It, class T>
@@ -73,7 +73,7 @@ class it_facade<It, T, std::input_iterator_tag>
     using base_t = it_facade<It, T, std::output_iterator_tag>;
 
 public:
-    typename base_t::pointer operator->() const {
+    constexpr typename base_t::pointer operator->() const {
         return operator_arrow_dispatch<typename base_t::reference>::apply(*this->derived());
     }
 };
@@ -86,12 +86,12 @@ template <class It, class T>
 class it_facade<It, T, std::bidirectional_iterator_tag>
     : public it_facade<It, T, std::forward_iterator_tag> {
 public:
-    It& operator--() {
+    constexpr It& operator--() {
         iterator_core_access::decrement(this->derived());
         return this->derived();
     }
 
-    It operator--(int) {
+    constexpr It operator--(int) {
         It copy = this->derived();
         --*this;
         return copy;
@@ -105,21 +105,21 @@ class it_facade<It, T, std::random_access_iterator_tag>
     using D = typename base_t::difference_type;
 
 public:
-    typename base_t::reference operator[](D n) const { return *(this->derived() + n); }
+    constexpr typename base_t::reference operator[](D n) const { return *(this->derived() + n); }
 
-    It& operator += (D n) {
+    constexpr It& operator += (D n) {
         iterator_core_access::advance(this->derived(), n);
         return this->derived();
     }
 
-    It& operator -= (D n) { return (*this) += (-n); }
+    constexpr It& operator -= (D n) { return (*this) += (-n); }
 
-    It operator + (D n) const {
+    constexpr It operator + (D n) const {
         It copy = this->derived();
         return copy += n;
     }
 
-    It operator - (D n) const { return (*this) + (-n); }
+    constexpr It operator - (D n) const { return (*this) + (-n); }
 };
 
 }  // namespace detail
@@ -130,8 +130,8 @@ class iterator_facade
 
 #define ITERATOR_OPERATOR(type, op, expr)                        \
     template <class It, class T>                                 \
-    inline type operator op(const iterator_facade<It, T>& lhs,   \
-                            const iterator_facade<It, T>& rhs) { \
+    constexpr type operator op(const iterator_facade<It, T>& lhs,   \
+                               const iterator_facade<It, T>& rhs) { \
         return expr;                                             \
     }
 
@@ -148,7 +148,7 @@ ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 #undef ITERATOR_OPERATOR
 
 template <class It, class T>
-inline It operator + (typename T::difference_type n, const iterator_facade<It, T>& rhs) {
+constexpr It operator + (typename T::difference_type n, const iterator_facade<It, T>& rhs) {
     return rhs + n;
 }
 

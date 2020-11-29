@@ -28,7 +28,7 @@ class adj_list_vertex_data;
 
 template <class Dir, class OEC, class EC, class VC>
 struct adj_list_traits {
-    using vertex = std::conditional_t<is_random_access_container_v<VC>, int, void*>;
+    using vertex = std::conditional_t<is_random_access_range_v<VC>, int, void*>;
 
     using edge_selector = value_t<EC>;
 

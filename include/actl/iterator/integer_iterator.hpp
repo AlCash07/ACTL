@@ -21,24 +21,24 @@ template <class Int, bool Increment = true>
 class integer_iterator
     : public iterator_facade<integer_iterator<Int, Increment>, integer_iterator_types<Int>> {
 public:
-    explicit integer_iterator() = default;
+    explicit constexpr integer_iterator() = default;
 
-    explicit integer_iterator(Int value) : value_{value} {}
+    explicit constexpr integer_iterator(Int value) : value_{value} {}
 
 private:
     friend struct ac::iterator_core_access;
 
-    const Int& dereference() const { return value_; }
+    constexpr const Int& dereference() const { return value_; }
 
-    void increment() { Increment ? ++value_ : --value_; }
+    constexpr void increment() { Increment ? ++value_ : --value_; }
 
-    void decrement() { Increment ? --value_ : ++value_; }
+    constexpr void decrement() { Increment ? --value_ : ++value_; }
 
-    void advance(Int n) { Increment ? value_ += n : value_ -= n; }
+    constexpr void advance(Int n) { Increment ? value_ += n : value_ -= n; }
 
-    bool equals(const integer_iterator& rhs) const { return value_ == rhs.value_; }
+    constexpr bool equals(const integer_iterator& rhs) const { return value_ == rhs.value_; }
 
-    Int distance_to(const integer_iterator& rhs) const { return rhs.value_ - value_; }
+    constexpr Int distance_to(const integer_iterator& rhs) const { return rhs.value_ - value_; }
 
     Int value_ = 0;
 };
@@ -47,25 +47,25 @@ template <class Int>
 class integer_iterator_with_step
     : public iterator_facade<integer_iterator_with_step<Int>, integer_iterator_types<Int>> {
 public:
-    explicit integer_iterator_with_step() = default;
+    explicit constexpr integer_iterator_with_step() = default;
 
-    explicit integer_iterator_with_step(Int value, Int step) : value_{value}, step_{step} {}
+    explicit constexpr integer_iterator_with_step(Int value, Int step) : value_{value}, step_{step} {}
 
 private:
     friend struct ac::iterator_core_access;
 
-    const Int& dereference() const { return value_; }
+    constexpr const Int& dereference() const { return value_; }
 
-    void increment() { value_ += step_; }
+    constexpr void increment() { value_ += step_; }
 
-    void decrement() { value_ -= step_; }
+    constexpr void decrement() { value_ -= step_; }
 
-    void advance(Int n) { value_ += n * step_; }
+    constexpr void advance(Int n) { value_ += n * step_; }
 
-    bool equals(const integer_iterator_with_step& rhs) const { return value_ == rhs.value_; }
+    constexpr bool equals(const integer_iterator_with_step& rhs) const { return value_ == rhs.value_; }
 
     // TODO: if this operation is called often then it's better to avoid division.
-    Int distance_to(const integer_iterator_with_step& rhs) const {
+    constexpr Int distance_to(const integer_iterator_with_step& rhs) const {
         ACTL_ASSERT(rhs.step_ == step_);
         ACTL_ASSERT((rhs.value_ - value_) % step_ == 0);
         return (rhs.value_ - value_) / step_;
