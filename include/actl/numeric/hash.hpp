@@ -10,7 +10,7 @@
 #include <actl/numeric/bit.hpp>
 #include <actl/numeric/random/splitmix64.hpp>
 #include <actl/numeric/util/hash_access.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/is_range.hpp>
 #include <actl/util/rebind.hpp>
 #include <chrono>
 #include <functional>

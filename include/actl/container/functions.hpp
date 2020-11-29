@@ -10,6 +10,9 @@
 #pragma once
 
 #include <actl/container/traits.hpp>
+#include <actl/range/traits/is_sorted.hpp>
+#include <actl/range/traits/is_unique.hpp>
+#include <actl/range/traits/iterator.hpp>
 #include <algorithm>
 
 namespace ac {

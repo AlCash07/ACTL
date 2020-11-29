@@ -9,7 +9,7 @@
 
 #include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/is_range.hpp>
 #include <algorithm>
 
 namespace ac::math {

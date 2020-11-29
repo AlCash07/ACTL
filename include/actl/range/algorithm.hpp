@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/is_range.hpp>
 #include <actl/util/type_traits.hpp>
 #include <algorithm>
 

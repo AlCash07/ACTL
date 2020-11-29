@@ -10,7 +10,7 @@
 #pragma once
 
 #include <actl/container/dummy_container.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/is_container.hpp>
 #include <actl/util/rebind.hpp>
 #include <actl/util/type_traits.hpp>
 

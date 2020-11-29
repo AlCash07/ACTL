@@ -1,17 +1,25 @@
 /***************************************************************************************************
- * Copyright 2018 Oleksandr Bacherikov.
+ * Copyright 2020 Oleksandr Bacherikov.
  *
  *             Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
-#include <actl/range/traits/all.hpp>
-#include <actl/std/list.hpp>
-#include <actl/test.hpp>
+#pragma once
 
-TEST("category") {
-    using C = std::list<int>;
-    ASSERT_TRUE(is_sequence_container_v<C>);
-    ASSERT_FALSE(is_random_access_range_v<C>);
-    ASSERT_FALSE(is_associative_container_v<C>);
-}
+#include <type_traits>
+
+namespace ac {
+
+template <class T>
+struct range_traits {};
+
+template <class T>
+struct range_traits<const T> : range_traits<T> {};
+
+template <class T, size_t N>
+struct range_traits<T[N]> {
+    struct is_container;
+};
+
+}  // namespace ac

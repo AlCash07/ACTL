@@ -11,7 +11,7 @@
 #include <actl/io/core/batch.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/is_range.hpp>
 
 namespace ac::io {
 

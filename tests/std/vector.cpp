@@ -5,6 +5,7 @@
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  **************************************************************************************************/
 
+#include <actl/range/traits/all.hpp>
 #include <actl/std/vector.hpp>
 #include <actl/test.hpp>
 
