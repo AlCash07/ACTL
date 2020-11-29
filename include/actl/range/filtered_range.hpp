@@ -9,7 +9,7 @@
 
 #include <actl/iterator/iterator_adaptor.hpp>
 #include <actl/iterator/traits.hpp>
-#include <actl/range/range_facade.hpp>
+#include <actl/range/facade/range_facade.hpp>
 #include <actl/util/compressed_pair.hpp>
 #include <actl/util/type_traits.hpp>
 

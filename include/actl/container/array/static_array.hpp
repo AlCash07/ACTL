@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/range/contiguous_range_facade.hpp>
+#include <actl/range/facade/contiguous_range_facade.hpp>
 #include <actl/std/array.hpp>
 
 namespace ac {
