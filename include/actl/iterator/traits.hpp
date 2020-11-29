@@ -26,7 +26,7 @@ struct is_iterator<T, std::void_t<iterator_category_t<T>>> : std::true_type {};
 }  // namespace detail
 
 template <class T>
-inline constexpr bool is_iterator_v = detail::is_iterator<T>::value;
+constexpr bool is_iterator_v = detail::is_iterator<T>::value;
 
 namespace detail {
 
@@ -43,7 +43,7 @@ template <class T>
 struct is_const_iterator<T, false> : std::false_type {};
 
 template <class T, class Category, bool = is_iterator_v<T>>
-struct has_iterator_category : std::is_same<Category, iterator_category_t<T>> {};
+struct has_iterator_category : std::is_base_of<Category, iterator_category_t<T>> {};
 
 template <class T, class Category>
 struct has_iterator_category<T, Category, false> : std::false_type {};
@@ -51,29 +51,29 @@ struct has_iterator_category<T, Category, false> : std::false_type {};
 }  // namespace detail
 
 template <class T>
-inline constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
+constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 
 template <class T>
-inline constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
+constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
 
 template <class T>
-inline constexpr bool is_input_iterator_v =
+constexpr bool is_input_iterator_v =
     detail::has_iterator_category<T, std::input_iterator_tag>::value;
 
 template <class T>
-inline constexpr bool is_output_iterator_v =
+constexpr bool is_output_iterator_v =
     detail::has_iterator_category<T, std::output_iterator_tag>::value;
 
 template <class T>
-inline constexpr bool is_forward_iterator_v =
+constexpr bool is_forward_iterator_v =
     detail::has_iterator_category<T, std::forward_iterator_tag>::value;
 
 template <class T>
-inline constexpr bool is_bidirectional_iterator_v =
+constexpr bool is_bidirectional_iterator_v =
     detail::has_iterator_category<T, std::bidirectional_iterator_tag>::value;
 
 template <class T>
-inline constexpr bool is_random_access_iterator_v =
+constexpr bool is_random_access_iterator_v =
     detail::has_iterator_category<T, std::random_access_iterator_tag>::value;
 
 }  // namespace ac
