@@ -10,7 +10,7 @@
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/iterator/iterator_facade.hpp>
+#include <actl/iterator/facade/iterator_facade.hpp>
 
 namespace ac::detail {
 

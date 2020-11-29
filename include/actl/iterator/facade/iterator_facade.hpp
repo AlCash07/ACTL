@@ -12,7 +12,7 @@
 #pragma once
 
 #include <actl/functional/operators.hpp>
-#include <actl/iterator/iterator_types.hpp>
+#include <actl/iterator/facade/iterator_types.hpp>
 #include <actl/util/type_traits.hpp>
 
 namespace ac {
@@ -24,13 +24,19 @@ struct iterator_core_access {
     }
 
     template <class It>
-    static constexpr void increment(It& it) { it.increment(); }
+    static constexpr void increment(It& it) {
+        it.increment();
+    }
 
     template <class It>
-    static constexpr void decrement(It& it) { it.decrement(); }
+    static constexpr void decrement(It& it) {
+        it.decrement();
+    }
 
     template <class It1, class It2>
-    static constexpr bool equal(const It1& it1, const It2& it2) { return it1.equals(it2); }
+    static constexpr bool equal(const It1& it1, const It2& it2) {
+        return it1.equals(it2);
+    }
 
     template <class It>
     static constexpr void advance(It& it, difference_t<It> n) {
@@ -49,7 +55,9 @@ template <class It, class T, class C>
 class it_facade : public operators::base<T> {
 public:
     // We don't return reference here because it's void for output iterators.
-    constexpr decltype(auto) operator*() const { return iterator_core_access::dereference(derived()); }
+    constexpr decltype(auto) operator*() const {
+        return iterator_core_access::dereference(derived());
+    }
 
     constexpr It& operator++() {
         iterator_core_access::increment(derived());
@@ -128,11 +136,11 @@ template <class Derived, class Types>
 class iterator_facade
     : public detail::it_facade<Derived, Types, typename Types::iterator_category> {};
 
-#define ITERATOR_OPERATOR(type, op, expr)                        \
-    template <class It, class T>                                 \
+#define ITERATOR_OPERATOR(type, op, expr)                           \
+    template <class It, class T>                                    \
     constexpr type operator op(const iterator_facade<It, T>& lhs,   \
                                const iterator_facade<It, T>& rhs) { \
-        return expr;                                             \
+        return expr;                                                \
     }
 
 ITERATOR_OPERATOR(bool, ==,

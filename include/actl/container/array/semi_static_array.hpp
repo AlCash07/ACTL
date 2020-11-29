@@ -9,7 +9,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/array/static_array.hpp>
-#include <actl/iterator/iterator_facade.hpp>
+#include <actl/iterator/facade/iterator_facade.hpp>
 #include <actl/range/facade/range_facade.hpp>
 
 namespace ac {

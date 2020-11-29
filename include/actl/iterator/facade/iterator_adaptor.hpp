@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <actl/iterator/iterator_facade.hpp>
+#include <actl/iterator/facade/iterator_facade.hpp>
 #include <actl/util/use_default.hpp>
 
 namespace ac {
@@ -40,36 +40,36 @@ struct iterator_adaptor_base {
 template <class Derived, class It, class C, class V, class R, class D>
 class iterator_adaptor : public detail::iterator_adaptor_base<Derived, It, C, V, R, D>::type {
 public:
-    explicit iterator_adaptor(const It& it) : it_{it} {}
+    explicit constexpr iterator_adaptor(const It& it) : it_{it} {}
 
-    const It& base() const { return it_; }
+    constexpr const It& base() const { return it_; }
 
 protected:
-    It& base_ref() { return it_; }
+    constexpr It& base_ref() { return it_; }
 
 private:
     friend struct ac::iterator_core_access;
 
     using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, D>::type;
 
-    reference_t<base_t> dereference() const { return *it_; }
+    constexpr reference_t<base_t> dereference() const { return *it_; }
 
-    void increment() { ++it_; }
+    constexpr void increment() { ++it_; }
 
-    void decrement() { --it_; }
+    constexpr void decrement() { --it_; }
 
     template <class T = difference_t<base_t>>
-    void advance(T n) {
+    constexpr void advance(T n) {
         it_ += n;
     }
 
     template <class Derived1, class It1, class C1, class V1, class R1, class D1>
-    bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, D1>& rhs) const {
+    constexpr bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, D1>& rhs) const {
         return it_ == rhs.base();
     }
 
     template <class Derived1, class It1, class C1, class V1, class R1, class D1>
-    difference_t<base_t> distance_to(
+    constexpr difference_t<base_t> distance_to(
         const iterator_adaptor<Derived1, It1, C1, V1, R1, D1>& rhs) const {
         return rhs.base() - it_;
     }

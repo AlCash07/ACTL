@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/iterator/iterator_adaptor.hpp>
+#include <actl/iterator/facade/iterator_adaptor.hpp>
 #include <actl/iterator/traits.hpp>
 #include <actl/range/facade/range_facade.hpp>
 #include <actl/util/compressed_pair.hpp>

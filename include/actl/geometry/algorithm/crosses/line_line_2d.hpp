@@ -9,7 +9,7 @@
 
 #include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
-#include <actl/iterator/iterator_facade.hpp>
+#include <actl/iterator/facade/iterator_facade.hpp>
 
 namespace ac {
 
