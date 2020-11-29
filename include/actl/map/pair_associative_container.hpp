@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/container/traits.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/range/traits/associative.hpp>
 #include <actl/range/traits/is_unique.hpp>
