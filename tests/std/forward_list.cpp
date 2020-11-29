@@ -11,7 +11,7 @@
 
 TEST("category") {
     using C = std::forward_list<int>;
-    ASSERT_TRUE(is_sequence_container_v<C>);
+    ASSERT_TRUE(is_sequence_range_v<C>);
     ASSERT_FALSE(is_random_access_range_v<C>);
-    ASSERT_FALSE(is_associative_container_v<C>);
+    ASSERT_FALSE(is_associative_range_v<C>);
 }

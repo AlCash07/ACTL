@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/container/traits.hpp>
 #include <actl/io/range.hpp>
 #include <actl/numeric/hash.hpp>
 #include <unordered_set>
@@ -23,19 +22,15 @@ template <class T, class H = hash_function<>, class E = std::equal_to<>,
 using hash_multiset = std::unordered_multiset<T, H, E, A>;
 
 template <class T, class H, class E, class A>
-struct container_category<hash_set<T, H, E, A>> : virtual simple_associative_container_tag {};
-
-template <class T, class H, class E, class A>
 struct range_traits<hash_set<T, H, E, A>> {
+    struct is_simple_associative;
     struct is_container;
     struct is_unique;
 };
 
 template <class T, class H, class E, class A>
-struct container_category<hash_multiset<T, H, E, A>> : virtual simple_associative_container_tag {};
-
-template <class T, class H, class E, class A>
 struct range_traits<hash_multiset<T, H, E, A>> {
+    struct is_simple_associative;
     struct is_container;
 };
 

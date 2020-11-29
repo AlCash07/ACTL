@@ -39,7 +39,7 @@ protected:
     using edge_vertices = typename traits::vertices;
 
 public:
-    static_assert(std::is_same_v<S, two_vertices> || !is_associative_container_v<EC>,
+    static_assert(std::is_same_v<S, two_vertices> || !is_associative_range_v<EC>,
                   "associative edge list requires two vertices");
 
     using edge_container = typename traits::container;

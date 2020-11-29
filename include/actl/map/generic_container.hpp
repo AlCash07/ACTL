@@ -11,6 +11,7 @@
 #include <actl/iterator/transform_iterator.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/range/iterator_range.hpp>
+#include <actl/range/traits/associative.hpp>
 #include <actl/range/traits/is_container.hpp>
 
 namespace ac {
@@ -18,7 +19,7 @@ namespace ac {
 namespace detail {
 
 template <class T>
-using enable_if_gc_t = std::enable_if_t<is_container_v<T> && !is_pair_associative_container_v<T>>;
+using enable_if_gc_t = std::enable_if_t<is_container_v<T> && !is_pair_associative_range_v<T>>;
 
 template <class C>
 struct get_id_ref {

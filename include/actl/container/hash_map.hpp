@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/container/traits.hpp>
 #include <actl/io/range.hpp>
 #include <actl/numeric/hash.hpp>
 #include <actl/std/utility.hpp>
@@ -24,19 +23,15 @@ template <class K, class T, class H = hash_function<>, class E = std::equal_to<>
 using hash_multimap = std::unordered_multimap<K, T, H, E, A>;
 
 template <class K, class T, class H, class E, class A>
-struct container_category<hash_map<K, T, H, E, A>> : virtual pair_associative_container_tag {};
-
-template <class K, class T, class H, class E, class A>
 struct range_traits<hash_map<K, T, H, E, A>> {
+    struct is_pair_associative;
     struct is_container;
     struct is_unique;
 };
 
 template <class K, class T, class H, class E, class A>
-struct container_category<hash_multimap<K, T, H, E, A>> : virtual pair_associative_container_tag {};
-
-template <class K, class T, class H, class E, class A>
 struct range_traits<hash_multimap<K, T, H, E, A>> {
+    struct is_pair_associative;
     struct is_container;
 };
 

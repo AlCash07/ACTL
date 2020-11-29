@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
+#include <actl/range/traits/associative.hpp>
 #include <actl/range/traits/is_unique.hpp>
 #include <actl/std/vector.hpp>
 #include <actl/util/compressed_pair.hpp>
@@ -26,7 +27,7 @@ class accounting_map {
     using V = typename AC::mapped_type;
 
 public:
-    static_assert(is_unique_range_v<AC> && is_pair_associative_container_v<AC>);
+    static_assert(is_unique_range_v<AC> && is_pair_associative_range_v<AC>);
     static_assert(std::is_integral_v<V>, "value type must be integral");
 
     struct is_accounting_map;

@@ -10,43 +10,10 @@
 #pragma once
 
 #include <actl/container/dummy_container.hpp>
-#include <actl/range/traits/is_container.hpp>
 #include <actl/util/rebind.hpp>
 #include <actl/util/type_traits.hpp>
 
 namespace ac {
-
-// Virtual inheritance is used because of inheritance diamonds.
-struct container_tag {};
-
-struct associative_container_tag : virtual container_tag {};
-
-struct simple_associative_container_tag : virtual associative_container_tag {};
-struct pair_associative_container_tag : virtual associative_container_tag {};
-
-template <class C>
-struct container_category {};
-
-template <class C>
-struct container_category<const C> : container_category<C> {};
-
-template <class C, class Tag>
-inline constexpr bool has_container_tag_v = std::is_base_of_v<Tag, container_category<C>>;
-
-template <class C>
-inline constexpr bool is_associative_container_v =
-    has_container_tag_v<C, associative_container_tag>;
-
-template <class C>
-inline constexpr bool is_simple_associative_container_v =
-    has_container_tag_v<C, simple_associative_container_tag>;
-
-template <class C>
-inline constexpr bool is_pair_associative_container_v =
-    has_container_tag_v<C, pair_associative_container_tag>;
-
-template <class C>
-inline constexpr bool is_sequence_container_v = is_container_v<C> && !is_associative_container_v<C>;
 
 template <class C, class To>
 using rebind_container_t = std::conditional_t<std::is_same_v<C, none> || std::is_same_v<To, none>,

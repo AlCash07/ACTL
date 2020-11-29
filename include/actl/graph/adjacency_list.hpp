@@ -89,7 +89,7 @@ protected:
     typename traits::edges edge_list_;
 
 public:
-    static_assert(!is_associative_container_v<EC>,
+    static_assert(!is_associative_range_v<EC>,
                   "use std::list instead of associative container for adjacency list");
 
     using edge_container = typename traits::edges::edge_container;

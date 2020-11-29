@@ -11,6 +11,7 @@
 #include <actl/io/range.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/range/iterator_range.hpp>
+#include <actl/range/traits/associative.hpp>
 
 namespace ac::io {
 
@@ -38,7 +39,7 @@ inline index write_final(Device& od, Format& fmt, map_range<It> r) {
 
 template <class AC>
 inline auto make_map_range(braced& fmt, const AC& cont) {
-    if constexpr (is_simple_associative_container_v<AC>) {
+    if constexpr (is_simple_associative_range_v<AC>) {
         return make_range(cont);
     } else {
         return map_range<iterator_t<const AC>>{{cont.begin(), cont.end()},
@@ -48,12 +49,13 @@ inline auto make_map_range(braced& fmt, const AC& cont) {
 
 }  // namespace detail
 
-template <class AC, enable_int_if<is_associative_container_v<AC>> = 0>
+template <class AC, enable_int_if<is_container_v<AC> && is_associative_range_v<AC>> = 0>
 auto encode(braced& fmt, const AC& cont) {
     return batch{'{', detail::make_map_range(fmt, cont), '}'};
 }
 
-template <class SC, enable_int_if<!is_string_v<SC> && is_sequence_container_v<SC>> = 0>
+template <class SC,
+          enable_int_if<!is_string_v<SC> && is_container_v<SC> && is_sequence_range_v<SC>> = 0>
 auto encode(braced, const SC& cont) {
     return batch{'[', make_range(cont), ']'};
 }

@@ -12,10 +12,10 @@
 
 TEST("category") {
     using C = std::string;
-    ASSERT_TRUE(is_sequence_container_v<C>);
+    ASSERT_TRUE(is_sequence_range_v<C>);
     ASSERT_TRUE(is_random_access_range_v<C>);
     ASSERT_TRUE(is_contiguous_range_v<C>);
-    ASSERT_FALSE(is_associative_container_v<C>);
+    ASSERT_FALSE(is_associative_range_v<C>);
 }
 
 using namespace ac::io;
