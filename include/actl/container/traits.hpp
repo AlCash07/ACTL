@@ -58,9 +58,6 @@ inline constexpr bool is_random_access_container_v =
     has_container_tag_v<C, random_access_container_tag>;
 
 template <class C>
-inline constexpr bool is_contiguous_container_v = has_container_tag_v<C, contiguous_container_tag>;
-
-template <class C>
 inline constexpr bool is_associative_container_v =
     has_container_tag_v<C, associative_container_tag>;
 
