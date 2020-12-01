@@ -12,7 +12,7 @@
 
 namespace ac {
 
-struct empty_range_traits {
+struct default_range_traits {
     static constexpr bool is_simple_associative = false;
     static constexpr bool is_pair_associative = false;
     static constexpr bool is_container = false;
@@ -21,13 +21,13 @@ struct empty_range_traits {
 };
 
 template <class T>
-struct range_traits : empty_range_traits {};
+struct range_traits : default_range_traits {};
 
 template <class T>
 struct range_traits<const T> : range_traits<T> {};
 
 template <class T, size_t N>
-struct range_traits<T[N]> : empty_range_traits {
+struct range_traits<T[N]> : default_range_traits {
     static constexpr bool is_container = true;
 };
 

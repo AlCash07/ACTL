@@ -22,14 +22,14 @@ template <class T, class H = hash_function<>, class E = std::equal_to<>,
 using hash_multiset = std::unordered_multiset<T, H, E, A>;
 
 template <class T, class H, class E, class A>
-struct range_traits<hash_set<T, H, E, A>> : empty_range_traits {
+struct range_traits<hash_set<T, H, E, A>> : default_range_traits {
     static constexpr bool is_simple_associative = true;
     static constexpr bool is_container = true;
     static constexpr bool is_unique = true;
 };
 
 template <class T, class H, class E, class A>
-struct range_traits<hash_multiset<T, H, E, A>> : empty_range_traits {
+struct range_traits<hash_multiset<T, H, E, A>> : default_range_traits {
     static constexpr bool is_simple_associative = true;
     static constexpr bool is_container = true;
 };

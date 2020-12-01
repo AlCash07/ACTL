@@ -11,41 +11,49 @@
 #pragma once
 
 #include <actl/range/facade/range_facade.hpp>
+#include <actl/range/traits/range_traits.hpp>
 
 namespace ac {
 
-template <class It>
-class iterator_range : public range_facade<iterator_range<It>, range_types<It, difference_t<It>>> {
+template <class It, class Traits = default_range_traits>
+class iterator_range
+    : public range_facade<iterator_range<It, Traits>, range_types<It, difference_t<It>>> {
 public:
-    iterator_range() = default;
+    constexpr iterator_range() = default;
 
-    iterator_range(It begin, It end) : begin_{begin}, end_{end} {}
+    constexpr iterator_range(It begin, It end) : begin_{begin}, end_{end} {}
 
-    It begin() const { return begin_; }
-    It end() const { return end_; }
+    constexpr It begin() const { return begin_; }
+    constexpr It end() const { return end_; }
 
 private:
     It begin_;
     It end_;
 };
 
-template <class Iterator>
-inline auto make_range(Iterator first, Iterator last) {
-    return iterator_range{first, last};
+template <class It, class Traits>
+struct range_traits<iterator_range<It, Traits>> : Traits {
+    static constexpr bool is_container = false;
+};
+
+template <class Traits = default_range_traits, class Iterator>
+auto make_range(Iterator first, Iterator last) {
+    return iterator_range<Iterator, Traits>{first, last};
 }
 
-template <class Iterator, class Int>
-inline auto make_range(Iterator first, Int n) {
-    return iterator_range{first, std::next(first, n)};
+template <class Traits = default_range_traits, class Iterator, class Int>
+auto make_range(Iterator first, Int n) {
+    return iterator_range<Iterator, Traits>{first, std::next(first, n)};
 }
 
 template <class Container>
-inline auto make_range(Container&& cont) {
-    return make_range(std::begin(cont), std::end(cont));
+auto make_range(Container&& cont) {
+    return make_range<range_traits<std::remove_reference_t<Container>>>(std::begin(cont),
+                                                                        std::end(cont));
 }
 
 template <class Container>
-inline auto make_crange(const Container& cont) {
+auto make_crange(const Container& cont) {
     return make_range(cont);
 }
 

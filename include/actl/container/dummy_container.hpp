@@ -61,7 +61,7 @@ private:
 };
 
 template <>
-struct range_traits<dummy_container> : empty_range_traits {
+struct range_traits<dummy_container> : default_range_traits {
     static constexpr bool is_container = true;
 };
 

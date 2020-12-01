@@ -13,7 +13,7 @@
 namespace ac {
 
 template <class T, class A>
-struct range_traits<std::list<T, A>> : empty_range_traits {
+struct range_traits<std::list<T, A>> : default_range_traits {
     static constexpr bool is_container = true;
 };
 

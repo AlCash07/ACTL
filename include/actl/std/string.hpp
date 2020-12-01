@@ -16,7 +16,7 @@
 namespace ac {
 
 template <class C, class T, class A>
-struct range_traits<std::basic_string<C, T, A>> : empty_range_traits {
+struct range_traits<std::basic_string<C, T, A>> : default_range_traits {
     static constexpr bool is_container = true;
 };
 
