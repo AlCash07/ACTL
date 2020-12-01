@@ -23,16 +23,16 @@ template <class K, class T, class H = hash_function<>, class E = std::equal_to<>
 using hash_multimap = std::unordered_multimap<K, T, H, E, A>;
 
 template <class K, class T, class H, class E, class A>
-struct range_traits<hash_map<K, T, H, E, A>> {
-    struct is_pair_associative;
-    struct is_container;
-    struct is_unique;
+struct range_traits<hash_map<K, T, H, E, A>> : empty_range_traits {
+    static constexpr bool is_pair_associative = true;
+    static constexpr bool is_container = true;
+    static constexpr bool is_unique = true;
 };
 
 template <class K, class T, class H, class E, class A>
-struct range_traits<hash_multimap<K, T, H, E, A>> {
-    struct is_pair_associative;
-    struct is_container;
+struct range_traits<hash_multimap<K, T, H, E, A>> : empty_range_traits {
+    static constexpr bool is_pair_associative = true;
+    static constexpr bool is_container = true;
 };
 
 }  // namespace ac

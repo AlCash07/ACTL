@@ -61,8 +61,8 @@ private:
 };
 
 template <>
-struct range_traits<dummy_container> {
-    struct is_container;
+struct range_traits<dummy_container> : empty_range_traits {
+    static constexpr bool is_container = true;
 };
 
 }  // namespace ac

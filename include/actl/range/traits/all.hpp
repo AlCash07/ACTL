@@ -7,8 +7,5 @@
 
 #pragma once
 
-#include <actl/range/traits/associative.hpp>
-#include <actl/range/traits/is_container.hpp>
-#include <actl/range/traits/is_sorted.hpp>
-#include <actl/range/traits/is_unique.hpp>
+#include <actl/range/traits/range_traits.hpp>
 #include <actl/range/traits/iterator.hpp>

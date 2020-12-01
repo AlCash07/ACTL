@@ -10,7 +10,7 @@
 #include <actl/io/range.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/range/traits/associative.hpp>
+#include <actl/range/traits/range_traits.hpp>
 
 namespace ac::io {
 

@@ -15,8 +15,8 @@
 namespace ac {
 
 template <class T, size_t N>
-struct range_traits<std::array<T, N>> {
-    struct is_container;
+struct range_traits<std::array<T, N>> : empty_range_traits {
+    static constexpr bool is_container = true;
 };
 
 template <class T, size_t N>

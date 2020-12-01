@@ -13,18 +13,18 @@
 namespace ac {
 
 template <class T, class C, class A>
-struct range_traits<std::set<T, C, A>> {
-    struct is_simple_associative;
-    struct is_container;
-    struct is_sorted;
-    struct is_unique;
+struct range_traits<std::set<T, C, A>> : empty_range_traits {
+    static constexpr bool is_simple_associative = true;
+    static constexpr bool is_container = true;
+    static constexpr bool is_sorted = true;
+    static constexpr bool is_unique = true;
 };
 
 template <class T, class C, class A>
-struct range_traits<std::multiset<T, C, A>> {
-    struct is_simple_associative;
-    struct is_container;
-    struct is_sorted;
+struct range_traits<std::multiset<T, C, A>> : empty_range_traits {
+    static constexpr bool is_simple_associative = true;
+    static constexpr bool is_container = true;
+    static constexpr bool is_sorted = true;
 };
 
 }  // namespace ac

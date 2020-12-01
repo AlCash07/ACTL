@@ -14,18 +14,18 @@
 namespace ac {
 
 template <class K, class T, class C, class A>
-struct range_traits<std::map<K, T, C, A>> {
-    struct is_pair_associative;
-    struct is_container;
-    struct is_sorted;
-    struct is_unique;
+struct range_traits<std::map<K, T, C, A>> : empty_range_traits {
+    static constexpr bool is_pair_associative = true;
+    static constexpr bool is_container = true;
+    static constexpr bool is_sorted = true;
+    static constexpr bool is_unique = true;
 };
 
 template <class K, class T, class C, class A>
-struct range_traits<std::multimap<K, T, C, A>> {
-    struct is_pair_associative;
-    struct is_container;
-    struct is_sorted;
+struct range_traits<std::multimap<K, T, C, A>> : empty_range_traits {
+    static constexpr bool is_pair_associative = true;
+    static constexpr bool is_container = true;
+    static constexpr bool is_sorted = true;
 };
 
 }  // namespace ac

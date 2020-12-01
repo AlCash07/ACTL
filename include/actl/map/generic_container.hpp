@@ -11,8 +11,7 @@
 #include <actl/iterator/transform_iterator.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/range/traits/associative.hpp>
-#include <actl/range/traits/is_container.hpp>
+#include <actl/range/traits/range_traits.hpp>
 
 namespace ac {
 

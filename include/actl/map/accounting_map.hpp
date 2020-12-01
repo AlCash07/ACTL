@@ -8,8 +8,7 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
-#include <actl/range/traits/associative.hpp>
-#include <actl/range/traits/is_unique.hpp>
+#include <actl/range/traits/range_traits.hpp>
 #include <actl/std/vector.hpp>
 #include <actl/util/compressed_pair.hpp>
 

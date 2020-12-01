@@ -13,8 +13,8 @@
 namespace ac {
 
 template <class T, class A>
-struct range_traits<std::forward_list<T, A>> {
-    struct is_container;
+struct range_traits<std::forward_list<T, A>> : empty_range_traits {
+    static constexpr bool is_container = true;
 };
 
 }  // namespace ac
