@@ -12,6 +12,7 @@
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/range/traits/is_range.hpp>
+#include <actl/util/span.hpp>
 
 namespace ac::io {
 
@@ -30,9 +31,15 @@ inline constexpr bool is_tuple_v = is_tuple<T>::value;
 
 namespace ac::io::detail {
 
+template <class B, index N, enable_int_if<std::is_arithmetic_v<B> && sizeof(B) == 1> = 0>
+std::true_type is_byte_span(const span<B, N>&);
+
+template <class T>
+std::false_type is_byte_span(const T&);
+
 template <class D, class F, class T>
 index write_pre_final(D& od, F& fmt, const T& x) {
-    if constexpr (is_range_v<T> || is_tuple_v<T>) {
+    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<T> || is_tuple_v<T>) {
         manipulate(fmt, change_level{true});
         index res = write_final(od, fmt, x);
         manipulate(fmt, change_level{false});
@@ -45,7 +52,7 @@ index write_pre_final(D& od, F& fmt, const T& x) {
 template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x) {
     using U = remove_cvref_t<T>;
-    if constexpr (is_range_v<U> || is_tuple_v<U>) {
+    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<U> || is_tuple_v<U>) {
         manipulate(fmt, change_level{true});
         bool res = read_final(id, fmt, x);
         manipulate(fmt, change_level{false});

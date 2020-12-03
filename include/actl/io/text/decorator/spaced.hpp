@@ -60,6 +60,12 @@ decltype(auto) encode(spaced<S, C>& fmt, const raw<T>& x) {
 }
 
 template <class S, class C>
+auto encode(spaced<S, C>& fmt, colon) {
+    fmt.separate = false;
+    return batch{colon{}, fmt.colon};
+}
+
+template <class S, class C>
 void manipulate(spaced<S, C>& fmt, change_level x) {
     fmt.separate = !x.deeper;
 }

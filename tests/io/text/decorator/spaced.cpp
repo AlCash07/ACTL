@@ -7,7 +7,10 @@
 
 #include <actl/io/text/arithmetic/integer_write.hpp>
 #include <actl/io/text/decorator/spaced.hpp>
+#include <actl/std/map.hpp>
+#include <actl/std/vector.hpp>
 #include <actl/test.hpp>
+
 #include "io/text/test_io.hpp"
 
 using namespace ac::io;
@@ -29,7 +32,14 @@ TEST("nested") {
     test_write("((2, 1), (4, 3)), (1, 3)", f, pair{pair{2, 1}, pair{4, 3}}, pair{1, 3});
 }
 
-TEST("vector") {
-    auto f = spaced{} >>= text{};
-    test_write("5 3 2 1", f, std::vector{5, 3, 2, 1});
+TEST("std::vector") {
+    std::vector v{2, 4, 5, 1};
+    test_write("4 2 4 5 1", spaced{} >>= text{}, v);
+    test_write("4 2 4 5 1", spaced{' ', ": "} >>= text{}, v);
+}
+
+TEST("pair associative container") {
+    std::map<int, int> m{{2, 4}, {5, 1}};
+    test_write("2 2 4 5 1", spaced{} >>= text{}, m);
+    test_write("2 2: 4 5: 1", spaced{' ', ": "} >>= text{}, m);
 }

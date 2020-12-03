@@ -18,12 +18,14 @@ template <class T>
 struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
 
 template <class Format, class Manipulator>
-inline void manipulate(Format&, const Manipulator&) {}
+void manipulate(Format&, const Manipulator&) {}
 
 struct change_level {
     bool deeper;
 
     struct is_manipulator;
 };
+
+struct colon {};
 
 }  // namespace ac::io

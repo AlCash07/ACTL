@@ -14,28 +14,47 @@
 
 namespace ac::io {
 
+template <class Pair>
+decltype(auto) key_representation(Pair& x) {
+    if constexpr (std::is_const_v<Pair>)
+        return x.first;
+    else
+        // const_cast is used to be able to read std::map<Key, Value>::value_type which is
+        // std::pair<const Key, Value>.
+        return const_cast<typename Pair::first_type&>(x.first);
+}
+
+template <class Range, class T>
+decltype(auto) element_representation(T& x) {
+    if constexpr (is_pair_associative_range_v<Range>)
+        return batch{key_representation(x), colon{}, x.second};
+    else
+        return x;
+}
+
 template <class Device, class Format, class R, enable_int_if<is_range_v<R>> = 0>
-inline index write_final(Device& od, Format& fmt, const R& x) {
+index write_final(Device& od, Format& fmt, const R& x) {
     index res{};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         res = write_size(od, fmt, x.size());
     }
     for (const auto& value : x) {
-        res += write(od, fmt, value);
+        res += write(od, fmt, element_representation<R>(value));
     }
     return res;
 }
 
 template <class Device, class Format, class R,
           enable_int_if<is_range_v<R> && !std::is_const_v<value_t<R>>> = 0>
-inline bool read_final(Device& id, Format& fmt, R& x) {
+bool read_final(Device& id, Format& fmt, R& x) {
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         decltype(x.size()) size{};
         if (!read_size(id, fmt, size)) return false;
         if constexpr (!is_random_access_range_v<R>) {
             for (; size > 0; --size) {
                 value_t<R> value;
-                if (!read(id, fmt, value)) return false;
+                if (!read(id, fmt, element_representation<R>(value)))
+                    return false;
                 emplace(x, std::move(value));
             }
             return true;
