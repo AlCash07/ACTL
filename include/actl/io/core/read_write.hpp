@@ -40,7 +40,8 @@ std::false_type is_byte_span(const T&);
 
 template <class D, class F, class T>
 index write_pre_final(D& od, F& fmt, const T& x) {
-    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<T> || is_io_tuple_v<T>) {
+    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<T> ||
+                  !is_tuple_v<T> && is_io_tuple_v<T>) {
         manipulate(fmt, change_level{true});
         index res = write_final(od, fmt, x);
         manipulate(fmt, change_level{false});
@@ -53,7 +54,8 @@ index write_pre_final(D& od, F& fmt, const T& x) {
 template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x) {
     using U = remove_cvref_t<T>;
-    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<U> || is_io_tuple_v<U>) {
+    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<U> ||
+                  !is_tuple_v<T> && is_io_tuple_v<U>) {
         manipulate(fmt, change_level{true});
         bool res = read_final(id, fmt, x);
         manipulate(fmt, change_level{false});

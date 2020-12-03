@@ -9,6 +9,7 @@
 
 #include <actl/functional/composite/tuple.hpp>
 #include <actl/functional/operators.hpp>
+#include <actl/io/tuple.hpp>
 #include <actl/util/introspection.hpp>
 
 namespace ac {
@@ -73,7 +74,7 @@ public:
     constexpr const T2& second() const noexcept { return detail::cpb2<T2>::get(); }
 
 private:
-    INTROSPECT(first(), second())
+    DEFINE_HASH(first(), second())
 };
 
 template <size_t I, class T1, class T2>
