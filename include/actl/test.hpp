@@ -54,7 +54,7 @@ namespace ac::io {
 template <
     class Device, class Format, class T,
     enable_int_if<!(decltype(serialization_access{}.has_write<T, Device&, Format&>(0))::value ||
-                    is_range_v<T> || is_tuple<T>::value || std::is_empty_v<T> ||
+                    is_range_v<T> || is_io_tuple_v<T> || std::is_empty_v<T> ||
                     std::is_arithmetic_v<T>)> = 0>
 inline index write_final(Device& od, Format& fmt, const T&) {
     return write(od, fmt, "<unknown-type>"sv);

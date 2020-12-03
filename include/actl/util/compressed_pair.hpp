@@ -76,9 +76,6 @@ private:
     INTROSPECT(first(), second())
 };
 
-template <class T1, class T2>
-struct is_tuple<compressed_pair<T1, T2>> : std::true_type {};
-
 template <size_t I, class T1, class T2>
 inline auto& get(const compressed_pair<T1, T2>& p) {
     if constexpr (I == 0) {

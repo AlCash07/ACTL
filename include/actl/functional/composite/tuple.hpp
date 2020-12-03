@@ -9,6 +9,7 @@
 
 #include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
+#include <actl/util/traits/is_tuple.hpp>
 
 namespace ac {
 
@@ -22,7 +23,7 @@ namespace ac::math {
 struct tuple_tag {};
 
 template <class T>
-struct category_impl<T, std::enable_if_t<is_tuple<T>::value>> {
+struct category_impl<T, std::enable_if_t<is_tuple_v<T>>> {
     using type = tuple_tag;
 };
 

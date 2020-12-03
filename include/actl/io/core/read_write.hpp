@@ -13,19 +13,20 @@
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/range/traits/is_range.hpp>
 #include <actl/util/span.hpp>
+#include <actl/util/traits/is_tuple.hpp>
 
 namespace ac::io {
 
 /* Argument traits */
 
-template <class T>
-struct is_tuple : decltype(serialization_access{}.is_io_tuple<T>(0)) {};
-
-template <class... Ts>
-struct is_tuple<std::tuple<Ts...>> : std::true_type {};
+template <class T, bool = is_tuple_v<T>>
+struct is_io_tuple : std::true_type {};
 
 template <class T>
-inline constexpr bool is_tuple_v = is_tuple<T>::value;
+struct is_io_tuple<T, false> : decltype(serialization_access{}.is_io_tuple<T>(0)) {};
+
+template <class T>
+constexpr bool is_io_tuple_v = is_io_tuple<T>::value;
 
 }  // namespace ac::io
 
@@ -39,7 +40,7 @@ std::false_type is_byte_span(const T&);
 
 template <class D, class F, class T>
 index write_pre_final(D& od, F& fmt, const T& x) {
-    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<T> || is_tuple_v<T>) {
+    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<T> || is_io_tuple_v<T>) {
         manipulate(fmt, change_level{true});
         index res = write_final(od, fmt, x);
         manipulate(fmt, change_level{false});
@@ -52,7 +53,7 @@ index write_pre_final(D& od, F& fmt, const T& x) {
 template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x) {
     using U = remove_cvref_t<T>;
-    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<U> || is_tuple_v<U>) {
+    if constexpr (!decltype(is_byte_span(x))::value && is_range_v<U> || is_io_tuple_v<U>) {
         manipulate(fmt, change_level{true});
         bool res = read_final(id, fmt, x);
         manipulate(fmt, change_level{false});

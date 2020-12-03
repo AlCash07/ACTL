@@ -12,9 +12,6 @@
 
 namespace ac {
 
-template <class... Ts>
-struct is_tuple<std::tuple<Ts...>> : std::true_type {};
-
 template <class T, size_t... Is>
 inline constexpr size_t hash_tuple(const T& x, std::index_sequence<Is...>) {
     return hash_value(std::get<Is>(x)...);
