@@ -35,37 +35,56 @@ decltype(auto) element_representation(T& x) {
 template <class Device, class Format, class R, enable_int_if<is_range_v<R>> = 0>
 index write_final(Device& od, Format& fmt, const R& x) {
     index res{};
+    manipulate(fmt, change_level{true});
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
         res = write_size(od, fmt, x.size());
     }
     for (const auto& value : x) {
         res += write(od, fmt, element_representation<R>(value));
     }
+    manipulate(fmt, change_level{false});
     return res;
+}
+
+template <class D, class F, class R>
+bool read_range(D& id, F& fmt, R& x) {
+    for (auto& value : x) {
+        if (!read(id, fmt, value))
+            return false;
+    }
+    return true;
+}
+
+template <class D, class F, class C>
+bool read_container(D& id, F& fmt, C& x) {
+    decltype(x.size()) size{};
+    if (!read_size(id, fmt, size))
+        return false;
+    if constexpr (!is_random_access_range_v<C>) {
+        for (; size > 0; --size) {
+            value_t<C> value;
+            if (!read(id, fmt, element_representation<C>(value)))
+                return false;
+            emplace(x, std::move(value));
+        }
+        return true;
+    } else {
+        x.resize(size);
+        return read_range(id, fmt, x);
+    }
 }
 
 template <class Device, class Format, class R,
           enable_int_if<is_range_v<R> && !std::is_const_v<value_t<R>>> = 0>
 bool read_final(Device& id, Format& fmt, R& x) {
-    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
-        decltype(x.size()) size{};
-        if (!read_size(id, fmt, size)) return false;
-        if constexpr (!is_random_access_range_v<R>) {
-            for (; size > 0; --size) {
-                value_t<R> value;
-                if (!read(id, fmt, element_representation<R>(value)))
-                    return false;
-                emplace(x, std::move(value));
-            }
-            return true;
-        } else {
-            x.resize(size);
-        }
-    }
-    for (auto& value : x) {
-        if (!read(id, fmt, value)) return false;
-    }
-    return true;
+    bool res{};
+    manipulate(fmt, change_level{true});
+    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
+        res = read_container(id, fmt, x);
+    else
+        res = read_range(id, fmt, x);
+    manipulate(fmt, change_level{false});
+    return res;
 }
 
 }  // namespace ac::io
