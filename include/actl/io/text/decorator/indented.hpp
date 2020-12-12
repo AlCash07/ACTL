@@ -38,10 +38,11 @@ decltype(auto) encode(indented<C>& fmt, const raw<T>& x) {
     return x;
 }
 
-template <class C>
-inline void manipulate(indented<C>& fmt, change_level x) {
-    if (x.deeper) fmt.indent = true;
-    fmt.level += x.deeper ? 1 : -1;
+template <class C, bool Deeper>
+void manipulate(indented<C>& fmt, change_level<Deeper>) {
+    if constexpr (Deeper)
+        fmt.indent = true;
+    fmt.level += Deeper ? 1 : -1;
 }
 
 }  // namespace ac::io

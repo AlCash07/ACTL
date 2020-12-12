@@ -65,9 +65,9 @@ auto encode(spaced<S, C>& fmt, colon) {
     return batch{colon{}, fmt.colon};
 }
 
-template <class S, class C>
-void manipulate(spaced<S, C>& fmt, change_level x) {
-    fmt.separate = !x.deeper;
+template <class S, class C, bool Deeper>
+void manipulate(spaced<S, C>& fmt, change_level<Deeper>) {
+    fmt.separate = !Deeper;
 }
 
 }  // namespace ac::io

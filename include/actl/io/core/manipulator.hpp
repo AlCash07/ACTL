@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <tuple>
+#include <type_traits>
 
 namespace ac::io {
 
@@ -20,20 +20,19 @@ struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_ty
 template <class Format, class Manipulator>
 void manipulate(Format&, const Manipulator&) {}
 
+template <bool Deeper>
 struct change_level {
-    bool deeper;
-
     struct is_manipulator;
 };
 
 template <class Format>
 struct nested_scope_guard {
     explicit nested_scope_guard(Format& fmt) : fmt{fmt} {
-        manipulate(fmt, change_level{true});
+        manipulate(fmt, change_level<true>{});
     }
 
     ~nested_scope_guard() {
-        manipulate(fmt, change_level{false});
+        manipulate(fmt, change_level<false>{});
     }
 
     Format& fmt;
