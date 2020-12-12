@@ -15,26 +15,21 @@ using namespace ac::io;
 using pii = std::pair<ac::index, ac::index>;
 
 TEST("adjustment::left") {
-    adjusted fmt;
-    fmt.width = 4;
+    adjusted fmt{4};
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{0, 3}, adjustment(fmt, 1));
 }
 
 TEST("adjustment::right") {
-    adjusted fmt;
-    fmt.where = adjust_to::right;
-    fmt.width = 4;
+    adjusted fmt{4, adjust_to::right};
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{3, 0}, adjustment(fmt, 1));
 }
 
 TEST("adjustment::center") {
-    adjusted fmt;
-    fmt.where = adjust_to::center;
-    fmt.width = 4;
+    adjusted fmt{4, adjust_to::center};
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{1, 1}, adjustment(fmt, 2));
@@ -42,9 +37,7 @@ TEST("adjustment::center") {
 }
 
 TEST("adjustment::center_right") {
-    adjusted fmt;
-    fmt.where = adjust_to::center_right;
-    fmt.width = 4;
+    adjusted fmt{4, adjust_to::center_right};
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
     ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
     ASSERT_EQUAL(pii{1, 1}, adjustment(fmt, 2));
@@ -52,11 +45,10 @@ TEST("adjustment::center_right") {
 }
 
 TEST("fill") {
-    auto fmt = text_static{} >>= adjusted{};
+    auto fmt = text_static{} >>= adjusted{4, adjust_to::center, '*'};
     char s[14];
     memory<io::out> od{s};
-    write(od, fmt, adjust_to::center);
-    ASSERT_EQUAL(4l, write(od, fmt, setwidth{4}, setfill{'*'}, 'a'));
+    ASSERT_EQUAL(4l, write(od, fmt, 'a'));
     ASSERT_EQUAL(6l, write(od, fmt, "bacaba"));
     ASSERT_EQUAL(4l, write(od, fmt, 42));
     ASSERT_EQUAL("*a**bacaba*42*"sv, s);
