@@ -34,15 +34,12 @@ decltype(auto) element_representation(T& x) {
 
 template <class Device, class Format, class R, enable_int_if<is_range_v<R>> = 0>
 index write_final(Device& od, Format& fmt, const R& x) {
+    nested_scope_guard g{fmt};
     index res{};
-    manipulate(fmt, change_level{true});
-    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size) {
+    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
         res = write_size(od, fmt, x.size());
-    }
-    for (const auto& value : x) {
+    for (const auto& value : x)
         res += write(od, fmt, element_representation<R>(value));
-    }
-    manipulate(fmt, change_level{false});
     return res;
 }
 
@@ -77,14 +74,11 @@ bool read_container(D& id, F& fmt, C& x) {
 template <class Device, class Format, class R,
           enable_int_if<is_range_v<R> && !std::is_const_v<value_t<R>>> = 0>
 bool read_final(Device& id, Format& fmt, R& x) {
-    bool res{};
-    manipulate(fmt, change_level{true});
+    nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
-        res = read_container(id, fmt, x);
+        return read_container(id, fmt, x);
     else
-        res = read_range(id, fmt, x);
-    manipulate(fmt, change_level{false});
-    return res;
+        return read_range(id, fmt, x);
 }
 
 }  // namespace ac::io

@@ -35,10 +35,8 @@ namespace ac::io::detail {
 template <class D, class F, class T>
 index write_pre_final(D& od, F& fmt, const T& x) {
     if constexpr (!is_tuple_v<T> && is_io_tuple_v<T>) {
-        manipulate(fmt, change_level{true});
-        index res = write_final(od, fmt, x);
-        manipulate(fmt, change_level{false});
-        return res;
+        nested_scope_guard g{fmt};
+        return write_final(od, fmt, x);
     } else {
         return write_final(od, fmt, x);
     }
@@ -48,10 +46,8 @@ template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x) {
     using U = remove_cvref_t<T>;
     if constexpr (!is_tuple_v<T> && is_io_tuple_v<U>) {
-        manipulate(fmt, change_level{true});
-        bool res = read_final(id, fmt, x);
-        manipulate(fmt, change_level{false});
-        return res;
+        nested_scope_guard g{fmt};
+        return read_final(id, fmt, x);
     } else {
         return read_final(id, fmt, x);
     }

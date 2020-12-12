@@ -26,6 +26,19 @@ struct change_level {
     struct is_manipulator;
 };
 
+template <class Format>
+struct nested_scope_guard {
+    explicit nested_scope_guard(Format& fmt) : fmt{fmt} {
+        manipulate(fmt, change_level{true});
+    }
+
+    ~nested_scope_guard() {
+        manipulate(fmt, change_level{false});
+    }
+
+    Format& fmt;
+};
+
 struct colon {};
 
 }  // namespace ac::io

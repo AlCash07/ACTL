@@ -2,7 +2,12 @@
 Language: Cpp
 BasedOnStyle: Google
 AccessModifierOffset: -4
-AllowShortIfStatementsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
 BreakConstructorInitializers: BeforeComma
 ColumnLimit: 100
 CompactNamespaces: true
