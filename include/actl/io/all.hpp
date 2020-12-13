@@ -9,7 +9,9 @@
 
 #include <actl/io/binary/all.hpp>
 #include <actl/io/device/all.hpp>
+#include <actl/io/format/all.hpp>
 #include <actl/io/iterator.hpp>
 #include <actl/io/range.hpp>
 #include <actl/io/text/all.hpp>
+#include <actl/io/tuple.hpp>
 #include <actl/io/util/all.hpp>

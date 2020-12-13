@@ -21,10 +21,3 @@ TEST("flush") {
     write(od, flush);
     ASSERT_TRUE(array[0] == 'x');
 }
-
-TEST("unit_flush") {
-    char array[1] = {};
-    buffered<memory<io::bin | io::out>, char[2]> od{array};
-    write(od, unit_flush{}, 'x');
-    ASSERT_TRUE(array[0] == 'x');
-}

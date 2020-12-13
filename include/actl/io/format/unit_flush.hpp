@@ -7,22 +7,19 @@
 
 #pragma once
 
-#include <actl/io/util/predicate.hpp>
-#include <actl/string/ctype.hpp>
+#include <actl/io/core/batch.hpp>
+#include <actl/io/util/flush.hpp>
 
 namespace ac::io {
 
-template <class T>
-struct skip : public predicate<T> {
-    explicit constexpr skip(T value) : predicate<T>{value} {}
+// Format that flushes after each unit.
+struct unit_flush {
+    struct format_tag;
 };
 
-constexpr auto ws = skip{is_space};  // skip whitespace
-
-template <class Device, class Format, class T>
-bool read_final(Device& id, Format&, skip<T> x) {
-    while (!id.eof() && x(id.peek())) id.move(1);
-    return true;
+template <class T>
+auto encode(unit_flush&, const T& x) {
+    return batch{x, flush_t{}};
 }
 
 }  // namespace ac::io

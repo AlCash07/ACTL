@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <actl/io/core/apply_format.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
+#include <actl/io/format/apply_format.hpp>
 #include <actl/range/traits/is_range.hpp>
 #include <actl/util/span.hpp>
 #include <actl/util/traits/is_tuple.hpp>

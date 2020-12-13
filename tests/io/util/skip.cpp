@@ -12,11 +12,9 @@
 using namespace ac::io;
 
 TEST("whitespace skip") {
-    std::string s = " \n\ta\n";
-    memory<in> id{s};
+    memory<in> id{" \n\tb"};
     char a, b;
-    ASSERT_TRUE(read(id, skipws{} >>= text{}, a));
-    ASSERT_TRUE(read(id, text{}, b));
-    ASSERT_EQUAL('a', a);
-    ASSERT_EQUAL('\n', b);
+    ASSERT_TRUE(read(id, text{}, a, ws, b));
+    ASSERT_EQUAL(' ', a);
+    ASSERT_EQUAL('b', b);
 }
