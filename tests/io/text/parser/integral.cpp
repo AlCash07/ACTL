@@ -19,11 +19,15 @@ TEST("read unsigned long long") {
     test_read<false>(x, "18446744073709551616", f);
     test_read<false>(x, "18446744073709551620", f);
     test_read<false>(x, "100000000000000000000", f);
-    test_read(zero, "+00", f, setbase{2});
+    f.base = 2;
+    test_read(zero, "+00", f);
     test_read(max, "1111111111111111111111111111111111111111111111111111111111111111", f);
-    test_read(max, "11112220022122120101211020120210210211220", f, setbase{3});
-    test_read(max, "3w5e11264sgsf", f, setbase{36});
-    test_read(max, "fFfFfFfFfFfFfFfF", f, hex);
+    f.base = 3;
+    test_read(max, "11112220022122120101211020120210210211220", f);
+    f.base = 36;
+    test_read(max, "3w5e11264sgsf", f);
+    f.base = hex;
+    test_read(max, "fFfFfFfFfFfFfFfF", f);
     test_read(max, "0XFFFFFFFFFFFFFFFF", f);
     test_read(max, "0xffffffffffffffff", f);
     test_read<false>(x, "0xfffffffffffffffff", f);
@@ -41,14 +45,18 @@ TEST("read long long") {
     test_read<false>(x, "-9223372036854775809", f);
     test_read<true>(max, "9223372036854775807", f);
     test_read<false>(x, "9223372036854775809", f);
-    test_read<true>(zero, "0", f, setbase{2});
+    f.base = 2;
+    test_read<true>(zero, "0", f);
     test_read<true>(min, "-1000000000000000000000000000000000000000000000000000000000000000", f);
     test_read<true>(max, "+111111111111111111111111111111111111111111111111111111111111111", f);
-    test_read<true>(min, "-2021110011022210012102010021220101220222", f, setbase{3});
+    f.base = 3;
+    test_read<true>(min, "-2021110011022210012102010021220101220222", f);
     test_read<true>(max, "+2021110011022210012102010021220101220221", f);
-    test_read<true>(min, "-1y2p0ij32e8e8", f, setbase{36});
+    f.base = 36;
+    test_read<true>(min, "-1y2p0ij32e8e8", f);
     test_read<true>(max, "+1y2p0ij32e8e7", f);
-    test_read<true>(min, "-8000000000000000", f, hex);
+    f.base = hex;
+    test_read<true>(min, "-8000000000000000", f);
     test_read<true>(min, "-0x8000000000000000", f);
     test_read<true>(max, "7fffffffffffffff", f);
     test_read<true>(max, "+0X7fFfFfFfFfFfFfFf", f);
@@ -57,8 +65,8 @@ TEST("read long long") {
 }
 
 TEST("determine base") {
-    text f;
-    test_read<true>(10, "10", f, setbase{0});
+    text f{0, base_t{0}};
+    test_read<true>(10, "10", f);
     test_read<true>(2, "0b10", f);
     test_read<true>(-2, "-0B10", f);
     test_read<true>(8, "010", f);

@@ -20,8 +20,7 @@ public:
     }
 
     precision_t& operator=(index x) {
-        value = x;
-        return *this;
+        return *this = precision_t{x};
     }
 
     constexpr operator index() const {

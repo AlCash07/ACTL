@@ -6,6 +6,7 @@
 #pragma once
 
 #include <actl/io/io.hpp>
+#include <actl/io/text/settings/base.hpp>
 #include <actl/io/text/settings/precision.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/numeric/bit.hpp>
@@ -40,24 +41,6 @@ namespace groups {
 enum : flag_t { floatfield };
 
 }  // namespace groups
-
-// Integer and real numbers base.
-class base_t {
-public:
-    struct is_manipulator;
-
-    explicit constexpr base_t() = default;
-
-    template <class T>
-    explicit constexpr base_t(T x) : value_{static_cast<uint8_t>(x)} {
-        ACTL_ASSERT(x == 0 || 1 < x && x <= 36);
-    }
-
-    constexpr operator uint8_t() const { return value_; }
-
-private:
-    uint8_t value_ = 10;
-};
 
 const flag_t group_bits[] = {flag::fixed | flag::scientific | flag::hexfloat};
 
@@ -98,11 +81,9 @@ public:
         flags_ = set_bits(flags_, group_bits[group], flag);
     }
 
-    base_t base;
-    precision_t precision;
-
-protected:
-    flag_t flags_ = text_static<>::flags();
+    flag_t flags_ = 0;
+    base_t base = base_t{};
+    precision_t precision = precision_t{};
 };
 
 template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
@@ -169,16 +150,6 @@ void manipulate(Format& fmt, setf<Flag, Value>) {
 template <class Format, flag_t Group, flag_t Flag>
 void manipulate(Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
-}
-
-using setbase = base_t;
-constexpr setbase dec{10};
-constexpr setbase hex{16};
-constexpr setbase oct{8};
-
-template <class Format>
-void manipulate(Format& fmt, setbase x) {
-    fmt.base = x;
 }
 
 }  // namespace ac::io
