@@ -11,16 +11,16 @@
 namespace ac::io {
 
 template <class T>
-struct skip : public predicate<T> {
+struct skip : private predicate<T> {
     explicit constexpr skip(T value) : predicate<T>{value} {}
+
+    template <class Device>
+    bool operator()(Device& id) const {
+        while (!id.eof() && predicate<T>::operator()(id.peek())) id.move(1);
+        return true;
+    }
 };
 
 constexpr auto ws = skip{is_space};  // skip whitespace
-
-template <class Device, class Format, class T>
-bool read_final(Device& id, Format&, skip<T> x) {
-    while (!id.eof() && x(id.peek())) id.move(1);
-    return true;
-}
 
 }  // namespace ac::io
