@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
 #include <actl/io/io.hpp>
+#include <actl/io/text/settings/precision.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/numeric/bit.hpp>
 #include <actl/string/traits.hpp>
@@ -57,15 +57,6 @@ public:
 
 private:
     uint8_t value_ = 10;
-};
-
-// Number of digits after the decimal point.
-struct precision_t {
-    struct is_manipulator;
-
-    index value = 6;
-
-    constexpr operator index() const { return value; }
 };
 
 const flag_t group_bits[] = {flag::fixed | flag::scientific | flag::hexfloat};
@@ -188,13 +179,6 @@ constexpr setbase oct{8};
 template <class Format>
 void manipulate(Format& fmt, setbase x) {
     fmt.base = x;
-}
-
-using setprecision = precision_t;
-
-template <class Format>
-void manipulate(Format& fmt, setprecision x) {
-    fmt.precision = x;
 }
 
 }  // namespace ac::io

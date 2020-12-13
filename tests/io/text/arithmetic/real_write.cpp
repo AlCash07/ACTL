@@ -19,11 +19,13 @@ TEST("write double") {
     test_write("NAN", f, noshowpos, nan);
     test_write("-NAN", f, -nan);
     test_write("+nan", f, showpos, nouppercase, nan);
-    test_write("+0", f, setprecision{0}, 0.0);
+    f.precision = 0;
+    test_write("+0", f, 0.0);
     test_write("-0", f, -0.0);
     test_write("0", f, noshowpos, 0.0);
     test_write("0.", f, showpoint, 0.0);
-    test_write("0.123456789", f, setprecision{9}, 0.123456789);
+    f.precision = 9;
+    test_write("0.123456789", f, 0.123456789);
     test_write("-12345678987654320.000000000", f, -12345678987654320.0);
     test_write("F0E1.D20000000", f, uppercase, hex, 0xF0E1.D2p0);
 }

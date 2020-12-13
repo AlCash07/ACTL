@@ -114,7 +114,7 @@ std::vector<test_base*>& all_tests() {
 }  // namespace detail
 
 int run(int argc, const char* argv[]) {
-    io::write(cerr, io::setprecision{3});
+    cerr.precision = 3;
     using namespace detail;
     std::function<bool(const std::string&)> filter = [](const std::string&) -> bool {
         return true;
