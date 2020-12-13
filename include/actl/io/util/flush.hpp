@@ -7,28 +7,26 @@
 
 #pragma once
 
-#include <actl/io/io.hpp>
+#include <actl/io/core/batch.hpp>
 
 namespace ac::io {
 
 struct flush_t {
-    struct is_manipulator;
+    template <class Device>
+    index operator()(Device& od) const {
+        od.flush();
+        return 0;
+    }
 };
-constexpr flush_t flush{};
-
-template <class Device, class Format>
-inline index write_final(Device& od, Format&, flush_t) {
-    od.flush();
-    return 0;
-}
+constexpr flush_t flush;
 
 // Format that flushes after each unit.
-struct auto_flush {
+struct unit_flush {
     struct format_tag;
 };
 
 template <class T>
-auto encode(auto_flush&, const T& x) {
+auto encode(unit_flush&, const T& x) {
     return batch{x, flush_t{}};
 }
 

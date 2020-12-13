@@ -8,6 +8,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/functional/scalar/derived.hpp>
 #include <actl/io/io.hpp>
 #include <actl/macros.hpp>
 #include <actl/range/algorithm.hpp>
@@ -99,7 +100,7 @@ template <class Device, class Buffer>
 class buffered<Device, Buffer, true> : public buffered<Device, Buffer, false> {
 protected:
     using Char = char_t<Device>;
-    using base_t = buffered_reader<Device, Buffer, false>;
+    using base_t = buffered<Device, Buffer, false>;
     using base_t::buf_;
     using base_t::ptr_;
 

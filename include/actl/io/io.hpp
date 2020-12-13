@@ -94,13 +94,15 @@ struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
 
 /* Common types support */
 
-template <class Device, class Format, class T, enable_int_if<std::is_empty_v<T>> = 0>
-inline index write_final(Device&, Format&, const T&) {
+template <class Device, class Format, class T,
+          enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
+index write_final(Device&, Format&, T&) {
     return 0;
 }
 
-template <class Device, class Format, class T, enable_int_if<std::is_empty_v<T>> = 0>
-inline bool read_final(Device&, Format&, T&) {
+template <class Device, class Format, class T,
+          enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<index, T&, Device&>> = 0>
+bool read_final(Device&, Format&, T&) {
     return true;
 }
 
@@ -137,9 +139,15 @@ inline bool read_final(Device& id, Format&, cspan<B, N>& s) {
 /* Function support */
 
 template <class Device, class Format, class T,
+          enable_int_if<std::is_invocable_r_v<index, T&, Device&>> = 0>
+index write_final(Device& id, Format&, T& f) {
+    return f(id);
+}
+
+template <class Device, class Format, class T,
           enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
-inline bool read_final(Device& id, Format&, T& s) {
-    return s(id);
+bool read_final(Device& od, Format&, T& f) {
+    return f(od);
 }
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into
