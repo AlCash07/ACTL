@@ -23,14 +23,14 @@ using flag_t = uint32_t;
 namespace flag {
 
 enum : flag_t {
-    boolalpha,
-    uppercase,
-    showbase,
-    showpos,
-    showpoint,
-    fixed,
-    scientific,
-    hexfloat
+    boolalpha = 1 << 0,
+    uppercase = 1 << 1,
+    showbase = 1 << 2,
+    showpos = 1 << 3,
+    showpoint = 1 << 4,
+    fixed = 1 << 5,
+    scientific = 1 << 6,
+    hexfloat = 1 << 7
 };
 
 }  // namespace flag
@@ -68,7 +68,7 @@ struct precision_t {
     constexpr operator index() const { return value; }
 };
 
-const flag_t group_bits[] = {bit(flag::fixed) | bit(flag::scientific) | bit(flag::hexfloat)};
+const flag_t group_bits[] = {flag::fixed | flag::scientific | flag::hexfloat};
 
 template <flag_t Flags = 0, uint8_t Base = 10, index Precision = 6>
 class text_static {
@@ -77,7 +77,9 @@ public:
 
     static constexpr flag_t flags() { return Flags; }
 
-    static constexpr bool getf(flag_t flag) { return has_bit(Flags, flag); }
+    static constexpr bool getf(flag_t flag) {
+        return has_bits(Flags, flag);
+    }
 
     static constexpr base_t base = base_t{Base};
 
@@ -91,12 +93,18 @@ public:
     flag_t flags() const { return flags_; }
     void flags(flag_t value) { flags_ = value; }
 
-    bool getf(flag_t flag) const { return has_bit(flags(), flag); }
-    void setf(flag_t flag) { flags_ |= bit(flag); }
-    void unsetf(flag_t flag) { flags_ = clear_bit(flags_, flag); }
+    bool getf(flag_t flag) const {
+        return has_bits(flags(), flag);
+    }
+    void setf(flag_t flag) {
+        flags_ |= flag;
+    }
+    void unsetf(flag_t flag) {
+        flags_ = clear_bits(flags_, flag);
+    }
 
     void setf(flag_t flag, flag_t group) {
-        flags_ = set_bits(flags_, group_bits[group], bit(flag));
+        flags_ = set_bits(flags_, group_bits[group], flag);
     }
 
     base_t base;
