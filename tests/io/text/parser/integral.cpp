@@ -65,7 +65,7 @@ TEST("read long long") {
 }
 
 TEST("determine base") {
-    text f{0, base_t{0}};
+    text f{0, detect_base};
     test_read<true>(10, "10", f);
     test_read<true>(2, "0b10", f);
     test_read<true>(-2, "-0B10", f);

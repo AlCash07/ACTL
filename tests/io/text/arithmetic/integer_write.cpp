@@ -17,7 +17,7 @@ TEST("write unsigned long long") {
     f.base = 2;
     test_write("0", f, zero);
     test_write("1111111111111111111111111111111111111111111111111111111111111111", f, max);
-    f.base = oct;
+    f.base = octal;
     test_write("0", f, zero);
     test_write("01777777777777777777777", f, max);
     test_write("1777777777777777777777", f, noshowbase, max);
@@ -45,8 +45,8 @@ TEST("write long long") {
     test_write("+0", f, showpos, zero);
     test_write("-1000000000000000000000000000000000000000000000000000000000000000", f, min);
     test_write("+111111111111111111111111111111111111111111111111111111111111111", f, max);
-    f.base = oct;
-    test_write("0", f, noshowpos, oct, zero);
+    f.base = octal;
+    test_write("0", f, noshowpos, zero);
     test_write("-01000000000000000000000", f, min);
     test_write("0777777777777777777777", f, max);
     test_write("-1000000000000000000000", f, noshowbase, min);
