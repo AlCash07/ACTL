@@ -14,7 +14,9 @@
 
 using namespace ac::io;
 
-auto sbts() { return spaced{' ', ':'} >>= braced{} >>= text_static<bit(flags::boolalpha)>{}; }
+auto sbts() {
+    return spaced{' ', ':'} >>= braced{} >>= text_static<bit(flag::boolalpha)>{};
+}
 
 TEST("bool") { test_write("true false", sbts(), true, false); }
 

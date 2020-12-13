@@ -12,7 +12,9 @@
 
 using namespace ac::io;
 
-auto ets() { return escaped{} >>= text_static<bit(flags::boolalpha)>{}; }
+auto ets() {
+    return escaped{} >>= text_static<bit(flag::boolalpha)>{};
+}
 
 TEST("int") { test_write("123", ets(), 123); }
 

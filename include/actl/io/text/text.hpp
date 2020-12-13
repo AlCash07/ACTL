@@ -20,20 +20,20 @@ using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
 
 using flag_t = uint32_t;
 
-namespace flags {
+namespace flag {
 
 enum : flag_t {
     boolalpha,
+    uppercase,
     showbase,
     showpos,
-    uppercase,
+    showpoint,
     fixed,
     scientific,
-    hexfloat,
-    showpoint
+    hexfloat
 };
 
-}  // namespace flags
+}  // namespace flag
 
 namespace groups {
 
@@ -68,7 +68,7 @@ struct precision_t {
     constexpr operator index() const { return value; }
 };
 
-const flag_t group_bits[] = {bit(flags::fixed) | bit(flags::scientific) | bit(flags::hexfloat)};
+const flag_t group_bits[] = {bit(flag::fixed) | bit(flag::scientific) | bit(flag::hexfloat)};
 
 template <flag_t Flags = 0, uint8_t Base = 10, index Precision = 6>
 class text_static {
@@ -134,30 +134,30 @@ struct setg {
 };
 
 // boolean as string or int
-constexpr setf<flags::boolalpha, true> boolalpha{};
-constexpr setf<flags::boolalpha, false> noboolalpha{};
+constexpr setf<flag::boolalpha, true> boolalpha{};
+constexpr setf<flag::boolalpha, false> noboolalpha{};
 
 // prepend integer number base prefix
-constexpr setf<flags::showbase, true> showbase{};
-constexpr setf<flags::showbase, false> noshowbase{};
+constexpr setf<flag::showbase, true> showbase{};
+constexpr setf<flag::showbase, false> noshowbase{};
 
 // prepend '+' before positive integer and real numbers
-constexpr setf<flags::showpos, true> showpos{};
-constexpr setf<flags::showpos, false> noshowpos{};
+constexpr setf<flag::showpos, true> showpos{};
+constexpr setf<flag::showpos, false> noshowpos{};
 
 // case for special characters in integer and real numbers representation
-constexpr setf<flags::uppercase, true> uppercase{};
-constexpr setf<flags::uppercase, false> nouppercase{};
+constexpr setf<flag::uppercase, true> uppercase{};
+constexpr setf<flag::uppercase, false> nouppercase{};
 
 // real numbers format
 constexpr setg<groups::floatfield, 0> defaultfloat{};
-constexpr setg<groups::floatfield, flags::fixed> fixed{};
-constexpr setg<groups::floatfield, flags::scientific> scientific{};
-constexpr setg<groups::floatfield, flags::hexfloat> hexfloat{};
+constexpr setg<groups::floatfield, flag::fixed> fixed{};
+constexpr setg<groups::floatfield, flag::scientific> scientific{};
+constexpr setg<groups::floatfield, flag::hexfloat> hexfloat{};
 
 // always show decimal point
-constexpr setf<flags::showpoint, true> showpoint{};
-constexpr setf<flags::showpoint, false> noshowpoint{};
+constexpr setf<flag::showpoint, true> showpoint{};
+constexpr setf<flag::showpoint, false> noshowpoint{};
 
 template <class Format, flag_t Flag, bool Value>
 void manipulate(Format& fmt, setf<Flag, Value>) {

@@ -53,7 +53,8 @@ auto encode(Format& fmt, Int x) {
             *--last = '-';
         } else {
             last = detail::uitoa(last, fmt, static_cast<UInt>(x), base);
-            if (fmt.getf(flags::showpos)) *--last = '+';
+            if (fmt.getf(flag::showpos))
+                *--last = '+';
         }
     } else {
         last = detail::uitoa(last, fmt, x, base);

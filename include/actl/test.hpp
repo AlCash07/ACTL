@@ -100,7 +100,7 @@ template <class T>
 std::string to_string(const T& value) {
     std::string s;
     auto fmt = io::spaced{", "sv} >>= io::escaped{} >>= io::braced{} >>=
-        io::text_static<bit(io::flags::boolalpha)>{};
+        io::text_static<bit(io::flag::boolalpha)>{};
     io::write(io::string<io::app>{s}, fmt, value);
     return s;
 }

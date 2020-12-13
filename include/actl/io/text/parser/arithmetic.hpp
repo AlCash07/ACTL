@@ -15,7 +15,7 @@ namespace ac::io {
 
 template <class Format, enable_int_if_text<Format> = 0>
 auto make_parser(Format& fmt, bool& x) {
-    return parser_executor{x, boolean_parser{fmt.getf(flags::boolalpha)}};
+    return parser_executor{x, boolean_parser{fmt.getf(flag::boolalpha)}};
 }
 
 template <class Format, class Int, enable_int_if_text<Format> = 0,

@@ -51,16 +51,17 @@ auto encode(Format& fmt, Float x) {
         sign = '-';
         x = -x;
     } else {
-        if (fmt.getf(flags::showpos)) sign = '+';
+        if (fmt.getf(flag::showpos))
+            sign = '+';
     }
     if (std::isnan(x)) {
         s = res.reserve(4);
         first = s.begin() + 1;
-        std::memcpy(first, fmt.getf(flags::uppercase) ? "NAN" : "nan", 3);
+        std::memcpy(first, fmt.getf(flag::uppercase) ? "NAN" : "nan", 3);
     } else if (std::isinf(x)) {
         s = res.reserve(4);
         first = s.begin() + 1;
-        std::memcpy(first, fmt.getf(flags::uppercase) ? "INF" : "inf", 3);
+        std::memcpy(first, fmt.getf(flag::uppercase) ? "INF" : "inf", 3);
     } else {
         using UInt = unsigned long long;
         UInt base = fmt.base;
@@ -79,7 +80,8 @@ auto encode(Format& fmt, Float x) {
         if (0 < precision) {
             std::fill(first, detail::uitoa(s.end(), fmt, fractional_part, base), '0');
         }
-        if (0 < precision || fmt.getf(flags::showpoint)) *--first = '.';
+        if (0 < precision || fmt.getf(flag::showpoint))
+            *--first = '.';
         first = detail::uitoa(first, fmt, integer_part, base);
     }
     if (sign) *--first = sign;
