@@ -12,8 +12,8 @@
 namespace ac::detail {
 
 template <class Policy, class T>
-inline const auto& max_endpoint(const Policy& policy, const std::pair<T, endpoint>& lhs,
-                                const std::pair<T, endpoint>& rhs, bool start) {
+const auto& max_endpoint(const Policy& policy, const std::pair<T, endpoint>& lhs,
+                         const std::pair<T, endpoint>& rhs, bool start) {
     if (lhs.second == endpoint::free) {
         if (rhs.second != endpoint::free) {
             return rhs;
@@ -32,8 +32,8 @@ inline const auto& max_endpoint(const Policy& policy, const std::pair<T, endpoin
 }
 
 template <class Policy, index N, class T0, class K0, class T1, class K1, class OutIter>
-inline OutIter common_line(const Policy& policy, const line<T0, N, K0>& lhs,
-                           const line<T1, N, K1>& rhs, OutIter dst) {
+OutIter common_line(const Policy& policy, const line<T0, N, K0>& lhs, const line<T1, N, K1>& rhs,
+                    OutIter dst) {
     using point_t = point<geometry::scalar_t<T0, T1>, N>;
     auto get_point = [&policy](const auto& l, bool start) {
         return less(policy, point<int, N>{}, l.vector) == start

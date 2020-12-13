@@ -35,7 +35,7 @@ struct defer_sqrt {
 };
 
 template <class T>
-inline auto perform(Sqrt, defer_sqrt, const T& x) {
+auto perform(Sqrt, defer_sqrt, const T& x) {
     return square_root{x};
 }
 

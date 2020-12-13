@@ -10,7 +10,7 @@
 namespace ac::math::detail {
 
 template <class T, class U>
-inline constexpr auto common_category(T, U) {
+constexpr auto common_category(T, U) {
     constexpr index DT = category_level_v<T>;
     constexpr index DU = category_level_v<U>;
     if constexpr (DT == DU) {
@@ -34,7 +34,7 @@ struct cdp {  // category-depth pair
 };
 
 template <class T, index DT, class U, index DU>
-inline constexpr auto operator || (cdp<T, DT> lhs, cdp<U, DU> rhs) {
+constexpr auto operator || (cdp<T, DT> lhs, cdp<U, DU> rhs) {
     if constexpr (DT == DU) {
         return cdp<decltype(common_category(T{}, U{})), DT>{};
     } else if constexpr (DT < DU) {
@@ -48,7 +48,7 @@ template <class T, class = void>
 struct type_depth : index_constant<0> {};
 
 template <class T>
-inline constexpr index type_depth_v = type_depth<raw_t<T>>::value;
+constexpr index type_depth_v = type_depth<raw_t<T>>::value;
 
 template <class T>
 struct type_depth<T, std::void_t<typename category_t<T>::has_nested>>

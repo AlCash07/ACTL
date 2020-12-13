@@ -10,7 +10,7 @@
 namespace ac::detail {
 
 template <class Policy, class T, class U>
-inline bool endpoint_test(const Policy& policy, endpoint kind, const T& lhs, const U& rhs) {
+bool endpoint_test(const Policy& policy, endpoint kind, const T& lhs, const U& rhs) {
     switch (kind) {
         case endpoint::free: return true;
         case endpoint::closed: return !less(policy, rhs, lhs);
@@ -19,7 +19,7 @@ inline bool endpoint_test(const Policy& policy, endpoint kind, const T& lhs, con
 }
 
 template <class Policy, class T, class U>
-inline bool line_test(const Policy& policy, line_kind kind, const T& num, const U& den) {
+bool line_test(const Policy& policy, line_kind kind, const T& num, const U& den) {
     return endpoint_test(policy, begin(kind), 0, num) && endpoint_test(policy, end(kind), num, den);
 }
 

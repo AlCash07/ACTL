@@ -25,7 +25,7 @@ struct andrew_monotone_chain_policy {
  * Implementation reference: https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
  */
 template <class Policy, class T, enable_int_if<geometry_traits<T>::dimension == 2> = 0>
-inline span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span<T>& points) {
+span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span<T>& points) {
     if (points.size() < 2) return points;
     auto& policy = amcp.policy;
     auto [a, b] = minmax_element(points, math::less(policy));
@@ -51,7 +51,7 @@ inline span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span
 }
 
 template <class T>
-inline span<T> convex_hull(const span<T>& points) {
+span<T> convex_hull(const span<T>& points) {
     return convex_hull(andrew_monotone_chain_policy{default_policy}, points);
 }
 

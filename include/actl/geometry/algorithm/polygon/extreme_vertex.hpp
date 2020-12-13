@@ -17,8 +17,7 @@ namespace ac {
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 270.
  */
 template <class Policy, class T, class Function>
-inline auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly,
-                           Function direction) {
+auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly, Function direction) {
     auto vertex_cmp = [&](auto i, auto j) { return orientation(policy, direction(*j), *j - *i); };
     auto is_extreme = [&](auto it) {
         auto i = cyclic_iterator{poly, it};
@@ -45,7 +44,7 @@ inline auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly,
 }
 
 template <class T, class Function>
-inline auto extreme_vertex(const convex_polygon<T>& poly, Function direction) {
+auto extreme_vertex(const convex_polygon<T>& poly, Function direction) {
     return extreme_vertex(geometry_policy, poly, direction);
 }
 

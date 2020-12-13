@@ -16,7 +16,7 @@ public:
 };
 
 template <class Device, class Format>
-inline Format& deduce_format(formatted<Device, Format>& dev) {
+Format& deduce_format(formatted<Device, Format>& dev) {
     return dev;
 }
 

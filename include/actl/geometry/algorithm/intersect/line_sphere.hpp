@@ -13,8 +13,8 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class K, class T1, class OutIter>
-inline OutIter intersect(line_scalar_policy<Policy> lsp, const line<T0, N, K>& l,
-                         const sphere<T1, N>& s, OutIter dst) {
+OutIter intersect(line_scalar_policy<Policy> lsp, const line<T0, N, K>& l, const sphere<T1, N>& s,
+                  OutIter dst) {
     auto& policy = lsp.policy;
     auto vdot = dot(policy, l.vector);
     auto delta =

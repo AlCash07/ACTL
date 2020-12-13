@@ -7,7 +7,7 @@
 #include <actl/test.hpp>
 #include <functional>
 
-inline bool ok();
+bool ok();
 
 TEST("0_arity") {
     using F = decltype(ok);
@@ -15,7 +15,7 @@ TEST("0_arity") {
     ASSERT_TRUE(std::is_same_v<bool, return_t<F>>);
 }
 
-inline int cmp(const void*, const std::string&);
+int cmp(const void*, const std::string&);
 
 TEST("function") {
     using F = decltype(cmp);

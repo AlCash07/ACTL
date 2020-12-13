@@ -29,7 +29,7 @@ struct Promotion {
 };
 
 template <class Op, enable_int_if<is_scalar_operation_v<Op>> = 0>
-inline constexpr auto apply_policy(const Op& op, allow_promotion) {
+constexpr auto apply_policy(const Op& op, allow_promotion) {
     return operation_composer<Promotion>{}(op);
 }
 

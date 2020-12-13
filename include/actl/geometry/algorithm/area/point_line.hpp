@@ -11,7 +11,7 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1, class K>
-inline auto area(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
+auto area(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
     return area(policy, p - l.begin, l.vector);
 }
 

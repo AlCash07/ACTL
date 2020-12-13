@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Policy, index N, class T, class U>
-inline bool crosses(const Policy& policy, const point<T, N>& lhs, const U& rhs) {
+bool crosses(const Policy& policy, const point<T, N>& lhs, const U& rhs) {
     return within(policy, lhs, rhs) == within::border;
 }
 

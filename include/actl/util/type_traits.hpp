@@ -50,7 +50,7 @@ template <class T, class... Ts>
 struct are_same<T, T, Ts...> : are_same<T, Ts...> {};
 
 template <class... Ts>
-inline constexpr bool are_same_v = are_same<Ts...>::value;
+constexpr bool are_same_v = are_same<Ts...>::value;
 
 namespace detail {
 
@@ -71,7 +71,7 @@ struct is_template_base_of<B, D, std::void_t<decltype(detail::test_base<B>(std::
     : decltype(detail::test_base<B>(std::declval<D*>())) {};
 
 template <template <class...> class B, class D>
-inline constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;
+constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;
 
 /* nth_type */
 

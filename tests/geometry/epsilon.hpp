@@ -11,4 +11,4 @@ struct epsilon9 {
     static constexpr double epsilon() { return 1e-9; }
 };
 
-inline ac::math::absolute_error<epsilon9> absolute_error9;
+ac::math::absolute_error<epsilon9> absolute_error9;

@@ -55,7 +55,7 @@ void sort_by_angle(const Policy& policy, U& points) {
 }
 
 template <class T, class... Ts, disable_int_if_policy<T> = 0>
-inline auto sort_by_angle(T&& x, Ts&&... xs) {
+auto sort_by_angle(T&& x, Ts&&... xs) {
     return sort_by_angle(geometry_policy, x, xs...);
 }
 

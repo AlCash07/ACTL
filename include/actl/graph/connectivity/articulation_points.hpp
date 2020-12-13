@@ -73,7 +73,7 @@ struct articulation_point_finder {
 };
 
 template <class G, class... Ts>
-inline auto get_articulation_point_finder(const G&, Ts&&... args) {
+auto get_articulation_point_finder(const G&, Ts&&... args) {
     return articulation_point_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 

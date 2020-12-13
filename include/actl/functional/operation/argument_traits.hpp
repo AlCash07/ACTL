@@ -41,7 +41,7 @@ template <class Tag, class = void>
 struct category_level : index_constant<0> {};
 
 template <class T>
-inline constexpr index category_level_v = category_level<T>::value;
+constexpr index category_level_v = category_level<T>::value;
 
 template <class Tag>
 struct category_level<Tag, std::void_t<typename Tag::base>>
@@ -67,23 +67,23 @@ using value_if_small = std::conditional_t<std::is_empty_v<U> || std::is_arithmet
 
 // pass is the same as std::forward except it converts reference into const reference
 template <class T>
-inline constexpr T&& pass(std::remove_reference_t<T>& x) {
+constexpr T&& pass(std::remove_reference_t<T>& x) {
     return static_cast<T&&>(x);
 }
 
 template <class T>
-inline constexpr const T&& pass(std::remove_reference_t<T>&& x) {
+constexpr const T&& pass(std::remove_reference_t<T>&& x) {
     static_assert(!std::is_lvalue_reference_v<T>, "can not pass an rvalue as an lvalue");
     return static_cast<const T&&>(x);
 }
 
 template <class T>
-inline constexpr T eval(const T& x) {
+constexpr T eval(const T& x) {
     return x;
 }
 
 template <class T, size_t N>
-inline auto& eval(const T (&x)[N]) {
+auto& eval(const T (&x)[N]) {
     return x;
 }
 

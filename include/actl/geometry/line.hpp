@@ -151,36 +151,35 @@ template <index N, class T, class K>
 struct geometry_traits<line<T, N, K>> : geometry_traits_base<line_tag, point<T, N>> {};
 
 template <index N, class T0, class T1>
-inline constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
+constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
     return line<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
-inline constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
+constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
     return ray<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
-inline constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b,
-                                   bool vector = false) {
+constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
     return segment<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
-inline constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
-                                    line_kind kind = line_kind::free, bool vector = false) {
+constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
+                             line_kind kind = line_kind::free, bool vector = false) {
     return any_line<geometry::scalar_t<T0, T1>, N>{a, b, kind, vector};
 }
 
 template <index N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
-inline constexpr Line make_any_line(const point<T0, N>& a, endpoint akind,
-                                    const point<T1, N>& b, endpoint bkind) {
+constexpr Line make_any_line(const point<T0, N>& a, endpoint akind, const point<T1, N>& b,
+                             endpoint bkind) {
     if (akind < bkind) return make_any_line(b, bkind, a, akind);
     return Line{a, b, static_cast<line_kind>(combine(akind, bkind))};
 }
 
 template <class Policy, index N, class T, class K>
-inline constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l) {
+constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l) {
     return degenerate(policy, l.vector);
 }
 

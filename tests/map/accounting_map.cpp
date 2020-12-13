@@ -8,7 +8,7 @@
 #include <actl/test.hpp>
 
 template <bool Invertible>
-inline void test_accounting_map() {
+void test_accounting_map() {
     accounting_map<std::map<std::string, int>, Invertible> map;
     ASSERT_EQUAL(0, get(map, "a"));
     ASSERT_EQUAL(1, get(map, "s"));

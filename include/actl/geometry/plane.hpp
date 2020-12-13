@@ -66,18 +66,17 @@ template <index N, class... Ts>
 using plane_t = plane<geometry::scalar_t<Ts...>, N>;
 
 template <class T0, class T1>
-inline constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b) {
+constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b) {
     return plane_t<2, T0, T1>{perpendicular(b - a), a};
 }
 
 template <class T0, class T1, class T2>
-inline constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b,
-                                   const point3d<T2>& c) {
+constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b, const point3d<T2>& c) {
     return plane_t<3, T0, T1, T2>{cross(b - a, c - a), a};
 }
 
 template <class Policy, index N, class T>
-inline constexpr bool degenerate(const Policy& policy, const plane<T, N>& pl) {
+constexpr bool degenerate(const Policy& policy, const plane<T, N>& pl) {
     return degenerate(policy, pl.normal);
 }
 

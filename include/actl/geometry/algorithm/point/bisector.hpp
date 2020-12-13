@@ -10,12 +10,12 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1>
-inline auto bisector(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+auto bisector(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return product(policy, lhs, norm(policy, rhs)) + product(policy, rhs, norm(policy, lhs));
 }
 
 template <index N, class T0, class T1>
-inline auto bisector(const point<T0, N>& lhs, const point<T1, N>& rhs) {
+auto bisector(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return bisector(geometry_policy, lhs, rhs);
 }
 

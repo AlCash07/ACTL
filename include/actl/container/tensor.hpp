@@ -41,10 +41,10 @@ template <class T, index N>
 using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
 
 template <index... Is>
-inline constexpr index static_product_v = (1 * ... * Is);
+constexpr index static_product_v = (1 * ... * Is);
 
 template <class Int>
-inline index compute_product(const cspan<Int>& x) {
+index compute_product(const cspan<Int>& x) {
     index res = 1;
     for (auto v : x) res *= v;
     return res;
@@ -382,7 +382,7 @@ private:
 };
 
 template <class D, class S>
-inline void swap(tensor_base<D, S>& lhs, tensor_base<D, S>& rhs) {
+void swap(tensor_base<D, S>& lhs, tensor_base<D, S>& rhs) {
     lhs.swap(rhs);
 }
 

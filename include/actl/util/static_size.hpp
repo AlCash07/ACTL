@@ -9,7 +9,7 @@
 
 namespace ac {
 
-inline constexpr index dynamic_size = -1;
+constexpr index dynamic_size = -1;
 
 template <class T>
 struct static_size : index_constant<dynamic_size> {};
@@ -18,6 +18,6 @@ template <class T, size_t N>
 struct static_size<T[N]> : index_constant<static_cast<index>(N)> {};
 
 template <class T>
-inline constexpr index static_size_v = static_size<std::remove_const_t<T>>::value;
+constexpr index static_size_v = static_size<std::remove_const_t<T>>::value;
 
 }  // namespace ac

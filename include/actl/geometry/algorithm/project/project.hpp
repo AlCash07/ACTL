@@ -10,7 +10,7 @@
 namespace ac {
 
 template <index N, class T, class U>
-inline decltype(auto) project(const point<T, N>& src, const U& dst) {
+decltype(auto) project(const point<T, N>& src, const U& dst) {
     return project(geometry_policy, src, dst);
 }
 

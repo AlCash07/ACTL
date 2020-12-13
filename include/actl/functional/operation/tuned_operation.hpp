@@ -25,7 +25,7 @@ template <class T>
 struct is_policy<T, std::void_t<typename T::is_policy>> : std::true_type {};
 
 template <class T>
-inline constexpr bool is_policy_v = is_policy<T>::value;
+constexpr bool is_policy_v = is_policy<T>::value;
 
 template <class Op, class Policy, class = void>
 struct can_apply_policy : std::false_type {};
@@ -36,7 +36,7 @@ struct can_apply_policy<
     : std::true_type {};
 
 template <class Op, class Policy>
-inline constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {
+constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {
     if constexpr (can_apply_policy<remove_cvref_t<Op>, Policy>::value) {
         return apply_policy(std::forward<Op>(op), policy);
     } else {

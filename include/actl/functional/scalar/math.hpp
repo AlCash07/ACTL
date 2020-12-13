@@ -22,7 +22,7 @@ struct Abs : scalar_operation<Abs, 1, arithmetic_tag> {
         }
     }
 };
-inline constexpr Abs abs;
+constexpr Abs abs;
 
 #define MATH_OP1(name, op)                               \
     struct name : scalar_operation<name, 1, float_tag> { \
@@ -32,7 +32,7 @@ inline constexpr Abs abs;
             return op(x);                                \
         }                                                \
     };                                                   \
-    inline constexpr name op;
+    constexpr name op;
 
 #define MATH_OP2(name, op)                                \
     struct name : scalar_operation<name, 2, float_tag> {  \
@@ -42,7 +42,7 @@ inline constexpr Abs abs;
             return op(lhs, rhs);                          \
         }                                                 \
     };                                                    \
-    inline constexpr name op;
+    constexpr name op;
 
 MATH_OP1(Cos, cos)
 MATH_OP1(Sin, sin)

@@ -15,10 +15,10 @@ struct BitNot : scalar_operation<BitNot, 2, integral_tag> {
         return ~x;
     }
 };
-inline constexpr BitNot bit_not;
+constexpr BitNot bit_not;
 
 template <class T>
-inline constexpr auto operator ~ (T&& x) {
+constexpr auto operator ~ (T&& x) {
     return bit_not(pass<T>(x));
 }
 
@@ -31,15 +31,15 @@ struct BitAnd : scalar_operation<BitAnd, 2, integral_tag> {
         return lhs & rhs;
     }
 };
-inline constexpr BitAnd bit_and;
+constexpr BitAnd bit_and;
 
 template <class T, class U>
-inline constexpr auto operator & (T&& lhs, U&& rhs) {
+constexpr auto operator & (T&& lhs, U&& rhs) {
     return bit_and(pass<T>(lhs), pass<U>(rhs));
 }
 
 template <class T, class U>
-inline constexpr decltype(auto) operator &= (T& lhs, const U& rhs) {
+constexpr decltype(auto) operator &= (T& lhs, const U& rhs) {
     return bit_and(inplace(lhs), rhs);
 }
 
@@ -52,15 +52,15 @@ struct BitOr : scalar_operation<BitOr, 2, integral_tag> {
         return lhs | rhs;
     }
 };
-inline constexpr BitOr bit_or;
+constexpr BitOr bit_or;
 
 template <class T, class U>
-inline constexpr auto operator | (T&& lhs, U&& rhs) {
+constexpr auto operator | (T&& lhs, U&& rhs) {
     return bit_or(pass<T>(lhs), pass<U>(rhs));
 }
 
 template <class T, class U>
-inline constexpr decltype(auto) operator |= (T& lhs, const U& rhs) {
+constexpr decltype(auto) operator |= (T& lhs, const U& rhs) {
     return bit_or(inplace(lhs), rhs);
 }
 
@@ -73,15 +73,15 @@ struct BitXor : scalar_operation<BitXor, 2, integral_tag> {
         return lhs ^ rhs;
     }
 };
-inline constexpr BitXor bit_xor;
+constexpr BitXor bit_xor;
 
 template <class T, class U>
-inline constexpr auto operator ^ (T&& lhs, U&& rhs) {
+constexpr auto operator ^ (T&& lhs, U&& rhs) {
     return bit_xor(pass<T>(lhs), pass<U>(rhs));
 }
 
 template <class T, class U>
-inline constexpr decltype(auto) operator ^= (T& lhs, const U& rhs) {
+constexpr decltype(auto) operator ^= (T& lhs, const U& rhs) {
     return bit_xor(inplace(lhs), rhs);
 }
 

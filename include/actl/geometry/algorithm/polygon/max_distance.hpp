@@ -16,7 +16,7 @@ namespace ac {
  * Maximum distance between two convex polygon vertices : O(N).
  */
 template <class Policy, class T>
-inline auto max_distance(const Policy& policy, const convex_polygon<T>& poly) {
+auto max_distance(const Policy& policy, const convex_polygon<T>& poly) {
     decltype(distance(policy, poly[0], poly[0])) res = 0;
     antipodal_vertices(policy, poly, function_output_iterator{[&](auto pair) {
                            math::max(inplace(res), distance(policy, *pair.first, *pair.second));
@@ -25,7 +25,7 @@ inline auto max_distance(const Policy& policy, const convex_polygon<T>& poly) {
 }
 
 template <class T>
-inline auto max_distance(const convex_polygon<T>& poly) {
+auto max_distance(const convex_polygon<T>& poly) {
     return max_distance(geometry_policy, poly);
 }
 

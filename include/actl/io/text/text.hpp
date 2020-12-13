@@ -107,7 +107,7 @@ protected:
 };
 
 template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
-inline text_static<> deduce_format(Device& dev) {
+text_static<> deduce_format(Device& dev) {
     return {};
 }
 
@@ -117,7 +117,7 @@ auto encode(Format& fmt, const S& s) {
 }
 
 template <class Device, class... Ts>
-inline index writeln(Device&& od, Ts&&... args) {
+index writeln(Device&& od, Ts&&... args) {
     return write(od, args..., raw{'\n'});
 }
 
@@ -160,7 +160,7 @@ constexpr setf<flags::showpoint, true> showpoint{};
 constexpr setf<flags::showpoint, false> noshowpoint{};
 
 template <class Format, flag_t Flag, bool Value>
-inline void manipulate(Format& fmt, setf<Flag, Value>) {
+void manipulate(Format& fmt, setf<Flag, Value>) {
     if constexpr (Value)
         fmt.setf(Flag);
     else
@@ -168,7 +168,7 @@ inline void manipulate(Format& fmt, setf<Flag, Value>) {
 }
 
 template <class Format, flag_t Group, flag_t Flag>
-inline void manipulate(Format& fmt, setg<Group, Flag>) {
+void manipulate(Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
 }
 
@@ -178,14 +178,14 @@ constexpr setbase hex{16};
 constexpr setbase oct{8};
 
 template <class Format>
-inline void manipulate(Format& fmt, setbase x) {
+void manipulate(Format& fmt, setbase x) {
     fmt.base = x;
 }
 
 using setprecision = precision_t;
 
 template <class Format>
-inline void manipulate(Format& fmt, setprecision x) {
+void manipulate(Format& fmt, setprecision x) {
     fmt.precision = x;
 }
 

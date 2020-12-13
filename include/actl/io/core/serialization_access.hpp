@@ -46,14 +46,14 @@ struct serialization_access {
 template <
     class Device, class Format, class T,
     enable_int_if<decltype(serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
-inline index write_final(Device& od, Format& fmt, const T& x) {
+index write_final(Device& od, Format& fmt, const T& x) {
     return serialization_access::write_final(x, od, fmt);
 }
 
 template <
     class Device, class Format, class T,
     enable_int_if<decltype(serialization_access{}.has_read<T, Device&, Format&>(0))::value> = 0>
-inline bool read_final(Device& id, Format& fmt, T& x) {
+bool read_final(Device& id, Format& fmt, T& x) {
     return serialization_access::read(x, id, fmt);
 }
 

@@ -39,7 +39,7 @@ struct singleton_quotient_ring : quotient_ring_base<Z> {
 };
 
 template <class Z, class R>
-inline constexpr void mod_add(Z& x, const Z& y, const R& ring) {
+constexpr void mod_add(Z& x, const Z& y, const R& ring) {
     if (std::is_integral<Z>::value) {
         Z z = ring.mod() - y;
         x < z ? x += y : x -= z;
@@ -49,7 +49,7 @@ inline constexpr void mod_add(Z& x, const Z& y, const R& ring) {
 }
 
 template <class Z, class R>
-inline constexpr void mod_sub(Z& x, const Z& y, const R& ring) {
+constexpr void mod_sub(Z& x, const Z& y, const R& ring) {
     if (std::is_integral<Z>::value) {
         x < y ? x += ring.mod() - y : x -= y;
     } else {
@@ -58,7 +58,7 @@ inline constexpr void mod_sub(Z& x, const Z& y, const R& ring) {
 }
 
 template <class Z, class R>
-inline constexpr Z mod_mul_binary(Z x, Z y, const R& ring) {
+constexpr Z mod_mul_binary(Z x, Z y, const R& ring) {
     for (Z r = Z(); ; ) {
         if (y & 1) mod_add(r, x, ring);
         if (y /= 2) mod_add(x, x, ring);
@@ -67,7 +67,7 @@ inline constexpr Z mod_mul_binary(Z x, Z y, const R& ring) {
 }
 
 template <class Z, class R>
-inline constexpr Z mod_mul(const Z& x, const Z& y, const R& ring) {
+constexpr Z mod_mul(const Z& x, const Z& y, const R& ring) {
     if (!std::is_integral<Z>::value) {
         return (x * y) % ring.mod();
     } else if (R::is_static && ring.mod() == 0) {
@@ -80,7 +80,7 @@ inline constexpr Z mod_mul(const Z& x, const Z& y, const R& ring) {
 }
 
 template <class Z, class R>
-inline constexpr Z mod_div(const Z& x, const Z& y, const R& ring) {
+constexpr Z mod_div(const Z& x, const Z& y, const R& ring) {
     Z p = ring.mod() - y, a = ring.mod() - ring.one(), q = y, b = ring.one();
     for (; q != Z(); ) {
         mod_sub(a, mod_mul(p / q, b, ring), ring);

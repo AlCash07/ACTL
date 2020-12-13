@@ -16,7 +16,7 @@ namespace ac {
  * 2D: positive if p1 <- p0 counter-clockwise.
  */
 template <class Policy, index N, class T0, class T1>
-inline auto area(const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
+auto area(const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
     if constexpr (N == 2) {
         return product(policy, p0[0], p1[1]) - product(policy, p0[1], p1[0]);
     } else if constexpr (N == 3) {

@@ -11,7 +11,7 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1>
-inline auto& project(const Policy& policy, const point<T0, N>&, const point<T1, N>& dst) {
+auto& project(const Policy& policy, const point<T0, N>&, const point<T1, N>& dst) {
     return dst;
 }
 

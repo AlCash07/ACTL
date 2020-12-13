@@ -34,27 +34,27 @@ struct expression : expression_base<expression<Ts...>, typename detail::result<T
 };
 
 template <class... Ts, enable_int_if<1 == (... + is_operation_v<Ts>)> = 0>
-inline constexpr auto make_expression(Ts&&... xs) {
+constexpr auto make_expression(Ts&&... xs) {
     return expression<value_if_small<Ts>...>{{}, {std::forward<Ts>(xs)...}};
 }
 
 template <class E, size_t... Is>
-inline constexpr decltype(auto) eval_impl(const E& e, std::index_sequence<Is...>) {
+constexpr decltype(auto) eval_impl(const E& e, std::index_sequence<Is...>) {
     return eval(std::get<0>(e.args).evaluate(std::get<Is + 1>(e.args)...));
 }
 
 template <class... Ts>
-inline constexpr decltype(auto) eval(const expression<Ts...>& e) {
+constexpr decltype(auto) eval(const expression<Ts...>& e) {
     return eval_impl(e, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
 template <class T, class E, size_t... Is>
-inline constexpr void assign_impl(T& dst, const E& e, std::index_sequence<Is...>) {
+constexpr void assign_impl(T& dst, const E& e, std::index_sequence<Is...>) {
     std::get<0>(e.args)(dst, std::get<Is + 1>(e.args)...);
 }
 
 template <class T, class... Ts>
-inline constexpr void assign(out<false, T>& dst, const expression<Ts...>& e) {
+constexpr void assign(out<false, T>& dst, const expression<Ts...>& e) {
     assign_impl(dst, e, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 

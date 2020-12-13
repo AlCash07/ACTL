@@ -54,7 +54,7 @@ struct strong_component_finder {
 };
 
 template <class G, class... Ts>
-inline auto get_strong_component_finder(const G&, Ts&&... args) {
+auto get_strong_component_finder(const G&, Ts&&... args) {
     return strong_component_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 

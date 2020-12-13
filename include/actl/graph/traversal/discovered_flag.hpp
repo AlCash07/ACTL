@@ -28,7 +28,7 @@ template <class Map>
 discovered_flag(Map&&) -> discovered_flag<Map>;
 
 template <class Graph>
-inline auto make_default_discovered_flag(const Graph& graph) {
+auto make_default_discovered_flag(const Graph& graph) {
     return discovered_flag{make_default_vertex_map<bool>(graph)};
 }
 

@@ -17,7 +17,7 @@ struct operation;
 struct operation_tag {};
 
 template <class T>
-inline constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
+constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
 
 namespace detail {
 
@@ -36,7 +36,7 @@ template <class T>
 struct is_associative<T, std::void_t<typename T::is_associative>> : std::true_type {};
 
 template <class T>
-inline constexpr bool is_associative_v = is_associative<T>::value;
+constexpr bool is_associative_v = is_associative<T>::value;
 
 /* Operation is_commutative trait: defined by nested `struct is_commutative;`. */
 
@@ -47,6 +47,6 @@ template <class T>
 struct is_commutative<T, std::void_t<typename T::is_commutative>> : std::true_type {};
 
 template <class T>
-inline constexpr bool is_commutative_v = is_commutative<T>::value;
+constexpr bool is_commutative_v = is_commutative<T>::value;
 
 }  // namespace ac::math

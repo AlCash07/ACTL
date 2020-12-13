@@ -28,12 +28,12 @@ struct expression_op : operation<expression_op<Ts...>> {
 };
 
 template <class... Ts, enable_int_if<1 < (... + is_operation_v<Ts>)> = 0>
-inline constexpr auto make_expression(Ts&&... xs) {
+constexpr auto make_expression(Ts&&... xs) {
     return expression_op<value_if_small<Ts>...>{std::forward<Ts>(xs)...};
 }
 
 template <class Op, class... Ts>
-inline constexpr decltype(auto) expand_expression(const Op& op, const Ts&... xs) {
+constexpr decltype(auto) expand_expression(const Op& op, const Ts&... xs) {
     if constexpr (!is_operation_v<Op>) {
         return op;
     } else {
@@ -48,19 +48,18 @@ static constexpr auto expand_impl(std::index_sequence<Is...>, const EO& eop, con
 }
 
 template <class... Ts, class... Us>
-inline constexpr auto expand_expression(const expression_op<Ts...>& eop, const Us&... xs) {
+constexpr auto expand_expression(const expression_op<Ts...>& eop, const Us&... xs) {
     return expand_impl(std::make_index_sequence<sizeof...(Ts) - 1>{}, eop, xs...);
 }
 
 template <class EO, class Policy, size_t... Is>
-inline constexpr auto apply_policy_impl(const EO& eop, const Policy policy,
-                                        std::index_sequence<Is...>) {
+constexpr auto apply_policy_impl(const EO& eop, const Policy policy, std::index_sequence<Is...>) {
     return make_expression(apply_policy_if_can(std::get<Is>(eop.args), policy)...);
 }
 
 template <class... Ts, class Policy,
           enable_int_if<(... || can_apply_policy<Ts, Policy>::value)> = 0>
-inline constexpr auto apply_policy(const expression_op<Ts...>& eop, const Policy& policy) {
+constexpr auto apply_policy(const expression_op<Ts...>& eop, const Policy& policy) {
     return apply_policy_impl(eop, policy, std::make_index_sequence<sizeof...(Ts)>{});
 }
 

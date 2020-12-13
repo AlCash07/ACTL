@@ -32,7 +32,7 @@ struct geometry_traits<T, std::enable_if_t<detail::is_multi_point<T>::value>>
     : geometry_traits_base<multi_point_tag, value_t<T>> {};
 
 template <class T>
-inline constexpr bool is_multi_point_v = std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
+constexpr bool is_multi_point_v = std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
 
 template <class T>
 struct identity_functor {
@@ -40,7 +40,7 @@ struct identity_functor {
 };
 
 template <class T>
-inline identity_functor<reference_t<T>> get_to_point(T&) {
+identity_functor<reference_t<T>> get_to_point(T&) {
     return {};
 }
 

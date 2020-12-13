@@ -19,22 +19,22 @@ struct base : B {
 };
 
 template <class T, class U>
-inline constexpr auto operator != (const T& lhs, const U& rhs) -> decltype(!(lhs == rhs)) {
+constexpr auto operator != (const T& lhs, const U& rhs) -> decltype(!(lhs == rhs)) {
     return !(lhs == rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator > (const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
+constexpr auto operator > (const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
     return rhs < lhs;
 }
 
 template <class T, class U>
-inline constexpr auto operator <= (const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
+constexpr auto operator <= (const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
     return !(lhs > rhs);
 }
 
 template <class T, class U>
-inline constexpr auto operator >= (const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
+constexpr auto operator >= (const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
     return !(lhs < rhs);
 }
 

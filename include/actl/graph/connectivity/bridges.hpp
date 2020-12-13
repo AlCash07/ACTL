@@ -87,7 +87,7 @@ struct bridge_finder {
 };
 
 template <class G, class... Ts>
-inline auto get_bridge_finder(const G&, Ts&&... args) {
+auto get_bridge_finder(const G&, Ts&&... args) {
     return bridge_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 

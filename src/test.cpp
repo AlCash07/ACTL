@@ -22,7 +22,7 @@ namespace detail {
 static auto repeat_key = "repeat"sv;
 static auto time_limit_key = "time_limit"sv;
 
-inline std::vector<std::string> split_va_args(std::string_view va_args_str) {
+std::vector<std::string> split_va_args(std::string_view va_args_str) {
     return split(va_args_str, [depth = int{}, quote = bool{}, last = char{}](char c) mutable {
         std::swap(last, c);
         switch (last) {

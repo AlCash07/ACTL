@@ -34,7 +34,7 @@ private:
 };
 
 template <class D, class F>
-inline index write_final(D& od, F& fmt, const float_string& x) {
+index write_final(D& od, F& fmt, const float_string& x) {
     return write_final(od, fmt, cspan<char>{x});
 }
 

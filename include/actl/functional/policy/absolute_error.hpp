@@ -18,12 +18,12 @@ struct absolute_error : E {
 };
 
 template <class E>
-inline constexpr auto apply_policy(Equal, const absolute_error<E>& policy) {
+constexpr auto apply_policy(Equal, const absolute_error<E>& policy) {
     return abs(sub) <= policy.epsilon();
 }
 
 template <class E>
-inline constexpr auto apply_policy(Less, const absolute_error<E>& policy) {
+constexpr auto apply_policy(Less, const absolute_error<E>& policy) {
     return policy.epsilon() < rhs_ - lhs_;
 }
 

@@ -31,13 +31,13 @@ private:
 }  // namespace detail
 
 template <class Policy, class T0, class K0, class T1, class K1>
-inline bool crosses(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) {
+bool crosses(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) {
     return intersect(policy, lhs, rhs, detail::flag_output_iterator{}).flag;
 }
 
 template <class Policy, class T0, class K0, class T1, class K1>
-inline bool crosses(general_position_policy<Policy> gpp, const line<T0, 2, K0>& lhs,
-                    const line<T1, 2, K1>& rhs) {
+bool crosses(general_position_policy<Policy> gpp, const line<T0, 2, K0>& lhs,
+             const line<T1, 2, K1>& rhs) {
     return crosses(line_scalar_policy{gpp.policy}, lhs, rhs);
 }
 

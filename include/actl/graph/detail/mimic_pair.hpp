@@ -47,7 +47,7 @@ template <class T>
 struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type {};
 
 template <class T>
-inline decltype(auto) get_key(const T& x) {
+decltype(auto) get_key(const T& x) {
     if constexpr (is_mimic_pair<T>::value) {
         return x.key();
     } else {
@@ -56,12 +56,12 @@ inline decltype(auto) get_key(const T& x) {
 }
 
 template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto operator == (const T& lhs, const U& rhs) {
+auto operator == (const T& lhs, const U& rhs) {
     return math::equal(get_key(lhs), get_key(rhs));
 }
 
 template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-inline auto operator < (const T& lhs, const U& rhs) {
+auto operator < (const T& lhs, const U& rhs) {
     return math::less(get_key(lhs), get_key(rhs));
 }
 
@@ -79,7 +79,7 @@ public:
 };
 
 template <class Map>
-inline auto get_second(Map&& map) {
+auto get_second(Map&& map) {
     return composite_map{std::forward<Map>(map), second_map<map_reference_t<Map>>{}};
 }
 

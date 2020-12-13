@@ -38,24 +38,23 @@ template <class Map>
 in_out_time_stamper(Map&&) -> in_out_time_stamper<Map, map_value_t<Map>>;
 
 template <class Map, class T>
-inline vertex_initializer<time_stamper<Map, T>> make_time_stamper(Map&& in_time, T value) {
+vertex_initializer<time_stamper<Map, T>> make_time_stamper(Map&& in_time, T value) {
     return {{std::forward<Map>(in_time)}, value};
 }
 
 template <class Map>
-inline auto make_in_out_time_stamper(Map&& in_time, Map&& out_time) {
+auto make_in_out_time_stamper(Map&& in_time, Map&& out_time) {
     return in_out_time_stamper{{std::forward<Map>(in_time)}, std::forward<Map>(out_time)};
 }
 
 template <class Map, class T>
-inline vertex_initializer<in_out_time_stamper<Map, T>> make_in_out_time_stamper(Map&& in_time,
-                                                                                Map&& out_time,
-                                                                                T value) {
+vertex_initializer<in_out_time_stamper<Map, T>> make_in_out_time_stamper(Map&& in_time,
+                                                                         Map&& out_time, T value) {
     return {{{std::forward<Map>(in_time)}, std::forward<Map>(out_time)}, value};
 }
 
 template <class Graph>
-inline auto make_default_time_stamper(const Graph& graph) {
+auto make_default_time_stamper(const Graph& graph) {
     return make_time_stamper(make_default_vertex_map<int>(graph), -1);
 }
 

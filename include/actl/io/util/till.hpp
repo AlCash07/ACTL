@@ -22,7 +22,7 @@ template <class T, class P>
 till(T&&, P) -> till<T, P>;
 
 template <class Device, class P, index N>
-inline index read_till(Device& id, till<span<char, N>, P> x) {
+index read_till(Device& id, till<span<char, N>, P> x) {
     index i = 0;
     const index size = x.value.size();
     if constexpr (has_input_buffer<Device>::value) {
@@ -45,7 +45,7 @@ inline index read_till(Device& id, till<span<char, N>, P> x) {
 }
 
 template <class Device, class Format, class T, class P>
-inline bool read_final(Device& id, Format&, till<T, P> x) {
+bool read_final(Device& id, Format&, till<T, P> x) {
     read_till(id, x);
     return true;
 }

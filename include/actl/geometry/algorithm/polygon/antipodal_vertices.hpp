@@ -16,7 +16,7 @@ namespace ac {
  * The actual antipodal pair for a vertex is the last pair with this vertex in the output.
  */
 template <class Policy, class T, class OutIter>
-inline auto antipodal_vertices(const Policy& policy, const convex_polygon<T>& poly, OutIter dst) {
+auto antipodal_vertices(const Policy& policy, const convex_polygon<T>& poly, OutIter dst) {
     for (auto i = poly.begin(), j = i + 1; j != poly.end(); ++i) {
         for (; j != poly.end(); ++j) {
             *dst++ = std::pair{i, j};
@@ -28,7 +28,7 @@ inline auto antipodal_vertices(const Policy& policy, const convex_polygon<T>& po
 }
 
 template <class T, class OutIter>
-inline auto antipodal_vertices(const convex_polygon<T>& poly, OutIter dst) {
+auto antipodal_vertices(const convex_polygon<T>& poly, OutIter dst) {
     return antipodal_vertices(geometry_policy, poly, dst);
 }
 

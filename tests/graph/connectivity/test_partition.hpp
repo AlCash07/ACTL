@@ -8,7 +8,7 @@
 #include <actl/test.hpp>
 
 template <class T>
-inline void test_partition(const std::vector<std::vector<size_t>>& expected, const T& actual) {
+void test_partition(const std::vector<std::vector<size_t>>& expected, const T& actual) {
     for (size_t i = 0; i < expected.size(); ++i) {
         for (auto v : expected[i]) {
             ASSERT_EQUAL(actual[expected[i][0]], actual[v]);

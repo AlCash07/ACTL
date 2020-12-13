@@ -36,6 +36,6 @@ template <class T>
 struct is_scalar_operation<T, std::void_t<typename T::is_scalar_operation>> : std::true_type {};
 
 template <class T>
-inline constexpr bool is_scalar_operation_v = is_scalar_operation<T>::value;
+constexpr bool is_scalar_operation_v = is_scalar_operation<T>::value;
 
 }  // namespace ac::math

@@ -17,7 +17,7 @@ namespace ac {
  * Increasing range from @p first to @p last (not inclusive).
  */
 template <class Int>
-inline auto irange(Int first, Int last) {
+auto irange(Int first, Int last) {
     auto begin = integer_iterator<Int>{first};
     if (first >= last) return make_range(begin, begin);
     return make_range(begin, integer_iterator<Int>{last});
@@ -27,7 +27,7 @@ inline auto irange(Int first, Int last) {
  * Increasing range from 0 to @p last (not inclusive).
  */
 template <class Int>
-inline auto irange(Int last) {
+auto irange(Int last) {
     return irange(Int{}, last);
 }
 
@@ -35,7 +35,7 @@ inline auto irange(Int last) {
  * Decreasing range from @p first to @p last (inclusive).
  */
 template <class Int>
-inline auto drange(Int first, Int last) {
+auto drange(Int first, Int last) {
     auto begin = integer_iterator<Int, false>{first};
     if (first < last) return make_range(begin, begin);
     return make_range(begin, integer_iterator<Int, false>{last - 1});
@@ -45,7 +45,7 @@ inline auto drange(Int first, Int last) {
  * Decreasing range from @p first to 0 (inclusive).
  */
 template <class Int>
-inline auto drange(Int first) {
+auto drange(Int first) {
     return drange(first, Int{});
 }
 
@@ -53,7 +53,7 @@ inline auto drange(Int first) {
  * Range with given @p step from @p first to @p last (inclusive if @p step is negative).
  */
 template <class Int, class StepType>
-inline auto irange(Int first, Int last, StepType step) {
+auto irange(Int first, Int last, StepType step) {
     ACTL_ASSERT(step != 0);
     auto begin = integer_iterator_with_step<Int>{first, step};
     if (step > 0 ? (first >= last) : (first < last)) return make_range(begin, begin);

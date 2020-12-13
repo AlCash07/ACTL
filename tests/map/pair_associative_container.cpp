@@ -9,12 +9,18 @@
 
 using C = std::vector<std::pair<int, int>>;
 
+namespace {
+
 static C kv{{1, 1}, {2, 7}, {5, 25}};
 
-inline std::map<int, int> get_map() { return {kv.begin(), kv.end()}; }
+std::map<int, int> get_map() {
+    return {kv.begin(), kv.end()};
+}
+
+}  // namespace
 
 template <bool Writable, class Map>
-inline void test_associative_map(Map&& map) {
+void test_associative_map(Map&& map) {
     for (auto [key, value] : kv) {
         ASSERT_EQUAL(value, get(map, key));
     }

@@ -17,7 +17,7 @@ namespace ac {
  * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
  */
 template <class Policy, class T, class U>
-inline enum within within(const Policy& policy, const point<T>& p, const polygon<U>& triangle) {
+enum within within(const Policy& policy, const point<T>& p, const polygon<U>& triangle) {
     ACTL_ASSERT(triangle.size() == 3);
     orientation2d signs[3] = {};
     auto it = cyclic_begin(triangle);

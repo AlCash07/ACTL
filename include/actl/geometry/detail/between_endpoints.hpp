@@ -10,8 +10,7 @@
 namespace ac::detail {
 
 template <class Policy, index N, class T0, class T1, class K>
-inline bool between_endpoints(const Policy& policy, const point<T0, N>& p,
-                              const line<T1, N, K>& l) {
+bool between_endpoints(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
     if (end(l.kind()) == endpoint::free)
         return endpoint_test(policy, begin(l.kind()), 0, dot(policy, p - l.begin, l.vector));
     if (l.kind() == line_kind::half_open_segment && equal(policy, p, l.begin)) return false;

@@ -16,7 +16,7 @@ struct cast_before {
 };
 
 template <class Op, class T>
-inline constexpr auto apply_policy(const Op& op, cast_before<Op, T>) {
+constexpr auto apply_policy(const Op& op, cast_before<Op, T>) {
     return op(cast<T>);
 }
 

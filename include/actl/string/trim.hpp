@@ -11,8 +11,7 @@
 namespace ac {
 
 template <class CharPredicate0, class CharPredicate1>
-inline std::string trim(const std::string& str, CharPredicate0 skip_left,
-                        CharPredicate1 skip_right) {
+std::string trim(const std::string& str, CharPredicate0 skip_left, CharPredicate1 skip_right) {
     auto l = str.begin();
     auto r = str.end();
     for (; l != r && skip_left(l[0]); ++l);
@@ -21,7 +20,7 @@ inline std::string trim(const std::string& str, CharPredicate0 skip_left,
 }
 
 template <class CharPredicate>
-inline std::string trim(const std::string& str, CharPredicate skip) {
+std::string trim(const std::string& str, CharPredicate skip) {
     return trim(str, skip, skip);
 }
 

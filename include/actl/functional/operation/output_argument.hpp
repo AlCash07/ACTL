@@ -35,22 +35,22 @@ struct raw<out<In, T>> {
 };
 
 template <class T>
-inline constexpr const T& remove_inplace(const out<true, T>& x) {
+constexpr const T& remove_inplace(const out<true, T>& x) {
     return x.x;
 }
 
 template <class T>
-inline constexpr const T& remove_inplace(const T& x) {
+constexpr const T& remove_inplace(const T& x) {
     return x;
 }
 
 template <class T, class... Ts>
-inline constexpr auto& find_dst(T&, Ts&... xs) {
+constexpr auto& find_dst(T&, Ts&... xs) {
     return find_dst(xs...);
 }
 
 template <class T, class... Ts>
-inline constexpr T& find_dst(out<true, T>& x, Ts&... xs) {
+constexpr T& find_dst(out<true, T>& x, Ts&... xs) {
     return x.x;
 }
 
@@ -59,12 +59,12 @@ inline constexpr T& find_dst(out<true, T>& x, Ts&... xs) {
 namespace ac {
 
 template <class T>
-inline math::out<false, T> out(T&& x) {
+math::out<false, T> out(T&& x) {
     return {std::forward<T>(x)};
 }
 
 template <class T>
-inline math::out<true, T> inplace(T&& x) {
+math::out<true, T> inplace(T&& x) {
     return {std::forward<T>(x)};
 }
 

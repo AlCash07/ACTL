@@ -21,7 +21,7 @@ struct range_traits<std::basic_string<C, T, A>> : default_range_traits {
 namespace io {
 
 template <class Device, class C, class T, class A, class P>
-inline void read_till(Device& id, till<std::basic_string<C, T, A>&, P> x) {
+void read_till(Device& id, till<std::basic_string<C, T, A>&, P> x) {
     index length = std::max(index{16}, static_cast<index>(x.value.capacity()));
     for (index last = 0;; length = last += length) {
         x.value.resize(static_cast<size_t>(last + length));

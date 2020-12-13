@@ -16,8 +16,8 @@ namespace ac {
  * Point must be outside the polygon.
  */
 template <class Policy, class T, class U, class OutIter>
-inline OutIter tangents(const Policy& policy, const point<T>& p, const convex_polygon<U>& poly,
-                        OutIter dst) {
+OutIter tangents(const Policy& policy, const point<T>& p, const convex_polygon<U>& poly,
+                 OutIter dst) {
     *dst++ = extreme_vertex(policy, poly, [&p](const auto& x) { return x - p; });
     *dst++ = extreme_vertex(policy, poly, [&p](const auto& x) { return p - x; });
     return dst;

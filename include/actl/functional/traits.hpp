@@ -19,7 +19,7 @@ template <class F>
 struct function_traits : functor_traits<F> {};
 
 template <class F>
-inline constexpr size_t arity_v = function_traits<F>::arity;
+constexpr size_t arity_v = function_traits<F>::arity;
 
 template <class F>
 using return_t = typename function_traits<F>::return_type;

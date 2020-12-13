@@ -27,7 +27,7 @@ private:
 };
 
 template <class Value = use_default, class Key>
-inline auto make_shift_map(Key offset) {
+auto make_shift_map(Key offset) {
     return shift_map<Key, deduce_t<Value, Key>>(offset);
 }
 

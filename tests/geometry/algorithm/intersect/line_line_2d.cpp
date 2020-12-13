@@ -19,7 +19,7 @@ TEST("general position") {
 }
 
 template <ac::index N, class T, class K1, class K2>
-inline bool equal_lines(const line<T, N, K1>& lhs, const line<T, N, K2>& rhs) {
+bool equal_lines(const line<T, N, K1>& lhs, const line<T, N, K2>& rhs) {
     if (lhs.kind() != rhs.kind()) return false;
     bool ok = lhs.begin == rhs.begin && lhs.vector == rhs.vector;
     if (end(lhs.kind()) == begin(lhs.kind())) {

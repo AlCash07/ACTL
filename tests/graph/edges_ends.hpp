@@ -10,7 +10,7 @@
 #include <actl/util/type_traits.hpp>
 
 template <bool Directed, class Edges>
-inline auto get_ends(const Edges& es) {
+auto get_ends(const Edges& es) {
     using V = vertex_t<value_t<Edges>>;
     std::vector<std::pair<V, V>> res;
     for (auto e : es) {
@@ -25,14 +25,14 @@ inline auto get_ends(const Edges& es) {
 }
 
 template <class Edges>
-inline auto get_sources(const Edges& es) {
+auto get_sources(const Edges& es) {
     std::vector<vertex_t<value_t<Edges>>> res;
     for (auto e : es) res.emplace_back(e.source());
     return res;
 }
 
 template <class Edges>
-inline auto get_targets(const Edges& es) {
+auto get_targets(const Edges& es) {
     std::vector<vertex_t<value_t<Edges>>> res;
     for (auto e : es) res.emplace_back(e.target());
     return res;

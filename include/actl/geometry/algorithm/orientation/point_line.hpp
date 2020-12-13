@@ -11,8 +11,7 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1, class K, enable_int_if_policy<Policy> = 0>
-inline constexpr auto orientation(const Policy& policy, const point<T0, N>& p,
-                                  const line<T1, N, K>& l) {
+constexpr auto orientation(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) {
     return orientation(policy, p - l.begin, l.vector);
 }
 

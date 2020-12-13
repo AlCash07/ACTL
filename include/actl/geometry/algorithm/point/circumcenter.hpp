@@ -11,8 +11,8 @@
 namespace ac {
 
 template <class Policy, class T0, class T1, class T2>
-inline auto circumcenter(const Policy& policy, const point<T0>& a, const point<T1>& b,
-                         const point<T2>& c) {
+auto circumcenter(const Policy& policy, const point<T0>& a, const point<T1>& b,
+                  const point<T2>& c) {
     ACTL_ASSERT(!collinear(policy, a, b, c));
     using T = geometry::scalar_t<T0, T1, T2>;
     // TODO: use actual return type of intersect.
@@ -23,7 +23,7 @@ inline auto circumcenter(const Policy& policy, const point<T0>& a, const point<T
 }
 
 template <class T0, class T1, class T2>
-inline auto circumcenter(const point<T0>& a, const point<T1>& b, const point<T2>& c) {
+auto circumcenter(const point<T0>& a, const point<T1>& b, const point<T2>& c) {
     return circumcenter(geometry_policy, a, b, c);
 }
 

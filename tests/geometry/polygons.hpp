@@ -10,22 +10,22 @@
 
 namespace ac {
 
-inline monotone_polygon<point<int>> get_trident_polygon() {
+monotone_polygon<point<int>> get_trident_polygon() {
     return {{{-2, 0}, {-1, 0}, {0, -1}, {1, 0}, {2, 0}, {2, 4}, {1, 1}, {0, 4}, {-1, 1}, {-2, 4}},
             5};
 }
 
-inline star_polygon<point<int>> get_star_polygon() {
+star_polygon<point<int>> get_star_polygon() {
     return {{{0, -2}, {3, -4}, {2, 0}, {5, 2}, {1, 2}, {0, 5}, {-1, 2}, {-5, 2}, {-2, 0}, {-3, -4}},
             {0, 0}};
 }
 
-inline convex_monotone_polygon<point<int>> get_octagon() {
+convex_monotone_polygon<point<int>> get_octagon() {
     using CP = convex_polygon<point<int>>;
     return CP{{-3, -1}, {-1, -3}, {1, -3}, {3, -1}, {3, 1}, {1, 3}, {-1, 3}, {-3, 1}};
 }
 
-inline convex_polygon<point<int>> get_max_convex_polygon(int max_coordinate) {
+convex_polygon<point<int>> get_max_convex_polygon(int max_coordinate) {
     auto get_max = [](int n) { return n * (n + 3) / 2; };
     convex_polygon<point<int>> poly;
     int n = 0;

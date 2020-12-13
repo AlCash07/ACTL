@@ -19,7 +19,7 @@ struct Max : scalar_operation<Max, 2, scalar_tag> {
         return eval(select(less(lhs, rhs), rhs, lhs));
     }
 };
-inline constexpr Max max;
+constexpr Max max;
 
 struct Min : scalar_operation<Min, 2, scalar_tag> {
     struct is_associative;
@@ -30,16 +30,16 @@ struct Min : scalar_operation<Min, 2, scalar_tag> {
         return eval(select(less(rhs, lhs), rhs, lhs));
     }
 };
-inline constexpr Min min;
+constexpr Min min;
 
 struct Sgn : scalar_operation<Sgn, 1, scalar_tag> {
     static constexpr auto formula = cmp3way(x_, zero);
 };
-inline constexpr Sgn sgn;
+constexpr Sgn sgn;
 
 struct Sqr : scalar_operation<Sqr, 1, arithmetic_tag> {
     static constexpr auto formula = mul(x_, x_);
 };
-inline constexpr Sqr sqr;
+constexpr Sqr sqr;
 
 }  // namespace ac::math

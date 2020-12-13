@@ -62,7 +62,7 @@ private:
 };
 
 template <class Range>
-inline auto cyclic_begin(Range& range) {
+auto cyclic_begin(Range& range) {
     return cyclic_iterator{range, std::begin(range)};
 }
 

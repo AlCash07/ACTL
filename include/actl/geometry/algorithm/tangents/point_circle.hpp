@@ -14,8 +14,7 @@
 namespace ac {
 
 template <class Policy, class T0, class T1, class OutIter>
-inline OutIter tangents(const Policy& policy, const point<T0>& p, const circle<T1>& c,
-                        OutIter dst) {
+OutIter tangents(const Policy& policy, const point<T0>& p, const circle<T1>& c, OutIter dst) {
     switch (within(policy, p, c)) {
         case within::outside: {
             auto dist = sqrt(policy, sqr(norm(policy, c.center - p)) - sqr(policy, c.radius));
@@ -31,8 +30,8 @@ inline OutIter tangents(const Policy& policy, const point<T0>& p, const circle<T
 }
 
 template <class Policy, class T0, class T1, class OutIter>
-inline OutIter tangents(polar_angle_policy<Policy> pap, const point<T0>& p, const circle<T1>& c,
-                        OutIter dst) {
+OutIter tangents(polar_angle_policy<Policy> pap, const point<T0>& p, const circle<T1>& c,
+                 OutIter dst) {
     auto& policy = pap.policy;
     auto center_vector = c.center - p;
     switch (within(policy, p, c)) {

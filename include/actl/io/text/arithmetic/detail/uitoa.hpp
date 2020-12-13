@@ -10,7 +10,7 @@
 namespace ac::io::detail {
 
 template <bool ShowBase = true, class Char, class Format, class UInt>
-inline Char* uitoa(Char* last, Format& fmt, UInt x, UInt base) {
+Char* uitoa(Char* last, Format& fmt, UInt x, UInt base) {
     if (base <= 10) {
         bool show_base = ShowBase && fmt.getf(flags::showbase) && x != 0 && base == 8;
         do {

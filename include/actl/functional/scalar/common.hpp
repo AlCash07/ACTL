@@ -29,11 +29,11 @@ struct Arg {
     }
 };
 template <index I, index N>
-inline constexpr Arg<I, N> arg;
+constexpr Arg<I, N> arg;
 
-inline constexpr Arg<0, 1> x_;
-inline constexpr Arg<0, 2> lhs_;
-inline constexpr Arg<1, 2> rhs_;
+constexpr Arg<0, 1> x_;
+constexpr Arg<0, 2> lhs_;
+constexpr Arg<1, 2> rhs_;
 
 template <class To>
 struct Cast : scalar_operation<Cast<To>, 1, arithmetic_tag> {
@@ -43,7 +43,7 @@ struct Cast : scalar_operation<Cast<To>, 1, arithmetic_tag> {
     }
 };
 template <class T>
-inline constexpr Cast<T> cast;
+constexpr Cast<T> cast;
 
 struct Common : scalar_operation<Common, 2, scalar_tag> {
     struct is_associative;
@@ -94,7 +94,7 @@ struct Common : scalar_operation<Common, 2, scalar_tag> {
         return eval_scalar(eval_scalar(x0, x1), x2, xs...);
     }
 };
-inline constexpr Common common;
+constexpr Common common;
 
 struct Copy : scalar_operation<Copy, 1, arithmetic_tag> {
     template <class T>
@@ -102,10 +102,10 @@ struct Copy : scalar_operation<Copy, 1, arithmetic_tag> {
         return x;
     }
 };
-inline constexpr Copy copy;
+constexpr Copy copy;
 
 template <class T, class U>
-inline constexpr void assign(out<false, T>& dst, const U& y) {
+constexpr void assign(out<false, T>& dst, const U& y) {
     copy(dst, y);
 }
 
@@ -115,6 +115,6 @@ struct Select : scalar_operation<Select, 3, arithmetic_tag> {
         return condition ? eval(lhs) : eval(rhs);
     }
 };
-inline constexpr Select select;
+constexpr Select select;
 
 }  // namespace ac::math
