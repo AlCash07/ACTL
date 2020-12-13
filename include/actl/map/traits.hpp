@@ -1,17 +1,15 @@
-/***************************************************************************************************
- * Maps inspired by boost property maps, but much more powerful. Supported functions:
- * - get(Map&, Key) : read;
- * - put(Map&, Key, Value) : write;
- * - invert(Map&, Value) : inverse mapping;
- * - map_range(Map&): traversal of key-value pairs.
- *
- * map_traits is a helper class that defines nested types and static variables.
- ***************************************************************************************************
- * Copyright 2017 Oleksandr Bacherikov.
- *
- *             Distributed under the Boost Software License, Version 1.0.
- * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- **************************************************************************************************/
+// Maps inspired by boost property maps, but much more powerful. Supported functions:
+// - get(Map&, Key) : read;
+// - put(Map&, Key, Value) : write;
+// - invert(Map&, Value) : inverse mapping;
+// - map_range(Map&): traversal of key-value pairs.
+//
+// map_traits is a helper class that defines nested types and static variables.
+//
+// Copyright 2017 Oleksandr Bacherikov.
+//
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
 

@@ -1,12 +1,10 @@
-/***************************************************************************************************
- * Two iterators incapsulated to represent a range. Adopted from boost:
- * http://www.boost.org/doc/libs/1_65_1/libs/range/doc/html/range/reference/utilities/iterator_range.html
- ***************************************************************************************************
- * Copyright 2017 Oleksandr Bacherikov.
- *
- *             Distributed under the Boost Software License, Version 1.0.
- * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- **************************************************************************************************/
+// Two iterators incapsulated to represent a range. Adopted from boost:
+// http://www.boost.org/doc/libs/1_65_1/libs/range/doc/html/range/reference/utilities/iterator_range.html
+//
+// Copyright 2017 Oleksandr Bacherikov.
+//
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
 

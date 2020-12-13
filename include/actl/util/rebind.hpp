@@ -1,13 +1,11 @@
-/***************************************************************************************************
- * Rebind operates on classes that have one primary template parameter (which is the first one by
- * default) and replaces all its occurrences with the given type. Inner template classes are
- * modified only if their primary template parameter is the type that's being rebinded.
- ***************************************************************************************************
- * Copyright 2018 Oleksandr Bacherikov.
- *
- *             Distributed under the Boost Software License, Version 1.0.
- * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- **************************************************************************************************/
+// Rebind operates on classes that have one primary template parameter (which is the first one by
+// default) and replaces all its occurrences with the given type. Inner template classes are
+// modified only if their primary template parameter is the type that's being rebinded.
+//
+// Copyright 2018 Oleksandr Bacherikov.
+//
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
 

@@ -1,12 +1,10 @@
-/***************************************************************************************************
- * Traits to extract callable object's argument and return types.
- * Reference: https://functionalcpp.wordpress.com/2013/08/05/function-traits/
- ***************************************************************************************************
- * Copyright 2018 Oleksandr Bacherikov.
- *
- *             Distributed under the Boost Software License, Version 1.0.
- * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- **************************************************************************************************/
+// Traits to extract callable object's argument and return types.
+// Reference: https://functionalcpp.wordpress.com/2013/08/05/function-traits/
+//
+// Copyright 2018 Oleksandr Bacherikov.
+//
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
 
