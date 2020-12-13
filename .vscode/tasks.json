@@ -4,48 +4,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "configure",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceRoot}"
-            },
-            "command": "cmake",
-            "args": [
-                "-B", "build",
-                "-G", "Xcode", 
-                // "-G", "'Unix Makefiles'", 
-                // "-DCMAKE_BUILD_TYPE=Debug",
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "build",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceRoot}"
-            },
-            "command": "cmake",
-            "args": [
-                "--build", "build",
-                "--config", "Debug",
-                "--target", "tests",
-            ],
-            "group": "build",
-            "problemMatcher": ["$gcc"]
-        },
-        {
             "label": "run",
             "type": "shell",
+            "command": "${command:cmake.launchTargetPath}",
             "options": {
-                "cwd": "${workspaceRoot}"
+                "cwd": "${workspaceFolder}"
             },
-            "command": "${workspaceRoot}/build/Debug/tests",
             "args": [
                 "-regex",
                 ".*",
-            ],
-            "group": "test",
-            "dependsOn": ["build"]
+            ]
         }
     ],
 }

@@ -8,15 +8,14 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "preLaunchTask": "build",
-            "cwd": "${workspaceRoot}",
-            "program": "${workspaceRoot}/build/Debug/tests",
+            "cwd": "${workspaceFolder}",
+            "program": "${command:cmake.launchTargetPath}",
             "args": [
                 "-regex",
                 ".*"
             ],
-            "stopAtEntry": false,
             "environment": [],
+            "stopAtEntry": false,
             "externalConsole": false,
             "MIMode": "lldb"
         },
