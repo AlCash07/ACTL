@@ -7,6 +7,7 @@
 
 #include <actl/io/io.hpp>
 #include <actl/io/text/settings/base.hpp>
+#include <actl/io/text/settings/flags.hpp>
 #include <actl/io/text/settings/precision.hpp>
 #include <actl/io/util/raw.hpp>
 #include <actl/numeric/bit.hpp>
@@ -18,31 +19,6 @@ struct text_tag {};
 
 template <class T>
 using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
-
-using flag_t = uint32_t;
-
-namespace flag {
-
-enum : flag_t {
-    boolalpha = 1 << 0,
-    uppercase = 1 << 1,
-    showbase = 1 << 2,
-    showpos = 1 << 3,
-    showpoint = 1 << 4,
-    fixed = 1 << 5,
-    scientific = 1 << 6,
-    hexfloat = 1 << 7
-};
-
-}  // namespace flag
-
-namespace groups {
-
-enum : flag_t { floatfield };
-
-}  // namespace groups
-
-const flag_t group_bits[] = {flag::fixed | flag::scientific | flag::hexfloat};
 
 template <flag_t Flags = 0, uint8_t Base = 10, index Precision = 6>
 class text_static {
