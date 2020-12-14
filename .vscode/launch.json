@@ -11,8 +11,7 @@
             "cwd": "${workspaceFolder}",
             "program": "${command:cmake.launchTargetPath}",
             "args": [
-                "-regex",
-                ".*"
+                "\"*\"",
             ],
             "environment": [],
             "stopAtEntry": false,

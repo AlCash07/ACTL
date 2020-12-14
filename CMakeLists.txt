@@ -34,6 +34,10 @@ add_executable(tests ${TEST_FILES})
 target_include_directories(tests PRIVATE ${TESTS_DIR})
 target_link_libraries(tests src)
 
+if(BUILD_TESTS)
+    add_subdirectory(tests_catch2)
+endif()
+
 source_group(TREE ${BENCHMARK_DIR} FILES ${BENCHMARK_DIR}/main.cpp)
 add_executable(benchmark ${BENCHMARK_DIR}/main.cpp)
 find_package(benchmark)

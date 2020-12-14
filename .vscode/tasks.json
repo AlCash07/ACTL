@@ -11,8 +11,7 @@
                 "cwd": "${workspaceFolder}"
             },
             "args": [
-                "-regex",
-                ".*",
+                "\"*\"",
             ]
         }
     ],
