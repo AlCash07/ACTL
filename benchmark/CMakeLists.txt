@@ -1,0 +1,7 @@
+add_executable(benchmark main.cpp)
+source_group(TREE ${CMAKE_CURRENT_LIST_DIR} FILES main.cpp)
+find_package(benchmark)
+find_path(benchmark_INCLUDE_DIRS "benchmark/benchmark.h")
+find_library(benchmark_LIBRARIES NAMES "benchmark")
+target_include_directories(benchmark PRIVATE ${benchmark_INCLUDE_DIRS})
+target_link_libraries(benchmark ACTL ${benchmark_LIBRARIES})

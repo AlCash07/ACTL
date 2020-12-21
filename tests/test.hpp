@@ -12,7 +12,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <string_view>
 
-using namespace std::string_view_literals;
+using std::string_view_literals::operator""sv;
 using namespace ac;
 
 #define CHECK_EQUAL check_equal

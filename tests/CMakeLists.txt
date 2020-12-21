@@ -5,4 +5,4 @@ add_executable(run_tests ${test_files})
 target_include_directories(run_tests PRIVATE .)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/catch2 ${CMAKE_BINARY_DIR}/catch2)
-target_link_libraries(run_tests Catch2::Catch2WithMain)
+target_link_libraries(run_tests ACTL Catch2::Catch2WithMain)
