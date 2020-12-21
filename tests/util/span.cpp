@@ -3,28 +3,28 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/test.hpp>
+#include "test.hpp"
 #include <actl/util/span.hpp>
 
 constexpr ac::index N = 9;
 
-TEST("empty") {
+TEST_CASE("empty span") {
     span<int> s;
-    ASSERT_TRUE(!s.data());
+    CHECK_FALSE(s.data());
     span<int, 0> s0;
-    ASSERT_TRUE(!s0.data());
+    CHECK_FALSE(s0.data());
 }
 
-TEST("array") {
+TEST_CASE("span from array") {
     int a[N] = {};
     span s{a};
-    ASSERT_EQUAL(static_cast<int*>(a), s.data());
+    CHECK(static_cast<int*>(a) == s.data());
     static_assert(N == s.size());
 }
 
-TEST("const vector") {
+TEST_CASE("span from const vector") {
     const std::vector<double> v(N);
     span s{v};
-    ASSERT_EQUAL(v.data(), s.data());
-    ASSERT_EQUAL(N, s.size());
+    CHECK(v.data() == s.data());
+    CHECK(N == s.size());
 }

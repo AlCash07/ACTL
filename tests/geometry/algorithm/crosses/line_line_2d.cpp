@@ -3,10 +3,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/geometry/algorithm/crosses/line_line_2d.hpp>
-#include <actl/test.hpp>
 
-TEST("general position all kinds") {
+TEST_CASE("general position all kinds") {
     auto kinds = std::vector{endpoint::free, endpoint::closed, endpoint::open};
     for (endpoint s0 : kinds) {
         for (endpoint e0 : kinds) {
@@ -31,9 +31,9 @@ TEST("general position all kinds") {
                                 case  2: if (s1 != endpoint::free) expected = false; break;
                                 default: break;
                             }
-                            ASSERT_EQUAL(expected, crosses(h, v));
-                            ASSERT_EQUAL(expected,
-                                         crosses(general_position_policy{math::policy{}}, h, v));
+                            CHECK(expected == crosses(h, v));
+                            CHECK(expected ==
+                                  crosses(general_position_policy{math::policy{}}, h, v));
                         }
                     }
                 }

@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <actl/functional/composite/range.hpp>
 #include <actl/functional/scalar/all.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/vector.hpp>
@@ -12,9 +13,12 @@
 #include <string_view>
 
 using namespace std::string_view_literals;
+using namespace ac;
 
-#define REQUIRE_EQUAL_SETS check_sets
-#define REQUIRE_ALMOST_EQUAL_SETS check_almost_equal
+#define CHECK_EQUAL check_equal
+#define CHECK_NOT_EQUAL check_not_equal
+#define CHECK_EQUAL_SETS check_sets
+#define CHECK_ALMOST_EQUAL check_almost_equal
 
 namespace ac::math {
 
@@ -44,10 +48,20 @@ template <class T>
 void check_sets(std::vector<T> expected, std::vector<T> actual) {
     sort(expected);
     sort(actual);
-    REQUIRE(expected == actual);
+    CHECK(expected == actual);
 }
 
 template <class T, class U, class E>
 void check_almost_equal(const T& expected, const U& actual, E eps) {
-    REQUIRE(eval(ac::math::equal(ac::math::abs_rel_error<E>{eps})(expected, actual)));
+    CHECK(ac::math::equal(ac::math::abs_rel_error<E>{eps})(expected, actual));
+}
+
+template <class T, class U>
+void check_equal(const T& expected, const U& actual) {
+    CHECK(math::equal(expected, actual));
+}
+
+template <class T, class U>
+void check_not_equal(const T& not_expected, const U& actual) {
+    CHECK_FALSE(math::equal(not_expected, actual));
 }

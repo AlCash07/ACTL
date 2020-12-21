@@ -3,29 +3,29 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/io/device/string.hpp>
-#include <actl/test.hpp>
 
-TEST("input") {
+TEST_CASE("input") {
     std::string s = "abcde";
     io::string<io::in> id{s};
-    ASSERT_EQUAL('a', id.get());
-    ASSERT_EQUAL('b', id.get());
+    CHECK('a' == id.get());
+    CHECK('b' == id.get());
     id.move(-1);
     char dst[9];
-    ASSERT_EQUAL(4l, id.read({dst, 5}));
-    ASSERT_EQUAL("bcde"sv, std::string(dst, dst + 4));
+    CHECK(4l == id.read({dst, 5}));
+    CHECK("bcde"sv == std::string(dst, dst + 4));
     s += 'f';
-    ASSERT_EQUAL(1l, id.read({dst, 3}));
-    ASSERT_EQUAL("f"sv, std::string(dst, dst + 1));
-    ASSERT_EQUAL(0l, id.read({dst, 3}));
-    ASSERT_EQUAL('\0', id.get());
+    CHECK(1l == id.read({dst, 3}));
+    CHECK("f"sv == std::string(dst, dst + 1));
+    CHECK(0l == id.read({dst, 3}));
+    CHECK('\0' == id.get());
 }
 
-TEST("output") {
+TEST_CASE("output") {
     std::string s;
     io::string<io::app> od{s};
-    ASSERT_EQUAL(1l, od.write('a'));
-    ASSERT_EQUAL(3l, od.write({"bcd", 3}));
-    ASSERT_EQUAL("abcd"sv, s);
+    CHECK(1l == od.write('a'));
+    CHECK(3l == od.write({"bcd", 3}));
+    CHECK("abcd"sv == s);
 }

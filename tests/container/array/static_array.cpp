@@ -7,16 +7,16 @@
 
 #include "regular.hpp"
 
-TEST("regular") {
+TEST_CASE("static_array is regular") {
     test_regular_traits<static_array<int, 1, 3>>();
 }
 
-TEST("empty") {
+TEST_CASE("empty static_array") {
     constexpr static_array<int> sa{};
     static_assert(0 == sa.size());
 }
 
-TEST("contents") {
+TEST_CASE("static_array contents") {
     constexpr static_array<int, 3, 0, 2> sa{};
     static_assert(3 == sa.size());
     static_assert(3 == sa[0]);

@@ -8,12 +8,12 @@
 #include <actl/std/all.hpp>
 #include "graph/test_edges.hpp"
 
-TEST("none") {
+TEST_CASE("edge_list none") {
     edge_list<directed, int> graph;
     auto e = graph.add_edge(2, 3);
-    ASSERT_EQUAL(2, e.source());
-    ASSERT_EQUAL(3, e.target());
-    ASSERT_TRUE(std::is_same_v<void, decltype(graph[e])>);
+    CHECK(2 == e.source());
+    CHECK(3 == e.target());
+    CHECK(std::is_same_v<void, decltype(graph[e])>);
 }
 
 template <class Dir, class EC>
@@ -22,7 +22,7 @@ void test_edge_list() {
     test_edges(graph, 0, 1, 2);
 }
 
-TEST("bundle") {
+TEST_CASE("edge_list bundle") {
     test_edge_list<directed, std::vector<bundle>>();
     test_edge_list<undirected, std::vector<bundle>>();
     test_edge_list<directed, std::set<bundle>>();

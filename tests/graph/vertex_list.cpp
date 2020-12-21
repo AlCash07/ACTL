@@ -8,21 +8,21 @@
 #include <actl/std/all.hpp>
 #include "graph/test_vertices.hpp"
 
-TEST("none") {
+TEST_CASE("none") {
     vertex_list<> graph{3};
-    ASSERT_EQUAL(std::pair{3, true}, graph.try_add_vertex());
-    ASSERT_EQUAL(4, graph.add_vertex());
-    ASSERT_EQUAL(2, graph.nth_vertex(2));
+    CHECK(std::pair{3, true} == graph.try_add_vertex());
+    CHECK(4 == graph.add_vertex());
+    CHECK(2 == graph.nth_vertex(2));
     graph.remove_vertex(2);
-    ASSERT_EQUAL(4l, graph.vertex_count());
+    CHECK(4l == graph.vertex_count());
     int i = 0;
     for (auto v : graph.vertices()) {
-        ASSERT_EQUAL(i, v);
+        CHECK(i == v);
         ++i;
     }
-    ASSERT_TRUE(std::is_same_v<void, decltype(graph[0])>);
+    CHECK(std::is_same_v<void, decltype(graph[0])>);
     graph = {};
-    ASSERT_EQUAL(0l, graph.vertex_count());
+    CHECK(0l == graph.vertex_count());
 }
 
 template <class VC>
@@ -30,10 +30,10 @@ void test_vertex_list() {
     vertex_list<VC> graph;
     auto vs = test_vertices(graph);
     graph.remove_vertex(vs[1]);
-    ASSERT_EQUAL((long)vs.size() - 1, graph.vertex_count());
+    CHECK((long)vs.size() - 1 == graph.vertex_count());
 }
 
-TEST("bundle") {
+TEST_CASE("bundle") {
     test_vertex_list<std::vector<bundle>>();
     test_vertex_list<std::list<bundle>>();
     test_vertex_list<std::set<bundle>>();

@@ -3,51 +3,52 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/io/device/memory.hpp>
+#include <actl/io/text/arithmetic/integer_write.hpp>
 #include <actl/io/text/decorator/adjusted.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/test.hpp>
 
 using namespace ac::io;
 
 using pii = std::pair<ac::index, ac::index>;
 
-TEST("adjustment::left") {
+TEST_CASE("adjustment::left") {
     adjusted fmt{4};
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
-    ASSERT_EQUAL(pii{0, 3}, adjustment(fmt, 1));
+    CHECK(pii{0, 0} == adjustment(fmt, 8));
+    CHECK(pii{0, 0} == adjustment(fmt, 4));
+    CHECK(pii{0, 3} == adjustment(fmt, 1));
 }
 
-TEST("adjustment::right") {
+TEST_CASE("adjustment::right") {
     adjusted fmt{4, adjust_to::right};
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
-    ASSERT_EQUAL(pii{3, 0}, adjustment(fmt, 1));
+    CHECK(pii{0, 0} == adjustment(fmt, 8));
+    CHECK(pii{0, 0} == adjustment(fmt, 4));
+    CHECK(pii{3, 0} == adjustment(fmt, 1));
 }
 
-TEST("adjustment::center") {
+TEST_CASE("adjustment::center") {
     adjusted fmt{4, adjust_to::center};
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
-    ASSERT_EQUAL(pii{1, 1}, adjustment(fmt, 2));
-    ASSERT_EQUAL(pii{1, 2}, adjustment(fmt, 1));
+    CHECK(pii{0, 0} == adjustment(fmt, 8));
+    CHECK(pii{0, 0} == adjustment(fmt, 4));
+    CHECK(pii{1, 1} == adjustment(fmt, 2));
+    CHECK(pii{1, 2} == adjustment(fmt, 1));
 }
 
-TEST("adjustment::center_right") {
+TEST_CASE("adjustment::center_right") {
     adjusted fmt{4, adjust_to::center_right};
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 8));
-    ASSERT_EQUAL(pii{0, 0}, adjustment(fmt, 4));
-    ASSERT_EQUAL(pii{1, 1}, adjustment(fmt, 2));
-    ASSERT_EQUAL(pii{2, 1}, adjustment(fmt, 1));
+    CHECK(pii{0, 0} == adjustment(fmt, 8));
+    CHECK(pii{0, 0} == adjustment(fmt, 4));
+    CHECK(pii{1, 1} == adjustment(fmt, 2));
+    CHECK(pii{2, 1} == adjustment(fmt, 1));
 }
 
-TEST("fill") {
+TEST_CASE("fill") {
     auto fmt = text_static{} >>= adjusted{4, adjust_to::center, '*'};
     char s[14];
     memory<io::out> od{s};
-    ASSERT_EQUAL(4l, write(od, fmt, 'a'));
-    ASSERT_EQUAL(6l, write(od, fmt, "bacaba"));
-    ASSERT_EQUAL(4l, write(od, fmt, 42));
-    ASSERT_EQUAL("*a**bacaba*42*"sv, s);
+    CHECK(4l == write(od, fmt, 'a'));
+    CHECK(6l == write(od, fmt, "bacaba"));
+    CHECK(4l == write(od, fmt, 42));
+    CHECK_EQUAL("*a**bacaba*42*"sv, s);
 }

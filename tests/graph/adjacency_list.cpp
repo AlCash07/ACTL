@@ -9,12 +9,12 @@
 #include "graph/test_edges.hpp"
 #include "graph/test_vertices.hpp"
 
-TEST("none") {
+TEST_CASE("adjacency_list none") {
     adjacency_list<directed> graph(2);
     graph.add_edge(0, 2);
     graph.add_vertex();
-    ASSERT_EQUAL(4l, graph.vertex_count());
-    ASSERT_EQUAL(1l, graph.edge_count());
+    CHECK(4l == graph.vertex_count());
+    CHECK(1l == graph.edge_count());
 }
 
 template <class Dir, class OEC, class EC, class VC>
@@ -32,7 +32,7 @@ void test_adjacency_list1() {
     test_adjacency_list<Dir, std::list<bundle>, std::vector<two_vertices>, hash_multiset<bundle>>();
 }
 
-TEST("bundle") {
+TEST_CASE("adjacency_list bundle") {
     test_adjacency_list1<directed>();
     test_adjacency_list1<undirected>();
     test_adjacency_list1<bidirectional>();

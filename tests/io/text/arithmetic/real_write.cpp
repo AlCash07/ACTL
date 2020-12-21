@@ -3,13 +3,13 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/io/text/arithmetic/real_write.hpp>
-#include <actl/test.hpp>
 #include "io/text/test_io.hpp"
+#include "test.hpp"
+#include <actl/io/text/arithmetic/real_write.hpp>
 
 using namespace ac::io;
 
-TEST("write double") {
+TEST_CASE("write double") {
     const auto inf = std::numeric_limits<double>::infinity();
     const auto nan = std::numeric_limits<double>::quiet_NaN();
     text f;

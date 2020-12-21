@@ -3,20 +3,20 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/map/function_map.hpp>
-#include <actl/test.hpp>
 #include <cstring>
 
-TEST("free_function") {
+TEST_CASE("function_map free_function") {
     auto map = function_map{std::strlen};
-    ASSERT_EQUAL(0ul, get(map, ""));
-    ASSERT_EQUAL(3ul, get(map, "map"));
+    CHECK(0ul == get(map, ""));
+    CHECK(3ul == get(map, "map"));
 }
 
-TEST("lambda") {
+TEST_CASE("function_map lambda") {
     int count = 0;
     auto map = function_map{[&count](int) { return count++; }};
-    ASSERT_EQUAL(0, get(map, 0));
-    ASSERT_EQUAL(1, get(map, 0));
-    ASSERT_EQUAL(2, count);
+    CHECK(0 == get(map, 0));
+    CHECK(1 == get(map, 0));
+    CHECK(2 == count);
 }

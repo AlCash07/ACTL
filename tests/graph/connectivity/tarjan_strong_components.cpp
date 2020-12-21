@@ -13,7 +13,7 @@
 //   0   4    6
 //    \ /    /
 //     1 <- 5
-TEST("basic") {
+TEST_CASE("tarjan_strong_components basic") {
     adjacency_list<directed> graph;
     graph.add_edge(0, 1);
     graph.add_edge(0, 3);
@@ -31,6 +31,6 @@ TEST("basic") {
     find_strong_components(graph, components);
     test_partition({{0, 2, 3}, {1}, {4}, {5}, {6, 7, 8}}, components);
     for (auto e : graph.edges()) {
-        ASSERT_TRUE(components[(size_t)e.source()] >= components[(size_t)e.target()]);
+        CHECK(components[(size_t)e.source()] >= components[(size_t)e.target()]);
     }
 }

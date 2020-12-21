@@ -3,10 +3,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/geometry/algorithm/nearest/multi_point.hpp>
-#include <actl/test.hpp>
 
-TEST("grid") {
+TEST_CASE("grid") {
     std::vector<point<int>> grid;
     for (int i : irange(222)) {
         for (int j : irange(222)) {
@@ -19,6 +19,6 @@ TEST("grid") {
     auto res = nearest(math::defer_sqrt{}, grid);
     using std::swap;
     if (res.first > res.second) swap(res.first, res.second);
-    ASSERT_EQUAL(p0, res.first);
-    ASSERT_EQUAL(p1, res.second);
+    CHECK(p0 == res.first);
+    CHECK(p1 == res.second);
 }

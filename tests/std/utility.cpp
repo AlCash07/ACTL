@@ -3,23 +3,23 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/io/device/memory.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/test.hpp>
 
 using namespace ac::io;
 
-TEST("write pair") {
+TEST_CASE("write pair") {
     char s[3];
-    ASSERT_TRUE(2 <= write(memory<bin | io::out>{s}, std::pair{'a', 'c'}, std::pair{'b', 'c'}));
-    ASSERT_EQUAL("ac"sv, span{s, 2});
+    CHECK(2 <= write(memory<bin | io::out>{s}, std::pair{'a', 'c'}, std::pair{'b', 'c'}));
+    CHECK_EQUAL("ac"sv, span{s, 2});
 }
 
-TEST("read pair") {
+TEST_CASE("read pair") {
     std::string s = "aba";
     memory<bin | in> id{s};
     std::pair<char, char> x;
-    ASSERT_TRUE(read(id, x));
-    ASSERT_EQUAL(std::pair{'a', 'b'}, x);
-    ASSERT_FALSE(read(id, x));
+    CHECK(read(id, x));
+    CHECK(std::pair{'a', 'b'} == x);
+    CHECK_FALSE(read(id, x));
 }

@@ -3,9 +3,9 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/map/pair_associative_container.hpp>
 #include <actl/std/map.hpp>
-#include <actl/test.hpp>
 
 using C = std::vector<std::pair<int, int>>;
 
@@ -22,28 +22,28 @@ std::map<int, int> get_map() {
 template <bool Writable, class Map>
 void test_associative_map(Map&& map) {
     for (auto [key, value] : kv) {
-        ASSERT_EQUAL(value, get(map, key));
+        CHECK(value == get(map, key));
     }
-    ASSERT_EQUAL(0, get(map, 0));
-    ASSERT_EQUAL(0, get(map, 3));
+    CHECK(0 == get(map, 0));
+    CHECK(0 == get(map, 3));
     C expected = kv;
     if constexpr (Writable) {
         expected.emplace_back(3, 2);
         put(map, 3, 2);
-        ASSERT_EQUAL(2, get(map, 3));
+        CHECK(2 == get(map, 3));
     }
     auto r = map_range(map);
-    ASSERT_EQUAL_SETS(expected, {r.begin(), r.end()});
+    CHECK_EQUAL_SETS(expected, {r.begin(), r.end()});
 }
 
-TEST("reference") {
+TEST_CASE("pair_associative_container reference") {
     auto map = get_map();
     test_associative_map<true>(map);
-    ASSERT_EQUAL(4ul, map.size());
-    ASSERT_EQUAL(2, map[3]);
+    CHECK(4ul == map.size());
+    CHECK(2 == map[3]);
 }
 
-TEST("const_reference") {
+TEST_CASE("pair_associative_container const_reference") {
     const auto map = get_map();
     test_associative_map<false>(map);
 }

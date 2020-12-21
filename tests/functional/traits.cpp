@@ -3,26 +3,26 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/functional/traits.hpp>
-#include <actl/test.hpp>
 #include <functional>
 
 bool ok();
 
-TEST("0_arity") {
+TEST_CASE("0_arity") {
     using F = decltype(ok);
-    ASSERT_EQUAL(0ul, arity_v<F>);
-    ASSERT_TRUE(std::is_same_v<bool, return_t<F>>);
+    CHECK(0ul == arity_v<F>);
+    CHECK(std::is_same_v<bool, return_t<F>>);
 }
 
 int cmp(const void*, const std::string&);
 
-TEST("function") {
+TEST_CASE("function") {
     using F = decltype(cmp);
-    ASSERT_EQUAL(2ul, arity_v<F>);
-    ASSERT_TRUE(std::is_same_v<int, return_t<F>>);
-    ASSERT_TRUE(std::is_same_v<const void*, argument_t<F, 0>>);
-    ASSERT_TRUE(std::is_same_v<const std::string&, argument_t<F, 1>>);
+    CHECK(2ul == arity_v<F>);
+    CHECK(std::is_same_v<int, return_t<F>>);
+    CHECK(std::is_same_v<const void*, argument_t<F, 0>>);
+    CHECK(std::is_same_v<const std::string&, argument_t<F, 1>>);
 }
 
 struct S {
@@ -33,31 +33,31 @@ struct S {
     bool operator()(int, S) const;
 };
 
-TEST("member_function") {
+TEST_CASE("member_function") {
     using F = decltype(&S::f1);
-    ASSERT_EQUAL(2ul, arity_v<F>);
-    ASSERT_TRUE(std::is_same_v<void, return_t<F>>);
-    ASSERT_TRUE(std::is_same_v<S&, argument_t<F, 0>>);
-    ASSERT_TRUE(std::is_same_v<bool&&, argument_t<F, 1>>);
+    CHECK(2ul == arity_v<F>);
+    CHECK(std::is_same_v<void, return_t<F>>);
+    CHECK(std::is_same_v<S&, argument_t<F, 0>>);
+    CHECK(std::is_same_v<bool&&, argument_t<F, 1>>);
 }
 
-TEST("const_member_function") {
+TEST_CASE("const_member_function") {
     using F = decltype(&S::f0);
-    ASSERT_EQUAL(1ul, arity_v<F>);
-    ASSERT_TRUE(std::is_same_v<double, return_t<F>>);
-    ASSERT_TRUE(std::is_same_v<const S&, argument_t<F, 0>>);
+    CHECK(1ul == arity_v<F>);
+    CHECK(std::is_same_v<double, return_t<F>>);
+    CHECK(std::is_same_v<const S&, argument_t<F, 0>>);
 }
 
-TEST("functor") {
-    ASSERT_EQUAL(2ul, arity_v<S>);
-    ASSERT_TRUE(std::is_same_v<bool, return_t<S>>);
-    ASSERT_TRUE(std::is_same_v<int, argument_t<S, 0>>);
-    ASSERT_TRUE(std::is_same_v<S, argument_t<S, 1>>);
+TEST_CASE("functor") {
+    CHECK(2ul == arity_v<S>);
+    CHECK(std::is_same_v<bool, return_t<S>>);
+    CHECK(std::is_same_v<int, argument_t<S, 0>>);
+    CHECK(std::is_same_v<S, argument_t<S, 1>>);
 }
 
-TEST("std::function") {
+TEST_CASE("std::function") {
     using F = std::function<char(char&)>;
-    ASSERT_EQUAL(1ul, arity_v<F>);
-    ASSERT_TRUE(std::is_same_v<char, return_t<F>>);
-    ASSERT_TRUE(std::is_same_v<char&, argument_t<F, 0>>);
+    CHECK(1ul == arity_v<F>);
+    CHECK(std::is_same_v<char, return_t<F>>);
+    CHECK(std::is_same_v<char&, argument_t<F, 0>>);
 }

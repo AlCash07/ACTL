@@ -65,6 +65,12 @@ public:
     explicit constexpr compressed_pair(T&& first, Ts&&... second)
         : detail::cpb1<T1>{std::forward<T>(first)}, detail::cpb2<T2>{std::forward<Ts>(second)...} {}
 
+    constexpr compressed_pair(const compressed_pair&) = default;
+    constexpr compressed_pair& operator=(const compressed_pair&) = default;
+
+    constexpr compressed_pair(compressed_pair&&) = default;
+    constexpr compressed_pair& operator=(compressed_pair&&) = default;
+
     constexpr T1& first() noexcept { return detail::cpb1<T1>::get(); }
     constexpr const T1& first() const noexcept { return detail::cpb1<T1>::get(); }
 

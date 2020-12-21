@@ -3,10 +3,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/functional/scalar/arithmetic.hpp>
-#include <actl/test.hpp>
 
-TEST("arithmetic") {
+TEST_CASE("arithmetic") {
     static_assert(-6 == math::neg(6));
     static_assert(2 == math::neg(-2));
     static_assert(8 == math::add(6, 2));

@@ -3,12 +3,12 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "geometry/polygons.hpp"
+#include "test.hpp"
 #include <actl/geometry/algorithm/orientation/point_line.hpp>
 #include <actl/geometry/algorithm/tangents/point_convex_polygon.hpp>
-#include <actl/test.hpp>
-#include "geometry/polygons.hpp"
 
-TEST("max polygon") {
+TEST_CASE("max polygon") {
     math::cast_before<math::Mul, long long> policy;
     constexpr int M = 100'000'000;
     auto poly = get_max_convex_polygon(M);
@@ -22,14 +22,14 @@ TEST("max polygon") {
         point<int> p{random_coordinate(), random_coordinate()};
         std::vector<decltype(poly.cbegin())> res;
         tangents(policy, p, poly, std::back_inserter(res));
-        ASSERT_EQUAL(2, res.size());
+        CHECK(2 == res.size());
         auto it0 = cyclic_iterator{std::as_const(poly), res[0]};
         line<int> l0{p, *it0};
-        ASSERT_TRUE(!left_turn(policy, it0[1], l0));
-        ASSERT_TRUE(right_turn(policy, it0[-1], l0));
+        CHECK_FALSE(left_turn(policy, it0[1], l0));
+        CHECK(right_turn(policy, it0[-1], l0));
         auto it1 = cyclic_iterator{std::as_const(poly), res[1]};
         line<int> l1{p, *it1};
-        ASSERT_TRUE(left_turn(policy, it1[1], l1));
-        ASSERT_TRUE(!right_turn(policy, it1[-1], l1));
+        CHECK(left_turn(policy, it1[1], l1));
+        CHECK_FALSE(right_turn(policy, it1[-1], l1));
     }
 }

@@ -3,47 +3,47 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/io/device/memory.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/test.hpp>
 
 using namespace ac::io;
 
-TEST("write char") {
+TEST_CASE("write char") {
     char s[2];
-    ASSERT_EQUAL(2l, write(memory<bin | io::out>{s}, 'a', 'b', 'c'));
-    ASSERT_EQUAL("ab"sv, s);
+    CHECK(2l == write(memory<bin | io::out>{s}, 'a', 'b', 'c'));
+    CHECK_EQUAL("ab"sv, s);
 }
 
-TEST("read char") {
+TEST_CASE("read char") {
     std::string s = "ab";
     memory<bin | in> id{s};
     char a, b;
-    ASSERT_TRUE(read(id, a, b));
-    ASSERT_EQUAL('a', a);
-    ASSERT_EQUAL('b', b);
-    ASSERT_FALSE(read(id, a));
+    CHECK(read(id, a, b));
+    CHECK('a' == a);
+    CHECK('b' == b);
+    CHECK_FALSE(read(id, a));
 }
 
-TEST("write char array") {
+TEST_CASE("write char array") {
     char s[7];
-    ASSERT_EQUAL(7l, write(memory<io::out>{s}, "aba", "cabad"));
-    ASSERT_EQUAL("abacaba"sv, s);
+    CHECK(7l == write(memory<io::out>{s}, "aba", "cabad"));
+    CHECK_EQUAL("abacaba"sv, s);
 }
 
-TEST("read span<char>") {
+TEST_CASE("read span<char>") {
     std::string s = "abacaba";
     memory<bin | in> id{s};
     char a[3], b[3];
-    ASSERT_TRUE(read(id, span{a}, span{b}));
-    ASSERT_EQUAL("aba"sv, a);
-    ASSERT_EQUAL("cab"sv, b);
-    ASSERT_FALSE(read(id, span{a}));
+    CHECK(read(id, span{a}, span{b}));
+    CHECK_EQUAL("aba"sv, a);
+    CHECK_EQUAL("cab"sv, b);
+    CHECK_FALSE(read(id, span{a}));
 }
 
-TEST("read string_view") {
+TEST_CASE("read string_view") {
     std::string s = "abacaba";
     memory<in> id{s};
-    ASSERT_TRUE(read(id, "aba"sv));
-    ASSERT_FALSE(read(id, "caca"sv));
+    CHECK(read(id, "aba"sv));
+    CHECK_FALSE(read(id, "caca"sv));
 }

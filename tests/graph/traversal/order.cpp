@@ -3,29 +3,29 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/graph/traversal/order.hpp>
-#include <actl/test.hpp>
 #include "graph/sample_graphs.hpp"
+#include "test.hpp"
+#include <actl/graph/traversal/order.hpp>
 
-TEST("inorder") {
+TEST_CASE("inorder") {
     auto graph = sample_undirected_tree();
     std::vector<int> order;
     inorder(graph, 0, std::back_inserter(order));
-    ASSERT_EQUAL(std::vector<int>{1, 0, 3, 2, 6, 4, 2, 5}, order);
+    CHECK(std::vector<int>{1, 0, 3, 2, 6, 4, 2, 5} == order);
 }
 
-TEST("postorder") {
+TEST_CASE("postorder") {
     auto graph = sample_undirected_tree();
     std::vector<int> order;
     postorder(graph, 0, std::back_inserter(order));
-    ASSERT_EQUAL(std::vector<int>{1, 3, 6, 4, 5, 2, 0}, order);
+    CHECK(std::vector<int>{1, 3, 6, 4, 5, 2, 0} == order);
 }
 
-TEST("preorder") {
+TEST_CASE("preorder") {
     auto graph = sample_undirected_tree();
     std::vector<int> order;
     preorder(graph, 0, std::back_inserter(order));
-    ASSERT_EQUAL(std::vector<int>{0, 1, 2, 3, 4, 6, 5}, order);
+    CHECK(std::vector<int>{0, 1, 2, 3, 4, 6, 5} == order);
 }
 
 //   0   5
@@ -35,7 +35,7 @@ TEST("preorder") {
 // | 3   7
 // |/    |
 // 4     8
-TEST("topological_sort") {
+TEST_CASE("topological_sort") {
     adjacency_list<directed> graph;
     graph.add_edge(0, 1);
     graph.add_edge(0, 2);
@@ -48,12 +48,12 @@ TEST("topological_sort") {
     ac::index n = graph.vertex_count();
     std::vector<int> order;
     topological_sort(graph, std::back_inserter(order));
-    ASSERT_EQUAL(n, (ac::index)order.size());
+    CHECK(n == (ac::index)order.size());
     std::vector<int> idx(order.size());
     for (int i = 0; i < n; ++i) {
         idx[(size_t)order[(size_t)i]] = i;
     }
     for (auto e : graph.edges()) {
-        ASSERT_TRUE(idx[(size_t)e.target()] < idx[(size_t)e.source()]);
+        CHECK(idx[(size_t)e.target()] < idx[(size_t)e.source()]);
     }
 }

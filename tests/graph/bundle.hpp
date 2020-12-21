@@ -18,5 +18,7 @@ struct bundle {
     bool operator < (const bundle& rhs) const { return i < rhs.i; }
     bool operator == (const bundle& rhs) const { return i == rhs.i; }
 
-    size_t hash() const { return hash_value(i); }
+    size_t hash() const {
+        return ac::hash_value(i);
+    }
 };

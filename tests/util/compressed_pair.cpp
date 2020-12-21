@@ -3,46 +3,46 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/test.hpp>
+#include "test.hpp"
 #include <actl/util/compressed_pair.hpp>
 #include <actl/util/none.hpp>
 
-TEST("member_access") {
+TEST_CASE("member_access") {
     compressed_pair<int, std::string> p{2, 'a', 'b', 'a'};
-    ASSERT_EQUAL(2, p.first());
-    ASSERT_EQUAL("aba"sv, p.second());
+    CHECK(2 == p.first());
+    CHECK("aba"sv == p.second());
     p.first() = 4;
     p.second() = "s";
-    ASSERT_EQUAL(4, p.first());
-    ASSERT_EQUAL("s"sv, p.second());
+    CHECK(4 == p.first());
+    CHECK("s"sv == p.second());
     compressed_pair<none, int> p2{none{}, 3};
-    ASSERT_EQUAL(3, p2.second());
+    CHECK(3 == p2.second());
 }
 
 using pii = compressed_pair<int, int>;
 
-TEST("equality") {
-    ASSERT_EQUAL(pii{0, 1}, pii{0, 1});
-    ASSERT_TRUE(pii{0, 1} != pii{0, 0});
-    ASSERT_TRUE(pii{0, 1} != pii{1, 1});
-    ASSERT_TRUE(pii{0, 1} != pii{1, 0});
+TEST_CASE("equality") {
+    CHECK(pii{0, 1} == pii{0, 1});
+    CHECK(pii{0, 1} != pii{0, 0});
+    CHECK(pii{0, 1} != pii{1, 1});
+    CHECK(pii{0, 1} != pii{1, 0});
 }
 
-TEST("order") {
-    ASSERT_FALSE(pii{0, 0} < pii{0, 0});
-    ASSERT_TRUE(pii{0, 1} >= pii{0, 0});
-    ASSERT_TRUE(pii{0, 1} <= pii{1, 0});
-    ASSERT_TRUE(pii{1, 0} > pii{0, 1});
+TEST_CASE("order") {
+    CHECK_FALSE(pii{0, 0} < pii{0, 0});
+    CHECK(pii{0, 1} >= pii{0, 0});
+    CHECK(pii{0, 1} <= pii{1, 0});
+    CHECK(pii{1, 0} > pii{0, 1});
 }
 
 struct fin final : none {};
 
-TEST("sizeof") {
-    ASSERT_EQUAL(2 * sizeof(int), sizeof(compressed_pair<int, int>));
+TEST_CASE("sizeof") {
+    CHECK(2 * sizeof(int) == sizeof(compressed_pair<int, int>));
     // TODO: investigate why the following size isn't 1.
-    ASSERT_TRUE(2 >= sizeof(compressed_pair<none, none>));
-    ASSERT_EQUAL(sizeof(int), sizeof(compressed_pair<none, int>));
-    ASSERT_EQUAL(sizeof(int), sizeof(compressed_pair<int, none>));
-    ASSERT_TRUE(sizeof(int) < sizeof(compressed_pair<fin, int>));
-    ASSERT_TRUE(sizeof(int) < sizeof(compressed_pair<int, fin>));
+    CHECK(2 >= sizeof(compressed_pair<none, none>));
+    CHECK(sizeof(int) == sizeof(compressed_pair<none, int>));
+    CHECK(sizeof(int) == sizeof(compressed_pair<int, none>));
+    CHECK(sizeof(int) < sizeof(compressed_pair<fin, int>));
+    CHECK(sizeof(int) < sizeof(compressed_pair<int, fin>));
 }

@@ -3,10 +3,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "test.hpp"
 #include <actl/functional/scalar/logical.hpp>
-#include <actl/test.hpp>
 
-TEST("logical") {
+TEST_CASE("logical") {
     static_assert(true == math::logical_not(false));
     static_assert(false == math::logical_not(true));
     static_assert(true == math::logical_and(true, true));

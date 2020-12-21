@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
-set(TESTS_DIR ${CMAKE_SOURCE_DIR}/tests)
 set(BENCHMARK_DIR ${CMAKE_SOURCE_DIR}/benchmark)
 
 add_definitions(-DACTL_DEBUG -ftemplate-backtrace-limit=0)
@@ -27,15 +26,8 @@ file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/*.cpp)
 source_group(TREE ${SRC_DIR} FILES ${SRC_FILES})
 add_library(src ${SRC_FILES})
 
-file(GLOB_RECURSE TEST_FILES ${TESTS_DIR}/*)
-list(FILTER TEST_FILES EXCLUDE REGEX ${TESTS_DIR}/geometry/*.*)
-source_group(TREE ${TESTS_DIR} FILES ${TEST_FILES})
-add_executable(tests ${TEST_FILES})
-target_include_directories(tests PRIVATE ${TESTS_DIR})
-target_link_libraries(tests src)
-
 if(BUILD_TESTS)
-    add_subdirectory(tests_catch2)
+    add_subdirectory(tests)
 endif()
 
 source_group(TREE ${BENCHMARK_DIR} FILES ${BENCHMARK_DIR}/main.cpp)
