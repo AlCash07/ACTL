@@ -73,24 +73,6 @@ struct is_template_base_of<B, D, std::void_t<decltype(detail::test_base<B>(std::
 template <template <class...> class B, class D>
 constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;
 
-/* nth_type */
-
-template <size_t N, class... Ts>
-struct nth_type;
-
-template <size_t N, class... Ts>
-using nth_t = typename nth_type<N, Ts...>::type;
-
-template <class T, class... Ts>
-struct nth_type<0, T, Ts...> {
-    using type = T;
-};
-
-template <size_t N, class T, class... Ts>
-struct nth_type<N, T, Ts...> {
-    using type = nth_t<N - 1, Ts...>;
-};
-
 /* Dependent types */
 
 namespace detail {

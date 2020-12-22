@@ -43,11 +43,6 @@ TEST_CASE("is_template_base_of") {
     static_assert(!is_template_base_of_v<std::vector, int>);
 }
 
-TEST_CASE("nth_type") {
-    static_assert(std::is_same_v<int, nth_t<0, int, float>>);
-    static_assert(std::is_same_v<float, nth_t<1, int, float>>);
-}
-
 TEST_CASE("value_t") {
     static_assert(std::is_same_v<const int, value_t<std::vector<const int>>>);
     static_assert(std::is_same_v<const int, value_t<const int[8]>>);

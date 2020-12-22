@@ -8,6 +8,7 @@
 #include <actl/functional/operation/expression.hpp>
 #include <actl/functional/operation/expression_operation.hpp>
 #include <actl/functional/operation/overload_resolution.hpp>
+#include <actl/traits/nth_type.hpp>
 
 namespace ac::math {
 
@@ -15,9 +16,11 @@ template <class Derived>
 struct operation {
     using category = operation_tag;
 
-    constexpr const Derived& derived() const { return static_cast<const Derived&>(*this); }
+    constexpr const Derived& derived() const {
+        return static_cast<const Derived&>(*this);
+    }
 
-    template <class... Ts, class T = remove_cvref_t<nth_t<0, Ts...>>,
+    template <class... Ts, class T = remove_cvref_t<nth_type_t<0, Ts...>>,
               enable_int_if<!is_out<T, true>::value && !is_policy_v<T>> = 0>
     constexpr decltype(auto) operator()(Ts&&... xs) const {
         decltype(auto) op = resolve<Ts...>();
