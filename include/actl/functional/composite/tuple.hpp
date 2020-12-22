@@ -7,7 +7,7 @@
 
 #include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
-#include <actl/util/traits/is_tuple.hpp>
+#include <actl/traits/is_tuple.hpp>
 
 namespace ac {
 
@@ -83,7 +83,9 @@ struct overload<Cmp3Way, tuple_tag, T, U> {
 
 template <class T, class U>
 struct overload<Less, tuple_tag, T, U> {
-    static constexpr auto resolve(Less) { return cmp3way < 0; }
+    static constexpr auto resolve(Less) {
+        return cmp3way < 0;
+    }
 };
 
 }  // namespace ac::math

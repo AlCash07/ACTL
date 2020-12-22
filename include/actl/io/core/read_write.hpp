@@ -10,8 +10,8 @@
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/format/apply_format.hpp>
 #include <actl/range/traits/is_range.hpp>
+#include <actl/traits/is_tuple.hpp>
 #include <actl/util/span.hpp>
-#include <actl/util/traits/is_tuple.hpp>
 
 namespace ac::io {
 
