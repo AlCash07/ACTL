@@ -32,17 +32,6 @@ TEST_CASE("are_same") {
     static_assert(!are_same_v<int, int, int, double>);
 }
 
-class public_derived : public std::vector<int> {};
-class private_derived : private std::vector<int> {};
-
-TEST_CASE("is_template_base_of") {
-    static_assert(is_template_base_of_v<std::vector, std::vector<double>>);
-    static_assert(is_template_base_of_v<std::vector, public_derived>);
-    static_assert(is_template_base_of_v<std::vector, private_derived>);
-    static_assert(!is_template_base_of_v<std::vector, std::pair<int, int>>);
-    static_assert(!is_template_base_of_v<std::vector, int>);
-}
-
 TEST_CASE("value_t") {
     static_assert(std::is_same_v<const int, value_t<std::vector<const int>>>);
     static_assert(std::is_same_v<const int, value_t<const int[8]>>);

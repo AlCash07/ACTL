@@ -7,6 +7,7 @@
 
 #include <actl/functional/scalar/arithmetic.hpp>
 #include <actl/functional/scalar/logical.hpp>
+#include <actl/traits/is_template_base_of.hpp>
 
 namespace ac::math {
 
@@ -27,7 +28,7 @@ struct Equal : comparison_operation<Equal> {
 constexpr Equal equal;
 
 template <class T, class U>
-constexpr auto operator == (T&& lhs, U&& rhs) {
+constexpr auto operator==(T&& lhs, U&& rhs) {
     return equal(pass<T>(lhs), pass<U>(rhs));
 }
 
@@ -39,7 +40,7 @@ struct NotEqual : comparison_operation<NotEqual> {
 constexpr NotEqual not_equal;
 
 template <class T, class U>
-constexpr auto operator != (T&& lhs, U&& rhs) {
+constexpr auto operator!=(T&& lhs, U&& rhs) {
     return not_equal(pass<T>(lhs), pass<U>(rhs));
 }
 
@@ -52,7 +53,7 @@ struct Less : comparison_operation<Less> {
 constexpr Less less;
 
 template <class T, class U>
-constexpr auto operator < (T&& lhs, U&& rhs) {
+constexpr auto operator<(T&& lhs, U&& rhs) {
     return less(pass<T>(lhs), pass<U>(rhs));
 }
 
@@ -62,7 +63,7 @@ struct Greater : comparison_operation<Greater> {
 constexpr Greater greater;
 
 template <class T, class U>
-constexpr auto operator > (T&& lhs, U&& rhs) {
+constexpr auto operator>(T&& lhs, U&& rhs) {
     return greater(pass<T>(lhs), pass<U>(rhs));
 }
 
@@ -72,7 +73,7 @@ struct LessEqual : comparison_operation<LessEqual> {
 constexpr LessEqual less_equal;
 
 template <class T, class U>
-constexpr auto operator <= (T&& lhs, U&& rhs) {
+constexpr auto operator<=(T&& lhs, U&& rhs) {
     return less_equal(pass<T>(lhs), pass<U>(rhs));
 }
 
@@ -82,7 +83,7 @@ struct GreaterEqual : comparison_operation<GreaterEqual> {
 constexpr GreaterEqual greater_equal;
 
 template <class T, class U>
-constexpr auto operator >= (T&& lhs, U&& rhs) {
+constexpr auto operator>=(T&& lhs, U&& rhs) {
     return greater_equal(pass<T>(lhs), pass<U>(rhs));
 }
 
