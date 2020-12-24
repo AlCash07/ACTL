@@ -4,8 +4,8 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/util/compressed_pair.hpp>
-#include <actl/util/none.hpp>
+#include <actl/utility/compressed_pair.hpp>
+#include <actl/utility/none.hpp>
 
 TEST_CASE("member_access") {
     compressed_pair<int, std::string> p{2, 'a', 'b', 'a'};

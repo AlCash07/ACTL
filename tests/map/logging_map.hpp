@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
-#include <actl/util/compressed_pair.hpp>
+#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -18,7 +18,9 @@ class logging_map : public compressed_pair<Map, OutIter> {
 public:
     using compressed_pair<Map, OutIter>::compressed_pair;
 
-    operator Map&() { return this->first(); }
+    operator Map&() {
+        return this->first();
+    }
 };
 
 template <class M, class OI>

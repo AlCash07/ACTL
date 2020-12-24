@@ -6,25 +6,17 @@
 #pragma once
 
 #include <actl/io/core/batch.hpp>
-#include <actl/io/util/repeat.hpp>
+#include <actl/io/utility/repeat.hpp>
 #include <actl/std/utility.hpp>
 
 namespace ac::io {
 
-enum class adjust_to : uint8_t {
-    left = 0,
-    right = 1,
-    center = 2,
-    center_right = 3
-};
+enum class adjust_to : uint8_t { left = 0, right = 1, center = 2, center_right = 3 };
 
 template <class Char = char>
 struct adjusted {
-    explicit constexpr adjusted(
-        index width,
-        adjust_to where = adjust_to::left,
-        Char fill = ' ')
-    : width{width}, where{where}, fill{fill} {}
+    explicit constexpr adjusted(index width, adjust_to where = adjust_to::left, Char fill = ' ')
+        : width{width}, where{where}, fill{fill} {}
 
     index width;
     adjust_to where;

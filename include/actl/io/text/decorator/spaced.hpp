@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/core/batch.hpp>
-#include <actl/util/span.hpp>
+#include <actl/utility/span.hpp>
 
 namespace ac::io {
 

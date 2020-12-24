@@ -8,7 +8,7 @@
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/util/component_set.hpp>
+#include <actl/utility/component_set.hpp>
 #include <queue>
 
 namespace ac {
@@ -26,8 +26,10 @@ public:
     void operator()(const Graph& graph, const Source& source, VertexQueue&& queue = {},
                     VertexPredicate is_terminator = {}) {
         using V = vertex_t<Graph>;
-        for (V u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
-        while (!queue.empty()) queue.pop();
+        for (V u : graph.vertices())
+            execute_all(on_vertex_initialize{}, u);
+        while (!queue.empty())
+            queue.pop();
         auto discover = [&](V u) {
             execute_all(on_vertex_discover{}, u);
             if (is_terminator(u)) {
@@ -39,11 +41,13 @@ public:
         };
         if constexpr (std::is_same_v<Source, V>) {
             execute_all(on_search_start{}, source);
-            if (!discover(source)) return;
+            if (!discover(source))
+                return;
         } else {
             for (V s : source) {
                 execute_all(on_search_start{}, s);
-                if (!discover(s)) return;
+                if (!discover(s))
+                    return;
             }
         }
         while (!queue.empty()) {
@@ -56,7 +60,8 @@ public:
                     execute_all(on_non_tree_edge{}, e);
                 } else {
                     execute_all(on_tree_edge_start{}, e);
-                    if (!discover(v)) return;
+                    if (!discover(v))
+                        return;
                     execute_all(on_tree_edge_finish{}, e);
                 }
             }

@@ -8,8 +8,8 @@
 #include <actl/assert.hpp>
 #include <actl/functional/scalar/all.hpp>
 #include <actl/geometry/traits.hpp>
-#include <actl/util/introspection.hpp>
-#include <actl/util/span.hpp>
+#include <actl/utility/introspection.hpp>
+#include <actl/utility/span.hpp>
 #include <functional>
 
 namespace ac {
@@ -38,23 +38,39 @@ public:
     // TODO: make explicit when conversion is narrowing.
     template <class T1>
     constexpr point_base(const point<T1, N>& rhs) {
-        for (index i = 0; i < N; ++i) coordinates_[i] = static_cast<T>(rhs[i]);
+        for (index i = 0; i < N; ++i)
+            coordinates_[i] = static_cast<T>(rhs[i]);
     }
 
-    constexpr T* data() { return coordinates_; }
-    constexpr const T* data() const { return coordinates_; }
+    constexpr T* data() {
+        return coordinates_;
+    }
+    constexpr const T* data() const {
+        return coordinates_;
+    }
 
-    static constexpr index size() { return N; }
+    static constexpr index size() {
+        return N;
+    }
 
-    constexpr T& operator[](index i) { return span{*this}[i]; }
-    constexpr const T& operator[](index i) const { return span{*this}[i]; }
+    constexpr T& operator[](index i) {
+        return span{*this}[i];
+    }
+    constexpr const T& operator[](index i) const {
+        return span{*this}[i];
+    }
 
-    constexpr T& operator()(index i) { return (*this)[i]; }
-    constexpr const T& operator()(index i) const { return (*this)[i]; }
+    constexpr T& operator()(index i) {
+        return (*this)[i];
+    }
+    constexpr const T& operator()(index i) const {
+        return (*this)[i];
+    }
 
     friend void swap(point_base& lhs, point_base& rhs) {
         using std::swap;
-        for (index i = 0; i < N; ++i) swap(lhs[i], rhs[i]);
+        for (index i = 0; i < N; ++i)
+            swap(lhs[i], rhs[i]);
     }
 
 private:
@@ -74,9 +90,9 @@ public:
 
 template <index N, class T>
 struct geometry_traits<point<T, N>> {
-    using tag    = point_tag;
+    using tag = point_tag;
     using scalar = T;
-    using point  = point<T, N>;
+    using point = point<T, N>;
     static constexpr index dimension = N;
 };
 
@@ -105,37 +121,37 @@ constexpr auto apply(Operation op, const Points&... points) {
 /* Vector operations */
 
 template <index N, class T0, class T1 = T0>
-constexpr auto& operator += (point<T0, N>& lhs, const point<T1, N>& rhs) {
+constexpr auto& operator+=(point<T0, N>& lhs, const point<T1, N>& rhs) {
     return detail::apply([](T0& lhs, const T1& src) { lhs += src; }, lhs, rhs);
 }
 
 template <index N, class T0, class T1 = T0>
-constexpr auto& operator -= (point<T0, N>& lhs, const point<T1, N>& rhs) {
+constexpr auto& operator-=(point<T0, N>& lhs, const point<T1, N>& rhs) {
     return detail::apply([](T0& lhs, const T1& src) { lhs -= src; }, lhs, rhs);
 }
 
 template <index N, class T0, class T1>
-constexpr auto& operator *= (point<T0, N>& lhs, const T1& factor) {
+constexpr auto& operator*=(point<T0, N>& lhs, const T1& factor) {
     return detail::apply([&factor](T0& lhs) { lhs *= factor; }, lhs);
 }
 
 template <index N, class T0, class T1>
-constexpr auto& operator /= (point<T0, N>& lhs, const T1& factor) {
+constexpr auto& operator/=(point<T0, N>& lhs, const T1& factor) {
     return detail::apply([&factor](T0& lhs) { lhs /= factor; }, lhs);
 }
 
 template <index N, class T>
-constexpr auto operator -(const point<T, N>& src) {
+constexpr auto operator-(const point<T, N>& src) {
     return detail::apply<N>(std::negate<T>{}, src);
 }
 
 template <index N, class T0, class T1>
-constexpr auto operator + (const point<T0, N>& lhs, const point<T1, N>& rhs) {
+constexpr auto operator+(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return detail::apply<N>(std::plus{}, lhs, rhs);
 }
 
 template <index N, class T0, class T1>
-constexpr auto operator - (const point<T0, N>& lhs, const point<T1, N>& rhs) {
+constexpr auto operator-(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return detail::apply<N>(std::minus{}, lhs, rhs);
 }
 
@@ -177,7 +193,8 @@ constexpr auto perform(Div, const Policy& policy, const point<T0, N>& lhs, const
 template <class Policy, index N, class T0, class T1>
 constexpr auto dot(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
     math::result_t<math::Mul, Policy, T0, T1> res = 0;
-    for (index i = 0; i < N; ++i) res += product(policy, lhs[i], rhs[i]);
+    for (index i = 0; i < N; ++i)
+        res += product(policy, lhs[i], rhs[i]);
     return res;
 }
 
@@ -199,7 +216,8 @@ constexpr auto dot(const point<T, N>& p) {
 template <class Policy, index N, class T>
 constexpr bool degenerate(const Policy& policy, const point<T, N>& p) {
     for (index i = 0; i < N; ++i) {
-        if (!math::eq(policy, p[i], 0)) return false;
+        if (!math::eq(policy, p[i], 0))
+            return false;
     }
     return true;
 }
@@ -216,11 +234,19 @@ class point_xy : public point_base<T, N> {
 public:
     using point_base<T, N>::point_base;
 
-    constexpr T& x() { return (*this)[0]; }
-    constexpr T& y() { return (*this)[1]; }
+    constexpr T& x() {
+        return (*this)[0];
+    }
+    constexpr T& y() {
+        return (*this)[1];
+    }
 
-    constexpr const T& x() const { return (*this)[0]; }
-    constexpr const T& y() const { return (*this)[1]; }
+    constexpr const T& x() const {
+        return (*this)[0];
+    }
+    constexpr const T& y() const {
+        return (*this)[1];
+    }
 };
 
 template <class T, index N>
@@ -228,9 +254,13 @@ class point_xyz : public point_xy<T, N> {
 public:
     using point_xy<T, N>::point_xy;
 
-    constexpr T& z() { return (*this)[2]; }
+    constexpr T& z() {
+        return (*this)[2];
+    }
 
-    constexpr const T& z() const { return (*this)[2]; }
+    constexpr const T& z() const {
+        return (*this)[2];
+    }
 };
 
 }  // namespace detail

@@ -12,8 +12,8 @@
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/format/composed_format.hpp>
 #include <actl/traits/type_traits.hpp>
-#include <actl/util/none.hpp>
-#include <actl/util/span.hpp>
+#include <actl/utility/none.hpp>
+#include <actl/utility/span.hpp>
 #include <cstdint>
 
 namespace ac::io {

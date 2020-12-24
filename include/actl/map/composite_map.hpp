@@ -10,7 +10,7 @@
 #include <actl/iterator/transform_iterator.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/util/compressed_pair.hpp>
+#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -21,7 +21,9 @@ struct cm_range {
     struct get2 {
         M2& map2;
 
-        V operator()(map_pair_t<M1> p1) const { return {p1.first, ac::get(map2, p1.second)}; }
+        V operator()(map_pair_t<M1> p1) const {
+            return {p1.first, ac::get(map2, p1.second)};
+        }
     };
 
     using type = iterator_range<transform_iterator<map_iterator_t<M1>, get2>>;
@@ -32,7 +34,9 @@ struct cm_range<M1, M2, V, false, true> {
     struct invert1 {
         M1& map1;
 
-        V operator()(map_pair_t<M2> p2) const { return {ac::invert(map1, p2.first), p2.second}; }
+        V operator()(map_pair_t<M2> p2) const {
+            return {ac::invert(map1, p2.first), p2.second};
+        }
     };
 
     using type = iterator_range<transform_iterator<map_iterator_t<M2>, invert1>>;

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/util/span.hpp>
+#include <actl/utility/span.hpp>
 #include <cstdint>
 
 namespace ac::io {
@@ -65,10 +65,16 @@ public:
         return i;
     }
 
-    bool zero() const { return state == states::zero; }
-    bool ready() const { return state != states::empty; }
+    bool zero() const {
+        return state == states::zero;
+    }
+    bool ready() const {
+        return state != states::empty;
+    }
 
-    uint8_t value() const { return base; }
+    uint8_t value() const {
+        return base;
+    }
 };
 
 }  // namespace ac::io

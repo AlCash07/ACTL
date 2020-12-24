@@ -7,7 +7,7 @@
 
 #include <actl/io/range.hpp>
 #include <actl/traits/rebind.hpp>
-#include <actl/util/static_size.hpp>
+#include <actl/utility/static_size.hpp>
 #include <array>
 
 namespace ac {

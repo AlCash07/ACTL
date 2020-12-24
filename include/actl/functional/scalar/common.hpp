@@ -7,7 +7,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/functional/scalar/scalar_operation.hpp>
-#include <actl/util/none.hpp>
+#include <actl/utility/none.hpp>
 
 namespace ac::math {
 
@@ -60,7 +60,9 @@ struct Common : scalar_operation<Common, 2, scalar_tag> {
         return x;
     }
 
-    static constexpr auto eval_scalar(none, none) { return none{}; }
+    static constexpr auto eval_scalar(none, none) {
+        return none{};
+    }
 
     template <class T>
     static constexpr T eval_scalar(T x, none) {

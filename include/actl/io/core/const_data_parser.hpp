@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/util/span.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/utility/span.hpp>
 
 namespace ac::io {
 
@@ -19,7 +19,9 @@ struct const_data_parser {
         return matching;
     }
 
-    bool ready() const { return pending.empty(); }
+    bool ready() const {
+        return pending.empty();
+    }
 };
 
 }  // namespace ac::io

@@ -6,7 +6,7 @@
 #include "test.hpp"
 #include <actl/io/device/buffered.hpp>
 #include <actl/io/device/memory.hpp>
-#include <actl/io/util/flush.hpp>
+#include <actl/io/utility/flush.hpp>
 
 using namespace ac;
 using namespace ac::io;

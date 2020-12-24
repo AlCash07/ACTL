@@ -9,7 +9,7 @@
 #include <actl/container/dummy_container.hpp>
 #include <actl/graph/detail/mimic_pair.hpp>
 #include <actl/graph/selectors.hpp>
-#include <actl/numeric/util/hash_access.hpp>
+#include <actl/numeric/utility/hash_access.hpp>
 
 namespace ac::detail {
 

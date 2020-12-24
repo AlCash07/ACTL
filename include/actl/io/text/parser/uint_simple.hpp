@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/text/parser/digit.hpp>
-#include <actl/util/span.hpp>
+#include <actl/utility/span.hpp>
 
 namespace ac::io {
 
@@ -48,12 +48,20 @@ public:
         return i;
     }
 
-    index parse(cspan<char> s) { return base <= 10 ? parse_impl<digit>(s) : parse_impl<alnum>(s); }
+    index parse(cspan<char> s) {
+        return base <= 10 ? parse_impl<digit>(s) : parse_impl<alnum>(s);
+    }
 
-    bool empty() const { return state == states::empty; }
-    bool ready() const { return state == states::ok; }
+    bool empty() const {
+        return state == states::empty;
+    }
+    bool ready() const {
+        return state == states::ok;
+    }
 
-    UInt value() const { return x; }
+    UInt value() const {
+        return x;
+    }
 };
 
 }  // namespace ac::io

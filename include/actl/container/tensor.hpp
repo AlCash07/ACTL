@@ -12,7 +12,7 @@
 #include <actl/range/algorithm.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/traits/type_traits.hpp>
-#include <actl/util/span.hpp>
+#include <actl/utility/span.hpp>
 #include <memory>
 
 namespace ac {

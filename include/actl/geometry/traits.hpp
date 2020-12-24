@@ -7,7 +7,7 @@
 
 #include <actl/functional/scalar/all.hpp>
 #include <actl/traits/type_traits.hpp>
-#include <actl/util/use_default.hpp>
+#include <actl/utility/use_default.hpp>
 
 namespace ac {
 

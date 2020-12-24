@@ -11,7 +11,9 @@ namespace ac {
 
 class stopwatch {
 public:
-    void start() { start_ = clock_type::now(); }
+    void start() {
+        start_ = clock_type::now();
+    }
 
     double seconds() const {
         auto duration = clock_type::now() - start_;

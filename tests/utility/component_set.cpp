@@ -4,17 +4,21 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/util/component_set.hpp>
+#include <actl/utility/component_set.hpp>
 
 template <class T, int V>
 struct const_op {
-    constexpr int operator()(T) const { return V; }
+    constexpr int operator()(T) const {
+        return V;
+    }
 };
 
 struct increment {
     int v;
 
-    constexpr void operator()(int& x) const { x += v; }
+    constexpr void operator()(int& x) const {
+        x += v;
+    }
 };
 
 template <class... Cs>
@@ -23,8 +27,8 @@ class component_set_test : public component_set<Cs...> {
 
 public:
     using base_t::base_t;
-    using base_t::execute_first;
     using base_t::execute_all;
+    using base_t::execute_first;
 };
 
 TEST_CASE("execute_first") {

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/io/util/predicate.hpp>
+#include <actl/io/utility/predicate.hpp>
 #include <actl/string/ctype.hpp>
 
 namespace ac::io {
@@ -16,7 +16,8 @@ struct skip : private predicate<T> {
 
     template <class Device>
     bool operator()(Device& id) const {
-        while (!id.eof() && predicate<T>::operator()(id.peek())) id.move(1);
+        while (!id.eof() && predicate<T>::operator()(id.peek()))
+            id.move(1);
         return true;
     }
 };

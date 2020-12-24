@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/util/use_default.hpp>
+#include <actl/utility/use_default.hpp>
 
 TEST_CASE("deduce_type") {
     CHECK(std::is_same_v<double, deduce_t<double, int>>);

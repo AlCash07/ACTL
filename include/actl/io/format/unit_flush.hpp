@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/core/batch.hpp>
-#include <actl/io/util/flush.hpp>
+#include <actl/io/utility/flush.hpp>
 
 namespace ac::io {
 

@@ -9,7 +9,7 @@
 #include <actl/io/text/settings/base.hpp>
 #include <actl/io/text/settings/flags.hpp>
 #include <actl/io/text/settings/precision.hpp>
-#include <actl/io/util/raw.hpp>
+#include <actl/io/utility/raw.hpp>
 #include <actl/numeric/bit.hpp>
 #include <actl/string/traits.hpp>
 

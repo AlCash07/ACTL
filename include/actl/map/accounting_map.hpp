@@ -8,7 +8,7 @@
 #include <actl/map/traits.hpp>
 #include <actl/range/traits/range_traits.hpp>
 #include <actl/std/vector.hpp>
-#include <actl/util/compressed_pair.hpp>
+#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -36,14 +36,19 @@ public:
         auto& ac = data_.first();
         auto pair = ac.insert({key, static_cast<V>(ac.size())});
         if constexpr (Invertible) {
-            if (pair.second) data_.second().push_back(&pair.first->first);
+            if (pair.second)
+                data_.second().push_back(&pair.first->first);
         }
         return pair.first->second;
     }
 
-    Key invert(const V& value) const { return *data_.second()[static_cast<size_t>(value)]; }
+    Key invert(const V& value) const {
+        return *data_.second()[static_cast<size_t>(value)];
+    }
 
-    const AC& map_range() const { return data_.first(); }
+    const AC& map_range() const {
+        return data_.first();
+    }
 
 private:
     compressed_pair<AC, std::conditional_t<Invertible, std::vector<const K*>, none>> data_;

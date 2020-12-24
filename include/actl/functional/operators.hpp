@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/util/none.hpp>
+#include <actl/utility/none.hpp>
 #include <type_traits>
 
 namespace ac::operators {
@@ -19,22 +19,22 @@ struct base : B {
 };
 
 template <class T, class U>
-constexpr auto operator != (const T& lhs, const U& rhs) -> decltype(!(lhs == rhs)) {
+constexpr auto operator!=(const T& lhs, const U& rhs) -> decltype(!(lhs == rhs)) {
     return !(lhs == rhs);
 }
 
 template <class T, class U>
-constexpr auto operator > (const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
+constexpr auto operator>(const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
     return rhs < lhs;
 }
 
 template <class T, class U>
-constexpr auto operator <= (const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
+constexpr auto operator<=(const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
     return !(lhs > rhs);
 }
 
 template <class T, class U>
-constexpr auto operator >= (const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
+constexpr auto operator>=(const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
     return !(lhs < rhs);
 }
 

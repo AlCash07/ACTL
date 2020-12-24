@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/core/batch.hpp>
-#include <actl/io/util/skip.hpp>
+#include <actl/io/utility/skip.hpp>
 #include <actl/string/traits.hpp>
 
 namespace ac::io {

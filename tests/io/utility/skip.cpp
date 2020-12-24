@@ -6,7 +6,7 @@
 #include "test.hpp"
 #include <actl/io/device/memory.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/io/util/skip.hpp>
+#include <actl/io/utility/skip.hpp>
 
 using namespace ac::io;
 

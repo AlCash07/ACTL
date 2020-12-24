@@ -17,9 +17,11 @@ struct none {
     using value_type = none;
 };
 
+// clang-format off
 template <class T> struct replace_void             { using type = T;          };
 template <>        struct replace_void<void>       { using type = none;       };
 template <>        struct replace_void<const void> { using type = const none; };
+// clang-format on
 
 template <class T>
 using replace_void_t = typename replace_void<T>::type;

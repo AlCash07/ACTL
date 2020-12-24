@@ -8,7 +8,7 @@
 #include <actl/assert.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <actl/types.hpp>
-#include <actl/util/use_default.hpp>
+#include <actl/utility/use_default.hpp>
 #include <cstring>
 
 namespace ac {

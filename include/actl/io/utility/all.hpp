@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/io/util/flush.hpp>
-#include <actl/io/util/raw.hpp>
-#include <actl/io/util/repeat.hpp>
-#include <actl/io/util/skip.hpp>
-#include <actl/io/util/till.hpp>
+#include <actl/io/utility/flush.hpp>
+#include <actl/io/utility/raw.hpp>
+#include <actl/io/utility/repeat.hpp>
+#include <actl/io/utility/skip.hpp>
+#include <actl/io/utility/till.hpp>

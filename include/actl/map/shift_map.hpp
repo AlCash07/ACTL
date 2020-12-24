@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
-#include <actl/util/use_default.hpp>
+#include <actl/utility/use_default.hpp>
 
 namespace ac {
 
@@ -18,9 +18,13 @@ class shift_map {
 public:
     explicit constexpr shift_map(Key offset) : offset_{offset} {}
 
-    constexpr Value get(Key key) const { return static_cast<Value>(key - offset_); }
+    constexpr Value get(Key key) const {
+        return static_cast<Value>(key - offset_);
+    }
 
-    constexpr Key invert(Value value) const { return static_cast<Key>(value) + offset_; }
+    constexpr Key invert(Value value) const {
+        return static_cast<Key>(value) + offset_;
+    }
 
 private:
     const Key offset_;
@@ -42,9 +46,13 @@ class static_shift_map {
     using Key = decltype(Offset);
 
 public:
-    constexpr static Value get(Key key) { return static_cast<Value>(key - Offset); }
+    constexpr static Value get(Key key) {
+        return static_cast<Value>(key - Offset);
+    }
 
-    constexpr static Key invert(Value value) { return static_cast<Key>(value) + Offset; }
+    constexpr static Key invert(Value value) {
+        return static_cast<Key>(value) + Offset;
+    }
 };
 
 template <auto O, class V>

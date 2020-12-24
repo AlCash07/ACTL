@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/core/serialization_access.hpp>
-#include <actl/numeric/util/hash_access.hpp>
+#include <actl/numeric/utility/hash_access.hpp>
 
 // Defines write_final and read_final functions for composite types.
 #define DEFINE_SERIALIZATION(...)                      \
@@ -22,9 +22,11 @@
     }
 
 // Defines hash for composite types.
-#define DEFINE_HASH(...)           \
-    friend struct ac::hash_access; \
-    constexpr size_t hash() const { return hash_value(__VA_ARGS__); }
+#define DEFINE_HASH(...)                \
+    friend struct ac::hash_access;      \
+    constexpr size_t hash() const {     \
+        return hash_value(__VA_ARGS__); \
+    }
 
 // Defines all the common functionality mentioned above.
 #define INTROSPECT(...)               \

@@ -7,7 +7,7 @@
 
 #include <actl/map/generic_container.hpp>
 #include <actl/range/filtered_range.hpp>
-#include <actl/util/compressed_pair.hpp>
+#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -41,11 +41,19 @@ class filtered_map : private compressed_pair<Map, test_second<Predicate>> {
 public:
     using base_t::base_t;
 
-    operator Map&() { return first(); }
-    operator const Map&() const { return first(); }
+    operator Map&() {
+        return first();
+    }
+    operator const Map&() const {
+        return first();
+    }
 
-    auto map_range() { return filter_range(ac::map_range(first()), second()); }
-    auto map_range() const { return filter_range(ac::map_range(first()), second()); }
+    auto map_range() {
+        return filter_range(ac::map_range(first()), second());
+    }
+    auto map_range() const {
+        return filter_range(ac::map_range(first()), second());
+    }
 };
 
 template <class M, class P = to_bool>
@@ -61,12 +69,16 @@ struct map_traits<const filtered_map<M, P>> : map_traits<filtered_map<const M, P
 
 template <class M, class P>
 struct map_ops<filtered_map<M, P>> : map_ops<M> {
-    static auto map_range(filtered_map<M, P>& map) { return map.map_range(); }
+    static auto map_range(filtered_map<M, P>& map) {
+        return map.map_range();
+    }
 };
 
 template <class M, class P>
 struct map_ops<const filtered_map<M, P>> : map_ops<const M> {
-    static auto map_range(const filtered_map<M, P>& map) { return map.map_range(); }
+    static auto map_range(const filtered_map<M, P>& map) {
+        return map.map_range();
+    }
 };
 
 /**

@@ -8,7 +8,7 @@
 #include <actl/functional/composite/tuple.hpp>
 #include <actl/functional/operators.hpp>
 #include <actl/io/tuple.hpp>
-#include <actl/util/introspection.hpp>
+#include <actl/utility/introspection.hpp>
 
 namespace ac {
 
@@ -18,8 +18,12 @@ public:
     template <class... Ts>
     explicit constexpr ebo(Ts&&... args) : T{std::forward<Ts>(args)...} {}
 
-    constexpr T& get() noexcept { return *this; }
-    constexpr const T& get() const noexcept { return *this; }
+    constexpr T& get() noexcept {
+        return *this;
+    }
+    constexpr const T& get() const noexcept {
+        return *this;
+    }
 };
 
 template <class T>
@@ -28,8 +32,12 @@ public:
     template <class... Ts>
     explicit constexpr ebo(Ts&&... args) : value_{std::forward<Ts>(args)...} {}
 
-    constexpr T& get() noexcept { return value_; }
-    constexpr const T& get() const noexcept { return value_; }
+    constexpr T& get() noexcept {
+        return value_;
+    }
+    constexpr const T& get() const noexcept {
+        return value_;
+    }
 
 private:
     T value_;
@@ -56,7 +64,7 @@ struct cpb2 : ebo<T> {
 template <class T1, class T2>
 class compressed_pair : private detail::cpb1<T1>, private detail::cpb2<T2> {
 public:
-    using first_type  = T1;
+    using first_type = T1;
     using second_type = T2;
 
     explicit constexpr compressed_pair() = default;
@@ -71,11 +79,19 @@ public:
     constexpr compressed_pair(compressed_pair&&) = default;
     constexpr compressed_pair& operator=(compressed_pair&&) = default;
 
-    constexpr T1& first() noexcept { return detail::cpb1<T1>::get(); }
-    constexpr const T1& first() const noexcept { return detail::cpb1<T1>::get(); }
+    constexpr T1& first() noexcept {
+        return detail::cpb1<T1>::get();
+    }
+    constexpr const T1& first() const noexcept {
+        return detail::cpb1<T1>::get();
+    }
 
-    constexpr T2& second() noexcept { return detail::cpb2<T2>::get(); }
-    constexpr const T2& second() const noexcept { return detail::cpb2<T2>::get(); }
+    constexpr T2& second() noexcept {
+        return detail::cpb2<T2>::get();
+    }
+    constexpr const T2& second() const noexcept {
+        return detail::cpb2<T2>::get();
+    }
 
 private:
     DEFINE_HASH(first(), second())
@@ -92,12 +108,12 @@ auto& get(const compressed_pair<T1, T2>& p) {
 }
 
 template <class T1, class T2>
-auto operator == (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+auto operator==(const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
     return math::equal(lhs.first(), rhs.first()) && math::equal(lhs.second(), rhs.second());
 }
 
 template <class T1, class T2>
-auto operator < (const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+auto operator<(const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
     return math::less(lhs, rhs);
 }
 

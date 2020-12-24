@@ -9,7 +9,7 @@
 #include <actl/iterator/traits.hpp>
 #include <actl/range/facade/range_facade.hpp>
 #include <actl/traits/type_traits.hpp>
-#include <actl/util/compressed_pair.hpp>
+#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 

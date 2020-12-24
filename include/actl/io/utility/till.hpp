@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/io.hpp>
-#include <actl/io/util/predicate.hpp>
+#include <actl/io/utility/predicate.hpp>
 
 namespace ac::io {
 
@@ -30,14 +30,17 @@ index read_till(Device& id, till<span<char, N>, P> x) {
             auto s = id.input_data();
             auto end = std::min(s.end(), s.begin() + (size - i));
             auto ptr = s.begin();
-            while (ptr != end && !x.terminator(*ptr)) x.value[i++] = *ptr++;
+            while (ptr != end && !x.terminator(*ptr))
+                x.value[i++] = *ptr++;
             id.move(ptr - s.begin());
-            if (i == size || s.empty() || ptr != end) break;
+            if (i == size || s.empty() || ptr != end)
+                break;
         };
     } else {
         for (; i < size; ++i) {
             auto c = id.get();
-            if (id.eof() || x.terminator(c)) break;
+            if (id.eof() || x.terminator(c))
+                break;
             x.value[i] = c;
         }
     }

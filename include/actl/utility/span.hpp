@@ -28,9 +28,13 @@ public:
     template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
     constexpr span(Range&& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
 
-    constexpr T* data() const { return storage_.data; }
+    constexpr T* data() const {
+        return storage_.data;
+    }
 
-    constexpr index size() const { return storage_.size(); }
+    constexpr index size() const {
+        return storage_.size();
+    }
 
     constexpr span<T> first(index n) const {
         ACTL_ASSERT(0 <= n && n <= size());
@@ -47,7 +51,9 @@ public:
         return {data() + offset, count};
     }
 
-    constexpr span<T> subspan(index offset) const { return subspan(offset, size() - offset); }
+    constexpr span<T> subspan(index offset) const {
+        return subspan(offset, size() - offset);
+    }
 
 private:
     struct storage_t : size_holder<N> {
@@ -61,8 +67,8 @@ private:
 };
 
 template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-span(Range &&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
-                       static_size_v<std::remove_reference_t<Range>>>;
+span(Range&&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
+                      static_size_v<std::remove_reference_t<Range>>>;
 
 template <class T, index N>
 struct static_size<span<T, N>> : index_constant<N> {};

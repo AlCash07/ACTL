@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/text/text.hpp>
-#include <actl/io/util/repeat.hpp>
+#include <actl/io/utility/repeat.hpp>
 
 namespace ac::io {
 
