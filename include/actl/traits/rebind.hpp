@@ -9,25 +9,10 @@
 
 #pragma once
 
-#include <actl/traits/nth_type.hpp>
+#include <actl/traits/template_type.hpp>
 #include <functional>
 
 namespace ac {
-
-template <class T>
-struct template_type {
-    using type = T;
-};
-
-template <class T, size_t N>
-struct template_type<T[N]> {
-    using type = T;
-};
-
-template <template <class...> class C, class... Ts>
-struct template_type<C<Ts...>> {
-    using type = nth_type_t<0, Ts...>;
-};
 
 template <class T, class To>
 struct rebind;
@@ -68,7 +53,7 @@ struct rebind<T[N], To> {
 };
 
 // Transparent operator function objects support.
-// TODO: support all of them.
+// TODO: switch completely to ACTL operations.
 template <class T, class To>
 struct rebind<std::less<T>, To> {
     using type = std::less<>;
