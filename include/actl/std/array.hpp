@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/io/range.hpp>
-#include <actl/util/rebind.hpp>
+#include <actl/traits/rebind.hpp>
 #include <actl/util/static_size.hpp>
 #include <array>
 

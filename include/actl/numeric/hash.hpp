@@ -9,7 +9,7 @@
 #include <actl/numeric/random/splitmix64.hpp>
 #include <actl/numeric/util/hash_access.hpp>
 #include <actl/range/traits/is_range.hpp>
-#include <actl/util/rebind.hpp>
+#include <actl/traits/rebind.hpp>
 #include <chrono>
 #include <functional>
 
@@ -21,7 +21,9 @@ struct randomized_hash {
 
     static const size_t seed;
 
-    static size_t compute(size_t x) { return splitmix64::next(x + seed); }
+    static size_t compute(size_t x) {
+        return splitmix64::next(x + seed);
+    }
 };
 
 inline const size_t randomized_hash::seed =
@@ -60,13 +62,16 @@ constexpr size_t hash_value(const T& x, const Ts&... xs) {
 template <class R, enable_int_if<is_range_v<R>> = 0>
 constexpr size_t hash_value(const R& x) {
     size_t res{};
-    for (const auto& value : x) hash_combine(res, value);
+    for (const auto& value : x)
+        hash_combine(res, value);
     return res;
 }
 
 template <class T = void>
 struct hash_function {
-    constexpr size_t operator()(const T& x) const { return hash_value(x); }
+    constexpr size_t operator()(const T& x) const {
+        return hash_value(x);
+    }
 };
 
 template <>
