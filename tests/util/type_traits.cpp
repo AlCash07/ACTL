@@ -31,24 +31,3 @@ TEST_CASE("are_same") {
     static_assert(!are_same_v<int, int, int&, int>);
     static_assert(!are_same_v<int, int, int, double>);
 }
-
-TEST_CASE("value_t") {
-    static_assert(std::is_same_v<const int, value_t<std::vector<const int>>>);
-    static_assert(std::is_same_v<const int, value_t<const int[8]>>);
-    static_assert(std::is_same_v<int, value_t<const int* const>>);
-}
-
-TEST_CASE("reference_t") {
-    static_assert(std::is_same_v<int&, reference_t<std::vector<int>>>);
-    static_assert(std::is_same_v<const int&, reference_t<const std::vector<int>>>);
-    static_assert(std::is_same_v<int&, reference_t<int[8]>>);
-    static_assert(std::is_same_v<const int&, reference_t<const int* const>>);
-}
-
-TEST_CASE("iterator_t") {
-    using VI = std::vector<int>;
-    static_assert(std::is_same_v<VI::iterator, iterator_t<VI>>);
-    static_assert(std::is_same_v<VI::const_iterator, iterator_t<const VI>>);
-    static_assert(std::is_same_v<int*, iterator_t<int[8]>>);
-    static_assert(std::is_same_v<const int*, iterator_t<int const[8]>>);
-}

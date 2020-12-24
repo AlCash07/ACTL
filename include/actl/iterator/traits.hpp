@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/dependent.hpp>
 #include <iterator>
 
 namespace ac {

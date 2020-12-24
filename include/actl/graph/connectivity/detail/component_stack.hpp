@@ -19,18 +19,21 @@ class component_stack {
     map_value_t<Map> n_ = 0;
 
 public:
-    static_assert(std::is_same_v<T, value_t<Stack>>);
+    static_assert(std::is_same_v<T, value_type_t<Stack>>);
 
     explicit component_stack(Map map) : map_{map} {}
 
-    void push(T x) { stack_.push(x); }
+    void push(T x) {
+        stack_.push(x);
+    }
 
     void pop(T last) {
         while (true) {
             T x = stack_.top();
             stack_.pop();
             put(map_, x, n_);
-            if (x == last) break;
+            if (x == last)
+                break;
         }
         ++n_;
     }
@@ -39,7 +42,8 @@ public:
     void pop_while(P pred) {
         while (!stack_.empty()) {
             T& x = stack_.top();
-            if (!pred(x)) break;
+            if (!pred(x))
+                break;
             put(map_, x, n_);
             stack_.pop();
         }
@@ -65,6 +69,6 @@ public:
 template <class Map>
 component_stack(Map&&) -> component_stack<Map, std::stack<map_key_t<Map>>>;
 
-component_stack(dummy_map) -> component_stack<dummy_map, void>;
+component_stack(dummy_map)->component_stack<dummy_map, void>;
 
 }  // namespace ac::detail

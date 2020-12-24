@@ -13,6 +13,7 @@
 
 namespace ac {
 
+// clang-format off
 template <
     class Derived,
     class Iterator,
@@ -28,10 +29,11 @@ template <class Derived, class It, class C, class V, class R, class D>
 struct iterator_adaptor_base {
     using type = iterator_facade<Derived, iterator_types<
         deduce_t<C, typename std::iterator_traits<It>::iterator_category>,
-        deduce_t<V, value_t<It>>,
+        deduce_t<V, value_type_t<It>>,
         deduce_t<R, reference_t<It>>,
         deduce_t<D, difference_t<It>>>>;
 };
+// clang-format on
 
 }  // namespace detail
 
@@ -40,21 +42,31 @@ class iterator_adaptor : public detail::iterator_adaptor_base<Derived, It, C, V,
 public:
     explicit constexpr iterator_adaptor(const It& it) : it_{it} {}
 
-    constexpr const It& base() const { return it_; }
+    constexpr const It& base() const {
+        return it_;
+    }
 
 protected:
-    constexpr It& base_ref() { return it_; }
+    constexpr It& base_ref() {
+        return it_;
+    }
 
 private:
     friend struct ac::iterator_core_access;
 
     using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, D>::type;
 
-    constexpr reference_t<base_t> dereference() const { return *it_; }
+    constexpr reference_t<base_t> dereference() const {
+        return *it_;
+    }
 
-    constexpr void increment() { ++it_; }
+    constexpr void increment() {
+        ++it_;
+    }
 
-    constexpr void decrement() { --it_; }
+    constexpr void decrement() {
+        --it_;
+    }
 
     template <class T = difference_t<base_t>>
     constexpr void advance(T n) {

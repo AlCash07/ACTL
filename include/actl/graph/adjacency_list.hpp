@@ -11,17 +11,21 @@
 
 namespace ac {
 
-template <class Directed,
-          class OutEdgeContainer = std::vector<none>,
-          class EdgeContainer    = none,
-          class VertexContainer  = std::vector<none>>
+// clang-format off
+template <
+    class Directed, 
+    class OutEdgeContainer = std::vector<none>, 
+    class EdgeContainer    = none,      
+    class VertexContainer  = std::vector<none>>
 class adjacency_list;
+// clang-format on
 
 namespace detail {
 
 /* Adjacency list with edge container */
 
-template <class Dir, class OEC, class EC, class VC, class S = value_t<EC>, class T = value_t<OEC>>
+template <class Dir, class OEC, class EC, class VC, class S = value_type_t<EC>,
+          class T = value_type_t<OEC>>
 class adj_list_edges : public adj_list_edges<Dir, OEC, EC, VC, S, none> {
     using base_t = adj_list_edges<Dir, OEC, EC, VC, S, none>;
 
@@ -31,11 +35,19 @@ public:
     using base_t::base_t;
     using base_t::operator[];
 
-    auto operator[](edge_property) { return this->edge_list_[edge_property{}]; }
-    auto operator[](edge_property) const { return this->edge_list_[edge_property{}]; }
+    auto operator[](edge_property) {
+        return this->edge_list_[edge_property{}];
+    }
+    auto operator[](edge_property) const {
+        return this->edge_list_[edge_property{}];
+    }
 
-    T& operator[](edge e) { return get((*this)[edge_property{}], e); }
-    const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
+    T& operator[](edge e) {
+        return get((*this)[edge_property{}], e);
+    }
+    const T& operator[](edge e) const {
+        return get((*this)[edge_property{}], e);
+    }
 };
 
 template <class Dir, class OEC, class EC, class VC, class S>
@@ -48,8 +60,12 @@ protected:
     using edge = detail::edge<vertex, typename traits::edges::edge_id>;
     using base_t::outs;
 
-    out_it out_begin(vertex u) const { return outs(u).begin(); }
-    out_it out_end(vertex u) const { return outs(u).end(); }
+    out_it out_begin(vertex u) const {
+        return outs(u).begin();
+    }
+    out_it out_end(vertex u) const {
+        return outs(u).end();
+    }
 
     edge get_edge(vertex u, const typename traits::out_edge_data& oed) const {
         auto e = oed.second();
@@ -77,7 +93,8 @@ protected:
         e = edge_list_.add_edge(id_to_raw(u), id_to_raw(v), std::forward<Ts>(args)...);
         id_at(u_edges, out_edge).second() = e;
         if constexpr (base_t::is_undirected) {
-            if (u != v) id_emplace(outs(v), id_to_raw(u), e);
+            if (u != v)
+                id_emplace(outs(v), id_to_raw(u), e);
         } else if constexpr (base_t::is_bidirectional) {
             id_emplace(this->ins(v), id_to_raw(u), e);
         }
@@ -113,7 +130,9 @@ public:
         return id_at(id_at(vertices_, e.source()).first().out_edges, e.bundle()).second();
     }
 
-    void put(E e, map_value_t<edge_map> value) const { get(e) = value; }
+    void put(E e, map_value_t<edge_map> value) const {
+        get(e) = value;
+    }
 };
 
 template <class Dir, class OEC, class EC, class VC, class T>
@@ -129,13 +148,19 @@ public:
     using base_t::base_t;
     using base_t::operator[];
 
-    edge_map<AVC, edge, Ref> operator[](edge_property) { return {this->vertices_}; }
+    edge_map<AVC, edge, Ref> operator[](edge_property) {
+        return {this->vertices_};
+    }
     edge_map<const AVC, edge, const Ref> operator[](edge_property) const {
         return {this->vertices_};
     }
 
-    Ref operator[](edge e) { return get((*this)[edge_property{}], e); }
-    const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
+    Ref operator[](edge e) {
+        return get((*this)[edge_property{}], e);
+    }
+    const T& operator[](edge e) const {
+        return get((*this)[edge_property{}], e);
+    }
 };
 
 template <class Dir, class OEC, class EC, class VC>
@@ -149,8 +174,12 @@ protected:
     using edge = edge<vertex, out_id, true>;
     using base_t::outs;
 
-    out_it out_begin(vertex u) const { return id_range(outs(u)).begin(); }
-    out_it out_end(vertex u) const { return id_range(outs(u)).end(); }
+    out_it out_begin(vertex u) const {
+        return id_range(outs(u)).begin();
+    }
+    out_it out_end(vertex u) const {
+        return id_range(outs(u)).end();
+    }
 
     edge get_edge(vertex u, out_id oe) const {
         return edge{u, vertex{id_at(outs(u), oe).first()}, oe};
@@ -169,7 +198,8 @@ protected:
         }
         edge_list_.add_edge(id_to_raw(u), id_to_raw(v));
         if constexpr (base_t::is_undirected) {
-            if (u != v) id_emplace(outs(v), id_to_raw(u), std::forward<Ts>(args)...);
+            if (u != v)
+                id_emplace(outs(v), id_to_raw(u), std::forward<Ts>(args)...);
         } else if constexpr (base_t::is_bidirectional) {
             id_emplace(this->ins(v), id_to_raw(u), out_edge);
         }
@@ -197,17 +227,17 @@ struct const_map_traits<detail::edge_map<VC, E, R>> : detail::edge_map<VC, E, R>
 template <class Dir, class OEC, class EC, class VC>
 class adjacency_list : public detail::adj_list_edges<Dir, OEC, EC, VC> {
     using base_t = detail::adj_list_edges<Dir, OEC, EC, VC>;
-    using typename base_t::traits;
     using base_t::edge_list_;
+    using typename base_t::traits;
 
     template <class AL, class S>
     friend struct detail::edge_it;
 
 public:
-    using typename base_t::vertex;
     using typename base_t::edge;
+    using typename base_t::vertex;
 
-    using edge_selector = value_t<EC>;
+    using edge_selector = value_type_t<EC>;
     using edge_iterator = typename detail::edge_it<adjacency_list>::type;
     using out_edge = typename base_t::out_it;
     using out_edge_iterator = detail::adj_list_out_edge_it<adjacency_list, out_edge>;
@@ -219,9 +249,13 @@ public:
 
     using base_t::base_t;
 
-    index edge_count() const { return edge_list_.edge_count(); }
+    index edge_count() const {
+        return edge_list_.edge_count();
+    }
 
-    index degree(vertex u) const { return out_edges(u).size(); }
+    index degree(vertex u) const {
+        return out_edges(u).size();
+    }
 
     iterator_range<edge_iterator> edges() const {
         if constexpr (std::is_same_v<edge_selector, two_vertices>) {
@@ -257,7 +291,8 @@ public:
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_random_access_range_v<VC>) {
             vertex n = std::max(u, v);
-            if (n >= this->vertex_count()) this->resize(n + 1);
+            if (n >= this->vertex_count())
+                this->resize(n + 1);
         }
         return this->try_add_edge_impl(u, v, std::forward<Ts>(args)...);
     }
@@ -267,7 +302,7 @@ public:
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    template <class... Ts, bool Unique = is_unique_range_v<VC>, class T = value_t<VC>,
+    template <class... Ts, bool Unique = is_unique_range_v<VC>, class T = value_type_t<VC>,
               enable_int_if<Unique> = 0>
     edge add_edge(const T& u, const T& v, Ts&&... args) {
         return add_edge(add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);
@@ -278,7 +313,8 @@ public:
             return this->get_edge(u, id_find(this->outs(u), id_to_raw(v)));
         } else {
             for (auto oe : out_edges(u)) {
-                if (oe.target() == v) return oe;
+                if (oe.target() == v)
+                    return oe;
             }
             return edge{};
         }

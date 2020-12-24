@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/dependent.hpp>
 #include <iterator>
 
 namespace ac {
 
 template <class OutIter>
 struct output_type {
-    using type = value_t<OutIter>;
+    using type = value_type_t<OutIter>;
 };
 
 template <class T, class CharT, class Traits>
@@ -25,17 +25,17 @@ struct output_type<std::ostream_iterator<T, CharT, Traits>> {
 
 template <class Container>
 struct output_type<std::back_insert_iterator<Container>> {
-    using type = value_t<Container>;
+    using type = value_type_t<Container>;
 };
 
 template <class Container>
 struct output_type<std::front_insert_iterator<Container>> {
-    using type = value_t<Container>;
+    using type = value_type_t<Container>;
 };
 
 template <class Container>
 struct output_type<std::insert_iterator<Container>> {
-    using type = value_t<Container>;
+    using type = value_type_t<Container>;
 };
 
 template <class OutIter>

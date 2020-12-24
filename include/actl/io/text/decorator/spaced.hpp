@@ -29,12 +29,12 @@ struct spaced {
     struct format_tag;
 };
 
-spaced() -> spaced<char>;
+spaced()->spaced<char>;
 
 template <class T>
 auto as_cspan(const T& x) {
     if constexpr (is_contiguous_range_v<T>) {
-        return span<const value_t<T>>{x};
+        return span<const value_type_t<T>>{x};
     } else {
         return span{&x, 1};
     }

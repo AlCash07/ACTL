@@ -14,7 +14,7 @@ namespace ac {
 
 namespace detail {
 
-template <class Dir, class V, class EC, class S, class T = value_t<EC>>
+template <class Dir, class V, class EC, class S, class T = value_type_t<EC>>
 class edge_list_edges : public edge_list_edges<Dir, V, EC, S, none> {
     using base_t = edge_list_edges<Dir, V, EC, S, none>;
 
@@ -23,11 +23,19 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](edge_property) { return get_second(this->edges_); }
-    auto operator[](edge_property) const { return get_second(this->edges_); }
+    auto operator[](edge_property) {
+        return get_second(this->edges_);
+    }
+    auto operator[](edge_property) const {
+        return get_second(this->edges_);
+    }
 
-    T& operator[](edge e) { return get((*this)[edge_property{}], e); }
-    const T& operator[](edge e) const { return get((*this)[edge_property{}], e); }
+    T& operator[](edge e) {
+        return get((*this)[edge_property{}], e);
+    }
+    const T& operator[](edge e) const {
+        return get((*this)[edge_property{}], e);
+    }
 };
 
 template <class Dir, class V, class EC, class S>
@@ -53,12 +61,15 @@ public:
 
     edge_list_edges() = default;
 
-    index edge_count() const { return static_cast<index>(edges_.size()); }
+    index edge_count() const {
+        return static_cast<index>(edges_.size());
+    }
 
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_undirected) {
-            if (v < u) std::swap(u, v);
+            if (v < u)
+                std::swap(u, v);
         }
         auto res = id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
         return {edge{u, v, res.first}, res.second};
@@ -69,9 +80,13 @@ public:
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    vertex get_target(vertex u, edge_id e) const { return id_at(edges_, e).first().other(u); }
+    vertex get_target(vertex u, edge_id e) const {
+        return id_at(edges_, e).first().other(u);
+    }
 
-    void swap(edge_list_edges& rhs) { edges_.swap(rhs.edges_); }
+    void swap(edge_list_edges& rhs) {
+        edges_.swap(rhs.edges_);
+    }
 
     void operator[](edge) const {}
 
@@ -86,7 +101,9 @@ class edge_list_impl : public edge_list_edges<Dir, V, EC, S> {
 public:
     using base_t::base_t;
 
-    void swap(edge_list_impl& rhs) { base_t::swap(rhs); }
+    void swap(edge_list_impl& rhs) {
+        base_t::swap(rhs);
+    }
 };
 
 template <class Dir, class V, class EC>
@@ -116,9 +133,13 @@ public:
             return E{V1{vertices.u}, V1{vertices.v}, id_};
         }
 
-        void increment() { ++id_; }
+        void increment() {
+            ++id_;
+        }
 
-        bool equals(const edge_iterator& rhs) const { return id_ == rhs.id_; }
+        bool equals(const edge_iterator& rhs) const {
+            return id_ == rhs.id_;
+        }
 
         const edge_list_impl& el_;
         ec_id id_;
@@ -132,14 +153,19 @@ public:
 
     edge find_edge(vertex u, vertex v) const {
         if constexpr (base_t::is_undirected) {
-            if (v < u) std::swap(u, v);
+            if (v < u)
+                std::swap(u, v);
         }
         return edge{u, v, id_find(edges_, typename base_t::edge_vertices(u, v))};
     }
 
-    void remove_edge(edge e) { id_erase(edges_, e); }
+    void remove_edge(edge e) {
+        id_erase(edges_, e);
+    }
 
-    void swap(edge_list_impl& rhs) { base_t::swap(rhs); }
+    void swap(edge_list_impl& rhs) {
+        base_t::swap(rhs);
+    }
 };
 
 }  // namespace detail

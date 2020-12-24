@@ -13,7 +13,7 @@ namespace ac {
 template <class Iterator, class Size = use_default,
           bool HasReverse = is_bidirectional_iterator_v<Iterator>>
 struct range_types {
-    using value_type = value_t<Iterator>;
+    using value_type = value_type_t<Iterator>;
     using reference = reference_t<Iterator>;
     using pointer = pointer_t<Iterator>;
     using difference_type = difference_t<Iterator>;

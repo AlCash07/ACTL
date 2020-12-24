@@ -24,7 +24,9 @@ struct edge_vertices<directed, V, one_vertex> {
 
     edge_vertices(V, V v) : v(v) {}
 
-    V other(V) const { return v; }
+    V other(V) const {
+        return v;
+    }
 };
 
 template <class Dir, class V>
@@ -37,7 +39,9 @@ struct edge_vertices<Dir, V, one_vertex> {
                       "selector and non-integral vertex id");
     }
 
-    V other(V src) const { return src ^ x; }
+    V other(V src) const {
+        return src ^ x;
+    }
 };
 
 template <class Dir, class V>
@@ -54,21 +58,29 @@ struct edge_vertices<Dir, V, two_vertices> {
         }
     }
 
-    constexpr auto key() const { return std::pair{get_id_key(u), get_id_key(v)}; }
+    constexpr auto key() const {
+        return std::pair{get_id_key(u), get_id_key(v)};
+    }
 
-    bool operator < (const edge_vertices& rhs) const { return key() < rhs.key(); }
+    bool operator<(const edge_vertices& rhs) const {
+        return key() < rhs.key();
+    }
 
-    bool operator == (const edge_vertices& rhs) const { return u == rhs.u && v == rhs.v; }
+    bool operator==(const edge_vertices& rhs) const {
+        return u == rhs.u && v == rhs.v;
+    }
 
 private:
     friend struct ac::hash_access;
 
-    size_t hash() const { return hash_value(key()); }
+    size_t hash() const {
+        return hash_value(key());
+    }
 };
 
 template <class Dir, class V, class EC, class Selector>
 struct edge_list_traits {
-    using bundle = value_t<EC>;
+    using bundle = value_type_t<EC>;
     using vertices = edge_vertices<Dir, V, Selector>;
     using edge_data = mimic_pair<vertices, bundle, 1>;
     using container = rebind_container_t<EC, edge_data>;
@@ -76,7 +88,7 @@ struct edge_list_traits {
 
 template <class Dir, class V, class EC>
 struct edge_list_traits<Dir, V, EC, none> {
-    using bundle = value_t<EC>;
+    using bundle = value_type_t<EC>;
     using vertices = none;
     using container = dummy_container;
 };

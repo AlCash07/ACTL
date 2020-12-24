@@ -34,7 +34,7 @@ struct cdp {  // category-depth pair
 };
 
 template <class T, index DT, class U, index DU>
-constexpr auto operator || (cdp<T, DT> lhs, cdp<U, DU> rhs) {
+constexpr auto operator||(cdp<T, DT> lhs, cdp<U, DU> rhs) {
     if constexpr (DT == DU) {
         return cdp<decltype(common_category(T{}, U{})), DT>{};
     } else if constexpr (DT < DU) {
@@ -52,7 +52,7 @@ constexpr index type_depth_v = type_depth<raw_t<T>>::value;
 
 template <class T>
 struct type_depth<T, std::void_t<typename category_t<T>::has_nested>>
-    : index_constant<type_depth_v<value_t<T>> + 1> {};
+    : index_constant<type_depth_v<value_type_t<T>> + 1> {};
 
 template <class... Ts>
 using major_cdp =

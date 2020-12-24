@@ -12,6 +12,7 @@
 #include <actl/numeric/bit.hpp>
 #include <actl/numeric/util/hash_access.hpp>
 #include <actl/range/iterator_range.hpp>
+#include <actl/traits/dependent.hpp>
 #include <cstdint>
 
 namespace ac {
@@ -38,15 +39,21 @@ public:
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.base()));
     }
 
-    bool operator < (iterator_id rhs) const { return get_id_key(*this) < get_id_key(rhs); }
+    bool operator<(iterator_id rhs) const {
+        return get_id_key(*this) < get_id_key(rhs);
+    }
 
 private:
     friend struct ac::iterator_core_access;
     friend struct ac::hash_access;
 
-    iterator_id dereference() const { return *this; }
+    iterator_id dereference() const {
+        return *this;
+    }
 
-    size_t hash() const { return hash_value(get_id_key(*this)); }
+    size_t hash() const {
+        return hash_value(get_id_key(*this));
+    }
 };
 
 template <class C>
@@ -61,9 +68,13 @@ struct container_id_traits<C, true, true> {
     using iterator = integer_iterator<id>;
 };
 
-inline constexpr int get_id_key(int id) { return id; }
+inline constexpr int get_id_key(int id) {
+    return id;
+}
 
-inline constexpr int id_to_raw(int id) { return id; }
+inline constexpr int id_to_raw(int id) {
+    return id;
+}
 
 template <class It>
 void* id_to_raw(iterator_id<It> id) {

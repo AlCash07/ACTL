@@ -25,7 +25,9 @@ class text_static {
 public:
     using format_tag = text_tag;
 
-    static constexpr flag_t flags() { return Flags; }
+    static constexpr flag_t flags() {
+        return Flags;
+    }
 
     static constexpr bool getf(flag_t flag) {
         return has_bits(Flags, flag);
@@ -40,8 +42,12 @@ class text {
 public:
     using format_tag = text_tag;
 
-    flag_t flags() const { return flags_; }
-    void flags(flag_t value) { flags_ = value; }
+    flag_t flags() const {
+        return flags_;
+    }
+    void flags(flag_t value) {
+        flags_ = value;
+    }
 
     bool getf(flag_t flag) const {
         return has_bits(flags(), flag);
@@ -69,7 +75,7 @@ text_static<> deduce_format(Device& dev) {
 
 template <class Format, class S, enable_int_if_text<Format> = 0, enable_int_if<is_string_v<S>> = 0>
 auto encode(Format& fmt, const S& s) {
-    return span{std::basic_string_view<value_t<S>>{s}};
+    return span{std::basic_string_view<value_type_t<S>>{s}};
 }
 
 template <class Device, class... Ts>

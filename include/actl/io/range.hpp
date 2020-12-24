@@ -7,8 +7,8 @@
 
 #include <actl/container/functions.hpp>
 #include <actl/io/io.hpp>
-#include <actl/range/traits/range_traits.hpp>
 #include <actl/range/traits/iterator.hpp>
+#include <actl/range/traits/range_traits.hpp>
 
 namespace ac::io {
 
@@ -57,7 +57,7 @@ bool read_container(D& id, F& fmt, C& x) {
         return false;
     if constexpr (!is_random_access_range_v<C>) {
         for (; size > 0; --size) {
-            value_t<C> value;
+            value_type_t<C> value;
             if (!read(id, fmt, element_representation<C>(value)))
                 return false;
             emplace(x, std::move(value));
@@ -70,7 +70,7 @@ bool read_container(D& id, F& fmt, C& x) {
 }
 
 template <class Device, class Format, class R,
-          enable_int_if<is_range_v<R> && !std::is_const_v<value_t<R>>> = 0>
+          enable_int_if<is_range_v<R> && !std::is_const_v<value_type_t<R>>> = 0>
 bool read_final(Device& id, Format& fmt, R& x) {
     nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)

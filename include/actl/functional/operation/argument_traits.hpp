@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <actl/traits/dependent.hpp>
 #include <actl/util/type_traits.hpp>
 
 namespace ac::math {
@@ -49,7 +50,7 @@ struct category_level<Tag, std::void_t<typename Tag::base>>
 
 template <bool B, class T>
 struct value_if {
-    using type = value_t<raw_t<T>>;
+    using type = value_type_t<raw_t<T>>;
 };
 
 template <class T>

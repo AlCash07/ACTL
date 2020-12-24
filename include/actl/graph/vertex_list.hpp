@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <class VertexContainer = none, class T = value_t<VertexContainer>>
+template <class VertexContainer = none, class T = value_type_t<VertexContainer>>
 class vertex_list : public vertex_list<VertexContainer, none> {
     using base_t = vertex_list<VertexContainer, none>;
 
@@ -19,17 +19,25 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](vertex_property) { return std::ref(this->vertices_); }
-    auto operator[](vertex_property) const { return std::ref(this->vertices_); }
+    auto operator[](vertex_property) {
+        return std::ref(this->vertices_);
+    }
+    auto operator[](vertex_property) const {
+        return std::ref(this->vertices_);
+    }
 
-    T& operator[](vertex u) { return get(this->vertices_, u); }
-    const T& operator[](vertex u) const { return get(this->vertices_, u); }
+    T& operator[](vertex u) {
+        return get(this->vertices_, u);
+    }
+    const T& operator[](vertex u) const {
+        return get(this->vertices_, u);
+    }
 };
 
 template <class VC>
 class vertex_list<VC, none> {
 public:
-    using vertex_container = rebind_container_t<VC, value_t<VC>>;  // to handle none
+    using vertex_container = rebind_container_t<VC, value_type_t<VC>>;  // to handle none
     using vertex = container_id<vertex_container>;
     using vertex_iterator = container_id_iterator<vertex_container>;
 
@@ -44,16 +52,22 @@ public:
         resize(n);
     }
 
-    index vertex_count() const { return static_cast<index>(vertices_.size()); }
+    index vertex_count() const {
+        return static_cast<index>(vertices_.size());
+    }
 
     template <bool B = RA, enable_int_if<B> = 0>
     void resize(index n) {
         vertices_.resize(static_cast<size_type_t<vertex_container>>(n));
     }
 
-    iterator_range<vertex_iterator> vertices() const { return id_range(vertices_); }
+    iterator_range<vertex_iterator> vertices() const {
+        return id_range(vertices_);
+    }
 
-    vertex null_vertex() const { return id_null(vertices_); }
+    vertex null_vertex() const {
+        return id_null(vertices_);
+    }
 
     vertex nth_vertex(difference_t<container_id_iterator<vertex_container>> n) const {
         ACTL_ASSERT(0 <= n && n < vertex_count());
@@ -70,9 +84,13 @@ public:
         return try_add_vertex(std::forward<Ts>(args)...).first;
     }
 
-    void remove_vertex(vertex u) { id_erase(vertices_, u); }
+    void remove_vertex(vertex u) {
+        id_erase(vertices_, u);
+    }
 
-    void swap(vertex_list& rhs) { vertices_.swap(rhs.vertices_); }
+    void swap(vertex_list& rhs) {
+        vertices_.swap(rhs.vertices_);
+    }
 
     void operator[](vertex) const {}
 
