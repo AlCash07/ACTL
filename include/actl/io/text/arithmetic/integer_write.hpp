@@ -8,7 +8,7 @@
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
 #include <actl/io/text/arithmetic/detail/uitoa.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac::io {
 
@@ -17,10 +17,16 @@ namespace detail {
 template <uint8_t Size>
 class int_string {
 public:
-    void set_size(index size) { data_[Size] = static_cast<char>(size); }
-    void set_start(const char* x) { set_size(data_ + Size - x); }
+    void set_size(index size) {
+        data_[Size] = static_cast<char>(size);
+    }
+    void set_start(const char* x) {
+        set_size(data_ + Size - x);
+    }
 
-    span<char, Size> available() { return {data_, Size}; }
+    span<char, Size> available() {
+        return {data_, Size};
+    }
 
     explicit operator cspan<char>() const {
         const index size = data_[Size];
@@ -44,7 +50,8 @@ template <class Format, class Int, enable_int_if_text<Format> = 0,
 auto encode(Format& fmt, Int x) {
     using UInt = std::make_unsigned_t<Int>;
     UInt base = fmt.base;
-    if (base == 0) base = 10;
+    if (base == 0)
+        base = 10;
     detail::int_string<1 + detail::digit_count(std::numeric_limits<UInt>::max(), UInt{2})> s;
     auto last = s.available().end();
     if constexpr (std::is_signed_v<Int>) {

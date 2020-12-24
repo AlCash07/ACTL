@@ -5,11 +5,11 @@
 
 #pragma once
 
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/component_set.hpp>
 #include <actl/util/compressed_pair.hpp>
 #include <actl/util/introspection.hpp>
 #include <actl/util/none.hpp>
 #include <actl/util/rebind.hpp>
 #include <actl/util/stopwatch.hpp>
-#include <actl/util/type_traits.hpp>
 #include <actl/util/use_default.hpp>

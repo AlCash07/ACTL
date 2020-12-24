@@ -10,8 +10,8 @@
 #include <actl/graph/traits.hpp>
 #include <actl/std/stack.hpp>
 #include <actl/std/tuple.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/component_set.hpp>
-#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
@@ -23,9 +23,13 @@ class dfs_context {
 public:
     dfs_context(V u, OEI it, OEI) : u_{u}, oe_{it.id()} {}
 
-    V vertex() const { return u_; }
+    V vertex() const {
+        return u_;
+    }
 
-    auto get(const G& g) const { return std::tuple{u_, OEI{&g, u_, oe_}, g.out_edges(u_).end()}; }
+    auto get(const G& g) const {
+        return std::tuple{u_, OEI{&g, u_, oe_}, g.out_edges(u_).end()};
+    }
 };
 
 template <class... Components>
@@ -39,14 +43,16 @@ class depth_first_search : public component_set<Components...> {
     bool recurse(const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator) {
         execute_all(on_vertex_discover{}, u);
         execute_all(on_vertex_start{}, u);
-        if (is_terminator(u)) return true;
+        if (is_terminator(u))
+            return true;
         for (auto e : graph.out_edges(u)) {
             auto v = e.target();
             if (base_t::execute_first(is_vertex_discovered{}, v)) {
                 execute_all(on_non_tree_edge{}, e);
             } else {
                 execute_all(on_tree_edge_start{}, e);
-                if (recurse(graph, v, is_terminator)) return true;
+                if (recurse(graph, v, is_terminator))
+                    return true;
                 execute_all(on_tree_edge_finish{}, e);
             }
         }
@@ -67,7 +73,8 @@ public:
         auto discover_vertex = [&]() {
             execute_all(on_vertex_discover{}, u);
             execute_all(on_vertex_start{}, u);
-            if (is_terminator(u)) return false;
+            if (is_terminator(u))
+                return false;
             it = graph.out_edges(u).begin();
             end = graph.out_edges(u).end();
             return true;
@@ -76,7 +83,8 @@ public:
         while (ok) {
             if (it == end) {
                 execute_all(on_vertex_finish{}, u);
-                if (stack.empty()) break;
+                if (stack.empty())
+                    break;
                 std::tie(u, it, end) = stack.top().get(graph);
                 stack.pop();
                 execute_all(on_tree_edge_finish{}, *it);
@@ -101,7 +109,8 @@ public:
               class VertexPredicate = always_false>
     void operator()(const Graph& graph, vertex_t<Graph> s, Stack&& stack = {},
                     VertexPredicate is_terminator = {}) {
-        for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
+        for (auto u : graph.vertices())
+            execute_all(on_vertex_initialize{}, u);
         visit(graph, s, stack, is_terminator);
     }
 
@@ -109,7 +118,8 @@ public:
               class VertexPredicate = always_false,
               enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> = 0>
     void operator()(const Graph& graph, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
-        for (auto u : graph.vertices()) execute_all(on_vertex_initialize{}, u);
+        for (auto u : graph.vertices())
+            execute_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {
             if (!base_t::execute_first(is_vertex_discovered{}, s))
                 visit(graph, s, stack, is_terminator);

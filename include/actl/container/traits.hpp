@@ -8,8 +8,8 @@
 #pragma once
 
 #include <actl/container/dummy_container.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/rebind.hpp>
-#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
@@ -23,8 +23,8 @@ template <class T, class = void>
 struct is_smart_pointer : std::false_type {};
 
 template <class T>
-struct is_smart_pointer<T, std::void_t<decltype(std::declval<T>().get())>> :
-    std::is_pointer<decltype(std::declval<T>().get())> {};
+struct is_smart_pointer<T, std::void_t<decltype(std::declval<T>().get())>>
+    : std::is_pointer<decltype(std::declval<T>().get())> {};
 
 template <class T>
 auto data(T&& x) {

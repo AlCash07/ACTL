@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/functional/scalar/all.hpp>
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/use_default.hpp>
 
 namespace ac {
@@ -27,16 +27,16 @@ struct convex_monotone_polygon_tag : monotone_polygon_tag {};
 
 template <class T, class = void>
 struct geometry_traits {
-    using tag    = scalar_tag;
+    using tag = scalar_tag;
     using scalar = T;
     static constexpr int dimension = 0;
 };
 
 template <class Tag, class Point>
 struct geometry_traits_base {
-    using tag    = Tag;
+    using tag = Tag;
     using scalar = typename geometry_traits<Point>::scalar;
-    using point  = Point;
+    using point = Point;
     static constexpr int dimension = geometry_traits<Point>::dimension;
 };
 
@@ -73,6 +73,7 @@ enum : int {
 template <class T>
 struct id : id<tag_t<T>> {};
 
+// clang-format off
 template <> struct id<scalar_tag> : index_constant<scalar_id> {};
 template <> struct id<point_tag>  : index_constant<point_id> {};
 template <> struct id<line_tag>   : index_constant<line_id> {};
@@ -89,6 +90,7 @@ template <> struct id<convex_monotone_polygon_tag> : index_constant<convex_monot
 
 template <class T0, class T1>
 using enable_int_if_swap = enable_int_if<id<T1>::value < id<T0>::value>;
+// clang-format on
 
 }  // namespace geometry
 

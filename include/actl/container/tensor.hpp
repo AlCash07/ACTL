@@ -11,8 +11,8 @@
 #include <actl/functional/scalar/derived.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/utility.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/span.hpp>
-#include <actl/util/type_traits.hpp>
 #include <memory>
 
 namespace ac {

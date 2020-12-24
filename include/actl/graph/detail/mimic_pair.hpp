@@ -7,8 +7,8 @@
 
 #include <actl/map/composite_map.hpp>
 #include <actl/numeric/util/hash_access.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/compressed_pair.hpp>
-#include <actl/util/type_traits.hpp>
 
 namespace ac::detail {
 
@@ -37,7 +37,9 @@ public:
 private:
     friend struct ac::hash_access;
 
-    size_t hash() const { return hash_value(key()); }
+    size_t hash() const {
+        return hash_value(key());
+    }
 };
 
 template <class T, class = void>
@@ -56,12 +58,12 @@ decltype(auto) get_key(const T& x) {
 }
 
 template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-auto operator == (const T& lhs, const U& rhs) {
+auto operator==(const T& lhs, const U& rhs) {
     return math::equal(get_key(lhs), get_key(rhs));
 }
 
 template <class T, class U, enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-auto operator < (const T& lhs, const U& rhs) {
+auto operator<(const T& lhs, const U& rhs) {
     return math::less(get_key(lhs), get_key(rhs));
 }
 
@@ -73,9 +75,13 @@ public:
     using traits =
         map_traits_base<Key, R, use_default, true, !std::is_const_v<std::remove_reference_t<R>>>;
 
-    R get(Key key) { return key.second(); }
+    R get(Key key) {
+        return key.second();
+    }
 
-    void put(Key key, remove_cvref_t<R> value) { get(key) = value; }
+    void put(Key key, remove_cvref_t<R> value) {
+        get(key) = value;
+    }
 };
 
 template <class Map>

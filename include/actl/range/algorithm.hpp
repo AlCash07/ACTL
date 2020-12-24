@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/range/traits/is_range.hpp>
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <algorithm>
 
 namespace ac {

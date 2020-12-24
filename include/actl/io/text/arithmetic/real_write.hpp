@@ -9,7 +9,7 @@
 #include <actl/io/text/arithmetic/detail/uitoa.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/numeric/algorithm/binary_pow.hpp>
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <algorithm>
 #include <cmath>
 
@@ -24,9 +24,13 @@ public:
         return {ptr_.get(), size};
     }
 
-    explicit operator cspan<char>() const { return data_; }
+    explicit operator cspan<char>() const {
+        return data_;
+    }
 
-    void set_span(cspan<char> value) { data_ = value; }
+    void set_span(cspan<char> value) {
+        data_ = value;
+    }
 
 private:
     std::unique_ptr<char[]> ptr_;
@@ -84,7 +88,8 @@ auto encode(Format& fmt, Float x) {
             *--first = '.';
         first = detail::uitoa(first, fmt, integer_part, base);
     }
-    if (sign) *--first = sign;
+    if (sign)
+        *--first = sign;
     res.set_span({first, s.end()});
     return res;
 }

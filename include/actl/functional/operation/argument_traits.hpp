@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/traits/dependent.hpp>
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac::math {
 

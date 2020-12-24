@@ -14,7 +14,7 @@
 #pragma once
 
 #include <actl/std/utility.hpp>
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <functional>
 
 namespace ac {
@@ -72,10 +72,18 @@ struct map_ops {
     using K = map_key_t<T>;
     using V = map_value_t<T>;
 
-    static constexpr map_reference_t<T> get(T& map, K key) { return map.get(key); }
-    static constexpr void put(T& map, K key, V value) { map.put(key, value); }
-    static constexpr K invert(T& map, V value) { return map.invert(value); }
-    static constexpr map_range_t<T> map_range(T& map) { return map.map_range(); }
+    static constexpr map_reference_t<T> get(T& map, K key) {
+        return map.get(key);
+    }
+    static constexpr void put(T& map, K key, V value) {
+        map.put(key, value);
+    }
+    static constexpr K invert(T& map, V value) {
+        return map.invert(value);
+    }
+    static constexpr map_range_t<T> map_range(T& map) {
+        return map.map_range();
+    }
 };
 
 template <class T>

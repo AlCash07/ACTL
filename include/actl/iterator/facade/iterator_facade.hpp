@@ -11,7 +11,7 @@
 
 #include <actl/functional/operators.hpp>
 #include <actl/iterator/facade/iterator_types.hpp>
-#include <actl/util/type_traits.hpp>
+#include <actl/traits/type_traits.hpp>
 
 namespace ac {
 
@@ -69,8 +69,12 @@ public:
     }
 
 protected:
-    constexpr It& derived() { return static_cast<It&>(*this); }
-    constexpr const It& derived() const { return static_cast<const It&>(*this); }
+    constexpr It& derived() {
+        return static_cast<It&>(*this);
+    }
+    constexpr const It& derived() const {
+        return static_cast<const It&>(*this);
+    }
 };
 
 template <class It, class T>
@@ -111,21 +115,27 @@ class it_facade<It, T, std::random_access_iterator_tag>
     using D = typename base_t::difference_type;
 
 public:
-    constexpr typename base_t::reference operator[](D n) const { return *(this->derived() + n); }
+    constexpr typename base_t::reference operator[](D n) const {
+        return *(this->derived() + n);
+    }
 
-    constexpr It& operator += (D n) {
+    constexpr It& operator+=(D n) {
         iterator_core_access::advance(this->derived(), n);
         return this->derived();
     }
 
-    constexpr It& operator -= (D n) { return (*this) += (-n); }
+    constexpr It& operator-=(D n) {
+        return (*this) += (-n);
+    }
 
-    constexpr It operator + (D n) const {
+    constexpr It operator+(D n) const {
         It copy = this->derived();
         return copy += n;
     }
 
-    constexpr It operator - (D n) const { return (*this) + (-n); }
+    constexpr It operator-(D n) const {
+        return (*this) + (-n);
+    }
 };
 
 }  // namespace detail
@@ -154,7 +164,7 @@ ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 #undef ITERATOR_OPERATOR
 
 template <class It, class T>
-constexpr It operator + (typename T::difference_type n, const iterator_facade<It, T>& rhs) {
+constexpr It operator+(typename T::difference_type n, const iterator_facade<It, T>& rhs) {
     return rhs + n;
 }
 

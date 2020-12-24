@@ -8,8 +8,8 @@
 #include <actl/iterator/facade/iterator_adaptor.hpp>
 #include <actl/iterator/traits.hpp>
 #include <actl/range/facade/range_facade.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/util/compressed_pair.hpp>
-#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
@@ -27,12 +27,20 @@ public:
     explicit filtered_range(Range range, Predicate pred)
         : data_{std::forward<Range>(range), pred} {}
 
-    auto begin() const { return iterator{original().begin(), *this}; }
-    auto end() const { return iterator{original().end(), *this}; }
+    auto begin() const {
+        return iterator{original().begin(), *this};
+    }
+    auto end() const {
+        return iterator{original().end(), *this};
+    }
 
-    const Range& original() const { return data_.first(); }
+    const Range& original() const {
+        return data_.first();
+    }
 
-    bool evaluate(reference_t<iterator> x) const { return data_.second()(x); }
+    bool evaluate(reference_t<iterator> x) const {
+        return data_.second()(x);
+    }
 
 private:
     compressed_pair<Range, Predicate> data_;
