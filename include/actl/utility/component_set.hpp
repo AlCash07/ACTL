@@ -18,45 +18,43 @@ public:
     explicit component_set(Components&&... components)
         : components_{std::forward<Components>(components)...} {}
 
-protected:
-    /**
-     * Finds the first components that accepts given arguments (it's required to exist) and returns
-     * its output.
-     */
+    /// Finds the first components that accepts given arguments (it's required to exist) and returns
+    /// its output.
     template <class... Ts>
-    decltype(auto) execute_first(Ts&&... args) {
-        return exec_first<0>(std::forward<Ts>(args)...);
+    constexpr decltype(auto) execute_first(const Ts&... xs) {
+        return exec_first<0>(xs...);
     }
 
     template <class... Ts>
-    void execute_all(Ts&&... args) {
-        exec_all<0>(std::forward<Ts>(args)...);
+    constexpr void execute_all(const Ts&... xs) {
+        exec_all<0>(xs...);
     }
 
 private:
     using tuple_t = std::tuple<Components...>;
 
     template <size_t I, class... Ts>
-    decltype(auto) exec_first(Ts&&... args) {
+    constexpr decltype(auto) exec_first(const Ts&... xs) {
         static_assert(I < sizeof...(Components), "no component with requested overload");
-        if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
-            return std::get<I>(components_)(std::forward<Ts>(args)...);
-        } else {
-            return exec_first<I + 1>(std::forward<Ts>(args)...);
-        }
+        if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>)
+            return std::get<I>(components_)(xs...);
+        else
+            return exec_first<I + 1>(xs...);
     }
 
     template <size_t I, class... Ts>
-    void exec_all(Ts&&... args) {
+    constexpr void exec_all(const Ts&... xs) {
         if constexpr (I < sizeof...(Components)) {
-            if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>) {
-                std::get<I>(components_)(std::forward<Ts>(args)...);
-            }
-            exec_all<I + 1>(std::forward<Ts>(args)...);
+            if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>)
+                std::get<I>(components_)(xs...);
+            exec_all<I + 1>(xs...);
         }
     }
 
     tuple_t components_;
 };
+
+template <class... Ts>
+component_set(Ts&&...) -> component_set<Ts...>;
 
 }  // namespace ac

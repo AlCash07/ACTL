@@ -8,6 +8,7 @@
 #include <actl/functional/composite/range.hpp>
 #include <actl/functional/scalar/all.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/range/irange.hpp>
 #include <actl/std/vector.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <string_view>
