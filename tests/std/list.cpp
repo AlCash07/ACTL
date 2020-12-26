@@ -7,9 +7,8 @@
 #include <actl/range/traits/all.hpp>
 #include <actl/std/list.hpp>
 
-TEST_CASE("list category") {
-    using C = std::list<int>;
-    CHECK(is_sequence_range_v<C>);
-    CHECK_FALSE(is_random_access_range_v<C>);
-    CHECK_FALSE(is_associative_range_v<C>);
-}
+using List = std::list<int>;
+static_assert(ac::is_container_v<List>);
+static_assert(ac::is_sequence_range_v<List>);
+static_assert(!ac::is_random_access_range_v<List>);
+static_assert(!ac::is_associative_range_v<List>);

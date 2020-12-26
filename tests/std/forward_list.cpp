@@ -7,9 +7,8 @@
 #include <actl/range/traits/all.hpp>
 #include <actl/std/forward_list.hpp>
 
-TEST_CASE("forward_list category") {
-    using C = std::forward_list<int>;
-    CHECK(is_sequence_range_v<C>);
-    CHECK_FALSE(is_random_access_range_v<C>);
-    CHECK_FALSE(is_associative_range_v<C>);
-}
+using ForwardList = std::forward_list<int>;
+static_assert(ac::is_container_v<ForwardList>);
+static_assert(ac::is_sequence_range_v<ForwardList>);
+static_assert(!ac::is_random_access_range_v<ForwardList>);
+static_assert(!ac::is_associative_range_v<ForwardList>);

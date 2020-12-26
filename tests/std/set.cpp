@@ -6,22 +6,20 @@
 #include "test.hpp"
 #include <actl/std/set.hpp>
 
-TEST_CASE("set::category") {
-    using C = std::set<int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK(is_sorted_range_v<C>);
-    CHECK(is_unique_range_v<C>);
-    CHECK(is_simple_associative_range_v<C>);
-    CHECK_FALSE(is_pair_associative_range_v<C>);
-}
+using Set = std::set<int>;
+static_assert(ac::is_container_v<Set>);
+static_assert(!ac::is_sequence_range_v<Set>);
+static_assert(ac::is_associative_range_v<Set>);
+static_assert(ac::is_sorted_range_v<Set>);
+static_assert(ac::is_unique_range_v<Set>);
+static_assert(ac::is_simple_associative_range_v<Set>);
+static_assert(!ac::is_pair_associative_range_v<Set>);
 
-TEST_CASE("multiset::category") {
-    using C = std::multiset<int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK(is_sorted_range_v<C>);
-    CHECK_FALSE(is_unique_range_v<C>);
-    CHECK(is_simple_associative_range_v<C>);
-    CHECK_FALSE(is_pair_associative_range_v<C>);
-}
+using MultiSet = std::multiset<int>;
+static_assert(ac::is_container_v<MultiSet>);
+static_assert(!ac::is_sequence_range_v<MultiSet>);
+static_assert(ac::is_associative_range_v<MultiSet>);
+static_assert(ac::is_sorted_range_v<MultiSet>);
+static_assert(!ac::is_unique_range_v<MultiSet>);
+static_assert(ac::is_simple_associative_range_v<MultiSet>);
+static_assert(!ac::is_pair_associative_range_v<MultiSet>);

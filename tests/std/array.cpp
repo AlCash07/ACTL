@@ -7,10 +7,9 @@
 #include <actl/range/traits/all.hpp>
 #include <actl/std/array.hpp>
 
-TEST_CASE("array category") {
-    using C = std::array<int, 2>;
-    CHECK(is_sequence_range_v<C>);
-    CHECK(is_random_access_range_v<C>);
-    CHECK(is_contiguous_range_v<C>);
-    CHECK_FALSE(is_associative_range_v<C>);
-}
+using Array = std::array<int, 2>;
+static_assert(ac::is_container_v<Array>);
+static_assert(ac::is_sequence_range_v<Array>);
+static_assert(ac::is_random_access_range_v<Array>);
+static_assert(ac::is_contiguous_range_v<Array>);
+static_assert(!ac::is_associative_range_v<Array>);

@@ -7,15 +7,8 @@
 #include <actl/utility/none.hpp>
 #include <type_traits>
 
-TEST_CASE("is_empty") {
-    CHECK(std::is_empty_v<none>);
-}
+static_assert(std::is_empty_v<ac::none>);
 
-template <class E, class T>
-constexpr bool test_replace_void_v = std::is_same_v<E, replace_void_t<T>>;
-
-TEST_CASE("replace_void") {
-    CHECK(test_replace_void_v<int, int>);
-    CHECK(test_replace_void_v<none, void>);
-    CHECK(test_replace_void_v<const none, const void>);
-}
+static_assert(std::is_same_v<int, ac::replace_void_t<int>>);
+static_assert(std::is_same_v<ac::none, ac::replace_void_t<void>>);
+static_assert(std::is_same_v<const ac::none, ac::replace_void_t<const void>>);

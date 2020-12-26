@@ -7,10 +7,9 @@
 #include <actl/range/traits/all.hpp>
 #include <actl/std/deque.hpp>
 
-TEST_CASE("deque category") {
-    using C = std::deque<int>;
-    CHECK(is_sequence_range_v<C>);
-    CHECK(is_random_access_range_v<C>);
-    CHECK_FALSE(is_contiguous_range_v<C>);
-    CHECK_FALSE(is_associative_range_v<C>);
-}
+using Deque = std::deque<int>;
+static_assert(ac::is_container_v<Deque>);
+static_assert(ac::is_sequence_range_v<Deque>);
+static_assert(ac::is_random_access_range_v<Deque>);
+static_assert(!ac::is_contiguous_range_v<Deque>);
+static_assert(!ac::is_associative_range_v<Deque>);

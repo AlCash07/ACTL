@@ -11,9 +11,9 @@
 namespace ac {
 
 struct default_range_traits {
+    static constexpr bool is_container = false;
     static constexpr bool is_simple_associative = false;
     static constexpr bool is_pair_associative = false;
-    static constexpr bool is_container = false;
     static constexpr bool is_sorted = false;
     static constexpr bool is_unique = false;
 };
@@ -30,6 +30,9 @@ struct range_traits<T[N]> : default_range_traits {
 };
 
 template <class T>
+constexpr bool is_container_v = range_traits<T>::is_container;
+
+template <class T>
 constexpr bool is_simple_associative_range_v = range_traits<T>::is_simple_associative;
 
 template <class T>
@@ -41,9 +44,6 @@ constexpr bool is_associative_range_v =
 
 template <class C>
 constexpr bool is_sequence_range_v = is_range_v<C> && !is_associative_range_v<C>;
-
-template <class T>
-constexpr bool is_container_v = range_traits<T>::is_container;
 
 template <class T>
 constexpr bool is_sorted_range_v = range_traits<T>::is_sorted;

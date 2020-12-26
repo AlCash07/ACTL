@@ -10,13 +10,11 @@
 #include <actl/range/traits/all.hpp>
 #include <actl/std/string.hpp>
 
-TEST_CASE("string category") {
-    using C = std::string;
-    CHECK(is_sequence_range_v<C>);
-    CHECK(is_random_access_range_v<C>);
-    CHECK(is_contiguous_range_v<C>);
-    CHECK_FALSE(is_associative_range_v<C>);
-}
+static_assert(ac::is_container_v<std::string>);
+static_assert(ac::is_sequence_range_v<std::string>);
+static_assert(ac::is_random_access_range_v<std::string>);
+static_assert(ac::is_contiguous_range_v<std::string>);
+static_assert(!ac::is_associative_range_v<std::string>);
 
 using namespace ac::io;
 

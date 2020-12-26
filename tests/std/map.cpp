@@ -6,22 +6,20 @@
 #include "test.hpp"
 #include <actl/std/map.hpp>
 
-TEST_CASE("map::category") {
-    using C = std::map<int, int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK(is_sorted_range_v<C>);
-    CHECK(is_unique_range_v<C>);
-    CHECK_FALSE(is_simple_associative_range_v<C>);
-    CHECK(is_pair_associative_range_v<C>);
-}
+using Map = std::map<int, int>;
+static_assert(ac::is_container_v<Map>);
+static_assert(!ac::is_sequence_range_v<Map>);
+static_assert(ac::is_associative_range_v<Map>);
+static_assert(!ac::is_simple_associative_range_v<Map>);
+static_assert(ac::is_pair_associative_range_v<Map>);
+static_assert(ac::is_sorted_range_v<Map>);
+static_assert(ac::is_unique_range_v<Map>);
 
-TEST_CASE("multimap::category") {
-    using C = std::multimap<int, int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK(is_sorted_range_v<C>);
-    CHECK_FALSE(is_unique_range_v<C>);
-    CHECK_FALSE(is_simple_associative_range_v<C>);
-    CHECK(is_pair_associative_range_v<C>);
-}
+using MultiMap = std::multimap<int, int>;
+static_assert(ac::is_container_v<MultiMap>);
+static_assert(!ac::is_sequence_range_v<MultiMap>);
+static_assert(ac::is_associative_range_v<MultiMap>);
+static_assert(!ac::is_simple_associative_range_v<MultiMap>);
+static_assert(ac::is_pair_associative_range_v<MultiMap>);
+static_assert(ac::is_sorted_range_v<MultiMap>);
+static_assert(!ac::is_unique_range_v<MultiMap>);

@@ -6,7 +6,5 @@
 #include "test.hpp"
 #include <actl/utility/use_default.hpp>
 
-TEST_CASE("deduce_type") {
-    CHECK(std::is_same_v<double, deduce_t<double, int>>);
-    CHECK(std::is_same_v<int, deduce_t<use_default, int>>);
-}
+static_assert(std::is_same_v<double, ac::deduce_t<double, int>>);
+static_assert(std::is_same_v<int, ac::deduce_t<use_default, int>>);

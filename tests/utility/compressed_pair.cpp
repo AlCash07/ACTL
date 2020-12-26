@@ -35,14 +35,14 @@ TEST_CASE("order") {
     CHECK(pii{1, 0} > pii{0, 1});
 }
 
+namespace {
 struct fin final : none {};
+}  // namespace
 
-TEST_CASE("sizeof") {
-    CHECK(2 * sizeof(int) == sizeof(compressed_pair<int, int>));
-    // TODO: investigate why the following size isn't 1.
-    CHECK(2 >= sizeof(compressed_pair<none, none>));
-    CHECK(sizeof(int) == sizeof(compressed_pair<none, int>));
-    CHECK(sizeof(int) == sizeof(compressed_pair<int, none>));
-    CHECK(sizeof(int) < sizeof(compressed_pair<fin, int>));
-    CHECK(sizeof(int) < sizeof(compressed_pair<int, fin>));
-}
+static_assert(2 * sizeof(int) == sizeof(compressed_pair<int, int>));
+// Objects of the same class can't share address.
+static_assert(2 == sizeof(compressed_pair<none, none>));
+static_assert(sizeof(int) == sizeof(compressed_pair<none, int>));
+static_assert(sizeof(int) == sizeof(compressed_pair<int, none>));
+static_assert(sizeof(int) < sizeof(compressed_pair<fin, int>));
+static_assert(sizeof(int) < sizeof(compressed_pair<int, fin>));
