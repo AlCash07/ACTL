@@ -8,16 +8,13 @@
 #include <actl/std/vector.hpp>
 #include <memory>
 
-TEST_CASE("rebind_container") {
-    CHECK(std::is_same_v<dummy_container, rebind_container_t<none, int>>);
-    CHECK(std::is_same_v<dummy_container, rebind_container_t<dummy_container, int>>);
-    CHECK(std::is_same_v<dummy_container, rebind_container_t<std::vector<int>, none>>);
-    CHECK(std::is_same_v<std::vector<int>, rebind_container_t<std::vector<none>, int>>);
-}
+static_assert(std::is_same_v<ac::dummy_container, ac::rebind_container_t<none, int>>);
+static_assert(
+    std::is_same_v<ac::dummy_container, ac::rebind_container_t<ac::dummy_container, int>>);
+static_assert(std::is_same_v<ac::dummy_container, ac::rebind_container_t<std::vector<int>, none>>);
+static_assert(std::is_same_v<std::vector<int>, ac::rebind_container_t<std::vector<none>, int>>);
 
-TEST_CASE("is_smart_pointer") {
-    CHECK(is_smart_pointer<std::unique_ptr<float>>::value);
-    CHECK(is_smart_pointer<const std::unique_ptr<std::vector<int>>>::value);
-    CHECK(is_smart_pointer<std::shared_ptr<float>>::value);
-    CHECK_FALSE(is_smart_pointer<std::vector<float>>::value);
-}
+static_assert(ac::is_smart_pointer<std::unique_ptr<float>>::value);
+static_assert(ac::is_smart_pointer<const std::unique_ptr<std::vector<int>>>::value);
+static_assert(ac::is_smart_pointer<std::shared_ptr<float>>::value);
+static_assert(!ac::is_smart_pointer<std::vector<float>>::value);

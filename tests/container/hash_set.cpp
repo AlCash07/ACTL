@@ -6,22 +6,20 @@
 #include "test.hpp"
 #include <actl/container/hash_set.hpp>
 
-TEST_CASE("hash_set::category") {
-    using C = hash_set<int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK_FALSE(is_sorted_range_v<C>);
-    CHECK(is_unique_range_v<C>);
-    CHECK(is_simple_associative_range_v<C>);
-    CHECK_FALSE(is_pair_associative_range_v<C>);
-}
+using HashSet = hash_set<int>;
+static_assert(ac::is_container_v<HashSet>);
+static_assert(!ac::is_sequence_range_v<HashSet>);
+static_assert(ac::is_associative_range_v<HashSet>);
+static_assert(!ac::is_sorted_range_v<HashSet>);
+static_assert(ac::is_unique_range_v<HashSet>);
+static_assert(ac::is_simple_associative_range_v<HashSet>);
+static_assert(!ac::is_pair_associative_range_v<HashSet>);
 
-TEST_CASE("hash_multiset::category") {
-    using C = hash_multiset<int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK_FALSE(is_sorted_range_v<C>);
-    CHECK_FALSE(is_unique_range_v<C>);
-    CHECK(is_simple_associative_range_v<C>);
-    CHECK_FALSE(is_pair_associative_range_v<C>);
-}
+using HashMultiset = hash_multiset<int>;
+static_assert(ac::is_container_v<HashMultiset>);
+static_assert(!ac::is_sequence_range_v<HashMultiset>);
+static_assert(ac::is_associative_range_v<HashMultiset>);
+static_assert(!ac::is_sorted_range_v<HashMultiset>);
+static_assert(!ac::is_unique_range_v<HashMultiset>);
+static_assert(ac::is_simple_associative_range_v<HashMultiset>);
+static_assert(!ac::is_pair_associative_range_v<HashMultiset>);

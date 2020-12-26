@@ -44,7 +44,8 @@ TEST_CASE("rank -1") {
     tensor<int> t{{3, 2}};
     CHECK(std::vector{3, 2} == t.dimensions());
     for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 2; ++j) t(i, j) = i * 2 + j;
+        for (int j = 0; j < 2; ++j)
+            t(i, j) = i * 2 + j;
     }
     CHECK_EQUAL(std::vector{0, 1, 2, 3, 4, 5}, span{t});
 }

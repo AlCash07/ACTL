@@ -6,22 +6,20 @@
 #include "test.hpp"
 #include <actl/container/hash_map.hpp>
 
-TEST_CASE("hash_map::category") {
-    using C = hash_map<int, int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK_FALSE(is_sorted_range_v<C>);
-    CHECK(is_unique_range_v<C>);
-    CHECK_FALSE(is_simple_associative_range_v<C>);
-    CHECK(is_pair_associative_range_v<C>);
-}
+using HashMap = hash_map<int, int>;
+static_assert(ac::is_container_v<HashMap>);
+static_assert(!ac::is_sequence_range_v<HashMap>);
+static_assert(ac::is_associative_range_v<HashMap>);
+static_assert(!ac::is_sorted_range_v<HashMap>);
+static_assert(ac::is_unique_range_v<HashMap>);
+static_assert(!ac::is_simple_associative_range_v<HashMap>);
+static_assert(ac::is_pair_associative_range_v<HashMap>);
 
-TEST_CASE("hash_multimap::category") {
-    using C = hash_multimap<int, int>;
-    CHECK_FALSE(is_sequence_range_v<C>);
-    CHECK(is_associative_range_v<C>);
-    CHECK_FALSE(is_sorted_range_v<C>);
-    CHECK_FALSE(is_unique_range_v<C>);
-    CHECK_FALSE(is_simple_associative_range_v<C>);
-    CHECK(is_pair_associative_range_v<C>);
-}
+using HashMultimap = hash_multimap<int, int>;
+static_assert(ac::is_container_v<HashMultimap>);
+static_assert(!ac::is_sequence_range_v<HashMultimap>);
+static_assert(ac::is_associative_range_v<HashMultimap>);
+static_assert(!ac::is_sorted_range_v<HashMultimap>);
+static_assert(!ac::is_unique_range_v<HashMultimap>);
+static_assert(!ac::is_simple_associative_range_v<HashMultimap>);
+static_assert(ac::is_pair_associative_range_v<HashMultimap>);
