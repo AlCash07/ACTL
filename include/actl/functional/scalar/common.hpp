@@ -17,6 +17,7 @@ constexpr std::integral_constant<int, 1> one;
 template <index I, index N>
 struct Arg {
     using category = operation_tag;
+    struct enable_operators;
 
     template <class T, class... Ts>
     constexpr decltype(auto) operator()(T&& x, Ts&&... xs) const {

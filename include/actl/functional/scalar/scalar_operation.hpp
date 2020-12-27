@@ -7,6 +7,7 @@
 
 #include <actl/functional/operation/operation.hpp>
 #include <actl/functional/scalar/argument_tags.hpp>
+#include <actl/functional/scalar/enable_operators.hpp>
 
 namespace ac::math {
 

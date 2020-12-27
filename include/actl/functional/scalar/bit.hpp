@@ -17,8 +17,8 @@ struct BitNot : scalar_operation<BitNot, 2, integral_tag> {
 };
 constexpr BitNot bit_not;
 
-template <class T>
-constexpr auto operator ~ (T&& x) {
+template <class T, enable_operators<T> = 0>
+constexpr auto operator~(T&& x) {
     return bit_not(pass<T>(x));
 }
 
@@ -33,13 +33,13 @@ struct BitAnd : scalar_operation<BitAnd, 2, integral_tag> {
 };
 constexpr BitAnd bit_and;
 
-template <class T, class U>
-constexpr auto operator & (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator&(T&& lhs, U&& rhs) {
     return bit_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
-constexpr decltype(auto) operator &= (T& lhs, const U& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr decltype(auto) operator&=(T& lhs, const U& rhs) {
     return bit_and(inplace(lhs), rhs);
 }
 
@@ -54,13 +54,13 @@ struct BitOr : scalar_operation<BitOr, 2, integral_tag> {
 };
 constexpr BitOr bit_or;
 
-template <class T, class U>
-constexpr auto operator | (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator|(T&& lhs, U&& rhs) {
     return bit_or(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
-constexpr decltype(auto) operator |= (T& lhs, const U& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr decltype(auto) operator|=(T& lhs, const U& rhs) {
     return bit_or(inplace(lhs), rhs);
 }
 
@@ -75,13 +75,13 @@ struct BitXor : scalar_operation<BitXor, 2, integral_tag> {
 };
 constexpr BitXor bit_xor;
 
-template <class T, class U>
-constexpr auto operator ^ (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator^(T&& lhs, U&& rhs) {
     return bit_xor(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
-constexpr decltype(auto) operator ^= (T& lhs, const U& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr decltype(auto) operator^=(T& lhs, const U& rhs) {
     return bit_xor(inplace(lhs), rhs);
 }
 

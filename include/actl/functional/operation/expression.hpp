@@ -27,10 +27,13 @@ struct expression_base {};
 template <class... Ts>
 struct expression : expression_base<expression<Ts...>, typename detail::result<Ts...>::tag> {
     using category = typename detail::result<Ts...>::tag;
+    struct enable_operators;
 
     std::tuple<Ts...> args;
 
-    constexpr operator typename detail::result<Ts...>::type() const { return eval(*this); }
+    constexpr operator typename detail::result<Ts...>::type() const {
+        return eval(*this);
+    }
 };
 
 template <class... Ts, enable_int_if<1 == (... + is_operation_v<Ts>)> = 0>

@@ -11,9 +11,13 @@ namespace ac::math {
 
 template <bool In, class T>
 struct out {
+    struct enable_operators;
+
     T x;
 
-    constexpr operator T() { return x; }
+    constexpr operator T() {
+        return x;
+    }
 
     template <class U>
     out& operator=(const U& y) {

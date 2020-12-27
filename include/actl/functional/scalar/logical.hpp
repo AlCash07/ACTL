@@ -10,12 +10,14 @@
 namespace ac::math {
 
 struct LogicalNot : scalar_operation<LogicalNot, 1, boolean_tag> {
-    static constexpr bool eval_scalar(bool x) { return !x; }
+    static constexpr bool eval_scalar(bool x) {
+        return !x;
+    }
 };
 constexpr LogicalNot logical_not;
 
-template <class T>
-constexpr auto operator ! (T&& x) {
+template <class T, enable_operators<T> = 0>
+constexpr auto operator!(T&& x) {
     return logical_not(pass<T>(x));
 }
 
@@ -23,12 +25,14 @@ struct LogicalAnd : scalar_operation<LogicalAnd, 2, boolean_tag> {
     struct is_associative;
     struct is_commutative;
 
-    static constexpr bool eval_scalar(bool lhs, bool rhs) { return lhs && rhs; }
+    static constexpr bool eval_scalar(bool lhs, bool rhs) {
+        return lhs && rhs;
+    }
 };
 constexpr LogicalAnd logical_and;
 
-template <class T, class U>
-constexpr auto operator && (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator&&(T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
 }
 
@@ -36,12 +40,14 @@ struct LogicalOr : scalar_operation<LogicalOr, 2, boolean_tag> {
     struct is_associative;
     struct is_commutative;
 
-    static constexpr bool eval_scalar(bool lhs, bool rhs) { return lhs || rhs; }
+    static constexpr bool eval_scalar(bool lhs, bool rhs) {
+        return lhs || rhs;
+    }
 };
 constexpr LogicalOr logical_or;
 
-template <class T, class U>
-constexpr auto operator || (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator||(T&& lhs, U&& rhs) {
     return logical_or(pass<T>(lhs), pass<U>(rhs));
 }
 

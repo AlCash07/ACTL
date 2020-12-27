@@ -17,8 +17,8 @@ struct Neg : scalar_operation<Neg, 2, arithmetic_tag> {
 };
 constexpr Neg neg;
 
-template <class T>
-constexpr auto operator - (T&& x) {
+template <class T, enable_operators<T> = 0>
+constexpr auto operator-(T&& x) {
     return neg(pass<T>(x));
 }
 
@@ -33,13 +33,13 @@ struct Add : scalar_operation<Add, 2, arithmetic_tag> {
 };
 constexpr Add add;
 
-template <class T, class U>
-constexpr auto operator + (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator+(T&& lhs, U&& rhs) {
     return add(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
-constexpr decltype(auto) operator += (T& lhs, const U& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr decltype(auto) operator+=(T& lhs, const U& rhs) {
     return add(inplace(lhs), rhs);
 }
 
@@ -51,13 +51,13 @@ struct Sub : scalar_operation<Sub, 2, arithmetic_tag> {
 };
 constexpr Sub sub;
 
-template <class T, class U>
-constexpr auto operator - (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator-(T&& lhs, U&& rhs) {
     return sub(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
-constexpr decltype(auto) operator -= (T& lhs, const U& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr decltype(auto) operator-=(T& lhs, const U& rhs) {
     return sub(inplace(lhs), rhs);
 }
 
@@ -72,13 +72,13 @@ struct Mul : scalar_operation<Mul, 2, arithmetic_tag> {
 };
 constexpr Mul mul;
 
-template <class T, class U>
-constexpr auto operator * (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator*(T&& lhs, U&& rhs) {
     return mul(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
-constexpr decltype(auto) operator *= (T& lhs, const U& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr decltype(auto) operator*=(T& lhs, const U& rhs) {
     return mul(inplace(lhs), rhs);
 }
 
@@ -90,13 +90,13 @@ struct Div : scalar_operation<Div, 2, arithmetic_tag> {
 };
 constexpr Div div;
 
-template <class T, class U>
-constexpr auto operator / (T&& lhs, U&& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr auto operator/(T&& lhs, U&& rhs) {
     return div(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
-constexpr decltype(auto) operator /= (T& lhs, const U& rhs) {
+template <class T, class U, enable_operators<T, U> = 0>
+constexpr decltype(auto) operator/=(T& lhs, const U& rhs) {
     return div(inplace(lhs), rhs);
 }
 
