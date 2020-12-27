@@ -5,11 +5,11 @@
 
 #pragma once
 
-namespace ac::math {
+namespace ac {
 
 template <class T = double>
 constexpr T pi_v = static_cast<T>(3.141592653589793238462643383279502884L);
 
 constexpr double pi = pi_v<>;
 
-}  // namespace ac::math
+}  // namespace ac

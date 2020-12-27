@@ -9,7 +9,7 @@
 #include <actl/functional/scalar/scalar_operation.hpp>
 #include <actl/utility/none.hpp>
 
-namespace ac::math {
+namespace ac {
 
 constexpr std::integral_constant<int, 0> zero;
 constexpr std::integral_constant<int, 1> one;
@@ -108,7 +108,7 @@ struct Copy : scalar_operation<Copy, 1, arithmetic_tag> {
 constexpr Copy copy;
 
 template <class T, class U>
-constexpr void assign(out<false, T>& dst, const U& y) {
+constexpr void assign(out_t<false, T>& dst, const U& y) {
     copy(dst, y);
 }
 
@@ -120,4 +120,4 @@ struct Select : scalar_operation<Select, 3, arithmetic_tag> {
 };
 constexpr Select select;
 
-}  // namespace ac::math
+}  // namespace ac

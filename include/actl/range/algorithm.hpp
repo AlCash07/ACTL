@@ -29,7 +29,7 @@ std::pair<iterator_t<Range0>, iterator_t<Range1>> mismatch(const Range0& lhs, co
 }
 
 template <class Range, class OutIter>
-OutIter copy(const Range& src, OutIter dst) {
+OutIter range_copy(const Range& src, OutIter dst) {
     return std::copy(std::begin(src), std::end(src), dst);
 }
 

@@ -20,12 +20,16 @@ public:
 
     template <class R>
     explicit constexpr static_array(R&& range) {
-        ACTL_ASSERT(math::equal(array, range));
+        ACTL_ASSERT(equal(array, range));
     }
 
-    static constexpr const T* data() { return array.data(); }
+    static constexpr const T* data() {
+        return array.data();
+    }
 
-    static constexpr index size() { return index{array.size()}; }
+    static constexpr index size() {
+        return index{array.size()};
+    }
 };
 
 template <class T, T... Is>

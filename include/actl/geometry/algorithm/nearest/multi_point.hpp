@@ -44,11 +44,13 @@ auto nearest(const Policy& policy, const span<Point>& points, const span<Point>&
     copy(tmp.first(n), points.begin());
     index count = 0;
     for (const auto& p : points) {
-        if (less(policy, math::abs(p.x() - middle_x), res.first)) {
+        if (less(policy, abs(p.x() - middle_x), res.first)) {
             for (index i = count - 1; i >= 0; --i) {
-                if (!less(policy, p.y() - tmp[i].y(), res.first)) break;
+                if (!less(policy, p.y() - tmp[i].y(), res.first))
+                    break;
                 auto dist = distance(policy, p, tmp[i]);
-                if (less(policy, dist, res.first)) res = std::pair{dist, std::pair{p, tmp[i]}};
+                if (less(policy, dist, res.first))
+                    res = std::pair{dist, std::pair{p, tmp[i]}};
             }
             tmp[count++] = p;
         }
@@ -65,9 +67,10 @@ template <class Policy, class T,
           enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
 auto nearest(const Policy& policy, T& points) {
     ACTL_ASSERT(points.size() > 1);
-    sort(points, math::less(policy));
+    sort(points, less(policy));
     for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j) {
-        if (equal(policy, *i, *j)) return std::pair{*i, *j};
+        if (equal(policy, *i, *j))
+            return std::pair{*i, *j};
     }
     using Point = typename geometry_traits<T>::point;
     std::vector<Point> tmp(points.size());

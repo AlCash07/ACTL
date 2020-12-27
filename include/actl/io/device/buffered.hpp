@@ -41,9 +41,13 @@ protected:
 public:
     using base_t::base_t;
 
-    cspan<Char> input_data() const { return {ptr_, end_}; }
+    cspan<Char> input_data() const {
+        return {ptr_, end_};
+    }
 
-    Char peek() { return ptr_ < end_ ? *ptr_ : Char{}; }
+    Char peek() {
+        return ptr_ < end_ ? *ptr_ : Char{};
+    }
 
     Char get() {
         Char c = peek();
@@ -69,7 +73,7 @@ public:
             dstPtr += count - remainder;
         }
         underflow();
-        math::min(inplace(remainder), end_ - ptr_);
+        min(inplace(remainder), end_ - ptr_);
         if (0 < remainder) {
             res += remainder;
             std::copy_n(ptr_, remainder, dstPtr);
@@ -82,10 +86,13 @@ public:
         // TODO: support move fully along the underlying device, not just along the buffer.
         ptr_ += offset;
         ACTL_ASSERT(std::data(this->buf_) <= ptr_);
-        if (ptr_ == end_) underflow();
+        if (ptr_ == end_)
+            underflow();
     }
 
-    bool eof() { return end_ < ptr_; }
+    bool eof() {
+        return end_ < ptr_;
+    }
 };
 
 template <class Device, class Buffer = char_t<Device>[1 << 10], bool = is_out<Device::mode>>
@@ -136,7 +143,9 @@ protected:
 public:
     using base_t::base_t;
 
-    span<Char> output_data() const { return {ptr_, std::end(buf_)}; }
+    span<Char> output_data() const {
+        return {ptr_, std::end(buf_)};
+    }
 
     index write(Char arg) {
         *ptr_ = arg;
@@ -147,7 +156,8 @@ public:
     index write(const cspan<Char>& src) {
         if constexpr (is_line_buffered<base_t::mode>) {
             const Char* last = src.end();
-            while (last != src.data() && last[-1] != '\n') --last;
+            while (last != src.data() && last[-1] != '\n')
+                --last;
             if (last != src.data()) {
                 write_impl({src.data(), last});
                 flush();
@@ -162,7 +172,8 @@ public:
     void move(index offset) {
         ptr_ += offset;
         ACTL_ASSERT(std::data(buf_) <= ptr_);
-        if (ptr_ == std::end(buf_)) overflow();
+        if (ptr_ == std::end(buf_))
+            overflow();
     }
 
     void flush() {
@@ -170,7 +181,9 @@ public:
         Device::flush();
     }
 
-    ~buffered() { overflow(); }
+    ~buffered() {
+        overflow();
+    }
 };
 
 }  // namespace ac::io

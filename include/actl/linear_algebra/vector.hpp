@@ -7,6 +7,6 @@
 
 #include <actl/functional/composite/range.hpp>
 
-namespace ac::math {
+namespace ac {
 
-}  // namespace ac::math
+}  // namespace ac

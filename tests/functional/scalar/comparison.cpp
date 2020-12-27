@@ -6,19 +6,17 @@
 #include "test.hpp"
 #include <actl/functional/scalar/comparison.hpp>
 
-TEST_CASE("comparison") {
-    static_assert(true == math::equal(2, 2));
-    static_assert(false == math::equal(2, 6));
-    static_assert(true == math::not_equal(2, 6));
-    static_assert(false == math::not_equal(2, 2));
-    static_assert(true == math::less(2, 6));
-    static_assert(false == math::less(2, 2));
-    static_assert(true == math::greater(6, 2));
-    static_assert(false == math::greater(2, 6));
-    static_assert(true == math::less_equal(2, 2));
-    static_assert(false == math::less_equal(6, 2));
-    static_assert(true == math::greater_equal(6, 2));
-    static_assert(false == math::greater_equal(2, 6));
-    static_assert(1 == math::cmp3way(0, -1));
-    static_assert(-1 == math::cmp3way(0u, 1u));
-}
+static_assert(true == ac::equal(2, 2));
+static_assert(false == ac::equal(2, 6));
+static_assert(true == ac::not_equal(2, 6));
+static_assert(false == ac::not_equal(2, 2));
+static_assert(true == ac::less(2, 6));
+static_assert(false == ac::less(2, 2));
+static_assert(true == ac::greater(6, 2));
+static_assert(false == ac::greater(2, 6));
+static_assert(true == ac::less_equal(2, 2));
+static_assert(false == ac::less_equal(6, 2));
+static_assert(true == ac::greater_equal(6, 2));
+static_assert(false == ac::greater_equal(2, 6));
+static_assert(1 == ac::cmp3way(0, -1));
+static_assert(-1 == ac::cmp3way(0u, 1u));

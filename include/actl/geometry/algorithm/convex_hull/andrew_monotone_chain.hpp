@@ -29,13 +29,13 @@ span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span<T>& po
     if (points.size() < 2)
         return points;
     auto& policy = amcp.policy;
-    auto [a, b] = minmax_element(points, math::less(policy));
+    auto [a, b] = minmax_element(points, less(policy));
     auto comp = [l = make_line(*a, *b), &policy](const auto& p) {
         return !right_turn(policy, p, l);
     };
     index pivot = partition(points, comp) - points.begin();
     ACTL_ASSERT(2 <= pivot);
-    sort(points.first(pivot), math::less(policy));
+    sort(points.first(pivot), less(policy));
     index last = 1;
     auto pop = [&](const auto& p) {
         while (last != 0 && !right_turn(policy, p, points[last], points[last - 1]))
@@ -44,7 +44,7 @@ span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span<T>& po
     for (index i = 2, n = points.size(); i != n; ++i) {
         // TODO: somehow output the right-top point when this condition is met.
         if (i == pivot)
-            sort(points.last(n - i), math::greater_functor(policy));
+            sort(points.last(n - i), greater_functor(policy));
         pop(points[i]);
         points[++last] = points[i];
     }

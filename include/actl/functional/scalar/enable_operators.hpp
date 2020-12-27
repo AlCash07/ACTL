@@ -7,7 +7,7 @@
 
 #include <actl/traits/type_traits.hpp>
 
-namespace ac::math {
+namespace ac {
 
 namespace detail {
 
@@ -23,4 +23,4 @@ template <class... Ts>
 using enable_operators =
     std::enable_if_t<(... || detail::enable_operators_impl<remove_cvref_t<Ts>>::value), int>;
 
-}  // namespace ac::math
+}  // namespace ac

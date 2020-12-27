@@ -21,7 +21,7 @@ using namespace ac;
 #define CHECK_EQUAL_SETS check_sets
 #define CHECK_ALMOST_EQUAL check_almost_equal
 
-namespace ac::math {
+namespace ac {
 
 template <class T>
 struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2, scalar_tag> {
@@ -43,7 +43,7 @@ auto apply_policy(Equal, const abs_rel_error<T>& policy) {
     return policy;
 }
 
-}  // namespace ac::math
+}  // namespace ac
 
 template <class T>
 void check_sets(std::vector<T> expected, std::vector<T> actual) {
@@ -54,15 +54,15 @@ void check_sets(std::vector<T> expected, std::vector<T> actual) {
 
 template <class T, class U, class E>
 void check_almost_equal(const T& expected, const U& actual, E eps) {
-    CHECK(ac::math::equal(ac::math::abs_rel_error<E>{eps})(expected, actual));
+    CHECK(ac::equal(ac::abs_rel_error<E>{eps})(expected, actual));
 }
 
 template <class T, class U>
 void check_equal(const T& expected, const U& actual) {
-    CHECK(math::equal(expected, actual));
+    CHECK(ac::equal(expected, actual));
 }
 
 template <class T, class U>
 void check_not_equal(const T& not_expected, const U& actual) {
-    CHECK_FALSE(math::equal(not_expected, actual));
+    CHECK_FALSE(ac::equal(not_expected, actual));
 }

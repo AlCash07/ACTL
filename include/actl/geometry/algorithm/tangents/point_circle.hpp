@@ -37,7 +37,7 @@ OutIter tangents(polar_angle_policy<Policy> pap, const point<T0>& p, const circl
     switch (within(policy, p, c)) {
         case within::outside: {
             auto center_angle = angle(policy, center_vector);
-            auto offset = math::atan2(c.radius, norm(policy, center_vector));
+            auto offset = atan2(c.radius, norm(policy, center_vector));
             *dst++ = center_angle - offset;
             *dst++ = center_angle + offset;
             break;

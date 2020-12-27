@@ -9,7 +9,7 @@
 #include <actl/functional/scalar/logical.hpp>
 #include <actl/traits/is_template_base_of.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class Derived>
 struct comparison_operation : scalar_operation<Derived, 2, scalar_tag> {};
@@ -92,4 +92,4 @@ struct Cmp3Way : comparison_operation<Cmp3Way> {
 };
 constexpr Cmp3Way cmp3way;
 
-}  // namespace ac::math
+}  // namespace ac

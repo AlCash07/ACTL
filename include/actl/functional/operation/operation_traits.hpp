@@ -8,7 +8,7 @@
 #include <actl/functional/operation/major_category.hpp>
 #include <limits>
 
-namespace ac::math {
+namespace ac {
 
 // Base class for operations.
 template <class Derived>
@@ -49,4 +49,4 @@ struct is_commutative<T, std::void_t<typename T::is_commutative>> : std::true_ty
 template <class T>
 constexpr bool is_commutative_v = is_commutative<T>::value;
 
-}  // namespace ac::math
+}  // namespace ac

@@ -9,7 +9,7 @@
 #include <actl/functional/scalar/comparison.hpp>
 #include <actl/functional/scalar/math.hpp>
 
-namespace ac::math {
+namespace ac {
 
 // class E should provide public `T epsilon()`;
 template <class E>
@@ -27,4 +27,4 @@ constexpr auto apply_policy(Less, const absolute_error<E>& policy) {
     return policy.epsilon() < rhs_ - lhs_;
 }
 
-}  // namespace ac::math
+}  // namespace ac

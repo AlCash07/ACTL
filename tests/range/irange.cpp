@@ -11,50 +11,50 @@ using VI = std::vector<int>;
 
 TEST_CASE("irange") {
     VI v;
-    copy(irange(2, 0), std::back_inserter(v));
-    copy(irange(2, 2), std::back_inserter(v));
+    range_copy(irange(2, 0), std::back_inserter(v));
+    range_copy(irange(2, 2), std::back_inserter(v));
     CHECK(VI{} == v);
-    copy(irange(2, 5), std::back_inserter(v));
+    range_copy(irange(2, 5), std::back_inserter(v));
     CHECK(VI{2, 3, 4} == v);
     v = {};
-    copy(irange(2), std::back_inserter(v));
+    range_copy(irange(2), std::back_inserter(v));
     CHECK(VI{0, 1} == v);
 }
 
 TEST_CASE("drange") {
     VI v;
-    copy(drange(2, 4), std::back_inserter(v));
+    range_copy(drange(2, 4), std::back_inserter(v));
     CHECK(VI{} == v);
-    copy(drange(2, 2), std::back_inserter(v));
+    range_copy(drange(2, 2), std::back_inserter(v));
     CHECK(VI{2} == v);
-    copy(drange(-1, -2), std::back_inserter(v));
+    range_copy(drange(-1, -2), std::back_inserter(v));
     CHECK(VI{2, -1, -2} == v);
     v = {};
-    copy(drange(2), std::back_inserter(v));
+    range_copy(drange(2), std::back_inserter(v));
     CHECK(VI{2, 1, 0} == v);
 }
 
 TEST_CASE("irange with step > 0") {
     VI v;
-    copy(irange(2, 0, 2), std::back_inserter(v));
-    copy(irange(2, 2, 2), std::back_inserter(v));
+    range_copy(irange(2, 0, 2), std::back_inserter(v));
+    range_copy(irange(2, 2, 2), std::back_inserter(v));
     CHECK(VI{} == v);
-    copy(irange(2, 6, 2), std::back_inserter(v));
+    range_copy(irange(2, 6, 2), std::back_inserter(v));
     CHECK(VI{2, 4} == v);
     v = {};
-    copy(irange(-5, -2, 2), std::back_inserter(v));
+    range_copy(irange(-5, -2, 2), std::back_inserter(v));
     CHECK(VI{-5, -3} == v);
 }
 
 TEST_CASE("irange with step < 0") {
     VI v;
-    copy(irange(2, 4, -2), std::back_inserter(v));
+    range_copy(irange(2, 4, -2), std::back_inserter(v));
     CHECK(VI{} == v);
-    copy(irange(2, 2, -2), std::back_inserter(v));
+    range_copy(irange(2, 2, -2), std::back_inserter(v));
     CHECK(VI{2} == v);
-    copy(irange(5, 3, -2), std::back_inserter(v));
+    range_copy(irange(5, 3, -2), std::back_inserter(v));
     CHECK(VI{2, 5, 3} == v);
     v = {};
-    copy(irange(-2, -5, -2), std::back_inserter(v));
+    range_copy(irange(-2, -5, -2), std::back_inserter(v));
     CHECK(VI{-2, -4} == v);
 }

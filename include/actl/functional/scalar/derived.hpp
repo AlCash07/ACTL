@@ -8,7 +8,7 @@
 #include <actl/functional/scalar/common.hpp>
 #include <actl/functional/scalar/comparison.hpp>
 
-namespace ac::math {
+namespace ac {
 
 struct Max : scalar_operation<Max, 2, scalar_tag> {
     struct is_associative;
@@ -42,4 +42,4 @@ struct Sqr : scalar_operation<Sqr, 1, arithmetic_tag> {
 };
 constexpr Sqr sqr;
 
-}  // namespace ac::math
+}  // namespace ac

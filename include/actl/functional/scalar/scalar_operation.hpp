@@ -9,7 +9,7 @@
 #include <actl/functional/scalar/argument_tags.hpp>
 #include <actl/functional/scalar/enable_operators.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class Op, index Arity, class ArgumentsTag>
 struct scalar_operation : operation<Op> {
@@ -39,4 +39,4 @@ struct is_scalar_operation<T, std::void_t<typename T::is_scalar_operation>> : st
 template <class T>
 constexpr bool is_scalar_operation_v = is_scalar_operation<T>::value;
 
-}  // namespace ac::math
+}  // namespace ac

@@ -9,7 +9,7 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace ac::math {
+namespace ac {
 
 struct Abs : scalar_operation<Abs, 1, arithmetic_tag> {
     template <class T>
@@ -53,4 +53,4 @@ MATH_OP2(Atan2, atan2)
 #undef MATH_OP1
 #undef MATH_OP2
 
-}  // namespace ac::math
+}  // namespace ac

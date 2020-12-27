@@ -16,9 +16,10 @@ TEST_CASE("grid") {
     point p0{178 * 3, 42 * 3};
     point p1 = p0 + point{1, -1};
     grid.emplace_back(p1);
-    auto res = nearest(math::defer_sqrt{}, grid);
+    auto res = nearest(defer_sqrt{}, grid);
     using std::swap;
-    if (res.first > res.second) swap(res.first, res.second);
+    if (res.first > res.second)
+        swap(res.first, res.second);
     CHECK(p0 == res.first);
     CHECK(p1 == res.second);
 }

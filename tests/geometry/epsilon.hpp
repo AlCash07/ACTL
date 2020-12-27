@@ -8,7 +8,9 @@
 #include <actl/functional/scalar/all.hpp>
 
 struct epsilon9 {
-    static constexpr double epsilon() { return 1e-9; }
+    static constexpr double epsilon() {
+        return 1e-9;
+    }
 };
 
-ac::math::absolute_error<epsilon9> absolute_error9;
+ac::absolute_error<epsilon9> absolute_error9;

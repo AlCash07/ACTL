@@ -7,7 +7,7 @@
 
 #include <actl/functional/scalar/common.hpp>
 
-namespace ac::math {
+namespace ac {
 
 struct LogicalNot : scalar_operation<LogicalNot, 1, boolean_tag> {
     static constexpr bool eval_scalar(bool x) {
@@ -53,4 +53,4 @@ constexpr auto operator||(T&& lhs, U&& rhs) {
 
 constexpr auto logical_implies = !lhs_ || rhs_;
 
-}  // namespace ac::math
+}  // namespace ac

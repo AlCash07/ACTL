@@ -7,7 +7,7 @@
 
 #include <actl/functional/operation/tuned_operation.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class... Ts>
 struct expression_op : operation<expression_op<Ts...>> {
@@ -63,4 +63,4 @@ constexpr auto apply_policy(const expression_op<Ts...>& eop, const Policy& polic
     return apply_policy_impl(eop, policy, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
-}  // namespace ac::math
+}  // namespace ac

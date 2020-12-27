@@ -9,7 +9,7 @@
 #include <actl/functional/operation/output_argument.hpp>
 #include <tuple>
 
-namespace ac::math {
+namespace ac {
 
 namespace detail {
 
@@ -57,8 +57,8 @@ constexpr void assign_impl(T& dst, const E& e, std::index_sequence<Is...>) {
 }
 
 template <class T, class... Ts>
-constexpr void assign(out<false, T>& dst, const expression<Ts...>& e) {
+constexpr void assign(out_t<false, T>& dst, const expression<Ts...>& e) {
     assign_impl(dst, e, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
-}  // namespace ac::math
+}  // namespace ac

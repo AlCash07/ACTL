@@ -7,7 +7,7 @@
 
 #include <actl/functional/scalar/math.hpp>
 
-namespace ac::math {
+namespace ac {
 
 /**
  * Comparable square root with deferred call to sqrt.
@@ -17,9 +17,13 @@ class square_root {
 public:
     constexpr explicit square_root(const T& value = {}) : sqr_{value} {}
 
-    operator decltype(eval(sqrt(std::declval<T>())))() const { return eval(sqrt(sqr_)); }
+    operator decltype(eval(sqrt(std::declval<T>())))() const {
+        return eval(sqrt(sqr_));
+    }
 
-    friend constexpr const T& perform(Sqr, const square_root& x) { return x.sqr_; }
+    friend constexpr const T& perform(Sqr, const square_root& x) {
+        return x.sqr_;
+    }
 
     template <class Op, enable_int_if<is_comparison_v<Op>> = 0>
     friend constexpr auto perform(Op op, const square_root& lhs, const square_root& rhs) {
@@ -39,4 +43,4 @@ auto perform(Sqrt, defer_sqrt, const T& x) {
     return square_root{x};
 }
 
-}  // namespace ac::math
+}  // namespace ac

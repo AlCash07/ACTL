@@ -9,21 +9,23 @@
 constexpr double eps = 1e-9;
 
 struct Eps {
-    static constexpr double epsilon() { return eps; }
+    static constexpr double epsilon() {
+        return eps;
+    }
 };
 
-constexpr math::absolute_error<Eps> eps_policy;
+constexpr ac::absolute_error<Eps> eps_policy;
 
 TEST_CASE("equal") {
-    constexpr auto abs_equal = math::equal(eps_policy);
+    constexpr auto abs_equal = ac::equal(eps_policy);
     CHECK(abs_equal(0.0, eps));
-    CHECK_FALSE(abs_equal(0.0, eps + math::sqr(eps)));
+    CHECK_FALSE(abs_equal(0.0, eps + ac::sqr(eps)));
 }
 
 TEST_CASE("less") {
-    constexpr auto abs_less = math::less(eps_policy);
-    CHECK_FALSE(math::less(0.0, -eps));
-    CHECK(math::less(-eps, 0.0));
+    constexpr auto abs_less = ac::less(eps_policy);
+    CHECK_FALSE(ac::less(0.0, -eps));
+    CHECK(ac::less(-eps, 0.0));
     CHECK_FALSE(abs_less(-eps, 0.0));
-    CHECK(abs_less(-eps - math::sqr(eps), 0.0));
+    CHECK(abs_less(-eps - ac::sqr(eps), 0.0));
 }

@@ -61,7 +61,7 @@ constexpr auto make_circle(const point<T0>& center, const T1& radius) {
 
 // Policy to indicate that polar angle is expected instead of a point.
 template <class Policy>
-struct polar_angle_policy : virtual math::policy {
+struct polar_angle_policy : virtual policy {
     explicit polar_angle_policy(const Policy& x) : policy{x} {}
 
     const Policy& policy;

@@ -7,10 +7,10 @@
 
 #include <actl/functional/operation/argument_traits.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <bool In, class T>
-struct out {
+struct out_t {
     struct enable_operators;
 
     T x;
@@ -20,7 +20,7 @@ struct out {
     }
 
     template <class U>
-    out& operator=(const U& y) {
+    out_t& operator=(const U& y) {
         static_assert(!In, "use output instead of inplace argument for assignment");
         assign(*this, y);
         return *this;
@@ -31,15 +31,15 @@ template <class T, bool NotIn = false>
 struct is_out : std::false_type {};
 
 template <bool In, class T, bool NotIn>
-struct is_out<out<In, T>, NotIn> : std::bool_constant<!(NotIn && In)> {};
+struct is_out<out_t<In, T>, NotIn> : std::bool_constant<!(NotIn && In)> {};
 
 template <bool In, class T>
-struct raw<out<In, T>> {
+struct raw<out_t<In, T>> {
     using type = raw_t<T>;
 };
 
 template <class T>
-constexpr const T& remove_inplace(const out<true, T>& x) {
+constexpr const T& remove_inplace(const out_t<true, T>& x) {
     return x.x;
 }
 
@@ -54,21 +54,17 @@ constexpr auto& find_dst(T&, Ts&... xs) {
 }
 
 template <class T, class... Ts>
-constexpr T& find_dst(out<true, T>& x, Ts&... xs) {
+constexpr T& find_dst(out_t<true, T>& x, Ts&... xs) {
     return x.x;
 }
 
-}  // namespace ac::math
-
-namespace ac {
-
 template <class T>
-math::out<false, T> out(T&& x) {
+out_t<false, T> out(T&& x) {
     return {std::forward<T>(x)};
 }
 
 template <class T>
-math::out<true, T> inplace(T&& x) {
+out_t<true, T> inplace(T&& x) {
     return {std::forward<T>(x)};
 }
 

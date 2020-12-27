@@ -7,14 +7,10 @@
 #include <actl/functional/scalar/derived.hpp>
 #include <limits>
 
-TEST_CASE("sgn") {
-    static_assert(1 == math::sgn(std::numeric_limits<double>::max()));
-    static_assert(-1 == math::sgn(std::numeric_limits<int>::min()));
-    static_assert(1 == math::sgn(std::numeric_limits<unsigned int>::max()));
-    static_assert(0 == math::sgn(0));
-}
+static_assert(1 == ac::sgn(std::numeric_limits<double>::max()));
+static_assert(-1 == ac::sgn(std::numeric_limits<int>::min()));
+static_assert(1 == ac::sgn(std::numeric_limits<unsigned int>::max()));
+static_assert(0 == ac::sgn(0));
 
-TEST_CASE("sqr") {
-    static_assert(36 == math::sqr(6));
-    static_assert(4 == math::sqr(-2));
-}
+static_assert(36 == ac::sqr(6));
+static_assert(4 == ac::sqr(-2));

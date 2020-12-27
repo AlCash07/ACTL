@@ -8,7 +8,7 @@
 #include <actl/functional/operation/operation_traits.hpp>
 #include <tuple>
 
-namespace ac::math {
+namespace ac {
 
 template <class Op, class Policy>
 struct tuned_operation : operation<tuned_operation<Op, Policy>> {
@@ -44,4 +44,4 @@ constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {
     }
 }
 
-}  // namespace ac::math
+}  // namespace ac

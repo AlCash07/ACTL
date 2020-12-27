@@ -10,6 +10,6 @@
 
 TEST_CASE("filtered_range correctness") {
     std::vector<int> v{1, 2, 4, 5, 7, 10}, even;
-    copy(filter_range(v, [](int x) { return x % 2 == 0; }), std::back_inserter(even));
+    range_copy(filter_range(v, [](int x) { return x % 2 == 0; }), std::back_inserter(even));
     CHECK(std::vector<int>{2, 4, 10} == even);
 }

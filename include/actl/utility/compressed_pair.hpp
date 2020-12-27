@@ -109,12 +109,12 @@ auto& get(const compressed_pair<T1, T2>& p) {
 
 template <class T1, class T2>
 auto operator==(const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
-    return math::equal(lhs.first(), rhs.first()) && math::equal(lhs.second(), rhs.second());
+    return equal(lhs.first(), rhs.first()) && equal(lhs.second(), rhs.second());
 }
 
 template <class T1, class T2>
 auto operator<(const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
-    return math::less(lhs, rhs);
+    return less(lhs, rhs);
 }
 
 }  // namespace ac

@@ -10,7 +10,7 @@
 #include <actl/functional/operation/overload_resolution.hpp>
 #include <actl/traits/nth_type.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class Derived>
 struct operation {
@@ -37,7 +37,7 @@ struct operation {
     }
 
     template <class T, class... Ts>
-    constexpr T operator()(out<false, T> dst, const Ts&... xs) const {
+    constexpr T operator()(out_t<false, T> dst, const Ts&... xs) const {
         resolve<T, Ts...>().evaluate_to(dst.x, xs...);
         return dst.x;
     }
@@ -60,4 +60,4 @@ struct operation {
     }
 };
 
-}  // namespace ac::math
+}  // namespace ac

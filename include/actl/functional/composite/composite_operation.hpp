@@ -7,7 +7,7 @@
 
 #include <actl/functional/operation/operation.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class OuterOp, class... InnerOps>
 struct composite_operation : operation<composite_operation<OuterOp, InnerOps...>>,
@@ -16,7 +16,9 @@ struct composite_operation : operation<composite_operation<OuterOp, InnerOps...>
     explicit constexpr composite_operation(Ts&&... xs)
         : std::tuple<InnerOps...>{std::forward<Ts>(xs)...} {}
 
-    constexpr const std::tuple<InnerOps...>& inner() const { return *this; }
+    constexpr const std::tuple<InnerOps...>& inner() const {
+        return *this;
+    }
 
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
@@ -49,4 +51,4 @@ constexpr auto apply_policy(const composite_operation<Outer, Inner...>& op, cons
     return apply_policy_to_composite(op, policy, std::make_index_sequence<sizeof...(Inner)>{});
 }
 
-}  // namespace ac::math
+}  // namespace ac

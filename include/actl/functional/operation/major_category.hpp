@@ -7,7 +7,7 @@
 
 #include <actl/functional/operation/argument_traits.hpp>
 
-namespace ac::math::detail {
+namespace ac::detail {
 
 template <class T, class U>
 constexpr auto common_category(T, U) {
@@ -61,4 +61,4 @@ using major_cdp =
 template <class... Ts>
 using major_category_t = typename major_cdp<Ts...>::type;
 
-}  // namespace ac::math::detail
+}  // namespace ac::detail

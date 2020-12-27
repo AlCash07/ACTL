@@ -8,16 +8,20 @@
 #include <actl/functional/operation/major_category.hpp>
 #include <actl/functional/operation/tuned_operation.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class Op, class = void>
 struct default_overload {
-    static constexpr const Op& resolve(const Op& op) { return op; }
+    static constexpr const Op& resolve(const Op& op) {
+        return op;
+    }
 };
 
 template <class Op>
 struct default_overload<Op, std::void_t<decltype(Op::formula)>> {
-    static constexpr auto resolve(Op) { return Op::formula; }
+    static constexpr auto resolve(Op) {
+        return Op::formula;
+    }
 };
 
 template <class Op, class Category, class... Ts>
@@ -38,4 +42,4 @@ struct overload_helper {
     }
 };
 
-}  // namespace ac::math
+}  // namespace ac

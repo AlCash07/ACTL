@@ -8,7 +8,7 @@
 #include <actl/traits/dependent.hpp>
 #include <actl/traits/type_traits.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class T>
 struct raw {
@@ -88,4 +88,4 @@ auto& eval(const T (&x)[N]) {
     return x;
 }
 
-}  // namespace ac::math
+}  // namespace ac

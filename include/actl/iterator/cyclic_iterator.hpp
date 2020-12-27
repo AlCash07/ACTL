@@ -18,34 +18,43 @@ template <class Range>
 class cyclic_iterator : public iterator_adaptor<cyclic_iterator<Range>, iterator_t<Range>> {
     using It = iterator_t<Range>;
 
-    It& it() { return this->base_ref(); }
+    It& it() {
+        return this->base_ref();
+    }
 
 public:
     explicit cyclic_iterator(Range& range, It it)
         : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{&range} {
         ACTL_ASSERT(!std::empty(range));
-        if (it == end()) this->base_ref() = begin();
+        if (it == end())
+            this->base_ref() = begin();
     }
 
 private:
     friend struct ac::iterator_core_access;
 
-    It begin() const { return std::begin(*range_); }
-    It end() const { return std::end(*range_); }
+    It begin() const {
+        return std::begin(*range_);
+    }
+    It end() const {
+        return std::end(*range_);
+    }
 
     void increment() {
         ++it();
-        if (it() == end()) it() = begin();
+        if (it() == end())
+            it() = begin();
     }
 
     void decrement() {
-        if (it() == begin()) it() = end();
+        if (it() == begin())
+            it() = end();
         --it();
     }
 
     void advance(difference_t<It> n) {
         auto cycle = static_cast<difference_t<It>>(std::size(*range_));
-        ACTL_ASSERT(math::abs(n) < cycle);
+        ACTL_ASSERT(abs(n) < cycle);
         if (n > 0) {
             it() += n - (n >= (end() - it()) ? cycle : 0);
         } else {

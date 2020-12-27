@@ -16,7 +16,7 @@ using tuple_indices_t = std::make_index_sequence<std::tuple_size_v<T>>;
 
 }  // namespace ac
 
-namespace ac::math {
+namespace ac {
 
 struct tuple_tag {};
 
@@ -88,4 +88,4 @@ struct overload<Less, tuple_tag, T, U> {
     }
 };
 
-}  // namespace ac::math
+}  // namespace ac

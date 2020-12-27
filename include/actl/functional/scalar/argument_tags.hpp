@@ -7,12 +7,14 @@
 
 #include <actl/functional/operation/argument_traits.hpp>
 
-namespace ac::math {
+namespace ac {
 
+// clang-format off
 struct arithmetic_tag : scalar_tag     { using base = scalar_tag; };
 struct float_tag      : arithmetic_tag { using base = arithmetic_tag; };
 struct integral_tag   : arithmetic_tag { using base = arithmetic_tag; };
 struct boolean_tag    : integral_tag   { using base = integral_tag; };
+// clang-format on
 
 template <class T>
 struct category_impl<T, std::enable_if_t<std::is_arithmetic_v<T> && !std::is_integral_v<T> &&
@@ -35,4 +37,4 @@ struct category_impl<bool> {
     using type = boolean_tag;
 };
 
-}  // namespace ac::math
+}  // namespace ac

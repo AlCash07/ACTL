@@ -8,10 +8,10 @@
 #include <limits>
 
 TEST_CASE("abs") {
-    CHECK(0 == math::abs(0));
+    CHECK(0 == ac::abs(0));
     constexpr auto int_max = std::numeric_limits<int>::max();
-    CHECK(int_max == math::abs(int_max));
-    CHECK(int_max == math::abs(-int_max));
+    CHECK(int_max == ac::abs(int_max));
+    CHECK(int_max == ac::abs(-int_max));
     constexpr auto uint_max = std::numeric_limits<unsigned int>::max();
-    CHECK(uint_max == math::abs(uint_max));
+    CHECK(uint_max == ac::abs(uint_max));
 }

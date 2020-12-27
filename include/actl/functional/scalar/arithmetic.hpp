@@ -7,7 +7,7 @@
 
 #include <actl/functional/scalar/scalar_operation.hpp>
 
-namespace ac::math {
+namespace ac {
 
 struct Neg : scalar_operation<Neg, 2, arithmetic_tag> {
     template <class T>
@@ -100,4 +100,4 @@ constexpr decltype(auto) operator/=(T& lhs, const U& rhs) {
     return div(inplace(lhs), rhs);
 }
 
-}  // namespace ac::math
+}  // namespace ac

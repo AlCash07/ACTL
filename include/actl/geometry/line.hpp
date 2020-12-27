@@ -31,6 +31,7 @@ inline constexpr bool is_valid(line_kind kind) {
     return static_cast<int>(end(kind)) <= s && s < 3;
 }
 
+// clang-format off
 enum class line_kind : uint8_t {
     free              = combine(endpoint::free,   endpoint::free),
     closed_ray        = combine(endpoint::closed, endpoint::free),
@@ -39,28 +40,39 @@ enum class line_kind : uint8_t {
     half_open_segment = combine(endpoint::open,   endpoint::closed),
     open_segment      = combine(endpoint::open,   endpoint::open)
 };
+// clang-format on
 
 namespace detail {
 
 template <line_kind Kind>
 struct static_kind {
-    static_kind(line_kind kind = Kind) { (*this) = kind; }
+    static_kind(line_kind kind = Kind) {
+        (*this) = kind;
+    }
 
-    static constexpr line_kind kind() { return Kind; }
+    static constexpr line_kind kind() {
+        return Kind;
+    }
 
-    void operator = (line_kind kind) { ACTL_ASSERT(Kind == kind); }
+    void operator=(line_kind kind) {
+        ACTL_ASSERT(Kind == kind);
+    }
 };
 
 class any_kind {
 public:
-    any_kind(line_kind kind = line_kind::free) { (*this) = kind; }
+    any_kind(line_kind kind = line_kind::free) {
+        (*this) = kind;
+    }
 
-    void operator = (line_kind kind) {
+    void operator=(line_kind kind) {
         ACTL_ASSERT(is_valid(kind));
         kind_ = kind;
     }
 
-    line_kind kind() const { return kind_; }
+    line_kind kind() const {
+        return kind_;
+    }
 
 private:
     line_kind kind_;
@@ -105,7 +117,7 @@ public:
         : Kind{rhs.kind()}, begin{rhs.begin}, vector{rhs.vector} {}
 
     template <class T1, class K1>
-    constexpr line& operator = (const line<T1, N, K1>& rhs) {
+    constexpr line& operator=(const line<T1, N, K1>& rhs) {
         Kind::operator=(rhs.kind());
         begin = rhs.begin;
         vector = rhs.vector;
@@ -119,7 +131,9 @@ public:
         swap(static_cast<Kind&>(lhs), rhs);
     }
 
-    constexpr point<T, N> end() const { return begin + vector; }
+    constexpr point<T, N> end() const {
+        return begin + vector;
+    }
 
     template <class Policy, class T1>
     constexpr auto operator()(const Policy& policy, const T1& t) const {
@@ -132,8 +146,12 @@ public:
     }
 
 private:
-    Kind& base() { return *this; }
-    const Kind& base() const { return *this; }
+    Kind& base() {
+        return *this;
+    }
+    const Kind& base() const {
+        return *this;
+    }
 
     INTROSPECT(begin, vector, base())
 };
@@ -174,7 +192,8 @@ constexpr auto make_any_line(const point<T0, N>& a, const point<T1, N>& b,
 template <index N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
 constexpr Line make_any_line(const point<T0, N>& a, endpoint akind, const point<T1, N>& b,
                              endpoint bkind) {
-    if (akind < bkind) return make_any_line(b, bkind, a, akind);
+    if (akind < bkind)
+        return make_any_line(b, bkind, a, akind);
     return Line{a, b, static_cast<line_kind>(combine(akind, bkind))};
 }
 
@@ -186,7 +205,7 @@ constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l) {
 // Policy to indicate that scalar is expected instead of a point. This scalar can be passed to line
 // operator () to get the point.
 template <class Policy>
-struct line_scalar_policy : virtual math::policy {
+struct line_scalar_policy : virtual policy {
     explicit line_scalar_policy(const Policy& x) : policy{x} {}
 
     const Policy& policy;

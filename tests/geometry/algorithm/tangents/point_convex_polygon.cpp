@@ -9,13 +9,15 @@
 #include <actl/geometry/algorithm/tangents/point_convex_polygon.hpp>
 
 TEST_CASE("max polygon") {
-    math::cast_before<math::Mul, long long> policy;
+    cast_before<Mul, long long> policy;
     constexpr int M = 100'000'000;
     auto poly = get_max_convex_polygon(M);
     auto random_coordinate = [&]() {
         int x = random.uniform(-10 * M, 10 * M);
-        if (x >= 0 && x <= M) x += M;
-        if (x < 0 && x >= -M) x -= M;
+        if (x >= 0 && x <= M)
+            x += M;
+        if (x < 0 && x >= -M)
+            x -= M;
         return x;
     };
     for ([[maybe_unused]] int i : irange(2222)) {

@@ -12,8 +12,8 @@ namespace ac {
 
 template <class Policy, class T0, class T1>
 auto rotate(const Policy& policy, const point<T0>& p, const T1& angle) {
-    auto sin = math::sin(angle);
-    auto cos = math::cos(angle);
+    auto sin = sin(angle);
+    auto cos = cos(angle);
     return point{dot(policy, point{cos, sin}, p), dot(policy, point{sin, cos}, p)};
 }
 

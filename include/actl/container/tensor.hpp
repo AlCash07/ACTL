@@ -151,7 +151,7 @@ private:
             }
             return ptr;
         } else {
-            return copy(il, ptr);
+            return std::copy(il.begin(), il.end(), ptr);
         }
     }
 };
@@ -244,7 +244,7 @@ private:
     template <index I>
     void compute_dimensions(nd_initializer_list_t<T, N - I> il) {
         if constexpr (I < N) {
-            math::max(inplace(dims_[I]), static_cast<Int>(il.size()));
+            max(inplace(dims_[I]), static_cast<Int>(il.size()));
             for (auto i : il)
                 compute_dimensions<I + 1>(i);
         }
@@ -497,8 +497,6 @@ struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
 }  // namespace detail
 
-namespace math {
-
 struct tensor_tag {};
 
 template <class T, class D>
@@ -525,8 +523,6 @@ struct overload<Equal, tensor_tag, T, U> {
         return operation_composer<EqualTensor>(op.resolve_nested<T, U>());
     }
 };
-
-}  // namespace math
 
 /**
  * N-dimensional array with dimensions completely or partially known at compile time.

@@ -8,7 +8,7 @@
 #include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/common.hpp>
 
-namespace ac::math {
+namespace ac {
 
 template <class Op, class T>
 struct cast_before {
@@ -20,4 +20,4 @@ constexpr auto apply_policy(const Op& op, cast_before<Op, T>) {
     return op(cast<T>);
 }
 
-}  // namespace ac::math
+}  // namespace ac

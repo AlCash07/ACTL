@@ -10,7 +10,7 @@
 #include <actl/range/traits/is_range.hpp>
 #include <algorithm>
 
-namespace ac::math {
+namespace ac {
 
 struct range_tag {
     struct has_nested;
@@ -32,7 +32,9 @@ constexpr operation_composer<EqualRange> equal_range;
 
 template <class T, class U>
 struct overload<Equal, range_tag, T, U> {
-    static constexpr auto resolve(Equal op) { return equal_range(op.resolve_nested<T, U>()); }
+    static constexpr auto resolve(Equal op) {
+        return equal_range(op.resolve_nested<T, U>());
+    }
 };
 
 struct LexicographicalCompareRange {
@@ -45,7 +47,8 @@ struct LexicographicalCompareRange {
         auto rlast = std::end(rhs);
         for (; (lfirst != llast) && (rfirst != rlast); ++lfirst, ++rfirst) {
             const int v = op(*lfirst, *rfirst);
-            if (v != 0) return v;
+            if (v != 0)
+                return v;
         }
         return cast<int>(rfirst != rlast) - cast<int>(lfirst != llast);
     }
@@ -61,7 +64,9 @@ struct overload<Cmp3Way, range_tag, T, U> {
 
 template <class T, class U>
 struct overload<Less, range_tag, T, U> {
-    static constexpr auto resolve(Less) { return cmp3way < 0; }
+    static constexpr auto resolve(Less) {
+        return cmp3way < 0;
+    }
 };
 
-}  // namespace ac::math
+}  // namespace ac
