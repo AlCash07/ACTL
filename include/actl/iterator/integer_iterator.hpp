@@ -26,17 +26,30 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    constexpr const Int& dereference() const { return value_; }
+    constexpr const Int& dereference() const {
+        return value_;
+    }
 
-    constexpr void increment() { Increment ? ++value_ : --value_; }
+    constexpr void increment() {
+        Increment ? ++value_ : --value_;
+    }
 
-    constexpr void decrement() { Increment ? --value_ : ++value_; }
+    constexpr void decrement() {
+        Increment ? --value_ : ++value_;
+    }
 
-    constexpr void advance(Int n) { Increment ? value_ += n : value_ -= n; }
+    constexpr void advance(Int n) {
+        Increment ? value_ += n : value_ -= n;
+    }
 
-    constexpr bool equals(const integer_iterator& rhs) const { return value_ == rhs.value_; }
+    constexpr bool equals(const integer_iterator& rhs) const {
+        return value_ == rhs.value_;
+    }
 
-    constexpr Int distance_to(const integer_iterator& rhs) const { return rhs.value_ - value_; }
+    constexpr Int distance_to(const integer_iterator& rhs) const {
+        Int diff = rhs.value_ - value_;
+        return Increment ? diff : -diff;
+    }
 
     Int value_ = 0;
 };
@@ -47,20 +60,31 @@ class integer_iterator_with_step
 public:
     explicit constexpr integer_iterator_with_step() = default;
 
-    explicit constexpr integer_iterator_with_step(Int value, Int step) : value_{value}, step_{step} {}
+    explicit constexpr integer_iterator_with_step(Int value, Int step)
+        : value_{value}, step_{step} {}
 
 private:
     friend struct ac::iterator_core_access;
 
-    constexpr const Int& dereference() const { return value_; }
+    constexpr const Int& dereference() const {
+        return value_;
+    }
 
-    constexpr void increment() { value_ += step_; }
+    constexpr void increment() {
+        value_ += step_;
+    }
 
-    constexpr void decrement() { value_ -= step_; }
+    constexpr void decrement() {
+        value_ -= step_;
+    }
 
-    constexpr void advance(Int n) { value_ += n * step_; }
+    constexpr void advance(Int n) {
+        value_ += n * step_;
+    }
 
-    constexpr bool equals(const integer_iterator_with_step& rhs) const { return value_ == rhs.value_; }
+    constexpr bool equals(const integer_iterator_with_step& rhs) const {
+        return value_ == rhs.value_;
+    }
 
     // TODO: if this operation is called often then it's better to avoid division.
     constexpr Int distance_to(const integer_iterator_with_step& rhs) const {

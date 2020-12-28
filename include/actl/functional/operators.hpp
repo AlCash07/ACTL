@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <actl/traits/is_template_base_of.hpp>
+#include <actl/traits/type_traits.hpp>
 #include <actl/utility/none.hpp>
 #include <type_traits>
 
@@ -18,22 +20,25 @@ struct base : B {
     using B::B;
 };
 
-template <class T, class U>
+template <class... Ts>
+using enable_derived_operators = enable_int_if<(... || is_template_base_of_v<base, Ts>)>;
+
+template <class T, class U, enable_derived_operators<T, U> = 0>
 constexpr auto operator!=(const T& lhs, const U& rhs) -> decltype(!(lhs == rhs)) {
     return !(lhs == rhs);
 }
 
-template <class T, class U>
+template <class T, class U, enable_derived_operators<T, U> = 0>
 constexpr auto operator>(const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
     return rhs < lhs;
 }
 
-template <class T, class U>
+template <class T, class U, enable_derived_operators<T, U> = 0>
 constexpr auto operator<=(const T& lhs, const U& rhs) -> decltype(!(lhs > rhs)) {
     return !(lhs > rhs);
 }
 
-template <class T, class U>
+template <class T, class U, enable_derived_operators<T, U> = 0>
 constexpr auto operator>=(const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) {
     return !(lhs < rhs);
 }

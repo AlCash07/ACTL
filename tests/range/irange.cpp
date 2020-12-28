@@ -6,55 +6,32 @@
 #include "test.hpp"
 #include <actl/range/algorithm.hpp>
 #include <actl/range/irange.hpp>
-
-using VI = std::vector<int>;
+#include <actl/std/array.hpp>
 
 TEST_CASE("irange") {
-    VI v;
-    range_copy(irange(2, 0), std::back_inserter(v));
-    range_copy(irange(2, 2), std::back_inserter(v));
-    CHECK(VI{} == v);
-    range_copy(irange(2, 5), std::back_inserter(v));
-    CHECK(VI{2, 3, 4} == v);
-    v = {};
-    range_copy(irange(2), std::back_inserter(v));
-    CHECK(VI{0, 1} == v);
+    CHECK(ac::irange(2, 0).empty());
+    CHECK(ac::irange(2, 2).empty());
+    CHECK_EQUAL(std::array{2, 3, 4}, ac::irange(2, 5));
+    CHECK_EQUAL(std::array{0, 1}, ac::irange(2));
 }
 
 TEST_CASE("drange") {
-    VI v;
-    range_copy(drange(2, 4), std::back_inserter(v));
-    CHECK(VI{} == v);
-    range_copy(drange(2, 2), std::back_inserter(v));
-    CHECK(VI{2} == v);
-    range_copy(drange(-1, -2), std::back_inserter(v));
-    CHECK(VI{2, -1, -2} == v);
-    v = {};
-    range_copy(drange(2), std::back_inserter(v));
-    CHECK(VI{2, 1, 0} == v);
+    CHECK(ac::drange(2, 4).empty());
+    CHECK_EQUAL(std::array{2}, ac::drange(2, 2));
+    CHECK_EQUAL(std::array{-1, -2}, ac::drange(-1, -2));
+    CHECK_EQUAL(std::array{2, 1, 0}, ac::drange(2));
 }
 
 TEST_CASE("irange with step > 0") {
-    VI v;
-    range_copy(irange(2, 0, 2), std::back_inserter(v));
-    range_copy(irange(2, 2, 2), std::back_inserter(v));
-    CHECK(VI{} == v);
-    range_copy(irange(2, 6, 2), std::back_inserter(v));
-    CHECK(VI{2, 4} == v);
-    v = {};
-    range_copy(irange(-5, -2, 2), std::back_inserter(v));
-    CHECK(VI{-5, -3} == v);
+    CHECK(ac::irange(2, 0, 2).empty());
+    CHECK(ac::irange(2, 2, 2).empty());
+    CHECK_EQUAL(std::array{2, 4}, ac::irange(2, 6, 2));
+    CHECK_EQUAL(std::array{-5, -3}, ac::irange(-5, -2, 2));
 }
 
 TEST_CASE("irange with step < 0") {
-    VI v;
-    range_copy(irange(2, 4, -2), std::back_inserter(v));
-    CHECK(VI{} == v);
-    range_copy(irange(2, 2, -2), std::back_inserter(v));
-    CHECK(VI{2} == v);
-    range_copy(irange(5, 3, -2), std::back_inserter(v));
-    CHECK(VI{2, 5, 3} == v);
-    v = {};
-    range_copy(irange(-2, -5, -2), std::back_inserter(v));
-    CHECK(VI{-2, -4} == v);
+    CHECK(ac::irange(2, 4, -2).empty());
+    CHECK_EQUAL(std::array{2}, ac::irange(2, 2, -2));
+    CHECK_EQUAL(std::array{5, 3}, ac::irange(5, 3, -2));
+    CHECK_EQUAL(std::array{-2, -4}, ac::irange(-2, -5, -2));
 }
