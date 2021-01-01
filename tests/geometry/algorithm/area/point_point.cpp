@@ -14,5 +14,5 @@ TEST_CASE("2d") {
 }
 
 TEST_CASE("3d") {
-    CHECK_ALMOST_EQUAL(2.9580398915498103, area(point{-2, 1, 1}, point{1, -1, 2}) / 2, 1e-12);
+    CHECK_NEAR(2.9580398915498103, area(point{-2, 1, 1}, point{1, -1, 2}) / 2, 1e-12);
 }

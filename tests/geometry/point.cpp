@@ -11,11 +11,11 @@ TEST_CASE("arithmetic") {
     point pf{3.5f, 4.5f};
     point pd{5.5, 6.5};
     CHECK(point{-1, -2} == -pi);
-    CHECK_ALMOST_EQUAL(point{4.5f, 6.5f}, pi + pf, 1e-9f);
-    CHECK_ALMOST_EQUAL(point{4.5, 4.5}, pd - pi, 1e-12);
+    CHECK_NEAR(point{4.5f, 6.5f}, pi + pf, 1e-9f);
+    CHECK_NEAR(point{4.5, 4.5}, pd - pi, 1e-12);
     CHECK(point{3, 6} == pi * 3);
     CHECK(point{4, 8} == 4 * pi);
-    CHECK_ALMOST_EQUAL(point{2.75, 3.25}, pd / 2, 1e-12);
+    CHECK_NEAR(point{2.75, 3.25}, pd / 2, 1e-12);
     CHECK(18.5, dot(pi, pd) == 1e-12);
 }
 

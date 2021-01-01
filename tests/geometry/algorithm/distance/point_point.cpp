@@ -7,7 +7,7 @@
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 
 TEST_CASE("default") {
-    CHECK_ALMOST_EQUAL(5.0, distance(point{2, 2}, point{5, 6}), 1e-12);
+    CHECK_NEAR(5.0, distance(point{2, 2}, point{5, 6}), 1e-12);
 }
 
 TEST_CASE("deferred") {

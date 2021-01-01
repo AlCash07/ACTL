@@ -19,7 +19,7 @@ using namespace ac;
 #define CHECK_EQUAL check_equal
 #define CHECK_NOT_EQUAL check_not_equal
 #define CHECK_EQUAL_SETS check_sets
-#define CHECK_ALMOST_EQUAL check_almost_equal
+#define CHECK_NEAR check_near
 
 namespace ac {
 
@@ -53,7 +53,7 @@ void check_sets(std::vector<T> expected, std::vector<T> actual) {
 }
 
 template <class T, class U, class E>
-void check_almost_equal(const T& expected, const U& actual, E eps) {
+void check_near(const T& expected, const U& actual, E eps) {
     CHECK(ac::equal(ac::abs_rel_error<E>{eps})(expected, actual));
 }
 

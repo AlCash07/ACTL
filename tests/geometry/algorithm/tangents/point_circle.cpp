@@ -13,8 +13,8 @@ TEST_CASE("default") {
     tangents(point{-1, 0}, c, std::back_inserter(res));
     CHECK(res.empty());
     tangents(point{-2, 0}, c, std::back_inserter(res));
-    CHECK_ALMOST_EQUAL(vpi{{-2, 0}}, res, 1e-12);
+    CHECK_NEAR(vpi{{-2, 0}}, res, 1e-12);
     res = {};
     tangents(point{2, -2}, c, std::back_inserter(res));
-    CHECK_ALMOST_EQUAL(vpi{{2, 0}, {0, -2}}, res, 1e-12);
+    CHECK_NEAR(vpi{{2, 0}, {0, -2}}, res, 1e-12);
 }

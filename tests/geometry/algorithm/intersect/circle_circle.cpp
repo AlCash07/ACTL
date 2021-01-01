@@ -16,9 +16,9 @@ TEST_CASE("default") {
     intersect(c0, circle<int>{{28, 0}, 10}, dst);
     CHECK(res.empty());
     intersect(c0, circle<int>{{27, 0}, 10}, dst);
-    CHECK_ALMOST_EQUAL(vpi{{17, 0}}, res, 1e-12);
+    CHECK_NEAR(vpi{{17, 0}}, res, 1e-12);
     res = {};
     intersect(c0, circle<int>{{21, 0}, 10}, dst);
     sort(res);
-    CHECK_ALMOST_EQUAL(vpi{{15, -8}, {15, 8}}, res, 1e-12);
+    CHECK_NEAR(vpi{{15, -8}, {15, 8}}, res, 1e-12);
 }

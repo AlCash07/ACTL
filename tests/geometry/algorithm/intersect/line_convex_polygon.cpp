@@ -16,15 +16,15 @@ TEST_CASE("square") {
     CHECK(res.empty());
     intersect(line<int>{{1, 0}, {1, 0}, true}, poly, dst);
     sort(res);
-    CHECK_ALMOST_EQUAL(vpi{{0, 0}, {2, 0}}, res, 1e-12);
+    CHECK_NEAR(vpi{{0, 0}, {2, 0}}, res, 1e-12);
     res = {};
     intersect(line<int>{{1, 1}, {1, 0}, true}, poly, dst);
     sort(res);
-    CHECK_ALMOST_EQUAL(vpi{{0, 1}, {2, 1}}, res, 1e-12);
+    CHECK_NEAR(vpi{{0, 1}, {2, 1}}, res, 1e-12);
     res = {};
     intersect(line<int>{{1, 2}, {1, 0}, true}, poly, dst);
     sort(res);
-    CHECK_ALMOST_EQUAL(vpi{{0, 2}, {2, 2}}, res, 1e-12);
+    CHECK_NEAR(vpi{{0, 2}, {2, 2}}, res, 1e-12);
     res = {};
     intersect(line<int>{{1, -2}, {1, 0}, true}, poly, dst);
     CHECK(res.empty());
@@ -32,13 +32,13 @@ TEST_CASE("square") {
     intersect(line<int>{{0, -3}, {1, 1}, true}, poly, dst);
     CHECK(res.empty());
     intersect(line<int>{{0, -2}, {1, 1}, true}, poly, dst);
-    // CHECK_ALMOST_EQUAL(vpi{{2, 0}}, res, 1e-12);
+    // CHECK_NEAR(vpi{{2, 0}}, res, 1e-12);
     res = {};
     intersect(line<int>{{0, -1}, {1, 1}, true}, poly, dst);
     sort(res);
-    CHECK_ALMOST_EQUAL(vpi{{1, 0}, {2, 1}}, res, 1e-12);
+    CHECK_NEAR(vpi{{1, 0}, {2, 1}}, res, 1e-12);
     res = {};
     intersect(line<int>{{0, 0}, {1, 1}, true}, poly, dst);
     sort(res);
-    CHECK_ALMOST_EQUAL(vpi{{0, 0}, {2, 2}}, res, 1e-12);
+    CHECK_NEAR(vpi{{0, 0}, {2, 2}}, res, 1e-12);
 }

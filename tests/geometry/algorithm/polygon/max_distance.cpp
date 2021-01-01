@@ -11,5 +11,5 @@ TEST_CASE("default") {
                                        {3.92734, -2.37856}, {4.02136, -1.57843},
                                        {0.79916, 0.98291},  {0.49946, 1.19525}};
     auto dist = max_distance(poly);
-    CHECK_ALMOST_EQUAL(dist, distance(poly[0], poly[3]), 1e-12);
+    CHECK_NEAR(dist, distance(poly[0], poly[3]), 1e-12);
 }

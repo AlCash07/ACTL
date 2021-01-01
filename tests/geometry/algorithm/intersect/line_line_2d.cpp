@@ -12,7 +12,7 @@ TEST_CASE("general position") {
     intersect(policy, segment<int>{{1, 1}, {5, 3}}, segment<int>{{1, 5}, {5, -1}},
               std::back_inserter(res));
     CHECK(1u == res.size());
-    CHECK_ALMOST_EQUAL(point{3, 2}, res[0], 1e-12);
+    CHECK_NEAR(point{3, 2}, res[0], 1e-12);
     intersect(policy, line<int>{{1, 1}, {5, 3}}, line<int>{{0, 1}, {4, 3}},
               std::back_inserter(res));
     CHECK(1u == res.size());
@@ -20,10 +20,12 @@ TEST_CASE("general position") {
 
 template <ac::index N, class T, class K1, class K2>
 bool equal_lines(const line<T, N, K1>& lhs, const line<T, N, K2>& rhs) {
-    if (lhs.kind() != rhs.kind()) return false;
+    if (lhs.kind() != rhs.kind())
+        return false;
     bool ok = lhs.begin == rhs.begin && lhs.vector == rhs.vector;
     if (end(lhs.kind()) == begin(lhs.kind())) {
-        if (lhs.begin == rhs.end() && lhs.vector == -rhs.vector) ok = true;
+        if (lhs.begin == rhs.end() && lhs.vector == -rhs.vector)
+            ok = true;
     }
     return ok;
 }

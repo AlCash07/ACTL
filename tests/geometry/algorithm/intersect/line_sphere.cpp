@@ -13,11 +13,11 @@ TEST_CASE("2d line all cases") {
     intersect(line<int>{{6, 0}, {6, 1}}, c, std::back_inserter(res));
     CHECK(res.empty());
     intersect(line<int>{{5, 0}, {5, 1}}, c, std::back_inserter(res));
-    CHECK_ALMOST_EQUAL(vpd{{5.0, 0.0}}, res, 1e-12);
+    CHECK_NEAR(vpd{{5.0, 0.0}}, res, 1e-12);
     res = {};
     intersect(line<int>{{4, 0}, {4, 1}}, c, std::back_inserter(res));
     sort(res);
-    CHECK_ALMOST_EQUAL(vpd{{4.0, -3.0}, {4.0, 3.0}}, res, 1e-12);
+    CHECK_NEAR(vpd{{4.0, -3.0}, {4.0, 3.0}}, res, 1e-12);
 }
 
 TEST_CASE("2d ray") {
@@ -25,8 +25,8 @@ TEST_CASE("2d ray") {
     using vpd = std::vector<point<double>>;
     vpd res;
     intersect(ray<int>{{4, -2}, {4, 2}}, c, std::back_inserter(res));
-    CHECK_ALMOST_EQUAL(vpd{{4.0, 3.0}}, res, 1e-12);
+    CHECK_NEAR(vpd{{4.0, 3.0}}, res, 1e-12);
     res = {};
     intersect(ray<int>{{4, 2}, {4, -2}}, c, std::back_inserter(res));
-    CHECK_ALMOST_EQUAL(vpd{{4.0, -3.0}}, res, 1e-12);
+    CHECK_NEAR(vpd{{4.0, -3.0}}, res, 1e-12);
 }

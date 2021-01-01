@@ -13,5 +13,5 @@ TEST_CASE("scalar") {
 }
 
 TEST_CASE("point") {
-    CHECK_ALMOST_EQUAL(point{3, 2}, project(point{2, 4}, line<int>{{1, 1}, {5, 3}}), 1e-12);
+    CHECK_NEAR(point{3, 2}, project(point{2, 4}, line<int>{{1, 1}, {5, 3}}), 1e-12);
 }

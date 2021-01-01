@@ -12,5 +12,5 @@ TEST_CASE("any_line") {
     auto l = make_any_line(a, endpoint::open, b, endpoint::free);
     CHECK(a == l.begin);
     CHECK(b == l.end());
-    CHECK_ALMOST_EQUAL(point{2, 3}, l(0.5), 1e-12);
+    CHECK_NEAR(point{2, 3}, l(0.5), 1e-12);
 }
