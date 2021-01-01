@@ -37,11 +37,10 @@ struct can_apply_policy<
 
 template <class Op, class Policy>
 constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {
-    if constexpr (can_apply_policy<remove_cvref_t<Op>, Policy>::value) {
+    if constexpr (can_apply_policy<remove_cvref_t<Op>, Policy>::value)
         return apply_policy(std::forward<Op>(op), policy);
-    } else {
+    else
         return std::forward<Op>(op);
-    }
 }
 
 }  // namespace ac

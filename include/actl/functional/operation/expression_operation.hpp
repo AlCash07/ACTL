@@ -34,15 +34,14 @@ constexpr auto make_expression(Ts&&... xs) {
 
 template <class Op, class... Ts>
 constexpr decltype(auto) expand_expression(const Op& op, const Ts&... xs) {
-    if constexpr (!is_operation_v<Op>) {
+    if constexpr (!is_operation_v<Op>)
         return op;
-    } else {
+    else
         return op(xs...);
-    }
 }
 
 template <size_t... Is, class EO, class... Us>
-static constexpr auto expand_impl(std::index_sequence<Is...>, const EO& eop, const Us&... xs) {
+constexpr auto expand_impl(std::index_sequence<Is...>, const EO& eop, const Us&... xs) {
     return make_expression(std::get<0>(eop.args),
                            expand_expression(std::get<Is + 1>(eop.args), xs...)...);
 }

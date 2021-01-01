@@ -20,11 +20,10 @@ constexpr auto common_category(T, U) {
             static_assert(DT > 0, "incompatible categories");
             return common_category(typename T::base{}, typename U::base{});
         }
-    } else if constexpr (DT < DU) {
+    } else if constexpr (DT < DU)
         return common_category(T{}, typename U::base{});
-    } else {
+    else
         return common_category(typename T::base{}, U{});
-    }
 }
 
 template <class Tag, index Depth>
@@ -35,13 +34,12 @@ struct cdp {  // category-depth pair
 
 template <class T, index DT, class U, index DU>
 constexpr auto operator||(cdp<T, DT> lhs, cdp<U, DU> rhs) {
-    if constexpr (DT == DU) {
+    if constexpr (DT == DU)
         return cdp<decltype(common_category(T{}, U{})), DT>{};
-    } else if constexpr (DT < DU) {
+    else if constexpr (DT < DU)
         return rhs;
-    } else {
+    else
         return lhs;
-    }
 }
 
 template <class T, class = void>
