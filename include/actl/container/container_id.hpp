@@ -17,20 +17,26 @@
 
 namespace ac {
 
+template <class Iter>
+class iterator_id;
+
 template <class C, bool = is_container_v<C>, bool = is_random_access_range_v<C>>
 struct container_id_traits;
 
 template <class Iter>
-class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter, use_default, iterator_id<Iter>,
-                                            iterator_id<Iter>> {
-    using id = iterator_id;
+struct iterator_id_types {
+    using value_type = iterator_id<Iter>;
+    using reference = iterator_id<Iter>;
+};
+
+template <class Iter>
+class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter, iterator_id_types<Iter>> {
+    using base_t = iterator_adaptor<iterator_id<Iter>, Iter, iterator_id_types<Iter>>;
 
 public:
-    explicit iterator_id(Iter iter = Iter{})
-        : iterator_adaptor<iterator_id<Iter>, Iter, use_default, id, id>{iter} {}
+    explicit iterator_id(Iter iter = {}) : base_t{iter} {}
 
-    explicit iterator_id(void* raw)
-        : iterator_adaptor<iterator_id<Iter>, Iter, use_default, id, id>{bit_cast<Iter>(raw)} {
+    explicit iterator_id(void* raw) : base_t{bit_cast<Iter>(raw)} {
         // TODO: implement more general logic in case this condition fails.
         static_assert(sizeof(Iter) == sizeof(void*));
     }

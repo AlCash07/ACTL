@@ -48,20 +48,24 @@ private:
 
 namespace detail {
 
+template <class Iter>
+struct filter_iter_types {
+    using iterator_category =
+        std::conditional_t<is_random_access_iterator_v<Iter>, std::bidirectional_iterator_tag,
+                           iterator_category_t<Iter>>;
+};
+
 template <class R, class P, class Iter = iterator_t<std::remove_reference_t<R>>>
-using filter_iterator_base =
-    iterator_adaptor<filter_iterator<R, P>, Iter,
-                     std::conditional_t<is_random_access_iterator_v<Iter>,
-                                        std::bidirectional_iterator_tag, use_default>>;
+using filter_iter_base = iterator_adaptor<filter_iterator<R, P>, Iter, filter_iter_types<Iter>>;
 
 }  // namespace detail
 
 template <class R, class P>
-class filter_iterator : public detail::filter_iterator_base<R, P> {
+class filter_iterator : public detail::filter_iter_base<R, P> {
 public:
     explicit filter_iterator(iterator_t<std::remove_reference_t<R>> iter,
                              const filtered_range<R, P>& range)
-        : detail::filter_iterator_base<R, P>{iter}, range_{range} {
+        : detail::filter_iter_base<R, P>{iter}, range_{range} {
         find_next();
     }
 

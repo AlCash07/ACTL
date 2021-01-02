@@ -18,9 +18,15 @@ class transform_iterator;
 
 namespace detail {
 
+template <class F, class V>
+struct transform_iter_types {
+    using value_type = return_t<F>;
+    using reference = deduce_t<V, remove_cvref_t<return_t<F>>>;
+};
+
 template <class Iter, class F, class V>
-using transform_iter_base = iterator_adaptor<transform_iterator<Iter, F, V>, Iter, use_default,
-                                             return_t<F>, deduce_t<V, remove_cvref_t<return_t<F>>>>;
+using transform_iter_base =
+    iterator_adaptor<transform_iterator<Iter, F, V>, Iter, transform_iter_types<F, V>>;
 
 }  // namespace detail
 

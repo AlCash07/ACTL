@@ -9,36 +9,23 @@
 #pragma once
 
 #include <actl/iterator/facade/iterator_facade.hpp>
-#include <actl/utility/use_default.hpp>
 
 namespace ac {
 
-// clang-format off
-template <
-    class Derived,
-    class Iterator,
-    class Category  = use_default,
-    class Value     = use_default,
-    class Reference = use_default,
-    class Distance  = use_default>
-class iterator_adaptor;
-
 namespace detail {
 
-template <class Derived, class Iter, class C, class V, class R, class D>
-struct iterator_adaptor_base {
-    using type = iterator_facade<Derived, iterator_types<
-        deduce_t<C, typename std::iterator_traits<Iter>::iterator_category>,
-        deduce_t<V, value_type_t<Iter>>,
-        deduce_t<R, reference_t<Iter>>,
-        deduce_t<D, difference_t<Iter>>>>;
+template <class Iter, class T>
+struct deduced_iter_types {
+    using iterator_category = iterator_category_or_default_t<T, iterator_category_t<Iter>>;
+    using value_type = value_type_or_default_t<T, value_type_t<Iter>>;
+    using reference = reference_or_default_t<T, reference_t<Iter>>;
+    using difference_type = difference_or_default_t<T, difference_t<Iter>>;
 };
-// clang-format on
 
 }  // namespace detail
 
-template <class Derived, class Iter, class C, class V, class R, class D>
-class iterator_adaptor : public detail::iterator_adaptor_base<Derived, Iter, C, V, R, D>::type {
+template <class Derived, class Iter, class Types = void>
+class iterator_adaptor : public iterator_facade<Derived, detail::deduced_iter_types<Iter, Types>> {
 public:
     explicit constexpr iterator_adaptor(const Iter& iter) : iter_{iter} {}
 
@@ -54,7 +41,7 @@ protected:
 private:
     friend struct ac::iterator_core_access;
 
-    using base_t = typename detail::iterator_adaptor_base<Derived, Iter, C, V, R, D>::type;
+    using base_t = iterator_facade<Derived, detail::deduced_iter_types<Iter, Types>>;
 
     constexpr reference_t<base_t> dereference() const {
         return *iter_;
@@ -68,19 +55,19 @@ private:
         --iter_;
     }
 
-    template <class T = difference_t<base_t>>
-    constexpr void advance(T n) {
+    template <class D = difference_t<base_t>>
+    constexpr void advance(D n) {
         iter_ += n;
     }
 
-    template <class Derived1, class Iter1, class C1, class V1, class R1, class D1>
-    constexpr bool equals(const iterator_adaptor<Derived1, Iter1, C1, V1, R1, D1>& rhs) const {
+    template <class Derived1, class Iter1, class Types1>
+    constexpr bool equals(const iterator_adaptor<Derived1, Iter1, Types1>& rhs) const {
         return iter_ == rhs.base();
     }
 
-    template <class Derived1, class Iter1, class C1, class V1, class R1, class D1>
+    template <class Derived1, class Iter1, class Types1>
     constexpr difference_t<base_t> distance_to(
-        const iterator_adaptor<Derived1, Iter1, C1, V1, R1, D1>& rhs) const {
+        const iterator_adaptor<Derived1, Iter1, Types1>& rhs) const {
         return rhs.base() - iter_;
     }
 
