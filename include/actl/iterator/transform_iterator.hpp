@@ -18,14 +18,14 @@ class transform_iterator;
 
 namespace detail {
 
-template <class It, class F, class V>
-using transform_it_base = iterator_adaptor<transform_iterator<It, F, V>, It, use_default,
-                                           return_t<F>, deduce_t<V, remove_cvref_t<return_t<F>>>>;
+template <class Iter, class F, class V>
+using transform_iter_base = iterator_adaptor<transform_iterator<Iter, F, V>, Iter, use_default,
+                                             return_t<F>, deduce_t<V, remove_cvref_t<return_t<F>>>>;
 
 }  // namespace detail
 
-template <class It, class F, class V>
-class transform_iterator : public detail::transform_it_base<It, F, V> {
+template <class Iter, class F, class V>
+class transform_iterator : public detail::transform_iter_base<Iter, F, V> {
     friend struct ac::iterator_core_access;
 
     auto dereference() const {
@@ -36,8 +36,8 @@ class transform_iterator : public detail::transform_it_base<It, F, V> {
 
 public:
     template <class... Ts>
-    transform_iterator(const It& it, Ts&&... args)
-        : detail::transform_it_base<It, F, V>{it}, f_{std::forward<Ts>(args)...} {}
+    transform_iterator(const Iter& iter, Ts&&... args)
+        : detail::transform_iter_base<Iter, F, V>{iter}, f_{std::forward<Ts>(args)...} {}
 };
 
 }  // namespace ac

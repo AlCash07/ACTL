@@ -16,71 +16,71 @@
 namespace ac {
 
 struct iterator_core_access {
-    template <class It>
-    static constexpr reference_t<It> dereference(const It& it) {
-        return it.dereference();
+    template <class Iter>
+    static constexpr reference_t<Iter> dereference(const Iter& iter) {
+        return iter.dereference();
     }
 
-    template <class It>
-    static constexpr void increment(It& it) {
-        it.increment();
+    template <class Iter>
+    static constexpr void increment(Iter& iter) {
+        iter.increment();
     }
 
-    template <class It>
-    static constexpr void decrement(It& it) {
-        it.decrement();
+    template <class Iter>
+    static constexpr void decrement(Iter& iter) {
+        iter.decrement();
     }
 
-    template <class It1, class It2>
-    static constexpr bool equal(const It1& it1, const It2& it2) {
-        return it1.equals(it2);
+    template <class Iter1, class Iter2>
+    static constexpr bool equal(const Iter1& lhs, const Iter2& rhs) {
+        return lhs.equals(rhs);
     }
 
-    template <class It>
-    static constexpr void advance(It& it, difference_t<It> n) {
-        it.advance(n);
+    template <class Iter>
+    static constexpr void advance(Iter& iter, difference_t<Iter> n) {
+        iter.advance(n);
     }
 
-    template <class It1, class It2>
-    static constexpr difference_t<It1> distance_to(const It1& it1, const It2& it2) {
-        return it1.distance_to(it2);
+    template <class Iter1, class Iter2>
+    static constexpr difference_t<Iter1> distance_to(const Iter1& src, const Iter2& dst) {
+        return src.distance_to(dst);
     }
 };
 
 namespace detail {
 
-template <class It, class T, class C>
-class it_facade : public operators::base<T> {
+template <class Iter, class T, class C>
+class iter_facade : public operators::base<T> {
 public:
     // We don't return reference here because it's void for output iterators.
     constexpr decltype(auto) operator*() const {
         return iterator_core_access::dereference(derived());
     }
 
-    constexpr It& operator++() {
+    constexpr Iter& operator++() {
         iterator_core_access::increment(derived());
         return derived();
     }
 
-    constexpr It operator++(int) {
-        It copy = derived();
+    constexpr Iter operator++(int) {
+        Iter copy = derived();
         ++*this;
         return copy;
     }
 
 protected:
-    constexpr It& derived() {
-        return static_cast<It&>(*this);
+    constexpr Iter& derived() {
+        return static_cast<Iter&>(*this);
     }
-    constexpr const It& derived() const {
-        return static_cast<const It&>(*this);
+    constexpr const Iter& derived() const {
+        return static_cast<const Iter&>(*this);
     }
 };
 
-template <class It, class T>
-class it_facade<It, T, std::input_iterator_tag>
-    : public it_facade<It, T, std::output_iterator_tag> {
-    using base_t = it_facade<It, T, std::output_iterator_tag>;
+template <class Iter, class T>
+class iter_facade<Iter, T, std::input_iterator_tag>
+    : public iter_facade<Iter, T, std::output_iterator_tag> {
+    using base_t = iter_facade<Iter, T, std::output_iterator_tag>;
 
 public:
     constexpr typename base_t::pointer operator->() const {
@@ -88,30 +88,30 @@ public:
     }
 };
 
-template <class It, class T>
-class it_facade<It, T, std::forward_iterator_tag>
-    : public it_facade<It, T, std::input_iterator_tag> {};
+template <class Iter, class T>
+class iter_facade<Iter, T, std::forward_iterator_tag>
+    : public iter_facade<Iter, T, std::input_iterator_tag> {};
 
-template <class It, class T>
-class it_facade<It, T, std::bidirectional_iterator_tag>
-    : public it_facade<It, T, std::forward_iterator_tag> {
+template <class Iter, class T>
+class iter_facade<Iter, T, std::bidirectional_iterator_tag>
+    : public iter_facade<Iter, T, std::forward_iterator_tag> {
 public:
-    constexpr It& operator--() {
+    constexpr Iter& operator--() {
         iterator_core_access::decrement(this->derived());
         return this->derived();
     }
 
-    constexpr It operator--(int) {
-        It copy = this->derived();
+    constexpr Iter operator--(int) {
+        Iter copy = this->derived();
         --*this;
         return copy;
     }
 };
 
-template <class It, class T>
-class it_facade<It, T, std::random_access_iterator_tag>
-    : public it_facade<It, T, std::bidirectional_iterator_tag> {
-    using base_t = it_facade<It, T, std::bidirectional_iterator_tag>;
+template <class Iter, class T>
+class iter_facade<Iter, T, std::random_access_iterator_tag>
+    : public iter_facade<Iter, T, std::bidirectional_iterator_tag> {
+    using base_t = iter_facade<Iter, T, std::bidirectional_iterator_tag>;
     using D = typename base_t::difference_type;
 
 public:
@@ -119,21 +119,21 @@ public:
         return *(this->derived() + n);
     }
 
-    constexpr It& operator+=(D n) {
+    constexpr Iter& operator+=(D n) {
         iterator_core_access::advance(this->derived(), n);
         return this->derived();
     }
 
-    constexpr It& operator-=(D n) {
+    constexpr Iter& operator-=(D n) {
         return (*this) += (-n);
     }
 
-    constexpr It operator+(D n) const {
-        It copy = this->derived();
+    constexpr Iter operator+(D n) const {
+        Iter copy = this->derived();
         return copy += n;
     }
 
-    constexpr It operator-(D n) const {
+    constexpr Iter operator-(D n) const {
         return (*this) + (-n);
     }
 };
@@ -142,29 +142,29 @@ public:
 
 template <class Derived, class Types>
 class iterator_facade
-    : public detail::it_facade<Derived, Types, typename Types::iterator_category> {};
+    : public detail::iter_facade<Derived, Types, typename Types::iterator_category> {};
 
-#define ITERATOR_OPERATOR(type, op, expr)                           \
-    template <class It, class T>                                    \
-    constexpr type operator op(const iterator_facade<It, T>& lhs,   \
-                               const iterator_facade<It, T>& rhs) { \
-        return expr;                                                \
+#define ITERATOR_OPERATOR(type, op, expr)                             \
+    template <class Iter, class T>                                    \
+    constexpr type operator op(const iterator_facade<Iter, T>& lhs,   \
+                               const iterator_facade<Iter, T>& rhs) { \
+        return expr;                                                  \
     }
 
 ITERATOR_OPERATOR(bool, ==,
-                  iterator_core_access::equal(*static_cast<const It*>(&lhs),
-                                              *static_cast<const It*>(&rhs)))
+                  iterator_core_access::equal(static_cast<const Iter&>(lhs),
+                                              static_cast<const Iter&>(rhs)))
 
 ITERATOR_OPERATOR(auto, -,
-                  iterator_core_access::distance_to(*static_cast<const It*>(&rhs),
-                                                    *static_cast<const It*>(&lhs)))
+                  iterator_core_access::distance_to(static_cast<const Iter&>(rhs),
+                                                    static_cast<const Iter&>(lhs)))
 
 ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
 #undef ITERATOR_OPERATOR
 
-template <class It, class T>
-constexpr It operator+(typename T::difference_type n, const iterator_facade<It, T>& rhs) {
+template <class Iter, class T>
+constexpr Iter operator+(typename T::difference_type n, const iterator_facade<Iter, T>& rhs) {
     return rhs + n;
 }
 

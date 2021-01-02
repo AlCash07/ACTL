@@ -29,47 +29,47 @@ TEST_CASE("is_non_const_iterator") {
 }
 
 TEST_CASE("C array is not any kind of iterator") {
-    using It = int[4];
-    CHECK_FALSE(is_input_iterator_v<It>);
-    CHECK_FALSE(is_output_iterator_v<It>);
-    CHECK_FALSE(is_forward_iterator_v<It>);
-    CHECK_FALSE(is_bidirectional_iterator_v<It>);
-    CHECK_FALSE(is_random_access_iterator_v<It>);
+    using Iter = int[4];
+    CHECK_FALSE(is_input_iterator_v<Iter>);
+    CHECK_FALSE(is_output_iterator_v<Iter>);
+    CHECK_FALSE(is_forward_iterator_v<Iter>);
+    CHECK_FALSE(is_bidirectional_iterator_v<Iter>);
+    CHECK_FALSE(is_random_access_iterator_v<Iter>);
 }
 
 TEST_CASE("std::istream_iterator is only input iterator") {
-    using It = std::istream_iterator<int>;
-    CHECK_FALSE(is_output_iterator_v<It>);
-    CHECK(is_input_iterator_v<It>);
-    CHECK_FALSE(is_forward_iterator_v<It>);
+    using Iter = std::istream_iterator<int>;
+    CHECK_FALSE(is_output_iterator_v<Iter>);
+    CHECK(is_input_iterator_v<Iter>);
+    CHECK_FALSE(is_forward_iterator_v<Iter>);
 }
 
 TEST_CASE("std::ostream_iterator is only output iterator") {
-    using It = std::ostream_iterator<int>;
-    CHECK_FALSE(is_input_iterator_v<It>);
-    CHECK(is_output_iterator_v<It>);
-    CHECK_FALSE(is_forward_iterator_v<It>);
+    using Iter = std::ostream_iterator<int>;
+    CHECK_FALSE(is_input_iterator_v<Iter>);
+    CHECK(is_output_iterator_v<Iter>);
+    CHECK_FALSE(is_forward_iterator_v<Iter>);
 }
 
 TEST_CASE("std::forward_list iterator is forward") {
-    using It = std::forward_list<int>::iterator;
-    CHECK_FALSE(is_output_iterator_v<It>);
-    CHECK(is_forward_iterator_v<It>);
-    CHECK_FALSE(is_random_access_iterator_v<It>);
+    using Iter = std::forward_list<int>::iterator;
+    CHECK_FALSE(is_output_iterator_v<Iter>);
+    CHECK(is_forward_iterator_v<Iter>);
+    CHECK_FALSE(is_random_access_iterator_v<Iter>);
 }
 
 TEST_CASE("std::list iterator is bidirectional") {
-    using It = std::list<int>::iterator;
-    CHECK_FALSE(is_output_iterator_v<It>);
-    CHECK(is_forward_iterator_v<It>);
-    CHECK(is_bidirectional_iterator_v<It>);
-    CHECK_FALSE(is_random_access_iterator_v<It>);
+    using Iter = std::list<int>::iterator;
+    CHECK_FALSE(is_output_iterator_v<Iter>);
+    CHECK(is_forward_iterator_v<Iter>);
+    CHECK(is_bidirectional_iterator_v<Iter>);
+    CHECK_FALSE(is_random_access_iterator_v<Iter>);
 }
 
 TEST_CASE("std::vector iterator is random access") {
-    using It = std::vector<int>::iterator;
-    CHECK_FALSE(is_output_iterator_v<It>);
-    CHECK(is_forward_iterator_v<It>);
-    CHECK(is_bidirectional_iterator_v<It>);
-    CHECK(is_random_access_iterator_v<It>);
+    using Iter = std::vector<int>::iterator;
+    CHECK_FALSE(is_output_iterator_v<Iter>);
+    CHECK(is_forward_iterator_v<Iter>);
+    CHECK(is_bidirectional_iterator_v<Iter>);
+    CHECK(is_random_access_iterator_v<Iter>);
 }

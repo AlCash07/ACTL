@@ -20,18 +20,18 @@ class limited_input_iterator : public iterator_adaptor<limited_input_iterator<It
 public:
     explicit limited_input_iterator() : base_t{Iterator{}}, limit_{0} {}
 
-    explicit limited_input_iterator(const Iterator& it, int limit) : base_t{it}, limit_{limit} {}
+    explicit limited_input_iterator(const Iterator& iter, int limit)
+        : base_t{iter}, limit_{limit} {}
 
 private:
     friend struct ac::iterator_core_access;
 
     void increment() {
         ACTL_ASSERT(limit_ > 0);
-        if (--limit_ > 0) {
+        if (--limit_ > 0)
             ++this->base_ref();
-        } else {
+        else
             this->base_ref() = Iterator{};
-        }
     }
 
     int limit_;

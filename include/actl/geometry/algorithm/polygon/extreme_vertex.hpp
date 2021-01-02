@@ -19,8 +19,8 @@ namespace ac {
 template <class Policy, class T, class Function>
 auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly, Function direction) {
     auto vertex_cmp = [&](auto i, auto j) { return orientation(policy, direction(*j), *j - *i); };
-    auto is_extreme = [&](auto it) {
-        auto i = cyclic_iterator{poly, it};
+    auto is_extreme = [&](auto iter) {
+        auto i = cyclic_iterator{poly, iter};
         auto v = vertex_cmp(i + 1, i);
         return std::pair{v != orientation2d::left && vertex_cmp(i, i - 1) == orientation2d::left,
                          v};

@@ -16,55 +16,55 @@ namespace ac {
  */
 template <class Range>
 class cyclic_iterator : public iterator_adaptor<cyclic_iterator<Range>, iterator_t<Range>> {
-    using It = iterator_t<Range>;
+    using Iter = iterator_t<Range>;
 
-    It& it() {
+    Iter& iter() {
         return this->base_ref();
     }
 
 public:
-    explicit cyclic_iterator(Range& range, It it)
-        : iterator_adaptor<cyclic_iterator<Range>, It>{it}, range_{&range} {
+    explicit cyclic_iterator(Range& range, Iter iter)
+        : iterator_adaptor<cyclic_iterator<Range>, Iter>{iter}, range_{&range} {
         ACTL_ASSERT(!std::empty(range));
-        if (it == end())
+        if (iter == end())
             this->base_ref() = begin();
     }
 
 private:
     friend struct ac::iterator_core_access;
 
-    It begin() const {
+    Iter begin() const {
         return std::begin(*range_);
     }
-    It end() const {
+    Iter end() const {
         return std::end(*range_);
     }
 
     void increment() {
-        ++it();
-        if (it() == end())
-            it() = begin();
+        ++iter();
+        if (iter() == end())
+            iter() = begin();
     }
 
     void decrement() {
-        if (it() == begin())
-            it() = end();
-        --it();
+        if (iter() == begin())
+            iter() = end();
+        --iter();
     }
 
-    void advance(difference_t<It> n) {
-        auto cycle = static_cast<difference_t<It>>(std::size(*range_));
+    void advance(difference_t<Iter> n) {
+        auto cycle = static_cast<difference_t<Iter>>(std::size(*range_));
         ACTL_ASSERT(abs(n) < cycle);
         if (n > 0) {
-            it() += n - (n >= (end() - it()) ? cycle : 0);
+            iter() += n - (n >= (end() - iter()) ? cycle : 0);
         } else {
-            it() += n + (-n > (it() - begin()) ? cycle : 0);
+            iter() += n + (-n > (iter() - begin()) ? cycle : 0);
         }
     }
 
-    difference_t<It> distance_to(const cyclic_iterator& rhs) const {
+    difference_t<Iter> distance_to(const cyclic_iterator& rhs) const {
         auto dist = rhs.base() - this->base();
-        return dist >= 0 ? dist : dist + static_cast<difference_t<It>>(std::size(*range_));
+        return dist >= 0 ? dist : dist + static_cast<difference_t<Iter>>(std::size(*range_));
     }
 
     Range* range_;

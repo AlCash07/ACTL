@@ -24,28 +24,27 @@ OutIter intersect(line_scalar_policy<Policy> lsp, const line<T, 2, K>& l,
     auto& policy = lsp.policy;
     // TODO: fix the case when polygon touches the line.
     ACTL_ASSERT(!degenerate(policy, l));
-    auto vertex_sgn = [&](auto it) { return static_cast<int>(orientation(policy, *it, l)); };
-    auto it = cyclic_begin(poly);
-    int prev_sgn = vertex_sgn(it - 1), it_sgn = vertex_sgn(it);
+    auto vertex_sgn = [&](auto iter) { return static_cast<int>(orientation(policy, *iter, l)); };
+    auto iter = cyclic_begin(poly);
+    int prev_sgn = vertex_sgn(it - 1), iter_sgn = vertex_sgn(it);
     for (auto n = poly.size(); n != 0; --n) {
-        int next_sgn = vertex_sgn(it + 1);
-        if (it_sgn == 0) {
+        int next_sgn = vertex_sgn(iter + 1);
+        if (iter_sgn == 0) {
             bool ok = false;
-            if (prev_sgn == 0) {
-                ok = next_sgn == sgn(policy, dot(policy, *it - it[-1], l.vector));
-            } else if (next_sgn == 0) {
-                ok = prev_sgn == sgn(policy, dot(policy, it[1] - *it, l.vector));
-            } else {
+            if (prev_sgn == 0)
+                ok = next_sgn == sgn(policy, dot(policy, *iter - iter[-1], l.vector));
+            else if (next_sgn == 0)
+                ok = prev_sgn == sgn(policy, dot(policy, iter[1] - *iter, l.vector));
+            else
                 ok = next_sgn != prev_sgn;
-            }
-            if (ok && between_endpoints(policy, *it, l))
-                *dst++ = project(lsp, *it, l);
-        } else if (next_sgn == -it_sgn) {
-            dst = intersect(lsp, l, make_line(*it, it[1]), dst);
+            if (ok && between_endpoints(policy, *iter, l))
+                *dst++ = project(lsp, *iter, l);
+        } else if (next_sgn == -iter_sgn) {
+            dst = intersect(lsp, l, make_line(*iter, iter[1]), dst);
         }
-        prev_sgn = it_sgn;
-        it_sgn = next_sgn;
-        ++it;
+        prev_sgn = iter_sgn;
+        iter_sgn = next_sgn;
+        ++iter;
     }
     return dst;
 }

@@ -23,25 +23,25 @@ class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>,
     friend class semi_static_array<T, Is...>;
     friend struct ac::iterator_core_access;
 
-    explicit ssa_iterator(index i, const T* ait) : i_{i}, ait_{ait} {}
+    explicit ssa_iterator(index i, const T* aiter) : i_{i}, aiter_{aiter} {}
 
     T get() const {
         return static_array<T, Is...>{}[i_];
     }
 
     T dereference() const {
-        return get() == dynamic_size ? *ait_ : get();
+        return get() == dynamic_size ? *aiter_ : get();
     }
 
     void increment() {
         if (get() == dynamic_size)
-            ++ait_;
+            ++aiter_;
         ++i_;
     }
 
     void decrement() {
         if (get() == dynamic_size)
-            --ait_;
+            --aiter_;
         --i_;
     }
 
@@ -50,7 +50,7 @@ class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>,
     }
 
     index i_;
-    const T* ait_;
+    const T* aiter_;
 };
 
 }  // namespace detail
@@ -74,16 +74,15 @@ public:
 
     template <class R>
     explicit semi_static_array(R&& range) {
-        auto it = begin();
+        auto iter = begin();
         for (const auto& x : range) {
-            if (it.get() == dynamic_size) {
-                a_[static_cast<size_t>(it.ait_ - a_.begin())] = x;
-            } else {
-                ACTL_ASSERT(x == it.get());
-            }
-            ++it;
+            if (iter.get() == dynamic_size)
+                a_[static_cast<size_t>(iter.aiter_ - a_.begin())] = x;
+            else
+                ACTL_ASSERT(x == iter.get());
+            ++iter;
         }
-        ACTL_ASSERT(it == end());
+        ACTL_ASSERT(iter == end());
     }
 
     auto begin() const {

@@ -73,14 +73,14 @@ struct crev_it<T, std::void_t<typename T::const_reverse_iterator>> {
 };
 
 template <class T>
-using crev_it_t = typename crev_it<T>::type;
+using crev_iter_t = typename crev_it<T>::type;
 
 template <class D, class T>
 class rng_facade<D, T, std::bidirectional_iterator_tag>
     : public rng_facade<D, T, std::forward_iterator_tag> {
 public:
     constexpr auto rbegin() const {
-        return crev_it_t<T>{this->derived().end()};
+        return crev_iter_t<T>{this->derived().end()};
     }
     ENABLE_IF_HAS_CONST constexpr auto rbegin() {
         return typename T::reverse_iterator{this->derived().end()};
@@ -90,7 +90,7 @@ public:
     }
 
     constexpr auto rend() const {
-        return crev_it_t<T>{this->derived().begin()};
+        return crev_iter_t<T>{this->derived().begin()};
     }
     ENABLE_IF_HAS_CONST constexpr auto rend() {
         return typename T::reverse_iterator{this->derived().begin()};

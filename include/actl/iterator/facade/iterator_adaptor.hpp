@@ -25,66 +25,66 @@ class iterator_adaptor;
 
 namespace detail {
 
-template <class Derived, class It, class C, class V, class R, class D>
+template <class Derived, class Iter, class C, class V, class R, class D>
 struct iterator_adaptor_base {
     using type = iterator_facade<Derived, iterator_types<
-        deduce_t<C, typename std::iterator_traits<It>::iterator_category>,
-        deduce_t<V, value_type_t<It>>,
-        deduce_t<R, reference_t<It>>,
-        deduce_t<D, difference_t<It>>>>;
+        deduce_t<C, typename std::iterator_traits<Iter>::iterator_category>,
+        deduce_t<V, value_type_t<Iter>>,
+        deduce_t<R, reference_t<Iter>>,
+        deduce_t<D, difference_t<Iter>>>>;
 };
 // clang-format on
 
 }  // namespace detail
 
-template <class Derived, class It, class C, class V, class R, class D>
-class iterator_adaptor : public detail::iterator_adaptor_base<Derived, It, C, V, R, D>::type {
+template <class Derived, class Iter, class C, class V, class R, class D>
+class iterator_adaptor : public detail::iterator_adaptor_base<Derived, Iter, C, V, R, D>::type {
 public:
-    explicit constexpr iterator_adaptor(const It& it) : it_{it} {}
+    explicit constexpr iterator_adaptor(const Iter& iter) : iter_{iter} {}
 
-    constexpr const It& base() const {
-        return it_;
+    constexpr const Iter& base() const {
+        return iter_;
     }
 
 protected:
-    constexpr It& base_ref() {
-        return it_;
+    constexpr Iter& base_ref() {
+        return iter_;
     }
 
 private:
     friend struct ac::iterator_core_access;
 
-    using base_t = typename detail::iterator_adaptor_base<Derived, It, C, V, R, D>::type;
+    using base_t = typename detail::iterator_adaptor_base<Derived, Iter, C, V, R, D>::type;
 
     constexpr reference_t<base_t> dereference() const {
-        return *it_;
+        return *iter_;
     }
 
     constexpr void increment() {
-        ++it_;
+        ++iter_;
     }
 
     constexpr void decrement() {
-        --it_;
+        --iter_;
     }
 
     template <class T = difference_t<base_t>>
     constexpr void advance(T n) {
-        it_ += n;
+        iter_ += n;
     }
 
-    template <class Derived1, class It1, class C1, class V1, class R1, class D1>
-    constexpr bool equals(const iterator_adaptor<Derived1, It1, C1, V1, R1, D1>& rhs) const {
-        return it_ == rhs.base();
+    template <class Derived1, class Iter1, class C1, class V1, class R1, class D1>
+    constexpr bool equals(const iterator_adaptor<Derived1, Iter1, C1, V1, R1, D1>& rhs) const {
+        return iter_ == rhs.base();
     }
 
-    template <class Derived1, class It1, class C1, class V1, class R1, class D1>
+    template <class Derived1, class Iter1, class C1, class V1, class R1, class D1>
     constexpr difference_t<base_t> distance_to(
-        const iterator_adaptor<Derived1, It1, C1, V1, R1, D1>& rhs) const {
-        return rhs.base() - it_;
+        const iterator_adaptor<Derived1, Iter1, C1, V1, R1, D1>& rhs) const {
+        return rhs.base() - iter_;
     }
 
-    It it_;
+    Iter iter_;
 };
 
 }  // namespace ac

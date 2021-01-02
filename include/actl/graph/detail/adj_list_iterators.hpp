@@ -20,44 +20,46 @@ struct edge_inverter {
 };
 
 template <class G>
-using edge_it_types = iterator_types<std::input_iterator_tag, edge_t<G>, edge_t<G>>;
+using edge_iter_types = iterator_types<std::input_iterator_tag, edge_t<G>, edge_t<G>>;
 
-template <class G, class It>
-class adj_list_out_edge_it : public iterator_facade<adj_list_out_edge_it<G, It>, edge_it_types<G>> {
+template <class G, class Iter>
+class adj_list_out_edge_iter
+    : public iterator_facade<adj_list_out_edge_iter<G, Iter>, edge_iter_types<G>> {
     friend struct ac::iterator_core_access;
 
     edge_t<G> dereference() const {
-        return g_->get_edge(u_, *it_);
+        return g_->get_edge(u_, *iter_);
     }
 
     void increment() {
-        ++it_;
+        ++iter_;
     }
 
-    bool equals(const adj_list_out_edge_it& rhs) const {
-        return it_ == rhs.it_;
+    bool equals(const adj_list_out_edge_iter& rhs) const {
+        return iter_ == rhs.iter_;
     }
 
     const G* g_;
     vertex_t<G> u_;
-    It it_;
+    Iter iter_;
 
 public:
-    explicit adj_list_out_edge_it() = default;
+    explicit adj_list_out_edge_iter() = default;
 
-    explicit adj_list_out_edge_it(const G* g, vertex_t<G> u, It it) : g_{g}, u_{u}, it_{it} {}
+    explicit adj_list_out_edge_iter(const G* g, vertex_t<G> u, Iter iter)
+        : g_{g}, u_{u}, iter_{iter} {}
 
-    It id() const {
-        return it_;
+    Iter id() const {
+        return iter_;
     }
 };
 
 template <class G>
-class adj_list_edge_it : public iterator_facade<adj_list_edge_it<G>, edge_it_types<G>> {
+class adj_list_edge_iter : public iterator_facade<adj_list_edge_iter<G>, edge_iter_types<G>> {
     friend struct ac::iterator_core_access;
 
     edge_t<G> dereference() const {
-        return g_->get_edge(u_, *it_);
+        return g_->get_edge(u_, *iter_);
     }
 
     bool is_end() const {
@@ -65,25 +67,23 @@ class adj_list_edge_it : public iterator_facade<adj_list_edge_it<G>, edge_it_typ
     }
 
     bool is_reverse_edge() const {
-        if constexpr (G::is_undirected) {
+        if constexpr (G::is_undirected)
             return dereference().target() < u_;
-        } else {
+        else
             return false;
-        }
     }
 
     void skip_empty() {
         while (!is_end()) {
-            if (it_ == g_->out_end(u_)) {
+            if (iter_ == g_->out_end(u_)) {
                 ++u_;
                 if (!is_end())
-                    it_ = g_->out_begin(u_);
+                    iter_ = g_->out_begin(u_);
             } else {
-                if (is_reverse_edge()) {
-                    ++it_;
-                } else {
+                if (is_reverse_edge())
+                    ++iter_;
+                else
                     break;
-                }
             }
         }
     }
@@ -91,25 +91,25 @@ class adj_list_edge_it : public iterator_facade<adj_list_edge_it<G>, edge_it_typ
     void increment() {
         if (is_end())
             return;
-        ++it_;
+        ++iter_;
         skip_empty();
     }
 
-    bool equals(const adj_list_edge_it& rhs) const {
-        return u_ == rhs.u_ && (is_end() || it_ == rhs.it_);
+    bool equals(const adj_list_edge_iter& rhs) const {
+        return u_ == rhs.u_ && (is_end() || iter_ == rhs.iter_);
     }
 
     const G* g_;
     vertex_t<G> u_;
-    typename G::out_it it_;
+    typename G::out_iter iter_;
 
 public:
-    explicit adj_list_edge_it() = default;
+    explicit adj_list_edge_iter() = default;
 
-    explicit adj_list_edge_it(const G* g, bool begin) : g_{g} {
+    explicit adj_list_edge_iter(const G* g, bool begin) : g_{g} {
         if (begin) {
             u_ = id_begin(g_->vertices_);
-            it_ = g_->out_begin(u_);
+            iter_ = g_->out_begin(u_);
             skip_empty();
         } else {
             u_ = id_end(g_->vertices_);
@@ -118,12 +118,12 @@ public:
 };
 
 template <class G, class = typename G::edge_selector>
-struct edge_it {
-    using type = adj_list_edge_it<G>;
+struct edge_iter {
+    using type = adj_list_edge_iter<G>;
 };
 
 template <class G>
-struct edge_it<G, two_vertices> {
+struct edge_iter<G, two_vertices> {
     using type = typename G::traits::edges::template edge_iterator<edge_t<G>>;
 };
 

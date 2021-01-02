@@ -12,6 +12,7 @@
 #include <actl/graph/selectors.hpp>
 #include <actl/graph/traits.hpp>
 #include <actl/map/traits.hpp>
+#include <actl/std/map.hpp>
 
 template <bool TestAdjacency = false, class Graph, class V = vertex_t<Graph>>
 void test_edges(Graph& graph, V v0, V v1, V v2) {
@@ -43,13 +44,11 @@ void test_edges(Graph& graph, V v0, V v1, V v2) {
         std::map<V, std::vector<V>> outs, ins;
         auto add_edge = [&](V u, V v) {
             outs[u].push_back(v);
-            if constexpr (Graph::is_undirected) {
+            if constexpr (Graph::is_undirected)
                 if (u != v)
                     outs[v].push_back(u);
-            }
-            if constexpr (Graph::is_bidirectional) {
+            if constexpr (Graph::is_bidirectional)
                 ins[v].push_back(u);
-            }
         };
         add_edge(v0, v1);
         add_edge(v0, v2);
@@ -61,12 +60,10 @@ void test_edges(Graph& graph, V v0, V v1, V v2) {
             add_edge(v1, v0);
         for (auto v : {v0, v1, v2}) {
             CHECK_EQUAL_SETS(outs[v], get_targets(graph.out_edges(v)));
-            if constexpr (Graph::is_undirected) {
+            if constexpr (Graph::is_undirected)
                 CHECK_EQUAL_SETS(outs[v], get_sources(graph.in_edges(v)));
-            }
-            if constexpr (Graph::is_bidirectional) {
+            if constexpr (Graph::is_bidirectional)
                 CHECK_EQUAL_SETS(ins[v], get_sources(graph.in_edges(v)));
-            }
         }
     };
     // TODO: uncomment when remove_edge is implemented in adjacency_list.

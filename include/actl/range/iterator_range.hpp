@@ -13,28 +13,28 @@
 
 namespace ac {
 
-template <class It, class Traits = default_range_traits>
+template <class Iter, class Traits = default_range_traits>
 class iterator_range
-    : public range_facade<iterator_range<It, Traits>, range_types<It, difference_t<It>>> {
+    : public range_facade<iterator_range<Iter, Traits>, range_types<Iter, difference_t<Iter>>> {
 public:
     constexpr iterator_range() = default;
 
-    constexpr iterator_range(It begin, It end) : begin_{begin}, end_{end} {}
+    constexpr iterator_range(Iter begin, Iter end) : begin_{begin}, end_{end} {}
 
-    constexpr It begin() const {
+    constexpr Iter begin() const {
         return begin_;
     }
-    constexpr It end() const {
+    constexpr Iter end() const {
         return end_;
     }
 
 private:
-    It begin_;
-    It end_;
+    Iter begin_;
+    Iter end_;
 };
 
-template <class It, class Traits>
-struct range_traits<iterator_range<It, Traits>> : Traits {
+template <class Iter, class Traits>
+struct range_traits<iterator_range<Iter, Traits>> : Traits {
     static constexpr bool is_container = false;
 };
 

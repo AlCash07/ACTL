@@ -12,7 +12,7 @@ namespace ac {
 /**
  * Property map that fetches member from a class key.
  */
-// TODO: consider making this map invertible. It's possible, but not standard-compliant.
+// TODO: consider making this map invertible. Iter's possible, but not standard-compliant.
 template <class Class, class Member>
 class member_map {
 public:

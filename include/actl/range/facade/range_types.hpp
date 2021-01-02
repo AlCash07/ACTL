@@ -21,9 +21,9 @@ struct range_types {
     using size_type = deduce_t<Size, std::make_unsigned_t<difference_type>>;
 };
 
-template <class It, class S>
-struct range_types<It, S, true> : range_types<It, S, false> {
-    using reverse_iterator = std::reverse_iterator<It>;
+template <class Iter, class S>
+struct range_types<Iter, S, true> : range_types<Iter, S, false> {
+    using reverse_iterator = std::reverse_iterator<Iter>;
 };
 
 template <class Iterator, class ConstIterator, class Size = use_default,
@@ -34,9 +34,9 @@ struct dual_range_types : range_types<Iterator, Size> {
     using const_iterator = ConstIterator;
 };
 
-template <class It, class CIt, class S>
-struct dual_range_types<It, CIt, S, true> : dual_range_types<It, CIt, S, false> {
-    using const_reverse_iterator = std::reverse_iterator<CIt>;
+template <class Iter, class CIter, class S>
+struct dual_range_types<Iter, CIter, S, true> : dual_range_types<Iter, CIter, S, false> {
+    using const_reverse_iterator = std::reverse_iterator<CIter>;
 };
 
 }  // namespace ac

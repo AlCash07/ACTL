@@ -55,15 +55,15 @@ class adj_list_edges<Dir, OEC, EC, VC, S, none> : public adj_list_vertices<Dir, 
 protected:
     using base_t = adj_list_vertices<Dir, OEC, EC, VC>;
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
-    using out_it = typename traits::out_edge_container::const_iterator;
+    using out_iter = typename traits::out_edge_container::const_iterator;
     using typename base_t::vertex;
     using edge = detail::edge<vertex, typename traits::edges::edge_id>;
     using base_t::outs;
 
-    out_it out_begin(vertex u) const {
+    out_iter out_begin(vertex u) const {
         return outs(u).begin();
     }
-    out_it out_end(vertex u) const {
+    out_iter out_end(vertex u) const {
         return outs(u).end();
     }
 
@@ -169,15 +169,15 @@ protected:
     using base_t = adj_list_vertices<Dir, OEC, EC, VC>;
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
     using out_id = container_id<typename traits::out_edge_container>;
-    using out_it = container_id_iterator<typename traits::out_edge_container>;
+    using out_iter = container_id_iterator<typename traits::out_edge_container>;
     using typename base_t::vertex;
     using edge = edge<vertex, out_id, true>;
     using base_t::outs;
 
-    out_it out_begin(vertex u) const {
+    out_iter out_begin(vertex u) const {
         return id_range(outs(u)).begin();
     }
-    out_it out_end(vertex u) const {
+    out_iter out_end(vertex u) const {
         return id_range(outs(u)).end();
     }
 
@@ -231,20 +231,20 @@ class adjacency_list : public detail::adj_list_edges<Dir, OEC, EC, VC> {
     using typename base_t::traits;
 
     template <class AL, class S>
-    friend struct detail::edge_it;
+    friend struct detail::edge_iter;
 
 public:
     using typename base_t::edge;
     using typename base_t::vertex;
 
     using edge_selector = value_type_t<EC>;
-    using edge_iterator = typename detail::edge_it<adjacency_list>::type;
-    using out_edge = typename base_t::out_it;
-    using out_edge_iterator = detail::adj_list_out_edge_it<adjacency_list, out_edge>;
+    using edge_iterator = typename detail::edge_iter<adjacency_list>::type;
+    using out_edge = typename base_t::out_iter;
+    using out_edge_iterator = detail::adj_list_out_edge_iter<adjacency_list, out_edge>;
     using in_edge = typename traits::in_edge_container::const_iterator;
     using in_edge_iterator =
         std::conditional_t<std::is_same_v<edge_selector, none> && base_t::is_bidirectional,
-                           detail::adj_list_out_edge_it<adjacency_list, in_edge>,
+                           detail::adj_list_out_edge_iter<adjacency_list, in_edge>,
                            transform_iterator<out_edge_iterator, detail::edge_inverter<edge>>>;
 
     using base_t::base_t;

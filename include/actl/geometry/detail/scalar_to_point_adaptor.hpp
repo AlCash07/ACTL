@@ -10,7 +10,7 @@
 
 namespace ac::detail {
 
-template <class Line, class It>
+template <class Line, class Iter>
 class scalar_to_point_adaptor {
 public:
     using value_type = void;
@@ -19,13 +19,13 @@ public:
     using reference = void;
     using iterator_category = std::output_iterator_tag;
 
-    explicit scalar_to_point_adaptor(const Line& line, It it) : line_{&line}, it_{it} {}
+    explicit scalar_to_point_adaptor(const Line& line, Iter iter) : line_{&line}, iter_{iter} {}
 
     scalar_to_point_adaptor& operator=(const scalar_to_point_adaptor&) = default;
 
     template <class T>
     void operator=(const T& x) {
-        *it_ = (*line_)(x);
+        *iter_ = (*line_)(x);
     }
 
     scalar_to_point_adaptor& operator*() {
@@ -38,13 +38,13 @@ public:
         return *this;
     }
 
-    operator It() const {
-        return it_;
+    operator Iter() const {
+        return iter_;
     }
 
 private:
     const Line* line_;
-    It it_;
+    Iter iter_;
 };
 
 }  // namespace ac::detail

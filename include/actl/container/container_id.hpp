@@ -20,19 +20,19 @@ namespace ac {
 template <class C, bool = is_container_v<C>, bool = is_random_access_range_v<C>>
 struct container_id_traits;
 
-template <class It>
-class iterator_id
-    : public iterator_adaptor<iterator_id<It>, It, use_default, iterator_id<It>, iterator_id<It>> {
+template <class Iter>
+class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter, use_default, iterator_id<Iter>,
+                                            iterator_id<Iter>> {
     using id = iterator_id;
 
 public:
-    explicit iterator_id(It it = It{})
-        : iterator_adaptor<iterator_id<It>, It, use_default, id, id>{it} {}
+    explicit iterator_id(Iter iter = Iter{})
+        : iterator_adaptor<iterator_id<Iter>, Iter, use_default, id, id>{iter} {}
 
     explicit iterator_id(void* raw)
-        : iterator_adaptor<iterator_id<It>, It, use_default, id, id>{bit_cast<It>(raw)} {
+        : iterator_adaptor<iterator_id<Iter>, Iter, use_default, id, id>{bit_cast<Iter>(raw)} {
         // TODO: implement more general logic in case this condition fails.
-        static_assert(sizeof(It) == sizeof(void*));
+        static_assert(sizeof(Iter) == sizeof(void*));
     }
 
     friend std::uintptr_t get_id_key(iterator_id id) {
@@ -76,8 +76,8 @@ inline constexpr int id_to_raw(int id) {
     return id;
 }
 
-template <class It>
-void* id_to_raw(iterator_id<It> id) {
+template <class Iter>
+void* id_to_raw(iterator_id<Iter> id) {
     return bit_cast<void*>(id);
 }
 
@@ -97,30 +97,27 @@ using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
 template <class C>
 container_id<C> id_begin(const C& cont) {
-    if constexpr (is_random_access_range_v<C>) {
+    if constexpr (is_random_access_range_v<C>)
         return 0;
-    } else {
+    else
         return container_id<C>{cont.begin()};
-    }
 }
 
 template <class C>
 container_id<C> id_end(const C& cont) {
-    if constexpr (is_random_access_range_v<C>) {
+    if constexpr (is_random_access_range_v<C>)
         return static_cast<container_id<C>>(std::size(cont));
-    } else {
+    else
         return container_id<C>{cont.end()};
-    }
 }
 
 // Returns an invalid Id that is fixed for the given container.
 template <class C>
 container_id<C> id_null(const C& cont) {
-    if constexpr (is_random_access_range_v<C>) {
+    if constexpr (is_random_access_range_v<C>)
         return -1;
-    } else {
+    else
         return id_end(cont);
-    }
 }
 
 template <class C>
@@ -130,12 +127,11 @@ auto id_range(const C& cont) {
 }
 
 template <class C>
-container_id<C> iterator_to_id(const C& cont, iterator_t<const C> it) {
-    if constexpr (is_random_access_range_v<C>) {
-        return static_cast<container_id<C>>(it - std::begin(cont));
-    } else {
-        return container_id<C>{it};
-    }
+container_id<C> iterator_to_id(const C& cont, iterator_t<const C> iter) {
+    if constexpr (is_random_access_range_v<C>)
+        return static_cast<container_id<C>>(iter - std::begin(cont));
+    else
+        return container_id<C>{iter};
 }
 
 template <class C>
@@ -160,23 +156,21 @@ void id_check(C& cont, container_id<C> id) {
 template <class C>
 reference_t<C> id_at(C& cont, container_id<C> id) {
     id_check(cont, id);
-    if constexpr (is_random_access_range_v<C>) {
+    if constexpr (is_random_access_range_v<C>)
         return cont[static_cast<size_type_t<C>>(id)];
-    } else {
+    else
         // const_cast is required because id contains a const_iterator.
         // TODO: this cast allows modification of set key, which may lead to bugs.
         return const_cast<reference_t<C>>(*id.base());
-    }
 }
 
 template <class C>
 reference_t<const C> id_at(const C& cont, container_id<C> id) {
     id_check(cont, id);
-    if constexpr (is_random_access_range_v<C>) {
+    if constexpr (is_random_access_range_v<C>)
         return cont[static_cast<size_type_t<C>>(id)];
-    } else {
+    else
         return *id.base();
-    }
 }
 
 /* Generic container functions with id */
