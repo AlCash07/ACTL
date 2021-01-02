@@ -20,7 +20,11 @@ struct edge_inverter {
 };
 
 template <class G>
-using edge_iter_types = iterator_types<std::input_iterator_tag, edge_t<G>, edge_t<G>>;
+struct edge_iter_types {
+    using iterator_category = std::input_iterator_tag;
+    using value_type = edge_t<G>;
+    using reference = edge_t<G>;
+};
 
 template <class G, class Iter>
 class adj_list_out_edge_iter

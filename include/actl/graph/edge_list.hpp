@@ -111,6 +111,13 @@ class edge_list_impl<Dir, V, EC, two_vertices> : public edge_list_edges<Dir, V, 
     using base_t = edge_list_edges<Dir, V, EC, two_vertices>;
     using base_t::edges_;
 
+    template <class E>
+    struct edge_iterator_types {
+        using iterator_category = std::input_iterator_tag;
+        using value_type = E;
+        using reference = E;
+    };
+
 public:
     using typename base_t::edge;
     using typename base_t::vertex;
@@ -118,8 +125,7 @@ public:
     using base_t::base_t;
 
     template <class E>
-    class edge_iterator
-        : public iterator_facade<edge_iterator<E>, iterator_types<std::input_iterator_tag, E, E>> {
+    class edge_iterator : public iterator_facade<edge_iterator<E>, edge_iterator_types<E>> {
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
 

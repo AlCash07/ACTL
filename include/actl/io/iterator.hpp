@@ -11,13 +11,19 @@
 
 namespace ac {
 
+template <class T>
+struct input_device_iterator_types {
+    using iterator_category = std::input_iterator_tag;
+    using value_type = T;
+    using reference = const T&;
+};
+
 /**
  * Iterator similar to http://en.cppreference.com/w/cpp/iterator/istream_iterator
  */
 template <class T, class Device>
 class input_device_iterator
-    : public iterator_facade<input_device_iterator<T, Device>,
-                             iterator_types<std::input_iterator_tag, T, const T&>> {
+    : public iterator_facade<input_device_iterator<T, Device>, input_device_iterator_types<T>> {
 public:
     explicit input_device_iterator() = default;
 

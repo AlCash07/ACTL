@@ -5,45 +5,14 @@
 
 #pragma once
 
+#include <actl/iterator/facade/operator_arrow_dispatch.hpp>
 #include <actl/iterator/traits.hpp>
-#include <memory>
+#include <actl/traits/nested_or_default.hpp>
 
 namespace ac {
 
-namespace detail {
-
-template <class Ref>
-struct operator_arrow_dispatch {  // proxy references
-    struct proxy {
-        explicit proxy(const Ref& ref) : ref_{ref} {}
-        Ref* operator->() {
-            return std::addressof(ref_);
-        }
-        Ref ref_;
-    };
-
-    using type = proxy;
-
-    static type apply(const Ref& x) {
-        return type{x};
-    }
-};
-
-template <class T>
-struct operator_arrow_dispatch<T&> {  // "real" references
-    using type = T*;
-
-    static type apply(T& x) {
-        return std::addressof(x);
-    }
-};
-
-template <>
-struct operator_arrow_dispatch<void> {  // output iterator
-    using type = void;
-};
-
-}  // namespace detail
+NESTED_OR_DEFAULT(reference)
+NESTED_OR_DEFAULT(difference)
 
 template <class Category, class Value, class Reference = Value&, class Difference = std::ptrdiff_t>
 struct iterator_types {
@@ -54,6 +23,11 @@ struct iterator_types {
     using difference_type = Difference;
 };
 
-using output_iterator_types = iterator_types<std::output_iterator_tag, void, void, void>;
+struct output_iterator_types {
+    using iterator_category = std::output_iterator_tag;
+    using value_type = void;
+    using reference = void;
+    using difference_type = void;
+};
 
 }  // namespace ac

@@ -12,8 +12,12 @@
 namespace ac {
 
 template <class Int>
-using integer_iterator_types =
-    iterator_types<std::random_access_iterator_tag, Int, const Int&, Int>;
+struct integer_iterator_types {
+    using iterator_category = std::random_access_iterator_tag;
+    using value_type = Int;
+    using reference = const Int&;
+    using difference = Int;
+};
 
 template <class Int, bool Increment = true>
 class integer_iterator

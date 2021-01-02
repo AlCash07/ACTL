@@ -17,9 +17,15 @@ class semi_static_array;
 
 namespace detail {
 
+template <class T>
+struct ssa_iterator_types {
+    using iterator_category = std::bidirectional_iterator_tag;
+    using value_type = T;
+    using reference = T;
+};
+
 template <class T, T... Is>
-class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>,
-                                            iterator_types<std::bidirectional_iterator_tag, T, T>> {
+class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>, ssa_iterator_types<T>> {
     friend class semi_static_array<T, Is...>;
     friend struct ac::iterator_core_access;
 
