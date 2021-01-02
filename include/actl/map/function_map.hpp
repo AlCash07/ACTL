@@ -10,9 +10,7 @@
 
 namespace ac {
 
-/**
- * Map that applies given function to the key.
- */
+/// Map that applies given function to the key.
 template <class Function>
 class function_map {
 public:

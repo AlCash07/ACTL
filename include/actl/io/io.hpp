@@ -148,7 +148,7 @@ bool read_final(Device& od, Format&, T& f) {
 }
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue references into
- * lvalue references, because I/O doesn't operate with rvalues. */
+/// lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
 index write(Device&& od, Format&& fmt, const Ts&... args) {

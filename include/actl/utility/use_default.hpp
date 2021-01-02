@@ -9,9 +9,7 @@
 
 namespace ac {
 
-/**
- * Indicates default type or policy where supported.
- */
+/// Indicates default type or policy where supported.
 struct use_default {};
 
 template <class T, class Default>

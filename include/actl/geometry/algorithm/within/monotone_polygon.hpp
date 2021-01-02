@@ -12,9 +12,7 @@
 
 namespace ac {
 
-/**
- * O(log N).
- */
+/// O(log N).
 template <class Policy, class T, class U>
 enum within within(const Policy& policy, const point<T>& p, const monotone_polygon<U>& poly) {
     if (poly.empty())

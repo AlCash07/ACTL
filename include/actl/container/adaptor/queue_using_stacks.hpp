@@ -10,9 +10,7 @@
 
 namespace ac {
 
-/**
- * Queue implemented with 2 stacks : amortized O(1).
- */
+/// Queue implemented with 2 stacks : amortized O(1).
 template <class T, class Stack = std::stack<T>>
 class queue_using_stacks {
 protected:

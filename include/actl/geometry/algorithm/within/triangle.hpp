@@ -12,10 +12,8 @@
 
 namespace ac {
 
-/**
- * Point vs non-degenerate triangle : O(1).
- * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
- */
+/// Point vs non-degenerate triangle : O(1).
+/// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
 template <class Policy, class T, class U>
 enum within within(const Policy& policy, const point<T>& p, const polygon<U>& triangle) {
     ACTL_ASSERT(triangle.size() == 3);

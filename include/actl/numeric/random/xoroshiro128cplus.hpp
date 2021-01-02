@@ -9,10 +9,8 @@
 
 namespace ac {
 
-/**
- * Variation of Xoroshiro128+ random engine that passes TestU01 and PractRAND tests.
- * Speed on Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz: 0.38 cycles/byte.
- */
+/// Variation of Xoroshiro128+ random engine that passes TestU01 and PractRAND tests.
+/// Speed on Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz: 0.38 cycles/byte.
 struct xoroshiro128cplus {
     using result_type = uint64_t;
 

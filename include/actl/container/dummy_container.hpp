@@ -14,9 +14,7 @@
 
 namespace ac {
 
-/**
- * Container with no data that maintains size like a vector with empty elements.
- */
+/// Container with no data that maintains size like a vector with empty elements.
 class dummy_container {
 public:
     using size_type = index;

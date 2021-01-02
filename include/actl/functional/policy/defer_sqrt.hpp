@@ -9,9 +9,7 @@
 
 namespace ac {
 
-/**
- * Comparable square root with deferred call to sqrt.
- */
+/// Comparable square root with deferred call to sqrt.
 template <class T>
 class square_root {
 public:

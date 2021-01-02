@@ -9,9 +9,7 @@
 
 namespace ac {
 
-/**
- * Property map that simply casts the key. Fitting to be a default map.
- */
+/// Property map that simply casts the key. Fitting to be a default map.
 template <class Key, class Value = Key>
 class identity_map {
 public:

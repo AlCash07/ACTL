@@ -14,15 +14,11 @@
 
 namespace ac {
 
-/**
- * N-dimensional point.
- */
+/// N-dimensional point.
 template <class T, index N = 2>
 class point;
 
-/**
- * N-dimensional point base class implementing common functionality.
- */
+/// N-dimensional point base class implementing common functionality.
 template <class T, index N>
 class point_base : base<> {
 public:
@@ -261,9 +257,7 @@ public:
 
 }  // namespace detail
 
-/**
- * 2-dimensional point specialization.
- */
+/// 2-dimensional point specialization.
 template <class T>
 class point<T, 2> : public detail::point_xy<T, 2> {
 public:
@@ -279,17 +273,13 @@ constexpr bool y_compare(const Policy& policy, const point<T0>& lhs, const point
     return v < 0 || (v == 0 && less(policy, lhs[0], rhs[0]));
 }
 
-/**
- * Point @p src rotated by pi/2 counter-clockwise.
- */
+/// Point @p src rotated by pi/2 counter-clockwise.
 template <class T>
 constexpr point<T> perpendicular(const point<T>& src) {
     return point{-src[1], src[0]};
 }
 
-/**
- * 3-dimensional point specialization.
- */
+/// 3-dimensional point specialization.
 template <class T>
 class point<T, 3> : public detail::point_xyz<T, 3> {
 public:

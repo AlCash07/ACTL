@@ -7,9 +7,7 @@
 
 namespace ac {
 
-/**
- * Empty class to enable void instantiation and take advantage of empty-base optimization.
- */
+/// Empty class to enable void instantiation and take advantage of empty-base optimization.
 struct none {
     template <class... Ts>
     explicit constexpr none(Ts...) {}

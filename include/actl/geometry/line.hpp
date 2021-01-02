@@ -92,9 +92,7 @@ private:
 
 }  // namespace detail
 
-/**
- * N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
- */
+/// N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
 template <class T, index N = 2, class Kind = detail::static_kind<line_kind::free>>
 class line : public Kind {
 public:

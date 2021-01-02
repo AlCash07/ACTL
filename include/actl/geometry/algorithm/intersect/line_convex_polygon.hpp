@@ -12,10 +12,8 @@
 
 namespace ac {
 
-/**
- * Intersection of line with convex polygon: O(log N).
- * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 271.
- */
+/// Intersection of line with convex polygon: O(log N).
+/// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 271.
 template <class Policy, class T, class K, class U, class OutIter>
 OutIter intersect(line_scalar_policy<Policy> lsp, const line<T, 2, K>& l,
                   const convex_polygon<U>& poly, OutIter dst) {

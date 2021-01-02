@@ -10,9 +10,7 @@
 
 namespace ac {
 
-/**
- * Property map that shifts key domain by the given offset (with casting).
- */
+/// Property map that shifts key domain by the given offset (with casting).
 template <class Key, class Value = Key>
 class shift_map {
 public:
@@ -38,9 +36,7 @@ auto make_shift_map(Key offset) {
 template <class K, class V>
 struct const_map_traits<shift_map<K, V>> : map_traits_base<K, V, V, true, false, true> {};
 
-/**
- * Shift property map with offset known at compile-time.
- */
+/// Shift property map with offset known at compile-time.
 template <auto Offset, class Value = decltype(Offset)>
 class static_shift_map {
     using Key = decltype(Offset);

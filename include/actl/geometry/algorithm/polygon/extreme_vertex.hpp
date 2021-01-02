@@ -11,11 +11,9 @@
 
 namespace ac {
 
-/**
- * Extreme (minimum orientation) point index with respect to the given direction : O(log N).
- * If there are two extreme vertices, the first one in counter-clockwise order is taken.
- * Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 270.
- */
+/// Extreme (minimum orientation) point index with respect to the given direction : O(log N).
+/// If there are two extreme vertices, the first one in counter-clockwise order is taken.
+/// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 270.
 template <class Policy, class T, class Function>
 auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly, Function direction) {
     auto vertex_cmp = [&](auto i, auto j) { return orientation(policy, direction(*j), *j - *i); };

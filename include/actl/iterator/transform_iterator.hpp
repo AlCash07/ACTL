@@ -10,9 +10,7 @@
 
 namespace ac {
 
-/**
- * Iterator that applies given function after dereferencing base iterator.
- */
+/// Iterator that applies given function after dereferencing base iterator.
 template <class Iterator, class Function, class Value = use_default>
 class transform_iterator;
 

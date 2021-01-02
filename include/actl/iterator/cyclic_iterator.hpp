@@ -11,9 +11,7 @@
 
 namespace ac {
 
-/**
- * Iterator that moves from the last element to the first and vice versa.
- */
+/// Iterator that moves from the last element to the first and vice versa.
 template <class Range>
 class cyclic_iterator : public iterator_adaptor<cyclic_iterator<Range>, iterator_t<Range>> {
     using Iter = iterator_t<Range>;

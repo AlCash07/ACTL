@@ -11,11 +11,9 @@
 
 namespace ac {
 
-/**
- * Winding number - number of turns around the point in counter-clockwise direction.
- * If the point is on the boundary, returns std::numeric_limits<int>::max().
- * http://geomalgorithms.com/a03-_inclusion.html
- */
+/// Winding number - number of turns around the point in counter-clockwise direction.
+/// If the point is on the boundary, returns std::numeric_limits<int>::max().
+/// http://geomalgorithms.com/a03-_inclusion.html
 template <class Policy, class T, class U>
 int winding_number(const Policy& policy, const point<T>& p, const polygon<U>& poly) {
     static constexpr int boundary = std::numeric_limits<int>::max();

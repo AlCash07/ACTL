@@ -12,9 +12,7 @@
 
 namespace ac {
 
-/**
- * This policy implies that lines are in general position (don't coincide but can be parallel).
- */
+/// This policy implies that lines are in general position (don't coincide but can be parallel).
 template <class Policy>
 struct general_position_policy {
     explicit general_position_policy(const Policy& x) : policy{x} {}

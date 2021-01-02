@@ -9,9 +9,7 @@
 
 namespace ac {
 
-/**
- * N-dimensional sphere.
- */
+/// N-dimensional sphere.
 // TODO: add bool parameter indicating if the inside is included, i.e. we have a disk.
 template <class T, index N = 3>
 class sphere {

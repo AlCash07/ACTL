@@ -12,9 +12,7 @@
 
 namespace ac {
 
-/**
- * Maximum distance between two convex polygon vertices : O(N).
- */
+/// Maximum distance between two convex polygon vertices : O(N).
 template <class Policy, class T>
 auto max_distance(const Policy& policy, const convex_polygon<T>& poly) {
     decltype(distance(policy, poly[0], poly[0])) res = 0;

@@ -11,9 +11,7 @@
 
 namespace ac {
 
-/**
- * Vector with queue interface.
- */
+/// Vector with queue interface.
 // TODO: replace with vector_as_deque.
 template <class T, class Vector = std::vector<T>>
 class vector_as_queue {

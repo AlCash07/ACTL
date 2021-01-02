@@ -10,10 +10,8 @@
 
 namespace ac {
 
-/**
- * Doubled oriented area of a polygon : O(N).
- * http://geomalgorithms.com/a01-_area.html area2D_Polygon().
- */
+/// Doubled oriented area of a polygon : O(N).
+/// http://geomalgorithms.com/a01-_area.html area2D_Polygon().
 template <class Policy, class T,
           enable_int_if<std::is_base_of_v<simple_polygon_tag, geometry::tag_t<T>> &&
                         geometry_traits<T>::dimension == 2> = 0>

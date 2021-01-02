@@ -9,10 +9,8 @@
 
 namespace ac {
 
-/**
- * Plane with equation in the form: dot(normal, x) = d.
- * In 2D represents a line.
- */
+/// Plane with equation in the form: dot(normal, x) = d.
+/// In 2D represents a line.
 template <class T, index N = 3>
 class plane {
 public:

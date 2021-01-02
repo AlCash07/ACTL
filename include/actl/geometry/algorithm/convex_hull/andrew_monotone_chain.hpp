@@ -19,11 +19,9 @@ struct andrew_monotone_chain_policy {
     const Policy& policy;
 };
 
-/**
- * Convex hull of a set of 2d points : O(N log N).
- * https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
- * Implementation reference: https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
- */
+/// Convex hull of a set of 2d points : O(N log N).
+/// https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
+/// Implementation reference: https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
 template <class Policy, class T, enable_int_if<geometry_traits<T>::dimension == 2> = 0>
 span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, const span<T>& points) {
     if (points.size() < 2)

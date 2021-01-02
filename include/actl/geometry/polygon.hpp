@@ -34,11 +34,9 @@ public:
 
 }  // namespace detail
 
-/**
- * Polygon - closed polyline defined by the sequence of vertices, that all lie in the same plane.
- * Algorithms usually expect vertices to go in counter-clockwise order.
- * @tparam T either a point (then std::vector is used as container) or a range of points.
- */
+/// Polygon - closed polyline defined by the sequence of vertices, that all lie in the same plane.
+/// Algorithms usually expect vertices to go in counter-clockwise order.
+/// @tparam T either a point (then std::vector is used as container) or a range of points.
 template <class T>
 class polygon : public detail::polygon<T> {
 public:
@@ -48,9 +46,7 @@ public:
 template <class T>
 struct geometry_traits<polygon<T>> : geometry_traits_base<polygon_tag, value_type_t<polygon<T>>> {};
 
-/**
- * Simple polygon - the boundary doesn't cross itself.
- */
+/// Simple polygon - the boundary doesn't cross itself.
 template <class T>
 class simple_polygon : public polygon<T> {
 public:
@@ -61,9 +57,7 @@ template <class T>
 struct geometry_traits<simple_polygon<T>>
     : geometry_traits_base<simple_polygon_tag, value_type_t<polygon<T>>> {};
 
-/**
- * Star polygon - has observer point, from which all the boundary is visible.
- */
+/// Star polygon - has observer point, from which all the boundary is visible.
 template <class T>
 class star_polygon : public simple_polygon<T> {
 public:
@@ -80,10 +74,8 @@ template <class T>
 struct geometry_traits<star_polygon<T>>
     : geometry_traits_base<star_polygon_tag, value_type_t<polygon<T>>> {};
 
-/**
- * Specific monotone polygon - with monotony direction (1, 0).
- * Bottom-left vertex has index 0, top-right index is returned by right().
- */
+/// Specific monotone polygon - with monotony direction (1, 0).
+/// Bottom-left vertex has index 0, top-right index is returned by right().
 template <class T>
 class monotone_polygon : public simple_polygon<T> {
 public:
@@ -101,9 +93,7 @@ template <class T>
 struct geometry_traits<monotone_polygon<T>>
     : geometry_traits_base<monotone_polygon_tag, value_type_t<polygon<T>>> {};
 
-/**
- * Convex polygon.
- */
+/// Convex polygon.
 template <class T>
 class convex_polygon : public simple_polygon<T> {
 public:
@@ -118,10 +108,8 @@ template <class T>
 struct geometry_traits<convex_polygon<T>>
     : geometry_traits_base<convex_polygon_tag, value_type_t<polygon<T>>> {};
 
-/**
- * Theoretically, every convex polygon is monotone. However, our definition of monotone polygon
- * requires special properties.
- */
+/// Theoretically, every convex polygon is monotone. However, our definition of monotone polygon
+/// requires special properties.
 template <class T>
 class convex_monotone_polygon : public monotone_polygon<T> {
 public:

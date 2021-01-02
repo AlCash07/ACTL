@@ -87,10 +87,8 @@ void* id_to_raw(iterator_id<Iter> id) {
     return bit_cast<void*>(id);
 }
 
-/**
- * Container Id is int for random access containers and wrapped const_iterator otherwise.
- * Such Id isn't invalidated by emplace operation and can be used as map or hash map key.
- */
+/// Container Id is int for random access containers and wrapped const_iterator otherwise.
+/// Such Id isn't invalidated by emplace operation and can be used as map or hash map key.
 template <class C>
 using container_id = typename container_id_traits<C>::id;
 

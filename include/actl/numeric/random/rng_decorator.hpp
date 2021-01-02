@@ -20,9 +20,7 @@ struct rng_decorator : public Rng {
         seed(std::forward<Seed>(s));
     }
 
-    /**
-     * Generates uniform random number in the range [from, to).
-     */
+    /// Generates uniform random number in the range [from, to).
     template <class T, enable_int_if<std::is_arithmetic_v<T>> = 0>
     T uniform(T from, T to) {
         if constexpr (std::is_integral_v<T>) {
@@ -32,17 +30,13 @@ struct rng_decorator : public Rng {
         }
     }
 
-    /**
-     * Generates uniform random number in the range [0, to).
-     */
+    /// Generates uniform random number in the range [0, to).
     template <class T>
     T uniform(T to) {
         return uniform(T{}, to);
     }
 
-    /**
-     * Generates normal (Gaussian) random number with mean = @p mean and stddev = @p stddev.
-     */
+    /// Generates normal (Gaussian) random number with mean = @p mean and stddev = @p stddev.
     template <class T = double, enable_int_if<std::is_floating_point_v<T>> = 0>
     T normal(T mean = T{}, T stddev = T{1}) {
         return std::normal_distribution<T>{mean, stddev}(*this);

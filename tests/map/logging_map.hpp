@@ -10,9 +10,7 @@
 
 namespace ac {
 
-/**
- * Map that writes all key-value pairs from put operations into output iterator.
- */
+/// Map that writes all key-value pairs from put operations into output iterator.
 template <class Map, class OutIter>
 class logging_map : public compressed_pair<Map, OutIter> {
 public:

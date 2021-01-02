@@ -524,22 +524,16 @@ struct overload<Equal, tensor_tag, T, U> {
     }
 };
 
-/**
- * N-dimensional array with dimensions completely or partially known at compile time.
- */
+/// N-dimensional array with dimensions completely or partially known at compile time.
 template <class T, index... Dimensions>
 using tensor_fixed =
     typename detail::tensor_fixed<T, (0 + ... + (Dimensions == dynamic_size)), Dimensions...>::type;
 
-/**
- * N-dimensional array.
- */
+/// N-dimensional array.
 template <class T, index N = dynamic_size>
 using tensor = typename detail::tensor<T, N>::type;
 
-/**
- * View of an N-dimensional array.
- */
+/// View of an N-dimensional array.
 template <class T, index N = dynamic_size>
 using tensor_view = detail::tensor_base<T*, detail::dimensions_t<N>>;
 

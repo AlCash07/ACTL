@@ -13,9 +13,7 @@
 
 namespace ac {
 
-/**
- * Increasing range from @p first to @p last (not inclusive).
- */
+/// Increasing range from @p first to @p last (not inclusive).
 template <class Int>
 auto irange(Int first, Int last) {
     auto begin = integer_iterator<Int>{first};
@@ -24,17 +22,13 @@ auto irange(Int first, Int last) {
     return make_range(begin, integer_iterator<Int>{last});
 }
 
-/**
- * Increasing range from 0 to @p last (not inclusive).
- */
+/// Increasing range from 0 to @p last (not inclusive).
 template <class Int>
 auto irange(Int last) {
     return irange(Int{}, last);
 }
 
-/**
- * Decreasing range from @p first to @p last (inclusive).
- */
+/// Decreasing range from @p first to @p last (inclusive).
 template <class Int>
 auto drange(Int first, Int last) {
     auto begin = integer_iterator<Int, false>{first};
@@ -43,17 +37,13 @@ auto drange(Int first, Int last) {
     return make_range(begin, integer_iterator<Int, false>{last - 1});
 }
 
-/**
- * Decreasing range from @p first to 0 (inclusive).
- */
+/// Decreasing range from @p first to 0 (inclusive).
 template <class Int>
 auto drange(Int first) {
     return drange(first, Int{});
 }
 
-/**
- * Range with given @p step from @p first to @p last (inclusive if @p step is negative).
- */
+/// Range with given @p step from @p first to @p last (inclusive if @p step is negative).
 template <class Int, class StepType>
 auto irange(Int first, Int last, StepType step) {
     ACTL_ASSERT(step != 0);

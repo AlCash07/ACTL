@@ -10,9 +10,7 @@
 
 namespace ac {
 
-/**
- * Counter-clockwise angle.
- */
+/// Counter-clockwise angle.
 template <class Policy, index N, class T, enable_int_if_policy<Policy> = 0>
 auto angle(const Policy& policy, const point<T, N>& p) {
     return atan2(p[1], p[0]);

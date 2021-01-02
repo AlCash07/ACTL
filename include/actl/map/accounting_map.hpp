@@ -12,10 +12,8 @@
 
 namespace ac {
 
-/**
- * Property map into integer domain that assigns next non-negative integer to every key not
- * encountered before. Can be invertible with overhead of additional vector of pointers.
- */
+/// Property map into integer domain that assigns next non-negative integer to every key not
+/// encountered before. Can be invertible with overhead of additional vector of pointers.
 template <class AssociativeContainer, bool Invertible = false>
 class accounting_map {
     using AC = AssociativeContainer;

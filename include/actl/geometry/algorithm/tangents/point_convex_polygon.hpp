@@ -11,10 +11,8 @@
 
 namespace ac {
 
-/**
- * Returns pair of iterators to polygon vertices tangent w.r.t. the given point.
- * Point must be outside the polygon.
- */
+/// Returns pair of iterators to polygon vertices tangent w.r.t. the given point.
+/// Point must be outside the polygon.
 template <class Policy, class T, class U, class OutIter>
 OutIter tangents(const Policy& policy, const point<T>& p, const convex_polygon<U>& poly,
                  OutIter dst) {
