@@ -5,14 +5,9 @@
 
 #pragma once
 
-#include <actl/traits/nested_or_default.hpp>
+#include <iterator>
 
 namespace ac {
-
-NESTED_OR_DEFAULT(iterator_category)
-NESTED_OR_DEFAULT(value_type)
-NESTED_OR_DEFAULT(reference)
-NESTED_OR_DEFAULT(difference)
 
 struct output_iterator_types {
     using iterator_category = std::output_iterator_tag;

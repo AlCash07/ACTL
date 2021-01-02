@@ -5,6 +5,10 @@
 
 #pragma once
 
+#include <type_traits>
+
+namespace ac {
+
 #define NESTED_OR_DEFAULT(nested)                                             \
     template <class T, class Default, class = void>                           \
     struct nested##_or_default {                                              \
@@ -16,3 +20,13 @@
     };                                                                        \
     template <class T, class Default>                                         \
     using nested##_or_default_t = typename nested##_or_default<T, Default>::type;
+
+NESTED_OR_DEFAULT(iterator_category)
+NESTED_OR_DEFAULT(value_type)
+NESTED_OR_DEFAULT(reference)
+NESTED_OR_DEFAULT(difference_type)
+NESTED_OR_DEFAULT(size_type)
+
+#undef NESTED_OR_DEFAULT
+
+}  // namespace ac

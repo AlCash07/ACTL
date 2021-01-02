@@ -145,7 +145,7 @@ public:
 }  // namespace detail
 
 template <class Range, class Types>
-using range_facade =
-    detail::rng_facade<Range, Types, iterator_category_t<typename Types::iterator>>;
+using range_facade = detail::rng_facade<Range, detail::range_types<Types>,
+                                        iterator_category_t<typename Types::iterator>>;
 
 }  // namespace ac

@@ -10,9 +10,18 @@
 
 namespace ac {
 
+namespace detail {
+
+template <class T>
+struct sa_types {
+    using iterator = const T*;
+    using size_type = index;
+};
+
+}  // namespace detail
+
 template <class T, T... Is>
-class static_array
-    : public contiguous_range_facade<static_array<T, Is...>, range_types<const T*, index>> {
+class static_array : public contiguous_range_facade<static_array<T, Is...>, detail::sa_types<T>> {
     static constexpr std::array<T, sizeof...(Is)> array = {Is...};
 
 public:

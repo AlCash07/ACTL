@@ -17,60 +17,63 @@ class semi_static_array;
 
 namespace detail {
 
-template <class T>
-struct ssa_iterator_types {
-    using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = T;
-    using reference = T;
-};
-
 template <class T, T... Is>
-class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>, ssa_iterator_types<T>> {
-    friend class semi_static_array<T, Is...>;
-    friend struct ac::iterator_core_access;
+struct ssa_types {
+    struct iter_types {
+        using iterator_category = std::bidirectional_iterator_tag;
+        using value_type = T;
+        using reference = T;
+    };
 
-    explicit ssa_iterator(index i, const T* aiter) : i_{i}, aiter_{aiter} {}
+    class iterator : public iterator_facade<iterator, iter_types> {
+        friend class semi_static_array<T, Is...>;
+        friend struct ac::iterator_core_access;
 
-    T get() const {
-        return static_array<T, Is...>{}[i_];
-    }
+        explicit iterator(index i, const T* arr_iter) : i_{i}, arr_iter_{arr_iter} {}
 
-    T dereference() const {
-        return get() == dynamic_size ? *aiter_ : get();
-    }
+        T get() const {
+            return static_array<T, Is...>{}[i_];
+        }
 
-    void increment() {
-        if (get() == dynamic_size)
-            ++aiter_;
-        ++i_;
-    }
+        T dereference() const {
+            return get() == dynamic_size ? *arr_iter_ : get();
+        }
 
-    void decrement() {
-        if (get() == dynamic_size)
-            --aiter_;
-        --i_;
-    }
+        void increment() {
+            if (get() == dynamic_size)
+                ++arr_iter_;
+            ++i_;
+        }
 
-    bool equals(const ssa_iterator& rhs) const {
-        return i_ == rhs.i_;
-    }
+        void decrement() {
+            if (get() == dynamic_size)
+                --arr_iter_;
+            --i_;
+        }
 
-    index i_;
-    const T* aiter_;
+        bool equals(const iterator& rhs) const {
+            return i_ == rhs.i_;
+        }
+
+        index i_;
+        const T* arr_iter_;
+    };
+
+    using size_type = index;
 };
 
 }  // namespace detail
 
 template <class T, T... Is>
-class semi_static_array : public range_facade<semi_static_array<T, Is...>,
-                                              range_types<detail::ssa_iterator<T, Is...>, index>> {
+class semi_static_array
+    : public range_facade<semi_static_array<T, Is...>, detail::ssa_types<T, Is...>> {
     static constexpr size_t N = (0 + ... + (Is == dynamic_size));
     using array_t = std::array<T, N>;
 
     array_t a_;
 
 public:
-    using iterator = detail::ssa_iterator<T, Is...>;
+    using iterator = typename detail::ssa_types<T, Is...>::iterator;
 
     explicit constexpr semi_static_array() = default;
 
@@ -83,7 +86,7 @@ public:
         auto iter = begin();
         for (const auto& x : range) {
             if (iter.get() == dynamic_size)
-                a_[static_cast<size_t>(iter.aiter_ - a_.begin())] = x;
+                a_[static_cast<size_t>(iter.arr_iter_ - a_.begin())] = x;
             else
                 ACTL_ASSERT(x == iter.get());
             ++iter;

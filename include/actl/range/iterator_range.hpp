@@ -13,9 +13,19 @@
 
 namespace ac {
 
+namespace detail {
+
+template <class Iter>
+struct iter_range_types {
+    using iterator = Iter;
+    using size_type = difference_t<Iter>;
+};
+
+}  // namespace detail
+
 template <class Iter, class Traits = default_range_traits>
 class iterator_range
-    : public range_facade<iterator_range<Iter, Traits>, range_types<Iter, difference_t<Iter>>> {
+    : public range_facade<iterator_range<Iter, Traits>, detail::iter_range_types<Iter>> {
 public:
     constexpr iterator_range() = default;
 

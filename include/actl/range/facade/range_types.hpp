@@ -7,37 +7,45 @@
 
 #include <actl/iterator/traits.hpp>
 #include <actl/traits/dependent.hpp>
+#include <actl/traits/nested_or_default.hpp>
 #include <actl/utility/use_default.hpp>
 
-namespace ac {
+namespace ac::detail {
 
-template <class Iterator, class Size = use_default,
-          bool HasReverse = is_bidirectional_iterator_v<Iterator>>
-struct range_types {
-    using value_type = value_type_t<Iterator>;
-    using reference = reference_t<Iterator>;
-    using pointer = pointer_t<Iterator>;
-    using difference_type = difference_t<Iterator>;
-    using iterator = Iterator;
-    using size_type = deduce_t<Size, std::make_unsigned_t<difference_type>>;
+template <class Iter, bool HasReverse = is_bidirectional_iterator_v<Iter>>
+struct range_ts {
+    using value_type = value_type_t<Iter>;
+    using reference = reference_t<Iter>;
+    using pointer = pointer_t<Iter>;
+    using difference_type = difference_t<Iter>;
+    using iterator = Iter;
 };
 
-template <class Iter, class S>
-struct range_types<Iter, S, true> : range_types<Iter, S, false> {
+template <class Iter>
+struct range_ts<Iter, true> : range_ts<Iter, false> {
     using reverse_iterator = std::reverse_iterator<Iter>;
 };
 
-template <class Iterator, class ConstIterator, class Size = use_default,
-          bool HasReverse = is_bidirectional_iterator_v<Iterator>>
-struct dual_range_types : range_types<Iterator, Size> {
-    using const_reference = reference_t<ConstIterator>;
-    using const_pointer = pointer_t<ConstIterator>;
-    using const_iterator = ConstIterator;
+template <class CIter, bool HasReverse = is_bidirectional_iterator_v<CIter>>
+struct crange_ts {
+    using const_reference = reference_t<CIter>;
+    using const_pointer = pointer_t<CIter>;
+    using const_iterator = CIter;
 };
 
-template <class Iter, class CIter, class S>
-struct dual_range_types<Iter, CIter, S, true> : dual_range_types<Iter, CIter, S, false> {
+template <class CIter>
+struct crange_ts<CIter, true> : crange_ts<CIter, false> {
     using const_reverse_iterator = std::reverse_iterator<CIter>;
 };
 
-}  // namespace ac
+template <class T, class = void>
+struct range_types : range_ts<typename T::iterator> {
+    using typename range_ts<typename T::iterator>::difference_type;
+    using size_type = size_type_or_default_t<T, std::make_unsigned_t<difference_type>>;
+};
+
+template <class T>
+struct range_types<T, std::void_t<typename T::const_iterator>>
+    : range_types<T, int>, crange_ts<typename T::const_iterator> {};
+
+}  // namespace ac::detail

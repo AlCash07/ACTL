@@ -11,8 +11,18 @@
 
 namespace ac {
 
+namespace detail {
+
+template <class T>
+struct span_types {
+    using iterator = T*;
+    using size_type = index;
+};
+
+}  // namespace detail
+
 template <class T, index N = dynamic_size>
-class span : public contiguous_range_facade<span<T, N>, range_types<T*, index>> {
+class span : public contiguous_range_facade<span<T, N>, detail::span_types<T>> {
 public:
     using element_type = T;
 
