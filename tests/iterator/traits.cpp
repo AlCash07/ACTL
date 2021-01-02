@@ -10,66 +10,41 @@
 #include <actl/std/vector.hpp>
 #include <iterator>
 
-TEST_CASE("is_iterator") {
-    CHECK_FALSE(is_iterator_v<int[4]>);
-    CHECK(is_iterator_v<int*>);
-    CHECK(is_iterator_v<std::vector<int>::iterator>);
-}
+static_assert(!ac::is_iterator_v<int[4]>);
+static_assert(ac::is_iterator_v<int*>);
+static_assert(ac::is_iterator_v<std::vector<int>::iterator>);
 
-TEST_CASE("is_const_iterator") {
-    CHECK_FALSE(is_const_iterator_v<int[4]>);
-    CHECK_FALSE(is_const_iterator_v<int*>);
-    CHECK(is_const_iterator_v<std::vector<int>::const_iterator>);
-}
+static_assert(!ac::is_const_iterator_v<int[4]>);
+static_assert(ac::is_const_iterator_v<const int*>);
+static_assert(ac::is_const_iterator_v<std::vector<int>::const_iterator>);
 
-TEST_CASE("is_non_const_iterator") {
-    CHECK_FALSE(is_non_const_iterator_v<int[4]>);
-    CHECK_FALSE(is_non_const_iterator_v<const int*>);
-    CHECK(is_non_const_iterator_v<std::vector<int>::iterator>);
-}
+static_assert(!ac::is_non_const_iterator_v<int[4]>);
+static_assert(ac::is_non_const_iterator_v<int*>);
+static_assert(ac::is_non_const_iterator_v<std::vector<int>::iterator>);
 
-TEST_CASE("C array is not any kind of iterator") {
-    using Iter = int[4];
-    CHECK_FALSE(is_input_iterator_v<Iter>);
-    CHECK_FALSE(is_output_iterator_v<Iter>);
-    CHECK_FALSE(is_forward_iterator_v<Iter>);
-    CHECK_FALSE(is_bidirectional_iterator_v<Iter>);
-    CHECK_FALSE(is_random_access_iterator_v<Iter>);
-}
+using InputIter = std::istream_iterator<int>;
+static_assert(!ac::is_output_iterator_v<InputIter>);
+static_assert(ac::is_input_iterator_v<InputIter>);
+static_assert(!ac::is_forward_iterator_v<InputIter>);
 
-TEST_CASE("std::istream_iterator is only input iterator") {
-    using Iter = std::istream_iterator<int>;
-    CHECK_FALSE(is_output_iterator_v<Iter>);
-    CHECK(is_input_iterator_v<Iter>);
-    CHECK_FALSE(is_forward_iterator_v<Iter>);
-}
+using OutputIter = std::ostream_iterator<int>;
+static_assert(!ac::is_input_iterator_v<OutputIter>);
+static_assert(ac::is_output_iterator_v<OutputIter>);
+static_assert(!ac::is_forward_iterator_v<OutputIter>);
 
-TEST_CASE("std::ostream_iterator is only output iterator") {
-    using Iter = std::ostream_iterator<int>;
-    CHECK_FALSE(is_input_iterator_v<Iter>);
-    CHECK(is_output_iterator_v<Iter>);
-    CHECK_FALSE(is_forward_iterator_v<Iter>);
-}
+using ForwardIter = std::forward_list<int>::iterator;
+static_assert(!ac::is_output_iterator_v<ForwardIter>);
+static_assert(ac::is_forward_iterator_v<ForwardIter>);
+static_assert(!ac::is_random_access_iterator_v<ForwardIter>);
 
-TEST_CASE("std::forward_list iterator is forward") {
-    using Iter = std::forward_list<int>::iterator;
-    CHECK_FALSE(is_output_iterator_v<Iter>);
-    CHECK(is_forward_iterator_v<Iter>);
-    CHECK_FALSE(is_random_access_iterator_v<Iter>);
-}
+using BidirIter = std::list<int>::iterator;
+static_assert(!ac::is_output_iterator_v<BidirIter>);
+static_assert(ac::is_forward_iterator_v<BidirIter>);
+static_assert(ac::is_bidirectional_iterator_v<BidirIter>);
+static_assert(!ac::is_random_access_iterator_v<BidirIter>);
 
-TEST_CASE("std::list iterator is bidirectional") {
-    using Iter = std::list<int>::iterator;
-    CHECK_FALSE(is_output_iterator_v<Iter>);
-    CHECK(is_forward_iterator_v<Iter>);
-    CHECK(is_bidirectional_iterator_v<Iter>);
-    CHECK_FALSE(is_random_access_iterator_v<Iter>);
-}
-
-TEST_CASE("std::vector iterator is random access") {
-    using Iter = std::vector<int>::iterator;
-    CHECK_FALSE(is_output_iterator_v<Iter>);
-    CHECK(is_forward_iterator_v<Iter>);
-    CHECK(is_bidirectional_iterator_v<Iter>);
-    CHECK(is_random_access_iterator_v<Iter>);
-}
+using RandAccessIter = std::vector<int>::iterator;
+static_assert(!ac::is_output_iterator_v<RandAccessIter>);
+static_assert(ac::is_forward_iterator_v<RandAccessIter>);
+static_assert(ac::is_bidirectional_iterator_v<RandAccessIter>);
+static_assert(ac::is_random_access_iterator_v<RandAccessIter>);
