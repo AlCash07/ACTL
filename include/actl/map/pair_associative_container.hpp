@@ -30,9 +30,13 @@ struct map_ops<AC, detail::enable_if_upac_t<AC>> {
         return it == map.end() ? map_reference_t<AC>{} : it->second;
     }
 
-    static void put(AC& map, map_key_t<AC> key, map_value_t<AC> value) { map[key] = value; }
+    static void put(AC& map, map_key_t<AC> key, map_value_t<AC> value) {
+        map[key] = value;
+    }
 
-    static AC& map_range(AC& map) { return map; }
+    static AC& map_range(AC& map) {
+        return map;
+    }
 };
 
 }  // namespace ac

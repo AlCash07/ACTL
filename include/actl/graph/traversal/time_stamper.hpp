@@ -31,7 +31,9 @@ struct in_out_time_stamper : time_stamper<Map, T> {
 
     using time_stamper<Map, T>::operator();
 
-    void operator()(on_vertex_finish, map_key_t<Map> u) { put(out_time, u, this->time_now); }
+    void operator()(on_vertex_finish, map_key_t<Map> u) {
+        put(out_time, u, this->time_now);
+    }
 };
 
 template <class Map>

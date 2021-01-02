@@ -16,6 +16,7 @@ struct escaped {
 namespace detail {
 
 inline char escape(char c) {
+    // clang-format off
     switch (c) {
         case '\0': return '0';
         case '\a': return 'a';
@@ -30,6 +31,7 @@ inline char escape(char c) {
         case '\\': return '\\';
         default: return char{};
     }
+    // clang-format on
 }
 
 template <class Char>
@@ -49,7 +51,7 @@ index write_final(Device& od, Format&, const escaped_string<Char>& s) {
     return res;
 }
 
-}
+}  // namespace detail
 
 template <class C, enable_int_if<std::is_same_v<C, char>> = 0>
 auto encode(escaped, const C& c) {

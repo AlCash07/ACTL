@@ -20,7 +20,8 @@ std::vector<V> test_vertices(Graph& graph) {
     CHECK(3l == graph.vertex_count());
     auto [v3, ok] = graph.try_add_vertex(1, "v3");
     CHECK_FALSE(is_unique_range_v<typename Graph::vertex_container> == ok);
-    if (ok) vs.push_back(v3);
+    if (ok)
+        vs.push_back(v3);
     auto map = graph[vertex_property{}];
     graph[vs[2]].s = "v2a";
     put(map, vs[0], bundle(0, "v0a"));

@@ -28,7 +28,8 @@ OutIter intersect(line_scalar_policy<Policy> lsp, const line<T, 2, K>& l,
     auto vertex_orient = [&](auto it) { return orientation(policy, *it, l); };
     auto right_orient = vertex_orient(right);
     auto left_orient = vertex_orient(left);
-    if (left_orient == orientation2d::left || right_orient == orientation2d::right) return dst;
+    if (left_orient == orientation2d::left || right_orient == orientation2d::right)
+        return dst;
     // TODO: in case line passes through exactly one vertex, it's reported twice. Fix this.
     auto intersect_chain = [&](auto first, auto last, orientation2d first_orient, OutIter dst) {
         while (first + 1 != last) {

@@ -28,7 +28,9 @@ template <class It, class F, class V>
 class transform_iterator : public detail::transform_it_base<It, F, V> {
     friend struct ac::iterator_core_access;
 
-    auto dereference() const { return f_(*this->base()); }
+    auto dereference() const {
+        return f_(*this->base());
+    }
 
     F f_;
 

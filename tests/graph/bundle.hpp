@@ -15,8 +15,12 @@ struct bundle {
     explicit bundle() = default;
     explicit bundle(int i, std::string s) : i{i}, s{s} {};
 
-    bool operator < (const bundle& rhs) const { return i < rhs.i; }
-    bool operator == (const bundle& rhs) const { return i == rhs.i; }
+    bool operator<(const bundle& rhs) const {
+        return i < rhs.i;
+    }
+    bool operator==(const bundle& rhs) const {
+        return i == rhs.i;
+    }
 
     size_t hash() const {
         return ac::hash_value(i);

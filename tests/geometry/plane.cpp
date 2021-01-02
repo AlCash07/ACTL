@@ -6,11 +6,17 @@
 #include "test.hpp"
 #include <actl/geometry/plane.hpp>
 
-int rand1() { return ac::random.uniform(-800, 800); }
+int rand1() {
+    return ac::random.uniform(-800, 800);
+}
 
-point<int> rand2() { return {rand1(), rand1()}; }
+point<int> rand2() {
+    return {rand1(), rand1()};
+}
 
-point<int, 3> rand3() { return {rand1(), rand1(), rand1()}; }
+point<int, 3> rand3() {
+    return {rand1(), rand1(), rand1()};
+}
 
 TEST_CASE("2d", repeat = 1000) {
     point a = rand2();

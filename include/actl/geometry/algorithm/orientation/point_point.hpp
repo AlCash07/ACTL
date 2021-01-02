@@ -27,7 +27,8 @@ enum orientation orientation(const Policy& policy, const point<T0, N>& lhs,
                              const point<T1, N>& rhs) {
     index i = 0;
     for (; i < N && equal(policy, lhs[i], 0); ++i) {
-        if (!equal(policy, rhs[i], 0)) return orientation::non_collinear;
+        if (!equal(policy, rhs[i], 0))
+            return orientation::non_collinear;
     }
     for (index j = i + 1; j < N; ++j) {
         if (!collinear(policy, point{lhs[i], lhs[j]}, point{rhs[i], rhs[j]}))

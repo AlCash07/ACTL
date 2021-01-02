@@ -29,7 +29,8 @@ convex_polygon<point<int>> get_max_convex_polygon(int max_coordinate) {
     auto get_max = [](int n) { return n * (n + 3) / 2; };
     convex_polygon<point<int>> poly;
     int n = 0;
-    while (get_max(n + 1) <= max_coordinate) ++n;
+    while (get_max(n + 1) <= max_coordinate)
+        ++n;
     int y = max_coordinate - n;
     int x = y + 1;
     for (index i : irange(n)) {

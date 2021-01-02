@@ -14,7 +14,9 @@ namespace ac::detail {
 
 template <class E>
 struct edge_inverter {
-    E operator()(E e) const { return E{e.target(), e.source(), e.bundle()}; }
+    E operator()(E e) const {
+        return E{e.target(), e.source(), e.bundle()};
+    }
 };
 
 template <class G>
@@ -24,11 +26,17 @@ template <class G, class It>
 class adj_list_out_edge_it : public iterator_facade<adj_list_out_edge_it<G, It>, edge_it_types<G>> {
     friend struct ac::iterator_core_access;
 
-    edge_t<G> dereference() const { return g_->get_edge(u_, *it_); }
+    edge_t<G> dereference() const {
+        return g_->get_edge(u_, *it_);
+    }
 
-    void increment() { ++it_; }
+    void increment() {
+        ++it_;
+    }
 
-    bool equals(const adj_list_out_edge_it& rhs) const { return it_ == rhs.it_; }
+    bool equals(const adj_list_out_edge_it& rhs) const {
+        return it_ == rhs.it_;
+    }
 
     const G* g_;
     vertex_t<G> u_;
@@ -39,16 +47,22 @@ public:
 
     explicit adj_list_out_edge_it(const G* g, vertex_t<G> u, It it) : g_{g}, u_{u}, it_{it} {}
 
-    It id() const { return it_; }
+    It id() const {
+        return it_;
+    }
 };
 
 template <class G>
 class adj_list_edge_it : public iterator_facade<adj_list_edge_it<G>, edge_it_types<G>> {
     friend struct ac::iterator_core_access;
 
-    edge_t<G> dereference() const { return g_->get_edge(u_, *it_); }
+    edge_t<G> dereference() const {
+        return g_->get_edge(u_, *it_);
+    }
 
-    bool is_end() const { return u_ == id_end(g_->vertices_); }
+    bool is_end() const {
+        return u_ == id_end(g_->vertices_);
+    }
 
     bool is_reverse_edge() const {
         if constexpr (G::is_undirected) {
@@ -62,7 +76,8 @@ class adj_list_edge_it : public iterator_facade<adj_list_edge_it<G>, edge_it_typ
         while (!is_end()) {
             if (it_ == g_->out_end(u_)) {
                 ++u_;
-                if (!is_end()) it_ = g_->out_begin(u_);
+                if (!is_end())
+                    it_ = g_->out_begin(u_);
             } else {
                 if (is_reverse_edge()) {
                     ++it_;
@@ -74,7 +89,8 @@ class adj_list_edge_it : public iterator_facade<adj_list_edge_it<G>, edge_it_typ
     }
 
     void increment() {
-        if (is_end()) return;
+        if (is_end())
+            return;
         ++it_;
         skip_empty();
     }

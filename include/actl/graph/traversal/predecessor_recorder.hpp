@@ -12,7 +12,9 @@ namespace ac {
 
 template <class Map>
 struct predecessor_recorder {
-    void operator()(on_search_start, map_key_t<Map> u) { put(map, u, u); }
+    void operator()(on_search_start, map_key_t<Map> u) {
+        put(map, u, u);
+    }
 
     template <class E>
     void operator()(on_tree_edge_start, E e) {

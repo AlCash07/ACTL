@@ -43,11 +43,13 @@ OutIter intersect(line_scalar_policy<Policy> lsp, const line<T0, 2, K0>& lhs,
                   const line<T1, 2, K1>& rhs, OutIter dst) {
     auto& policy = lsp.policy;
     auto tarea = area(policy, rhs.vector, lhs.vector);
-    if (equal(policy, tarea, 0)) return dst;
+    if (equal(policy, tarea, 0))
+        return dst;
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
     auto rarea = area(policy, v, lhs.vector);
-    if (!detail::cross_test(policy, lhs, rhs, tarea, larea, rarea)) return dst;
+    if (!detail::cross_test(policy, lhs, rhs, tarea, larea, rarea))
+        return dst;
     *dst++ = ratio(policy, larea, tarea);
     return dst;
 }
@@ -66,11 +68,13 @@ OutIter intersect(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
     if (equal(policy, tarea, 0)) {
-        if (!equal(policy, larea, 0)) return dst;
+        if (!equal(policy, larea, 0))
+            return dst;
         return detail::common_line(policy, lhs, rhs, dst);
     }
     auto rarea = area(policy, v, lhs.vector);
-    if (!detail::cross_test(policy, lhs, rhs, tarea, larea, rarea)) return dst;
+    if (!detail::cross_test(policy, lhs, rhs, tarea, larea, rarea))
+        return dst;
     auto p = lhs(policy, ratio(policy, larea, tarea));
     *dst++ = make_any_line(p, decltype(p){}, line_kind::closed_segment, true);
     return dst;

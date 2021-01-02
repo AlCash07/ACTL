@@ -18,8 +18,12 @@ struct vertex_initializer : Base {
 
     using Base::operator();
 
-    void operator()(on_vertex_initialize, vertex u) { put(map, u, value); }
-    bool operator()(is_vertex_discovered, vertex u) { return get(map, u) != value; }
+    void operator()(on_vertex_initialize, vertex u) {
+        put(map, u, value);
+    }
+    bool operator()(is_vertex_discovered, vertex u) {
+        return get(map, u) != value;
+    }
 
     map_value_t<map_t> value;
 };

@@ -21,8 +21,12 @@ public:
 
     constexpr iterator_range(It begin, It end) : begin_{begin}, end_{end} {}
 
-    constexpr It begin() const { return begin_; }
-    constexpr It end() const { return end_; }
+    constexpr It begin() const {
+        return begin_;
+    }
+    constexpr It end() const {
+        return end_;
+    }
 
 private:
     It begin_;

@@ -27,7 +27,8 @@ public:
     static_assert((Mode & app) > 0, "only append is supported now");
 
     explicit out_string(std::basic_string<Char>& s) : s_{s} {
-        if constexpr (trunc == (Mode & trunc)) s = {};
+        if constexpr (trunc == (Mode & trunc))
+            s = {};
     }
 
     index write(Char c) {
@@ -62,7 +63,9 @@ protected:
 public:
     using base_t::base_t;
 
-    cspan<Char> input_data() const { return {s_.data() + pos_, s_.data() + s_.size()}; }
+    cspan<Char> input_data() const {
+        return {s_.data() + pos_, s_.data() + s_.size()};
+    }
 
     Char peek() {
         auto i = static_cast<size_t>(pos_);
@@ -87,7 +90,9 @@ public:
         ACTL_ASSERT(0 <= pos_ && pos_ <= static_cast<index>(s_.size()));
     }
 
-    bool eof() const { return static_cast<index>(s_.size()) < pos_; }
+    bool eof() const {
+        return static_cast<index>(s_.size()) < pos_;
+    }
 };
 
 template <mode_t Mode, class Char = char>

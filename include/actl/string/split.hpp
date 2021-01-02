@@ -22,13 +22,15 @@ std::vector<std::string> split(std::string_view line, CharPredicate is_delimiter
             res.emplace_back();
         }
     }
-    if ((remove_empty || res.size() == 1u) && res.back().empty()) res.pop_back();
+    if ((remove_empty || res.size() == 1u) && res.back().empty())
+        res.pop_back();
     return res;
 }
 
 inline std::vector<std::string> split(std::string_view line, char delimiter,
                                       bool remove_empty = true) {
-    return split(line, [delimiter](char c) { return c == delimiter; }, remove_empty);
+    return split(
+        line, [delimiter](char c) { return c == delimiter; }, remove_empty);
 }
 
 }  // namespace ac

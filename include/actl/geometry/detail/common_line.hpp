@@ -25,7 +25,8 @@ const auto& max_endpoint(const Policy& policy, const std::pair<T, endpoint>& lhs
             return lhs;
         } else {
             int v = cmp3way(policy, lhs.first, rhs.first);
-            if (v == 0) return lhs.second >= rhs.second ? lhs : rhs;
+            if (v == 0)
+                return lhs.second >= rhs.second ? lhs : rhs;
             return v > 0 == start ? lhs : rhs;
         }
     }

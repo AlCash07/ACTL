@@ -25,9 +25,13 @@ class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>,
 
     explicit ssa_iterator(index i, const T* ait) : i_{i}, ait_{ait} {}
 
-    T get() const { return static_array<T, Is...>{}[i_]; }
+    T get() const {
+        return static_array<T, Is...>{}[i_];
+    }
 
-    T dereference() const { return get() == dynamic_size ? *ait_ : get(); }
+    T dereference() const {
+        return get() == dynamic_size ? *ait_ : get();
+    }
 
     void increment() {
         if (get() == dynamic_size)
@@ -41,7 +45,9 @@ class ssa_iterator : public iterator_facade<ssa_iterator<T, Is...>,
         --i_;
     }
 
-    bool equals(const ssa_iterator& rhs) const { return i_ == rhs.i_; }
+    bool equals(const ssa_iterator& rhs) const {
+        return i_ == rhs.i_;
+    }
 
     index i_;
     const T* ait_;
@@ -80,10 +86,16 @@ public:
         ACTL_ASSERT(it == end());
     }
 
-    auto begin() const { return iterator{0, a_.begin()}; }
-    auto end() const { return iterator{size(), a_.end()}; }
+    auto begin() const {
+        return iterator{0, a_.begin()};
+    }
+    auto end() const {
+        return iterator{size(), a_.end()};
+    }
 
-    static constexpr index size() { return index{sizeof...(Is)}; }
+    static constexpr index size() {
+        return index{sizeof...(Is)};
+    }
 
     T operator[](index i) const {
         auto it = begin();
@@ -91,7 +103,9 @@ public:
         return *it;
     }
 
-    friend void swap(semi_static_array& lhs, semi_static_array& rhs) { lhs.a_.swap(rhs.a_); }
+    friend void swap(semi_static_array& lhs, semi_static_array& rhs) {
+        lhs.a_.swap(rhs.a_);
+    }
 };
 
 template <class T, T... Is>

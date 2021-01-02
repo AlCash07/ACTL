@@ -37,9 +37,13 @@ public:
         return suffix_parser.parse(s);
     }
 
-    bool ready() const { return suffix_parser.ready() && state != states::empty; }
+    bool ready() const {
+        return suffix_parser.ready() && state != states::empty;
+    }
 
-    bool value() const { return x; }
+    bool value() const {
+        return x;
+    }
 };
 
 }  // namespace ac::io

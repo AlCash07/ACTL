@@ -12,7 +12,8 @@ namespace ac {
 
 template <class Policy, class T, enable_int_if_policy<Policy> = 0>
 orientation2d orientation(const Policy& policy, const convex_polygon<T>& poly) {
-    if (poly.size() < 3) return orientation2d::collinear;
+    if (poly.size() < 3)
+        return orientation2d::collinear;
     auto it = poly.begin();
     return orientation(policy, it[0], it[1], it[2]);
 }

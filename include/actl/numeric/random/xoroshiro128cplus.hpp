@@ -28,8 +28,12 @@ struct xoroshiro128cplus {
         return r + (x + y < y);
     }
 
-    static constexpr uint64_t min() { return uint64_t{}; }
-    static constexpr uint64_t max() { return ~uint64_t{}; }
+    static constexpr uint64_t min() {
+        return uint64_t{};
+    }
+    static constexpr uint64_t max() {
+        return ~uint64_t{};
+    }
 
 protected:
     alignas(16) uint64_t state[2] = {0x2b2226c33510fa6, 0xf3ce5935970031d3};

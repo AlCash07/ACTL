@@ -26,10 +26,13 @@ public:
         : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
     ~in_file() {
-        if (own_) std::fclose(file_);
+        if (own_)
+            std::fclose(file_);
     }
 
-    bool eof() const { return std::feof(file_) != 0; }
+    bool eof() const {
+        return std::feof(file_) != 0;
+    }
 
 protected:
     std::FILE* file_;
@@ -81,16 +84,22 @@ class file<Mode, Char, true> : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;
 
-    index write(Char c) { return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0; }
+    index write(Char c) {
+        return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0;
+    }
 
     index write(const cspan<Char>& src) {
         return static_cast<index>(
             std::fwrite(src.data(), sizeof(Char), static_cast<size_t>(src.size()), this->file_));
     }
 
-    void flush() { std::fflush(this->file_); }
+    void flush() {
+        std::fflush(this->file_);
+    }
 
-    ~file() { flush(); }
+    ~file() {
+        flush();
+    }
 };
 
 }  // namespace ac::io

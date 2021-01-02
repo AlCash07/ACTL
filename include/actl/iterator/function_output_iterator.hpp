@@ -20,14 +20,16 @@ public:
     explicit function_output_iterator(const Function& f = {}) : f_{f} {}
 
     template <class T>
-    void operator = (T&& x) const {
+    void operator=(T&& x) const {
         f_(std::forward<T>(x));
     }
 
 private:
     friend struct ac::iterator_core_access;
 
-    const function_output_iterator& dereference() const { return *this; }
+    const function_output_iterator& dereference() const {
+        return *this;
+    }
 
     void increment() {}
 

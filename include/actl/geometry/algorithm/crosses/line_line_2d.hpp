@@ -18,14 +18,18 @@ public:
     bool flag = false;
 
     template <class T>
-    void operator = (T) const {}
+    void operator=(T) const {}
 
 private:
     friend struct ac::iterator_core_access;
 
-    const flag_output_iterator& dereference() const { return *this; }
+    const flag_output_iterator& dereference() const {
+        return *this;
+    }
 
-    void increment() { flag = true; }
+    void increment() {
+        flag = true;
+    }
 };
 
 }  // namespace detail

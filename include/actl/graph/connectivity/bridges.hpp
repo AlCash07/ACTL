@@ -18,7 +18,8 @@ namespace detail {
 template <bool Once, bool Other>
 struct once_equal {
     operator bool() {
-        if (x_ == Other) return Other;
+        if (x_ == Other)
+            return Other;
         x_ = Other;
         return Once;
     }
@@ -28,7 +29,9 @@ struct once_equal {
 
 template <bool All>
 struct once_equal<All, All> {
-    constexpr operator bool() { return All; }
+    constexpr operator bool() {
+        return All;
+    }
 };
 
 }  // namespace detail
@@ -47,8 +50,12 @@ struct bridge_finder {
     using E = edge_t<Graph>;
     using T = map_value_t<TimeMap>;
 
-    void operator()(on_vertex_initialize, V u) { put(time_low, u, 0); }
-    bool operator()(is_vertex_discovered, V u) { return get(time_low, u) != 0; }
+    void operator()(on_vertex_initialize, V u) {
+        put(time_low, u, 0);
+    }
+    bool operator()(is_vertex_discovered, V u) {
+        return get(time_low, u) != 0;
+    }
 
     void operator()(on_vertex_start, V u) {
         put(time_low, u, ++time_now);
@@ -59,7 +66,8 @@ struct bridge_finder {
         V v = e.target();
         if (!dfs_stack.empty()) {
             auto& top = dfs_stack.top();
-            if (top.vertex() == v && top) return;
+            if (top.vertex() == v && top)
+                return;
         }
         T low = get(time_low, v);
         V u = e.source();
@@ -71,11 +79,13 @@ struct bridge_finder {
 
     void operator()(on_tree_edge_finish, E e) {
         operator()(on_non_tree_edge{}, e);
-        if (!get(not_root, e.target())) *bridges++ = e;
+        if (!get(not_root, e.target()))
+            *bridges++ = e;
     }
 
     void operator()(on_vertex_finish, V u) {
-        if (!get(not_root, u)) components.pop(u);
+        if (!get(not_root, u))
+            components.pop(u);
     }
 
     BridgeOutIter bridges;

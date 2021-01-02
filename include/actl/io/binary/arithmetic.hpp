@@ -21,7 +21,8 @@ template <class Device, class Format, class T, enable_int_if<std::is_arithmetic_
 bool deserialize(Device& id, Format&, T& x, binary) {
     std::array<std::byte, sizeof(T)> bytes;
     bool ok = id.read(bytes) == static_cast<index>(bytes.size());
-    if (ok) x = bit_cast<T>(bytes);
+    if (ok)
+        x = bit_cast<T>(bytes);
     return ok;
 }
 

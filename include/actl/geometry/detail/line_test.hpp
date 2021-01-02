@@ -12,9 +12,12 @@ namespace ac::detail {
 template <class Policy, class T, class U>
 bool endpoint_test(const Policy& policy, endpoint kind, const T& lhs, const U& rhs) {
     switch (kind) {
-        case endpoint::free: return true;
-        case endpoint::closed: return !less(policy, rhs, lhs);
-        case endpoint::open: return less(policy, lhs, rhs);
+        case endpoint::free:
+            return true;
+        case endpoint::closed:
+            return !less(policy, rhs, lhs);
+        case endpoint::open:
+            return less(policy, lhs, rhs);
     }
 }
 

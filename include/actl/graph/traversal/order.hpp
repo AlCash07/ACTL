@@ -21,20 +21,29 @@ struct inorder_printer {
 
     using vertex = output_type_t<VertexOutIter>;
 
-    void operator()(on_vertex_initialize, vertex u) { put(state, u, -1); }
-    void operator()(on_vertex_discover, vertex u) { put(state, u, 0); }
-    bool operator()(is_vertex_discovered, vertex u) { return get(state, u) != -1; }
+    void operator()(on_vertex_initialize, vertex u) {
+        put(state, u, -1);
+    }
+    void operator()(on_vertex_discover, vertex u) {
+        put(state, u, 0);
+    }
+    bool operator()(is_vertex_discovered, vertex u) {
+        return get(state, u) != -1;
+    }
 
     template <class E>
     void operator()(on_tree_edge_start, E e) {
         vertex u = e.source();
         decltype(auto) current = get(state, u);
-        if (current > 0) *dst++ = u;
-        if (current < 2) put(state, u, current + 1);
+        if (current > 0)
+            *dst++ = u;
+        if (current < 2)
+            put(state, u, current + 1);
     }
 
     void operator()(on_vertex_finish, vertex u) {
-        if (get(state, u) < 2) *dst++ = u;
+        if (get(state, u) < 2)
+            *dst++ = u;
     }
 };
 
@@ -42,7 +51,9 @@ template <class Event, class VertexOutIter>
 struct vertex_printer {
     VertexOutIter dst;
 
-    void operator()(Event, output_type_t<VertexOutIter> u) { *dst++ = u; }
+    void operator()(Event, output_type_t<VertexOutIter> u) {
+        *dst++ = u;
+    }
 };
 
 template <class Graph, class VertexOutIter>

@@ -24,8 +24,7 @@ struct parser_executor {
 
     template <class Device>
     bool operator()(Device& id) {
-        while (parsed_available_data(id, parser))
-            ;
+        while (parsed_available_data(id, parser)) {}
         bool ok = parser.ready();
         if (ok)
             dst = parser.value();
@@ -39,8 +38,7 @@ struct parser_executor<void, Parser> {
 
     template <class Device>
     bool operator()(Device& id) {
-        while (parsed_available_data(id, parser))
-            ;
+        while (parsed_available_data(id, parser)) {}
         return parser.ready();
     }
 };

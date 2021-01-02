@@ -21,7 +21,8 @@ auto antipodal_vertices(const Policy& policy, const convex_polygon<T>& poly, Out
         for (; j != poly.end(); ++j) {
             *dst++ = std::pair{i, j};
             auto vecj = *(j + 1 != poly.end() ? j + 1 : poly.begin()) - *j;
-            if (!left_turn(policy, i[1] - *i, vecj)) break;
+            if (!left_turn(policy, i[1] - *i, vecj))
+                break;
         }
     }
     return dst;

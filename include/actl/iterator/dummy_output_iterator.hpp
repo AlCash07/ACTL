@@ -13,11 +13,19 @@ struct dummy_output_iterator : output_iterator_types {
     using R = dummy_output_iterator&;
 
     template <class T>
-    R operator = (const T&) { return *this; }
+    R operator=(const T&) {
+        return *this;
+    }
 
-    R operator*() { return *this; }
-    R operator++() { return *this; }
-    R operator++(int) { return *this; }
+    R operator*() {
+        return *this;
+    }
+    R operator++() {
+        return *this;
+    }
+    R operator++(int) {
+        return *this;
+    }
 };
 
 }  // namespace ac

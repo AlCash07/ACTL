@@ -18,7 +18,8 @@ OutIter intersect(const Policy& policy, const circle<T0>& lhs, const circle<T1>&
     auto centers_dist2 = dot(policy, centers_vector);
     int sgn0 = cmp3way(policy, centers_dist2, sqr(policy, lhs.radius - rhs.radius));
     int sgn1 = cmp3way(policy, sqr(policy, lhs.radius + rhs.radius), centers_dist2);
-    if (sgn0 < 0 || sgn1 < 0) return dst;
+    if (sgn0 < 0 || sgn1 < 0)
+        return dst;
     auto lradius2 = sqr(policy, lhs.radius);
     auto rradius2 = sqr(policy, rhs.radius);
     auto a = ratio(policy, lradius2 - rradius2, centers_dist2);

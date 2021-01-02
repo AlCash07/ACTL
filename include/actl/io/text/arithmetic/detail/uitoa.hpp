@@ -18,7 +18,8 @@ Char* uitoa(Char* last, Format& fmt, UInt x, UInt base) {
             x /= base;
             *--last = static_cast<Char>('0' + digit);
         } while (x != 0);
-        if (show_base) *--last = '0';
+        if (show_base)
+            *--last = '0';
     } else {
         bool show_base = ShowBase && fmt.getf(flag::showbase) && x != 0 && base == 16;
         Char a = fmt.getf(flag::uppercase) ? 'A' : 'a';

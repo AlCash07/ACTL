@@ -15,9 +15,13 @@ namespace ac {
 template <class Key, class Value = Key>
 class identity_map {
 public:
-    constexpr static Value get(Key key) { return static_cast<Value>(key); }
+    constexpr static Value get(Key key) {
+        return static_cast<Value>(key);
+    }
 
-    constexpr static Key invert(Value value) { return static_cast<Key>(value); }
+    constexpr static Key invert(Value value) {
+        return static_cast<Key>(value);
+    }
 };
 
 template <class K, class V>

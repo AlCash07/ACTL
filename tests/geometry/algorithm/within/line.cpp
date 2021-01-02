@@ -11,7 +11,8 @@ TEST_CASE("all cases") {
     auto test_points = [&points](line_kind kind) {
         any_line<int> l{points[1], points[3], kind};
         std::vector<bool> w;
-        for (const auto& p : points) w.push_back(within(p, l) == within::border);
+        for (const auto& p : points)
+            w.push_back(within(p, l) == within::border);
         return w;
     };
     CHECK(std::vector{true, true, true, true, true, false} == test_points(line_kind::free));

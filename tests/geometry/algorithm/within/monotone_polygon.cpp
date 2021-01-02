@@ -9,7 +9,8 @@
 
 TEST_CASE("trident") {
     auto poly = get_trident_polygon();
-    for (auto& p : poly) p *= 2;
+    for (auto& p : poly)
+        p *= 2;
     for (auto p : poly) {
         CHECK(within::border == within(p, poly));
     }

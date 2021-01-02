@@ -27,7 +27,8 @@ TEST_CASE("3d") {
     for (int x : irange(-1, 2)) {
         for (int y : irange(-1, 2)) {
             for (int z : irange(-1, 2)) {
-                if (x != 0 || y != 0 || z != 0) v.emplace_back(x, y, z);
+                if (x != 0 || y != 0 || z != 0)
+                    v.emplace_back(x, y, z);
             }
         }
     }

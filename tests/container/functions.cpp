@@ -10,11 +10,11 @@
 #include <actl/range/algorithm.hpp>
 #include <actl/std/all.hpp>
 
-static std::vector<int> xs        = {5, 4, 1, 2, 4, 2};
+static std::vector<int> xs = {5, 4, 1, 2, 4, 2};
 static std::vector<int> sorted_xs = {1, 2, 2, 4, 4, 5};
 static std::vector<int> unique_xs = {1, 2, 4, 5};
 
-static std::vector<int> xs2        = {5, 4, 1, 4};
+static std::vector<int> xs2 = {5, 4, 1, 4};
 static std::vector<int> sorted_xs2 = {1, 4, 4, 5};
 static std::vector<int> unique_xs2 = {1, 4, 5};
 

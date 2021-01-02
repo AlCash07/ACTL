@@ -17,9 +17,15 @@ struct discovered_flag {
 
     using vertex = map_key_t<Map>;
 
-    void operator()(on_vertex_initialize, vertex u) { put(map, u, false); }
-    void operator()(on_vertex_discover, vertex u) { put(map, u, true); }
-    bool operator()(is_vertex_discovered, vertex u) { return get(map, u); }
+    void operator()(on_vertex_initialize, vertex u) {
+        put(map, u, false);
+    }
+    void operator()(on_vertex_discover, vertex u) {
+        put(map, u, true);
+    }
+    bool operator()(is_vertex_discovered, vertex u) {
+        return get(map, u);
+    }
 
     Map map;
 };

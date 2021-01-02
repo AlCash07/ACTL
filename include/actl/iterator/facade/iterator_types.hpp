@@ -16,20 +16,26 @@ template <class Ref>
 struct operator_arrow_dispatch {  // proxy references
     struct proxy {
         explicit proxy(const Ref& ref) : ref_{ref} {}
-        Ref* operator->() { return std::addressof(ref_); }
+        Ref* operator->() {
+            return std::addressof(ref_);
+        }
         Ref ref_;
     };
 
     using type = proxy;
 
-    static type apply(const Ref& x) { return type{x}; }
+    static type apply(const Ref& x) {
+        return type{x};
+    }
 };
 
 template <class T>
 struct operator_arrow_dispatch<T&> {  // "real" references
     using type = T*;
 
-    static type apply(T& x) { return std::addressof(x); }
+    static type apply(T& x) {
+        return std::addressof(x);
+    }
 };
 
 template <>
@@ -39,11 +45,7 @@ struct operator_arrow_dispatch<void> {  // output iterator
 
 }  // namespace detail
 
-template <
-    class Category,
-    class Value,
-    class Reference = Value&,
-    class Difference = std::ptrdiff_t>
+template <class Category, class Value, class Reference = Value&, class Difference = std::ptrdiff_t>
 struct iterator_types {
     using iterator_category = Category;
     using value_type = std::remove_cv_t<Value>;

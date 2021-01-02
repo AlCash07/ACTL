@@ -3,7 +3,6 @@ Language: Cpp
 BasedOnStyle: Google
 AccessModifierOffset: -4
 AllowShortBlocksOnASingleLine: Empty
-AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false

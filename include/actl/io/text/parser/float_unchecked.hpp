@@ -80,9 +80,13 @@ public:
         return i;
     }
 
-    bool ready() const { return state != states::empty && state != states::sign; }
+    bool ready() const {
+        return state != states::empty && state != states::sign;
+    }
 
-    Float value() const { return sign.value(x); }
+    Float value() const {
+        return sign.value(x);
+    }
 };
 
 }  // namespace ac::io

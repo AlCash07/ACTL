@@ -16,9 +16,12 @@ namespace ac {
 template <class Policy, class T, class U>
 enum within within(const Policy& policy, const point<T>& p, const simple_polygon<U>& poly) {
     switch (winding_number(policy, p, poly)) {
-        case 0: return within::outside;
-        case std::numeric_limits<int>::max(): return within::border;
-        default: return within::inside;
+        case 0:
+            return within::outside;
+        case std::numeric_limits<int>::max():
+            return within::border;
+        default:
+            return within::inside;
     }
 }
 

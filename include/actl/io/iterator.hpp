@@ -30,14 +30,19 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    const T& dereference() const { return value_; }
+    const T& dereference() const {
+        return value_;
+    }
 
     void increment() {
         ACTL_ASSERT(device_);
-        if (!io::read(*device_, value_)) device_ = nullptr;
+        if (!io::read(*device_, value_))
+            device_ = nullptr;
     }
 
-    bool equals(const input_device_iterator& rhs) const { return device_ == rhs.device_; }
+    bool equals(const input_device_iterator& rhs) const {
+        return device_ == rhs.device_;
+    }
 
     Device* device_;
     T value_;
@@ -59,14 +64,16 @@ public:
 
     output_device_iterator(const output_device_iterator&) = default;
 
-    void operator = (const T& value) const {
+    void operator=(const T& value) const {
         io::write(*device_, value);
     }
 
 private:
     friend struct ac::iterator_core_access;
 
-    const output_device_iterator& dereference() const { return *this; }
+    const output_device_iterator& dereference() const {
+        return *this;
+    }
 
     void increment() {}
 

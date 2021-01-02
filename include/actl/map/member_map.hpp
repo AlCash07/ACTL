@@ -19,9 +19,9 @@ public:
     using class_t = Class;
     using member_t = Member;
 
-    explicit constexpr member_map(Member Class::* ptr) : ptr{ptr} {}
+    explicit constexpr member_map(Member Class::*ptr) : ptr{ptr} {}
 
-    Member Class::* const ptr;
+    Member Class::*const ptr;
 };
 
 /**
@@ -30,7 +30,7 @@ public:
 template <auto Ptr>
 class static_member_map;
 
-template <class Class, class Member, Member Class::* Ptr>
+template <class Class, class Member, Member Class::*Ptr>
 class static_member_map<Ptr> {
 public:
     using class_t = Class;
@@ -55,7 +55,9 @@ struct map_traits<MM, std::void_t<typename MM::class_t, typename MM::member_t>> 
 
 template <class MM>
 struct map_ops<MM, std::void_t<typename MM::class_t, typename MM::member_t>> : map_put<MM> {
-    static map_reference_t<MM> get(MM& map, map_key_t<MM> key) { return key.*map.ptr; }
+    static map_reference_t<MM> get(MM& map, map_key_t<MM> key) {
+        return key.*map.ptr;
+    }
 };
 
 }  // namespace ac

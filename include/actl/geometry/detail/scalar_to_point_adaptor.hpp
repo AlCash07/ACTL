@@ -21,18 +21,26 @@ public:
 
     explicit scalar_to_point_adaptor(const Line& line, It it) : line_{&line}, it_{it} {}
 
-    scalar_to_point_adaptor& operator = (const scalar_to_point_adaptor&) = default;
+    scalar_to_point_adaptor& operator=(const scalar_to_point_adaptor&) = default;
 
     template <class T>
-    void operator = (const T& x) {
+    void operator=(const T& x) {
         *it_ = (*line_)(x);
     }
 
-    scalar_to_point_adaptor& operator*() { return *this; }
-    scalar_to_point_adaptor& operator++() { return *this; }
-    scalar_to_point_adaptor operator++(int) { return *this; }
+    scalar_to_point_adaptor& operator*() {
+        return *this;
+    }
+    scalar_to_point_adaptor& operator++() {
+        return *this;
+    }
+    scalar_to_point_adaptor operator++(int) {
+        return *this;
+    }
 
-    operator It() const { return it_; }
+    operator It() const {
+        return it_;
+    }
 
 private:
     const Line* line_;

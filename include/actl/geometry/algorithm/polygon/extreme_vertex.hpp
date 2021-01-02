@@ -27,11 +27,13 @@ auto extreme_vertex(const Policy& policy, const convex_polygon<T>& poly, Functio
     };
     auto first = poly.begin();
     auto [first_ok, first_sgn] = is_extreme(first);
-    if (first_ok) return first;
+    if (first_ok)
+        return first;
     for (auto last = poly.end(); first + 1 != last;) {
         auto middle = first + (last - first) / 2;
         auto [middle_ok, middle_sgn] = is_extreme(middle);
-        if (middle_ok) return middle;
+        if (middle_ok)
+            return middle;
         if (first_sgn != middle_sgn ? first_sgn < middle_sgn
                                     : first_sgn == vertex_cmp(first, middle)) {
             last = middle;

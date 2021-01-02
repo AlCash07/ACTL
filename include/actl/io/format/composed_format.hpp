@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/io/format/apply_format.hpp>
 #include <actl/io/core/manipulator.hpp>
+#include <actl/io/format/apply_format.hpp>
 
 namespace ac::io {
 
@@ -28,7 +28,7 @@ struct composed_format {
 };
 
 template <class First, class Second, enable_int_if<is_format_v<First> && is_format_v<Second>> = 0>
-auto operator >>= (First&& first, Second&& second) {
+auto operator>>=(First&& first, Second&& second) {
     return composed_format<First, Second>{std::forward<First>(first), std::forward<Second>(second)};
 }
 

@@ -13,18 +13,15 @@ TEST_CASE("general position all kinds") {
             for (endpoint s1 : kinds) {
                 for (endpoint e1 : kinds) {
                     auto crosses_line = [](int offset, endpoint s, endpoint e) {
+                        // clang-format off
                         switch (offset) {
-                            case -2:
-                                return e == endpoint::free;
-                            case -1:
-                                return e != endpoint::open;
-                            case 1:
-                                return s != endpoint::open;
-                            case 2:
-                                return s == endpoint::free;
-                            default:
-                                return true;
+                            case -2: return e == endpoint::free;
+                            case -1: return e != endpoint::open;
+                            case  1: return s != endpoint::open;
+                            case  2: return s == endpoint::free;
+                            default: return true;
                         }
+                        // clang-format on
                     };
                     for (int x : irange(-2, 3)) {
                         for (int y : irange(-2, 3)) {

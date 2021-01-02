@@ -38,7 +38,8 @@ OutIter intersect(line_scalar_policy<Policy> lsp, const line<T, 2, K>& l,
             } else {
                 ok = next_sgn != prev_sgn;
             }
-            if (ok && between_endpoints(policy, *it, l)) *dst++ = project(lsp, *it, l);
+            if (ok && between_endpoints(policy, *it, l))
+                *dst++ = project(lsp, *it, l);
         } else if (next_sgn == -it_sgn) {
             dst = intersect(lsp, l, make_line(*it, it[1]), dst);
         }

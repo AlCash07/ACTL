@@ -3,10 +3,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include "graph/connectivity/test_partition.hpp"
 #include <actl/graph/adjacency_list.hpp>
 #include <actl/graph/connectivity/connected_components.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
-#include "graph/connectivity/test_partition.hpp"
 
 // 1 - 0 - 7   6
 // |   |

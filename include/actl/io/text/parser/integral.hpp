@@ -45,9 +45,13 @@ public:
         return i;
     }
 
-    bool ready() const { return inner.ready() || (inner.empty() && base.zero()); }
+    bool ready() const {
+        return inner.ready() || (inner.empty() && base.zero());
+    }
 
-    Int value() const { return sign.value(inner.value()); }
+    Int value() const {
+        return sign.value(inner.value());
+    }
 };
 
 }  // namespace ac::io

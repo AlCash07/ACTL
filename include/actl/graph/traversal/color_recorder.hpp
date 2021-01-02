@@ -18,10 +18,18 @@ struct color_recorder {
 
     using vertex = map_key_t<Map>;
 
-    void operator()(on_vertex_initialize, vertex u) { put(map, u, colors::white); }
-    bool operator()(is_vertex_discovered, vertex u) { return get(map, u) != colors::white; }
-    void operator()(on_vertex_discover, vertex u) { put(map, u, colors::gray); }
-    void operator()(on_vertex_finish, vertex u) { put(map, u, colors::black); }
+    void operator()(on_vertex_initialize, vertex u) {
+        put(map, u, colors::white);
+    }
+    bool operator()(is_vertex_discovered, vertex u) {
+        return get(map, u) != colors::white;
+    }
+    void operator()(on_vertex_discover, vertex u) {
+        put(map, u, colors::gray);
+    }
+    void operator()(on_vertex_finish, vertex u) {
+        put(map, u, colors::black);
+    }
 
     Map map;
 };

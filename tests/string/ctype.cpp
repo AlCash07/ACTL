@@ -13,6 +13,7 @@ TEST_CASE("ctype correctness") {
         CHECK((islower(uc) != 0) == is_lower(c));
         CHECK((isupper(uc) != 0) == is_upper(c));
         CHECK((isspace(uc) != 0) == is_space(c));
-        if (c == std::numeric_limits<char>::max()) break;
+        if (c == std::numeric_limits<char>::max())
+            break;
     }
 }

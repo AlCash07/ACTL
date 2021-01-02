@@ -12,7 +12,8 @@ TEST_CASE("random", repeat = 10) {
     std::vector<point<int>> points;
     while (points.size() < 1000) {
         point p{gen(), gen()};
-        if (dot(p) <= sqr(R)) points.push_back(p);
+        if (dot(p) <= sqr(R))
+            points.push_back(p);
     }
     auto points_copy = points;
     auto hull = convex_hull(span{points_copy});

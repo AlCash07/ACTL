@@ -23,10 +23,14 @@ public:
         ACTL_ASSERT(data_.begin() <= ptr_ && ptr_ <= end());
     }
 
-    bool eof() const { return end() < ptr_; }
+    bool eof() const {
+        return end() < ptr_;
+    }
 
 protected:
-    C* end() const { return data_.end(); }
+    C* end() const {
+        return data_.end();
+    }
 
     const span<C> data_;
     C* ptr_;
@@ -42,10 +46,13 @@ protected:
 public:
     using base_t::base_t;
 
-    span<Char> output_data() const { return {ptr_, end()}; }
+    span<Char> output_data() const {
+        return {ptr_, end()};
+    }
 
     index write(Char c) {
-        if (ptr_ >= end()) return 0;
+        if (ptr_ >= end())
+            return 0;
         *ptr_++ = c;
         return 1;
     }
@@ -76,9 +83,13 @@ protected:
 public:
     using base_t::base_t;
 
-    cspan<Char> input_data() const { return {ptr_, end()}; }
+    cspan<Char> input_data() const {
+        return {ptr_, end()};
+    }
 
-    Char peek() { return ptr_ < end() ? *ptr_ : Char{}; }
+    Char peek() {
+        return ptr_ < end() ? *ptr_ : Char{};
+    }
 
     Char get() {
         Char c = peek();

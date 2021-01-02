@@ -24,7 +24,9 @@ public:
 
     explicit splitmix64(uint64_t seed = {}) : state_{seed} {}
 
-    uint64_t operator()() { return state_ = next(state_); }
+    uint64_t operator()() {
+        return state_ = next(state_);
+    }
 
 private:
     uint64_t state_;

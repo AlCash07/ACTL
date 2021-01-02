@@ -20,8 +20,12 @@ struct articulation_point_finder {
     using E = edge_t<Graph>;
     using T = map_value_t<TimeMap>;
 
-    void operator()(on_vertex_initialize, V u) { put(time, u, 0); }
-    bool operator()(is_vertex_discovered, V u) { return get(time, u) != 0; }
+    void operator()(on_vertex_initialize, V u) {
+        put(time, u, 0);
+    }
+    bool operator()(is_vertex_discovered, V u) {
+        return get(time, u) != 0;
+    }
 
     void operator()(on_vertex_start, V u) {
         put(time, u, ++time_now);
@@ -37,7 +41,8 @@ struct articulation_point_finder {
         V u = e.source();
         V v = e.target();
         T vtime = get(time, v);
-        if (vtime < get(time, u)) components.push(e);
+        if (vtime < get(time, u))
+            components.push(e);
         if (vtime < get(low, u)) {
             put(low, u, vtime);
         }
@@ -60,7 +65,8 @@ struct articulation_point_finder {
     }
 
     void operator()(on_search_finish, V u) {
-        if (root_children > 1) put(articulation_map, u, true);
+        if (root_children > 1)
+            put(articulation_map, u, true);
     }
 
     ArticulationMap articulation_map;

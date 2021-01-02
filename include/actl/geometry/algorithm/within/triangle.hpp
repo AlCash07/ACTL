@@ -24,7 +24,8 @@ enum within within(const Policy& policy, const point<T>& p, const polygon<U>& tr
     for (index i = 0; i < 3; ++i, ++it) {
         signs[i] = orientation(policy, p, it[1], it[0]);
     }
-    if (signs[0] == signs[1] && signs[1] == signs[2]) return within::inside;
+    if (signs[0] == signs[1] && signs[1] == signs[2])
+        return within::inside;
     for (index i = 0; i < 3; ++i) {
         if (signs[i] != orientation2d::collinear && signs[i] == -signs[i + 1 == 3 ? 0 : i + 1])
             return within::outside;
