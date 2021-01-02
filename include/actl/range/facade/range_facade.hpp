@@ -63,17 +63,17 @@ protected:
 };
 
 template <class T, class = void>
-struct crev_it {
+struct crev_iter {
     using type = typename T::reverse_iterator;
 };
 
 template <class T>
-struct crev_it<T, std::void_t<typename T::const_reverse_iterator>> {
+struct crev_iter<T, std::void_t<typename T::const_reverse_iterator>> {
     using type = typename T::const_reverse_iterator;
 };
 
 template <class T>
-using crev_iter_t = typename crev_it<T>::type;
+using crev_iter_t = typename crev_iter<T>::type;
 
 template <class D, class T>
 class rng_facade<D, T, std::bidirectional_iterator_tag>

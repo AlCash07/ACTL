@@ -10,42 +10,10 @@
 #pragma once
 
 #include <actl/functional/operators.hpp>
+#include <actl/iterator/facade/iterator_core_access.hpp>
 #include <actl/iterator/facade/iterator_types.hpp>
-#include <actl/traits/type_traits.hpp>
 
 namespace ac {
-
-struct iterator_core_access {
-    template <class Iter>
-    static constexpr reference_t<Iter> dereference(const Iter& iter) {
-        return iter.dereference();
-    }
-
-    template <class Iter>
-    static constexpr void increment(Iter& iter) {
-        iter.increment();
-    }
-
-    template <class Iter>
-    static constexpr void decrement(Iter& iter) {
-        iter.decrement();
-    }
-
-    template <class Iter1, class Iter2>
-    static constexpr bool equal(const Iter1& lhs, const Iter2& rhs) {
-        return lhs.equals(rhs);
-    }
-
-    template <class Iter>
-    static constexpr void advance(Iter& iter, difference_t<Iter> n) {
-        iter.advance(n);
-    }
-
-    template <class Iter1, class Iter2>
-    static constexpr difference_t<Iter1> distance_to(const Iter1& src, const Iter2& dst) {
-        return src.distance_to(dst);
-    }
-};
 
 namespace detail {
 
