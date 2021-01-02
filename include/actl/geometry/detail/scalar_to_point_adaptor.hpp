@@ -6,19 +6,14 @@
 #pragma once
 
 #include <actl/geometry/line.hpp>
+#include <actl/iterator/facade/iterator_types.hpp>
 #include <iterator>
 
 namespace ac::detail {
 
 template <class Line, class Iter>
-class scalar_to_point_adaptor {
+class scalar_to_point_adaptor : public output_iterator_types {
 public:
-    using value_type = void;
-    using difference_type = void;
-    using pointer = void;
-    using reference = void;
-    using iterator_category = std::output_iterator_tag;
-
     explicit scalar_to_point_adaptor(const Line& line, Iter iter) : line_{&line}, iter_{iter} {}
 
     scalar_to_point_adaptor& operator=(const scalar_to_point_adaptor&) = default;

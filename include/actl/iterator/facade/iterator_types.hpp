@@ -13,6 +13,7 @@ struct output_iterator_types {
     using iterator_category = std::output_iterator_tag;
     using value_type = void;
     using reference = void;
+    using pointer = void;
     using difference_type = void;
 };
 
