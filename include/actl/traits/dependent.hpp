@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/types.hpp>
+#include <actl/iterator/traits.hpp>
 #include <type_traits>
 
 namespace ac {
@@ -18,24 +18,16 @@ struct traits {
 };
 
 template <class T>
-struct traits<T*, std::enable_if_t<std::is_object_v<T>>> {
-    struct type {
-        using value_type = std::remove_cv_t<T>;
-        using reference = T&;
-        using pointer = T*;
-        using difference_type = index;
-    };
+struct traits<T, std::enable_if_t<is_iterator_v<std::remove_cv_t<T>>>> {
+    using type = std::iterator_traits<std::remove_cv_t<T>>;
 };
 
-template <class T>
-struct traits<T* const> : traits<T*> {};
-
-template <class T, index N>
+template <class T, size_t N>
 struct traits<T[N]> {
-    struct type : traits<T*>::type {
+    struct type : std::iterator_traits<T*> {
         using value_type = T;
         using iterator = T*;
-        using size_type = index;
+        using size_type = size_t;
     };
 };
 

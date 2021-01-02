@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include <actl/traits/dependent.hpp>
 #include <iterator>
 
 namespace ac {
@@ -35,7 +34,7 @@ template <class T>
 struct is_const_pointer<const T*> : std::true_type {};
 
 template <class T, bool = is_iterator_v<T>>
-struct is_const_iterator : is_const_pointer<pointer_t<T>> {};
+struct is_const_iterator : is_const_pointer<typename std::iterator_traits<T>::pointer> {};
 
 template <class T>
 struct is_const_iterator<T, false> : std::false_type {};

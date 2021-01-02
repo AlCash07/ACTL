@@ -6,6 +6,7 @@
 #pragma once
 
 #include <actl/iterator/traits.hpp>
+#include <actl/traits/dependent.hpp>
 #include <actl/utility/use_default.hpp>
 
 namespace ac {
