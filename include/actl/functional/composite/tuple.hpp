@@ -25,7 +25,7 @@ struct category_impl<T, std::enable_if_t<is_tuple_v<T>>> {
     using type = tuple_tag;
 };
 
-struct EqualTuple {
+struct equal_tuple_t {
     template <class EqualOps, class T, class U, size_t... Is>
     static bool eval(const EqualOps& ops, const T& lhs, const U& rhs, std::index_sequence<Is...>) {
         using std::get;
@@ -37,7 +37,7 @@ struct EqualTuple {
         return eval(ops, lhs, rhs, tuple_indices_t<T>{});
     }
 };
-constexpr operation_composer<EqualTuple> equal_tuple;
+constexpr operation_composer<equal_tuple_t> equal_tuple;
 
 template <class T, class... Ts>
 struct tuple_op_resolver : tuple_op_resolver<tuple_indices_t<T>, T, Ts...> {};
@@ -54,13 +54,13 @@ struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
 };
 
 template <class T, class U>
-struct overload<Equal, tuple_tag, T, U> {
-    static constexpr auto resolve(Equal op) {
+struct overload<equal_t, tuple_tag, T, U> {
+    static constexpr auto resolve(equal_t op) {
         return tuple_op_resolver<T, U>::resolve(equal_tuple, op);
     }
 };
 
-struct LexicographicalCompareTuple {
+struct lexicographical_compare_tuple_t {
     template <size_t I = 0, class Cmp3WayOps, class T, class U>
     static int evaluate(const Cmp3WayOps& ops, const T& lhs, const U& rhs) {
         using std::get;
@@ -72,18 +72,18 @@ struct LexicographicalCompareTuple {
         }
     }
 };
-constexpr operation_composer<LexicographicalCompareTuple> lexicographical_compare_tuple;
+constexpr operation_composer<lexicographical_compare_tuple_t> lexicographical_compare_tuple;
 
 template <class T, class U>
-struct overload<Cmp3Way, tuple_tag, T, U> {
-    static constexpr auto resolve(Cmp3Way op) {
+struct overload<cmp3way_t, tuple_tag, T, U> {
+    static constexpr auto resolve(cmp3way_t op) {
         return tuple_op_resolver<T, U>::resolve(lexicographical_compare_tuple, op);
     };
 };
 
 template <class T, class U>
-struct overload<Less, tuple_tag, T, U> {
-    static constexpr auto resolve(Less) {
+struct overload<less_t, tuple_tag, T, U> {
+    static constexpr auto resolve(less_t) {
         return cmp3way < 0;
     }
 };

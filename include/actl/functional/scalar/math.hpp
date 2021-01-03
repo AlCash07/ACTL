@@ -11,7 +11,7 @@
 
 namespace ac {
 
-struct Abs : scalar_operation<Abs, 1, arithmetic_tag> {
+struct abs_t : scalar_operation<abs_t, 1, arithmetic_tag> {
     template <class T>
     static constexpr T eval_scalar(T x) {
         if constexpr (std::is_unsigned_v<T>) {
@@ -22,7 +22,7 @@ struct Abs : scalar_operation<Abs, 1, arithmetic_tag> {
         }
     }
 };
-constexpr Abs abs;
+constexpr abs_t abs;
 
 #define MATH_OP1(name, op)                               \
     struct name : scalar_operation<name, 1, float_tag> { \
@@ -44,11 +44,11 @@ constexpr Abs abs;
     };                                                    \
     constexpr name op;
 
-MATH_OP1(Cos, cos)
-MATH_OP1(Sin, sin)
-MATH_OP1(Sqrt, sqrt)
+MATH_OP1(cos_t, cos)
+MATH_OP1(sin_t, sin)
+MATH_OP1(sqrt_t, sqrt)
 
-MATH_OP2(Atan2, atan2)
+MATH_OP2(atan2_t, atan2)
 
 #undef MATH_OP1
 #undef MATH_OP2

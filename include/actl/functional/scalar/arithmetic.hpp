@@ -9,20 +9,20 @@
 
 namespace ac {
 
-struct Neg : scalar_operation<Neg, 2, arithmetic_tag> {
+struct neg_t : scalar_operation<neg_t, 2, arithmetic_tag> {
     template <class T>
     static constexpr auto eval_scalar(T x) {
         return -x;
     }
 };
-constexpr Neg neg;
+constexpr neg_t neg;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator-(T&& x) {
     return neg(pass<T>(x));
 }
 
-struct Add : scalar_operation<Add, 2, arithmetic_tag> {
+struct add_t : scalar_operation<add_t, 2, arithmetic_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -31,7 +31,7 @@ struct Add : scalar_operation<Add, 2, arithmetic_tag> {
         return lhs + rhs;
     }
 };
-constexpr Add add;
+constexpr add_t add;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator+(T&& lhs, U&& rhs) {
@@ -43,13 +43,13 @@ constexpr decltype(auto) operator+=(T& lhs, const U& rhs) {
     return add(inplace(lhs), rhs);
 }
 
-struct Sub : scalar_operation<Sub, 2, arithmetic_tag> {
+struct sub_t : scalar_operation<sub_t, 2, arithmetic_tag> {
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs - rhs;
     }
 };
-constexpr Sub sub;
+constexpr sub_t sub;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator-(T&& lhs, U&& rhs) {
@@ -61,7 +61,7 @@ constexpr decltype(auto) operator-=(T& lhs, const U& rhs) {
     return sub(inplace(lhs), rhs);
 }
 
-struct Mul : scalar_operation<Mul, 2, arithmetic_tag> {
+struct mul_t : scalar_operation<mul_t, 2, arithmetic_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -70,7 +70,7 @@ struct Mul : scalar_operation<Mul, 2, arithmetic_tag> {
         return lhs * rhs;
     }
 };
-constexpr Mul mul;
+constexpr mul_t mul;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator*(T&& lhs, U&& rhs) {
@@ -82,13 +82,13 @@ constexpr decltype(auto) operator*=(T& lhs, const U& rhs) {
     return mul(inplace(lhs), rhs);
 }
 
-struct Div : scalar_operation<Div, 2, arithmetic_tag> {
+struct div_t : scalar_operation<div_t, 2, arithmetic_tag> {
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs / rhs;
     }
 };
-constexpr Div div;
+constexpr div_t div;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator/(T&& lhs, U&& rhs) {

@@ -15,38 +15,37 @@ constexpr std::integral_constant<int, 0> zero;
 constexpr std::integral_constant<int, 1> one;
 
 template <index I, index N>
-struct Arg {
+struct arg_t {
     using category = operation_tag;
     struct enable_operators;
 
     template <class T, class... Ts>
     constexpr decltype(auto) operator()(T&& x, Ts&&... xs) const {
         static_assert(1 + sizeof...(Ts) == N || N == -1);
-        if constexpr (I == 0) {
+        if constexpr (I == 0)
             return std::forward<T>(x);
-        } else {
-            return Arg<I - 1, (N == -1 ? -1 : N - 1)>{}(std::forward<Ts>(xs)...);
-        }
+        else
+            return arg_t<I - 1, (N == -1 ? -1 : N - 1)>{}(std::forward<Ts>(xs)...);
     }
 };
 template <index I, index N>
-constexpr Arg<I, N> arg;
+constexpr arg_t<I, N> arg;
 
-constexpr Arg<0, 1> x_;
-constexpr Arg<0, 2> lhs_;
-constexpr Arg<1, 2> rhs_;
+constexpr arg_t<0, 1> x_;
+constexpr arg_t<0, 2> lhs_;
+constexpr arg_t<1, 2> rhs_;
 
 template <class To>
-struct Cast : scalar_operation<Cast<To>, 1, arithmetic_tag> {
+struct cast_t : scalar_operation<cast_t<To>, 1, arithmetic_tag> {
     template <class T>
     static constexpr To eval_scalar(T x) {
         return static_cast<To>(x);
     }
 };
 template <class T>
-constexpr Cast<T> cast;
+constexpr cast_t<T> cast;
 
-struct Common : scalar_operation<Common, 2, scalar_tag> {
+struct common_t : scalar_operation<common_t, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -97,27 +96,27 @@ struct Common : scalar_operation<Common, 2, scalar_tag> {
         return eval_scalar(eval_scalar(x0, x1), x2, xs...);
     }
 };
-constexpr Common common;
+constexpr common_t common;
 
-struct Copy : scalar_operation<Copy, 1, arithmetic_tag> {
+struct copy_t : scalar_operation<copy_t, 1, arithmetic_tag> {
     template <class T>
     static constexpr T eval_scalar(T x) {
         return x;
     }
 };
-constexpr Copy copy;
+constexpr copy_t copy;
 
 template <class T, class U>
 constexpr void assign(out_t<false, T>& dst, const U& y) {
     copy(dst, y);
 }
 
-struct Select : scalar_operation<Select, 3, arithmetic_tag> {
+struct select_t : scalar_operation<select_t, 3, arithmetic_tag> {
     template <class T, class U>
     constexpr auto evaluate(bool condition, const T& lhs, const U& rhs) const {
         return condition ? eval(lhs) : eval(rhs);
     }
 };
-constexpr Select select;
+constexpr select_t select;
 
 }  // namespace ac

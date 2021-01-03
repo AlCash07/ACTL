@@ -17,7 +17,7 @@ struct comparison_operation : scalar_operation<Derived, 2, scalar_tag> {};
 template <class T>
 constexpr bool is_comparison_v = is_template_base_of_v<comparison_operation, T>;
 
-struct Equal : comparison_operation<Equal> {
+struct equal_t : comparison_operation<equal_t> {
     struct is_commutative;
 
     template <class T, class U>
@@ -25,71 +25,71 @@ struct Equal : comparison_operation<Equal> {
         return lhs == rhs;
     }
 };
-constexpr Equal equal;
+constexpr equal_t equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator==(T&& lhs, U&& rhs) {
     return equal(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct NotEqual : comparison_operation<NotEqual> {
+struct non_equal_t : comparison_operation<non_equal_t> {
     struct is_commutative;
 
     static constexpr auto formula = !equal;
 };
-constexpr NotEqual not_equal;
+constexpr non_equal_t not_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator!=(T&& lhs, U&& rhs) {
     return not_equal(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct Less : comparison_operation<Less> {
+struct less_t : comparison_operation<less_t> {
     template <class T, class U>
     static constexpr bool eval_scalar(T lhs, U rhs) {
         return lhs < rhs;
     }
 };
-constexpr Less less;
+constexpr less_t less;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator<(T&& lhs, U&& rhs) {
     return less(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct Greater : comparison_operation<Greater> {
+struct greater_t : comparison_operation<greater_t> {
     static constexpr auto formula = rhs_ < lhs_;
 };
-constexpr Greater greater;
+constexpr greater_t greater;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator>(T&& lhs, U&& rhs) {
     return greater(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct LessEqual : comparison_operation<LessEqual> {
+struct less_equal_t : comparison_operation<less_equal_t> {
     static constexpr auto formula = !greater;
 };
-constexpr LessEqual less_equal;
+constexpr less_equal_t less_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator<=(T&& lhs, U&& rhs) {
     return less_equal(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct GreaterEqual : comparison_operation<GreaterEqual> {
+struct greater_equal_t : comparison_operation<greater_equal_t> {
     static constexpr auto formula = !less;
 };
-constexpr GreaterEqual greater_equal;
+constexpr greater_equal_t greater_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator>=(T&& lhs, U&& rhs) {
     return greater_equal(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct Cmp3Way : comparison_operation<Cmp3Way> {
+struct cmp3way_t : comparison_operation<cmp3way_t> {
     static constexpr auto formula = cast<int>(greater) - cast<int>(less);
 };
-constexpr Cmp3Way cmp3way;
+constexpr cmp3way_t cmp3way;
 
 }  // namespace ac

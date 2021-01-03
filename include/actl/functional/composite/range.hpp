@@ -22,22 +22,22 @@ struct category_impl<T, std::enable_if_t<is_range_v<T>>> {
     using type = range_tag;
 };
 
-struct EqualRange {
+struct equal_range_t {
     template <class EqualOp, class T, class U>
     static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
         return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
     }
 };
-constexpr operation_composer<EqualRange> equal_range;
+constexpr operation_composer<equal_range_t> equal_range;
 
 template <class T, class U>
-struct overload<Equal, range_tag, T, U> {
-    static constexpr auto resolve(Equal op) {
+struct overload<equal_t, range_tag, T, U> {
+    static constexpr auto resolve(equal_t op) {
         return equal_range(op.resolve_nested<T, U>());
     }
 };
 
-struct LexicographicalCompareRange {
+struct lexicographical_compare_range_t {
     template <class Cmp3WayOp, class T, class U>
     static int evaluate(const Cmp3WayOp& op, const T& lhs, const U& rhs) {
         // Can't use std::lexicographical_compare because it doesn't compare 3-way.
@@ -53,18 +53,18 @@ struct LexicographicalCompareRange {
         return cast<int>(rfirst != rlast) - cast<int>(lfirst != llast);
     }
 };
-constexpr operation_composer<LexicographicalCompareRange> lexicographical_compare_range;
+constexpr operation_composer<lexicographical_compare_range_t> lexicographical_compare_range;
 
 template <class T, class U>
-struct overload<Cmp3Way, range_tag, T, U> {
-    static constexpr auto resolve(Cmp3Way op) {
+struct overload<cmp3way_t, range_tag, T, U> {
+    static constexpr auto resolve(cmp3way_t op) {
         return lexicographical_compare_range(op.resolve_nested<T, U>());
     }
 };
 
 template <class T, class U>
-struct overload<Less, range_tag, T, U> {
-    static constexpr auto resolve(Less) {
+struct overload<less_t, range_tag, T, U> {
+    static constexpr auto resolve(less_t) {
         return cmp3way < 0;
     }
 };

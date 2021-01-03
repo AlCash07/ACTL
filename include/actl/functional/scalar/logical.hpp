@@ -9,19 +9,19 @@
 
 namespace ac {
 
-struct LogicalNot : scalar_operation<LogicalNot, 1, boolean_tag> {
+struct logical_not_t : scalar_operation<logical_not_t, 1, boolean_tag> {
     static constexpr bool eval_scalar(bool x) {
         return !x;
     }
 };
-constexpr LogicalNot logical_not;
+constexpr logical_not_t logical_not;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator!(T&& x) {
     return logical_not(pass<T>(x));
 }
 
-struct LogicalAnd : scalar_operation<LogicalAnd, 2, boolean_tag> {
+struct logical_and_t : scalar_operation<logical_and_t, 2, boolean_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -29,14 +29,14 @@ struct LogicalAnd : scalar_operation<LogicalAnd, 2, boolean_tag> {
         return lhs && rhs;
     }
 };
-constexpr LogicalAnd logical_and;
+constexpr logical_and_t logical_and;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator&&(T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-struct LogicalOr : scalar_operation<LogicalOr, 2, boolean_tag> {
+struct logical_or_t : scalar_operation<logical_or_t, 2, boolean_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -44,7 +44,7 @@ struct LogicalOr : scalar_operation<LogicalOr, 2, boolean_tag> {
         return lhs || rhs;
     }
 };
-constexpr LogicalOr logical_or;
+constexpr logical_or_t logical_or;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator||(T&& lhs, U&& rhs) {

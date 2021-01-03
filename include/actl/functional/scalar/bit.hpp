@@ -9,20 +9,20 @@
 
 namespace ac {
 
-struct BitNot : scalar_operation<BitNot, 2, integral_tag> {
+struct bit_not_t : scalar_operation<bit_not_t, 2, integral_tag> {
     template <class T>
     static constexpr T eval_scalar(T x) {
         return ~x;
     }
 };
-constexpr BitNot bit_not;
+constexpr bit_not_t bit_not;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator~(T&& x) {
     return bit_not(pass<T>(x));
 }
 
-struct BitAnd : scalar_operation<BitAnd, 2, integral_tag> {
+struct bit_and_t : scalar_operation<bit_and_t, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -31,7 +31,7 @@ struct BitAnd : scalar_operation<BitAnd, 2, integral_tag> {
         return lhs & rhs;
     }
 };
-constexpr BitAnd bit_and;
+constexpr bit_and_t bit_and;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator&(T&& lhs, U&& rhs) {
@@ -43,7 +43,7 @@ constexpr decltype(auto) operator&=(T& lhs, const U& rhs) {
     return bit_and(inplace(lhs), rhs);
 }
 
-struct BitOr : scalar_operation<BitOr, 2, integral_tag> {
+struct bit_or_t : scalar_operation<bit_or_t, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -52,7 +52,7 @@ struct BitOr : scalar_operation<BitOr, 2, integral_tag> {
         return lhs | rhs;
     }
 };
-constexpr BitOr bit_or;
+constexpr bit_or_t bit_or;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator|(T&& lhs, U&& rhs) {
@@ -64,7 +64,7 @@ constexpr decltype(auto) operator|=(T& lhs, const U& rhs) {
     return bit_or(inplace(lhs), rhs);
 }
 
-struct BitXor : scalar_operation<BitXor, 2, integral_tag> {
+struct bit_xor_t : scalar_operation<bit_xor_t, 2, integral_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -73,7 +73,7 @@ struct BitXor : scalar_operation<BitXor, 2, integral_tag> {
         return lhs ^ rhs;
     }
 };
-constexpr BitXor bit_xor;
+constexpr bit_xor_t bit_xor;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator^(T&& lhs, U&& rhs) {

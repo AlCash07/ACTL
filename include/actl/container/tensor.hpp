@@ -504,7 +504,7 @@ struct category_impl<T, ac::detail::tensor_base<T, D>> {
     using type = tensor_tag;
 };
 
-struct EqualTensor {
+struct tensor_equal_t {
     template <class EqualOp, class T, class U>
     static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
         if (lhs.rank() != rhs.rank())
@@ -518,9 +518,9 @@ struct EqualTensor {
 };
 
 template <class T, class U>
-struct overload<Equal, tensor_tag, T, U> {
-    static constexpr auto resolve(Equal op) {
-        return operation_composer<EqualTensor>(op.resolve_nested<T, U>());
+struct overload<equal_t, tensor_tag, T, U> {
+    static constexpr auto resolve(equal_t op) {
+        return operation_composer<tensor_equal_t>(op.resolve_nested<T, U>());
     }
 };
 

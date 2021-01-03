@@ -18,8 +18,8 @@ namespace detail {
 
 template <class F, class V>
 struct transform_iter_types {
-    using value_type = return_t<F>;
-    using reference = deduce_t<V, remove_cvref_t<return_t<F>>>;
+    using value_type = return_type_t<F>;
+    using reference = deduce_t<V, remove_cvref_t<return_type_t<F>>>;
 };
 
 template <class Iter, class F, class V>

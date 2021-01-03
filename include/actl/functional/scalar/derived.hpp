@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct Max : scalar_operation<Max, 2, scalar_tag> {
+struct max_t : scalar_operation<max_t, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -19,9 +19,9 @@ struct Max : scalar_operation<Max, 2, scalar_tag> {
         return eval(select(less(lhs, rhs), rhs, lhs));
     }
 };
-constexpr Max max;
+constexpr max_t max;
 
-struct Min : scalar_operation<Min, 2, scalar_tag> {
+struct min_t : scalar_operation<min_t, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
 
@@ -30,16 +30,16 @@ struct Min : scalar_operation<Min, 2, scalar_tag> {
         return eval(select(less(rhs, lhs), rhs, lhs));
     }
 };
-constexpr Min min;
+constexpr min_t min;
 
-struct Sgn : scalar_operation<Sgn, 1, scalar_tag> {
+struct sgn_t : scalar_operation<sgn_t, 1, scalar_tag> {
     static constexpr auto formula = cmp3way(x_, zero);
 };
-constexpr Sgn sgn;
+constexpr sgn_t sgn;
 
-struct Sqr : scalar_operation<Sqr, 1, arithmetic_tag> {
+struct sqr_t : scalar_operation<sqr_t, 1, arithmetic_tag> {
     static constexpr auto formula = mul(x_, x_);
 };
-constexpr Sqr sqr;
+constexpr sqr_t sqr;
 
 }  // namespace ac

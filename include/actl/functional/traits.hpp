@@ -23,10 +23,10 @@ template <class F>
 constexpr size_t arity_v = function_traits<F>::arity;
 
 template <class F>
-using return_t = typename function_traits<F>::return_type;
+using return_type_t = typename function_traits<F>::return_type;
 
 template <class F, size_t N>
-using argument_t = typename function_traits<F>::template argument_type<N>;
+using argument_type_t = typename function_traits<F>::template argument_type<N>;
 
 // function pointer
 template <class R, class... Ts>
@@ -60,10 +60,10 @@ private:
 public:
     static constexpr size_t arity = arity_v<O> - 1;
 
-    using return_type = return_t<O>;
+    using return_type = return_type_t<O>;
 
     template <size_t N>
-    using argument_type = argument_t<O, N + 1>;
+    using argument_type = argument_type_t<O, N + 1>;
 };
 
 }  // namespace ac

@@ -152,13 +152,13 @@ constexpr auto operator-(const point<T0, N>& lhs, const point<T1, N>& rhs) {
 }
 
 template <class Policy, index N, class T0, class T1>
-constexpr bool perform(Equal, const Policy& policy, const point<T0, N>& lhs,
+constexpr bool perform(equal_t, const Policy& policy, const point<T0, N>& lhs,
                        const point<T1, N>& rhs) {
     return equal(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
-constexpr bool perform(Less, const Policy& policy, const point<T0, N>& lhs,
+constexpr bool perform(less_t, const Policy& policy, const point<T0, N>& lhs,
                        const point<T1, N>& rhs) {
     return less(policy, span{lhs}, span{rhs});
 }
