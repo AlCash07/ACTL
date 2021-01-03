@@ -33,6 +33,13 @@ struct add_t : scalar_operation<add_t, 2, arithmetic_tag> {
 };
 constexpr add_t add;
 
+template <class T>
+struct neutral_element<add_t, T> {
+    static constexpr T value() {
+        return T{0};
+    }
+};
+
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator+(T&& lhs, U&& rhs) {
     return add(pass<T>(lhs), pass<U>(rhs));
@@ -71,6 +78,13 @@ struct mul_t : scalar_operation<mul_t, 2, arithmetic_tag> {
     }
 };
 constexpr mul_t mul;
+
+template <class T>
+struct neutral_element<mul_t, T> {
+    static constexpr T value() {
+        return T{1};
+    }
+};
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator*(T&& lhs, U&& rhs) {

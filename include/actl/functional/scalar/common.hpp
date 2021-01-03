@@ -98,6 +98,13 @@ struct common_t : scalar_operation<common_t, 2, scalar_tag> {
 };
 constexpr common_t common;
 
+template <class T>
+struct neutral_element<common_t, T> {
+    static constexpr none value() {
+        return none{};
+    }
+};
+
 struct copy_t : scalar_operation<copy_t, 1, arithmetic_tag> {
     template <class T>
     static constexpr T eval_scalar(T x) {

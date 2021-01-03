@@ -19,6 +19,9 @@ struct operation_tag {};
 template <class T>
 constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
 
+template <class Operation, class T>
+struct neutral_element;
+
 namespace detail {
 
 template <class T>

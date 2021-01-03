@@ -31,6 +31,13 @@ struct logical_and_t : scalar_operation<logical_and_t, 2, boolean_tag> {
 };
 constexpr logical_and_t logical_and;
 
+template <class T>
+struct neutral_element<logical_and_t, T> {
+    static constexpr T value() {
+        return T{true};
+    }
+};
+
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator&&(T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
@@ -45,6 +52,13 @@ struct logical_or_t : scalar_operation<logical_or_t, 2, boolean_tag> {
     }
 };
 constexpr logical_or_t logical_or;
+
+template <class T>
+struct neutral_element<logical_or_t, T> {
+    static constexpr T value() {
+        return T{false};
+    }
+};
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator||(T&& lhs, U&& rhs) {

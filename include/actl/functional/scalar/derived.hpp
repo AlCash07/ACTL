@@ -7,6 +7,7 @@
 
 #include <actl/functional/scalar/common.hpp>
 #include <actl/functional/scalar/comparison.hpp>
+#include <limits>
 
 namespace ac {
 
@@ -21,6 +22,13 @@ struct max_t : scalar_operation<max_t, 2, scalar_tag> {
 };
 constexpr max_t max;
 
+template <class T>
+struct neutral_element<max_t, T> {
+    static constexpr T value() {
+        return std::numeric_limits<T>::lowest();
+    }
+};
+
 struct min_t : scalar_operation<min_t, 2, scalar_tag> {
     struct is_associative;
     struct is_commutative;
@@ -31,6 +39,13 @@ struct min_t : scalar_operation<min_t, 2, scalar_tag> {
     }
 };
 constexpr min_t min;
+
+template <class T>
+struct neutral_element<min_t, T> {
+    static constexpr T value() {
+        return std::numeric_limits<T>::max();
+    }
+};
 
 struct sgn_t : scalar_operation<sgn_t, 1, scalar_tag> {
     static constexpr auto formula = cmp3way(x_, zero);
