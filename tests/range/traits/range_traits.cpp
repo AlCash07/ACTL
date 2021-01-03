@@ -6,9 +6,7 @@
 #include "test.hpp"
 #include <actl/range/traits/range_traits.hpp>
 
-TEST_CASE("is_container") {
-    CHECK_FALSE(is_container_v<int>);
-    CHECK_FALSE(is_container_v<int*>);
-    CHECK_FALSE(is_container_v<int[]>);
-    CHECK(is_container_v<int[2]>);
-}
+static_assert(!ac::is_container_v<int>);
+static_assert(!ac::is_container_v<int*>);
+static_assert(!ac::is_container_v<int[]>);
+static_assert(ac::is_container_v<int[2]>);
