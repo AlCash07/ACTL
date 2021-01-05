@@ -18,14 +18,17 @@ struct add_const_if : std::conditional<B, const T, T> {};
 template <bool B, class T>
 using add_const_if_t = typename add_const_if<B, T>::type;
 
-template <index N>
-using index_constant = std::integral_constant<index, N>;
+template <class T>
+struct is_integral_constant : std::false_type {};
+
+template <class T, T N>
+struct is_integral_constant<std::integral_constant<T, N>> : std::true_type {};
 
 template <class T>
-struct is_index_constant : std::false_type {};
+constexpr bool is_integral_constant_v = is_integral_constant<T>::value;
 
 template <index N>
-struct is_index_constant<index_constant<N>> : std::true_type {};
+using index_constant = std::integral_constant<index, N>;
 
 // TODO: use std::remove_cvref_t when C++20 is out.
 template <class T>
