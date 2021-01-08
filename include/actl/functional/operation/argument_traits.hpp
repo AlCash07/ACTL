@@ -18,11 +18,15 @@ struct raw {
 template <class T>
 using raw_t = typename raw<remove_cvref_t<T>>::type;
 
-struct scalar_tag {};
+struct unclassified_tag {};
+
+struct scalar_tag {
+    using base = unclassified_tag;
+};
 
 template <class T, class = void>
 struct category_impl {
-    using type = scalar_tag;
+    using type = unclassified_tag;
 };
 
 template <class T>

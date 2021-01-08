@@ -15,7 +15,7 @@ template <class... Ts>
 struct strict_common_type;
 
 template <class... Ts>
-using strict_common_type_t = typename strict_common_type<Ts...>::type;
+using strict_common_type_t = typename strict_common_type<std::decay_t<Ts>...>::type;
 
 template <class T>
 struct strict_common_type<T> {

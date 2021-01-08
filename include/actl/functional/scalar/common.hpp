@@ -45,9 +45,14 @@ struct cast_t : scalar_operation<cast_t<To>, 1, arithmetic_tag> {
 template <class T>
 constexpr cast_t<T> cast;
 
-struct common_t : scalar_operation<common_t, 2, scalar_tag> {
+struct common_t : scalar_operation<common_t, 2, unclassified_tag> {
     struct is_associative;
     struct is_commutative;
+
+    template <class... Ts>
+    constexpr auto evaluate(const Ts&... xs) const {
+        return eval_scalar(eval(xs)...);
+    }
 
     template <class T>
     static constexpr T eval_scalar(T x) {

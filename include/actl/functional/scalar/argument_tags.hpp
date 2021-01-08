@@ -10,10 +10,10 @@
 namespace ac {
 
 // clang-format off
-struct arithmetic_tag : scalar_tag     { using base = scalar_tag; };
-struct float_tag      : arithmetic_tag { using base = arithmetic_tag; };
-struct integral_tag   : arithmetic_tag { using base = arithmetic_tag; };
-struct boolean_tag    : integral_tag   { using base = integral_tag; };
+struct arithmetic_tag { using base = scalar_tag; };
+struct float_tag      { using base = arithmetic_tag; };
+struct integral_tag   { using base = arithmetic_tag; };
+struct boolean_tag    { using base = integral_tag; };
 // clang-format on
 
 template <class T>
@@ -36,5 +36,8 @@ template <>
 struct category_impl<bool> {
     using type = boolean_tag;
 };
+
+template <class T, T X>
+struct category_impl<std::integral_constant<T, X>> : category<T> {};
 
 }  // namespace ac

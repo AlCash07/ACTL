@@ -8,6 +8,7 @@
 #include <actl/functional/operation/operation.hpp>
 #include <actl/functional/scalar/argument_tags.hpp>
 #include <actl/functional/scalar/enable_operators.hpp>
+#include <actl/traits/strict_common_type.hpp>
 
 namespace ac {
 
@@ -15,11 +16,24 @@ template <class Op, index Arity, class ArgumentsTag>
 struct scalar_operation : operation<Op> {
     struct is_scalar_operation;
 
+    template <class T>
+    static constexpr T convert(T x) {
+        return x;
+    }
+
+    template <class T, class U, U X>
+    static constexpr T convert(std::integral_constant<U, X>) {
+        return T{X};
+    }
+
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
         if constexpr ((... && std::is_base_of_v<arithmetic_tag, category_t<Ts>>)) {
-            static_assert(are_same_v<remove_cvref_t<decltype(eval(xs))>...> &&
-                          (... && std::is_base_of_v<ArgumentsTag, category_t<Ts>>));
+            using T = strict_common_type_t<decltype(eval(xs))...>;
+            if constexpr (!is_integral_constant_v<T>) {
+                static_assert(std::is_base_of_v<ArgumentsTag, category_t<T>>);
+                return this->derived().eval_scalar(convert<T>(eval(xs))...);
+            }
         }
         return this->derived().eval_scalar(eval(xs)...);
     }

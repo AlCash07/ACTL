@@ -15,16 +15,21 @@ namespace ac::detail {
 // Special compressed_pair that mimics either T1 or T2 (defined by index I) for the operations
 // required by set and hash set.
 template <class T1, class T2, index I>
-class mimic_pair : public compressed_pair<T1, T2> {
+class mimic_pair : private compressed_pair<T1, T2> {
     using base_t = compressed_pair<T1, T2>;
 
 public:
     struct is_mimic_pair;
     using value_type = std::conditional_t<I == 1, T1, T2>;
+    using typename base_t::first_type;
+    using typename base_t::second_type;
 
     static_assert(I == 1 || I == 2);
 
     using base_t::base_t;
+
+    using base_t::first;
+    using base_t::second;
 
     constexpr decltype(auto) key() const {
         if constexpr (I == 1) {
