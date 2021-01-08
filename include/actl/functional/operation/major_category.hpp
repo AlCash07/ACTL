@@ -6,6 +6,7 @@
 #pragma once
 
 #include <actl/functional/operation/argument_traits.hpp>
+#include <actl/traits/category/category.hpp>
 
 namespace ac::detail {
 

@@ -21,7 +21,7 @@ namespace ac {
 struct tuple_tag {};
 
 template <class T>
-struct category_impl<T, std::enable_if_t<is_tuple_v<T>>> {
+struct category<T, std::enable_if_t<is_tuple_v<T>>> {
     using type = tuple_tag;
 };
 

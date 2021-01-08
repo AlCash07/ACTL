@@ -18,39 +18,7 @@ struct raw {
 template <class T>
 using raw_t = typename raw<remove_cvref_t<T>>::type;
 
-struct unclassified_tag {};
-
-struct scalar_tag {
-    using base = unclassified_tag;
-};
-
-template <class T, class = void>
-struct category_impl {
-    using type = unclassified_tag;
-};
-
-template <class T>
-struct category_impl<T, std::void_t<typename T::category>> {
-    using type = typename T::category;
-};
-
-template <class T>
-struct category : category_impl<T> {};
-
-template <class T>
-using category_t = typename category<raw_t<T>>::type;
-
 namespace detail {
-
-template <class Tag, class = void>
-struct category_level : index_constant<0> {};
-
-template <class T>
-constexpr index category_level_v = category_level<T>::value;
-
-template <class Tag>
-struct category_level<Tag, std::void_t<typename Tag::base>>
-    : index_constant<1 + category_level_v<typename Tag::base>> {};
 
 template <bool B, class T>
 struct value_if {

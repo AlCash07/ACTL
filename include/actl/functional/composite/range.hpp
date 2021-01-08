@@ -17,8 +17,8 @@ struct range_tag {
 };
 
 template <class T>
-// struct category_impl<T, std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>> {
-struct category_impl<T, std::enable_if_t<is_range_v<T>>> {
+// struct category<T, std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>> {
+struct category<T, std::enable_if_t<is_range_v<T>>> {
     using type = range_tag;
 };
 

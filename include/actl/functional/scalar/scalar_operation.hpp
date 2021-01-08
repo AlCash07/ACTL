@@ -6,8 +6,8 @@
 #pragma once
 
 #include <actl/functional/operation/operation.hpp>
-#include <actl/functional/scalar/argument_tags.hpp>
 #include <actl/functional/scalar/enable_operators.hpp>
+#include <actl/traits/category/scalar.hpp>
 #include <actl/traits/strict_common_type.hpp>
 
 namespace ac {

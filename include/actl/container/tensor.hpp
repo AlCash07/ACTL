@@ -500,7 +500,7 @@ struct tensor<T, 0> : tensor_fixed<T, 0> {};
 struct tensor_tag {};
 
 template <class T, class D>
-struct category_impl<T, ac::detail::tensor_base<T, D>> {
+struct category<T, ac::detail::tensor_base<T, D>> {
     using type = tensor_tag;
 };
 
