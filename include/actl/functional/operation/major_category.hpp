@@ -5,27 +5,10 @@
 
 #pragma once
 
-#include <actl/functional/operation/argument_traits.hpp>
-#include <actl/traits/category/category.hpp>
+#include <actl/traits/category/common_category.hpp>
+#include <actl/traits/dependent.hpp>
 
 namespace ac::detail {
-
-template <class T, class U>
-constexpr auto common_category(T, U) {
-    constexpr index DT = category_level_v<T>;
-    constexpr index DU = category_level_v<U>;
-    if constexpr (DT == DU) {
-        if constexpr (std::is_same_v<T, U>) {
-            return T{};
-        } else {
-            static_assert(DT > 0, "incompatible categories");
-            return common_category(typename T::base{}, typename U::base{});
-        }
-    } else if constexpr (DT < DU)
-        return common_category(T{}, typename U::base{});
-    else
-        return common_category(typename T::base{}, U{});
-}
 
 template <class Tag, index Depth>
 struct cdp {  // category-depth pair
@@ -36,7 +19,7 @@ struct cdp {  // category-depth pair
 template <class T, index DT, class U, index DU>
 constexpr auto operator||(cdp<T, DT> lhs, cdp<U, DU> rhs) {
     if constexpr (DT == DU)
-        return cdp<decltype(common_category(T{}, U{})), DT>{};
+        return cdp<common_category_t<T, U>, DT>{};
     else if constexpr (DT < DU)
         return rhs;
     else
@@ -47,7 +30,7 @@ template <class T, class = void>
 struct type_depth : index_constant<0> {};
 
 template <class T>
-constexpr index type_depth_v = type_depth<raw_t<T>>::value;
+constexpr index type_depth_v = type_depth<T>::value;
 
 template <class T>
 struct type_depth<T, std::void_t<typename category_t<T>::has_nested>>
