@@ -25,7 +25,7 @@ struct neutral_element;
 namespace detail {
 
 template <class T>
-struct type_depth<T, std::enable_if_t<is_operation_v<T>>>
+struct type_depth<T, std::enable_if_t<is_operation_v<remove_cvref_t<T>>>>
     : index_constant<std::numeric_limits<index>::max()> {};
 
 }  // namespace detail

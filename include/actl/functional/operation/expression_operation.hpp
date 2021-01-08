@@ -27,7 +27,7 @@ struct expression_op : operation<expression_op<Ts...>> {
     }
 };
 
-template <class... Ts, enable_int_if<1 < (... + is_operation_v<Ts>)> = 0>
+template <class... Ts, enable_int_if<1 < (... + is_operation_v<remove_cvref_t<Ts>>)> = 0>
 constexpr auto make_expression(Ts&&... xs) {
     return expression_op<value_if_small<Ts>...>{std::forward<Ts>(xs)...};
 }

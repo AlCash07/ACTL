@@ -22,7 +22,7 @@ struct category<T, std::void_t<typename T::category>> {
 };
 
 template <class T>
-using category_t = typename category<remove_cvref_t<T>>::type;
+using category_t = typename category<T>::type;
 
 template <class Tag, class = void>
 struct category_level : index_constant<0> {};
