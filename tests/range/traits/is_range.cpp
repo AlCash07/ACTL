@@ -7,6 +7,7 @@
 #include <actl/range/traits/is_range.hpp>
 #include <actl/std/list.hpp>
 
+static_assert(!ac::is_range_v<void>);
 static_assert(!ac::is_range_v<int>);
 static_assert(ac::is_range_v<int[4]>);
 static_assert(ac::is_range_v<const int[4]>);

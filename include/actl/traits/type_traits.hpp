@@ -12,6 +12,15 @@
 
 namespace ac {
 
+// Workaround for CWG 1558: https://en.cppreference.com/w/cpp/types/void_t
+template <class... Ts>
+struct make_void {
+    using type = void;
+};
+
+template <class... Ts>
+using void_t = typename make_void<Ts...>::type;
+
 template <bool B, class T>
 struct add_const_if : std::conditional<B, const T, T> {};
 

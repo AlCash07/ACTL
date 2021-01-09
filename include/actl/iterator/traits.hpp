@@ -5,25 +5,12 @@
 
 #pragma once
 
-#include <iterator>
+#include <actl/traits/category/iterator.hpp>
 
 namespace ac {
 
 template <class T>
 using iterator_category_t = typename std::iterator_traits<T>::iterator_category;
-
-namespace detail {
-
-template <class T, class = void>
-struct is_iterator : std::false_type {};
-
-template <class T>
-struct is_iterator<T, std::void_t<iterator_category_t<T>>> : std::true_type {};
-
-}  // namespace detail
-
-template <class T>
-constexpr bool is_iterator_v = detail::is_iterator<T>::value;
 
 namespace detail {
 
@@ -39,12 +26,6 @@ struct is_const_iterator : is_const_pointer<typename std::iterator_traits<T>::po
 template <class T>
 struct is_const_iterator<T, false> : std::false_type {};
 
-template <class T, class Category, bool = is_iterator_v<T>>
-struct has_iterator_category : std::is_base_of<Category, iterator_category_t<T>> {};
-
-template <class T, class Category>
-struct has_iterator_category<T, Category, false> : std::false_type {};
-
 }  // namespace detail
 
 template <class T>
@@ -52,25 +33,5 @@ constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 
 template <class T>
 constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
-
-template <class T>
-constexpr bool is_input_iterator_v =
-    detail::has_iterator_category<T, std::input_iterator_tag>::value;
-
-template <class T>
-constexpr bool is_output_iterator_v =
-    detail::has_iterator_category<T, std::output_iterator_tag>::value;
-
-template <class T>
-constexpr bool is_forward_iterator_v =
-    detail::has_iterator_category<T, std::forward_iterator_tag>::value;
-
-template <class T>
-constexpr bool is_bidirectional_iterator_v =
-    detail::has_iterator_category<T, std::bidirectional_iterator_tag>::value;
-
-template <class T>
-constexpr bool is_random_access_iterator_v =
-    detail::has_iterator_category<T, std::random_access_iterator_tag>::value;
 
 }  // namespace ac

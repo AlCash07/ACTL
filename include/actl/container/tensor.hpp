@@ -497,10 +497,12 @@ struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
 }  // namespace detail
 
-struct tensor_tag {};
+struct tensor_tag {
+    using base = unclassified_tag;
+};
 
-template <class T, class D>
-struct category<T, ac::detail::tensor_base<T, D>> {
+template <class... Ts>
+struct category<ac::detail::tensor_base<Ts...>> {
     using type = tensor_tag;
 };
 

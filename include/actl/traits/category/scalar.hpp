@@ -18,7 +18,7 @@ struct boolean_tag    { using base = integral_tag; };
 // clang-format on
 
 template <class T>
-struct category<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
+struct category_sfinae<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
     static auto f() {
         if constexpr (std::is_integral_v<T>)
             return integral_tag{};
@@ -38,5 +38,10 @@ struct category<bool> {
 
 template <class T, T X>
 struct category<std::integral_constant<T, X>> : category<T> {};
+
+template <class T>
+struct category_sfinae<T*, std::enable_if_t<!std::is_object_v<T>>> {
+    using type = scalar_tag;
+};
 
 }  // namespace ac

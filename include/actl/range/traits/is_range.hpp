@@ -12,12 +12,12 @@ namespace ac {
 template <class T, class = void>
 struct is_range : std::false_type {};
 
-template <class T>
+template <class T>  // & is needed for C arrays
 struct is_range<T,
-                std::void_t<decltype(std::begin(std::declval<T>()), std::end(std::declval<T>()))>>
+                std::void_t<decltype(std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
     : std::true_type {};
 
 template <class T>
-constexpr bool is_range_v = is_range<T&>::value;  // & is needed for C arrays
+constexpr bool is_range_v = is_range<T>::value;
 
 }  // namespace ac

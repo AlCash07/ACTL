@@ -62,6 +62,9 @@ private:
     }
 };
 
+template <class Iter>
+struct category<iterator_id<Iter>> : category<Iter> {};
+
 template <class C>
 struct container_id_traits<C, true, false> {
     using id = iterator_id<iterator_t<const C>>;
