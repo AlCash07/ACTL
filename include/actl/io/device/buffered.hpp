@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/scalar/derived.hpp>
+#include <actl/functional/scalar/basic_math.hpp>
 #include <actl/io/io.hpp>
 #include <actl/macros.hpp>
 #include <actl/range/algorithm.hpp>

@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/functional/scalar/derived.hpp>
+#include <actl/functional/scalar/basic_math.hpp>
 #include <limits>
 
 static_assert(1 == ac::sgn(std::numeric_limits<double>::max()));
