@@ -5,12 +5,12 @@
 
 #pragma once
 
+#include <actl/category/tuple.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/format/apply_format.hpp>
 #include <actl/range/traits/is_range.hpp>
-#include <actl/traits/is_tuple.hpp>
 #include <actl/utility/span.hpp>
 
 namespace ac::io {

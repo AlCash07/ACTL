@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include <actl/category/tuple.hpp>
 #include <actl/io/core/manipulator.hpp>
-#include <actl/traits/is_tuple.hpp>
 
 namespace ac::io {
 

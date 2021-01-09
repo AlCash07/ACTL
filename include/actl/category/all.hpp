@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/category/category.hpp>
 #include <actl/category/iterator.hpp>
 #include <actl/category/scalar.hpp>
+#include <actl/category/tuple.hpp>
 #include <actl/category/utility/all.hpp>

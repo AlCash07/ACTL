@@ -4,10 +4,10 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
+#include <actl/category/tuple.hpp>
 #include <actl/std/array.hpp>
 #include <actl/std/tuple.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/traits/is_tuple.hpp>
 
 static_assert(ac::is_tuple_v<std::pair<int, int>>);
 static_assert(ac::is_tuple_v<std::tuple<int, int, int>>);

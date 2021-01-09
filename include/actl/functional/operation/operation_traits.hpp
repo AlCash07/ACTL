@@ -16,7 +16,9 @@ namespace ac {
 template <class Derived>
 struct operation;
 
-struct operation_tag {};
+struct operation_tag {
+    using base = unclassified_tag;
+};
 
 template <class T>
 constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;

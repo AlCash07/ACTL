@@ -25,7 +25,10 @@ struct default_overload<Op, std::void_t<decltype(Op::formula)>> {
 };
 
 template <class Op, class Category, class... Ts>
-struct overload : default_overload<Op> {};
+struct overload : overload<Op, typename Category::base, Ts...> {};
+
+template <class Op, class... Ts>
+struct overload<Op, unclassified_tag, Ts...> : default_overload<Op> {};
 
 // TODO: figure out a way to overload on the operation type and pass variadic template pack without
 // this helper structure.

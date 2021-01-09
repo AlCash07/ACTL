@@ -5,25 +5,11 @@
 
 #pragma once
 
+#include <actl/category/tuple.hpp>
 #include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
-#include <actl/traits/is_tuple.hpp>
 
 namespace ac {
-
-template <class T>
-using tuple_indices_t = std::make_index_sequence<std::tuple_size_v<T>>;
-
-}  // namespace ac
-
-namespace ac {
-
-struct tuple_tag {};
-
-template <class T>
-struct category_sfinae<T, std::enable_if_t<is_tuple_v<T>>> {
-    using type = tuple_tag;
-};
 
 struct equal_tuple_t {
     template <class EqualOps, class T, class U, size_t... Is>
@@ -53,8 +39,8 @@ struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
     }
 };
 
-template <class T, class U>
-struct overload<equal_t, tuple_tag, T, U> {
+template <class... Ts, class T, class U>
+struct overload<equal_t, tuple_tag<Ts...>, T, U> {
     static constexpr auto resolve(equal_t op) {
         return tuple_op_resolver<T, U>::resolve(equal_tuple, op);
     }
@@ -74,15 +60,15 @@ struct lexicographical_compare_tuple_t {
 };
 constexpr operation_composer<lexicographical_compare_tuple_t> lexicographical_compare_tuple;
 
-template <class T, class U>
-struct overload<cmp3way_t, tuple_tag, T, U> {
+template <class... Ts, class T, class U>
+struct overload<cmp3way_t, tuple_tag<Ts...>, T, U> {
     static constexpr auto resolve(cmp3way_t op) {
         return tuple_op_resolver<T, U>::resolve(lexicographical_compare_tuple, op);
     };
 };
 
-template <class T, class U>
-struct overload<less_t, tuple_tag, T, U> {
+template <class... Ts, class T, class U>
+struct overload<less_t, tuple_tag<Ts...>, T, U> {
     static constexpr auto resolve(less_t) {
         return cmp3way < 0;
     }
