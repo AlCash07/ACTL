@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/functional/composite/tuple.hpp>
 #include <actl/functional/operators.hpp>
+#include <actl/functional/tuple/comparison.hpp>
 #include <actl/io/tuple.hpp>
 #include <actl/utility/introspection.hpp>
 

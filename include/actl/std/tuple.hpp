@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/functional/composite/tuple.hpp>
+#include <actl/functional/tuple/comparison.hpp>
 #include <actl/io/tuple.hpp>
 
 namespace ac {

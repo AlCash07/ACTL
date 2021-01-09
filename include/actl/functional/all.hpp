@@ -10,3 +10,4 @@
 #include <actl/functional/policy/all.hpp>
 #include <actl/functional/scalar/all.hpp>
 #include <actl/functional/traits.hpp>
+#include <actl/functional/tuple/all.hpp>
