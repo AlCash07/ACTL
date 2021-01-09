@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/range/traits/is_range.hpp>
+#include <actl/category/range.hpp>
 #include <type_traits>
 
 namespace ac {

@@ -6,9 +6,20 @@
 #pragma once
 
 #include <actl/iterator/traits.hpp>
-#include <actl/range/traits/is_range.hpp>
+#include <actl/traits/dependent.hpp>
 
 namespace ac {
+
+template <class T, class = void>
+struct is_range : std::false_type {};
+
+template <class T>  // & is needed for C arrays
+struct is_range<T,
+                std::void_t<decltype(std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
+    : std::true_type {};
+
+template <class T>
+constexpr bool is_range_v = is_range<T>::value;
 
 template <class T, class Category, bool = is_range_v<T>>
 struct has_range_iterator : std::is_base_of<Category, iterator_category_t<iterator_t<T>>> {};
@@ -25,10 +36,20 @@ struct is_contiguous_range : std::false_type {};
 
 template <class T>
 struct is_contiguous_range<
-    T, std::void_t<decltype(std::data(std::declval<T>()), std::size(std::declval<T>()))>>
+    T, std::void_t<decltype(std::data(std::declval<T&>()), std::size(std::declval<T&>()))>>
     : std::true_type {};
 
 template <class T>
-constexpr bool is_contiguous_range_v = is_contiguous_range<T&>::value;
+constexpr bool is_contiguous_range_v = is_contiguous_range<T>::value;
+
+struct range_tag {
+    struct has_nested;
+};
+
+template <class T>
+// struct category_sfinae<T, std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>> {
+struct category_sfinae<T, std::enable_if_t<is_range_v<T>>> {
+    using type = range_tag;
+};
 
 }  // namespace ac

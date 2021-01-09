@@ -7,7 +7,7 @@
 
 #include <actl/io/text/text.hpp>
 #include <actl/io/utility/till.hpp>
-#include <actl/range/traits/range_traits.hpp>
+#include <actl/range/traits.hpp>
 #include <actl/string/ctype.hpp>
 #include <string>
 

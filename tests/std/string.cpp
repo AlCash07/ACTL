@@ -7,7 +7,7 @@
 #include <actl/io/device/memory.hpp>
 #include <actl/io/text/skipws.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/range/traits/all.hpp>
+#include <actl/range/traits.hpp>
 #include <actl/std/string.hpp>
 
 static_assert(ac::is_container_v<std::string>);

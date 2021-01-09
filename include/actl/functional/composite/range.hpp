@@ -5,22 +5,12 @@
 
 #pragma once
 
+#include <actl/category/range.hpp>
 #include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
-#include <actl/range/traits/is_range.hpp>
 #include <algorithm>
 
 namespace ac {
-
-struct range_tag {
-    struct has_nested;
-};
-
-template <class T>
-// struct category_sfinae<T, std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>> {
-struct category_sfinae<T, std::enable_if_t<is_range_v<T>>> {
-    using type = range_tag;
-};
 
 struct equal_range_t {
     template <class EqualOp, class T, class U>

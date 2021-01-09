@@ -7,7 +7,7 @@
 
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
-#include <actl/range/traits/range_traits.hpp>
+#include <actl/range/traits.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/types.hpp>
 #include <actl/utility/none.hpp>

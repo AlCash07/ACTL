@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/range/traits/all.hpp>
+#include <actl/range/traits.hpp>
 #include <actl/std/deque.hpp>
 
 using Deque = std::deque<int>;

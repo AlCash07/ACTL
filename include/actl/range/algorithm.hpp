@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <actl/range/traits/is_range.hpp>
+#include <actl/category/range.hpp>
 #include <actl/traits/dependent.hpp>
 #include <algorithm>
 

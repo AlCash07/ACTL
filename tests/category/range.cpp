@@ -4,10 +4,18 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/range/traits/iterator.hpp>
+#include <actl/category/range.hpp>
 #include <actl/std/deque.hpp>
+#include <actl/std/list.hpp>
 #include <actl/std/vector.hpp>
 
+static_assert(!ac::is_range_v<void>);
+static_assert(!ac::is_range_v<int>);
+static_assert(ac::is_range_v<int[4]>);
+static_assert(ac::is_range_v<const int[4]>);
+static_assert(ac::is_range_v<std::list<int>>);
+
+static_assert(!ac::is_contiguous_range_v<void>);
 static_assert(!ac::is_contiguous_range_v<int>);
 static_assert(ac::is_contiguous_range_v<int[4]>);
 static_assert(ac::is_contiguous_range_v<const int[4]>);

@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
-#include <actl/range/traits/range_traits.hpp>
+#include <actl/range/traits.hpp>
 
 namespace ac {
 

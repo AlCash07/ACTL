@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/category/category.hpp>
-#include <actl/range/traits/is_range.hpp>
+#include <actl/category/range.hpp>
 #include <tuple>
 #include <utility>
 

@@ -5,10 +5,10 @@
 
 #pragma once
 
+#include <actl/category/range.hpp>
 #include <actl/container/functions.hpp>
 #include <actl/io/io.hpp>
-#include <actl/range/traits/iterator.hpp>
-#include <actl/range/traits/range_traits.hpp>
+#include <actl/range/traits.hpp>
 
 namespace ac::io {
 
