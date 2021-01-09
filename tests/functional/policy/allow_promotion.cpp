@@ -4,8 +4,9 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/functional/composite/all.hpp>
 #include <actl/functional/policy/allow_promotion.hpp>
+#include <actl/functional/range/equal_range.hpp>
+#include <actl/functional/tuple/equal_tuple.hpp>
 
 TEST_CASE("simple operation") {
     static_assert(3LL == ac::add(ac::allow_promotion{})(1, 2LL));

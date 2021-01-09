@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/category/range.hpp>
-#include <actl/functional/composite/composite_operation.hpp>
+#include <actl/functional/operation/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
 #include <algorithm>
 
