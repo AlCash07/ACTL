@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/functional/composite/range.hpp>
+#include <actl/functional/range/comparison.hpp>
 #include <actl/functional/scalar/all.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/irange.hpp>

@@ -5,5 +5,5 @@
 
 #pragma once
 
-#include <actl/functional/tuple/equal_tuple.hpp>
-#include <actl/functional/tuple/lexicographical_compare_tuple.hpp>
+#include <actl/functional/range/equal_range.hpp>
+#include <actl/functional/range/lexicographical_compare_range.hpp>

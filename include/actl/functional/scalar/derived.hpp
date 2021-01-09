@@ -48,7 +48,7 @@ struct neutral_element<min_t, T> {
 };
 
 struct sgn_t : scalar_operation<sgn_t, 1, scalar_tag> {
-    static constexpr auto formula = cmp3way(x_, zero);
+    static constexpr auto formula = cmp3way(x_, zero_);
 };
 constexpr sgn_t sgn;
 

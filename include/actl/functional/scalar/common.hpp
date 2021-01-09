@@ -11,8 +11,8 @@
 
 namespace ac {
 
-constexpr std::integral_constant<int, 0> zero;
-constexpr std::integral_constant<int, 1> one;
+constexpr std::integral_constant<int, 0> zero_;
+constexpr std::integral_constant<int, 1> one_;
 
 template <index I, index N>
 struct arg_t {

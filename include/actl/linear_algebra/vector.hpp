@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/functional/composite/range.hpp>
+#include <actl/functional/range/comparison.hpp>
 
 namespace ac {
 

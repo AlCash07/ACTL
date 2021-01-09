@@ -8,24 +8,8 @@
 #include <actl/category/range.hpp>
 #include <actl/functional/composite/composite_operation.hpp>
 #include <actl/functional/scalar/comparison.hpp>
-#include <algorithm>
 
 namespace ac {
-
-struct equal_range_t {
-    template <class EqualOp, class T, class U>
-    static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
-        return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
-    }
-};
-constexpr operation_composer<equal_range_t> equal_range;
-
-template <class T, class U>
-struct overload<equal_t, range_tag, T, U> {
-    static constexpr auto resolve(equal_t op) {
-        return equal_range(op.resolve_nested<T, U>());
-    }
-};
 
 struct lexicographical_compare_range_t {
     template <class Cmp3WayOp, class T, class U>
@@ -55,7 +39,7 @@ struct overload<cmp3way_t, range_tag, T, U> {
 template <class T, class U>
 struct overload<less_t, range_tag, T, U> {
     static constexpr auto resolve(less_t) {
-        return cmp3way < 0;
+        return cmp3way < zero_;
     }
 };
 

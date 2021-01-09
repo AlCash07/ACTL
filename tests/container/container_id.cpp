@@ -6,7 +6,7 @@
 #include "test.hpp"
 #include <actl/container/container_id.hpp>
 #include <actl/container/hash_set.hpp>
-#include <actl/functional/composite/range.hpp>
+#include <actl/functional/range/comparison.hpp>
 #include <actl/std/all.hpp>
 
 TEST_CASE("vector id") {
