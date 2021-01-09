@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/traits/category/iterator.hpp>
+#include <actl/category/iterator.hpp>
 
 namespace ac {
 

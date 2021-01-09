@@ -5,6 +5,7 @@
 
 #pragma once
 
-#include <actl/traits/category/utility/category_level.hpp>
-#include <actl/traits/category/utility/is_subcategory_of.hpp>
-#include <actl/traits/category/utility/is_subcategory_of_template.hpp>
+#include <actl/category/category.hpp>
+#include <actl/category/iterator.hpp>
+#include <actl/category/scalar.hpp>
+#include <actl/category/utility/all.hpp>

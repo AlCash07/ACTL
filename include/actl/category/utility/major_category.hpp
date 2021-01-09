@@ -5,10 +5,12 @@
 
 #pragma once
 
-#include <actl/traits/category/common_category.hpp>
+#include <actl/category/utility/common_category.hpp>
 #include <actl/traits/dependent.hpp>
 
-namespace ac::detail {
+namespace ac {
+
+namespace detail {
 
 template <class Tag, index Depth>
 struct cdp {  // category-depth pair
@@ -40,7 +42,9 @@ template <class... Ts>
 using major_cdp =
     remove_cvref_t<decltype((... || std::declval<cdp<category_t<Ts>, type_depth_v<Ts>>>()))>;
 
-template <class... Ts>
-using major_category_t = typename major_cdp<Ts...>::type;
+}  // namespace detail
 
-}  // namespace ac::detail
+template <class... Ts>
+using major_category_t = typename detail::major_cdp<Ts...>::type;
+
+}  // namespace ac

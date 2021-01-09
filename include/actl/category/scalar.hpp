@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/traits/category/category.hpp>
+#include <actl/category/category.hpp>
 
 namespace ac {
 

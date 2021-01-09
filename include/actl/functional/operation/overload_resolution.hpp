@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/functional/operation/major_category.hpp>
+#include <actl/category/utility/major_category.hpp>
 #include <actl/functional/operation/tuned_operation.hpp>
 
 namespace ac {
@@ -33,7 +33,7 @@ template <class... Ts>
 struct overload_helper {
     template <class Op>
     static constexpr decltype(auto) resolve(const Op& op) {
-        return overload<Op, detail::major_category_t<raw_t<Ts>...>, raw_t<Ts>...>::resolve(op);
+        return overload<Op, major_category_t<raw_t<Ts>...>, raw_t<Ts>...>::resolve(op);
     }
 
     template <class Op, class Policy>

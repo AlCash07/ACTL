@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/traits/category/scalar.hpp>
-#include <actl/traits/category/utility/is_subcategory_of_template.hpp>
+#include <actl/category/scalar.hpp>
+#include <actl/category/utility/is_subcategory_of_template.hpp>
 #include <iterator>
 
 namespace ac {
