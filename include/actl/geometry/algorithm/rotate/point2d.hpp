@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/functional/scalar/math.hpp>
 #include <actl/geometry/algorithm/rotate/rotate.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 

@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/functional/scalar/math.hpp>
 #include <actl/geometry/algorithm/area/point_point.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 

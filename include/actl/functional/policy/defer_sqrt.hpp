@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/functional/scalar/math.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 

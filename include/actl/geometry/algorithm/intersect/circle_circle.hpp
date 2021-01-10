@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include <actl/functional/scalar/math.hpp>
 #include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/geometry/algorithm/point/angle.hpp>
 #include <actl/geometry/sphere.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 

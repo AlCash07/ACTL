@@ -8,7 +8,7 @@
 #include <actl/functional/scalar/arithmetic/sub.hpp>
 #include <actl/functional/scalar/common/arg.hpp>
 #include <actl/functional/scalar/comparison/all.hpp>
-#include <actl/functional/scalar/math.hpp>
+#include <actl/numeric/math.hpp>
 
 namespace ac {
 
