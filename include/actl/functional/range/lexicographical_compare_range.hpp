@@ -29,15 +29,15 @@ struct lexicographical_compare_range_t {
 };
 constexpr operation_composer<lexicographical_compare_range_t> lexicographical_compare_range;
 
-template <class T, class U>
-struct overload<cmp3way_t, range_tag, T, U> {
+template <class V, class T, class U>
+struct overload<cmp3way_t, range_tag<V>, T, U> {
     static constexpr auto resolve(cmp3way_t op) {
         return lexicographical_compare_range(op.resolve_nested<T, U>());
     }
 };
 
-template <class T, class U>
-struct overload<less_t, range_tag, T, U> {
+template <class V, class T, class U>
+struct overload<less_t, range_tag<V>, T, U> {
     static constexpr auto resolve(less_t) {
         return cmp3way < zero_;
     }

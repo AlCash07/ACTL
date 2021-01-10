@@ -9,4 +9,8 @@
 static_assert(!ac::is_container_v<int>);
 static_assert(!ac::is_container_v<int*>);
 static_assert(!ac::is_container_v<int[]>);
-static_assert(ac::is_container_v<int[2]>);
+
+using CArray = int[2];
+static_assert(ac::is_container_v<CArray>);
+static_assert(ac::is_sequence_range_v<CArray>);
+static_assert(!ac::is_associative_range_v<CArray>);

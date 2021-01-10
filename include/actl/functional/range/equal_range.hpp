@@ -20,8 +20,8 @@ struct equal_range_t {
 };
 constexpr operation_composer<equal_range_t> equal_range;
 
-template <class T, class U>
-struct overload<equal_t, range_tag, T, U> {
+template <class V, class T, class U>
+struct overload<equal_t, range_tag<V>, T, U> {
     static constexpr auto resolve(equal_t op) {
         return equal_range(op.resolve_nested<T, U>());
     }
