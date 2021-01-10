@@ -3,13 +3,13 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "io/text/test_io.hpp"
-#include "test.hpp"
 #include <actl/io/text/arithmetic/all.hpp>
 #include <actl/io/text/decorator/braced.hpp>
 #include <actl/io/text/decorator/spaced.hpp>
 #include <actl/io/text/text.hpp>
 #include <actl/std/all.hpp>
+#include "io/text/test_io.hpp"
+#include "test.hpp"
 
 using namespace ac::io;
 

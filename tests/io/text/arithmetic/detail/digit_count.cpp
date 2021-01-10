@@ -3,8 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
+#include "test.hpp"
 
 TEST_CASE("digit_count") {
     using io::detail::digit_count;

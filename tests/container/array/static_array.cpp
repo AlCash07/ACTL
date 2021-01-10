@@ -3,8 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "regular.hpp"
 #include <actl/container/array/static_array.hpp>
+#include "regular.hpp"
 
 TEST_CASE("static_array is regular") {
     test_regular_traits<static_array<int, 1, 3>>();

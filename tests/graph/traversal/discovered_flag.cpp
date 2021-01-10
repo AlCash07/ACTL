@@ -3,13 +3,13 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "graph/sample_graphs.hpp"
-#include "map/logging_map.hpp"
-#include "test.hpp"
 #include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/breadth_first_search.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/graph/traversal/discovered_flag.hpp>
+#include "graph/sample_graphs.hpp"
+#include "map/logging_map.hpp"
+#include "test.hpp"
 
 using Log = std::vector<std::pair<int, bool>>;
 

@@ -3,9 +3,9 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/functional/scalar/basic_math/all.hpp>
 #include <limits>
+#include "test.hpp"
 
 static_assert(1 == ac::sgn(std::numeric_limits<double>::max()));
 static_assert(-1 == ac::sgn(std::numeric_limits<int>::min()));

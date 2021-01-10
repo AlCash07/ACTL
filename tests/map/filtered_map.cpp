@@ -3,9 +3,9 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/map/filtered_map.hpp>
 #include <actl/std/vector.hpp>
+#include "test.hpp"
 
 TEST_CASE("filtered_map to_bool") {
     auto map = filtered_map{std::vector<int>{3, 2, 0, 6}};

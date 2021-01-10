@@ -3,10 +3,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/numeric/algorithm/binary_pow.hpp>
 #include <actl/numeric/modular/ring.hpp>
 #include <actl/numeric/random/random.hpp>
+#include "test.hpp"
 
 TEST_CASE("static_quotient_ring::arithmetic") {
     using ring = static_quotient_ring<18446744073709551557ull>;  // largest uint64_t prime number

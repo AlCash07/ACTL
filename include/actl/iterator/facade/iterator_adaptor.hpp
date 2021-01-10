@@ -9,6 +9,7 @@
 #pragma once
 
 #include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/traits.hpp>
 
 namespace ac {
 

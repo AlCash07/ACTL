@@ -3,12 +3,12 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "graph/sample_graphs.hpp"
-#include "test.hpp"
 #include <actl/graph/traversal/breadth_first_search.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/graph/traversal/discovered_flag.hpp>
 #include <actl/graph/traversal/predecessor_edge_recorder.hpp>
+#include "graph/sample_graphs.hpp"
+#include "test.hpp"
 
 TEST_CASE("predecessor_edge_recorder bfs") {
     auto graph = sample_undirected_graph();

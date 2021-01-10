@@ -3,11 +3,11 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "graph/test_edges.hpp"
-#include "graph/test_vertices.hpp"
 #include <actl/container/hash_set.hpp>
 #include <actl/graph/adjacency_list.hpp>
 #include <actl/std/all.hpp>
+#include "graph/test_edges.hpp"
+#include "graph/test_vertices.hpp"
 
 TEST_CASE("adjacency_list none") {
     adjacency_list<directed> graph(2);

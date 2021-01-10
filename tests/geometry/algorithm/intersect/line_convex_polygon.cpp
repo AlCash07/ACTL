@@ -3,8 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/geometry/algorithm/intersect/line_convex_polygon.hpp>
+#include "test.hpp"
 
 TEST_CASE("square") {
     convex_polygon<point<int>> poly{{2, 0}, {2, 2}, {0, 2}, {0, 0}};

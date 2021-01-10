@@ -5,11 +5,11 @@
 
 #pragma once
 
-#include "graph/bundle.hpp"
-#include "test.hpp"
 #include <actl/graph/selectors.hpp>
 #include <actl/graph/traits.hpp>
 #include <actl/map/traits.hpp>
+#include "graph/bundle.hpp"
+#include "test.hpp"
 
 template <class Graph, class V = vertex_t<Graph>>
 std::vector<V> test_vertices(Graph& graph) {

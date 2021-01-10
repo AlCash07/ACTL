@@ -3,11 +3,11 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/io/device/memory.hpp>
 #include <actl/io/text/arithmetic/integer_write.hpp>
 #include <actl/io/text/decorator/adjusted.hpp>
 #include <actl/io/text/text.hpp>
+#include "test.hpp"
 
 using namespace ac::io;
 

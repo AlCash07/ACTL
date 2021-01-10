@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include "test.hpp"
 #include <actl/io/device/string.hpp>
+#include "test.hpp"
 
 template <class... Ts>
 void test_write(const std::string& expected, Ts&&... args) {

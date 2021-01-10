@@ -3,9 +3,9 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/std/vector.hpp>
 #include <actl/traits/is_template_base_of.hpp>
+#include "test.hpp"
 
 namespace {
 class public_derived : public std::vector<int> {};

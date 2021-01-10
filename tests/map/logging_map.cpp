@@ -4,9 +4,9 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "map/logging_map.hpp"
-#include "test.hpp"
 #include <actl/map/generic_container.hpp>
 #include <actl/std/vector.hpp>
+#include "test.hpp"
 
 TEST_CASE("logging_map vector") {
     std::vector<int> v(4);

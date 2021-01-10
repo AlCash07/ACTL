@@ -5,14 +5,14 @@
 
 #pragma once
 
-#include "graph/bundle.hpp"
-#include "graph/edges_ends.hpp"
-#include "test.hpp"
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/graph/traits.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/std/map.hpp>
+#include "graph/bundle.hpp"
+#include "graph/edges_ends.hpp"
+#include "test.hpp"
 
 template <bool TestAdjacency = false, class Graph, class V = vertex_t<Graph>>
 void test_edges(Graph& graph, V v0, V v1, V v2) {

@@ -3,8 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/geometry/plane.hpp>
+#include "test.hpp"
 
 int rand1() {
     return ac::random.uniform(-800, 800);

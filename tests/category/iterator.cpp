@@ -3,11 +3,11 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
 #include <actl/category/iterator.hpp>
 #include <actl/std/forward_list.hpp>
 #include <actl/std/list.hpp>
 #include <actl/std/vector.hpp>
+#include "test.hpp"
 
 static_assert(!ac::is_iterator_v<void>);
 static_assert(!ac::is_iterator_v<int[4]>);

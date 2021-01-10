@@ -3,11 +3,11 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "geometry/epsilon.hpp"
-#include "test.hpp"
 #include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/algorithm/point/invert.hpp>
 #include <actl/geometry/algorithm/point/norm.hpp>
+#include "geometry/epsilon.hpp"
+#include "test.hpp"
 
 TEST_CASE("default") {
     point o{3, 4};
