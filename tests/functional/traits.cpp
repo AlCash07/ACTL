@@ -7,57 +7,68 @@
 #include <actl/functional/traits.hpp>
 #include <functional>
 
-bool ok();
+using free_function_0_arity = void();
+static_assert(0ul == ac::arity_v<free_function_0_arity>);
+static_assert(std::is_same_v<void, ac::return_type_t<free_function_0_arity>>);
 
-TEST_CASE("0_arity") {
-    using F = decltype(ok);
-    CHECK(0ul == arity_v<F>);
-    CHECK(std::is_same_v<bool, return_type_t<F>>);
-}
+using free_function_ptr = free_function_0_arity*;
+static_assert(0ul == ac::arity_v<free_function_ptr>);
+static_assert(std::is_same_v<void, ac::return_type_t<free_function_ptr>>);
 
-int cmp(const void*, const std::string&);
+using free_function_params = int && (int, const int, int&, const int&, int*, const int*);
+static_assert(6ul == ac::arity_v<free_function_params>);
+static_assert(std::is_same_v<int&&, ac::return_type_t<free_function_params>>);
+static_assert(std::is_same_v<int, ac::argument_type_t<0, free_function_params>>);
+static_assert(std::is_same_v<int, ac::argument_type_t<1, free_function_params>>);
+static_assert(std::is_same_v<int&, ac::argument_type_t<2, free_function_params>>);
+static_assert(std::is_same_v<const int&, ac::argument_type_t<3, free_function_params>>);
+static_assert(std::is_same_v<int*, ac::argument_type_t<4, free_function_params>>);
+static_assert(std::is_same_v<const int*, ac::argument_type_t<5, free_function_params>>);
 
-TEST_CASE("function") {
-    using F = decltype(cmp);
-    CHECK(2ul == arity_v<F>);
-    CHECK(std::is_same_v<int, return_type_t<F>>);
-    CHECK(std::is_same_v<const void*, argument_type_t<F, 0>>);
-    CHECK(std::is_same_v<const std::string&, argument_type_t<F, 1>>);
-}
+namespace {
 
 struct S {
-    void f1(bool&&);
+    const int& member_function(const int, int&&);
 
-    double f0() const;
-
-    bool operator()(int, S) const;
+    int* const_member_function() const;
 };
 
-TEST_CASE("member_function") {
-    using F = decltype(&S::f1);
-    CHECK(2ul == arity_v<F>);
-    CHECK(std::is_same_v<void, return_type_t<F>>);
-    CHECK(std::is_same_v<S&, argument_type_t<F, 0>>);
-    CHECK(std::is_same_v<bool&&, argument_type_t<F, 1>>);
-}
+struct function_object {
+    const void* operator()(const S*, int&&, S);
+};
 
-TEST_CASE("const_member_function") {
-    using F = decltype(&S::f0);
-    CHECK(1ul == arity_v<F>);
-    CHECK(std::is_same_v<double, return_type_t<F>>);
-    CHECK(std::is_same_v<const S&, argument_type_t<F, 0>>);
-}
+struct const_function_object {
+    S operator()() const;
+};
 
-TEST_CASE("functor") {
-    CHECK(2ul == arity_v<S>);
-    CHECK(std::is_same_v<bool, return_type_t<S>>);
-    CHECK(std::is_same_v<int, argument_type_t<S, 0>>);
-    CHECK(std::is_same_v<S, argument_type_t<S, 1>>);
-}
+}  // namespace
 
-TEST_CASE("std::function") {
-    using F = std::function<char(char&)>;
-    CHECK(1ul == arity_v<F>);
-    CHECK(std::is_same_v<char, return_type_t<F>>);
-    CHECK(std::is_same_v<char&, argument_type_t<F, 0>>);
-}
+using member_function = decltype(&S::member_function);
+static_assert(3ul == ac::arity_v<member_function>);
+static_assert(std::is_same_v<const int&, ac::return_type_t<member_function>>);
+static_assert(std::is_same_v<S&, ac::argument_type_t<0, member_function>>);
+static_assert(std::is_same_v<int, ac::argument_type_t<1, member_function>>);
+static_assert(std::is_same_v<int&&, ac::argument_type_t<2, member_function>>);
+
+using const_member_function = decltype(&S::const_member_function);
+static_assert(1ul == ac::arity_v<const_member_function>);
+static_assert(std::is_same_v<int*, ac::return_type_t<const_member_function>>);
+static_assert(std::is_same_v<const S&, ac::argument_type_t<0, const_member_function>>);
+
+static_assert(3ul == ac::arity_v<function_object>);
+static_assert(3ul == ac::arity_v<function_object&>);
+static_assert(3ul == ac::arity_v<function_object&&>);
+static_assert(std::is_same_v<const void*, ac::return_type_t<function_object>>);
+static_assert(std::is_same_v<const S*, ac::argument_type_t<0, function_object>>);
+static_assert(std::is_same_v<int&&, ac::argument_type_t<1, function_object>>);
+static_assert(std::is_same_v<S, ac::argument_type_t<2, function_object>>);
+
+static_assert(0ul == ac::arity_v<const_function_object>);
+static_assert(0ul == ac::arity_v<const const_function_object>);
+static_assert(0ul == ac::arity_v<const const_function_object&>);
+static_assert(std::is_same_v<S, ac::return_type_t<const const_function_object>>);
+
+using std_function = std::function<int*(int&)>;
+static_assert(1ul == ac::arity_v<std_function>);
+static_assert(std::is_same_v<int*, ac::return_type_t<std_function>>);
+static_assert(std::is_same_v<int&, ac::argument_type_t<0, std_function>>);

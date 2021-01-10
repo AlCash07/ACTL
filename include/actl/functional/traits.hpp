@@ -14,10 +14,10 @@
 namespace ac {
 
 template <class F, class = void>
-struct functor_traits {};
+struct function_object_traits {};
 
 template <class F>
-struct function_traits : functor_traits<F> {};
+struct function_traits : function_object_traits<std::remove_reference_t<F>> {};
 
 template <class F>
 constexpr size_t arity_v = function_traits<F>::arity;
@@ -25,7 +25,7 @@ constexpr size_t arity_v = function_traits<F>::arity;
 template <class F>
 using return_type_t = typename function_traits<F>::return_type;
 
-template <class F, size_t N>
+template <size_t N, class F>
 using argument_type_t = typename function_traits<F>::template argument_type<N>;
 
 // function pointer
@@ -51,9 +51,8 @@ struct function_traits<R (C::*)(Args...)> : function_traits<R(C&, Args...)> {};
 template <class C, class R, class... Args>
 struct function_traits<R (C::*)(Args...) const> : function_traits<R(const C&, Args...)> {};
 
-// functor object
 template <class F>
-struct functor_traits<F, std::void_t<decltype(&F::operator())>> {
+struct function_object_traits<F, std::void_t<decltype(&F::operator())>> {
 private:
     using O = decltype(&F::operator());
 
@@ -63,7 +62,7 @@ public:
     using return_type = return_type_t<O>;
 
     template <size_t N>
-    using argument_type = argument_type_t<O, N + 1>;
+    using argument_type = argument_type_t<N + 1, O>;
 };
 
 }  // namespace ac
