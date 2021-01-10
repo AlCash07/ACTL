@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <actl/category/tuple.hpp>
 #include <actl/functional/operation/composite_operation.hpp>
 #include <actl/functional/scalar/comparison/equal.hpp>
+#include <actl/functional/tuple/resolver.hpp>
 
 namespace ac {
 
@@ -24,20 +24,6 @@ struct equal_tuple_t {
     }
 };
 constexpr operation_composer<equal_tuple_t> equal_tuple;
-
-template <class T, class... Ts>
-struct tuple_op_resolver : tuple_op_resolver<tuple_indices_t<T>, T, Ts...> {};
-
-template <size_t... Is, class T, class U>
-struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
-    static_assert(std::tuple_size_v<T> == std::tuple_size_v<U>);
-
-    template <class Composer, class Op>
-    static constexpr auto resolve(Composer composer, const Op& op) {
-        return composer(
-            op.template resolve<std::tuple_element_t<Is, T>, std::tuple_element_t<Is, U>>()...);
-    }
-};
 
 template <class... Ts, class T, class U>
 struct overload<equal_t, tuple_tag<Ts...>, T, U> {

@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include <actl/category/tuple.hpp>
 #include <actl/functional/operation/composite_operation.hpp>
 #include <actl/functional/scalar/common/constants.hpp>
 #include <actl/functional/scalar/common/select.hpp>
 #include <actl/functional/scalar/comparison/cmp3way.hpp>
 #include <actl/functional/scalar/comparison/less.hpp>
+#include <actl/functional/tuple/resolver.hpp>
 
 namespace ac {
 
