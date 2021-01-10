@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/functional/scalar/comparison.hpp>
+#include <actl/functional/scalar/comparison/all.hpp>
 
 static_assert(true == ac::equal(2, 2));
 static_assert(false == ac::equal(2, 6));

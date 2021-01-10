@@ -7,7 +7,7 @@
 
 #include <actl/category/tuple.hpp>
 #include <actl/functional/operation/composite_operation.hpp>
-#include <actl/functional/scalar/comparison.hpp>
+#include <actl/functional/scalar/comparison/equal.hpp>
 
 namespace ac {
 

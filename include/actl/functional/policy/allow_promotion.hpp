@@ -6,7 +6,8 @@
 #pragma once
 
 #include <actl/functional/operation/composite_operation.hpp>
-#include <actl/functional/scalar/common.hpp>
+#include <actl/functional/scalar/common/cast.hpp>
+#include <actl/functional/scalar/common/select.hpp>
 
 namespace ac {
 

@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/functional/scalar/common.hpp>
+#include <actl/functional/scalar/common/all.hpp>
 
 TEST_CASE("common") {
     using one = std::integral_constant<int, 1>;

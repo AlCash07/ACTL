@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "test.hpp"
-#include <actl/functional/scalar/arithmetic.hpp>
+#include <actl/functional/scalar/arithmetic/all.hpp>
 
 static_assert(-6 == ac::neg(6));
 static_assert(2 == ac::neg(-2));

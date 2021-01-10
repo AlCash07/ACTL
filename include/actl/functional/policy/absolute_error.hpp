@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include <actl/functional/scalar/arithmetic.hpp>
-#include <actl/functional/scalar/comparison.hpp>
+#include <actl/functional/scalar/arithmetic/sub.hpp>
+#include <actl/functional/scalar/common/arg.hpp>
+#include <actl/functional/scalar/comparison/all.hpp>
 #include <actl/functional/scalar/math.hpp>
 
 namespace ac {

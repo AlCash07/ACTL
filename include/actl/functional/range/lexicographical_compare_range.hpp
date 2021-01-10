@@ -7,7 +7,10 @@
 
 #include <actl/category/range.hpp>
 #include <actl/functional/operation/composite_operation.hpp>
-#include <actl/functional/scalar/comparison.hpp>
+#include <actl/functional/scalar/common/cast.hpp>
+#include <actl/functional/scalar/common/constants.hpp>
+#include <actl/functional/scalar/comparison/cmp3way.hpp>
+#include <actl/functional/scalar/comparison/less.hpp>
 
 namespace ac {
 

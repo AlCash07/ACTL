@@ -7,7 +7,10 @@
 
 #include <actl/category/tuple.hpp>
 #include <actl/functional/operation/composite_operation.hpp>
-#include <actl/functional/scalar/comparison.hpp>
+#include <actl/functional/scalar/common/constants.hpp>
+#include <actl/functional/scalar/common/select.hpp>
+#include <actl/functional/scalar/comparison/cmp3way.hpp>
+#include <actl/functional/scalar/comparison/less.hpp>
 
 namespace ac {
 
@@ -16,11 +19,10 @@ struct lexicographical_compare_tuple_t {
     static int evaluate(const Cmp3WayOps& ops, const T& lhs, const U& rhs) {
         using std::get;
         int v = get<I>(ops)(get<I>(lhs), get<I>(rhs));
-        if constexpr (I + 1 == std::tuple_size_v<T>) {
+        if constexpr (I + 1 == std::tuple_size_v<T>)
             return v;
-        } else {
+        else
             return select(v == 0, evaluate<I + 1>(ops, lhs, rhs), v);
-        }
     }
 };
 constexpr operation_composer<lexicographical_compare_tuple_t> lexicographical_compare_tuple;
@@ -35,7 +37,7 @@ struct overload<cmp3way_t, tuple_tag<Ts...>, T, U> {
 template <class... Ts, class T, class U>
 struct overload<less_t, tuple_tag<Ts...>, T, U> {
     static constexpr auto resolve(less_t) {
-        return cmp3way < 0;
+        return cmp3way < zero_;
     }
 };
 

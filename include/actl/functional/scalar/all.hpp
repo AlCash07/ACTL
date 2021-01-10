@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <actl/functional/scalar/arithmetic.hpp>
-#include <actl/functional/scalar/basic_math.hpp>
-#include <actl/functional/scalar/bit.hpp>
-#include <actl/functional/scalar/common.hpp>
-#include <actl/functional/scalar/comparison.hpp>
+#include <actl/functional/scalar/arithmetic/all.hpp>
+#include <actl/functional/scalar/basic_math/all.hpp>
+#include <actl/functional/scalar/bit/all.hpp>
+#include <actl/functional/scalar/common/all.hpp>
+#include <actl/functional/scalar/comparison/all.hpp>
 #include <actl/functional/scalar/math.hpp>
