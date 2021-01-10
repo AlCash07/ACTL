@@ -10,3 +10,4 @@
 #include <actl/category/utility/is_subcategory_of.hpp>
 #include <actl/category/utility/is_subcategory_of_template.hpp>
 #include <actl/category/utility/major_category.hpp>
+#include <actl/category/utility/nesting_depth.hpp>

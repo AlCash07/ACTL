@@ -33,13 +33,13 @@ template <class T>
 constexpr bool is_contiguous_range_v = is_contiguous_range<T>::value;
 
 // clang-format off
-template <class T> struct range_tag               { struct has_nested; using base = scalar_tag; };
-template <class T> struct output_range_tag        { struct has_nested; using base = range_tag<T>; };
-template <class T> struct input_range_tag         { struct has_nested; using base = range_tag<T>; };
-template <class T> struct forward_range_tag       { struct has_nested; using base = input_range_tag<T>; };
-template <class T> struct bidirectional_range_tag { struct has_nested; using base = forward_range_tag<T>; };
-template <class T> struct random_access_range_tag { struct has_nested; using base = bidirectional_range_tag<T>; };
-template <class T> struct contiguous_range_tag    { struct has_nested; using base = random_access_range_tag<T>; };
+template <class T> struct range_tag               { using base = scalar_tag; };
+template <class T> struct output_range_tag        { using base = range_tag<T>; };
+template <class T> struct input_range_tag         { using base = range_tag<T>; };
+template <class T> struct forward_range_tag       { using base = input_range_tag<T>; };
+template <class T> struct bidirectional_range_tag { using base = forward_range_tag<T>; };
+template <class T> struct random_access_range_tag { using base = bidirectional_range_tag<T>; };
+template <class T> struct contiguous_range_tag    { using base = random_access_range_tag<T>; };
 // clang-format on
 
 namespace detail {

@@ -24,7 +24,7 @@ struct operation {
     template <class... Ts, class T = remove_cvref_t<nth_type_t<0, Ts...>>,
               enable_int_if<!is_out<T, true>::value && !is_policy_v<T>> = 0>
     constexpr decltype(auto) operator()(Ts&&... xs) const {
-        decltype(auto) op = resolve<Ts...>();
+        decltype(auto) op = resolve<raw_t<Ts>...>();
         if constexpr ((... || is_out<remove_cvref_t<Ts>>::value)) {
             static_assert(1 == (... + is_out<remove_cvref_t<Ts>>::value),
                           "single inplace argument expected");
@@ -38,7 +38,7 @@ struct operation {
 
     template <class T, class... Ts>
     constexpr T operator()(out_t<false, T> dst, const Ts&... xs) const {
-        resolve<T, Ts...>().evaluate_to(dst.x, xs...);
+        resolve<raw_t<T>, raw_t<Ts>...>().evaluate_to(dst.x, xs...);
         return dst.x;
     }
 
@@ -54,9 +54,9 @@ struct operation {
 
     template <class... Ts>
     constexpr decltype(auto) resolve_nested() const {
-        return overload_helper<
-            detail::value_if_t<detail::type_depth_v<Ts> == detail::major_cdp<Ts...>::value,
-                               Ts>...>::resolve(derived());
+        constexpr auto major_depth = nesting_depth_v<major_category_t<category_t<raw_t<Ts>>...>>;
+        return overload_helper<detail::value_type_if_t<
+            nesting_depth_v<category_t<raw_t<Ts>>> == major_depth, Ts>...>::resolve(derived());
     }
 };
 

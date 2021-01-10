@@ -31,7 +31,7 @@ struct value_if<false, T> {
 };
 
 template <bool B, class T>
-using value_if_t = typename value_if<B, T>::type;
+using value_type_if_t = typename value_if<B, T>::type;
 
 }  // namespace detail
 

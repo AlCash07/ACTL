@@ -19,7 +19,7 @@ struct category_wrap {
 }  // namespace detail
 
 template <class... Ts>
-using common_category_t = typename decltype((... && detail::category_wrap<Ts>()))::type;
+using common_category_t = typename decltype((... && detail::category_wrap<Ts>{}))::type;
 
 namespace detail {
 

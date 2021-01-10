@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/category/category.hpp>
-#include <actl/category/utility/major_category.hpp>
+#include <actl/category/utility/nesting_depth.hpp>
 #include <actl/traits/type_traits.hpp>
 #include <limits>
 
@@ -26,13 +26,8 @@ constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
 template <class Operation, class T>
 struct neutral_element;
 
-namespace detail {
-
-template <class T>
-struct type_depth<T, std::enable_if_t<is_operation_v<remove_cvref_t<T>>>>
-    : index_constant<std::numeric_limits<index>::max()> {};
-
-}  // namespace detail
+template <>
+struct nesting_depth<operation_tag> : index_constant<std::numeric_limits<index>::max()> {};
 
 /* Operation is_associative trait: defined by nested `struct is_associative;`. */
 

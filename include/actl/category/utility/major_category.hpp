@@ -6,45 +6,27 @@
 #pragma once
 
 #include <actl/category/utility/common_category.hpp>
-#include <actl/traits/dependent.hpp>
+#include <actl/category/utility/nesting_depth.hpp>
 
 namespace ac {
 
 namespace detail {
 
-template <class Tag, index Depth>
-struct cdp {  // category-depth pair
-    using type = Tag;
-    static constexpr index value = Depth;
-};
-
-template <class T, index DT, class U, index DU>
-constexpr auto operator||(cdp<T, DT> lhs, cdp<U, DU> rhs) {
-    if constexpr (DT == DU)
-        return cdp<common_category_t<T, U>, DT>{};
-    else if constexpr (DT < DU)
+template <class T, class U>
+constexpr auto operator||(category_wrap<T> lhs, category_wrap<U> rhs) {
+    constexpr auto ldepth = nesting_depth_v<T>;
+    constexpr auto rdepth = nesting_depth_v<U>;
+    if constexpr (ldepth == rdepth)
+        return lhs && rhs;
+    else if constexpr (ldepth < rdepth)
         return rhs;
     else
         return lhs;
 }
 
-template <class T, class = void>
-struct type_depth : index_constant<0> {};
-
-template <class T>
-constexpr index type_depth_v = type_depth<T>::value;
-
-template <class T>
-struct type_depth<T, std::void_t<typename category_t<T>::has_nested>>
-    : index_constant<type_depth_v<value_type_t<T>> + 1> {};
-
-template <class... Ts>
-using major_cdp =
-    remove_cvref_t<decltype((... || std::declval<cdp<category_t<Ts>, type_depth_v<Ts>>>()))>;
-
 }  // namespace detail
 
 template <class... Ts>
-using major_category_t = typename detail::major_cdp<Ts...>::type;
+using major_category_t = typename decltype((... || detail::category_wrap<Ts>{}))::type;
 
 }  // namespace ac
