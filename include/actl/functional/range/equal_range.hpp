@@ -13,6 +13,8 @@
 namespace ac {
 
 struct equal_range_t {
+    static constexpr index inner_count = 1;
+
     template <class EqualOp, class T, class U>
     static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
         return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);

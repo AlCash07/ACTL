@@ -22,11 +22,10 @@ struct composite_operation : operation<composite_operation<OuterOp, InnerOps...>
 
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
-        if constexpr (sizeof...(InnerOps) == 1) {
+        if constexpr (sizeof...(InnerOps) == 1)
             return OuterOp::evaluate(std::get<0>(inner()), xs...);
-        } else {
+        else
             return OuterOp::evaluate(inner(), xs...);
-        }
     }
 };
 
@@ -34,6 +33,8 @@ template <class OuterOp>
 struct operation_composer {
     template <class... InnerOps>
     constexpr auto operator()(InnerOps&&... ops) const {
+        constexpr index N = OuterOp::inner_count;
+        static_assert(N == -1 || N == index{sizeof...(InnerOps)});
         return composite_operation<OuterOp, value_if_small<InnerOps>...>{
             std::forward<InnerOps>(ops)...};
     }

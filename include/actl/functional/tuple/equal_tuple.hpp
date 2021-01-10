@@ -12,6 +12,8 @@
 namespace ac {
 
 struct equal_tuple_t {
+    static constexpr index inner_count = -1;
+
     template <class EqualOps, class T, class U, size_t... Is>
     static bool eval(const EqualOps& ops, const T& lhs, const U& rhs, std::index_sequence<Is...>) {
         using std::get;

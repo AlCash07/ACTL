@@ -15,6 +15,8 @@
 namespace ac {
 
 struct lexicographical_compare_tuple_t {
+    static constexpr index inner_count = -1;
+
     template <size_t I = 0, class Cmp3WayOps, class T, class U>
     static int evaluate(const Cmp3WayOps& ops, const T& lhs, const U& rhs) {
         using std::get;
