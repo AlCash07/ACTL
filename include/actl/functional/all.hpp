@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <actl/functional/fold/all.hpp>
 #include <actl/functional/operation/operation.hpp>
 #include <actl/functional/policy/all.hpp>
 #include <actl/functional/range/all.hpp>
