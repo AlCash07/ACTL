@@ -73,7 +73,7 @@ public:
             dstPtr += count - remainder;
         }
         underflow();
-        min(inplace(remainder), end_ - ptr_);
+        min(inout(remainder), end_ - ptr_);
         if (0 < remainder) {
             res += remainder;
             std::copy_n(ptr_, remainder, dstPtr);

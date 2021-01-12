@@ -27,9 +27,9 @@ struct operation {
         decltype(auto) op = resolve<raw_t<Ts>...>();
         if constexpr ((... || is_out<remove_cvref_t<Ts>>::value)) {
             static_assert(1 == (... + is_out<remove_cvref_t<Ts>>::value),
-                          "single inplace argument expected");
+                          "single inout argument expected");
             auto& dst = find_dst(xs...);
-            op.evaluate_to(dst, remove_inplace(xs)...);
+            op.evaluate_to(dst, remove_inout(xs)...);
             return dst;
         } else {
             return make_expression(std::forward<decltype(op)>(op), std::forward<Ts>(xs)...);

@@ -34,7 +34,7 @@ constexpr auto operator*(T&& lhs, U&& rhs) {
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr decltype(auto) operator*=(T& lhs, const U& rhs) {
-    return mul(inplace(lhs), rhs);
+    return mul(inout(lhs), rhs);
 }
 
 }  // namespace ac

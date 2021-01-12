@@ -19,7 +19,7 @@ TEST_CASE("arithmetic") {
     CHECK(18.5, dot(pi, pd) == 1e-12);
 }
 
-TEST_CASE("inplace arithmetic") {
+TEST_CASE("inout arithmetic") {
     point p = {1, 2};
     CHECK(point{3, 5} == p += {2, 3});
     CHECK(point{2, 6} == p -= {1, -1});

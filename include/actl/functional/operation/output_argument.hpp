@@ -21,7 +21,7 @@ struct out_t {
 
     template <class U>
     out_t& operator=(const U& y) {
-        static_assert(!In, "use output instead of inplace argument for assignment");
+        static_assert(!In, "use out instead of inout argument for assignment");
         assign(*this, y);
         return *this;
     }
@@ -39,12 +39,12 @@ struct raw<out_t<In, T>> {
 };
 
 template <class T>
-constexpr const T& remove_inplace(const out_t<true, T>& x) {
+constexpr const T& remove_inout(const out_t<true, T>& x) {
     return x.x;
 }
 
 template <class T>
-constexpr const T& remove_inplace(const T& x) {
+constexpr const T& remove_inout(const T& x) {
     return x;
 }
 
@@ -64,7 +64,7 @@ out_t<false, T> out(T&& x) {
 }
 
 template <class T>
-out_t<true, T> inplace(T&& x) {
+out_t<true, T> inout(T&& x) {
     return {std::forward<T>(x)};
 }
 

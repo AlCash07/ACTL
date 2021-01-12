@@ -34,7 +34,7 @@ constexpr auto operator&(T&& lhs, U&& rhs) {
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr decltype(auto) operator&=(T& lhs, const U& rhs) {
-    return bit_and(inplace(lhs), rhs);
+    return bit_and(inout(lhs), rhs);
 }
 
 }  // namespace ac

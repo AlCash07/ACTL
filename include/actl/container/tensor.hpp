@@ -244,7 +244,7 @@ private:
     template <index I>
     void compute_dimensions(nd_initializer_list_t<T, N - I> il) {
         if constexpr (I < N) {
-            max(inplace(dims_[I]), static_cast<Int>(il.size()));
+            max(inout(dims_[I]), static_cast<Int>(il.size()));
             for (auto i : il)
                 compute_dimensions<I + 1>(i);
         }

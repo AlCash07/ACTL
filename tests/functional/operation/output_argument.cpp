@@ -6,13 +6,13 @@
 #include <actl/functional/scalar/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("inplace parameter") {
+TEST_CASE("inout parameter") {
     int x = 4;
-    CHECK(5 == ac::max(5, ac::inplace(x)));
+    CHECK(5 == ac::max(5, ac::inout(x)));
     CHECK(5 == x);
-    CHECK(5 == ac::max(ac::inplace(x), 3));
+    CHECK(5 == ac::max(ac::inout(x), 3));
     CHECK(5 == x);
-    CHECK(2 == (ac::inplace(x) -= 3));
+    CHECK(2 == (ac::inout(x) -= 3));
     CHECK(2 == x);
 }
 
