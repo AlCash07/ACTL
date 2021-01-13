@@ -17,6 +17,9 @@ struct operation {
     using category = operation_tag;
     struct enable_operators;
 
+    static constexpr bool is_associative = false;
+    static constexpr bool is_commutative = false;
+
     constexpr const Derived& derived() const {
         return static_cast<const Derived&>(*this);
     }

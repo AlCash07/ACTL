@@ -29,26 +29,4 @@ struct neutral_element;
 template <>
 struct nesting_depth<operation_tag> : index_constant<std::numeric_limits<index>::max()> {};
 
-/* Operation is_associative trait: defined by nested `struct is_associative;`. */
-
-template <class T, class = void>
-struct is_associative : std::false_type {};
-
-template <class T>
-struct is_associative<T, std::void_t<typename T::is_associative>> : std::true_type {};
-
-template <class T>
-constexpr bool is_associative_v = is_associative<T>::value;
-
-/* Operation is_commutative trait: defined by nested `struct is_commutative;`. */
-
-template <class T, class = void>
-struct is_commutative : std::false_type {};
-
-template <class T>
-struct is_commutative<T, std::void_t<typename T::is_commutative>> : std::true_type {};
-
-template <class T>
-constexpr bool is_commutative_v = is_commutative<T>::value;
-
 }  // namespace ac

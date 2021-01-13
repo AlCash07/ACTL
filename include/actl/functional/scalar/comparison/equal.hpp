@@ -10,7 +10,7 @@
 namespace ac {
 
 struct equal_t : comparison_operation<equal_t> {
-    struct is_commutative;
+    static constexpr bool is_commutative = true;
 
     template <class T, class U>
     static constexpr bool eval_scalar(T lhs, U rhs) {

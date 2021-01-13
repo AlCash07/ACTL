@@ -11,7 +11,7 @@
 namespace ac {
 
 struct non_equal_t : comparison_operation<non_equal_t> {
-    struct is_commutative;
+    static constexpr bool is_commutative = true;
 
     static constexpr auto formula = !equal;
 };

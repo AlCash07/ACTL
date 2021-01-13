@@ -10,8 +10,8 @@
 namespace ac {
 
 struct bit_xor_t : scalar_operation<bit_xor_t, 2, integral_tag> {
-    struct is_associative;
-    struct is_commutative;
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {

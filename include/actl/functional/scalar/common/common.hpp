@@ -12,8 +12,8 @@
 namespace ac {
 
 struct common_t : scalar_operation<common_t, 2, unclassified_tag> {
-    struct is_associative;
-    struct is_commutative;
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
 
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {

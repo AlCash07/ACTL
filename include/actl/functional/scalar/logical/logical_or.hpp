@@ -10,8 +10,8 @@
 namespace ac {
 
 struct logical_or_t : scalar_operation<logical_or_t, 2, boolean_tag> {
-    struct is_associative;
-    struct is_commutative;
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
 
     static constexpr bool eval_scalar(bool lhs, bool rhs) {
         return lhs || rhs;
