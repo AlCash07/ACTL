@@ -17,7 +17,7 @@ struct range_ts {
     using value_type = value_type_t<Iter>;
     using reference = reference_t<Iter>;
     using pointer = pointer_t<Iter>;
-    using difference_type = difference_t<Iter>;
+    using difference_type = difference_type_t<Iter>;
     using iterator = Iter;
 };
 

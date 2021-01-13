@@ -31,12 +31,12 @@ struct iterator_core_access {
     }
 
     template <class Iter>
-    static constexpr void advance(Iter& iter, difference_t<Iter> n) {
+    static constexpr void advance(Iter& iter, difference_type_t<Iter> n) {
         iter.advance(n);
     }
 
     template <class Iter1, class Iter2>
-    static constexpr difference_t<Iter1> distance_to(const Iter1& src, const Iter2& dst) {
+    static constexpr difference_type_t<Iter1> distance_to(const Iter1& src, const Iter2& dst) {
         return src.distance_to(dst);
     }
 };

@@ -76,7 +76,7 @@ template <class T>
 using pointer_t = typename detail::pointer<T>::type;
 
 template <class T>
-using difference_t = typename detail::traits_t<T>::difference_type;
+using difference_type_t = typename detail::traits_t<T>::difference_type;
 
 template <class T>
 using iterator_t = typename detail::iterator<T>::type;

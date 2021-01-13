@@ -19,7 +19,7 @@ Function for_each(Range& dst, Function f) {
 }
 
 template <class Range, class T>
-difference_t<Range> count(const Range& src, const T& value) {
+difference_type_t<Range> count(const Range& src, const T& value) {
     return std::count(std::begin(src), std::end(src), value);
 }
 

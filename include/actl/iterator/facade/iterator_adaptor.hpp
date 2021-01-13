@@ -20,7 +20,7 @@ struct deduced_iter_types {
     using iterator_category = iterator_category_or_default_t<T, iterator_category_t<Iter>>;
     using value_type = value_type_or_default_t<T, value_type_t<Iter>>;
     using reference = reference_or_default_t<T, reference_t<Iter>>;
-    using difference_type = difference_type_or_default_t<T, difference_t<Iter>>;
+    using difference_type = difference_type_or_default_t<T, difference_type_t<Iter>>;
 };
 
 }  // namespace detail
@@ -56,7 +56,7 @@ private:
         --iter_;
     }
 
-    template <class D = difference_t<base_t>>
+    template <class D = difference_type_t<base_t>>
     constexpr void advance(D n) {
         iter_ += n;
     }
@@ -67,7 +67,7 @@ private:
     }
 
     template <class Derived1, class Iter1, class Types1>
-    constexpr difference_t<base_t> distance_to(
+    constexpr difference_type_t<base_t> distance_to(
         const iterator_adaptor<Derived1, Iter1, Types1>& rhs) const {
         return rhs.base() - iter_;
     }

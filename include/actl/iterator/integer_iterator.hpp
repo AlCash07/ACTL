@@ -16,7 +16,7 @@ struct integer_iterator_types {
     using iterator_category = std::random_access_iterator_tag;
     using value_type = Int;
     using reference = const Int&;
-    using difference = Int;
+    using difference_type = Int;
 };
 
 template <class Int, bool Increment = true>
