@@ -16,7 +16,7 @@ struct braced {
 };
 
 template <class AC, enable_int_if<is_container_v<AC> && is_associative_range_v<AC>> = 0>
-auto encode(braced& fmt, const AC& cont) {
+auto encode(braced, const AC& cont) {
     return batch{'{', make_range(cont), '}'};
 }
 

@@ -41,7 +41,7 @@ struct fin final : none {};
 
 static_assert(2 * sizeof(int) == sizeof(compressed_pair<int, int>));
 // Objects of the same class can't share address.
-static_assert(2 == sizeof(compressed_pair<none, none>));
+static_assert(0 < sizeof(compressed_pair<none, none>));
 static_assert(sizeof(int) == sizeof(compressed_pair<none, int>));
 static_assert(sizeof(int) == sizeof(compressed_pair<int, none>));
 static_assert(sizeof(int) < sizeof(compressed_pair<fin, int>));

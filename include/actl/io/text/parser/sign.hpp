@@ -25,11 +25,11 @@ public:
     template <class Int>
     auto max_abs() const {
         using UInt = std::make_unsigned_t<Int>;
-        constexpr auto max = std::numeric_limits<UInt>::max();
+        constexpr auto max_v = std::numeric_limits<UInt>::max();
         if constexpr (Signed)
-            return max / 2 + UInt{negate};
+            return max_v / 2 + UInt{negate};
         else
-            return max;
+            return max_v;
     }
 
     template <class T>

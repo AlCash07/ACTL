@@ -16,7 +16,7 @@ void test_write(const std::string& expected, Ts&&... args) {
 }
 
 template <bool Valid = true, class T, class... Ts>
-void test_read(const T& expected, const std::string& input, Ts&&... args) {
+void test_read([[maybe_unused]] const T& expected, const std::string& input, Ts&&... args) {
     T x;
     CHECK(Valid == read(io::string<io::in>{input}, std::forward<Ts>(args)..., x));
     if constexpr (Valid) {

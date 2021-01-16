@@ -70,7 +70,7 @@ public:
     using iterator = typename detail::filtered_range_types<Range, Predicate>::iterator;
 
     explicit filtered_range(Range&& range, Predicate pred)
-        : data_{std::forward<Range>(range), pred} {}
+        : data_{std::forward<Range>(range), std::move(pred)} {}
 
     auto begin() const {
         return iterator{original().begin(), *this};
@@ -93,7 +93,7 @@ private:
 
 template <class Range, class Predicate>
 auto filter_range(Range&& range, Predicate pred) {
-    return filtered_range<Range, Predicate>{std::forward<Range>(range), pred};
+    return filtered_range<Range, Predicate>{std::forward<Range>(range), std::move(pred)};
 }
 
 }  // namespace ac

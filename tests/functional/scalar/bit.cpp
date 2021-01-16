@@ -6,7 +6,9 @@
 #include <actl/functional/scalar/bit/all.hpp>
 #include "test.hpp"
 
-static_assert(-2 == ac::bit_not(1));
-static_assert(1 == ac::bit_and(3, 5));
-static_assert(7 == ac::bit_or(3, 5));
-static_assert(6 == ac::bit_xor(3, 5));
+TEST_CASE("bit operations") {
+    STATIC_ASSERT_WORKAROUND(-2 == ac::bit_not(1));
+    STATIC_ASSERT_WORKAROUND(1 == ac::bit_and(3, 5));
+    STATIC_ASSERT_WORKAROUND(7 == ac::bit_or(3, 5));
+    STATIC_ASSERT_WORKAROUND(6 == ac::bit_xor(3, 5));
+}

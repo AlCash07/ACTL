@@ -20,7 +20,7 @@ struct operation {
     static constexpr bool is_associative = false;
     static constexpr bool is_commutative = false;
 
-    constexpr const Derived& derived() const {
+    constexpr const Derived& derived() const noexcept {
         return static_cast<const Derived&>(*this);
     }
 

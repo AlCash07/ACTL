@@ -86,7 +86,7 @@ public:
         auto iter = begin();
         for (const auto& x : range) {
             if (iter.get() == dynamic_size)
-                a_[static_cast<size_t>(iter.arr_iter_ - a_.begin())] = x;
+                a_[static_cast<size_t>(iter.arr_iter_ - a_.data())] = x;
             else
                 ACTL_ASSERT(x == iter.get());
             ++iter;
@@ -95,10 +95,10 @@ public:
     }
 
     auto begin() const {
-        return iterator{0, a_.begin()};
+        return iterator{0, a_.data()};
     }
     auto end() const {
-        return iterator{size(), a_.end()};
+        return iterator{size(), a_.data() + a_.size()};
     }
 
     static constexpr index size() {

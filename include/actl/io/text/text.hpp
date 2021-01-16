@@ -69,12 +69,12 @@ public:
 };
 
 template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
-text_static<> deduce_format(Device& dev) {
+text_static<> deduce_format(Device&) {
     return {};
 }
 
 template <class Format, class S, enable_int_if_text<Format> = 0, enable_int_if<is_string_v<S>> = 0>
-auto encode(Format& fmt, const S& s) {
+auto encode(Format&, const S& s) {
     return span{std::basic_string_view<value_type_t<S>>{s}};
 }
 

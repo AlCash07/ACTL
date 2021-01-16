@@ -6,9 +6,11 @@
 #include <actl/functional/scalar/arithmetic/all.hpp>
 #include "test.hpp"
 
-static_assert(-6 == ac::neg(6));
-static_assert(2 == ac::neg(-2));
-static_assert(8 == ac::add(6, 2));
-static_assert(4 == ac::sub(6, 2));
-static_assert(12 == ac::mul(6, 2));
-static_assert(3 == ac::div(7, 2));
+TEST_CASE("arithmetic") {
+    STATIC_ASSERT_WORKAROUND(-6 == ac::neg(6));
+    STATIC_ASSERT_WORKAROUND(2 == ac::neg(-2));
+    STATIC_ASSERT_WORKAROUND(8 == ac::add(6, 2));
+    STATIC_ASSERT_WORKAROUND(4 == ac::sub(6, 2));
+    STATIC_ASSERT_WORKAROUND(12 == ac::mul(6, 2));
+    STATIC_ASSERT_WORKAROUND(3 == ac::div(7, 2));
+}

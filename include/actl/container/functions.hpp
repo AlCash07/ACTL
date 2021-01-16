@@ -18,7 +18,7 @@ std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
     if constexpr (is_associative_range_v<C>) {
         auto res = cont.emplace(std::forward<Ts>(args)...);
         if constexpr (is_unique_range_v<C>)
-            return {res.first, res.second};
+            return res;
         else
             return {res, true};
     } else if constexpr (is_random_access_range_v<C>) {

@@ -254,7 +254,7 @@ private:
 template <index N, class Data, index... Ds>
 class tensor_shape<N, Data, static_array<index, Ds...>> : public tensor_data<N, Data> {
     using base_t = tensor_data<N, Data>;
-    using Dims = static_array<index, Ds...>;
+    using dims_t = static_array<index, Ds...>;
 
 public:
     template <class... Ts>
@@ -265,14 +265,14 @@ public:
         : base_t{size(), il, dimensions()} {}
 
     static constexpr index rank() {
-        return static_size_v<Dims>;
+        return static_size_v<dims_t>;
     }
 
     static constexpr index size() {
         return static_product_v<Ds...>;
     }
 
-    static constexpr Dims dimensions() {
+    static constexpr dims_t dimensions() {
         return {};
     }
 };

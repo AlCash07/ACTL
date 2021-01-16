@@ -7,7 +7,7 @@
 #include "regular.hpp"
 
 TEST_CASE("semi_static_array is regular") {
-    using ssa = semi_static_array<int, 2, -1, 3, -1>;
+    // using ssa = semi_static_array<int, 2, -1, 3, -1>;
     // test_regular_type(ssa{5, 4}, ssa{4, 4});
 }
 
