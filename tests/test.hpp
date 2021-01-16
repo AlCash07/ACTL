@@ -60,7 +60,7 @@ void check_sets(std::vector<T> expected, std::vector<T> actual) {
 
 template <class T, class U, class E>
 void check_near(const T& expected, const U& actual, E eps) {
-    CHECK(ac::equal(ac::abs_rel_error<E>{eps})(expected, actual));
+    CHECK((ac::equal | ac::abs_rel_error<E>{eps})(expected, actual));
 }
 
 template <class T, class U>

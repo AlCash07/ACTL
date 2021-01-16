@@ -6,41 +6,30 @@
 #pragma once
 
 #include <actl/functional/operation/operation_traits.hpp>
+#include <actl/functional/operation/policy.hpp>
 #include <tuple>
 
 namespace ac {
 
 template <class Op, class Policy>
-struct tuned_operation : operation<tuned_operation<Op, Policy>> {
+class tuned_operation : public operation<tuned_operation<Op, Policy>> {
     std::tuple<Op, Policy> t;
 
+public:
     template <class... Ts>
     explicit constexpr tuned_operation(Ts&&... xs) : t{std::forward<Ts>(xs)...} {}
+
+    template <class... Ts>
+    constexpr decltype(auto) resolve() const {
+        return apply_policy_if_can(std::get<0>(t).template resolve<Ts...>(), std::get<1>(t));
+    }
 };
 
-template <class T, class = void>
-struct is_policy : std::false_type {};
-
-template <class T>
-struct is_policy<T, std::void_t<typename T::is_policy>> : std::true_type {};
-
-template <class T>
-constexpr bool is_policy_v = is_policy<T>::value;
-
-template <class Op, class Policy, class = void>
-struct can_apply_policy : std::false_type {};
-
-template <class Op, class Policy>
-struct can_apply_policy<
-    Op, Policy, std::void_t<decltype(apply_policy(std::declval<Op>(), std::declval<Policy>()))>>
-    : std::true_type {};
-
-template <class Op, class Policy>
-constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {
-    if constexpr (can_apply_policy<remove_cvref_t<Op>, Policy>::value)
-        return apply_policy(std::forward<Op>(op), policy);
-    else
-        return std::forward<Op>(op);
+template <
+    class Op, class Policy,
+    enable_int_if<is_operation_v<remove_cvref_t<Op>> && is_policy_v<remove_cvref_t<Policy>>> = 0>
+constexpr auto operator|(Op&& op, Policy&& policy) {
+    return tuned_operation<Op, Policy>{std::forward<Op>(op), std::forward<Policy>(policy)};
 }
 
 }  // namespace ac

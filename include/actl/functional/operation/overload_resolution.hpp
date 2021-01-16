@@ -38,11 +38,6 @@ struct overload_helper {
     static constexpr decltype(auto) resolve(const Op& op) {
         return overload<Op, major_category_t<category_t<raw_t<Ts>>...>, raw_t<Ts>...>::resolve(op);
     }
-
-    template <class Op, class Policy>
-    static constexpr decltype(auto) resolve(const tuned_operation<Op, Policy>& op) {
-        return apply_policy_if_can(resolve(std::get<0>(op.t)), std::get<1>(op.t));
-    }
 };
 
 }  // namespace ac
