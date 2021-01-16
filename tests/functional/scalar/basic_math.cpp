@@ -8,11 +8,11 @@
 #include "test.hpp"
 
 TEST_CASE("basic_math") {
-STATIC_ASSERT_WORKAROUND(1 == ac::sgn(std::numeric_limits<double>::max()));
-STATIC_ASSERT_WORKAROUND(-1 == ac::sgn(std::numeric_limits<int>::min()));
-STATIC_ASSERT_WORKAROUND(1 == ac::sgn(std::numeric_limits<unsigned int>::max()));
-STATIC_ASSERT_WORKAROUND(0 == ac::sgn(0));
+    STATIC_ASSERT_WORKAROUND(1 == ac::sgn(std::numeric_limits<double>::max()));
+    STATIC_ASSERT_WORKAROUND(-1 == ac::sgn(std::numeric_limits<int>::min()));
+    STATIC_ASSERT_WORKAROUND(1 == ac::sgn(std::numeric_limits<unsigned int>::max()));
+    STATIC_ASSERT_WORKAROUND(0 == ac::sgn(0));
 
-STATIC_ASSERT_WORKAROUND(36 == ac::sqr(6));
-STATIC_ASSERT_WORKAROUND(4 == ac::sqr(-2));
+    STATIC_ASSERT_WORKAROUND(36 == ac::sqr(6));
+    STATIC_ASSERT_WORKAROUND(4 == ac::sqr(-2));
 }
