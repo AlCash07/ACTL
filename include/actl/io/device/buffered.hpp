@@ -147,8 +147,8 @@ public:
         return {ptr_, std::end(buf_)};
     }
 
-    index write(Char arg) {
-        *ptr_ = arg;
+    index write(Char c) {
+        *ptr_ = c;
         move(1);
         return 1;
     }

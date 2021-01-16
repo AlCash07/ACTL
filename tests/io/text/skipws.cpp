@@ -13,7 +13,8 @@ using namespace ac::io;
 TEST_CASE("skipws") {
     std::string s = " \n\ta\n";
     memory<in> id{s};
-    char a, b;
+    char a{};
+    char b{};
     CHECK(read(id, skipws{} >>= text{}, a));
     CHECK(read(id, text{}, b));
     CHECK('a' == a);

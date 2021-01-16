@@ -43,7 +43,7 @@ private:
     }
 
     template <size_t I, class... Ts>
-    constexpr void exec_all(const Ts&... xs) {
+    constexpr void exec_all([[maybe_unused]] const Ts&... xs) {
         if constexpr (I < sizeof...(Components)) {
             if constexpr (std::is_invocable_v<std::tuple_element_t<I, tuple_t>, Ts...>)
                 std::get<I>(components_)(xs...);

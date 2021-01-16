@@ -33,7 +33,7 @@ template <class T, enable_int_if<std::is_arithmetic_v<T>> = 0>
 constexpr size_t hash_value(const T& x) {
     static_assert(sizeof(T) <= sizeof(size_t), "TODO: remove this restriction");
     size_t t{};
-    std::memcpy(&t + sizeof(size_t) - sizeof(T), &x, sizeof(T));
+    std::memcpy(reinterpret_cast<std::byte*>(&t) + sizeof(size_t) - sizeof(T), &x, sizeof(T));
     return randomized_hash::compute(t);
 }
 

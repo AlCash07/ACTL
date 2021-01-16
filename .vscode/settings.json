@@ -3,9 +3,8 @@
     "editor.wordWrapColumn": 100,
 	"cmake.sourceDirectory": "${workspaceFolder}",
 	"cmake.buildDirectory": "${workspaceFolder}/build",
-	"cmake.generator": "Ninja",
 	"cmake.configureArgs": [
 		"-DBUILD_TESTS=ON",
 	],
-	"cmake.buildArgs": []
+	"cmake.buildArgs": [],
 }
