@@ -6,19 +6,9 @@
 #include <actl/functional/scalar/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("inout parameter") {
-    int x = 4;
-    CHECK(5 == ac::max(5, ac::inout(x)));
-    CHECK(5 == x);
-    CHECK(5 == ac::max(ac::inout(x), 3));
-    CHECK(5 == x);
-    CHECK(2 == (ac::inout(x) -= 3));
-    CHECK(2 == x);
-}
-
 TEST_CASE("output parameter") {
     int res{};
-    CHECK(6 == ac::add(ac::out(res), 2, 4));
+    CHECK(6 == (ac::out(res) = ac::add(2, 4)).x);
     CHECK(6 == res);
     ac::out(res) = ac::add(2, res);
     CHECK(8 == res);

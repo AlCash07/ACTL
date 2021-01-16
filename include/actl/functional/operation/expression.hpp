@@ -5,8 +5,9 @@
 
 #pragma once
 
+#include <actl/functional/operation/argument_traits.hpp>
 #include <actl/functional/operation/operation_traits.hpp>
-#include <actl/functional/operation/output_argument.hpp>
+#include <actl/functional/operation/out.hpp>
 #include <tuple>
 
 namespace ac {
@@ -31,6 +32,10 @@ struct expression : expression_base<expression<Ts...>, typename detail::result<T
 
     std::tuple<Ts...> args;
 
+    constexpr auto& operation() const {
+        return std::get<0>(args);
+    }
+
     constexpr operator typename detail::result<Ts...>::type() const {
         return eval(*this);
     }
@@ -43,7 +48,7 @@ constexpr auto make_expression(Ts&&... xs) {
 
 template <class E, size_t... Is>
 constexpr decltype(auto) eval_impl(const E& e, std::index_sequence<Is...>) {
-    return eval(std::get<0>(e.args).evaluate(std::get<Is + 1>(e.args)...));
+    return eval(e.operation().evaluate(std::get<Is + 1>(e.args)...));
 }
 
 template <class... Ts>
@@ -51,14 +56,15 @@ constexpr decltype(auto) eval(const expression<Ts...>& e) {
     return eval_impl(e, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
-template <class T, class E, size_t... Is>
-constexpr void assign_impl(T& dst, const E& e, std::index_sequence<Is...>) {
-    std::get<0>(e.args)(dst, std::get<Is + 1>(e.args)...);
+template <class Op, class T, class E, size_t... Is>
+constexpr void assign_impl(const Op& op, T& dst, const E& e, std::index_sequence<Is...>) {
+    op.evaluate_to(dst, std::get<Is + 1>(e.args)...);
 }
 
 template <class T, class... Ts>
-constexpr void assign(out_t<false, T>& dst, const expression<Ts...>& e) {
-    assign_impl(dst, e, std::make_index_sequence<sizeof...(Ts) - 1>{});
+constexpr void assign(out_t<T>& dst, const expression<Ts...>& e) {
+    assign_impl(e.operation().template resolve<Ts...>(), dst.x, e,
+                std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
 }  // namespace ac

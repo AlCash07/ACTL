@@ -7,8 +7,8 @@
 
 #include <actl/functional/operation/expression.hpp>
 #include <actl/functional/operation/expression_operation.hpp>
+#include <actl/functional/operation/inout.hpp>
 #include <actl/functional/operation/overload_resolution.hpp>
-#include <actl/traits/nth_type.hpp>
 
 namespace ac {
 
@@ -24,13 +24,11 @@ struct operation {
         return static_cast<const Derived&>(*this);
     }
 
-    template <class... Ts, class T = remove_cvref_t<nth_type_t<0, Ts...>>,
-              enable_int_if<!is_out<T, true>::value> = 0>
+    template <class... Ts>
     constexpr decltype(auto) operator()(Ts&&... xs) const {
         decltype(auto) op = derived().template resolve<raw_t<Ts>...>();
-        if constexpr ((... || is_out<remove_cvref_t<Ts>>::value)) {
-            static_assert(1 == (... + is_out<remove_cvref_t<Ts>>::value),
-                          "single inout argument expected");
+        if constexpr ((... || is_inout_v<Ts>)) {
+            static_assert(1 == (... + is_inout_v<Ts>), "single inout argument expected");
             auto& dst = find_dst(xs...);
             op.evaluate_to(dst, remove_inout(xs)...);
             return dst;
@@ -39,15 +37,9 @@ struct operation {
         }
     }
 
-    template <class T, class... Ts>
-    constexpr T operator()(out_t<false, T> dst, const Ts&... xs) const {
-        derived().template resolve<raw_t<T>, raw_t<Ts>...>().evaluate_to(dst.x, xs...);
-        return dst.x;
-    }
-
     template <class... Ts>
     constexpr decltype(auto) resolve() const {
-        return overload_helper<Ts...>::resolve(derived());
+        return overload_helper<remove_cvref_t<Ts>...>::resolve(derived());
     }
 
     template <class... Ts>

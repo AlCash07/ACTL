@@ -23,8 +23,8 @@ constexpr auto operator-(T&& lhs, U&& rhs) {
 }
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr decltype(auto) operator-=(T& lhs, const U& rhs) {
-    return sub(inout(lhs), rhs);
+constexpr decltype(auto) operator-=(T&& lhs, U&& rhs) {
+    return sub(inout(std::forward<T>(lhs)), pass<U>(rhs));
 }
 
 }  // namespace ac

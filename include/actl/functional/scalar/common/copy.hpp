@@ -18,7 +18,7 @@ struct copy_t : scalar_operation<copy_t, 1, arithmetic_tag> {
 constexpr copy_t copy;
 
 template <class T, class U>
-constexpr void assign(out_t<false, T>& dst, const U& y) {
+constexpr void assign(out_t<T>& dst, const U& y) {
     copy(dst, y);
 }
 
