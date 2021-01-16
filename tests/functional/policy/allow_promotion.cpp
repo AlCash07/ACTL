@@ -13,9 +13,8 @@ TEST_CASE("simple operation") {
 }
 
 TEST_CASE("nested composite operation") {
-    using ushort = unsigned short;
     const std::vector<std::pair<char, long long>> lhs{{char{2}, 3}, {char{5}, 8}};
-    const std::vector<std::pair<int, ushort>> rhs{{2, ushort{3}}, {5, ushort{8}}};
+    const std::vector<std::pair<int, uint16_t>> rhs{{2, uint16_t{3}}, {5, uint16_t{8}}};
     CHECK(ac::equal(ac::allow_promotion{})(lhs, rhs));
 }
 
