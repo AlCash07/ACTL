@@ -54,7 +54,7 @@ constexpr auto& find_dst(T&, Ts&... xs) {
 }
 
 template <class T, class... Ts>
-constexpr T& find_dst(out_t<true, T>& x, Ts&... xs) {
+constexpr T& find_dst(out_t<true, T>& x, Ts&...) {
     return x.x;
 }
 

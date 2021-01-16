@@ -36,7 +36,7 @@ struct expression : expression_base<expression<Ts...>, typename detail::result<T
     }
 };
 
-template <class... Ts, enable_int_if<1 == (... + is_operation_v<remove_cvref_t<Ts>>)> = 0>
+template <class... Ts, enable_int_if<1 == (... + int{is_operation_v<remove_cvref_t<Ts>>})> = 0>
 constexpr auto make_expression(Ts&&... xs) {
     return expression<value_if_small<Ts>...>{{}, {std::forward<Ts>(xs)...}};
 }

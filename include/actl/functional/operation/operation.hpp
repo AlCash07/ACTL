@@ -17,7 +17,7 @@ struct operation {
     using category = operation_tag;
     struct enable_operators;
 
-    constexpr const Derived& derived() const {
+    constexpr const Derived& derived() const noexcept {
         return static_cast<const Derived&>(*this);
     }
 

@@ -12,6 +12,7 @@
 #include <actl/traits/type_traits.hpp>
 #include <algorithm>
 #include <cmath>
+#include <memory>
 
 namespace ac::io {
 

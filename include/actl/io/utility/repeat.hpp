@@ -20,7 +20,7 @@ struct repeat {
 };
 
 template <class Device, class Format, class Char>
-index write_final(Device& od, Format& fmt, const repeat<Char>& x) {
+index write_final(Device& od, Format&, const repeat<Char>& x) {
     index count = x.count;
     if constexpr (has_output_buffer<Device>::value) {
         auto s = od.output_data();

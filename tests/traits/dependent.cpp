@@ -8,7 +8,6 @@
 #include "test.hpp"
 
 // Containers preserve const for value_type but pointers don't.
-static_assert(std::is_same_v<const int, ac::value_type_t<std::vector<const int>>>);
 static_assert(std::is_same_v<const int, ac::value_type_t<const int[8]>>);
 static_assert(std::is_same_v<int, ac::value_type_t<const int* const>>);
 

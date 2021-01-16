@@ -6,6 +6,7 @@
 #pragma once
 
 #include <actl/category/scalar.hpp>
+#include <actl/category/utility/is_subcategory_of.hpp>
 #include <actl/functional/operation/operation.hpp>
 #include <actl/functional/scalar/enable_operators.hpp>
 #include <actl/traits/strict_common_type.hpp>
@@ -28,10 +29,10 @@ struct scalar_operation : operation<Op> {
 
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
-        if constexpr ((... && std::is_base_of_v<arithmetic_tag, category_t<Ts>>)) {
+        if constexpr ((... && is_subcategory_of_v<category_t<Ts>, arithmetic_tag>)) {
             using T = strict_common_type_t<decltype(eval(xs))...>;
             if constexpr (!is_integral_constant_v<T>) {
-                static_assert(std::is_base_of_v<ArgumentsTag, category_t<T>>);
+                static_assert(is_subcategory_of_v<category_t<T>, ArgumentsTag>);
                 return this->derived().eval_scalar(convert<T>(eval(xs))...);
             }
         }

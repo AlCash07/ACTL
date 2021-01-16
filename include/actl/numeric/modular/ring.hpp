@@ -78,11 +78,11 @@ constexpr Z mod_mul_binary(Z x, Z y, const R& ring) {
 
 template <class Z, class R>
 constexpr Z mod_mul(const Z& x, const Z& y, const R& ring) {
-    if (!std::is_integral<Z>::value) {
+    if constexpr (!std::is_integral<Z>::value) {
         return (x * y) % ring.mod();
     } else if (R::is_static && ring.mod() == 0) {
         return x * y;
-    } else if (sizeof(Z) < sizeof(uint64_t)) {
+    } else if constexpr (sizeof(Z) < sizeof(uint64_t)) {
         return (uint64_t)x * y % ring.mod();
     } else {
         return mod_mul_binary(x, y, ring);

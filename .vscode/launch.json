@@ -5,8 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(lldb) Launch",
+            "name": "Debug",
             "type": "cppdbg",
+            "windows" : {
+                "type": "cppvsdbg",
+            },
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "program": "${command:cmake.launchTargetPath}",

@@ -18,7 +18,7 @@ UInt to_digit(char c) {
     if constexpr (kind == digit) {
         return static_cast<UInt>(c - '0');
     } else {
-        if (is_digit(c))
+        if (ac::is_digit(c))
             return static_cast<UInt>(c - '0');
         else if (is_upper(c))
             return static_cast<UInt>(c - 'A' + 10);

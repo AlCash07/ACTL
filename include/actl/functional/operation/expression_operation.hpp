@@ -27,13 +27,13 @@ struct expression_op : operation<expression_op<Ts...>> {
     }
 };
 
-template <class... Ts, enable_int_if<1 < (... + is_operation_v<remove_cvref_t<Ts>>)> = 0>
+template <class... Ts, enable_int_if<1 < (... + int{is_operation_v<remove_cvref_t<Ts>>})> = 0>
 constexpr auto make_expression(Ts&&... xs) {
     return expression_op<value_if_small<Ts>...>{std::forward<Ts>(xs)...};
 }
 
 template <class Op, class... Ts>
-constexpr decltype(auto) expand_expression(const Op& op, const Ts&... xs) {
+constexpr decltype(auto) expand_expression(const Op& op, [[maybe_unused]] const Ts&... xs) {
     if constexpr (!is_operation_v<Op>)
         return op;
     else
