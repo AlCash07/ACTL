@@ -6,8 +6,8 @@
 #pragma once
 
 #include <actl/map/composite_map.hpp>
+#include <actl/meta/type_traits.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <actl/utility/compressed_pair.hpp>
 
 namespace ac::detail {

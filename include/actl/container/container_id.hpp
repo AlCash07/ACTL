@@ -9,10 +9,10 @@
 #include <actl/container/functions.hpp>
 #include <actl/iterator/facade/iterator_adaptor.hpp>
 #include <actl/iterator/integer_iterator.hpp>
+#include <actl/meta/dependent.hpp>
 #include <actl/numeric/bit.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/traits/dependent.hpp>
 #include <cstdint>
 
 namespace ac {

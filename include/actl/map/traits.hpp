@@ -13,8 +13,8 @@
 
 #pragma once
 
+#include <actl/meta/type_traits.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <functional>
 
 namespace ac {

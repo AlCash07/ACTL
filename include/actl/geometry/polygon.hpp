@@ -7,9 +7,9 @@
 
 #include <actl/geometry/point.hpp>
 #include <actl/iterator/cyclic_iterator.hpp>
+#include <actl/meta/dependent.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/std/vector.hpp>
-#include <actl/traits/dependent.hpp>
 
 namespace ac {
 

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <actl/category/range.hpp>
-#include <actl/traits/dependent.hpp>
+#include <actl/meta/dependent.hpp>
 #include <algorithm>
 
 namespace ac {

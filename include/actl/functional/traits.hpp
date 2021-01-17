@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <actl/traits/nth_type.hpp>
+#include <actl/meta/nth_type.hpp>
 #include <type_traits>
 
 namespace ac {

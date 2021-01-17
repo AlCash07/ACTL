@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/traits/nth_type.hpp>
+#include <actl/meta/nth_type.hpp>
 
 namespace ac {
 

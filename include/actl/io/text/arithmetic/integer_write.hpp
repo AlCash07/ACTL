@@ -8,7 +8,7 @@
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
 #include <actl/io/text/arithmetic/detail/uitoa.hpp>
 #include <actl/io/text/text.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/meta/type_traits.hpp>
 
 namespace ac::io {
 

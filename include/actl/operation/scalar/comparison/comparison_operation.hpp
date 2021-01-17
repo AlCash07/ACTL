@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include <actl/meta/is_template_base_of.hpp>
 #include <actl/operation/scalar/scalar_operation.hpp>
-#include <actl/traits/is_template_base_of.hpp>
 
 namespace ac {
 

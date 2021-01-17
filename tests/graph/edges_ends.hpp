@@ -6,8 +6,8 @@
 #pragma once
 
 #include <actl/graph/traits.hpp>
+#include <actl/meta/dependent.hpp>
 #include <actl/std/vector.hpp>
-#include <actl/traits/dependent.hpp>
 
 template <bool Directed, class Edges>
 auto get_ends(const Edges& es) {

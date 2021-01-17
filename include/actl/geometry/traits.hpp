@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include <actl/meta/type_traits.hpp>
 #include <actl/operation/scalar/all.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <actl/utility/use_default.hpp>
 
 namespace ac {

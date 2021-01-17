@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/traits/dependent.hpp>
+#include <actl/meta/dependent.hpp>
 #include <cstdint>
 #include <iostream>
 

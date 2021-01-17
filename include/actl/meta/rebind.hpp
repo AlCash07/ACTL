@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/traits/template_type.hpp>
+#include <actl/meta/template_type.hpp>
 #include <functional>
 
 namespace ac {

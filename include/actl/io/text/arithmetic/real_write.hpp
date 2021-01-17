@@ -8,8 +8,8 @@
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
 #include <actl/io/text/arithmetic/detail/uitoa.hpp>
 #include <actl/io/text/text.hpp>
+#include <actl/meta/type_traits.hpp>
 #include <actl/numeric/algorithm/binary_pow.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <algorithm>
 #include <cmath>
 #include <memory>

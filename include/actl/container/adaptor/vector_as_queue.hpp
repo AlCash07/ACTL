@@ -6,8 +6,8 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/meta/dependent.hpp>
 #include <actl/std/vector.hpp>
-#include <actl/traits/dependent.hpp>
 
 namespace ac {
 

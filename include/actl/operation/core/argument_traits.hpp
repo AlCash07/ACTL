@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/traits/dependent.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/meta/dependent.hpp>
+#include <actl/meta/type_traits.hpp>
 
 namespace ac {
 

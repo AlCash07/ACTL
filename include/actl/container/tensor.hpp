@@ -7,11 +7,11 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/array/semi_static_array.hpp>
+#include <actl/meta/type_traits.hpp>
 #include <actl/operation/scalar/basic_math/max.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/operation/comparison.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/traits/type_traits.hpp>
 #include <actl/utility/span.hpp>
 #include <memory>
 

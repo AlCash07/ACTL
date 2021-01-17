@@ -11,7 +11,7 @@
 #include <actl/io/core/parser_executor.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/format/composed_format.hpp>
-#include <actl/traits/type_traits.hpp>
+#include <actl/meta/type_traits.hpp>
 #include <actl/utility/none.hpp>
 #include <actl/utility/span.hpp>
 #include <cstdint>

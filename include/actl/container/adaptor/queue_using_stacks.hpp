@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include <actl/meta/dependent.hpp>
 #include <actl/std/stack.hpp>
-#include <actl/traits/dependent.hpp>
 
 namespace ac {
 
