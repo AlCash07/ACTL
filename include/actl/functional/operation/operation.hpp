@@ -8,7 +8,8 @@
 #include <actl/functional/operation/expression.hpp>
 #include <actl/functional/operation/expression_operation.hpp>
 #include <actl/functional/operation/inout.hpp>
-#include <actl/functional/operation/overload_resolution.hpp>
+#include <actl/functional/operation/overload.hpp>
+#include <actl/functional/operation/tuned_operation.hpp>
 
 namespace ac {
 
@@ -26,7 +27,7 @@ struct operation {
 
     template <class... Ts>
     constexpr decltype(auto) operator()(Ts&&... xs) const {
-        decltype(auto) op = derived().template resolve<raw_t<Ts>...>();
+        decltype(auto) op = derived().template resolve<Ts...>();
         if constexpr ((... || is_inout_v<Ts>)) {
             static_assert(1 == (... + is_inout_v<Ts>), "single inout argument expected");
             auto& dst = find_dst(xs...);
@@ -39,7 +40,8 @@ struct operation {
 
     template <class... Ts>
     constexpr decltype(auto) resolve() const {
-        return overload_helper<remove_cvref_t<Ts>...>::resolve(derived());
+        using major_t = major_category_t<category_t<raw_t<Ts>>...>;
+        return overload<Derived, major_t, raw_t<Ts>...>::resolve(derived());
     }
 
     template <class... Ts>

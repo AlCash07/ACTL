@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include <actl/category/category.hpp>
 #include <actl/category/utility/major_category.hpp>
-#include <actl/functional/operation/tuned_operation.hpp>
 
 namespace ac {
 
@@ -29,15 +29,5 @@ struct overload : overload<Op, typename Category::base, Ts...> {};
 
 template <class Op, class... Ts>
 struct overload<Op, unclassified_tag, Ts...> : default_overload<Op> {};
-
-// TODO: figure out a way to overload on the operation type and pass variadic template pack without
-// this helper structure.
-template <class... Ts>
-struct overload_helper {
-    template <class Op>
-    static constexpr decltype(auto) resolve(const Op& op) {
-        return overload<Op, major_category_t<category_t<raw_t<Ts>>...>, raw_t<Ts>...>::resolve(op);
-    }
-};
 
 }  // namespace ac

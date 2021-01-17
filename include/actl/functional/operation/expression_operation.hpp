@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/functional/operation/argument_traits.hpp>
-#include <actl/functional/operation/tuned_operation.hpp>
+#include <actl/functional/operation/policy.hpp>
 
 namespace ac {
 
