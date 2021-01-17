@@ -10,3 +10,4 @@
 #include <actl/range/irange.hpp>
 #include <actl/range/iterator_range.hpp>
 #include <actl/range/limited_input_range.hpp>
+#include <actl/range/operation/all.hpp>

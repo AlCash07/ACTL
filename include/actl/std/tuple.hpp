@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/functional/tuple/comparison.hpp>
 #include <actl/io/tuple.hpp>
+#include <actl/operation/tuple/comparison.hpp>
 
 namespace ac {
 

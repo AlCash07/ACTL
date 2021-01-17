@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <actl/functional/tuple/comparison.hpp>
 #include <actl/io/tuple.hpp>
 #include <actl/numeric/hash.hpp>
+#include <actl/operation/tuple/comparison.hpp>
 #include <utility>
 
 namespace ac {

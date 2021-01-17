@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/functional/policy/absolute_error.hpp>
+#include <actl/operation/policy/absolute_error.hpp>
 
 struct epsilon9 {
     static constexpr double epsilon() {

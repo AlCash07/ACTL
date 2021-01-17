@@ -5,8 +5,8 @@
 
 #include <actl/container/functions.hpp>
 #include <actl/container/hash_set.hpp>
-#include <actl/functional/range/comparison.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/range/operation/comparison.hpp>
 #include <actl/std/all.hpp>
 #include "test.hpp"
 

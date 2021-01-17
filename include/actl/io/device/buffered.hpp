@@ -6,9 +6,9 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/functional/scalar/basic_math/all.hpp>
 #include <actl/io/io.hpp>
 #include <actl/macros.hpp>
+#include <actl/operation/scalar/basic_math/all.hpp>
 #include <actl/range/algorithm.hpp>
 
 namespace ac::io {
