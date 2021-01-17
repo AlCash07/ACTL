@@ -25,17 +25,23 @@ struct operation {
         return static_cast<const Derived&>(*this);
     }
 
-    template <class... Ts>
-    constexpr decltype(auto) operator()(Ts&&... xs) const {
+    template <class... Ts, enable_int_if<(... || is_inout_v<Ts>)> = 0>
+    constexpr decltype(auto) operator()(Ts&&... xs) const& {
+        static_assert(1 == (... + is_inout_v<Ts>), "single inout argument expected");
         decltype(auto) op = derived().template resolve<Ts...>();
-        if constexpr ((... || is_inout_v<Ts>)) {
-            static_assert(1 == (... + is_inout_v<Ts>), "single inout argument expected");
-            auto& dst = find_dst(xs...);
-            op.evaluate_to(dst, remove_inout(xs)...);
-            return dst;
-        } else {
-            return make_expression(std::forward<decltype(op)>(op), std::forward<Ts>(xs)...);
-        }
+        auto& dst = find_dst(xs...);
+        op.evaluate_to(dst, remove_inout(xs)...);
+        return dst;
+    }
+
+    template <class... Ts, enable_int_if<!(... || is_inout_v<Ts>)> = 0>
+    constexpr decltype(auto) operator()(Ts&&... xs) const& {
+        return make_expression(derived(), std::forward<Ts>(xs)...);
+    }
+
+    template <class... Ts, enable_int_if<!(... || is_inout_v<Ts>)> = 0>
+    constexpr decltype(auto) operator()(Ts&&... xs) && {
+        return make_expression(static_cast<Derived&&>(*this), std::forward<Ts>(xs)...);
     }
 
     template <class... Ts>

@@ -16,7 +16,8 @@ namespace detail {
 
 template <class Op, class... Ts>
 struct result {
-    using type = decltype(std::declval<Op>().evaluate(std::declval<Ts>()...));
+    using type =
+        decltype(std::declval<Op>().template resolve<Ts...>().evaluate(std::declval<Ts>()...));
     using tag = category_t<remove_cvref_t<type>>;
 };
 
@@ -25,18 +26,19 @@ struct result {
 template <class Derived, class Tag>
 struct expression_base {};
 
-template <class... Ts>
-struct expression : expression_base<expression<Ts...>, typename detail::result<Ts...>::tag> {
-    using category = typename detail::result<Ts...>::tag;
+template <class Op, class... Ts>
+struct expression
+    : expression_base<expression<Op, Ts...>, typename detail::result<Op, Ts...>::tag> {
+    using category = typename detail::result<Op, Ts...>::tag;
     struct enable_operators;
 
-    std::tuple<Ts...> args;
+    std::tuple<Op, Ts...> args;
 
-    constexpr auto& operation() const {
-        return std::get<0>(args);
+    constexpr decltype(auto) operation() const {
+        return std::get<0>(args).template resolve<Ts...>();
     }
 
-    constexpr operator typename detail::result<Ts...>::type() const {
+    constexpr operator typename detail::result<Op, Ts...>::type() const {
         return eval(*this);
     }
 };
@@ -56,15 +58,14 @@ constexpr decltype(auto) eval(const expression<Ts...>& e) {
     return eval_impl(e, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
-template <class Op, class T, class E, size_t... Is>
-constexpr void assign_impl(const Op& op, T& dst, const E& e, std::index_sequence<Is...>) {
-    op.evaluate_to(dst, std::get<Is + 1>(e.args)...);
+template <class T, class E, size_t... Is>
+constexpr void assign_impl(T& dst, const E& e, std::index_sequence<Is...>) {
+    e.operation().evaluate_to(dst, std::get<Is + 1>(e.args)...);
 }
 
 template <class T, class... Ts>
 constexpr void assign(out_t<T>& dst, const expression<Ts...>& e) {
-    assign_impl(e.operation().template resolve<Ts...>(), dst.x, e,
-                std::make_index_sequence<sizeof...(Ts) - 1>{});
+    assign_impl(dst.x, e, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
 }  // namespace ac
