@@ -8,6 +8,7 @@
 #include <actl/category/range.hpp>
 #include <actl/container/size_holder.hpp>
 #include <actl/range/facade/contiguous_range_facade.hpp>
+#include <actl/range/traits.hpp>
 
 namespace ac {
 
@@ -81,7 +82,9 @@ span(Range&&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Rang
                       static_size_v<std::remove_reference_t<Range>>>;
 
 template <class T, index N>
-struct static_size<span<T, N>> : index_constant<N> {};
+struct range_traits<span<T, N>> : default_range_traits {
+    static constexpr index static_size = N;
+};
 
 template <class T, index N = dynamic_size>
 using cspan = span<const T, N>;

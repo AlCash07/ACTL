@@ -42,6 +42,8 @@ public:
 };
 
 template <class T, T... Is>
-struct static_size<static_array<T, Is...>> : index_constant<sizeof...(Is)> {};
+struct range_traits<static_array<T, Is...>> : default_range_traits {
+    static constexpr index static_size = sizeof...(Is);
+};
 
 }  // namespace ac

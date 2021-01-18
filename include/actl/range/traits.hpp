@@ -6,11 +6,13 @@
 #pragma once
 
 #include <actl/category/range.hpp>
+#include <actl/range/dynamic_size.hpp>
 #include <type_traits>
 
 namespace ac {
 
 struct default_range_traits {
+    static constexpr index static_size = dynamic_size;
     static constexpr bool is_container = false;
     static constexpr bool is_simple_associative = false;
     static constexpr bool is_pair_associative = false;
@@ -26,8 +28,12 @@ struct range_traits<const T> : range_traits<T> {};
 
 template <class T, size_t N>
 struct range_traits<T[N]> : default_range_traits {
+    static constexpr index static_size = static_cast<index>(N);
     static constexpr bool is_container = true;
 };
+
+template <class T>
+constexpr index static_size_v = range_traits<T>::static_size;
 
 template <class T>
 constexpr bool is_container_v = range_traits<T>::is_container;

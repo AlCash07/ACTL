@@ -7,18 +7,15 @@
 
 #include <actl/io/range.hpp>
 #include <actl/meta/rebind.hpp>
-#include <actl/utility/static_size.hpp>
 #include <array>
 
 namespace ac {
 
 template <class T, size_t N>
 struct range_traits<std::array<T, N>> : default_range_traits {
+    static constexpr index static_size = static_cast<index>(N);
     static constexpr bool is_container = true;
 };
-
-template <class T, size_t N>
-struct static_size<std::array<T, N>> : index_constant<static_cast<index>(N)> {};
 
 template <class T, size_t N>
 struct template_type<std::array<T, N>> {

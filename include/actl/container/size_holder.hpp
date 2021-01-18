@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/utility/static_size.hpp>
+#include <actl/range/dynamic_size.hpp>
 
 namespace ac {
 
