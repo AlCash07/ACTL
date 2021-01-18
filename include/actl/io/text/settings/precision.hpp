@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/types.hpp>
+#include <actl/utility/index.hpp>
 
 namespace ac::io {
 

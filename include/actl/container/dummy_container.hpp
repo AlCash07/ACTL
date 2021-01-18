@@ -9,7 +9,7 @@
 #include <actl/numeric/utility/hash_access.hpp>
 #include <actl/range/traits.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/types.hpp>
+#include <actl/utility/index.hpp>
 #include <actl/utility/none.hpp>
 
 namespace ac {
