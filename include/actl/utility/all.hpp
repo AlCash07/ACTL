@@ -11,5 +11,4 @@
 #include <actl/utility/none.hpp>
 #include <actl/utility/operators.hpp>
 #include <actl/utility/span.hpp>
-#include <actl/utility/stopwatch.hpp>
 #include <actl/utility/use_default.hpp>
