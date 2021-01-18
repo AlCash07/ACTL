@@ -6,10 +6,14 @@
 #pragma once
 
 #include <cstddef>
+#include <type_traits>
 
 namespace ac {
 
 // http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-subscripts
 using index = std::ptrdiff_t;
+
+template <index N>
+using index_constant = std::integral_constant<index, N>;
 
 }  // namespace ac

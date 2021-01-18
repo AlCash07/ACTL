@@ -7,7 +7,6 @@
 
 #include <actl/category/category.hpp>
 #include <actl/category/utility/nesting_depth.hpp>
-#include <actl/meta/type_traits.hpp>
 #include <limits>
 
 namespace ac {

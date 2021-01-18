@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <actl/utility/index.hpp>
 #include <type_traits>
 
 namespace ac {
@@ -35,9 +34,6 @@ struct is_integral_constant<std::integral_constant<T, N>> : std::true_type {};
 
 template <class T>
 constexpr bool is_integral_constant_v = is_integral_constant<T>::value;
-
-template <index N>
-using index_constant = std::integral_constant<index, N>;
 
 // TODO: use std::remove_cvref_t when C++20 is out.
 template <class T>
