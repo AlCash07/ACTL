@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include <actl/functional/operators.hpp>
 #include <actl/io/tuple.hpp>
 #include <actl/operation/tuple/comparison.hpp>
 #include <actl/utility/introspection.hpp>
+#include <actl/utility/operators.hpp>
 
 namespace ac {
 
