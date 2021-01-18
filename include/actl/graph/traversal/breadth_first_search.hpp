@@ -8,15 +8,15 @@
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/utility/component_set.hpp>
+#include <actl/utility/invocable_tuple.hpp>
 #include <queue>
 
 namespace ac {
 
 template <class... Components>
-class breadth_first_search : public component_set<Components...> {
-    using base_t = component_set<Components...>;
-    using base_t::execute_all;
+class breadth_first_search : public invocable_tuple<Components...> {
+    using base_t = invocable_tuple<Components...>;
+    using base_t::invoke_all;
 
 public:
     using base_t::base_t;
@@ -27,25 +27,25 @@ public:
                     VertexPredicate is_terminator = {}) {
         using V = vertex_t<Graph>;
         for (V u : graph.vertices())
-            execute_all(on_vertex_initialize{}, u);
+            invoke_all(on_vertex_initialize{}, u);
         while (!queue.empty())
             queue.pop();
         auto discover = [&](V u) {
-            execute_all(on_vertex_discover{}, u);
+            invoke_all(on_vertex_discover{}, u);
             if (is_terminator(u)) {
-                execute_all(on_search_finish{}, u);
+                invoke_all(on_search_finish{}, u);
                 return false;
             }
             queue.push(u);
             return true;
         };
         if constexpr (std::is_same_v<Source, V>) {
-            execute_all(on_search_start{}, source);
+            invoke_all(on_search_start{}, source);
             if (!discover(source))
                 return;
         } else {
             for (V s : source) {
-                execute_all(on_search_start{}, s);
+                invoke_all(on_search_start{}, s);
                 if (!discover(s))
                     return;
             }
@@ -53,21 +53,21 @@ public:
         while (!queue.empty()) {
             V u = queue.front();
             queue.pop();
-            execute_all(on_vertex_start{}, u);
+            invoke_all(on_vertex_start{}, u);
             for (auto e : graph.out_edges(u)) {
                 V v = e.target();
-                if (base_t::execute_first(is_vertex_discovered{}, v)) {
-                    execute_all(on_non_tree_edge{}, e);
+                if (base_t::invoke_first(is_vertex_discovered{}, v)) {
+                    invoke_all(on_non_tree_edge{}, e);
                 } else {
-                    execute_all(on_tree_edge_start{}, e);
+                    invoke_all(on_tree_edge_start{}, e);
                     if (!discover(v))
                         return;
-                    execute_all(on_tree_edge_finish{}, e);
+                    invoke_all(on_tree_edge_finish{}, e);
                 }
             }
-            execute_all(on_vertex_finish{}, u);
+            invoke_all(on_vertex_finish{}, u);
         }
-        execute_all(on_search_finish{}, graph.null_vertex());
+        invoke_all(on_search_finish{}, graph.null_vertex());
     }
 };
 

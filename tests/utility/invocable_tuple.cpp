@@ -3,7 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/utility/component_set.hpp>
+#include <actl/utility/invocable_tuple.hpp>
 #include "test.hpp"
 
 namespace {
@@ -25,15 +25,15 @@ struct increment {
 
 }  // namespace
 
-TEST_CASE("component_set") {
-    using CS = ac::component_set<const_op<bool, 1>, const_op<bool, 2>, const_op<increment, 3>>;
-    static_assert(1 == CS{}.execute_first(true));
-    static_assert(3 == CS{}.execute_first(increment{1}));
+TEST_CASE("invocable_tuple") {
+    using CS = ac::invocable_tuple<const_op<bool, 1>, const_op<bool, 2>, const_op<increment, 3>>;
+    static_assert(1 == CS{}.invoke_first(true));
+    static_assert(3 == CS{}.invoke_first(increment{1}));
 
-    SECTION("execute_all") {
+    SECTION("invoke_all") {
         increment inc[3] = {{0}, {1}, {2}};
-        ac::component_set c{inc[0], inc[1], inc[2]};
-        c.execute_all(2);
+        ac::invocable_tuple c{inc[0], inc[1], inc[2]};
+        c.invoke_all(2);
         for (int i : ac::irange(3))
             CHECK(i + 2 == inc[i].v);
     }
