@@ -8,7 +8,7 @@
 #include <actl/geometry/algorithm/orientation/point_line.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/range/algorithm.hpp>
-#include <actl/utility/span.hpp>
+#include <actl/range/span.hpp>
 
 namespace ac {
 

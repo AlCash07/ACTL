@@ -11,8 +11,8 @@
 #include <actl/operation/scalar/basic_math/max.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/operation/comparison.hpp>
+#include <actl/range/span.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/utility/span.hpp>
 #include <memory>
 
 namespace ac {

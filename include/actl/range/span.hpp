@@ -6,9 +6,9 @@
 #pragma once
 
 #include <actl/category/range.hpp>
-#include <actl/container/size_holder.hpp>
 #include <actl/range/facade/contiguous_range_facade.hpp>
 #include <actl/range/traits.hpp>
+#include <actl/range/utility/size_holder.hpp>
 
 namespace ac {
 

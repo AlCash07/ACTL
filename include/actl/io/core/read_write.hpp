@@ -11,7 +11,7 @@
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/format/apply_format.hpp>
-#include <actl/utility/span.hpp>
+#include <actl/range/span.hpp>
 
 namespace ac::io {
 

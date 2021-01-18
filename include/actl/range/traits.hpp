@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/category/range.hpp>
-#include <actl/range/dynamic_size.hpp>
+#include <actl/range/utility/dynamic_size.hpp>
 #include <type_traits>
 
 namespace ac {

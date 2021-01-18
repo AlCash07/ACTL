@@ -8,8 +8,8 @@
 #include <actl/assert.hpp>
 #include <actl/geometry/traits.hpp>
 #include <actl/operation/scalar/all.hpp>
+#include <actl/range/span.hpp>
 #include <actl/utility/introspection.hpp>
-#include <actl/utility/span.hpp>
 #include <functional>
 
 namespace ac {

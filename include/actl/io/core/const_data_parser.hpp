@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/range/algorithm.hpp>
-#include <actl/utility/span.hpp>
+#include <actl/range/span.hpp>
 
 namespace ac::io {
 
