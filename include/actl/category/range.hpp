@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/iterator/traits.hpp>
+#include <actl/category/utility/nesting_depth.hpp>
 #include <actl/meta/dependent.hpp>
 
 namespace ac {
@@ -33,72 +33,75 @@ template <class T>
 constexpr bool is_contiguous_range_v = is_contiguous_range<T>::value;
 
 // clang-format off
-template <class T> struct range_tag               { using base = scalar_tag; };
-template <class T> struct output_range_tag        { using base = range_tag<T>; };
-template <class T> struct input_range_tag         { using base = range_tag<T>; };
-template <class T> struct forward_range_tag       { using base = input_range_tag<T>; };
-template <class T> struct bidirectional_range_tag { using base = forward_range_tag<T>; };
-template <class T> struct random_access_range_tag { using base = bidirectional_range_tag<T>; };
-template <class T> struct contiguous_range_tag    { using base = random_access_range_tag<T>; };
+struct range_tag               { using base = scalar_tag; };
+struct output_range_tag        { using base = range_tag; };
+struct input_range_tag         { using base = range_tag; };
+struct forward_range_tag       { using base = input_range_tag; };
+struct bidirectional_range_tag { using base = forward_range_tag; };
+struct random_access_range_tag { using base = bidirectional_range_tag; };
+struct contiguous_range_tag    { using base = random_access_range_tag; };
 // clang-format on
 
 namespace detail {
 
-template <class C, class V>
+template <class C>
 struct range_category;
 
-template <class V>
-struct range_category<std::output_iterator_tag, V> {
-    using type = output_range_tag<V>;
+template <>
+struct range_category<std::output_iterator_tag> {
+    using type = output_range_tag;
 };
 
-template <class V>
-struct range_category<std::input_iterator_tag, V> {
-    using type = input_range_tag<V>;
+template <>
+struct range_category<std::input_iterator_tag> {
+    using type = input_range_tag;
 };
 
-template <class V>
-struct range_category<std::forward_iterator_tag, V> {
-    using type = forward_range_tag<V>;
+template <>
+struct range_category<std::forward_iterator_tag> {
+    using type = forward_range_tag;
 };
 
-template <class V>
-struct range_category<std::bidirectional_iterator_tag, V> {
-    using type = bidirectional_range_tag<V>;
+template <>
+struct range_category<std::bidirectional_iterator_tag> {
+    using type = bidirectional_range_tag;
 };
 
-template <class V>
-struct range_category<std::random_access_iterator_tag, V> {
-    using type = random_access_range_tag<V>;
+template <>
+struct range_category<std::random_access_iterator_tag> {
+    using type = random_access_range_tag;
 };
 
 }  // namespace detail
 
 template <class T>
 struct category_sfinae<T, std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>>
-    : detail::range_category<typename std::iterator_traits<iterator_t<T>>::iterator_category,
-                             category_t<value_type_t<T>>> {};
+    : detail::range_category<typename std::iterator_traits<iterator_t<T>>::iterator_category> {};
 
 template <class T>
 struct category_sfinae<T, std::enable_if_t<is_contiguous_range_v<T>>> {
-    using type = contiguous_range_tag<category_t<value_type_t<T>>>;
+    using type = contiguous_range_tag;
 };
 
 template <class T>
-constexpr bool is_input_range_v = is_subcategory_of_template_v<category_t<T>, input_range_tag>;
+constexpr bool is_input_range_v = is_subcategory_of_v<category_t<T>, input_range_tag>;
 
 template <class T>
-constexpr bool is_output_range_v = is_subcategory_of_template_v<category_t<T>, output_range_tag>;
+constexpr bool is_output_range_v = is_subcategory_of_v<category_t<T>, output_range_tag>;
 
 template <class T>
-constexpr bool is_forward_range_v = is_subcategory_of_template_v<category_t<T>, forward_range_tag>;
+constexpr bool is_forward_range_v = is_subcategory_of_v<category_t<T>, forward_range_tag>;
 
 template <class T>
 constexpr bool is_bidirectional_range_v =
-    is_subcategory_of_template_v<category_t<T>, bidirectional_range_tag>;
+    is_subcategory_of_v<category_t<T>, bidirectional_range_tag>;
 
 template <class T>
 constexpr bool is_random_access_range_v =
-    is_subcategory_of_template_v<category_t<T>, random_access_range_tag>;
+    is_subcategory_of_v<category_t<T>, random_access_range_tag>;
+
+template <class T>
+struct nesting_depth<T, std::enable_if_t<is_range_v<T>>>
+    : index_constant<1 + nesting_depth_v<value_type_t<T>>> {};
 
 }  // namespace ac

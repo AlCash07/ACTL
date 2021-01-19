@@ -29,15 +29,15 @@ struct lexicographical_compare_tuple_t {
 };
 constexpr operation_composer<lexicographical_compare_tuple_t> lexicographical_compare_tuple;
 
-template <class... Ts, class T, class U>
-struct overload<cmp3way_t, tuple_tag<Ts...>, T, U> {
+template <class T, class U>
+struct overload<cmp3way_t, tuple_tag, T, U> {
     static constexpr auto resolve(cmp3way_t op) {
         return tuple_op_resolver<T, U>::resolve(lexicographical_compare_tuple, op);
     };
 };
 
-template <class... Ts, class T, class U>
-struct overload<less_t, tuple_tag<Ts...>, T, U> {
+template <class T, class U>
+struct overload<less_t, tuple_tag, T, U> {
     static constexpr auto resolve(less_t) {
         return cmp3way < zero_;
     }

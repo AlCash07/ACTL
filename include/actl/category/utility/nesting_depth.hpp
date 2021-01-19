@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <actl/meta/type_traits.hpp>
 #include <actl/utility/index.hpp>
 
 namespace ac {
@@ -21,14 +22,16 @@ constexpr auto operator||(max_v<N>, max_v<M>) {
 
 }  // namespace detail
 
-template <class T>
+template <class T, class = void>
 struct nesting_depth : index_constant<0> {};
 
 template <class T>
-constexpr index nesting_depth_v = nesting_depth<T>::value;
+constexpr index nesting_depth_v = nesting_depth<remove_cvref_t<T>>::value;
 
-template <template <class...> class T, class... Ts>
-struct nesting_depth<T<Ts...>>
-    : index_constant<1 + (... || detail::max_v<nesting_depth_v<Ts>>{}).value> {};
+template <class... Ts>
+struct max_nesting_depth : index_constant<(... || detail::max_v<nesting_depth_v<Ts>>{})> {};
+
+template <class... Ts>
+constexpr index max_nesting_depth_v = max_nesting_depth<Ts...>::value;
 
 }  // namespace ac

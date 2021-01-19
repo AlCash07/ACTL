@@ -25,7 +25,8 @@ constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
 template <class Operation, class T>
 struct neutral_element;
 
-template <>
-struct nesting_depth<operation_tag> : index_constant<std::numeric_limits<index>::max()> {};
+template <class T>
+struct nesting_depth<T, std::enable_if_t<is_operation_v<T>>>
+    : index_constant<std::numeric_limits<index>::max()> {};
 
 }  // namespace ac

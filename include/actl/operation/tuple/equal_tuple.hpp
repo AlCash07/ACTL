@@ -27,8 +27,8 @@ struct equal_tuple_t {
 };
 constexpr operation_composer<equal_tuple_t> equal_tuple;
 
-template <class... Ts, class T, class U>
-struct overload<equal_t, tuple_tag<Ts...>, T, U> {
+template <class T, class U>
+struct overload<equal_t, tuple_tag, T, U> {
     static constexpr auto resolve(equal_t op) {
         return tuple_op_resolver<T, U>::resolve(equal_tuple, op);
     }

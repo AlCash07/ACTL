@@ -12,13 +12,17 @@ namespace ac {
 
 namespace detail {
 
-template <class T, class U>
-constexpr auto operator||(category_wrap<T> lhs, category_wrap<U> rhs) {
-    constexpr auto ldepth = nesting_depth_v<T>;
-    constexpr auto rdepth = nesting_depth_v<U>;
-    if constexpr (ldepth == rdepth)
-        return lhs && rhs;
-    else if constexpr (ldepth < rdepth)
+template <class Category, index Depth>
+struct cdp {  // category-depth pair
+    using category = Category;
+    static constexpr index depth = Depth;
+};
+
+template <class T, index DepthT, class U, index DepthU>
+constexpr auto operator||(cdp<T, DepthT> lhs, cdp<U, DepthU> rhs) {
+    if constexpr (DepthT == DepthU)
+        return cdp<common_category_t<T, U>, DepthT>{};
+    else if constexpr (DepthT < DepthU)
         return rhs;
     else
         return lhs;
@@ -27,6 +31,9 @@ constexpr auto operator||(category_wrap<T> lhs, category_wrap<U> rhs) {
 }  // namespace detail
 
 template <class... Ts>
-using major_category_t = typename decltype((... || detail::category_wrap<Ts>{}))::type;
+using major_category = decltype((... || detail::cdp<category_t<Ts>, nesting_depth_v<Ts>>{}));
+
+template <class... Ts>
+using major_category_t = typename major_category<Ts...>::category;
 
 }  // namespace ac

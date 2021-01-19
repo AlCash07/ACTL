@@ -46,16 +46,16 @@ struct operation {
 
     template <class... Ts>
     constexpr decltype(auto) resolve() const {
-        using major_t = major_category_t<category_t<raw_t<Ts>>...>;
+        using major_t = major_category_t<raw_t<Ts>...>;
         return overload<Derived, major_t, raw_t<Ts>...>::resolve(derived());
     }
 
     template <class... Ts>
     constexpr decltype(auto) resolve_nested() const {
-        constexpr auto major_depth = nesting_depth_v<major_category_t<category_t<raw_t<Ts>>...>>;
+        constexpr auto major_depth = major_category<raw_t<Ts>...>::depth;
         return derived()
-            .template resolve<detail::value_type_if_t<
-                nesting_depth_v<category_t<raw_t<Ts>>> == major_depth, Ts>...>();
+            .template resolve<
+                detail::value_type_if_t<nesting_depth_v<raw_t<Ts>> == major_depth, Ts>...>();
     }
 };
 

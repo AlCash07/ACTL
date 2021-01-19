@@ -7,7 +7,6 @@
 
 #include <actl/category/range.hpp>
 #include <actl/operation/core/composite_operation.hpp>
-#include <actl/operation/scalar/common/cast.hpp>
 #include <actl/operation/scalar/common/constants.hpp>
 #include <actl/operation/scalar/comparison/cmp3way.hpp>
 #include <actl/operation/scalar/comparison/less.hpp>
@@ -29,20 +28,20 @@ struct lexicographical_compare_range_t {
             if (v != 0)
                 return v;
         }
-        return cast<int>(rfirst != rlast) - cast<int>(lfirst != llast);
+        return int{rfirst != rlast} - int{lfirst != llast};
     }
 };
 constexpr operation_composer<lexicographical_compare_range_t> lexicographical_compare_range;
 
-template <class V, class T, class U>
-struct overload<cmp3way_t, range_tag<V>, T, U> {
+template <class T, class U>
+struct overload<cmp3way_t, range_tag, T, U> {
     static constexpr auto resolve(cmp3way_t op) {
         return lexicographical_compare_range(op.resolve_nested<T, U>());
     }
 };
 
-template <class V, class T, class U>
-struct overload<less_t, range_tag<V>, T, U> {
+template <class T, class U>
+struct overload<less_t, range_tag, T, U> {
     static constexpr auto resolve(less_t) {
         return cmp3way < zero_;
     }

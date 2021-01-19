@@ -6,7 +6,7 @@
 #pragma once
 
 #include <actl/category/scalar.hpp>
-#include <actl/category/utility/is_subcategory_of_template.hpp>
+#include <actl/category/utility/is_subcategory_of.hpp>
 #include <iterator>
 
 namespace ac {
@@ -31,69 +31,65 @@ template <class T>
 constexpr bool is_iterator_v = is_iterator<T>::value;
 
 // clang-format off
-template <class T> struct iterator_tag               { using base = scalar_tag; };
-template <class T> struct output_iterator_tag        { using base = iterator_tag<T>; };
-template <class T> struct input_iterator_tag         { using base = iterator_tag<T>; };
-template <class T> struct forward_iterator_tag       { using base = input_iterator_tag<T>; };
-template <class T> struct bidirectional_iterator_tag { using base = forward_iterator_tag<T>; };
-template <class T> struct random_access_iterator_tag { using base = bidirectional_iterator_tag<T>; };
+struct iterator_tag               { using base = scalar_tag; };
+struct output_iterator_tag        { using base = iterator_tag; };
+struct input_iterator_tag         { using base = iterator_tag; };
+struct forward_iterator_tag       { using base = input_iterator_tag; };
+struct bidirectional_iterator_tag { using base = forward_iterator_tag; };
+struct random_access_iterator_tag { using base = bidirectional_iterator_tag; };
 // clang-format on
 
 namespace detail {
 
-template <class C, class V>
+template <class C>
 struct iter_category;
 
-template <class V>
-struct iter_category<std::output_iterator_tag, V> {
-    using type = output_iterator_tag<V>;
+template <>
+struct iter_category<std::output_iterator_tag> {
+    using type = output_iterator_tag;
 };
 
-template <class V>
-struct iter_category<std::input_iterator_tag, V> {
-    using type = input_iterator_tag<V>;
+template <>
+struct iter_category<std::input_iterator_tag> {
+    using type = input_iterator_tag;
 };
 
-template <class V>
-struct iter_category<std::forward_iterator_tag, V> {
-    using type = forward_iterator_tag<V>;
+template <>
+struct iter_category<std::forward_iterator_tag> {
+    using type = forward_iterator_tag;
 };
 
-template <class V>
-struct iter_category<std::bidirectional_iterator_tag, V> {
-    using type = bidirectional_iterator_tag<V>;
+template <>
+struct iter_category<std::bidirectional_iterator_tag> {
+    using type = bidirectional_iterator_tag;
 };
 
-template <class V>
-struct iter_category<std::random_access_iterator_tag, V> {
-    using type = random_access_iterator_tag<V>;
+template <>
+struct iter_category<std::random_access_iterator_tag> {
+    using type = random_access_iterator_tag;
 };
 
 }  // namespace detail
 
 template <class T>
 struct category_sfinae<T, std::enable_if_t<is_iterator_v<T>>>
-    : detail::iter_category<typename std::iterator_traits<T>::iterator_category,
-                            category_t<typename std::iterator_traits<T>::value_type>> {};
+    : detail::iter_category<typename std::iterator_traits<T>::iterator_category> {};
 
 template <class T>
-constexpr bool is_input_iterator_v =
-    is_subcategory_of_template_v<category_t<T>, input_iterator_tag>;
+constexpr bool is_input_iterator_v = is_subcategory_of_v<category_t<T>, input_iterator_tag>;
 
 template <class T>
-constexpr bool is_output_iterator_v =
-    is_subcategory_of_template_v<category_t<T>, output_iterator_tag>;
+constexpr bool is_output_iterator_v = is_subcategory_of_v<category_t<T>, output_iterator_tag>;
 
 template <class T>
-constexpr bool is_forward_iterator_v =
-    is_subcategory_of_template_v<category_t<T>, forward_iterator_tag>;
+constexpr bool is_forward_iterator_v = is_subcategory_of_v<category_t<T>, forward_iterator_tag>;
 
 template <class T>
 constexpr bool is_bidirectional_iterator_v =
-    is_subcategory_of_template_v<category_t<T>, bidirectional_iterator_tag>;
+    is_subcategory_of_v<category_t<T>, bidirectional_iterator_tag>;
 
 template <class T>
 constexpr bool is_random_access_iterator_v =
-    is_subcategory_of_template_v<category_t<T>, random_access_iterator_tag>;
+    is_subcategory_of_v<category_t<T>, random_access_iterator_tag>;
 
 }  // namespace ac

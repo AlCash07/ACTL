@@ -28,7 +28,7 @@ TEST_CASE("rank 3 initialization") {
     }
     tensor<int, 3> t_init{{{1, 2, 3}}, {{4}, {5, 6}}};
     CHECK_EQUAL(std::vector{2, 2, 3}, t_init.dimensions());
-    CHECK_EQUAL(std::vector{1, 2, 3, 0, 0, 0, 4, 0, 0, 5, 6, 0}, t_init);
+    CHECK_EQUAL(std::vector{1, 2, 3, 0, 0, 0, 4, 0, 0, 5, 6, 0}, span{t_init});
 }
 
 TEST_CASE("indexing") {

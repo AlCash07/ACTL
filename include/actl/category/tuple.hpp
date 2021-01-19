@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <actl/category/category.hpp>
 #include <actl/category/range.hpp>
+#include <actl/category/utility/nesting_depth.hpp>
 #include <tuple>
 #include <utility>
 
@@ -24,25 +24,28 @@ struct is_tuple<T, false, std::void_t<decltype(std::tuple_size<T>::value)>> : st
 template <class T>
 constexpr bool is_tuple_v = is_tuple<T>::value;
 
-template <class... Ts>
 struct tuple_tag {
     using base = unclassified_tag;
 };
 
+template <class T>
+struct category_sfinae<T, std::enable_if_t<is_tuple_v<T>>> {
+    using type = tuple_tag;
+};
+
 namespace detail {
 
-template <class T, class I>
-struct tuple_category;
+template <class T, class Seq>
+struct tuple_depth;
 
 template <class T, size_t... Is>
-struct tuple_category<T, std::index_sequence<Is...>> {
-    using type = tuple_tag<category_t<std::tuple_element_t<Is, T>>...>;
-};
+struct tuple_depth<T, std::index_sequence<Is...>>
+    : index_constant<1 + max_nesting_depth_v<std::tuple_element_t<Is, T>...>> {};
 
 }  // namespace detail
 
 template <class T>
-struct category_sfinae<T, std::enable_if_t<is_tuple_v<T>>>
-    : detail::tuple_category<T, tuple_indices_t<T>> {};
+struct nesting_depth<T, std::enable_if_t<is_tuple_v<T>>>
+    : detail::tuple_depth<T, tuple_indices_t<T>> {};
 
 }  // namespace ac
