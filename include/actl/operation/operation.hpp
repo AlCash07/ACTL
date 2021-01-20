@@ -25,7 +25,7 @@ struct operation {
         return static_cast<const Derived&>(*this);
     }
 
-    template <class... Ts, enable_int_if<(... || is_inout_v<Ts>)> = 0>
+    template <class... Ts, enable_int_if<is_any_inout_v<Ts...>> = 0>
     constexpr decltype(auto) operator()(Ts&&... xs) const& {
         static_assert(1 == (... + is_inout_v<Ts>), "single inout argument expected");
         decltype(auto) op = derived().template resolve<Ts...>();
@@ -34,12 +34,12 @@ struct operation {
         return dst;
     }
 
-    template <class... Ts, enable_int_if<!(... || is_inout_v<Ts>)> = 0>
+    template <class... Ts, enable_int_if<!is_any_inout_v<Ts...>> = 0>
     constexpr decltype(auto) operator()(Ts&&... xs) const& {
         return make_expression(derived(), std::forward<Ts>(xs)...);
     }
 
-    template <class... Ts, enable_int_if<!(... || is_inout_v<Ts>)> = 0>
+    template <class... Ts, enable_int_if<!!is_any_inout_v<Ts...>> = 0>
     constexpr decltype(auto) operator()(Ts&&... xs) && {
         return make_expression(static_cast<Derived&&>(*this), std::forward<Ts>(xs)...);
     }

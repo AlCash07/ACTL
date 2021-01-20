@@ -25,6 +25,9 @@ struct is_inout<inout_t<T>> : std::true_type {};
 template <class T>
 constexpr bool is_inout_v = is_inout<remove_cvref_t<T>>::value;
 
+template <class... Ts>
+constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);
+
 template <class T>
 decltype(auto) inout(T&& x) {
     if constexpr (is_inout_v<T>)

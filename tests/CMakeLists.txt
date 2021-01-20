@@ -1,6 +1,6 @@
 file(GLOB_RECURSE test_files *.hpp *.cpp)
 list(FILTER test_files EXCLUDE REGEX geometry/*)
-# list(FILTER test_files EXCLUDE REGEX graph/*)
+list(FILTER test_files EXCLUDE REGEX graph/*)
 source_group(TREE ${CMAKE_CURRENT_LIST_DIR} FILES ${test_files})
 add_executable(run_tests ${test_files})
 target_include_directories(run_tests PRIVATE .)
