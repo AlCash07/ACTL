@@ -8,8 +8,8 @@ mkdir -p $(dirname $test)
 touch $test
 head -4 $path > $test
 echo "
-#include \"test.hpp\"
 #include <${path:8}>
+#include \"test.hpp\"
 
 TEST_CASE(\"\") {}" >> $test
 else

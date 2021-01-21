@@ -7,32 +7,12 @@
 
 #include <actl/category/scalar.hpp>
 #include <actl/category/utility/is_subcategory_of.hpp>
-#include <iterator>
+#include <actl/meta/is_iterator.hpp>
 
 namespace ac {
 
-namespace detail {
-
-template <class T, class = void>
-struct is_iter : std::false_type {};
-
-template <class T>
-struct is_iter<T, void_t<typename std::iterator_traits<T>::iterator_category>> : std::true_type {};
-
-}  // namespace detail
-
-template <class T, class = void>
-struct is_iterator : detail::is_iter<T> {};
-
-template <class T>
-struct is_iterator<T*, std::enable_if_t<!std::is_object_v<T>>> : std::false_type {};
-
-template <class T>
-constexpr bool is_iterator_v = is_iterator<T>::value;
-
 // clang-format off
 struct iterator_tag               { using base = scalar_tag; };
-struct output_iterator_tag        { using base = iterator_tag; };
 struct input_iterator_tag         { using base = iterator_tag; };
 struct forward_iterator_tag       { using base = input_iterator_tag; };
 struct bidirectional_iterator_tag { using base = forward_iterator_tag; };
@@ -42,11 +22,8 @@ struct random_access_iterator_tag { using base = bidirectional_iterator_tag; };
 namespace detail {
 
 template <class C>
-struct iter_category;
-
-template <>
-struct iter_category<std::output_iterator_tag> {
-    using type = output_iterator_tag;
+struct iter_category {
+    using type = iterator_tag;
 };
 
 template <>
@@ -77,9 +54,6 @@ struct category_sfinae<T, std::enable_if_t<is_iterator_v<T>>>
 
 template <class T>
 constexpr bool is_input_iterator_v = is_subcategory_of_v<category_t<T>, input_iterator_tag>;
-
-template <class T>
-constexpr bool is_output_iterator_v = is_subcategory_of_v<category_t<T>, output_iterator_tag>;
 
 template <class T>
 constexpr bool is_forward_iterator_v = is_subcategory_of_v<category_t<T>, forward_iterator_tag>;

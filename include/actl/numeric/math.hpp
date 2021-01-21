@@ -34,7 +34,7 @@ constexpr abs_t abs;
 template <class Op, index Arity>
 struct math_operation : scalar_operation<Op, Arity> {
     using category = math_operation_tag;
-    using argument_category = float_tag;
+    using argument_category = floating_point_tag;
 };
 
 #define MATH_OP1(name, op)                       \

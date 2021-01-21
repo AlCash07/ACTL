@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <actl/iterator/traits.hpp>
+#include <actl/category/iterator.hpp>
 #include <actl/meta/dependent.hpp>
 #include <actl/meta/nested_or_default.hpp>
 #include <actl/utility/use_default.hpp>
