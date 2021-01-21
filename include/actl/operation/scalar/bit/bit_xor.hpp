@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct bit_xor_t : scalar_operation<bit_xor_t, 2, integral_tag> {
+struct bit_xor_t : scalar_operation<bit_xor_t, 2> {
+    using category = bitwise_operation_tag;
+    using argument_category = integral_tag;
+
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 

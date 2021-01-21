@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct logical_not_t : scalar_operation<logical_not_t, 1, boolean_tag> {
+struct logical_not_t : scalar_operation<logical_not_t, 1> {
+    using category = logical_operation_tag;
+    using argument_category = boolean_tag;
+
     static constexpr bool eval_scalar(bool x) {
         return !x;
     }

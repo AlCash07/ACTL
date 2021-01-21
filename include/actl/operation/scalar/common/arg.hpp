@@ -12,6 +12,8 @@ namespace ac {
 template <index I, index N>
 struct arg_t {
     using category = operation_tag;
+    using argument_category = unclassified_tag;
+
     struct enable_operators;
 
     template <class T, class... Ts>

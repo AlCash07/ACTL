@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct bit_not_t : scalar_operation<bit_not_t, 2, integral_tag> {
+struct bit_not_t : scalar_operation<bit_not_t, 1> {
+    using category = bitwise_operation_tag;
+    using argument_category = integral_tag;
+
     template <class T>
     static constexpr T eval_scalar(T x) {
         return ~x;

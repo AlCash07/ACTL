@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct logical_or_t : scalar_operation<logical_or_t, 2, boolean_tag> {
+struct logical_or_t : scalar_operation<logical_or_t, 2> {
+    using category = logical_operation_tag;
+    using argument_category = boolean_tag;
+
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 

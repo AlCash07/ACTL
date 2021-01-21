@@ -11,7 +11,10 @@
 
 namespace ac {
 
-struct sgn_t : scalar_operation<sgn_t, 1, scalar_tag> {
+struct sgn_t : scalar_operation<sgn_t, 1> {
+    using category = comparison_operation_tag;
+    using argument_category = arithmetic_tag;
+
     static constexpr auto formula = cmp3way(x_, zero_);
 };
 constexpr sgn_t sgn;

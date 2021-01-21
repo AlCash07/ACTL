@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct copy_t : scalar_operation<copy_t, 1, arithmetic_tag> {
+struct copy_t : scalar_operation<copy_t, 1> {
+    using category = scalar_operation_tag;
+    using argument_category = arithmetic_tag;
+
     template <class T>
     static constexpr T eval_scalar(T x) {
         return x;

@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct add_t : scalar_operation<add_t, 2, arithmetic_tag> {
+struct add_t : scalar_operation<add_t, 2> {
+    using category = additive_operation_tag;
+    using argument_category = arithmetic_tag;
+
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 

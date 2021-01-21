@@ -10,7 +10,10 @@
 
 namespace ac {
 
-struct greater_equal_t : comparison_operation<greater_equal_t> {
+struct greater_equal_t : scalar_operation<greater_equal_t, 2> {
+    using category = ordering_operation_tag;
+    using argument_category = scalar_tag;
+
     static constexpr auto formula = !less;
 };
 constexpr greater_equal_t greater_equal;

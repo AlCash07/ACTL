@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct neg_t : scalar_operation<neg_t, 2, arithmetic_tag> {
+struct neg_t : scalar_operation<neg_t, 1> {
+    using category = additive_operation_tag;
+    using argument_category = arithmetic_tag;
+
     template <class T>
     static constexpr auto eval_scalar(T x) {
         return -x;

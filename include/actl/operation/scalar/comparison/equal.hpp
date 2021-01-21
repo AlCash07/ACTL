@@ -5,11 +5,14 @@
 
 #pragma once
 
-#include <actl/operation/scalar/comparison/comparison_operation.hpp>
+#include <actl/operation/scalar/scalar_operation.hpp>
 
 namespace ac {
 
-struct equal_t : comparison_operation<equal_t> {
+struct equal_t : scalar_operation<equal_t, 2> {
+    using category = equality_operation_tag;
+    using argument_category = scalar_tag;
+
     static constexpr bool is_commutative = true;
 
     template <class T, class U>

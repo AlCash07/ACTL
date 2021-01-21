@@ -6,6 +6,7 @@
 #pragma once
 
 #include <actl/category/category.hpp>
+#include <actl/category/utility/is_subcategory_of.hpp>
 #include <actl/category/utility/nesting_depth.hpp>
 #include <limits>
 
@@ -20,7 +21,7 @@ struct operation_tag {
 };
 
 template <class T>
-constexpr bool is_operation_v = std::is_same_v<operation_tag, category_t<T>>;
+constexpr bool is_operation_v = is_subcategory_of_v<category_t<T>, operation_tag>;
 
 template <class Operation, class T>
 struct neutral_element;

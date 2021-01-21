@@ -11,7 +11,14 @@
 
 namespace ac {
 
-struct abs_t : scalar_operation<abs_t, 1, arithmetic_tag> {
+struct math_operation_tag {
+    using base = scalar_operation_tag;
+};
+
+struct abs_t : scalar_operation<abs_t, 1> {
+    using category = math_operation_tag;
+    using argument_category = arithmetic_tag;
+
     template <class T>
     static constexpr T eval_scalar(T x) {
         if constexpr (std::is_unsigned_v<T>) {
@@ -24,18 +31,24 @@ struct abs_t : scalar_operation<abs_t, 1, arithmetic_tag> {
 };
 constexpr abs_t abs;
 
-#define MATH_OP1(name, op)                               \
-    struct name : scalar_operation<name, 1, float_tag> { \
-        template <class T>                               \
-        static constexpr auto eval_scalar(T x) {         \
-            using std::op;                               \
-            return op(x);                                \
-        }                                                \
-    };                                                   \
+template <class Op, index Arity>
+struct math_operation : scalar_operation<Op, Arity> {
+    using category = math_operation_tag;
+    using argument_category = float_tag;
+};
+
+#define MATH_OP1(name, op)                       \
+    struct name : math_operation<name, 1> {      \
+        template <class T>                       \
+        static constexpr auto eval_scalar(T x) { \
+            using std::op;                       \
+            return op(x);                        \
+        }                                        \
+    };                                           \
     constexpr name op;
 
 #define MATH_OP2(name, op)                                \
-    struct name : scalar_operation<name, 2, float_tag> {  \
+    struct name : math_operation<name, 2> {               \
         template <class T, class U>                       \
         static constexpr auto eval_scalar(T lhs, U rhs) { \
             using std::op;                                \

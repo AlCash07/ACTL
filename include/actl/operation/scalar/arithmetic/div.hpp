@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct div_t : scalar_operation<div_t, 2, arithmetic_tag> {
+struct div_t : scalar_operation<div_t, 2> {
+    using category = multiplicative_operation_tag;
+    using argument_category = arithmetic_tag;
+
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs / rhs;

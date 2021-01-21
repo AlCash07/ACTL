@@ -11,7 +11,10 @@
 
 namespace ac {
 
-struct min_t : scalar_operation<min_t, 2, scalar_tag> {
+struct min_t : scalar_operation<min_t, 2> {
+    using category = scalar_operation_tag;
+    using argument_category = scalar_tag;
+
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 

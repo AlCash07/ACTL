@@ -5,11 +5,14 @@
 
 #pragma once
 
-#include <actl/operation/scalar/comparison/comparison_operation.hpp>
+#include <actl/operation/scalar/scalar_operation.hpp>
 
 namespace ac {
 
-struct less_t : comparison_operation<less_t> {
+struct less_t : scalar_operation<less_t, 2> {
+    using category = ordering_operation_tag;
+    using argument_category = scalar_tag;
+
     template <class T, class U>
     static constexpr bool eval_scalar(T lhs, U rhs) {
         return lhs < rhs;

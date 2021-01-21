@@ -9,7 +9,10 @@
 
 namespace ac {
 
-struct select_t : scalar_operation<select_t, 3, arithmetic_tag> {
+struct select_t : scalar_operation<select_t, 3> {
+    using category = scalar_operation_tag;
+    using argument_category = arithmetic_tag;
+
     template <class T, class U>
     constexpr auto evaluate(bool condition, const T& lhs, const U& rhs) const {
         return condition ? eval(lhs) : eval(rhs);

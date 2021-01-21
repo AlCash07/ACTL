@@ -10,7 +10,10 @@
 
 namespace ac {
 
-struct less_equal_t : comparison_operation<less_equal_t> {
+struct less_equal_t : scalar_operation<less_equal_t, 2> {
+    using category = ordering_operation_tag;
+    using argument_category = scalar_tag;
+
     static constexpr auto formula = !greater;
 };
 constexpr less_equal_t less_equal;

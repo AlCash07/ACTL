@@ -11,7 +11,10 @@
 
 namespace ac {
 
-struct common_t : scalar_operation<common_t, 2, unclassified_tag> {
+struct common_t : scalar_operation<common_t, 2> {
+    using category = scalar_operation_tag;
+    using argument_category = unclassified_tag;
+
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 

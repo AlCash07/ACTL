@@ -10,7 +10,10 @@
 
 namespace ac {
 
-struct non_equal_t : comparison_operation<non_equal_t> {
+struct non_equal_t : scalar_operation<non_equal_t, 2> {
+    using category = equality_operation_tag;
+    using argument_category = scalar_tag;
+
     static constexpr bool is_commutative = true;
 
     static constexpr auto formula = !equal;

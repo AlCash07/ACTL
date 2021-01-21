@@ -10,7 +10,10 @@
 
 namespace ac {
 
-struct sqr_t : scalar_operation<sqr_t, 1, arithmetic_tag> {
+struct sqr_t : scalar_operation<sqr_t, 1> {
+    using category = multiplicative_operation_tag;
+    using argument_category = arithmetic_tag;
+
     static constexpr auto formula = mul(x_, x_);
 };
 constexpr sqr_t sqr;

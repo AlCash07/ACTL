@@ -30,7 +30,10 @@ using namespace ac;
 namespace ac {
 
 template <class T>
-struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2, scalar_tag> {
+struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
+    using category = scalar_operation_tag;
+    using argument_category = scalar_tag;
+
     struct is_policy;
 
     abs_rel_error(T eps) : eps{eps} {}
