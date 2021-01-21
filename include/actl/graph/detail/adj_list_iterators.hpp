@@ -24,6 +24,7 @@ struct edge_iter_types {
     using iterator_category = std::input_iterator_tag;
     using value_type = edge_t<G>;
     using reference = edge_t<G>;
+    using difference_type = use_default;
 };
 
 template <class G, class Iter>

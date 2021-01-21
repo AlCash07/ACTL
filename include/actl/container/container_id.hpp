@@ -24,7 +24,7 @@ template <class C, bool = is_container_v<C>, bool = is_random_access_range_v<C>>
 struct container_id_traits;
 
 template <class Iter>
-struct iterator_id_types {
+struct iterator_id_types : default_iterator_adaptor_types {
     using value_type = iterator_id<Iter>;
     using reference = iterator_id<Iter>;
 };

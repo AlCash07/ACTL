@@ -23,6 +23,7 @@ struct ssa_types {
         using iterator_category = std::bidirectional_iterator_tag;
         using value_type = T;
         using reference = T;
+        using difference_type = use_default;
     };
 
     class iterator : public iterator_facade<iterator, iter_types> {

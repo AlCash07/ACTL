@@ -17,10 +17,10 @@ namespace detail {
 
 template <class Iter, class T>
 struct deduced_iter_types {
-    using iterator_category = iterator_category_or_default_t<T, iterator_category_t<Iter>>;
-    using value_type = value_type_or_default_t<T, value_type_t<Iter>>;
-    using reference = reference_or_default_t<T, reference_t<Iter>>;
-    using difference_type = difference_type_or_default_t<T, difference_type_t<Iter>>;
+    using iterator_category = deduce_t<typename T::iterator_category, iterator_category_t<Iter>>;
+    using value_type = deduce_t<typename T::value_type, value_type_t<Iter>>;
+    using reference = deduce_t<typename T::reference, reference_t<Iter>>;
+    using difference_type = deduce_t<typename T::difference_type, difference_type_t<Iter>>;
 };
 
 }  // namespace detail

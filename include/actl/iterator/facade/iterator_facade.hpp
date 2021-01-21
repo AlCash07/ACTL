@@ -12,7 +12,6 @@
 #include <actl/iterator/facade/iterator_core_access.hpp>
 #include <actl/iterator/facade/iterator_types.hpp>
 #include <actl/iterator/facade/operator_arrow_dispatch.hpp>
-#include <actl/meta/nested_or_default.hpp>
 #include <actl/utility/operators.hpp>
 
 namespace ac {
@@ -24,9 +23,9 @@ class iter_facade : public operators::base<> {
 public:
     using iterator_category = typename T::iterator_category;
     using value_type = std::remove_cv_t<typename T::value_type>;
-    using reference = reference_or_default_t<T, value_type&>;
+    using reference = deduce_t<typename T::reference, value_type&>;
     using pointer = typename operator_arrow_dispatch<reference>::type;
-    using difference_type = difference_type_or_default_t<T, std::ptrdiff_t>;
+    using difference_type = deduce_t<typename T::difference_type, std::ptrdiff_t>;
 
     // We don't return reference here because it's void for output iterators.
     constexpr decltype(auto) operator*() const {

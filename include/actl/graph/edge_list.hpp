@@ -116,6 +116,7 @@ class edge_list_impl<Dir, V, EC, two_vertices> : public edge_list_edges<Dir, V, 
         using iterator_category = std::input_iterator_tag;
         using value_type = E;
         using reference = E;
+        using difference_type = use_default;
     };
 
 public:

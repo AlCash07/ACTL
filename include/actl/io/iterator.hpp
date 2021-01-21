@@ -16,6 +16,7 @@ struct input_device_iterator_types {
     using iterator_category = std::input_iterator_tag;
     using value_type = T;
     using reference = const T&;
+    using difference_type = use_default;
 };
 
 /// Iterator similar to http://en.cppreference.com/w/cpp/iterator/istream_iterator

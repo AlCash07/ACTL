@@ -22,7 +22,7 @@ template <class R, class P>
 struct filtered_range_types {
     using Iter = iterator_t<std::remove_reference_t<R>>;
 
-    struct iter_types {
+    struct iter_types : default_iterator_adaptor_types {
         using iterator_category =
             std::conditional_t<is_random_access_iterator_v<Iter>, std::bidirectional_iterator_tag,
                                iterator_category_t<Iter>>;

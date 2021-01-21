@@ -10,6 +10,8 @@
 namespace ac {
 
 struct dummy_output_iterator : output_iterator_types {
+    using pointer = void;
+
     using R = dummy_output_iterator&;
 
     template <class T>
