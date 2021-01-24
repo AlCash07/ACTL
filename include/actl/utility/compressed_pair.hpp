@@ -61,7 +61,9 @@ struct cpb2 : ebo<T> {
 /// Pair that utilizes empty-base optimization in case one of the elements is empty.
 /// Reference: http://talesofcpp.fusionfenix.com/post-18/episode-ten-when-size-does-matter
 template <class T1, class T2>
-class compressed_pair : private detail::cpb1<T1>, private detail::cpb2<T2> {
+class compressed_pair
+    : private detail::cpb1<T1>
+    , private detail::cpb2<T2> {
 public:
     using first_type = T1;
     using second_type = T2;

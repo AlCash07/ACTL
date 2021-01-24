@@ -70,8 +70,11 @@ bool read_container(D& id, F& fmt, C& x) {
     }
 }
 
-template <class Device, class Format, class R,
-          enable_int_if<is_range_v<R> && !std::is_const_v<value_type_t<R>>> = 0>
+template <
+    class Device,
+    class Format,
+    class R,
+    enable_int_if<is_range_v<R> && !std::is_const_v<value_type_t<R>>> = 0>
 bool read_final(Device& id, Format& fmt, R& x) {
     nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)

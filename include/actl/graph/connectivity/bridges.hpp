@@ -38,12 +38,19 @@ struct once_equal<All, All> {
 }  // namespace detail
 
 template <class Graph, bool ParallelEdges>
-struct bridge_context : dfs_context<Graph>, detail::once_equal<true, !ParallelEdges> {
+struct bridge_context
+    : dfs_context<Graph>
+    , detail::once_equal<true, !ParallelEdges> {
     using dfs_context<Graph>::dfs_context;
 };
 
-template <class Graph, class BridgeOutIter, class ComponentStack, class TimeMap, class RootMap,
-          class DfsStack>
+template <
+    class Graph,
+    class BridgeOutIter,
+    class ComponentStack,
+    class TimeMap,
+    class RootMap,
+    class DfsStack>
 struct bridge_finder {
     static_assert(Graph::is_undirected);
 
@@ -105,9 +112,12 @@ auto get_bridge_finder(const G&, Ts&&... args) {
 template <bool ParallelEdges = true, class Graph, class BridgeOutIter, class ComponentMap>
 void find_bridges_and_components(const Graph& graph, BridgeOutIter bridges, ComponentMap&& map) {
     auto bf = get_bridge_finder(
-        graph, bridges, detail::component_stack{std::forward<ComponentMap>(map)},
+        graph,
+        bridges,
+        detail::component_stack{std::forward<ComponentMap>(map)},
         // Values of the next two maps can be compressed into bits of one int per vertex.
-        make_default_vertex_map<int>(graph), make_default_vertex_map<bool>(graph),
+        make_default_vertex_map<int>(graph),
+        make_default_vertex_map<bool>(graph),
         std::stack<bridge_context<Graph, ParallelEdges && Graph::allows_parallel_edges>>{});
     depth_first_search{bf}(graph, bf.dfs_stack);
 }
@@ -119,8 +129,8 @@ void find_bridges(const Graph& graph, BridgeOutIter bridges) {
 
 template <bool ParallelEdges = true, class Graph, class ComponentMap>
 void find_two_edge_connected_components(const Graph& graph, ComponentMap&& map) {
-    find_bridges_and_components<ParallelEdges>(graph, dummy_output_iterator{},
-                                               std::forward<ComponentMap>(map));
+    find_bridges_and_components<ParallelEdges>(
+        graph, dummy_output_iterator{}, std::forward<ComponentMap>(map));
 }
 
 }  // namespace ac

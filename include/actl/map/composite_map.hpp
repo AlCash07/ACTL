@@ -59,8 +59,8 @@ class composite_map<M1, M2> : public compressed_pair<M1, M2> {
     using R = map_reference_t<M2>;
 
 public:
-    static_assert(std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>,
-                  "incompatible property maps");
+    static_assert(
+        std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>, "incompatible property maps");
 
     static constexpr bool writable2 = map_traits<M1>::readable && map_traits<M2>::writable;
     static constexpr bool iterable1 = map_traits<M1>::iterable && map_traits<M2>::readable;
@@ -69,11 +69,15 @@ public:
 
     struct is_composite_map;
 
-    using traits =
-        map_traits_base<K, R, map_value_t<M2>, map_traits<M1>::readable && map_traits<M2>::readable,
-                        writable2 || (map_traits<M1>::writable && map_traits<M2>::invertible),
-                        map_traits<M1>::invertible && map_traits<M2>::invertible,
-                        iterable1 || iterable2, range_t>;
+    using traits = map_traits_base<
+        K,
+        R,
+        map_value_t<M2>,
+        map_traits<M1>::readable && map_traits<M2>::readable,
+        writable2 || (map_traits<M1>::writable && map_traits<M2>::invertible),
+        map_traits<M1>::invertible && map_traits<M2>::invertible,
+        iterable1 || iterable2,
+        range_t>;
 
     using compressed_pair<M1, M2>::compressed_pair;
 };

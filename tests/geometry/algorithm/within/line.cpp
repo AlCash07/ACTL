@@ -19,10 +19,13 @@ TEST_CASE("all cases") {
     CHECK(std::vector{true, true, true, true, true, false} == test_points(line_kind::free));
     CHECK(std::vector{false, true, true, true, true, false} == test_points(line_kind::closed_ray));
     CHECK(std::vector{false, false, true, true, true, false} == test_points(line_kind::open_ray));
-    CHECK(std::vector{false, true, true, true, false, false} ==
-          test_points(line_kind::closed_segment));
-    CHECK(std::vector{false, false, true, true, false, false} ==
-          test_points(line_kind::half_open_segment));
-    CHECK(std::vector{false, false, true, false, false, false} ==
-          test_points(line_kind::open_segment));
+    CHECK(
+        std::vector{false, true, true, true, false, false} ==
+        test_points(line_kind::closed_segment));
+    CHECK(
+        std::vector{false, false, true, true, false, false} ==
+        test_points(line_kind::half_open_segment));
+    CHECK(
+        std::vector{false, false, true, false, false, false} ==
+        test_points(line_kind::open_segment));
 }

@@ -2,13 +2,18 @@
 Language: Cpp
 BasedOnStyle: Google
 AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
+BinPackArguments: false
+BinPackParameters: false
 BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
 ColumnLimit: 100
 CompactNamespaces: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
 DerivePointerAlignment: false
 IncludeBlocks: Merge
 IncludeCategories:

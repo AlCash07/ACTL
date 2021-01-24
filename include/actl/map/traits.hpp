@@ -20,8 +20,15 @@
 
 namespace ac {
 
-template <class Key, class Ref, class Value = use_default, bool Readable = true,
-          bool Writable = false, bool Invertible = false, bool Iterable = false, class Range = void>
+template <
+    class Key,
+    class Ref,
+    class Value = use_default,
+    bool Readable = true,
+    bool Writable = false,
+    bool Invertible = false,
+    bool Iterable = false,
+    class Range = void>
 struct map_traits_base {
     using key_type = Key;
     using reference = Ref;

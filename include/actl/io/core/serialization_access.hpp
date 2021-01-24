@@ -19,8 +19,10 @@ struct serialization_access {
     template <class T>
     std::false_type is_io_tuple(...);
 
-    template <class T, class... Ts,
-              class = decltype(std::declval<const T>().write_final(std::declval<Ts>()...))>
+    template <
+        class T,
+        class... Ts,
+        class = decltype(std::declval<const T>().write_final(std::declval<Ts>()...))>
     std::true_type has_write(int);
 
     template <class... Ts>
@@ -31,8 +33,10 @@ struct serialization_access {
         return x.write_final(args...);
     }
 
-    template <class T, class... Ts,
-              class = decltype(std::declval<T>().read_final(std::declval<Ts>()...))>
+    template <
+        class T,
+        class... Ts,
+        class = decltype(std::declval<T>().read_final(std::declval<Ts>()...))>
     std::true_type has_read(int);
 
     template <class... Ts>
@@ -45,14 +49,18 @@ struct serialization_access {
 };
 
 template <
-    class Device, class Format, class T,
+    class Device,
+    class Format,
+    class T,
     enable_int_if<decltype(serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
 index write_final(Device& od, Format& fmt, const T& x) {
     return serialization_access::write_final(x, od, fmt);
 }
 
 template <
-    class Device, class Format, class T,
+    class Device,
+    class Format,
+    class T,
     enable_int_if<decltype(serialization_access{}.has_read<T, Device&, Format&>(0))::value> = 0>
 bool read_final(Device& id, Format& fmt, T& x) {
     return serialization_access::read(x, id, fmt);

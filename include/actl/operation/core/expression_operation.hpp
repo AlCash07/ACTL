@@ -44,8 +44,8 @@ constexpr decltype(auto) expand_expression(const Op& op, [[maybe_unused]] const 
 
 template <size_t... Is, class EO, class... Us>
 constexpr auto expand_impl(std::index_sequence<Is...>, const EO& eop, const Us&... xs) {
-    return make_expression(std::get<0>(eop.args),
-                           expand_expression(std::get<Is + 1>(eop.args), xs...)...);
+    return make_expression(
+        std::get<0>(eop.args), expand_expression(std::get<Is + 1>(eop.args), xs...)...);
 }
 
 template <class... Ts, class... Us>
@@ -58,8 +58,10 @@ constexpr auto apply_policy_impl(const EO& eop, const Policy policy, std::index_
     return make_expression(apply_policy_if_can(std::get<Is>(eop.args), policy)...);
 }
 
-template <class... Ts, class Policy,
-          enable_int_if<(... || can_apply_policy<Ts, Policy>::value)> = 0>
+template <
+    class... Ts,
+    class Policy,
+    enable_int_if<(... || can_apply_policy<Ts, Policy>::value)> = 0>
 constexpr auto apply_policy(const expression_op<Ts...>& eop, const Policy& policy) {
     return apply_policy_impl(eop, policy, std::make_index_sequence<sizeof...(Ts)>{});
 }

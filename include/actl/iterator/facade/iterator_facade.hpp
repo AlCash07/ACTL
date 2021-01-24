@@ -120,20 +120,22 @@ template <class Derived, class Types>
 class iterator_facade
     : public detail::iter_facade<Derived, Types, typename Types::iterator_category> {};
 
-#define ITERATOR_OPERATOR(type, op, expr)                             \
-    template <class Iter, class T>                                    \
-    constexpr type operator op(const iterator_facade<Iter, T>& lhs,   \
-                               const iterator_facade<Iter, T>& rhs) { \
-        return expr;                                                  \
+#define ITERATOR_OPERATOR(type, op, expr)                                           \
+    template <class Iter, class T>                                                  \
+    constexpr type operator op(                                                     \
+        const iterator_facade<Iter, T>& lhs, const iterator_facade<Iter, T>& rhs) { \
+        return expr;                                                                \
     }
 
-ITERATOR_OPERATOR(bool, ==,
-                  iterator_core_access::equal(static_cast<const Iter&>(lhs),
-                                              static_cast<const Iter&>(rhs)))
+ITERATOR_OPERATOR(
+    bool,
+    ==,
+    iterator_core_access::equal(static_cast<const Iter&>(lhs), static_cast<const Iter&>(rhs)))
 
-ITERATOR_OPERATOR(auto, -,
-                  iterator_core_access::distance_to(static_cast<const Iter&>(rhs),
-                                                    static_cast<const Iter&>(lhs)))
+ITERATOR_OPERATOR(
+    auto,
+    -,
+    iterator_core_access::distance_to(static_cast<const Iter&>(rhs), static_cast<const Iter&>(lhs)))
 
 ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 

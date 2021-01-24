@@ -15,8 +15,9 @@ namespace ac {
 
 /// O(log N).
 template <class Policy, class T, class U>
-enum within within(const Policy& policy, const point<T>& p,
-                   const convex_monotone_polygon<U>& poly) {
+enum within within(
+    const Policy& policy, const point<T>& p, const convex_monotone_polygon<U>& poly)  //
+{
     if (poly.empty())
         return within::outside;
     if (poly.size() == 1)

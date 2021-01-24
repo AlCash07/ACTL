@@ -85,13 +85,16 @@ auto get_articulation_point_finder(const G&, Ts&&... args) {
 }
 
 template <class Graph, class ArticulationMap, class ComponentMap>
-void find_articulation_points_and_components(const Graph& graph, ArticulationMap&& articulation_map,
-                                             ComponentMap&& component_map) {
+void find_articulation_points_and_components(
+    const Graph& graph, ArticulationMap&& articulation_map, ComponentMap&& component_map)  //
+{
     auto apf = get_articulation_point_finder(
-        graph, std::forward<ArticulationMap>(articulation_map),
+        graph,
+        std::forward<ArticulationMap>(articulation_map),
         detail::component_stack{std::forward<ComponentMap>(component_map)},
         // Values of the next two maps can be compressed into bits of one int per vertex.
-        make_default_vertex_map<int>(graph), make_default_vertex_map<int>(graph));
+        make_default_vertex_map<int>(graph),
+        make_default_vertex_map<int>(graph));
     depth_first_search{apf}(graph);
 }
 

@@ -50,8 +50,9 @@ struct common_t : scalar_operation<common_t, 2> {
     }
 
     template <class T, T X>
-    static constexpr auto eval_scalar(std::integral_constant<T, X> x,
-                                      std::integral_constant<T, X>) {
+    static constexpr auto eval_scalar(
+        std::integral_constant<T, X> x, std::integral_constant<T, X>)  //
+    {
         return x;
     }
 

@@ -20,8 +20,15 @@ using enable_if_upac_t = std::enable_if_t<is_unique_range_v<T> && is_pair_associ
 
 template <class AC>
 struct map_traits<AC, detail::enable_if_upac_t<AC>>
-    : map_traits_base<const typename AC::key_type, typename AC::mapped_type, use_default, true,
-                      !std::is_const_v<AC>, false, true, AC&> {};
+    : map_traits_base<
+          const typename AC::key_type,
+          typename AC::mapped_type,
+          use_default,
+          true,
+          !std::is_const_v<AC>,
+          false,
+          true,
+          AC&> {};
 
 template <class AC>
 struct map_ops<AC, detail::enable_if_upac_t<AC>> {

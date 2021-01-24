@@ -12,20 +12,23 @@
 namespace ac {
 
 template <class Policy, class T0, class T1, enable_int_if_policy<Policy> = 0>
-constexpr orientation2d orientation(const Policy& policy, const point<T0>& lhs,
-                                    const point<T1>& rhs) {
+constexpr orientation2d orientation(
+    const Policy& policy, const point<T0>& lhs, const point<T1>& rhs)  //
+{
     return static_cast<orientation2d>(sgn(policy, area(policy, rhs, lhs)));
 }
 
 template <class Policy, class T0, class T1, class T2, enable_int_if_policy<Policy> = 0>
-constexpr orientation2d orientation(const Policy& policy, const point<T0>& lhs,
-                                    const point<T1>& rhs, const point<T2>& origin) {
+constexpr orientation2d orientation(
+    const Policy& policy, const point<T0>& lhs, const point<T1>& rhs, const point<T2>& origin)  //
+{
     return orientation(policy, lhs - origin, rhs - origin);
 }
 
 template <class Policy, index N, class T0, class T1, enable_int_if_policy<Policy> = 0>
-enum orientation orientation(const Policy& policy, const point<T0, N>& lhs,
-                             const point<T1, N>& rhs) {
+enum orientation orientation(
+    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs)  //
+{
     index i = 0;
     for (; i < N && equal(policy, lhs[i], 0); ++i) {
         if (!equal(policy, rhs[i], 0))

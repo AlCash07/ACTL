@@ -79,8 +79,9 @@ public:
 
     explicit constexpr semi_static_array() = default;
 
-    template <class... Ts,
-              enable_int_if<((sizeof...(Ts) == N) && ... && std::is_convertible_v<Ts, T>)> = 0>
+    template <
+        class... Ts,
+        enable_int_if<((sizeof...(Ts) == N) && ... && std::is_convertible_v<Ts, T>)> = 0>
     explicit constexpr semi_static_array(Ts&&... xs) : a_{std::forward<Ts>(xs)...} {}
 
     template <class R>

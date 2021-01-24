@@ -62,8 +62,10 @@ auto nearest(const Policy& policy, const span<Point>& points, const span<Point>&
 }  // namespace detail
 
 /// Minimum distance between two different points from the set : O(N log N).
-template <class Policy, class T,
-          enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
+template <
+    class Policy,
+    class T,
+    enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
 auto nearest(const Policy& policy, T& points) {
     ACTL_ASSERT(points.size() > 1);
     sort(points, less(policy));

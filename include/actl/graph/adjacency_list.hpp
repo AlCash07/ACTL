@@ -25,8 +25,13 @@ namespace detail {
 
 /* Adjacency list with edge container */
 
-template <class Dir, class OEC, class EC, class VC, class S = value_type_t<EC>,
-          class T = value_type_t<OEC>>
+template <
+    class Dir,
+    class OEC,
+    class EC,
+    class VC,
+    class S = value_type_t<EC>,
+    class T = value_type_t<OEC>>
 class adj_list_edges : public adj_list_edges<Dir, OEC, EC, VC, S, none> {
     using base_t = adj_list_edges<Dir, OEC, EC, VC, S, none>;
 
@@ -105,8 +110,9 @@ protected:
     typename traits::edges edge_list_;
 
 public:
-    static_assert(!is_associative_range_v<EC>,
-                  "use std::list instead of associative container for adjacency list");
+    static_assert(
+        !is_associative_range_v<EC>,
+        "use std::list instead of associative container for adjacency list");
 
     using edge_container = typename traits::edges::edge_container;
 
@@ -243,10 +249,10 @@ public:
     using out_edge = typename base_t::out_iter;
     using out_edge_iterator = detail::adj_list_out_edge_iter<adjacency_list, out_edge>;
     using in_edge = typename traits::in_edge_container::const_iterator;
-    using in_edge_iterator =
-        std::conditional_t<std::is_same_v<edge_selector, none> && base_t::is_bidirectional,
-                           detail::adj_list_out_edge_iter<adjacency_list, in_edge>,
-                           transform_iterator<out_edge_iterator, detail::edge_inverter<edge>>>;
+    using in_edge_iterator = std::conditional_t<
+        std::is_same_v<edge_selector, none> && base_t::is_bidirectional,
+        detail::adj_list_out_edge_iter<adjacency_list, in_edge>,
+        transform_iterator<out_edge_iterator, detail::edge_inverter<edge>>>;
 
     using base_t::base_t;
 
@@ -267,8 +273,9 @@ public:
     }
 
     iterator_range<out_edge_iterator> out_edges(vertex u) const {
-        return {out_edge_iterator{this, u, this->out_begin(u)},
-                out_edge_iterator{this, u, this->out_end(u)}};
+        return {
+            out_edge_iterator{this, u, this->out_begin(u)},
+            out_edge_iterator{this, u, this->out_end(u)}};
     }
 
     template <bool D = std::is_same_v<Dir, directed>, enable_int_if<!D> = 0>
@@ -282,8 +289,9 @@ public:
             if constexpr (std::is_same_v<edge_selector, none>) {
                 return {in_edge_iterator{this, u, in_begin}, in_edge_iterator{this, u, in_end}};
             } else {
-                return {in_edge_iterator{out_edge_iterator{this, u, in_begin}},
-                        in_edge_iterator{out_edge_iterator{this, u, in_end}}};
+                return {
+                    in_edge_iterator{out_edge_iterator{this, u, in_begin}},
+                    in_edge_iterator{out_edge_iterator{this, u, in_end}}};
             }
         }
     }
@@ -303,8 +311,11 @@ public:
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    template <class... Ts, bool Unique = is_unique_range_v<VC>, class T = value_type_t<VC>,
-              enable_int_if<Unique> = 0>
+    template <
+        class... Ts,
+        bool Unique = is_unique_range_v<VC>,
+        class T = value_type_t<VC>,
+        enable_int_if<Unique> = 0>
     edge add_edge(const T& u, const T& v, Ts&&... args) {
         return add_edge(add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);
     }

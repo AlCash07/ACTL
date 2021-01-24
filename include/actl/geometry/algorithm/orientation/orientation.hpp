@@ -26,8 +26,12 @@ enum orientation operator-(enum orientation x) {
     return x;
 }
 
-template <class Policy, class T, class U, enable_int_if_policy<Policy> = 0,
-          geometry::enable_int_if_swap<T, U> = 0>
+template <
+    class Policy,
+    class T,
+    class U,
+    enable_int_if_policy<Policy> = 0,
+    geometry::enable_int_if_swap<T, U> = 0>
 auto orientation(const Policy& policy, const T& lhs, const U& rhs) {
     return -orientation(policy, rhs, lhs);
 }

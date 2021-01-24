@@ -19,24 +19,27 @@ TEST_CASE("color_recorder bfs") {
     Log log;
     auto map = logging_map{make_default_vertex_map<colors>(graph), std::back_inserter(log)};
     breadth_first_search{color_recorder{map}}(graph, 0);
-    CHECK(Log{{0, colors::white},
-              {1, colors::white},
-              {2, colors::white},
-              {3, colors::white},
-              {4, colors::white},
-              {5, colors::white},
-              {0, colors::gray},
-              {1, colors::gray},
-              {3, colors::gray},
-              {0, colors::black},
-              {2, colors::gray},
-              {1, colors::black},
-              {4, colors::gray},
-              {5, colors::gray},
-              {3, colors::black},
-              {2, colors::black},
-              {4, colors::black},
-              {5, colors::black}} == log);
+    CHECK(
+        Log{
+            {0, colors::white},
+            {1, colors::white},
+            {2, colors::white},
+            {3, colors::white},
+            {4, colors::white},
+            {5, colors::white},
+            {0, colors::gray},
+            {1, colors::gray},
+            {3, colors::gray},
+            {0, colors::black},
+            {2, colors::gray},
+            {1, colors::black},
+            {4, colors::gray},
+            {5, colors::gray},
+            {3, colors::black},
+            {2, colors::black},
+            {4, colors::black},
+            {5, colors::black},
+        } == log);
 }
 
 TEST_CASE("color_recorder dfs") {
@@ -44,22 +47,25 @@ TEST_CASE("color_recorder dfs") {
     Log log;
     auto map = logging_map{make_default_vertex_map<colors>(graph), std::back_inserter(log)};
     depth_first_search{color_recorder{map}}(graph, 0);
-    CHECK(Log{{0, colors::white},
-              {1, colors::white},
-              {2, colors::white},
-              {3, colors::white},
-              {4, colors::white},
-              {5, colors::white},
-              {0, colors::gray},
-              {1, colors::gray},
-              {2, colors::gray},
-              {3, colors::gray},
-              {4, colors::gray},
-              {5, colors::gray},
-              {5, colors::black},
-              {4, colors::black},
-              {3, colors::black},
-              {2, colors::black},
-              {1, colors::black},
-              {0, colors::black}} == log);
+    CHECK(
+        Log{
+            {0, colors::white},
+            {1, colors::white},
+            {2, colors::white},
+            {3, colors::white},
+            {4, colors::white},
+            {5, colors::white},
+            {0, colors::gray},
+            {1, colors::gray},
+            {2, colors::gray},
+            {3, colors::gray},
+            {4, colors::gray},
+            {5, colors::gray},
+            {5, colors::black},
+            {4, colors::black},
+            {3, colors::black},
+            {2, colors::black},
+            {1, colors::black},
+            {0, colors::black},
+        } == log);
 }

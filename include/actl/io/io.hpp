@@ -62,8 +62,8 @@ template <class T, class = void>
 struct has_input_buffer : std::false_type {};
 
 template <class T>
-struct has_input_buffer<T, std::void_t<decltype(std::declval<T>().input_data())>> : std::true_type {
-};
+struct has_input_buffer<T, std::void_t<decltype(std::declval<T>().input_data())>>
+    : std::true_type {};
 
 template <class T, class = void>
 struct has_output_buffer : std::false_type {};
@@ -92,14 +92,20 @@ struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
 
 /* Common types support */
 
-template <class Device, class Format, class T,
-          enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
+template <
+    class Device,
+    class Format,
+    class T,
+    enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
 index write_final(Device&, Format&, T&) {
     return 0;
 }
 
-template <class Device, class Format, class T,
-          enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<index, T&, Device&>> = 0>
+template <
+    class Device,
+    class Format,
+    class T,
+    enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<index, T&, Device&>> = 0>
 bool read_final(Device&, Format&, T&) {
     return true;
 }
@@ -136,14 +142,20 @@ bool read_final(Device& id, Format&, cspan<B, N>& s) {
 
 /* Function support */
 
-template <class Device, class Format, class T,
-          enable_int_if<std::is_invocable_r_v<index, T&, Device&>> = 0>
+template <
+    class Device,
+    class Format,
+    class T,
+    enable_int_if<std::is_invocable_r_v<index, T&, Device&>> = 0>
 index write_final(Device& id, Format&, T& f) {
     return f(id);
 }
 
-template <class Device, class Format, class T,
-          enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
+template <
+    class Device,
+    class Format,
+    class T,
+    enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
 bool read_final(Device& od, Format&, T& f) {
     return f(od);
 }

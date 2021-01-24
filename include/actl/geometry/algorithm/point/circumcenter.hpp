@@ -12,14 +12,18 @@
 namespace ac {
 
 template <class Policy, class T0, class T1, class T2>
-auto circumcenter(const Policy& policy, const point<T0>& a, const point<T1>& b,
-                  const point<T2>& c) {
+auto circumcenter(
+    const Policy& policy, const point<T0>& a, const point<T1>& b, const point<T2>& c)  //
+{
     ACTL_ASSERT(!collinear(policy, a, b, c));
     using T = geometry::scalar_t<T0, T1, T2>;
     // TODO: use actual return type of intersect.
     point<decltype(ratio(policy, T{}, T{}))> res;
-    intersect(general_position_policy{policy}, make_line(a + b, perpendicular(a - b), true),
-              make_line(a + c, perpendicular(a - c), true), &res);
+    intersect(
+        general_position_policy{policy},
+        make_line(a + b, perpendicular(a - b), true),
+        make_line(a + c, perpendicular(a - c), true),
+        &res);
     return ratio(policy, res, 2);
 }
 

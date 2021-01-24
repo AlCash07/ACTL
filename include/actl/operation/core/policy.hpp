@@ -25,7 +25,9 @@ struct can_apply_policy : std::false_type {};
 
 template <class Op, class Policy>
 struct can_apply_policy<
-    Op, Policy, std::void_t<decltype(apply_policy(std::declval<Op>(), std::declval<Policy>()))>>
+    Op,
+    Policy,
+    std::void_t<decltype(apply_policy(std::declval<Op>(), std::declval<Policy>()))>>
     : std::true_type {};
 
 template <class Op, class Policy>

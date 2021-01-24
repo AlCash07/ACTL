@@ -66,21 +66,24 @@ void inorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) {
 
 template <class Graph, class VertexOutIter>
 void postorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) {
-    depth_first_search{vertex_printer<on_vertex_finish, VertexOutIter>{dst},
-                       make_default_discovered_flag(graph)}(graph, s);
+    depth_first_search{
+        vertex_printer<on_vertex_finish, VertexOutIter>{dst}, make_default_discovered_flag(graph)}(
+        graph, s);
 }
 
 template <class Graph, class VertexOutIter>
 void preorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) {
-    depth_first_search{vertex_printer<on_vertex_start, VertexOutIter>{dst},
-                       make_default_discovered_flag(graph)}(graph, s);
+    depth_first_search{
+        vertex_printer<on_vertex_start, VertexOutIter>{dst}, make_default_discovered_flag(graph)}(
+        graph, s);
 }
 
 /// Outputs topological sort of the DAG in reverse order.
 template <class Graph, class VertexOutIter>
 void topological_sort(const Graph& graph, VertexOutIter dst) {
-    depth_first_search{vertex_printer<on_vertex_finish, VertexOutIter>{dst},
-                       make_default_discovered_flag(graph)}(graph);
+    depth_first_search{
+        vertex_printer<on_vertex_finish, VertexOutIter>{dst},
+        make_default_discovered_flag(graph)}(graph);
 }
 
 }  // namespace ac

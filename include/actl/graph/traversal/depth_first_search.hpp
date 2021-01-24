@@ -65,8 +65,11 @@ public:
     using base_t::base_t;
 
     // Depth first search without initialization.
-    template <class Graph, class Stack = std::stack<dfs_context<Graph>>,
-              class VertexPredicate = always_false, class V = vertex_t<Graph>>
+    template <
+        class Graph,
+        class Stack = std::stack<dfs_context<Graph>>,
+        class VertexPredicate = always_false,
+        class V = vertex_t<Graph>>
     void visit(const Graph& graph, V u, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
         stack = {};
         invoke_all(on_search_start{}, u);
@@ -106,18 +109,26 @@ public:
         invoke_all(on_search_finish{}, u);
     }
 
-    template <class Graph, class Stack = std::stack<dfs_context<Graph>>,
-              class VertexPredicate = always_false>
-    void operator()(const Graph& graph, vertex_t<Graph> s, Stack&& stack = {},
-                    VertexPredicate is_terminator = {}) {
+    template <
+        class Graph,
+        class Stack = std::stack<dfs_context<Graph>>,
+        class VertexPredicate = always_false>
+    void operator()(
+        const Graph& graph,
+        vertex_t<Graph> s,
+        Stack&& stack = {},
+        VertexPredicate is_terminator = {})  //
+    {
         for (auto u : graph.vertices())
             invoke_all(on_vertex_initialize{}, u);
         visit(graph, s, stack, is_terminator);
     }
 
-    template <class Graph, class Stack = std::stack<dfs_context<Graph>>,
-              class VertexPredicate = always_false,
-              enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> = 0>
+    template <
+        class Graph,
+        class Stack = std::stack<dfs_context<Graph>>,
+        class VertexPredicate = always_false,
+        enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> = 0>
     void operator()(const Graph& graph, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
         for (auto u : graph.vertices())
             invoke_all(on_vertex_initialize{}, u);

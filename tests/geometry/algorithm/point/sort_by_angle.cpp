@@ -15,8 +15,8 @@ std::vector<point<int>> get_points() {
 TEST_CASE("points") {
     auto points = get_points();
     sort_by_angle(points);
-    std::vector<point<int>> expected{{0, 0},  {2, 0},   {1, 1},  {0, 2}, {-1, 1},
-                                     {-2, 0}, {-1, -1}, {0, -2}, {1, -1}};
+    std::vector<point<int>> expected{
+        {0, 0}, {2, 0}, {1, 1}, {0, 2}, {-1, 1}, {-2, 0}, {-1, -1}, {0, -2}, {1, -1}};
     CHECK(expected == points);
 }
 

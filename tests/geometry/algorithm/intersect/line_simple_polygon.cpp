@@ -9,9 +9,25 @@
 
 TEST_CASE("horizontal line all cases") {
     ray<int> seg{{0, 0}, {1, 0}};
-    simple_polygon<point<int>> poly{{0, 3}, {0, -2}, {3, -2}, {1, 0}, {3, 2}, {5, 2},
-                                    {7, 0}, {6, 0},  {5, -1}, {4, 0}, {5, 0}, {3, 1},
-                                    {2, 0}, {3, 0},  {5, -2}, {9, 0}, {8, 0}, {5, 3}};
+    simple_polygon<point<int>> poly{
+        {0, 3},
+        {0, -2},
+        {3, -2},
+        {1, 0},
+        {3, 2},
+        {5, 2},
+        {7, 0},
+        {6, 0},
+        {5, -1},
+        {4, 0},
+        {5, 0},
+        {3, 1},
+        {2, 0},
+        {3, 0},
+        {5, -2},
+        {9, 0},
+        {8, 0},
+        {5, 3}};
     std::vector<double> ts;
     intersect(line_scalar_policy{geometry_policy}, seg, poly, std::back_inserter(ts));
     sort(ts);

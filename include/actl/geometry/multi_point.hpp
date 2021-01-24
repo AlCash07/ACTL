@@ -50,8 +50,9 @@ identity_functor<reference_t<T>> get_to_point(T&) {
 
 template <class Indices, class Points>
 struct indexed_multi_point {
-    static_assert(is_range_v<Indices> && std::is_integral_v<value_type_t<Indices>> &&
-                  std::is_same_v<geometry::tag_t<value_type_t<Points>>, point_tag>);
+    static_assert(
+        is_range_v<Indices> && std::is_integral_v<value_type_t<Indices>> &&
+        std::is_same_v<geometry::tag_t<value_type_t<Points>>, point_tag>);
 
     using value_type = value_type_t<Points>;
     using reference = reference_t<Indices>;

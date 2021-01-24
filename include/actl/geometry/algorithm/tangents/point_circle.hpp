@@ -31,8 +31,9 @@ OutIter tangents(const Policy& policy, const point<T0>& p, const circle<T1>& c, 
 }
 
 template <class Policy, class T0, class T1, class OutIter>
-OutIter tangents(polar_angle_policy<Policy> pap, const point<T0>& p, const circle<T1>& c,
-                 OutIter dst) {
+OutIter tangents(
+    polar_angle_policy<Policy> pap, const point<T0>& p, const circle<T1>& c, OutIter dst)  //
+{
     auto& policy = pap.policy;
     auto center_vector = c.center - p;
     switch (within(policy, p, c)) {

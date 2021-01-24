@@ -19,18 +19,21 @@ TEST_CASE("discovered_flag bfs") {
     Log log;
     auto map = logging_map{make_default_vertex_map<bool>(graph), std::back_inserter(log)};
     breadth_first_search{discovered_flag{map}}(graph, 0);
-    CHECK(Log{{0, false},
-              {1, false},
-              {2, false},
-              {3, false},
-              {4, false},
-              {5, false},
-              {0, true},
-              {1, true},
-              {3, true},
-              {2, true},
-              {4, true},
-              {5, true}} == log);
+    CHECK(
+        Log{
+            {0, false},
+            {1, false},
+            {2, false},
+            {3, false},
+            {4, false},
+            {5, false},
+            {0, true},
+            {1, true},
+            {3, true},
+            {2, true},
+            {4, true},
+            {5, true},
+        } == log);
 }
 
 TEST_CASE("discovered_flag dfs") {
@@ -38,16 +41,19 @@ TEST_CASE("discovered_flag dfs") {
     Log log;
     auto map = logging_map{make_default_vertex_map<bool>(graph), std::back_inserter(log)};
     depth_first_search{discovered_flag{map}}(graph, 0);
-    CHECK(Log{{0, false},
-              {1, false},
-              {2, false},
-              {3, false},
-              {4, false},
-              {5, false},
-              {0, true},
-              {1, true},
-              {2, true},
-              {3, true},
-              {4, true},
-              {5, true}} == log);
+    CHECK(
+        Log{
+            {0, false},
+            {1, false},
+            {2, false},
+            {3, false},
+            {4, false},
+            {5, false},
+            {0, true},
+            {1, true},
+            {2, true},
+            {3, true},
+            {4, true},
+            {5, true},
+        } == log);
 }

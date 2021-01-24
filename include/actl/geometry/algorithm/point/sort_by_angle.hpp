@@ -13,8 +13,11 @@
 namespace ac {
 
 /// Sorts 2d points by polar angle from 0 to 2 * pi around the origin. Points at origin go first.
-template <class Policy, class U, class T,
-          enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
+template <
+    class Policy,
+    class U,
+    class T,
+    enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
 void sort_by_angle(const Policy& policy, U& points, const point<T>& origin) {
     using ref = reference_t<U>;
     auto to_point = get_to_point(points);
@@ -33,14 +36,16 @@ void sort_by_angle(const Policy& policy, U& points, const point<T>& origin) {
 }
 
 /// Sort by angle around (0, 0).
-template <class Policy, class U,
-          enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
+template <
+    class Policy,
+    class U,
+    enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> = 0>
 void sort_by_angle(const Policy& policy, U& points) {
     using ref = reference_t<U>;
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
-    first = std::partition(first, last,
-                           [to_point, &policy](ref x) { return degenerate(policy, to_point(x)); });
+    first = std::partition(
+        first, last, [to_point, &policy](ref x) { return degenerate(policy, to_point(x)); });
     auto pivot = std::partition(first, last, [to_point, &policy](ref x) {
         return y_compare(policy, value_type_t<U>{}, to_point(x));
     });

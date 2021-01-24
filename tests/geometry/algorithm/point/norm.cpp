@@ -11,7 +11,9 @@ TEST_CASE("default") {
     CHECK(1.414213562373095, norm(point{1, 1}) == 1e-12);
 }
 
-struct norm_policy : virtual cast_before<Mul, long long>, virtual defer_sqrt {};
+struct norm_policy
+    : virtual cast_before<Mul, long long>
+    , virtual defer_sqrt {};
 
 TEST_CASE("deferred") {
     constexpr int x = 2'000'000'000;

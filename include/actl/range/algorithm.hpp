@@ -136,14 +136,14 @@ std::pair<Iterator, Iterator> minmax_element(const Range& src, Compare comp) {
 
 template <class Range0, class Range1>
 bool lexicographical_compare(const Range0& lhs, const Range1& rhs) {
-    return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
-                                        std::end(rhs));
+    return std::lexicographical_compare(
+        std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
 }
 
 template <class Range0, class Range1, class Compare>
 bool lexicographical_compare(const Range0& lhs, const Range1& rhs, Compare comp) {
-    return std::lexicographical_compare(std::begin(lhs), std::end(lhs), std::begin(rhs),
-                                        std::end(rhs), comp);
+    return std::lexicographical_compare(
+        std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), comp);
 }
 
 template <class Range>

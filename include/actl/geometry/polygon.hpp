@@ -18,8 +18,9 @@ namespace detail {
 
 template <class Range, bool = std::is_same_v<geometry::tag_t<Range>, point_tag>>
 class polygon : public Range {
-    static_assert(std::is_same_v<point_tag, geometry::tag_t<value_type_t<Range>>>,
-                  "polygon must be a range of points");
+    static_assert(
+        std::is_same_v<point_tag, geometry::tag_t<value_type_t<Range>>>,
+        "polygon must be a range of points");
 
 public:
     struct is_polygon;

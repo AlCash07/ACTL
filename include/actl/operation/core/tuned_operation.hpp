@@ -27,7 +27,8 @@ public:
 };
 
 template <
-    class Op, class Policy,
+    class Op,
+    class Policy,
     enable_int_if<is_operation_v<remove_cvref_t<Op>> && is_policy_v<remove_cvref_t<Policy>>> = 0>
 constexpr auto operator|(Op&& op, Policy&& policy) {
     return tuned_operation<Op, Policy>{std::forward<Op>(op), std::forward<Policy>(policy)};

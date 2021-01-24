@@ -15,8 +15,11 @@ constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
 constexpr char zero_c = '0';
 constexpr char one_c = '1';
 
-template <class Format, class Bool, enable_int_if_text<Format> = 0,
-          enable_int_if<std::is_same_v<Bool, bool>> = 0>
+template <
+    class Format,
+    class Bool,
+    enable_int_if_text<Format> = 0,
+    enable_int_if<std::is_same_v<Bool, bool>> = 0>
 cspan<char> encode(Format& fmt, Bool x) {
     if (fmt.getf(flag::boolalpha))
         if (x)

@@ -24,15 +24,16 @@ struct filtered_range_types {
     using Iter = iterator_t<std::remove_reference_t<R>>;
 
     struct iter_types : default_iterator_adaptor_types {
-        using iterator_category =
-            std::conditional_t<is_random_access_iterator_v<Iter>, std::bidirectional_iterator_tag,
-                               iterator_category_t<Iter>>;
+        using iterator_category = std::conditional_t<
+            is_random_access_iterator_v<Iter>,
+            std::bidirectional_iterator_tag,
+            iterator_category_t<Iter>>;
     };
 
     class iterator : public iterator_adaptor<iterator, Iter, iter_types> {
     public:
-        explicit iterator(iterator_t<std::remove_reference_t<R>> iter,
-                          const filtered_range<R, P>& range)
+        explicit iterator(
+            iterator_t<std::remove_reference_t<R>> iter, const filtered_range<R, P>& range)
             : iterator_adaptor<iterator, Iter, iter_types>{iter}, range_{range} {
             find_next();
         }
@@ -65,8 +66,10 @@ struct filtered_range_types {
 }  // namespace detail
 
 template <class Range, class Predicate>
-class filtered_range : public range_facade<filtered_range<Range, Predicate>,
-                                           detail::filtered_range_types<Range, Predicate>> {
+class filtered_range
+    : public range_facade<
+          filtered_range<Range, Predicate>,
+          detail::filtered_range_types<Range, Predicate>> {
 public:
     using iterator = typename detail::filtered_range_types<Range, Predicate>::iterator;
 

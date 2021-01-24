@@ -47,9 +47,12 @@ constexpr T set_bits(T& x, const T& mask, const T& bits) {
 }
 
 // C++20 version requires std::is_trivially_constructible_v<To>.
-template <class To, class From,
-          enable_int_if<sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> &&
-                        std::is_trivially_copyable_v<To> && std::is_trivially_copyable_v<From>> = 0>
+template <
+    class To,
+    class From,
+    enable_int_if<
+        sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> &&
+        std::is_trivially_copyable_v<To> && std::is_trivially_copyable_v<From>> = 0>
 To bit_cast(const From& src) noexcept {
     To dst;
     std::memcpy(&dst, &src, sizeof(To));

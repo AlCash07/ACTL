@@ -15,8 +15,7 @@ namespace ac::io {
 template <mode_t Mode, class Char, bool = is_in<Mode>>
 class in_file : public device<Mode, Char> {
     static constexpr const char* mode_str[14] = {
-        "r", "rb", "w", "wb", "w+", "w+b", "a", "ab", "a+", "a+b", "a", "ab", "r+", "r+b",
-    };
+        "r", "rb", "w", "wb", "w+", "w+b", "a", "ab", "a+", "a+b", "a", "ab", "r+", "r+b"};
 
 public:
     explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} {

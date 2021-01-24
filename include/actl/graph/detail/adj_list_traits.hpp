@@ -40,18 +40,20 @@ struct adj_list_traits {
 
     using out_edge_vertex = std::conditional_t<has_out_vertex, vertex, none>;
 
-    using out_edge_bundle = std::conditional_t<!std::is_same_v<edge_selector, none>,
-                                               typename edges::edge_id, value_type_t<OEC>>;
+    using out_edge_bundle = std::conditional_t<
+        !std::is_same_v<edge_selector, none>,
+        typename edges::edge_id,
+        value_type_t<OEC>>;
 
     using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
     using out_edge_container = rebind_container_t<OEC, out_edge_data>;
 
     // In bidirectional graph with none edge_selector in_edge points to out_edge.
-    using in_edge_bundle =
-        std::conditional_t<std::is_same_v<edge_selector, none> &&
-                               std::is_same_v<Dir, bidirectional>,
-                           container_id<out_edge_container>, typename edges::edge_id>;
+    using in_edge_bundle = std::conditional_t<
+        std::is_same_v<edge_selector, none> && std::is_same_v<Dir, bidirectional>,
+        container_id<out_edge_container>,
+        typename edges::edge_id>;
 
     using in_edge_data = mimic_pair<out_edge_vertex, in_edge_bundle, 1>;
 
@@ -69,8 +71,8 @@ struct adj_list_traits {
     // Here we operate based on assumption that iterators for supported containers are just wrapped
     // pointers (and it's true for all the major stl implementations), so they can be reinterpreted
     // as void*.
-    static_assert(std::is_same_v<vertex, int> ||
-                  sizeof(typename vertices::vertex) == sizeof(void*));
+    static_assert(
+        std::is_same_v<vertex, int> || sizeof(typename vertices::vertex) == sizeof(void*));
 };
 
 template <class Dir, class OEC, class EC, class VC>

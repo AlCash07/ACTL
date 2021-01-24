@@ -24,8 +24,14 @@ struct general_position_policy {
 namespace detail {
 
 template <class Policy, class T0, class K0, class T1, class K1, class T2>
-bool cross_test(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs,
-                T2 tarea, T2 larea, T2 rarea) {
+bool cross_test(
+    const Policy& policy,
+    const line<T0, 2, K0>& lhs,
+    const line<T1, 2, K1>& rhs,
+    T2 tarea,
+    T2 larea,
+    T2 rarea)  //
+{
     if (less(policy, tarea, 0)) {
         tarea = -tarea;
         larea = -larea;
@@ -38,8 +44,12 @@ bool cross_test(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1,
 }  // namespace detail
 
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
-OutIter intersect(line_scalar_policy<Policy> lsp, const line<T0, 2, K0>& lhs,
-                  const line<T1, 2, K1>& rhs, OutIter dst) {
+OutIter intersect(
+    line_scalar_policy<Policy> lsp,
+    const line<T0, 2, K0>& lhs,
+    const line<T1, 2, K1>& rhs,
+    OutIter dst)  //
+{
     auto& policy = lsp.policy;
     auto tarea = area(policy, rhs.vector, lhs.vector);
     if (equal(policy, tarea, 0))
@@ -54,15 +64,20 @@ OutIter intersect(line_scalar_policy<Policy> lsp, const line<T0, 2, K0>& lhs,
 }
 
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
-OutIter intersect(general_position_policy<Policy> gpp, const line<T0, 2, K0>& lhs,
-                  const line<T1, 2, K1>& rhs, OutIter dst) {
-    return intersect(line_scalar_policy{gpp.policy}, lhs, rhs,
-                     detail::scalar_to_point_adaptor{lhs, dst});
+OutIter intersect(
+    general_position_policy<Policy> gpp,
+    const line<T0, 2, K0>& lhs,
+    const line<T1, 2, K1>& rhs,
+    OutIter dst)  //
+{
+    return intersect(
+        line_scalar_policy{gpp.policy}, lhs, rhs, detail::scalar_to_point_adaptor{lhs, dst});
 }
 
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
-OutIter intersect(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs,
-                  OutIter dst) {
+OutIter intersect(
+    const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs, OutIter dst)  //
+{
     auto tarea = area(policy, rhs.vector, lhs.vector);
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);

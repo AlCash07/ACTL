@@ -43,6 +43,8 @@ TEST_CASE("braced pair associative container") {
 }
 
 TEST_CASE("braced nested") {
-    test_write("{[(0 1)] [(2 3) (4 5)] [(6 7)]}", sbts(),
-               std::set<std::vector<std::pair<int, int>>>{{{0, 1}}, {{2, 3}, {4, 5}}, {{6, 7}}});
+    test_write(
+        "{[(0 1)] [(2 3) (4 5)] [(6 7)]}",
+        sbts(),
+        std::set<std::vector<std::pair<int, int>>>{{{0, 1}}, {{2, 3}, {4, 5}}, {{6, 7}}});
 }

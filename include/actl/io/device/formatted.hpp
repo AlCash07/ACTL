@@ -11,7 +11,9 @@
 namespace ac::io {
 
 template <class Device, class Format = text>
-class formatted : public Device, public Format {
+class formatted
+    : public Device
+    , public Format {
 public:
     using Device::Device;
 };

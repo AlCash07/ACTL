@@ -9,7 +9,8 @@
 
 TEST_CASE("scalar") {
     ASSERT_ALMOST_EQUAL(
-        0.5, project(line_scalar_policy{geometry_policy}, point{2, 4}, line<int>{{1, 1}, {5, 3}}),
+        0.5,
+        project(line_scalar_policy{geometry_policy}, point{2, 4}, line<int>{{1, 1}, {5, 3}}),
         1e-12);
 }
 

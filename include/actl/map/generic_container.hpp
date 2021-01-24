@@ -33,7 +33,13 @@ struct get_id_ref {
 template <class C>
 struct map_traits<C, detail::enable_if_gc_t<C>>
     : map_traits_base<
-          container_id<C>, reference_t<C>, value_type_t<C>, true, !std::is_const_v<C>, false, true,
+          container_id<C>,
+          reference_t<C>,
+          value_type_t<C>,
+          true,
+          !std::is_const_v<C>,
+          false,
+          true,
           iterator_range<transform_iterator<container_id_iterator<C>, detail::get_id_ref<C>>>> {};
 
 template <class C>

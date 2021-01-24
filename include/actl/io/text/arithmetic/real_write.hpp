@@ -46,8 +46,11 @@ index write_final(D& od, F& fmt, const float_string& x) {
 
 }  // namespace detail
 
-template <class Format, class Float, enable_int_if_text<Format> = 0,
-          enable_int_if<std::is_floating_point_v<Float>> = 0>
+template <
+    class Format,
+    class Float,
+    enable_int_if_text<Format> = 0,
+    enable_int_if<std::is_floating_point_v<Float>> = 0>
 auto encode(Format& fmt, Float x) {
     detail::float_string res;
     span<char> s;

@@ -79,8 +79,9 @@ private:
 };
 
 template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-span(Range&&) -> span<std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
-                      static_size_v<std::remove_reference_t<Range>>>;
+span(Range&&) -> span<
+    std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
+    static_size_v<std::remove_reference_t<Range>>>;
 
 template <class T, index N>
 struct range_traits<span<T, N>> : default_range_traits {

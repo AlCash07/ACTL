@@ -38,8 +38,9 @@ OutIter intersect(const Policy& policy, const circle<T0>& lhs, const circle<T1>&
 }
 
 template <class Policy, class T0, class T1, class OutIter>
-OutIter intersect(polar_angle_policy<Policy> pap, const circle<T0>& lhs, const circle<T1>& rhs,
-                  OutIter dst) {
+OutIter intersect(
+    polar_angle_policy<Policy> pap, const circle<T0>& lhs, const circle<T1>& rhs, OutIter dst)  //
+{
     auto centers_vector = rhs.center - lhs.center;
     auto centers_angle = angle(pap.policy, centers_vector);
     // TODO: implement using cosine theorem.

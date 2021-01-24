@@ -141,8 +141,9 @@ public:
 
 private:
     template <index I, class Dims>
-    T* initialize(T* ptr, const nd_initializer_list_t<T, N - I>& il, Dims dims,
-                  const index* strides) {
+    T* initialize(
+        T* ptr, const nd_initializer_list_t<T, N - I>& il, Dims dims, const index* strides)  //
+    {
         ACTL_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N) {
             for (const auto& x : il) {
@@ -198,7 +199,9 @@ struct tensor_dims<std::array<Int, N>> {
 };
 
 template <index N, class Data, class Dims>
-class tensor_shape : private tensor_dims<Dims>, public tensor_data<N, Data> {
+class tensor_shape
+    : private tensor_dims<Dims>
+    , public tensor_data<N, Data> {
     using base_dims = tensor_dims<Dims>;
     using base_data = tensor_data<N, Data>;
     using Int = value_type_t<Dims>;
@@ -216,8 +219,8 @@ public:
         : base_dims{std::move(dims)}, base_data{size(), args...} {}
 
     template <class... Ts>
-    explicit tensor_shape(std::conditional_t<N == 1, Int, std::initializer_list<Int>> dims,
-                          Ts... args)
+    explicit tensor_shape(
+        std::conditional_t<N == 1, Int, std::initializer_list<Int>> dims, Ts... args)
         : base_dims{dims}, base_data{size(), args...} {}
 
     explicit tensor_shape(nd_initializer_list_t<T, N> il)
@@ -465,9 +468,9 @@ template <class T, index... Dims>
 struct tensor_fixed<T, 0, Dims...> {
     static constexpr index size = static_product_v<Dims...>;
 
-    using type =
-        tensor_base<std::conditional_t<16 < size, std::unique_ptr<T[]>, std::array<T, size>>,
-                    static_array<index, Dims...>>;
+    using type = tensor_base<
+        std::conditional_t<16 < size, std::unique_ptr<T[]>, std::array<T, size>>,
+        static_array<index, Dims...>>;
 };
 
 template <index N>

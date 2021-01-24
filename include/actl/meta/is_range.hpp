@@ -14,8 +14,9 @@ template <class T, class = void>
 struct is_range : std::false_type {};
 
 template <class T>  // & is needed for C arrays
-struct is_range<T,
-                std::void_t<decltype(std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
+struct is_range<
+    T,
+    std::void_t<decltype(std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
     : std::true_type {};
 
 template <class T>
@@ -26,7 +27,8 @@ struct is_contiguous_range : std::false_type {};
 
 template <class T>  // & is needed for C arrays
 struct is_contiguous_range<
-    T, std::void_t<decltype(std::data(std::declval<T&>()), std::size(std::declval<T&>()))>>
+    T,
+    std::void_t<decltype(std::data(std::declval<T&>()), std::size(std::declval<T&>()))>>
     : std::true_type {};
 
 template <class T>

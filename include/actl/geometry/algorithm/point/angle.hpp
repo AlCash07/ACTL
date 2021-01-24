@@ -23,8 +23,12 @@ auto angle(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rh
 }
 
 template <class Policy, index N, class T0, class T1, class T2, enable_int_if_policy<Policy> = 0>
-auto angle(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs,
-           const point<T2, N>& origin) {
+auto angle(
+    const Policy& policy,
+    const point<T0, N>& lhs,
+    const point<T1, N>& rhs,
+    const point<T2, N>& origin)  //
+{
     return angle(policy, lhs - origin, rhs - origin);
 }
 

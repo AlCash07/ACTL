@@ -61,8 +61,8 @@ auto make_range(Iterator first, Int n) {
 
 template <class Container>
 auto make_range(Container&& cont) {
-    return make_range<range_traits<std::remove_reference_t<Container>>>(std::begin(cont),
-                                                                        std::end(cont));
+    return make_range<range_traits<std::remove_reference_t<Container>>>(
+        std::begin(cont), std::end(cont));
 }
 
 template <class Container>
