@@ -33,7 +33,7 @@ struct lexicographical_compare_range_t {
         return int{rfirst != rlast} - int{lfirst != llast};
     }
 };
-constexpr operation_composer<lexicographical_compare_range_t>
+inline constexpr operation_composer<lexicographical_compare_range_t>
     lexicographical_compare_range;
 
 template <class T, class U>

@@ -31,7 +31,7 @@ struct equal_tuple_t {
         return eval(ops, lhs, rhs, tuple_indices_t<T>{});
     }
 };
-constexpr operation_composer<equal_tuple_t> equal_tuple;
+inline constexpr operation_composer<equal_tuple_t> equal_tuple;
 
 template <class T, class U>
 struct overload<equal_t, tuple_tag, T, U> {

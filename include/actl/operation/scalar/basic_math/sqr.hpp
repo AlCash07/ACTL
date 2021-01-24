@@ -17,6 +17,6 @@ struct sqr_t : scalar_operation<sqr_t, 1> {
 
     static constexpr auto formula = mul(x_, x_);
 };
-constexpr sqr_t sqr;
+inline constexpr sqr_t sqr;
 
 } // namespace ac

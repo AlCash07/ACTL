@@ -149,7 +149,8 @@ ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
 template <class Iter, class T>
 constexpr Iter operator+(
-    typename T::difference_type n, const iterator_facade<Iter, T>& rhs) {
+    typename T::difference_type n, const iterator_facade<Iter, T>& rhs) //
+{
     return rhs + n;
 }
 

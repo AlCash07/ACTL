@@ -14,10 +14,10 @@
 
 namespace ac {
 
-constexpr auto sum = fold(add);
-constexpr auto product = fold(mul);
+inline constexpr auto sum = fold(add);
+inline constexpr auto product = fold(mul);
 
-constexpr auto max_element = fold(max);
-constexpr auto min_element = fold(min);
+inline constexpr auto max_element = fold(max);
+inline constexpr auto min_element = fold(min);
 
 } // namespace ac

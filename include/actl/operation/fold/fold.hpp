@@ -14,6 +14,6 @@ struct fold_t {
     static constexpr index inner_count = 1;
 };
 
-constexpr operation_composer<fold_t> fold;
+inline constexpr operation_composer<fold_t> fold;
 
 } // namespace ac

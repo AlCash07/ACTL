@@ -101,30 +101,30 @@ struct setg {
 };
 
 // boolean as string or int
-constexpr setf<flag::boolalpha, true> boolalpha{};
-constexpr setf<flag::boolalpha, false> noboolalpha{};
+inline constexpr setf<flag::boolalpha, true> boolalpha{};
+inline constexpr setf<flag::boolalpha, false> noboolalpha{};
 
 // prepend integer number base prefix
-constexpr setf<flag::showbase, true> showbase{};
-constexpr setf<flag::showbase, false> noshowbase{};
+inline constexpr setf<flag::showbase, true> showbase{};
+inline constexpr setf<flag::showbase, false> noshowbase{};
 
 // prepend '+' before positive integer and real numbers
-constexpr setf<flag::showpos, true> showpos{};
-constexpr setf<flag::showpos, false> noshowpos{};
+inline constexpr setf<flag::showpos, true> showpos{};
+inline constexpr setf<flag::showpos, false> noshowpos{};
 
 // case for special characters in integer and real numbers representation
-constexpr setf<flag::uppercase, true> uppercase{};
-constexpr setf<flag::uppercase, false> nouppercase{};
+inline constexpr setf<flag::uppercase, true> uppercase{};
+inline constexpr setf<flag::uppercase, false> nouppercase{};
 
 // real numbers format
-constexpr setg<groups::floatfield, 0> defaultfloat{};
-constexpr setg<groups::floatfield, flag::fixed> fixed{};
-constexpr setg<groups::floatfield, flag::scientific> scientific{};
-constexpr setg<groups::floatfield, flag::hexfloat> hexfloat{};
+inline constexpr setg<groups::floatfield, 0> defaultfloat{};
+inline constexpr setg<groups::floatfield, flag::fixed> fixed{};
+inline constexpr setg<groups::floatfield, flag::scientific> scientific{};
+inline constexpr setg<groups::floatfield, flag::hexfloat> hexfloat{};
 
 // always show decimal point
-constexpr setf<flag::showpoint, true> showpoint{};
-constexpr setf<flag::showpoint, false> noshowpoint{};
+inline constexpr setf<flag::showpoint, true> showpoint{};
+inline constexpr setf<flag::showpoint, false> noshowpoint{};
 
 template <class Format, flag_t Flag, bool Value>
 void manipulate(Format& fmt, setf<Flag, Value>) {

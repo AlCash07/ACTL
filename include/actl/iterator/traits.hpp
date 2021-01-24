@@ -31,10 +31,10 @@ struct is_const_iterator<T, false> : std::false_type {};
 } // namespace detail
 
 template <class T>
-constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
+inline constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 
 template <class T>
-constexpr bool is_non_const_iterator_v =
+inline constexpr bool is_non_const_iterator_v =
     is_iterator_v<T> && !is_const_iterator_v<T>;
 
 } // namespace ac

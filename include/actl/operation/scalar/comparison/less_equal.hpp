@@ -17,7 +17,7 @@ struct less_equal_t : scalar_operation<less_equal_t, 2> {
 
     static constexpr auto formula = !greater;
 };
-constexpr less_equal_t less_equal;
+inline constexpr less_equal_t less_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator<=(T&& lhs, U&& rhs) {

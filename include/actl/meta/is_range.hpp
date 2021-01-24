@@ -21,7 +21,7 @@ struct is_range<
     : std::true_type {};
 
 template <class T>
-constexpr bool is_range_v = is_range<T>::value;
+inline constexpr bool is_range_v = is_range<T>::value;
 
 template <class T, class = void>
 struct is_contiguous_range : std::false_type {};
@@ -34,6 +34,6 @@ struct is_contiguous_range<
     : std::true_type {};
 
 template <class T>
-constexpr bool is_contiguous_range_v = is_contiguous_range<T>::value;
+inline constexpr bool is_contiguous_range_v = is_contiguous_range<T>::value;
 
 } // namespace ac

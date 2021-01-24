@@ -19,7 +19,7 @@ struct sub_t : scalar_operation<sub_t, 2> {
         return lhs - rhs;
     }
 };
-constexpr sub_t sub;
+inline constexpr sub_t sub;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator-(T&& lhs, U&& rhs) {

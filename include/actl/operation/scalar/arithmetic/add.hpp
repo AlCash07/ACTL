@@ -22,7 +22,7 @@ struct add_t : scalar_operation<add_t, 2> {
         return lhs + rhs;
     }
 };
-constexpr add_t add;
+inline constexpr add_t add;
 
 template <class T>
 struct neutral_element<add_t, T> {

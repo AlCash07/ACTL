@@ -21,7 +21,7 @@ struct equal_t : scalar_operation<equal_t, 2> {
         return lhs == rhs;
     }
 };
-constexpr equal_t equal;
+inline constexpr equal_t equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator==(T&& lhs, U&& rhs) {

@@ -22,7 +22,7 @@ struct bit_or_t : scalar_operation<bit_or_t, 2> {
         return lhs | rhs;
     }
 };
-constexpr bit_or_t bit_or;
+inline constexpr bit_or_t bit_or;
 
 template <class T>
 struct neutral_element<bit_or_t, T> {

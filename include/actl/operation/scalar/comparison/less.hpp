@@ -19,7 +19,7 @@ struct less_t : scalar_operation<less_t, 2> {
         return lhs < rhs;
     }
 };
-constexpr less_t less;
+inline constexpr less_t less;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator<(T&& lhs, U&& rhs) {

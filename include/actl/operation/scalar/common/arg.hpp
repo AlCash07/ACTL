@@ -30,10 +30,10 @@ struct arg_t {
     }
 };
 template <index I, index N>
-constexpr arg_t<I, N> arg;
+inline constexpr arg_t<I, N> arg;
 
-constexpr arg_t<0, 1> x_;
-constexpr arg_t<0, 2> lhs_;
-constexpr arg_t<1, 2> rhs_;
+inline constexpr arg_t<0, 1> x_;
+inline constexpr arg_t<0, 2> lhs_;
+inline constexpr arg_t<1, 2> rhs_;
 
 } // namespace ac

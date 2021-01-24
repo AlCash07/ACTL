@@ -35,7 +35,7 @@ struct geometry_traits<T, std::enable_if_t<detail::is_multi_point<T>::value>>
     : geometry_traits_base<multi_point_tag, value_type_t<T>> {};
 
 template <class T>
-constexpr bool is_multi_point_v =
+inline constexpr bool is_multi_point_v =
     std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
 
 template <class T>

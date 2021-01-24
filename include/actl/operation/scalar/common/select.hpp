@@ -19,6 +19,6 @@ struct select_t : scalar_operation<select_t, 3> {
         return condition ? eval(lhs) : eval(rhs);
     }
 };
-constexpr select_t select;
+inline constexpr select_t select;
 
 } // namespace ac

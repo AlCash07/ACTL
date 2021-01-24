@@ -10,8 +10,8 @@
 
 namespace ac {
 
-constexpr std::integral_constant<int, 0> zero_;
-constexpr std::integral_constant<int, 1> one_;
-constexpr std::integral_constant<int, 2> two_;
+inline constexpr std::integral_constant<int, 0> zero_;
+inline constexpr std::integral_constant<int, 1> one_;
+inline constexpr std::integral_constant<int, 2> two_;
 
 } // namespace ac

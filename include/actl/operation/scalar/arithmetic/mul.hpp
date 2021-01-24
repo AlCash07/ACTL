@@ -22,7 +22,7 @@ struct mul_t : scalar_operation<mul_t, 2> {
         return lhs * rhs;
     }
 };
-constexpr mul_t mul;
+inline constexpr mul_t mul;
 
 template <class T>
 struct neutral_element<mul_t, T> {

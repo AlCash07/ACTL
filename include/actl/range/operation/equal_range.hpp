@@ -22,7 +22,7 @@ struct equal_range_t {
             std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
     }
 };
-constexpr operation_composer<equal_range_t> equal_range;
+inline constexpr operation_composer<equal_range_t> equal_range;
 
 template <class T, class U>
 struct overload<equal_t, range_tag, T, U> {

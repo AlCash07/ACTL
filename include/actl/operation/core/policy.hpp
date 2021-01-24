@@ -18,7 +18,7 @@ template <class T>
 struct is_policy<T, std::void_t<typename T::is_policy>> : std::true_type {};
 
 template <class T>
-constexpr bool is_policy_v = is_policy<T>::value;
+inline constexpr bool is_policy_v = is_policy<T>::value;
 
 template <class Op, class Policy, class = void>
 struct can_apply_policy : std::false_type {};

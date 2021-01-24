@@ -30,7 +30,7 @@ struct abs_t : scalar_operation<abs_t, 1> {
         }
     }
 };
-constexpr abs_t abs;
+inline constexpr abs_t abs;
 
 template <class Op, index Arity>
 struct math_operation : scalar_operation<Op, Arity> {

@@ -21,7 +21,7 @@ struct logical_and_t : scalar_operation<logical_and_t, 2> {
         return lhs && rhs;
     }
 };
-constexpr logical_and_t logical_and;
+inline constexpr logical_and_t logical_and;
 
 template <class T>
 struct neutral_element<logical_and_t, T> {

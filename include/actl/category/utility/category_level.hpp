@@ -14,7 +14,7 @@ template <class Tag, class = void>
 struct category_level : index_constant<0> {};
 
 template <class T>
-constexpr index category_level_v = category_level<T>::value;
+inline constexpr index category_level_v = category_level<T>::value;
 
 template <class Tag>
 struct category_level<Tag, std::void_t<typename Tag::base>>

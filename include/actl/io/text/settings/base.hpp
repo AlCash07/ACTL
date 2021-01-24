@@ -35,9 +35,9 @@ private:
     uint8_t value = 10;
 };
 
-constexpr base_t decimal{10};
-constexpr base_t hex{16};
-constexpr base_t octal{8};
-constexpr base_t detect_base{0};
+inline constexpr base_t decimal{10};
+inline constexpr base_t hex{16};
+inline constexpr base_t octal{8};
+inline constexpr base_t detect_base{0};
 
 } // namespace ac::io

@@ -43,7 +43,7 @@ template <class T, index N>
 using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
 
 template <index... Is>
-constexpr index static_product_v = (1 * ... * Is);
+inline constexpr index static_product_v = (1 * ... * Is);
 
 template <class Int>
 index compute_product(const cspan<Int>& x) {

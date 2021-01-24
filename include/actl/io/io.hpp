@@ -22,24 +22,24 @@ namespace ac::io {
 /* Device */
 
 using mode_t = uint8_t;
-constexpr mode_t bin = 0x01;
-constexpr mode_t in = 0x02;
-constexpr mode_t out = 0x04;
-constexpr mode_t app = 0x08;
-constexpr mode_t line_buffered = 0x10;
-constexpr mode_t trunc = in | out | app;
+inline constexpr mode_t bin = 0x01;
+inline constexpr mode_t in = 0x02;
+inline constexpr mode_t out = 0x04;
+inline constexpr mode_t app = 0x08;
+inline constexpr mode_t line_buffered = 0x10;
+inline constexpr mode_t trunc = in | out | app;
 
 template <mode_t Mode>
-constexpr bool is_bin = (Mode & bin) > 0;
+inline constexpr bool is_bin = (Mode & bin) > 0;
 
 template <mode_t Mode>
-constexpr bool is_in = (Mode & in) > 0;
+inline constexpr bool is_in = (Mode & in) > 0;
 
 template <mode_t Mode>
-constexpr bool is_out = (Mode & (out | app)) > 0;
+inline constexpr bool is_out = (Mode & (out | app)) > 0;
 
 template <mode_t Mode>
-constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
+inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
 
 template <class Device>
 using char_t = typename Device::char_type;
@@ -56,7 +56,7 @@ struct device : device_base {
 };
 
 template <class T>
-constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
+inline constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
 
 template <class T, class = void>
 struct has_input_buffer : std::false_type {};

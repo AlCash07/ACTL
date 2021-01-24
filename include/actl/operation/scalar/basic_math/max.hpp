@@ -24,7 +24,7 @@ struct max_t : scalar_operation<max_t, 2> {
         return eval(select(less(lhs, rhs), rhs, lhs));
     }
 };
-constexpr max_t max;
+inline constexpr max_t max;
 
 template <class T>
 struct neutral_element<max_t, T> {

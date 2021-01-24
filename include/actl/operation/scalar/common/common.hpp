@@ -72,7 +72,7 @@ struct common_t : scalar_operation<common_t, 2> {
         return eval_scalar(eval_scalar(x0, x1), x2, xs...);
     }
 };
-constexpr common_t common;
+inline constexpr common_t common;
 
 template <class T>
 struct neutral_element<common_t, T> {

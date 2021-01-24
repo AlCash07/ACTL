@@ -32,6 +32,6 @@ struct is_template_base_of<
     : decltype(detail::test_base<B>(std::declval<D*>())) {};
 
 template <template <class...> class B, class D>
-constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;
+inline constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;
 
 } // namespace ac

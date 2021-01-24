@@ -21,6 +21,6 @@ struct is_subcategory_of<D, B, std::void_t<typename D::base>>
     : is_subcategory_of<typename D::base, B> {};
 
 template <class D, class Base>
-constexpr bool is_subcategory_of_v = is_subcategory_of<D, Base>::value;
+inline constexpr bool is_subcategory_of_v = is_subcategory_of<D, Base>::value;
 
 } // namespace ac

@@ -24,7 +24,7 @@ struct min_t : scalar_operation<min_t, 2> {
         return eval(select(less(rhs, lhs), rhs, lhs));
     }
 };
-constexpr min_t min;
+inline constexpr min_t min;
 
 template <class T>
 struct neutral_element<min_t, T> {

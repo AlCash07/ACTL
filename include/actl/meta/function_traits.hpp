@@ -21,7 +21,7 @@ template <class F>
 struct function_traits : function_object_traits<std::remove_reference_t<F>> {};
 
 template <class F>
-constexpr size_t arity_v = function_traits<F>::arity;
+inline constexpr size_t arity_v = function_traits<F>::arity;
 
 template <class F>
 using return_type_t = typename function_traits<F>::return_type;

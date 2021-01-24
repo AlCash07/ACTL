@@ -26,7 +26,7 @@ struct is_io_tuple<T, false>
     : decltype(serialization_access{}.is_io_tuple<T>(0)) {};
 
 template <class T>
-constexpr bool is_io_tuple_v = is_io_tuple<T>::value;
+inline constexpr bool is_io_tuple_v = is_io_tuple<T>::value;
 
 } // namespace ac::io
 

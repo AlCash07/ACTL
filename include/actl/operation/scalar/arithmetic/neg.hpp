@@ -19,7 +19,7 @@ struct neg_t : scalar_operation<neg_t, 1> {
         return -x;
     }
 };
-constexpr neg_t neg;
+inline constexpr neg_t neg;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator-(T&& x) {

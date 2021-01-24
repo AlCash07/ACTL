@@ -63,19 +63,19 @@ struct category_sfinae<T, std::enable_if_t<is_contiguous_range_v<T>>> {
 };
 
 template <class T>
-constexpr bool is_input_range_v =
+inline constexpr bool is_input_range_v =
     is_subcategory_of_v<category_t<T>, input_range_tag>;
 
 template <class T>
-constexpr bool is_forward_range_v =
+inline constexpr bool is_forward_range_v =
     is_subcategory_of_v<category_t<T>, forward_range_tag>;
 
 template <class T>
-constexpr bool is_bidirectional_range_v =
+inline constexpr bool is_bidirectional_range_v =
     is_subcategory_of_v<category_t<T>, bidirectional_range_tag>;
 
 template <class T>
-constexpr bool is_random_access_range_v =
+inline constexpr bool is_random_access_range_v =
     is_subcategory_of_v<category_t<T>, random_access_range_tag>;
 
 template <class T>

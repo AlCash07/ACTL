@@ -19,7 +19,7 @@ struct bit_not_t : scalar_operation<bit_not_t, 1> {
         return ~x;
     }
 };
-constexpr bit_not_t bit_not;
+inline constexpr bit_not_t bit_not;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator~(T&& x) {

@@ -30,7 +30,7 @@ struct is_iterator<T*, std::enable_if_t<!std::is_object_v<T>>>
     : std::false_type {};
 
 template <class T>
-constexpr bool is_iterator_v = is_iterator<T>::value;
+inline constexpr bool is_iterator_v = is_iterator<T>::value;
 
 // TODO: implement is_output_iterator trait.
 

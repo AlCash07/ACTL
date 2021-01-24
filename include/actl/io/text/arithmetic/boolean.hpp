@@ -10,10 +10,10 @@
 
 namespace ac::io {
 
-constexpr char true_s[4] = {'t', 'r', 'u', 'e'};
-constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
-constexpr char zero_c = '0';
-constexpr char one_c = '1';
+inline constexpr char true_s[4] = {'t', 'r', 'u', 'e'};
+inline constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
+inline constexpr char zero_c = '0';
+inline constexpr char one_c = '1';
 
 template <
     class Format,

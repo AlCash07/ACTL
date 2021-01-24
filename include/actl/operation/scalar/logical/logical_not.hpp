@@ -18,7 +18,7 @@ struct logical_not_t : scalar_operation<logical_not_t, 1> {
         return !x;
     }
 };
-constexpr logical_not_t logical_not;
+inline constexpr logical_not_t logical_not;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator!(T&& x) {

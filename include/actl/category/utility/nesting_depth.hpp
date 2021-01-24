@@ -27,13 +27,14 @@ template <class T, class = void>
 struct nesting_depth : index_constant<0> {};
 
 template <class T>
-constexpr index nesting_depth_v = nesting_depth<remove_cvref_t<T>>::value;
+inline constexpr index nesting_depth_v =
+    nesting_depth<remove_cvref_t<T>>::value;
 
 template <class... Ts>
 struct max_nesting_depth
     : index_constant<(... || detail::max_v<nesting_depth_v<Ts>>{})> {};
 
 template <class... Ts>
-constexpr index max_nesting_depth_v = max_nesting_depth<Ts...>::value;
+inline constexpr index max_nesting_depth_v = max_nesting_depth<Ts...>::value;
 
 } // namespace ac

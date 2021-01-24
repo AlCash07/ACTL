@@ -19,7 +19,7 @@ struct non_equal_t : scalar_operation<non_equal_t, 2> {
 
     static constexpr auto formula = !equal;
 };
-constexpr non_equal_t not_equal;
+inline constexpr non_equal_t not_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator!=(T&& lhs, U&& rhs) {

@@ -17,6 +17,6 @@ struct flush_t {
         return 0;
     }
 };
-constexpr flush_t flush;
+inline constexpr flush_t flush;
 
 } // namespace ac::io

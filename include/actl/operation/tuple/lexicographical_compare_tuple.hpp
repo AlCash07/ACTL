@@ -28,7 +28,7 @@ struct lexicographical_compare_tuple_t {
             return select(v == 0, evaluate<I + 1>(ops, lhs, rhs), v);
     }
 };
-constexpr operation_composer<lexicographical_compare_tuple_t>
+inline constexpr operation_composer<lexicographical_compare_tuple_t>
     lexicographical_compare_tuple;
 
 template <class T, class U>

@@ -55,19 +55,19 @@ struct category_sfinae<T, std::enable_if_t<is_iterator_v<T>>>
           typename std::iterator_traits<T>::iterator_category> {};
 
 template <class T>
-constexpr bool is_input_iterator_v =
+inline constexpr bool is_input_iterator_v =
     is_subcategory_of_v<category_t<T>, input_iterator_tag>;
 
 template <class T>
-constexpr bool is_forward_iterator_v =
+inline constexpr bool is_forward_iterator_v =
     is_subcategory_of_v<category_t<T>, forward_iterator_tag>;
 
 template <class T>
-constexpr bool is_bidirectional_iterator_v =
+inline constexpr bool is_bidirectional_iterator_v =
     is_subcategory_of_v<category_t<T>, bidirectional_iterator_tag>;
 
 template <class T>
-constexpr bool is_random_access_iterator_v =
+inline constexpr bool is_random_access_iterator_v =
     is_subcategory_of_v<category_t<T>, random_access_iterator_tag>;
 
 } // namespace ac

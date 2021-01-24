@@ -24,7 +24,7 @@ struct is_tuple<T, false, std::void_t<decltype(std::tuple_size<T>::value)>>
     : std::true_type {};
 
 template <class T>
-constexpr bool is_tuple_v = is_tuple<T>::value;
+inline constexpr bool is_tuple_v = is_tuple<T>::value;
 
 struct tuple_tag {
     using base = unclassified_tag;
