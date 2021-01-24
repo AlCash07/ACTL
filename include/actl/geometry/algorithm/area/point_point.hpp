@@ -15,11 +15,14 @@ namespace ac {
 /// Oriented area of parallelogram with side vectors being p0 and p1.
 /// 2D: positive if p1 <- p0 counter-clockwise.
 template <class Policy, index N, class T0, class T1>
-auto area(const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) {
+auto area(
+    const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) //
+{
     if constexpr (N == 2) {
         return product(policy, p0[0], p1[1]) - product(policy, p0[1], p1[0]);
     } else if constexpr (N == 3) {
-        // TODO: figure out the correct sign instead of returning the absolute value.
+        // TODO: figure out the correct sign instead of returning the absolute
+        // value.
         return sqrt(policy, dot(policy, cross(policy, p0, p1)));
     } else {
         auto a = product(policy, dot(policy, p0), dot(policy, p1));

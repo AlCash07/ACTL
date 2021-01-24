@@ -10,7 +10,9 @@
 #include "test.hpp"
 
 TEST_CASE("static_quotient_ring::arithmetic") {
-    using ring = static_quotient_ring<18446744073709551557ull>; // largest uint64_t prime number
+    using ring =
+        static_quotient_ring<18446744073709551557ull>; // largest uint64_t prime
+                                                       // number
     using int_mod = ring_element<ring>;
     int_mod x = ac::random.uniform(ring::mod());
     int_mod y = ac::random.uniform(ring::mod());

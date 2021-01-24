@@ -12,13 +12,21 @@
 
 namespace ac::io {
 
-template <class Device, class Format, class T, enable_int_if<std::is_arithmetic_v<T>> = 0>
+template <
+    class Device,
+    class Format,
+    class T,
+    enable_int_if<std::is_arithmetic_v<T>> = 0>
 index serialize(Device& od, Format&, const T& x, binary) {
     auto bytes = bit_cast<std::array<std::byte, sizeof(T)>>(x);
     return od.write(bytes);
 }
 
-template <class Device, class Format, class T, enable_int_if<std::is_arithmetic_v<T>> = 0>
+template <
+    class Device,
+    class Format,
+    class T,
+    enable_int_if<std::is_arithmetic_v<T>> = 0>
 bool deserialize(Device& id, Format&, T& x, binary) {
     std::array<std::byte, sizeof(T)> bytes;
     bool ok = id.read(bytes) == static_cast<index>(bytes.size());

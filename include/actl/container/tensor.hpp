@@ -25,7 +25,8 @@ class tensor_base;
 
 template <class T, index N>
 struct nd_initializer_list {
-    using type = std::initializer_list<typename nd_initializer_list<T, N - 1>::type>;
+    using type =
+        std::initializer_list<typename nd_initializer_list<T, N - 1>::type>;
 };
 
 template <class T>
@@ -124,8 +125,10 @@ public:
     }
 
     template <class Dims>
-    tensor_data(index size, const nd_initializer_list_t<T, N>& il, Dims dims) : base_t{size} {
-        index strides[std::max(N - 1, (index)1)]; // array of size 0 is not standard-compliant
+    tensor_data(index size, const nd_initializer_list_t<T, N>& il, Dims dims)
+        : base_t{size} {
+        // Array of size 0 is not standard-compliant.
+        index strides[std::max(N - 1, (index)1)];
         if constexpr (N >= 2) {
             strides[N - 2] = dims[N - 1];
             for (index i = N - 3; i >= 0; --i)
@@ -142,7 +145,10 @@ public:
 private:
     template <index I, class Dims>
     T* initialize(
-        T* ptr, const nd_initializer_list_t<T, N - I>& il, Dims dims, const index* strides) //
+        T* ptr,
+        const nd_initializer_list_t<T, N - I>& il,
+        Dims dims,
+        const index* strides) //
     {
         ACTL_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N) {
@@ -182,7 +188,8 @@ private:
 
 /* NDArray shape class, manages dimensions. */
 
-// This class is needed to guarantee dims construction before data to avoid undefined behavior.
+// This class is needed to guarantee dims construction before data to avoid
+// undefined behavior.
 template <class Dims>
 struct tensor_dims {
     Dims dims_;
@@ -220,11 +227,14 @@ public:
 
     template <class... Ts>
     explicit tensor_shape(
-        std::conditional_t<N == 1, Int, std::initializer_list<Int>> dims, Ts... args)
+        std::conditional_t<N == 1, Int, std::initializer_list<Int>> dims,
+        Ts... args)
         : base_dims{dims}, base_data{size(), args...} {}
 
     explicit tensor_shape(nd_initializer_list_t<T, N> il)
-        : base_dims{}, base_data{(compute_dimensions<0>(il), size()), il, std::data(dims_)} {}
+        : base_dims{}
+        , base_data{(compute_dimensions<0>(il), size()), il, std::data(dims_)} {
+    }
 
     constexpr index rank() const {
         return static_cast<index>(std::size(dims_));
@@ -256,7 +266,8 @@ private:
 };
 
 template <index N, class Data, index... Ds>
-class tensor_shape<N, Data, static_array<index, Ds...>> : public tensor_data<N, Data> {
+class tensor_shape<N, Data, static_array<index, Ds...>>
+    : public tensor_data<N, Data> {
     using base_t = tensor_data<N, Data>;
     using dims_t = static_array<index, Ds...>;
 
@@ -346,7 +357,8 @@ public:
 };
 
 template <class Data, class Dims>
-class tensor_subscript<0, Data, Dims> : public tensor_shape<0, Data, static_array<index>> {
+class tensor_subscript<0, Data, Dims>
+    : public tensor_shape<0, Data, static_array<index>> {
     using base_t = tensor_shape<0, Data, static_array<index>>;
     using T = value_type_t<base_t>;
 
@@ -461,7 +473,8 @@ void swap(tensor_base<D, S>& lhs, tensor_base<D, S>& rhs) {
 
 template <class T, size_t D, index... Dims>
 struct tensor_fixed {
-    using type = tensor_base<std::unique_ptr<T[]>, semi_static_array<int, Dims...>>;
+    using type =
+        tensor_base<std::unique_ptr<T[]>, semi_static_array<int, Dims...>>;
 };
 
 template <class T, index... Dims>
@@ -469,7 +482,8 @@ struct tensor_fixed<T, 0, Dims...> {
     static constexpr index size = static_product_v<Dims...>;
 
     using type = tensor_base<
-        std::conditional_t<16 < size, std::unique_ptr<T[]>, std::array<T, size>>,
+        std::
+            conditional_t<16 < size, std::unique_ptr<T[]>, std::array<T, size>>,
         static_array<index, Dims...>>;
 };
 
@@ -532,10 +546,13 @@ struct overload<equal_t, tensor_tag, T, U> {
     }
 };
 
-/// N-dimensional array with dimensions completely or partially known at compile time.
+/// N-dimensional array with dimensions completely or partially known at compile
+/// time.
 template <class T, index... Dimensions>
-using tensor_fixed =
-    typename detail::tensor_fixed<T, (0 + ... + (Dimensions == dynamic_size)), Dimensions...>::type;
+using tensor_fixed = typename detail::tensor_fixed<
+    T,
+    (0 + ... + (Dimensions == dynamic_size)),
+    Dimensions...>::type;
 
 /// N-dimensional array.
 template <class T, index N = dynamic_size>

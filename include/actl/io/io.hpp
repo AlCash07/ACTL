@@ -62,15 +62,17 @@ template <class T, class = void>
 struct has_input_buffer : std::false_type {};
 
 template <class T>
-struct has_input_buffer<T, std::void_t<decltype(std::declval<T>().input_data())>>
-    : std::true_type {};
+struct has_input_buffer<
+    T,
+    std::void_t<decltype(std::declval<T>().input_data())>> : std::true_type {};
 
 template <class T, class = void>
 struct has_output_buffer : std::false_type {};
 
 template <class T>
-struct has_output_buffer<T, std::void_t<decltype(std::declval<T>().output_data())>>
-    : std::true_type {};
+struct has_output_buffer<
+    T,
+    std::void_t<decltype(std::declval<T>().output_data())>> : std::true_type {};
 
 /* Format */
 
@@ -96,7 +98,8 @@ template <
     class Device,
     class Format,
     class T,
-    enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
+    enable_int_if<
+        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
 index write_final(Device&, Format&, T&) {
     return 0;
 }
@@ -105,13 +108,15 @@ template <
     class Device,
     class Format,
     class T,
-    enable_int_if<std::is_empty_v<T> && !std::is_invocable_r_v<index, T&, Device&>> = 0>
+    enable_int_if<
+        std::is_empty_v<T> && !std::is_invocable_r_v<index, T&, Device&>> = 0>
 bool read_final(Device&, Format&, T&) {
     return true;
 }
 
 template <class T>
-using enable_int_if_byte = enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
+using enable_int_if_byte =
+    enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
 
 template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
 index write_final(Device& od, Format&, B byte) {
@@ -124,17 +129,34 @@ bool read_final(Device& id, Format&, B& byte) {
     return !id.eof();
 }
 
-template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+template <
+    class Device,
+    class Format,
+    class B,
+    index N,
+    enable_int_if_byte<B> = 0>
 index write_final(Device& od, Format&, span<B, N> s) {
-    return od.write({reinterpret_cast<const char_t<Device>*>(s.data()), s.size()});
+    return od.write(
+        {reinterpret_cast<const char_t<Device>*>(s.data()), s.size()});
 }
 
-template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+template <
+    class Device,
+    class Format,
+    class B,
+    index N,
+    enable_int_if_byte<B> = 0>
 bool read_final(Device& id, Format&, span<B, N>& s) {
-    return id.read({reinterpret_cast<char_t<Device>*>(s.data()), s.size()}) == s.size();
+    return id.read({reinterpret_cast<char_t<Device>*>(s.data()), s.size()}) ==
+           s.size();
 }
 
-template <class Device, class Format, class B, index N, enable_int_if_byte<B> = 0>
+template <
+    class Device,
+    class Format,
+    class B,
+    index N,
+    enable_int_if_byte<B> = 0>
 bool read_final(Device& id, Format&, cspan<B, N>& s) {
     span sc{reinterpret_cast<const char*>(s.data()), s.size()};
     return parser_executor{const_data_parser{sc}}(id);
@@ -160,7 +182,8 @@ bool read_final(Device& od, Format&, T& f) {
     return f(od);
 }
 
-/* Read and write. Absence of std::forward is intentional here to convert rvalue references into
+/* Read and write. Absence of std::forward is intentional here to convert rvalue
+   references into
    lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>

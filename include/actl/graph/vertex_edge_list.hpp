@@ -21,7 +21,8 @@ class vertex_edge_list
     : public vertex_list<VertexContainer>
     , public edge_list<Directed, container_id<VertexContainer>, EdgeContainer> {
     using vbase_t = vertex_list<VertexContainer>;
-    using ebase_t = edge_list<Directed, container_id<VertexContainer>, EdgeContainer>;
+    using ebase_t =
+        edge_list<Directed, container_id<VertexContainer>, EdgeContainer>;
 
 public:
     using typename ebase_t::edge;
@@ -50,10 +51,14 @@ public:
         class T = value_type_t<VertexContainer>,
         enable_int_if<Unique> = 0>
     edge add_edge(const T& u, const T& v, Ts&&... args) {
-        return add_edge(this->add_vertex(u), this->add_vertex(v), std::forward<Ts>(args)...);
+        return add_edge(
+            this->add_vertex(u),
+            this->add_vertex(v),
+            std::forward<Ts>(args)...);
     }
 
-    // TODO: implement using one pass over edges that will remove edges and decrease int IDs.
+    // TODO: implement using one pass over edges that will remove edges and
+    // decrease int IDs.
     void remove_vertex(vertex u);
 
     void swap(vertex_edge_list& rhs) {

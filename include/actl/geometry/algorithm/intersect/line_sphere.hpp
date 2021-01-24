@@ -22,8 +22,8 @@ OutIter intersect(
 {
     auto& policy = lsp.policy;
     auto vdot = dot(policy, l.vector);
-    auto delta =
-        product(policy, vdot, sqr(policy, s.radius)) - sqr(policy, area(policy, s.center, l));
+    auto delta = product(policy, vdot, sqr(policy, s.radius)) -
+                 sqr(policy, area(policy, s.center, l));
     int delta_sgn = sgn(policy, delta);
     if (delta_sgn < 0)
         return dst;

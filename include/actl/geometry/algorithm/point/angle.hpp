@@ -17,12 +17,25 @@ auto angle(const Policy& policy, const point<T, N>& p) {
     return atan2(p[1], p[0]);
 }
 
-template <class Policy, index N, class T0, class T1, enable_int_if_policy<Policy> = 0>
-auto angle(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+template <
+    class Policy,
+    index N,
+    class T0,
+    class T1,
+    enable_int_if_policy<Policy> = 0>
+auto angle(
+    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) //
+{
     return atan2(area(policy, lhs, rhs), dot(policy, lhs, rhs));
 }
 
-template <class Policy, index N, class T0, class T1, class T2, enable_int_if_policy<Policy> = 0>
+template <
+    class Policy,
+    index N,
+    class T0,
+    class T1,
+    class T2,
+    enable_int_if_policy<Policy> = 0>
 auto angle(
     const Policy& policy,
     const point<T0, N>& lhs,

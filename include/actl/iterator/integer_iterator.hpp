@@ -22,7 +22,9 @@ struct integer_iterator_types {
 
 template <class Int, bool Increment = true>
 class integer_iterator
-    : public iterator_facade<integer_iterator<Int, Increment>, integer_iterator_types<Int>> {
+    : public iterator_facade<
+          integer_iterator<Int, Increment>,
+          integer_iterator_types<Int>> {
 public:
     explicit constexpr integer_iterator() = default;
 
@@ -61,7 +63,9 @@ private:
 
 template <class Int>
 class integer_iterator_with_step
-    : public iterator_facade<integer_iterator_with_step<Int>, integer_iterator_types<Int>> {
+    : public iterator_facade<
+          integer_iterator_with_step<Int>,
+          integer_iterator_types<Int>> {
 public:
     explicit constexpr integer_iterator_with_step() = default;
 
@@ -91,7 +95,8 @@ private:
         return value_ == rhs.value_;
     }
 
-    // TODO: if this operation is called often then it's better to avoid division.
+    // TODO: if this operation is called often then it's better to avoid
+    // division.
     constexpr Int distance_to(const integer_iterator_with_step& rhs) const {
         ACTL_ASSERT(rhs.step_ == step_);
         ACTL_ASSERT((rhs.value_ - value_) % step_ == 0);

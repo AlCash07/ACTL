@@ -18,7 +18,8 @@ namespace ac {
 
 // Reference: http://codeforces.com/blog/entry/62393
 struct randomized_hash {
-    static_assert(sizeof(size_t) <= sizeof(uint64_t), "TODO: remove this restriction");
+    static_assert(
+        sizeof(size_t) <= sizeof(uint64_t), "TODO: remove this restriction");
 
     static const size_t seed;
 
@@ -27,14 +28,17 @@ struct randomized_hash {
     }
 };
 
-inline const size_t randomized_hash::seed =
-    static_cast<size_t>(std::chrono::steady_clock::now().time_since_epoch().count());
+inline const size_t randomized_hash::seed = static_cast<size_t>(
+    std::chrono::steady_clock::now().time_since_epoch().count());
 
 template <class T, enable_int_if<std::is_arithmetic_v<T>> = 0>
 constexpr size_t hash_value(const T& x) {
     static_assert(sizeof(T) <= sizeof(size_t), "TODO: remove this restriction");
     size_t t{};
-    std::memcpy(reinterpret_cast<std::byte*>(&t) + sizeof(size_t) - sizeof(T), &x, sizeof(T));
+    std::memcpy(
+        reinterpret_cast<std::byte*>(&t) + sizeof(size_t) - sizeof(T),
+        &x,
+        sizeof(T));
     return randomized_hash::compute(t);
 }
 

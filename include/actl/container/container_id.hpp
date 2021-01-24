@@ -31,8 +31,13 @@ struct iterator_id_types : default_iterator_adaptor_types {
 };
 
 template <class Iter>
-class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter, iterator_id_types<Iter>> {
-    using base_t = iterator_adaptor<iterator_id<Iter>, Iter, iterator_id_types<Iter>>;
+class iterator_id
+    : public iterator_adaptor<
+          iterator_id<Iter>,
+          Iter,
+          iterator_id_types<Iter>> {
+    using base_t =
+        iterator_adaptor<iterator_id<Iter>, Iter, iterator_id_types<Iter>>;
 
 public:
     explicit iterator_id(Iter iter = {}) : base_t{iter} {}
@@ -91,8 +96,9 @@ void* id_to_raw(iterator_id<Iter> id) {
     return bit_cast<void*>(id);
 }
 
-/// Container Id is int for random access containers and wrapped const_iterator otherwise.
-/// Such Id isn't invalidated by emplace operation and can be used as map or hash map key.
+/// Container Id is int for random access containers and wrapped const_iterator
+/// otherwise. Such Id isn't invalidated by emplace operation and can be used as
+/// map or hash map key.
 template <class C>
 using container_id = typename container_id_traits<C>::id;
 
@@ -168,7 +174,8 @@ reference_t<C> id_at(C& cont, container_id<C> id) {
         return cont[static_cast<size_type_t<C>>(id)];
     else
         // const_cast is required because id contains a const_iterator.
-        // TODO: this cast allows modification of set key, which may lead to bugs.
+        // TODO: this cast allows modification of set key, which may lead to
+        // bugs.
         return const_cast<reference_t<C>>(*id.base());
 }
 

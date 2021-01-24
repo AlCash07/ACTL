@@ -10,10 +10,12 @@
 
 namespace ac {
 
-#define ENABLE_IF_HAS_CONST template <class U = Types, class = typename U::const_iterator>
+#define ENABLE_IF_HAS_CONST \
+    template <class U = Types, class = typename U::const_iterator>
 
 template <class Range, class Types>
-class contiguous_range_facade : public range_facade<contiguous_range_facade<Range, Types>, Types> {
+class contiguous_range_facade
+    : public range_facade<contiguous_range_facade<Range, Types>, Types> {
     constexpr Range& derived() {
         return static_cast<Range&>(*this);
     }

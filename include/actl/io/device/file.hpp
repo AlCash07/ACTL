@@ -15,10 +15,24 @@ namespace ac::io {
 template <mode_t Mode, class Char, bool = is_in<Mode>>
 class in_file : public device<Mode, Char> {
     static constexpr const char* mode_str[14] = {
-        "r", "rb", "w", "wb", "w+", "w+b", "a", "ab", "a+", "a+b", "a", "ab", "r+", "r+b"};
+        "r",
+        "rb",
+        "w",
+        "wb",
+        "w+",
+        "w+b",
+        "a",
+        "ab",
+        "a+",
+        "a+b",
+        "a",
+        "ab",
+        "r+",
+        "r+b"};
 
 public:
-    explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own} {
+    explicit in_file(std::FILE* file, bool own = false)
+        : file_{file}, own_{own} {
         ACTL_ASSERT(file);
     }
 
@@ -58,17 +72,22 @@ public:
     index read(const span<Char>& dst) {
         size_t res{};
         if constexpr (is_line_buffered<Mode>) {
-            if (std::fgets(dst.data(), static_cast<int>(dst.size()), this->file_))
+            if (std::fgets(
+                    dst.data(), static_cast<int>(dst.size()), this->file_))
                 res = std::strlen(dst.data());
         } else {
-            res =
-                std::fread(dst.data(), sizeof(Char), static_cast<size_t>(dst.size()), this->file_);
+            res = std::fread(
+                dst.data(),
+                sizeof(Char),
+                static_cast<size_t>(dst.size()),
+                this->file_);
         }
         return static_cast<index>(res);
     }
 
     void move(index offset) {
-        int res = std::fseek(this->file_, offset * static_cast<index>(sizeof(Char)), SEEK_CUR);
+        int res = std::fseek(
+            this->file_, offset * static_cast<index>(sizeof(Char)), SEEK_CUR);
         ACTL_ASSERT(res == 0);
     }
 };
@@ -89,8 +108,11 @@ public:
     }
 
     index write(const cspan<Char>& src) {
-        return static_cast<index>(
-            std::fwrite(src.data(), sizeof(Char), static_cast<size_t>(src.size()), this->file_));
+        return static_cast<index>(std::fwrite(
+            src.data(),
+            sizeof(Char),
+            static_cast<size_t>(src.size()),
+            this->file_));
     }
 
     void flush() {

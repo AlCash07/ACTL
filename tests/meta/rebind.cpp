@@ -31,8 +31,9 @@ struct rebind<R<T>, U> {
 // Specialization has the highest priority.
 static_assert(std::is_same_v<int, ac::rebind_t<R<A>, B>>);
 
-static_assert(
-    std::is_same_v<std::tuple<B, B, int, R<B>>, ac::rebind_t<std::tuple<A, A, R<A>, R<B>>, B>>);
+static_assert(std::is_same_v<
+              std::tuple<B, B, int, R<B>>,
+              ac::rebind_t<std::tuple<A, A, R<A>, R<B>>, B>>);
 
 static_assert(std::is_same_v<B[2], ac::rebind_t<A[2], B>>);
 

@@ -9,14 +9,31 @@
 #include "test.hpp"
 
 std::vector<point<int>> get_points() {
-    return {{2, 0}, {0, 2}, {-2, 0}, {0, -2}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}, {0, 0}};
+    return {
+        {2, 0},
+        {0, 2},
+        {-2, 0},
+        {0, -2},
+        {1, 1},
+        {-1, 1},
+        {-1, -1},
+        {1, -1},
+        {0, 0}};
 }
 
 TEST_CASE("points") {
     auto points = get_points();
     sort_by_angle(points);
     std::vector<point<int>> expected{
-        {0, 0}, {2, 0}, {1, 1}, {0, 2}, {-1, 1}, {-2, 0}, {-1, -1}, {0, -2}, {1, -1}};
+        {0, 0},
+        {2, 0},
+        {1, 1},
+        {0, 2},
+        {-1, 1},
+        {-2, 0},
+        {-1, -1},
+        {0, -2},
+        {1, -1}};
     CHECK(expected == points);
 }
 

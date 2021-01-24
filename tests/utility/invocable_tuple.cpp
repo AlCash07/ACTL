@@ -27,7 +27,10 @@ struct increment {
 } // namespace
 
 TEST_CASE("invocable_tuple") {
-    using CS = ac::invocable_tuple<const_op<bool, 1>, const_op<bool, 2>, const_op<increment, 3>>;
+    using CS = ac::invocable_tuple<
+        const_op<bool, 1>,
+        const_op<bool, 2>,
+        const_op<increment, 3>>;
     static_assert(1 == CS{}.invoke_first(true));
     static_assert(3 == CS{}.invoke_first(increment{1}));
 

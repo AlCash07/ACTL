@@ -18,20 +18,25 @@ class tuned_operation : public operation<tuned_operation<Op, Policy>> {
 
 public:
     template <class... Ts>
-    explicit constexpr tuned_operation(Ts&&... xs) : t{std::forward<Ts>(xs)...} {}
+    explicit constexpr tuned_operation(Ts&&... xs)
+        : t{std::forward<Ts>(xs)...} {}
 
     template <class... Ts>
     constexpr decltype(auto) resolve() const {
-        return apply_policy_if_can(std::get<0>(t).template resolve<Ts...>(), std::get<1>(t));
+        return apply_policy_if_can(
+            std::get<0>(t).template resolve<Ts...>(), std::get<1>(t));
     }
 };
 
 template <
     class Op,
     class Policy,
-    enable_int_if<is_operation_v<remove_cvref_t<Op>> && is_policy_v<remove_cvref_t<Policy>>> = 0>
+    enable_int_if<
+        is_operation_v<remove_cvref_t<Op>> &&
+        is_policy_v<remove_cvref_t<Policy>>> = 0>
 constexpr auto operator|(Op&& op, Policy&& policy) {
-    return tuned_operation<Op, Policy>{std::forward<Op>(op), std::forward<Policy>(policy)};
+    return tuned_operation<Op, Policy>{
+        std::forward<Op>(op), std::forward<Policy>(policy)};
 }
 
 } // namespace ac

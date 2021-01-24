@@ -38,7 +38,8 @@ public:
     constexpr span(T* first, T* last) : span{first, last - first} {}
 
     template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-    constexpr span(Range&& r) : span{std::data(r), static_cast<index>(std::size(r))} {}
+    constexpr span(Range&& r)
+        : span{std::data(r), static_cast<index>(std::size(r))} {}
 
     constexpr T* data() const {
         return storage_.data;
@@ -70,7 +71,8 @@ public:
 private:
     struct storage_t : size_holder<N> {
         T* data;
-        constexpr storage_t(T* ptr, index count) : size_holder<N>{count}, data{ptr} {
+        constexpr storage_t(T* ptr, index count)
+            : size_holder<N>{count}, data{ptr} {
             ACTL_ASSERT(ptr || count == 0);
         }
     };

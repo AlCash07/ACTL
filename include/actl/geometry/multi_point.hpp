@@ -22,7 +22,8 @@ struct is_polygon<T, std::void_t<typename T::is_polygon>> : std::true_type {};
 
 template <class T, bool = !is_polygon<T>::value && is_range_v<T>>
 struct is_multi_point
-    : std::bool_constant<std::is_same_v<point_tag, geometry::tag_t<value_type_t<T>>>> {};
+    : std::bool_constant<
+          std::is_same_v<point_tag, geometry::tag_t<value_type_t<T>>>> {};
 
 template <class T>
 struct is_multi_point<T, false> : std::false_type {};
@@ -34,7 +35,8 @@ struct geometry_traits<T, std::enable_if_t<detail::is_multi_point<T>::value>>
     : geometry_traits_base<multi_point_tag, value_type_t<T>> {};
 
 template <class T>
-constexpr bool is_multi_point_v = std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
+constexpr bool is_multi_point_v =
+    std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
 
 template <class T>
 struct identity_functor {
@@ -75,7 +77,9 @@ struct indexed_multi_point {
     }
 
     friend auto get_to_point(indexed_multi_point& imp) {
-        return [&p = imp.points](index x) { return p[static_cast<size_type_t<Points>>(x)]; };
+        return [&p = imp.points](index x) {
+            return p[static_cast<size_type_t<Points>>(x)];
+        };
     }
 };
 

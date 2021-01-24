@@ -34,7 +34,8 @@ index write_final(Device& od, Format&, const repeat<Char>& x) {
             count -= s.size();
             s = od.output_data();
             std::fill_n(s.data(), std::min(count, s.size()), x.c);
-            // Here we assume that s references device buffer and does not change.
+            // Here we assume that s references device buffer and does not
+            // change.
             for (index n = count / s.size(); n > 0; --n) {
                 od.move(s.size());
             }

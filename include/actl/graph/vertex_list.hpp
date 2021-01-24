@@ -38,7 +38,8 @@ public:
 template <class VC>
 class vertex_list<VC, none> {
 public:
-    using vertex_container = rebind_container_t<VC, value_type_t<VC>>; // to handle none
+    using vertex_container =
+        rebind_container_t<VC, value_type_t<VC>>; // to handle none
     using vertex = container_id<vertex_container>;
     using vertex_iterator = container_id_iterator<vertex_container>;
 
@@ -70,7 +71,8 @@ public:
         return id_null(vertices_);
     }
 
-    vertex nth_vertex(difference_type_t<container_id_iterator<vertex_container>> n) const {
+    vertex nth_vertex(
+        difference_type_t<container_id_iterator<vertex_container>> n) const {
         ACTL_ASSERT(0 <= n && n < vertex_count());
         return *std::next(id_range(vertices_).begin(), n);
     }

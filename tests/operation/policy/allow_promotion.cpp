@@ -14,13 +14,16 @@ TEST_CASE("simple operation") {
 }
 
 TEST_CASE("nested composite operation") {
-    const std::vector<std::pair<char, long long>> lhs{{char{2}, 3}, {char{5}, 8}};
-    const std::vector<std::pair<int, uint16_t>> rhs{{2, uint16_t{3}}, {5, uint16_t{8}}};
+    const std::vector<std::pair<char, long long>> lhs{
+        {char{2}, 3}, {char{5}, 8}};
+    const std::vector<std::pair<int, uint16_t>> rhs{
+        {2, uint16_t{3}}, {5, uint16_t{8}}};
     CHECK((ac::equal | ac::allow_promotion{})(lhs, rhs));
 }
 
 TEST_CASE("nested expression operation") {
     constexpr auto sum3 = ac::add + 3LL;
     STATIC_ASSERT_WORKAROUND(6LL == sum3(1LL, 2LL));
-    STATIC_ASSERT_WORKAROUND(6LL == (sum3 | ac::allow_promotion{})(short{1}, int{2}));
+    STATIC_ASSERT_WORKAROUND(
+        6LL == (sum3 | ac::allow_promotion{})(short{1}, int{2}));
 }

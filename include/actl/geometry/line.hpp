@@ -16,7 +16,8 @@ enum class endpoint : uint8_t { free = 0, closed = 1, open = 2 };
 enum class line_kind : uint8_t;
 
 inline constexpr uint8_t combine(endpoint begin, endpoint end) {
-    return static_cast<uint8_t>(static_cast<int>(begin) | static_cast<int>(end) << 2);
+    return static_cast<uint8_t>(
+        static_cast<int>(begin) | static_cast<int>(end) << 2);
 }
 
 inline constexpr endpoint begin(line_kind kind) {
@@ -93,8 +94,12 @@ private:
 
 } // namespace detail
 
-/// N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
-template <class T, index N = 2, class Kind = detail::static_kind<line_kind::free>>
+/// N-dimensional line in parametric form, that can be a line (by default), a
+/// ray, or a segment.
+template <
+    class T,
+    index N = 2,
+    class Kind = detail::static_kind<line_kind::free>>
 class line : public Kind {
 public:
     point<T, N> begin;
@@ -103,13 +108,19 @@ public:
     constexpr line() = default;
 
     template <class T1 = T, class T2 = T>
-    explicit constexpr line(const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
+    explicit constexpr line(
+        const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
         : begin{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
 
     template <class T1 = T, class T2 = T>
     explicit constexpr line(
-        const point<T1, N>& a, const point<T2, N>& b, line_kind kind, bool vector = false)
-        : Kind{kind}, begin{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
+        const point<T1, N>& a,
+        const point<T2, N>& b,
+        line_kind kind,
+        bool vector = false)
+        : Kind{kind}
+        , begin{a}
+        , vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
 
     template <class T1, class K1>
     explicit constexpr line(const line<T1, N, K1>& rhs)
@@ -165,20 +176,27 @@ template <class T, index N = 2>
 using any_line = line<T, N, detail::any_kind>;
 
 template <index N, class T, class K>
-struct geometry_traits<line<T, N, K>> : geometry_traits_base<line_tag, point<T, N>> {};
+struct geometry_traits<line<T, N, K>>
+    : geometry_traits_base<line_tag, point<T, N>> {};
 
 template <index N, class T0, class T1>
-constexpr auto make_line(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
+constexpr auto make_line(
+    const point<T0, N>& a, const point<T1, N>& b, bool vector = false) //
+{
     return line<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
-constexpr auto make_ray(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
+constexpr auto make_ray(
+    const point<T0, N>& a, const point<T1, N>& b, bool vector = false) //
+{
     return ray<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
-constexpr auto make_segment(const point<T0, N>& a, const point<T1, N>& b, bool vector = false) {
+constexpr auto make_segment(
+    const point<T0, N>& a, const point<T1, N>& b, bool vector = false) //
+{
     return segment<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
@@ -192,9 +210,16 @@ constexpr auto make_any_line(
     return any_line<geometry::scalar_t<T0, T1>, N>{a, b, kind, vector};
 }
 
-template <index N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
+template <
+    index N,
+    class T0,
+    class T1,
+    class Line = any_line<geometry::scalar_t<T0, T1>, N>>
 constexpr Line make_any_line(
-    const point<T0, N>& a, endpoint akind, const point<T1, N>& b, endpoint bkind) //
+    const point<T0, N>& a,
+    endpoint akind,
+    const point<T1, N>& b,
+    endpoint bkind) //
 {
     if (akind < bkind)
         return make_any_line(b, bkind, a, akind);
@@ -206,8 +231,8 @@ constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l) {
     return degenerate(policy, l.vector);
 }
 
-// Policy to indicate that scalar is expected instead of a point. This scalar can be passed to line
-// operator () to get the point.
+// Policy to indicate that scalar is expected instead of a point. This scalar
+// can be passed to line operator () to get the point.
 template <class Policy>
 struct line_scalar_policy : virtual policy {
     explicit line_scalar_policy(const Policy& x) : policy{x} {}

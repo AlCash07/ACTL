@@ -51,8 +51,11 @@ struct range_category<std::random_access_iterator_tag> {
 } // namespace detail
 
 template <class T>
-struct category_sfinae<T, std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>>
-    : detail::range_category<typename std::iterator_traits<iterator_t<T>>::iterator_category> {};
+struct category_sfinae<
+    T,
+    std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>>
+    : detail::range_category<
+          typename std::iterator_traits<iterator_t<T>>::iterator_category> {};
 
 template <class T>
 struct category_sfinae<T, std::enable_if_t<is_contiguous_range_v<T>>> {
@@ -60,10 +63,12 @@ struct category_sfinae<T, std::enable_if_t<is_contiguous_range_v<T>>> {
 };
 
 template <class T>
-constexpr bool is_input_range_v = is_subcategory_of_v<category_t<T>, input_range_tag>;
+constexpr bool is_input_range_v =
+    is_subcategory_of_v<category_t<T>, input_range_tag>;
 
 template <class T>
-constexpr bool is_forward_range_v = is_subcategory_of_v<category_t<T>, forward_range_tag>;
+constexpr bool is_forward_range_v =
+    is_subcategory_of_v<category_t<T>, forward_range_tag>;
 
 template <class T>
 constexpr bool is_bidirectional_range_v =

@@ -19,7 +19,9 @@ auto invert(const Policy& policy, const point<T0, N>& p, const T1& radius) {
 }
 
 template <class Policy, index N, class T0, class T1>
-auto invert(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
+auto invert(
+    const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) //
+{
     return s.center + invert(policy, p - s.center, s.radius);
 }
 

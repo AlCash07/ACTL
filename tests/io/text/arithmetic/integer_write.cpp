@@ -16,7 +16,10 @@ TEST_CASE("write unsigned long long") {
     test_write("18446744073709551615", f, max_ull);
     f.base = 2;
     test_write("0", f, 0ull);
-    test_write("1111111111111111111111111111111111111111111111111111111111111111", f, max_ull);
+    test_write(
+        "1111111111111111111111111111111111111111111111111111111111111111",
+        f,
+        max_ull);
     f.base = octal;
     test_write("0", f, 0ull);
     test_write("01777777777777777777777", f, max_ull);
@@ -42,8 +45,14 @@ TEST_CASE("write long long") {
     test_write("9223372036854775807", f, max_ll);
     f.base = 2;
     test_write("+0", f, showpos, 0ll);
-    test_write("-1000000000000000000000000000000000000000000000000000000000000000", f, min_ll);
-    test_write("+111111111111111111111111111111111111111111111111111111111111111", f, max_ll);
+    test_write(
+        "-1000000000000000000000000000000000000000000000000000000000000000",
+        f,
+        min_ll);
+    test_write(
+        "+111111111111111111111111111111111111111111111111111111111111111",
+        f,
+        max_ll);
     f.base = octal;
     test_write("0", f, noshowpos, 0ll);
     test_write("-01000000000000000000000", f, min_ll);

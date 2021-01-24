@@ -11,7 +11,8 @@
 namespace ac {
 
 /// Property map that fetches member from a class key.
-// TODO: consider making this map invertible. Iter's possible, but not standard-compliant.
+// TODO: consider making this map invertible. Iter's possible, but not
+// standard-compliant.
 template <class Class, class Member>
 class member_map {
 public:
@@ -37,7 +38,10 @@ public:
 };
 
 template <class MM>
-struct map_traits<MM, std::void_t<typename MM::class_t, typename MM::member_t>> {
+struct map_traits<
+    MM,
+    std::void_t<typename MM::class_t, typename MM::member_t>> //
+{
     static constexpr bool C = std::is_const_v<MM>;
 
     using key_type = add_const_if_t<C, typename MM::class_t>&;
@@ -51,7 +55,8 @@ struct map_traits<MM, std::void_t<typename MM::class_t, typename MM::member_t>> 
 };
 
 template <class MM>
-struct map_ops<MM, std::void_t<typename MM::class_t, typename MM::member_t>> : map_put<MM> {
+struct map_ops<MM, std::void_t<typename MM::class_t, typename MM::member_t>>
+    : map_put<MM> {
     static map_reference_t<MM> get(MM& map, map_key_t<MM> key) {
         return key.*map.ptr;
     }

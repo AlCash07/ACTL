@@ -26,7 +26,8 @@ namespace detail {
 template <class Z, Z Mod>
 struct static_quotient_ring_impl : quotient_ring_base<Z, true> {
     constexpr static_quotient_ring_impl() = default;
-    constexpr static_quotient_ring_impl(const static_quotient_ring_impl&) = default;
+    constexpr static_quotient_ring_impl(const static_quotient_ring_impl&) =
+        default;
     static constexpr Z mod() {
         return Mod;
     }
@@ -34,12 +35,15 @@ struct static_quotient_ring_impl : quotient_ring_base<Z, true> {
 
 } // namespace detail
 
-template <uint64_t Mod, class Z = std::conditional_t<(Mod > (1ull << 32)), uint64_t, uint32_t>>
+template <
+    uint64_t Mod,
+    class Z = std::conditional_t<(Mod > (1ull << 32)), uint64_t, uint32_t>>
 using static_quotient_ring = detail::static_quotient_ring_impl<Z, (Z)Mod>;
 
 template <class Z>
 struct singleton_quotient_ring : quotient_ring_base<Z> {
-    static_assert(!std::is_signed<Z>::value, "signed integers are not supported");
+    static_assert(
+        !std::is_signed<Z>::value, "signed integers are not supported");
     static Z& mod() {
         static Z mod;
         return mod;

@@ -74,7 +74,11 @@ text_static<> deduce_format(Device&) {
     return {};
 }
 
-template <class Format, class S, enable_int_if_text<Format> = 0, enable_int_if<is_string_v<S>> = 0>
+template <
+    class Format,
+    class S,
+    enable_int_if_text<Format> = 0,
+    enable_int_if<is_string_v<S>> = 0>
 auto encode(Format&, const S& s) {
     return span{std::basic_string_view<value_type_t<S>>{s}};
 }

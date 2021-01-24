@@ -40,7 +40,8 @@ struct cm_range<M1, M2, V, false, true> {
         }
     };
 
-    using type = iterator_range<transform_iterator<map_iterator_t<M2>, invert1>>;
+    using type =
+        iterator_range<transform_iterator<map_iterator_t<M2>, invert1>>;
 };
 
 template <class M1, class M2, class V>
@@ -51,7 +52,8 @@ struct cm_range<M1, M2, V, false, false> {
 } // namespace detail
 
 template <class Map1, class Map2, class... Maps>
-class composite_map : public composite_map<composite_map<Map1, Map2>, Maps...> {};
+class composite_map
+    : public composite_map<composite_map<Map1, Map2>, Maps...> {};
 
 template <class M1, class M2>
 class composite_map<M1, M2> : public compressed_pair<M1, M2> {
@@ -60,12 +62,17 @@ class composite_map<M1, M2> : public compressed_pair<M1, M2> {
 
 public:
     static_assert(
-        std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>, "incompatible property maps");
+        std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>,
+        "incompatible property maps");
 
-    static constexpr bool writable2 = map_traits<M1>::readable && map_traits<M2>::writable;
-    static constexpr bool iterable1 = map_traits<M1>::iterable && map_traits<M2>::readable;
-    static constexpr bool iterable2 = map_traits<M1>::invertible && map_traits<M2>::iterable;
-    using range_t = typename detail::cm_range<M1, M2, std::pair<K, R>, iterable1, iterable2>::type;
+    static constexpr bool writable2 =
+        map_traits<M1>::readable && map_traits<M2>::writable;
+    static constexpr bool iterable1 =
+        map_traits<M1>::iterable && map_traits<M2>::readable;
+    static constexpr bool iterable2 =
+        map_traits<M1>::invertible && map_traits<M2>::iterable;
+    using range_t = typename detail::
+        cm_range<M1, M2, std::pair<K, R>, iterable1, iterable2>::type;
 
     struct is_composite_map;
 
@@ -86,7 +93,8 @@ template <class... Ms>
 struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits {};
 
 template <class... Ms>
-struct map_traits<const composite_map<Ms...>> : map_traits<composite_map<const Ms...>> {};
+struct map_traits<const composite_map<Ms...>>
+    : map_traits<composite_map<const Ms...>> {};
 
 template <class CM>
 struct map_ops<CM, std::void_t<typename CM::is_composite_map>> {

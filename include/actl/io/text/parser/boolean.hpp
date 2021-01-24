@@ -25,7 +25,8 @@ public:
         if (state == states::empty) {
             if (alpha) {
                 x = s[0] == true_s[0];
-                suffix_parser = x ? const_data_parser{true_s} : const_data_parser{false_s};
+                suffix_parser =
+                    x ? const_data_parser{true_s} : const_data_parser{false_s};
                 state = states::suffix;
             } else {
                 x = s[0] == one_c;

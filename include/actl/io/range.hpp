@@ -18,8 +18,8 @@ decltype(auto) key_representation(Pair& x) {
     if constexpr (std::is_const_v<Pair>)
         return x.first;
     else
-        // const_cast is used to be able to read std::map<Key, Value>::value_type which is
-        // std::pair<const Key, Value>.
+        // const_cast is used to read std::map<Key, Value>::value_type
+        // which is std::pair<const Key, Value>.
         return const_cast<typename Pair::first_type&>(x.first);
 }
 

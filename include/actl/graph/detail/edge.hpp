@@ -44,7 +44,8 @@ public:
     bool operator<(const edge& rhs) const {
         return id() < rhs.id();
     }
-    // TODO: for undirected and bidirectional graphs edge isn't equal to its reverse.
+    // TODO: for undirected and bidirectional graphs edge isn't equal to its
+    // reverse.
     bool operator==(const edge& rhs) const {
         return id() == rhs.id();
     }

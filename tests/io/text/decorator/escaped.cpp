@@ -25,5 +25,8 @@ TEST_CASE("escaped char") {
 }
 
 TEST_CASE("escaped string") {
-    test_write("\"\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\0rz\"", ets(), "\0\a\b\t\n\v\f\r\"\'\\0rz"sv);
+    test_write(
+        "\"\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\0rz\"",
+        ets(),
+        "\0\a\b\t\n\v\f\r\"\'\\0rz"sv);
 }

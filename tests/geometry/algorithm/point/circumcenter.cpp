@@ -8,5 +8,8 @@
 #include "test.hpp"
 
 TEST_CASE("default") {
-    CHECK_NEAR(point{3, 1}, circumcenter(point{0, 0}, point{4, 4}, point{6, 0}), 1e-12);
+    CHECK_NEAR(
+        point{3, 1},
+        circumcenter(point{0, 0}, point{4, 4}, point{6, 0}),
+        1e-12);
 }

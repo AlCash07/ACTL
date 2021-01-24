@@ -26,7 +26,8 @@ protected:
 };
 
 template <class Device, class Buffer>
-class buffered_reader<Device, Buffer, true> : public buffered_reader<Device, Buffer, false> {
+class buffered_reader<Device, Buffer, true>
+    : public buffered_reader<Device, Buffer, false> {
 protected:
     using Char = char_t<Device>;
     using base_t = buffered_reader<Device, Buffer, false>;
@@ -84,7 +85,8 @@ public:
     }
 
     void move(index offset) {
-        // TODO: support move fully along the underlying device, not just along the buffer.
+        // TODO: support move fully along the underlying device, not just along
+        // the buffer.
         ptr_ += offset;
         ACTL_ASSERT(std::data(this->buf_) <= ptr_);
         if (ptr_ == end_)
@@ -96,7 +98,10 @@ public:
     }
 };
 
-template <class Device, class Buffer = char_t<Device>[1 << 10], bool = is_out<Device::mode>>
+template <
+    class Device,
+    class Buffer = char_t<Device>[1 << 10],
+    bool = is_out<Device::mode>>
 class buffered : public buffered_reader<Device, Buffer> {
 public:
     using buffered_reader<Device, Buffer>::buffered_reader;

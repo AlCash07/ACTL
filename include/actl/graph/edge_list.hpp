@@ -73,7 +73,8 @@ public:
             if (v < u)
                 std::swap(u, v);
         }
-        auto res = id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
+        auto res =
+            id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
         return {edge{u, v, res.first}, res.second};
     }
 
@@ -109,7 +110,8 @@ public:
 };
 
 template <class Dir, class V, class EC>
-class edge_list_impl<Dir, V, EC, two_vertices> : public edge_list_edges<Dir, V, EC, two_vertices> {
+class edge_list_impl<Dir, V, EC, two_vertices>
+    : public edge_list_edges<Dir, V, EC, two_vertices> {
     using base_t = edge_list_edges<Dir, V, EC, two_vertices>;
     using base_t::edges_;
 
@@ -128,7 +130,8 @@ public:
     using base_t::base_t;
 
     template <class E>
-    class edge_iterator : public iterator_facade<edge_iterator<E>, edge_iterator_types<E>> {
+    class edge_iterator
+        : public iterator_facade<edge_iterator<E>, edge_iterator_types<E>> {
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
 
@@ -154,10 +157,13 @@ public:
         ec_id id_;
     };
 
-    // E template parameter is needed for adjacency_list where vertices aren't stored directly.
+    // E template parameter is needed for adjacency_list where vertices aren't
+    // stored directly.
     template <class E = edge>
     iterator_range<edge_iterator<E>> edges() const {
-        return {edge_iterator<E>{*this, id_begin(edges_)}, edge_iterator<E>{*this, id_end(edges_)}};
+        return {
+            edge_iterator<E>{*this, id_begin(edges_)},
+            edge_iterator<E>{*this, id_end(edges_)}};
     }
 
     edge find_edge(vertex u, vertex v) const {
@@ -165,7 +171,8 @@ public:
             if (v < u)
                 std::swap(u, v);
         }
-        return edge{u, v, id_find(edges_, typename base_t::edge_vertices(u, v))};
+        return edge{
+            u, v, id_find(edges_, typename base_t::edge_vertices(u, v))};
     }
 
     void remove_edge(edge e) {
@@ -180,6 +187,7 @@ public:
 } // namespace detail
 
 template <class Directed, class Vertex, class EdgeContainer = std::vector<none>>
-using edge_list = detail::edge_list_impl<Directed, Vertex, EdgeContainer, two_vertices>;
+using edge_list =
+    detail::edge_list_impl<Directed, Vertex, EdgeContainer, two_vertices>;
 
 } // namespace ac

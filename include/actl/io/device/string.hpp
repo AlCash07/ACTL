@@ -80,7 +80,8 @@ public:
     }
 
     index read(const span<Char>& dst) {
-        index count = std::min(dst.size(), static_cast<index>(s_.size()) - pos_);
+        index count =
+            std::min(dst.size(), static_cast<index>(s_.size()) - pos_);
         std::memcpy(dst.data(), s_.data() + pos_, static_cast<size_t>(count));
         pos_ += count;
         return count;

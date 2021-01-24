@@ -12,11 +12,14 @@
 
 namespace ac {
 
-/// Winding number - number of turns around the point in counter-clockwise direction.
-/// If the point is on the boundary, returns std::numeric_limits<int>::max().
+/// Winding number - number of turns around the point in counter-clockwise
+/// direction. If the point is on the boundary, returns
+/// std::numeric_limits<int>::max().
 /// http://geomalgorithms.com/a03-_inclusion.html
 template <class Policy, class T, class U>
-int winding_number(const Policy& policy, const point<T>& p, const polygon<U>& poly) {
+int winding_number(
+    const Policy& policy, const point<T>& p, const polygon<U>& poly) //
+{
     static constexpr int boundary = std::numeric_limits<int>::max();
     if (poly.empty())
         return 0;
@@ -30,10 +33,12 @@ int winding_number(const Policy& policy, const point<T>& p, const polygon<U>& po
         auto j = i + 1;
         if (equal(policy, i->y(), p.y()) && equal(policy, j->y(), p.y())) {
             if (less(policy, i->x(), j->x())) {
-                if (!less(policy, p.x(), i->x()) && !less(policy, j->x(), p.x()))
+                if (!less(policy, p.x(), i->x()) &&
+                    !less(policy, j->x(), p.x()))
                     return boundary;
             } else {
-                if (!less(policy, p.x(), j->x()) && !less(policy, i->x(), p.x()))
+                if (!less(policy, p.x(), j->x()) &&
+                    !less(policy, i->x(), p.x()))
                     return boundary;
             }
         } else {

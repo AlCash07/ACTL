@@ -13,8 +13,11 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1>
-enum within within(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) {
-    return static_cast<enum within>(1 + cmp3way(policy, distance(policy, p, s.center), s.radius));
+enum within within(
+    const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) //
+{
+    return static_cast<enum within>(
+        1 + cmp3way(policy, distance(policy, p, s.center), s.radius));
 }
 
 } // namespace ac

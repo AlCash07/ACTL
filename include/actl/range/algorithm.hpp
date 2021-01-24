@@ -25,8 +25,11 @@ difference_type_t<Range> count(const Range& src, const T& value) {
 }
 
 template <class Range0, class Range1>
-std::pair<iterator_t<Range0>, iterator_t<Range1>> mismatch(const Range0& lhs, const Range1& rhs) {
-    return std::mismatch(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
+std::pair<iterator_t<Range0>, iterator_t<Range1>> mismatch(
+    const Range0& lhs, const Range1& rhs) //
+{
+    return std::mismatch(
+        std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
 }
 
 template <class Range, class T>
@@ -80,7 +83,9 @@ iterator_t<const Range> lower_bound(const Range& src, const T& value) {
 }
 
 template <class Range, class T, class Compare>
-iterator_t<const Range> lower_bound(const Range& src, const T& value, Compare comp) {
+iterator_t<const Range> lower_bound(
+    const Range& src, const T& value, Compare comp) //
+{
     return std::lower_bound(std::begin(src), std::end(src), value, comp);
 }
 
@@ -90,18 +95,27 @@ iterator_t<const Range> upper_bound(const Range& src, const T& value) {
 }
 
 template <class Range, class T, class Compare>
-iterator_t<const Range> upper_bound(const Range& src, const T& value, Compare comp) {
+iterator_t<const Range> upper_bound(
+    const Range& src, const T& value, Compare comp) //
+{
     return std::upper_bound(std::begin(src), std::end(src), value, comp);
 }
 
 template <class Range0, class Range1, class OutIter>
 bool merge(const Range0& lhs, const Range1& rhs, OutIter dst) {
-    return std::merge(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), dst);
+    return std::merge(
+        std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), dst);
 }
 
 template <class Range0, class Range1, class OutIter, class Compare>
 bool merge(const Range0& lhs, const Range1& rhs, OutIter dst, Compare comp) {
-    return std::merge(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), dst, comp);
+    return std::merge(
+        std::begin(lhs),
+        std::end(lhs),
+        std::begin(rhs),
+        std::end(rhs),
+        dst,
+        comp);
 }
 
 template <class Range>
@@ -141,7 +155,9 @@ bool lexicographical_compare(const Range0& lhs, const Range1& rhs) {
 }
 
 template <class Range0, class Range1, class Compare>
-bool lexicographical_compare(const Range0& lhs, const Range1& rhs, Compare comp) {
+bool lexicographical_compare(
+    const Range0& lhs, const Range1& rhs, Compare comp) //
+{
     return std::lexicographical_compare(
         std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), comp);
 }

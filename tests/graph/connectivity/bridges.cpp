@@ -26,7 +26,8 @@ TEST_CASE("bridges simple") {
     graph.add_edge(5, 7);
     std::vector<edge_t<Graph>> bridges;
     std::vector<int> components(8);
-    find_bridges_and_components<false>(graph, std::back_inserter(bridges), components);
+    find_bridges_and_components<false>(
+        graph, std::back_inserter(bridges), components);
     CHECK_EQUAL_SETS({{0, 2}, {5, 7}}, get_ends<false>(bridges));
     test_partition({{0, 1, 3}, {2, 4, 5}, {6}, {7}}, components);
 }

@@ -14,9 +14,12 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1>
-bool crosses(const Policy& policy, const plane<T0, N>& pl, const sphere<T1, N>& s) {
+bool crosses(
+    const Policy& policy, const plane<T0, N>& pl, const sphere<T1, N>& s) //
+{
     auto dist = abs(pl(policy, s.center));
-    return !less(policy, dist, product(policy, s.radius, norm(policy, pl.normal)));
+    return !less(
+        policy, dist, product(policy, s.radius, norm(policy, pl.normal)));
 }
 
 } // namespace ac

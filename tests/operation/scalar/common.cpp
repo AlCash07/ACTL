@@ -9,8 +9,11 @@
 
 TEST_CASE("common") {
     using one = std::integral_constant<int, 1>;
-    static_assert(std::is_same_v<none, decltype(eval(ac::common(none{}, none{}, none{})))>);
-    STATIC_ASSERT_WORKAROUND(1 == eval(ac::common(none{}, one{}, none{})).value);
+    static_assert(std::is_same_v<
+                  none,
+                  decltype(eval(ac::common(none{}, none{}, none{})))>);
+    STATIC_ASSERT_WORKAROUND(
+        1 == eval(ac::common(none{}, one{}, none{})).value);
     STATIC_ASSERT_WORKAROUND(1 == eval(ac::common(one{})).value);
     STATIC_ASSERT_WORKAROUND(1 == eval(ac::common(one{}, one{}, one{})).value);
     int x = 1;

@@ -17,7 +17,8 @@ namespace ac {
 namespace detail {
 
 template <class T>
-using enable_if_gc_t = std::enable_if_t<is_container_v<T> && !is_pair_associative_range_v<T>>;
+using enable_if_gc_t =
+    std::enable_if_t<is_container_v<T> && !is_pair_associative_range_v<T>>;
 
 template <class C>
 struct get_id_ref {
@@ -40,7 +41,9 @@ struct map_traits<C, detail::enable_if_gc_t<C>>
           !std::is_const_v<C>,
           false,
           true,
-          iterator_range<transform_iterator<container_id_iterator<C>, detail::get_id_ref<C>>>> {};
+          iterator_range<transform_iterator<
+              container_id_iterator<C>,
+              detail::get_id_ref<C>>>> {};
 
 template <class C>
 struct map_ops<C, detail::enable_if_gc_t<C>> : map_put<C> {

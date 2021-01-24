@@ -14,7 +14,8 @@ static_assert(std::is_same_v<int, ac::value_type_t<const int* const>>);
 
 // Outer const affects reference for containers but not for pointers.
 static_assert(std::is_same_v<int&, ac::reference_t<std::vector<int>>>);
-static_assert(std::is_same_v<const int&, ac::reference_t<const std::vector<int>>>);
+static_assert(
+    std::is_same_v<const int&, ac::reference_t<const std::vector<int>>>);
 static_assert(std::is_same_v<int&, ac::reference_t<int* const>>);
 static_assert(std::is_same_v<const int&, ac::reference_t<const int*>>);
 

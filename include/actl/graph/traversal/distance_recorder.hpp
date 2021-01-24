@@ -29,7 +29,9 @@ template <class Map>
 distance_recorder(Map&&) -> distance_recorder<Map>;
 
 template <class Map, class T>
-vertex_initializer<distance_recorder<Map>> make_distance_recorder(Map&& distance, T value) {
+vertex_initializer<distance_recorder<Map>> make_distance_recorder(
+    Map&& distance, T value) //
+{
     return {{std::forward<Map>(distance)}, value};
 }
 

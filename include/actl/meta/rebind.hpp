@@ -1,6 +1,7 @@
-// Rebind operates on classes that have one primary template parameter (which is the first one by
-// default) and replaces all its occurrences with the given type. Inner template classes are
-// modified only if their primary template parameter is the type that's being rebinded.
+// Rebind operates on classes that have one primary template parameter (which is
+// the first one by default) and replaces all its occurrences with the given
+// type. Inner template classes are modified only if their primary template
+// parameter is the type that's being rebinded.
 //
 // Copyright 2018 Oleksandr Bacherikov.
 //
@@ -29,7 +30,8 @@ struct rebind2<T, To, false> {
 };
 
 template <class T, class To, class From>
-struct rebind1 : rebind2<T, To, std::is_same_v<typename template_type<T>::type, From>> {};
+struct rebind1
+    : rebind2<T, To, std::is_same_v<typename template_type<T>::type, From>> {};
 
 template <class To, class From>
 struct rebind1<From, To, From> {

@@ -14,7 +14,8 @@ template <class T, class = void>
 struct is_manipulator : std::false_type {};
 
 template <class T>
-struct is_manipulator<T, std::void_t<typename T::is_manipulator>> : std::true_type {};
+struct is_manipulator<T, std::void_t<typename T::is_manipulator>>
+    : std::true_type {};
 
 template <class Format, class Manipulator>
 void manipulate(Format&, const Manipulator&) {}

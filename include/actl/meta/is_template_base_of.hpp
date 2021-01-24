@@ -25,7 +25,10 @@ template <template <class...> class B, class D, class = void>
 struct is_template_base_of : std::true_type {};
 
 template <template <class...> class B, class D>
-struct is_template_base_of<B, D, std::void_t<decltype(detail::test_base<B>(std::declval<D*>()))>>
+struct is_template_base_of<
+    B,
+    D,
+    std::void_t<decltype(detail::test_base<B>(std::declval<D*>()))>>
     : decltype(detail::test_base<B>(std::declval<D*>())) {};
 
 template <template <class...> class B, class D>

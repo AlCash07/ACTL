@@ -19,7 +19,8 @@ struct lexicographical_compare_range_t {
 
     template <class Cmp3WayOp, class T, class U>
     static int evaluate(const Cmp3WayOp& op, const T& lhs, const U& rhs) {
-        // Can't use std::lexicographical_compare because it doesn't compare 3-way.
+        // Can't use std::lexicographical_compare because it doesn't compare
+        // 3-way.
         auto lfirst = std::begin(lhs);
         auto llast = std::end(lhs);
         auto rfirst = std::begin(rhs);
@@ -32,7 +33,8 @@ struct lexicographical_compare_range_t {
         return int{rfirst != rlast} - int{lfirst != llast};
     }
 };
-constexpr operation_composer<lexicographical_compare_range_t> lexicographical_compare_range;
+constexpr operation_composer<lexicographical_compare_range_t>
+    lexicographical_compare_range;
 
 template <class T, class U>
 struct overload<cmp3way_t, range_tag, T, U> {

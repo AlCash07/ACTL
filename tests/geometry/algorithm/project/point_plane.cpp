@@ -8,5 +8,8 @@
 #include "test.hpp"
 
 TEST_CASE("default") {
-    CHECK_NEAR(point{3, 0, -1}, project(point{2, -2, -4}, plane<int>{{1, 2, 3}, 0}), 1e-12);
+    CHECK_NEAR(
+        point{3, 0, -1},
+        project(point{2, -2, -4}, plane<int>{{1, 2, 3}, 0}),
+        1e-12);
 }

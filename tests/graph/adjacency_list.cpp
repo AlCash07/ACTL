@@ -28,9 +28,21 @@ void test_adjacency_list() {
 template <class Dir>
 void test_adjacency_list1() {
     test_adjacency_list<Dir, hash_set<bundle>, none, std::vector<bundle>>();
-    test_adjacency_list<Dir, std::vector<bundle>, std::list<edge_property>, std::set<bundle>>();
-    test_adjacency_list<Dir, std::multiset<bundle>, std::vector<one_vertex>, std::vector<bundle>>();
-    test_adjacency_list<Dir, std::list<bundle>, std::vector<two_vertices>, hash_multiset<bundle>>();
+    test_adjacency_list<
+        Dir,
+        std::vector<bundle>,
+        std::list<edge_property>,
+        std::set<bundle>>();
+    test_adjacency_list<
+        Dir,
+        std::multiset<bundle>,
+        std::vector<one_vertex>,
+        std::vector<bundle>>();
+    test_adjacency_list<
+        Dir,
+        std::list<bundle>,
+        std::vector<two_vertices>,
+        hash_multiset<bundle>>();
 }
 
 TEST_CASE("adjacency_list bundle") {

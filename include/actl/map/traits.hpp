@@ -1,4 +1,5 @@
-// Maps inspired by boost property maps, but much more powerful. Supported functions:
+// Maps inspired by boost property maps, but much more powerful. Supported
+// functions:
 // - get(Map&, Key) : read;
 // - put(Map&, Key, Value) : write;
 // - invert(Map&, Value) : inverse mapping;
@@ -74,7 +75,8 @@ using map_range_t = typename map_traits<T>::range_type;
 template <class T>
 using map_iterator_t = iterator_t<map_range_t<T>>;
 
-// This struct guarantees that function declaration is found during unqualified name lookup.
+// This struct guarantees that function declaration is found during unqualified
+// name lookup.
 template <class T, class = void>
 struct map_ops {
     using K = map_key_t<T>;
@@ -122,7 +124,9 @@ map_range_t<T> map_range(T&& map) {
 
 template <class T>
 struct map_put {
-    static constexpr void put(T& map, map_key_t<T> key, const map_value_t<T>& value) {
+    static constexpr void put(
+        T& map, map_key_t<T> key, const map_value_t<T>& value) //
+    {
         get(map, key) = value;
     }
 };

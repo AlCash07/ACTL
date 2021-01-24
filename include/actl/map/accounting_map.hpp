@@ -13,8 +13,9 @@
 
 namespace ac {
 
-/// Property map into integer domain that assigns next non-negative integer to every key not
-/// encountered before. Can be invertible with overhead of additional vector of pointers.
+/// Property map into integer domain that assigns next non-negative integer to
+/// every key not encountered before. Can be invertible with overhead of
+/// additional vector of pointers.
 template <class AssociativeContainer, bool Invertible = false>
 class accounting_map {
     using AC = AssociativeContainer;
@@ -29,7 +30,15 @@ public:
     struct is_accounting_map;
 
     template <bool Const>
-    using traits = map_traits_base<Key, const V&, V, !Const, false, Invertible, true, const AC&>;
+    using traits = map_traits_base<
+        Key,
+        const V&,
+        V,
+        !Const,
+        false,
+        Invertible,
+        true,
+        const AC&>;
 
     const V& get(Key key) {
         auto& ac = data_.first();
@@ -50,7 +59,10 @@ public:
     }
 
 private:
-    compressed_pair<AC, std::conditional_t<Invertible, std::vector<const K*>, none>> data_;
+    compressed_pair<
+        AC,
+        std::conditional_t<Invertible, std::vector<const K*>, none>>
+        data_;
 };
 
 template <class AM>

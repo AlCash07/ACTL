@@ -50,7 +50,8 @@ struct function_traits<R (C::*)(Args...)> : function_traits<R(C&, Args...)> {};
 
 // const member function pointer
 template <class C, class R, class... Args>
-struct function_traits<R (C::*)(Args...) const> : function_traits<R(const C&, Args...)> {};
+struct function_traits<R (C::*)(Args...) const>
+    : function_traits<R(const C&, Args...)> {};
 
 template <class F>
 struct function_object_traits<F, std::void_t<decltype(&F::operator())>> {

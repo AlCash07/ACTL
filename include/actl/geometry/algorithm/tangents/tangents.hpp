@@ -10,8 +10,15 @@
 
 namespace ac {
 
-template <class Policy, class T, class U, class OutIter, geometry::enable_int_if_swap<T, U> = 0>
-OutIter tangents(const Policy& policy, const T& lhs, const U& rhs, OutIter dst) {
+template <
+    class Policy,
+    class T,
+    class U,
+    class OutIter,
+    geometry::enable_int_if_swap<T, U> = 0>
+OutIter tangents(
+    const Policy& policy, const T& lhs, const U& rhs, OutIter dst) //
+{
     return tangents(policy, rhs, lhs, dst);
 }
 

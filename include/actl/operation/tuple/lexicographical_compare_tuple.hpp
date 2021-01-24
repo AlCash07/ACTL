@@ -28,12 +28,14 @@ struct lexicographical_compare_tuple_t {
             return select(v == 0, evaluate<I + 1>(ops, lhs, rhs), v);
     }
 };
-constexpr operation_composer<lexicographical_compare_tuple_t> lexicographical_compare_tuple;
+constexpr operation_composer<lexicographical_compare_tuple_t>
+    lexicographical_compare_tuple;
 
 template <class T, class U>
 struct overload<cmp3way_t, tuple_tag, T, U> {
     static constexpr auto resolve(cmp3way_t op) {
-        return tuple_op_resolver<T, U>::resolve(lexicographical_compare_tuple, op);
+        return tuple_op_resolver<T, U>::resolve(
+            lexicographical_compare_tuple, op);
     };
 };
 

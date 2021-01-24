@@ -22,7 +22,10 @@ struct sa_types {
 } // namespace detail
 
 template <class T, T... Is>
-class static_array : public contiguous_range_facade<static_array<T, Is...>, detail::sa_types<T>> {
+class static_array
+    : public contiguous_range_facade<
+          static_array<T, Is...>,
+          detail::sa_types<T>> {
     static constexpr std::array<T, sizeof...(Is)> array = {Is...};
 
 public:

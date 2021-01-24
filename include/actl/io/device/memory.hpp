@@ -17,7 +17,8 @@ class out_memory : public device<Mode, Char> {
     using C = add_const_if_t<!is_out<Mode>, Char>;
 
 public:
-    explicit out_memory(span<C> data) : data_{std::move(data)}, ptr_{data_.begin()} {}
+    explicit out_memory(span<C> data)
+        : data_{std::move(data)}, ptr_{data_.begin()} {}
 
     void move(index offset) {
         ptr_ += offset;
@@ -60,7 +61,8 @@ public:
 
     index write(const cspan<Char>& src) {
         index count = std::min(src.size(), end() - ptr_);
-        std::memcpy(ptr_, src.data(), static_cast<size_t>(count) * sizeof(Char));
+        std::memcpy(
+            ptr_, src.data(), static_cast<size_t>(count) * sizeof(Char));
         ptr_ += count;
         return count;
     }

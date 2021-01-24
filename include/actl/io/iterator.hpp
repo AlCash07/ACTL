@@ -20,10 +20,13 @@ struct input_device_iterator_types {
     using difference_type = use_default;
 };
 
-/// Iterator similar to http://en.cppreference.com/w/cpp/iterator/istream_iterator
+/// Iterator similar to
+/// http://en.cppreference.com/w/cpp/iterator/istream_iterator
 template <class T, class Device>
 class input_device_iterator
-    : public iterator_facade<input_device_iterator<T, Device>, input_device_iterator_types<T>> {
+    : public iterator_facade<
+          input_device_iterator<T, Device>,
+          input_device_iterator_types<T>> {
 public:
     explicit input_device_iterator() = default;
 
@@ -59,10 +62,13 @@ auto make_input_device_iterator(Device& device) {
     return input_device_iterator<T, Device>{device};
 }
 
-/// Iterator similar to http://en.cppreference.com/w/cpp/iterator/ostream_iterator
+/// Iterator similar to
+/// http://en.cppreference.com/w/cpp/iterator/ostream_iterator
 template <class T, class Device>
 class output_device_iterator
-    : public iterator_facade<output_device_iterator<T, Device>, output_iterator_types> {
+    : public iterator_facade<
+          output_device_iterator<T, Device>,
+          output_iterator_types> {
 public:
     explicit output_device_iterator(Device& device) : device_{&device} {}
 

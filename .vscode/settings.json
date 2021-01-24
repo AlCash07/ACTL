@@ -1,6 +1,6 @@
 {
-    "editor.rulers": [100],
-    "editor.wordWrapColumn": 100,
+    "editor.rulers": [80],
+    "editor.wordWrapColumn": 80,
     "cmake.sourceDirectory": "${workspaceFolder}",
     "cmake.buildDirectory": "${workspaceFolder}/build",
     "cmake.configureArgs": [

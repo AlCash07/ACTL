@@ -16,7 +16,7 @@ template <class T, index N = 3>
 class plane {
 public:
     point<T, N> normal; // normal vector
-    T d;                // distance from origin to the plane times the norm of normal
+    T d; // distance from origin to the plane times the norm of normal
 
     constexpr plane() = default;
 
@@ -29,7 +29,8 @@ public:
         : plane{normal, dot(cast_before<Mul, T>{}, normal, p)} {}
 
     template <class T1>
-    explicit constexpr plane(const plane<T1, N>& rhs) : plane{rhs.normal, rhs.d} {}
+    explicit constexpr plane(const plane<T1, N>& rhs)
+        : plane{rhs.normal, rhs.d} {}
 
     friend void swap(plane& lhs, plane& rhs) {
         using std::swap;
@@ -39,7 +40,9 @@ public:
 
     // Oriented distance from @p point to the plane times the norm of normal.
     template <class Policy, class T1 = T>
-    constexpr auto operator()(const Policy& policy, const point<T1, N>& p) const {
+    constexpr auto operator()(
+        const Policy& policy, const point<T1, N>& p) const //
+    {
         return dot(policy, normal, p) - d;
     }
 
@@ -56,10 +59,12 @@ template <index N, class T0, class T1>
 plane(const point<T0, N>&, const T1&) -> plane<geometry::scalar_t<T0, T1>, N>;
 
 template <index N, class T0, class T1>
-plane(const point<T0, N>&, const point<T1, N>&) -> plane<geometry::scalar_t<T0, T1>, N>;
+plane(const point<T0, N>&, const point<T1, N>&)
+    -> plane<geometry::scalar_t<T0, T1>, N>;
 
 template <index N, class T>
-struct geometry_traits<plane<T, N>> : geometry_traits_base<plane_tag, point<T, N>> {};
+struct geometry_traits<plane<T, N>>
+    : geometry_traits_base<plane_tag, point<T, N>> {};
 
 template <index N, class... Ts>
 using plane_t = plane<geometry::scalar_t<Ts...>, N>;
@@ -70,7 +75,9 @@ constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b) {
 }
 
 template <class T0, class T1, class T2>
-constexpr auto make_plane3d(const point3d<T0>& a, const point3d<T1>& b, const point3d<T2>& c) {
+constexpr auto make_plane3d(
+    const point3d<T0>& a, const point3d<T1>& b, const point3d<T2>& c) //
+{
     return plane_t<3, T0, T1, T2>{cross(b - a, c - a), a};
 }
 

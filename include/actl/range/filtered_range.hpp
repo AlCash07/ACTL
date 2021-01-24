@@ -33,8 +33,10 @@ struct filtered_range_types {
     class iterator : public iterator_adaptor<iterator, Iter, iter_types> {
     public:
         explicit iterator(
-            iterator_t<std::remove_reference_t<R>> iter, const filtered_range<R, P>& range)
-            : iterator_adaptor<iterator, Iter, iter_types>{iter}, range_{range} {
+            iterator_t<std::remove_reference_t<R>> iter,
+            const filtered_range<R, P>& range)
+            : iterator_adaptor<iterator, Iter, iter_types>{iter}
+            , range_{range} {
             find_next();
         }
 
@@ -42,7 +44,8 @@ struct filtered_range_types {
         friend struct ac::iterator_core_access;
 
         void find_next() {
-            while (this->base() != range_.original().end() && !range_.evaluate(*this->base()))
+            while (this->base() != range_.original().end() &&
+                   !range_.evaluate(*this->base()))
                 ++this->base_ref();
         }
 
@@ -71,7 +74,8 @@ class filtered_range
           filtered_range<Range, Predicate>,
           detail::filtered_range_types<Range, Predicate>> {
 public:
-    using iterator = typename detail::filtered_range_types<Range, Predicate>::iterator;
+    using iterator =
+        typename detail::filtered_range_types<Range, Predicate>::iterator;
 
     explicit filtered_range(Range&& range, Predicate pred)
         : data_{std::forward<Range>(range), std::move(pred)} {}
@@ -97,7 +101,8 @@ private:
 
 template <class Range, class Predicate>
 auto filter_range(Range&& range, Predicate pred) {
-    return filtered_range<Range, Predicate>{std::forward<Range>(range), std::move(pred)};
+    return filtered_range<Range, Predicate>{
+        std::forward<Range>(range), std::move(pred)};
 }
 
 } // namespace ac

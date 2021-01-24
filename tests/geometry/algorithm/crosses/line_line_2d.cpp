@@ -26,11 +26,17 @@ TEST_CASE("general position all kinds") {
                     };
                     for (int x : irange(-2, 3)) {
                         for (int y : irange(-2, 3)) {
-                            auto h = make_any_line(point{x - 1, 0}, s0, point{x + 1, 0}, e0);
-                            auto v = make_any_line(point{0, y - 1}, s1, point{0, y + 1}, e1);
-                            bool expected = crosses_line(x, s0, e0) && crosses_line(y, s1, e1);
+                            auto h = make_any_line(
+                                point{x - 1, 0}, s0, point{x + 1, 0}, e0);
+                            auto v = make_any_line(
+                                point{0, y - 1}, s1, point{0, y + 1}, e1);
+                            bool expected = crosses_line(x, s0, e0) &&
+                                            crosses_line(y, s1, e1);
                             CHECK(expected == crosses(h, v));
-                            CHECK(expected == crosses(general_position_policy{policy{}}, h, v));
+                            CHECK(
+                                expected ==
+                                crosses(
+                                    general_position_policy{policy{}}, h, v));
                         }
                     }
                 }

@@ -18,7 +18,8 @@ struct vertex_edges {
 };
 
 template <class OEC, class IEC>
-struct vertex_edges<bidirectional, OEC, IEC> : vertex_edges<directed, OEC, IEC> {
+struct vertex_edges<bidirectional, OEC, IEC>
+    : vertex_edges<directed, OEC, IEC> {
     IEC in_edges;
 };
 
@@ -31,12 +32,17 @@ struct adj_list_traits {
 
     using edge_selector = value_type_t<EC>;
 
-    using edges = edge_list_impl<Dir, vertex, rebind_t<EC, value_type_t<OEC>>, edge_selector>;
+    using edges = edge_list_impl<
+        Dir,
+        vertex,
+        rebind_t<EC, value_type_t<OEC>>,
+        edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
-    static constexpr bool has_out_vertex = is_associative_range_v<OEC> ||
-                                           std::is_same_v<edge_selector, edge_property> ||
-                                           std::is_same_v<edge_selector, none>;
+    static constexpr bool has_out_vertex =
+        is_associative_range_v<OEC> ||
+        std::is_same_v<edge_selector, edge_property> ||
+        std::is_same_v<edge_selector, none>;
 
     using out_edge_vertex = std::conditional_t<has_out_vertex, vertex, none>;
 
@@ -49,9 +55,11 @@ struct adj_list_traits {
 
     using out_edge_container = rebind_container_t<OEC, out_edge_data>;
 
-    // In bidirectional graph with none edge_selector in_edge points to out_edge.
+    // In bidirectional graph with none edge_selector in_edge points to
+    // out_edge.
     using in_edge_bundle = std::conditional_t<
-        std::is_same_v<edge_selector, none> && std::is_same_v<Dir, bidirectional>,
+        std::is_same_v<edge_selector, none> &&
+            std::is_same_v<Dir, bidirectional>,
         container_id<out_edge_container>,
         typename edges::edge_id>;
 
@@ -59,30 +67,36 @@ struct adj_list_traits {
 
     using in_edge_container = rebind_container_t<OEC, in_edge_data>;
 
-    using vertex_edges = vertex_edges<Dir, out_edge_container, in_edge_container>;
+    using vertex_edges =
+        vertex_edges<Dir, out_edge_container, in_edge_container>;
     using vertex_data = mimic_pair<vertex_edges, value_type_t<VC>, 2>;
 
-    using vertices = vertex_list<rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
+    using vertices = vertex_list<
+        rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;
 
-    // vertices::vertex cannot be used as an element inside vertices because it would result in
-    // incomplete type inside stl container which is undefined behaviour.
-    // One solution would be to store iterators on heap and maintain pointers to them, however this
-    // is ugly and adds heap allocation and dereferencing overhead.
-    // Here we operate based on assumption that iterators for supported containers are just wrapped
-    // pointers (and it's true for all the major stl implementations), so they can be reinterpreted
+    // vertices::vertex cannot be used as an element inside vertices because it
+    // would result in incomplete type inside stl container which is undefined
+    // behaviour. One solution would be to store iterators on heap and maintain
+    // pointers to them, however this is ugly and adds heap allocation and
+    // dereferencing overhead. Here we operate based on assumption that
+    // iterators for supported containers are just wrapped pointers (and it's
+    // true for all the major stl implementations), so they can be reinterpreted
     // as void*.
     static_assert(
-        std::is_same_v<vertex, int> || sizeof(typename vertices::vertex) == sizeof(void*));
+        std::is_same_v<vertex, int> ||
+        sizeof(typename vertices::vertex) == sizeof(void*));
 };
 
 template <class Dir, class OEC, class EC, class VC>
-class adj_list_vertex_data : public adj_list_traits<Dir, OEC, EC, VC>::vertex_data {
+class adj_list_vertex_data
+    : public adj_list_traits<Dir, OEC, EC, VC>::vertex_data {
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
 
 public:
     template <class... Ts>
     explicit adj_list_vertex_data(Ts&&... args)
-        : traits::vertex_data{typename traits::vertex_edges{}, std::forward<Ts>(args)...} {}
+        : traits::vertex_data{
+              typename traits::vertex_edges{}, std::forward<Ts>(args)...} {}
 };
 
 template <class V, class OE, class S>

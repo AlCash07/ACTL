@@ -35,7 +35,12 @@ void read_till(Device& id, till<std::basic_string<C, T, A>&, P> x) {
     }
 }
 
-template <class Format, class C, class T, class A, enable_int_if_text<Format> = 0>
+template <
+    class Format,
+    class C,
+    class T,
+    class A,
+    enable_int_if_text<Format> = 0>
 auto make_parser(Format&, std::basic_string<C, T, A>& x) {
     return till{x, is_space};
 }

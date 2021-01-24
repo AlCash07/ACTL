@@ -43,5 +43,8 @@ TEST_CASE("3d cross product") {
     constexpr int M = 1'000'000'000;
     CHECK(
         point{-2, 999999999000000001LL, -1000000001000000001LL} ==
-        cross(cast_before<Mul, long long>{}, point{1, M + 1, M - 1}, point{M + 1, M, M - 2}));
+        cross(
+            cast_before<Mul, long long>{},
+            point{1, M + 1, M - 1},
+            point{M + 1, M, M - 2}));
 }

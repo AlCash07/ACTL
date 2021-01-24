@@ -1,5 +1,5 @@
-// Iterator facade is designed to produce complete iterator interface from a set of core functions.
-// Adopted from boost (with simplifications):
+// Iterator facade is designed to produce complete iterator interface from a set
+// of core functions. Adopted from boost (with simplifications):
 // http://www.boost.org/doc/libs/1_65_1/libs/iterator/doc/iterator_facade.html
 //
 // Copyright 2017 Oleksandr Bacherikov.
@@ -26,7 +26,8 @@ public:
     using value_type = std::remove_cv_t<typename T::value_type>;
     using reference = deduce_t<typename T::reference, value_type&>;
     using pointer = typename operator_arrow_dispatch<reference>::type;
-    using difference_type = deduce_t<typename T::difference_type, std::ptrdiff_t>;
+    using difference_type =
+        deduce_t<typename T::difference_type, std::ptrdiff_t>;
 
     // We don't return reference here because it's void for output iterators.
     constexpr decltype(auto) operator*() const {
@@ -60,7 +61,8 @@ class iter_facade<Iter, T, std::input_iterator_tag>
 
 public:
     constexpr typename base_t::pointer operator->() const {
-        return operator_arrow_dispatch<typename base_t::reference>::apply(*this->derived());
+        return operator_arrow_dispatch<typename base_t::reference>::apply(
+            *this->derived());
     }
 };
 
@@ -118,31 +120,36 @@ public:
 
 template <class Derived, class Types>
 class iterator_facade
-    : public detail::iter_facade<Derived, Types, typename Types::iterator_category> {};
+    : public detail::
+          iter_facade<Derived, Types, typename Types::iterator_category> {};
 
-#define ITERATOR_OPERATOR(type, op, expr)                                           \
-    template <class Iter, class T>                                                  \
-    constexpr type operator op(                                                     \
-        const iterator_facade<Iter, T>& lhs, const iterator_facade<Iter, T>& rhs) { \
-        return expr;                                                                \
+#define ITERATOR_OPERATOR(type, op, expr)      \
+    template <class Iter, class T>             \
+    constexpr type operator op(                \
+        const iterator_facade<Iter, T>& lhs,   \
+        const iterator_facade<Iter, T>& rhs) { \
+        return expr;                           \
     }
 
 ITERATOR_OPERATOR(
     bool,
     ==,
-    iterator_core_access::equal(static_cast<const Iter&>(lhs), static_cast<const Iter&>(rhs)))
+    iterator_core_access::equal(
+        static_cast<const Iter&>(lhs), static_cast<const Iter&>(rhs)))
 
 ITERATOR_OPERATOR(
     auto,
     -,
-    iterator_core_access::distance_to(static_cast<const Iter&>(rhs), static_cast<const Iter&>(lhs)))
+    iterator_core_access::distance_to(
+        static_cast<const Iter&>(rhs), static_cast<const Iter&>(lhs)))
 
 ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
 #undef ITERATOR_OPERATOR
 
 template <class Iter, class T>
-constexpr Iter operator+(typename T::difference_type n, const iterator_facade<Iter, T>& rhs) {
+constexpr Iter operator+(
+    typename T::difference_type n, const iterator_facade<Iter, T>& rhs) {
     return rhs + n;
 }
 

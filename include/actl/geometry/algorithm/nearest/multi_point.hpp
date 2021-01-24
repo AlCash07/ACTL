@@ -17,7 +17,9 @@ namespace ac {
 namespace detail {
 
 template <class Point, class Policy>
-auto nearest(const Policy& policy, const span<Point>& points, const span<Point>& tmp) {
+auto nearest(
+    const Policy& policy, const span<Point>& points, const span<Point>& tmp) //
+{
     using T = decltype(distance(policy, points[0], points[0]));
     using Pair = std::pair<T, std::pair<Point, Point>>;
     auto y_comp = [&policy](const Point& lhs, const Point& rhs) {
@@ -39,7 +41,8 @@ auto nearest(const Policy& policy, const span<Point>& points, const span<Point>&
     index middle = n / 2;
     auto middle_x = points[middle].x();
     Pair res = nearest(policy, points.first(middle), tmp);
-    if (Pair rres = nearest(policy, points.last(n - middle), tmp); rres.first < res.first)
+    if (Pair rres = nearest(policy, points.last(n - middle), tmp);
+        rres.first < res.first)
         res = rres;
     merge(points.first(middle), points.last(n - middle), tmp.begin(), y_comp);
     copy(tmp.first(n), points.begin());
@@ -65,7 +68,8 @@ auto nearest(const Policy& policy, const span<Point>& points, const span<Point>&
 template <
     class Policy,
     class T,
-    enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> = 0>
+    enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> =
+        0>
 auto nearest(const Policy& policy, T& points) {
     ACTL_ASSERT(points.size() > 1);
     sort(points, less(policy));

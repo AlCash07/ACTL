@@ -10,5 +10,6 @@
 #include "test.hpp"
 
 TEST_CASE("default") {
-    CHECK(collinear(absolute_error9, point{1, -1}, bisector(point{6, -3}, point{2, -4})));
+    CHECK(collinear(
+        absolute_error9, point{1, -1}, bisector(point{6, -3}, point{2, -4})));
 }

@@ -16,7 +16,9 @@ namespace ac {
 /// Point vs non-degenerate triangle : O(1).
 /// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
 template <class Policy, class T, class U>
-enum within within(const Policy& policy, const point<T>& p, const polygon<U>& triangle) {
+enum within within(
+    const Policy& policy, const point<T>& p, const polygon<U>& triangle) //
+{
     ACTL_ASSERT(triangle.size() == 3);
     orientation2d signs[3] = {};
     auto it = cyclic_begin(triangle);
@@ -26,7 +28,8 @@ enum within within(const Policy& policy, const point<T>& p, const polygon<U>& tr
     if (signs[0] == signs[1] && signs[1] == signs[2])
         return within::inside;
     for (index i = 0; i < 3; ++i) {
-        if (signs[i] != orientation2d::collinear && signs[i] == -signs[i + 1 == 3 ? 0 : i + 1])
+        if (signs[i] != orientation2d::collinear &&
+            signs[i] == -signs[i + 1 == 3 ? 0 : i + 1])
             return within::outside;
     }
     return within::border;

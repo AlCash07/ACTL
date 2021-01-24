@@ -18,7 +18,8 @@ struct equal_range_t {
 
     template <class EqualOp, class T, class U>
     static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs) {
-        return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
+        return std::equal(
+            std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
     }
 };
 constexpr operation_composer<equal_range_t> equal_range;

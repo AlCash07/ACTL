@@ -37,9 +37,19 @@ const auto& max_endpoint(
     }
 }
 
-template <class Policy, index N, class T0, class K0, class T1, class K1, class OutIter>
+template <
+    class Policy,
+    index N,
+    class T0,
+    class K0,
+    class T1,
+    class K1,
+    class OutIter>
 OutIter common_line(
-    const Policy& policy, const line<T0, N, K0>& lhs, const line<T1, N, K1>& rhs, OutIter dst) //
+    const Policy& policy,
+    const line<T0, N, K0>& lhs,
+    const line<T1, N, K1>& rhs,
+    OutIter dst) //
 {
     using point_t = point<geometry::scalar_t<T0, T1>, N>;
     auto get_point = [&policy](const auto& l, bool start) {
@@ -47,8 +57,10 @@ OutIter common_line(
                    ? std::pair{point_t{l.begin}, begin(l.kind())}
                    : std::pair{point_t{l.end()}, end(l.kind())};
     };
-    auto la = max_endpoint(policy, get_point(lhs, true), get_point(rhs, true), true);
-    auto lb = max_endpoint(policy, get_point(lhs, false), get_point(rhs, false), false);
+    auto la =
+        max_endpoint(policy, get_point(lhs, true), get_point(rhs, true), true);
+    auto lb = max_endpoint(
+        policy, get_point(lhs, false), get_point(rhs, false), false);
     if (endpoint_test(policy, la.second, la.first, lb.first)) {
         *dst++ = make_any_line(la.first, la.second, lb.first, lb.second);
     }

@@ -14,7 +14,8 @@ namespace ac {
 namespace detail {
 
 template <class T>
-using enable_if_upac_t = std::enable_if_t<is_unique_range_v<T> && is_pair_associative_range_v<T>>;
+using enable_if_upac_t =
+    std::enable_if_t<is_unique_range_v<T> && is_pair_associative_range_v<T>>;
 
 } // namespace detail
 

@@ -29,14 +29,18 @@ class float_unchecked_parser {
 
     auto parse_int(cspan<char> s) {
         uint_unchecked_parser<UInt> parser{base};
-        index length = parser.parse(s.size() <= max_length ? s : s.first(max_length));
+        index length =
+            parser.parse(s.size() <= max_length ? s : s.first(max_length));
         return std::pair{parser.value(), length};
     }
 
 public:
     explicit float_unchecked_parser(uint8_t base)
         : base{base == 0 ? 10 : UInt{base}}
-        , max_length{detail::digit_count(std::numeric_limits<UInt>::max(), this->base) - 1} {}
+        , max_length{
+              detail::digit_count(
+                  std::numeric_limits<UInt>::max(), this->base) -
+              1} {}
 
     index parse(cspan<char> s) {
         index i = 0;

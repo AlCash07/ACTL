@@ -37,7 +37,9 @@ void test_edges(Graph& graph, V v0, V v1, V v2) {
     CHECK("e02"sv == graph[es[1]].s);
     CHECK("e21a"sv == get(map, es[2]).s);
     auto e_range = graph.edges();
-    CHECK_EQUAL_SETS(get_ends<Graph::is_directed>(es), get_ends<Graph::is_directed>(e_range));
+    CHECK_EQUAL_SETS(
+        get_ends<Graph::is_directed>(es),
+        get_ends<Graph::is_directed>(e_range));
     auto e02 = graph.find_edge(v0, v2);
     CHECK_EQUAL_SETS(std::vector{v0, v2}, {e02.source(), e02.target()});
     CHECK(es[1] == e02);

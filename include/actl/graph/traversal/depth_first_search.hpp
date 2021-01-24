@@ -41,7 +41,9 @@ class depth_first_search : public invocable_tuple<Components...> {
     // Recursive implementation to demonstrate dfs logic clearer.
     // Returns true immediately if terminator vertex was found.
     template <class Graph, class VertexPredicate>
-    bool recurse(const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator) {
+    bool recurse(
+        const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator) //
+    {
         invoke_all(on_vertex_discover{}, u);
         invoke_all(on_vertex_start{}, u);
         if (is_terminator(u))
@@ -70,7 +72,12 @@ public:
         class Stack = std::stack<dfs_context<Graph>>,
         class VertexPredicate = always_false,
         class V = vertex_t<Graph>>
-    void visit(const Graph& graph, V u, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
+    void visit(
+        const Graph& graph,
+        V u,
+        Stack&& stack = {},
+        VertexPredicate is_terminator = {}) //
+    {
         stack = {};
         invoke_all(on_search_start{}, u);
         out_edge_iterator_t<Graph> it, end;
@@ -128,8 +135,13 @@ public:
         class Graph,
         class Stack = std::stack<dfs_context<Graph>>,
         class VertexPredicate = always_false,
-        enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> = 0>
-    void operator()(const Graph& graph, Stack&& stack = {}, VertexPredicate is_terminator = {}) {
+        enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> =
+            0>
+    void operator()(
+        const Graph& graph,
+        Stack&& stack = {},
+        VertexPredicate is_terminator = {}) //
+    {
         for (auto u : graph.vertices())
             invoke_all(on_vertex_initialize{}, u);
         for (auto s : graph.vertices()) {

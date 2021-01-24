@@ -109,16 +109,25 @@ auto get_bridge_finder(const G&, Ts&&... args) {
     return bridge_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
-template <bool ParallelEdges = true, class Graph, class BridgeOutIter, class ComponentMap>
-void find_bridges_and_components(const Graph& graph, BridgeOutIter bridges, ComponentMap&& map) {
+template <
+    bool ParallelEdges = true,
+    class Graph,
+    class BridgeOutIter,
+    class ComponentMap>
+void find_bridges_and_components(
+    const Graph& graph, BridgeOutIter bridges, ComponentMap&& map) //
+{
     auto bf = get_bridge_finder(
         graph,
         bridges,
         detail::component_stack{std::forward<ComponentMap>(map)},
-        // Values of the next two maps can be compressed into bits of one int per vertex.
+        // Values of the next two maps can be compressed into bits of one int
+        // per vertex.
         make_default_vertex_map<int>(graph),
         make_default_vertex_map<bool>(graph),
-        std::stack<bridge_context<Graph, ParallelEdges && Graph::allows_parallel_edges>>{});
+        std::stack<bridge_context<
+            Graph,
+            ParallelEdges && Graph::allows_parallel_edges>>{});
     depth_first_search{bf}(graph, bf.dfs_stack);
 }
 
@@ -128,7 +137,9 @@ void find_bridges(const Graph& graph, BridgeOutIter bridges) {
 }
 
 template <bool ParallelEdges = true, class Graph, class ComponentMap>
-void find_two_edge_connected_components(const Graph& graph, ComponentMap&& map) {
+void find_two_edge_connected_components(
+    const Graph& graph, ComponentMap&& map) //
+{
     find_bridges_and_components<ParallelEdges>(
         graph, dummy_output_iterator{}, std::forward<ComponentMap>(map));
 }

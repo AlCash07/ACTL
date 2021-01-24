@@ -48,14 +48,16 @@ template <class T>
 using tag_t = typename geometry_traits<remove_cvref_t<T>>::tag;
 
 template <class... Ts>
-using scalar_t = std::common_type_t<typename geometry_traits<remove_cvref_t<Ts>>::scalar...>;
+using scalar_t =
+    std::common_type_t<typename geometry_traits<remove_cvref_t<Ts>>::scalar...>;
 
 template <class T>
 using point_t = typename geometry_traits<remove_cvref_t<T>>::point;
 
 /* ID */
 
-// Never change the order of existing IDs! However, new ones can be inserted anywhere.
+// Never change the order of existing IDs! However, new ones can be inserted
+// anywhere.
 enum : int {
     scalar_id,
     point_id,

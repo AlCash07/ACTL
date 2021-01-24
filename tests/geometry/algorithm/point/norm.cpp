@@ -17,5 +17,6 @@ struct norm_policy
 
 TEST_CASE("deferred") {
     constexpr int x = 2'000'000'000;
-    CHECK(8'000'000'000'000'000'000LL == sqr(norm(norm_policy{}, point{x, -x})));
+    CHECK(
+        8'000'000'000'000'000'000LL == sqr(norm(norm_policy{}, point{x, -x})));
 }

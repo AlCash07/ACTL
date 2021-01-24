@@ -1,5 +1,6 @@
 // Integer ranges.
-// Allow to replace loops like `for (int i = a; i < b; ++i)` with `for (int i : irange(a, b))` etc.
+// Allow to replace loops like `for (int i = a; i < b; ++i)` with
+// `for (int i : irange(a, b))` etc.
 //
 // Copyright 2017 Oleksandr Bacherikov.
 //
@@ -44,7 +45,8 @@ auto drange(Int first) {
     return drange(first, Int{});
 }
 
-/// Range with given @p step from @p first to @p last (inclusive if @p step is negative).
+/// Range with given @p step from @p first to @p last (inclusive if @p step is
+/// negative).
 template <class Int, class StepType>
 auto irange(Int first, Int last, StepType step) {
     ACTL_ASSERT(step != 0);
@@ -52,7 +54,9 @@ auto irange(Int first, Int last, StepType step) {
     if (step > 0 ? (first >= last) : (first < last))
         return make_range(begin, begin);
     Int step_count = (last - first - (step > 0)) / step + 1;
-    return make_range(begin, integer_iterator_with_step<Int>{first + step * step_count, step});
+    return make_range(
+        begin,
+        integer_iterator_with_step<Int>{first + step * step_count, step});
 }
 
 } // namespace ac

@@ -30,7 +30,9 @@ struct edge_iter_types {
 
 template <class G, class Iter>
 class adj_list_out_edge_iter
-    : public iterator_facade<adj_list_out_edge_iter<G, Iter>, edge_iter_types<G>> {
+    : public iterator_facade<
+          adj_list_out_edge_iter<G, Iter>,
+          edge_iter_types<G>> {
     friend struct ac::iterator_core_access;
 
     edge_t<G> dereference() const {
@@ -61,7 +63,8 @@ public:
 };
 
 template <class G>
-class adj_list_edge_iter : public iterator_facade<adj_list_edge_iter<G>, edge_iter_types<G>> {
+class adj_list_edge_iter
+    : public iterator_facade<adj_list_edge_iter<G>, edge_iter_types<G>> {
     friend struct ac::iterator_core_access;
 
     edge_t<G> dereference() const {

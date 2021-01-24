@@ -12,5 +12,7 @@ TEST_CASE("digit_count") {
     CHECK(2l == digit_count(8, 3));
     CHECK(9l == digit_count(999'999'999, 10));
     CHECK(10l == digit_count(1'000'000'000, 10));
-    CHECK(64l == digit_count(std::numeric_limits<unsigned long long>::max(), 2ull));
+    CHECK(
+        64l ==
+        digit_count(std::numeric_limits<unsigned long long>::max(), 2ull));
 }

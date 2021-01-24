@@ -27,7 +27,11 @@ ac::index write_final(D& od, F& fmt, const pair<T>& x) {
 
 TEST_CASE("nested") {
     auto f = spaced{", "sv} >>= text{};
-    test_write("((2, 1), (4, 3)), (1, 3)", f, pair{pair{2, 1}, pair{4, 3}}, pair{1, 3});
+    test_write(
+        "((2, 1), (4, 3)), (1, 3)",
+        f,
+        pair{pair{2, 1}, pair{4, 3}},
+        pair{1, 3});
 }
 
 TEST_CASE("std::vector") {

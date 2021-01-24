@@ -20,7 +20,8 @@ struct Promotion {
     static constexpr index inner_count = 1;
 
     template <class T, class U>
-    static constexpr auto evaluate(select_t op, bool condition, const T& lhs, const U& rhs) {
+    static constexpr auto evaluate(
+        select_t op, bool condition, const T& lhs, const U& rhs) {
         using CT = std::common_type_t<T, U>;
         return op.evaluate(condition, cast<CT>(lhs), cast<CT>(rhs));
     }

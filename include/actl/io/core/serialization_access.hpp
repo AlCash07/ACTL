@@ -12,7 +12,8 @@
 namespace ac::io {
 
 struct serialization_access {
-    // This is the simplest portable way I found to check for optional private members in T.
+    // This is the simplest portable way I found to check for optional private
+    // members in T.
     template <class T, class = typename T::is_io_tuple>
     std::true_type is_io_tuple(int);
 
@@ -22,7 +23,8 @@ struct serialization_access {
     template <
         class T,
         class... Ts,
-        class = decltype(std::declval<const T>().write_final(std::declval<Ts>()...))>
+        class = decltype(
+            std::declval<const T>().write_final(std::declval<Ts>()...))>
     std::true_type has_write(int);
 
     template <class... Ts>
@@ -52,7 +54,8 @@ template <
     class Device,
     class Format,
     class T,
-    enable_int_if<decltype(serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
+    enable_int_if<decltype(
+        serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
 index write_final(Device& od, Format& fmt, const T& x) {
     return serialization_access::write_final(x, od, fmt);
 }
@@ -61,7 +64,8 @@ template <
     class Device,
     class Format,
     class T,
-    enable_int_if<decltype(serialization_access{}.has_read<T, Device&, Format&>(0))::value> = 0>
+    enable_int_if<decltype(
+        serialization_access{}.has_read<T, Device&, Format&>(0))::value> = 0>
 bool read_final(Device& id, Format& fmt, T& x) {
     return serialization_access::read(x, id, fmt);
 }

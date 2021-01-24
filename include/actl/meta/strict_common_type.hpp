@@ -10,13 +10,15 @@
 
 namespace ac {
 
-/// If all the types are the same excluding integral constants, provides the member typedef type of
-/// this type. If all the types are integral constants, the first of them is provided.
+/// If all the types are the same excluding integral constants, provides the
+/// member typedef type of this type. If all the types are integral constants,
+/// the first of them is provided.
 template <class... Ts>
 struct strict_common_type;
 
 template <class... Ts>
-using strict_common_type_t = typename strict_common_type<std::decay_t<Ts>...>::type;
+using strict_common_type_t =
+    typename strict_common_type<std::decay_t<Ts>...>::type;
 
 template <class T>
 struct strict_common_type<T> {
@@ -40,6 +42,7 @@ struct strict_common_type<T, U> {
 };
 
 template <class T, class U, class... Ts>
-struct strict_common_type<T, U, Ts...> : strict_common_type<strict_common_type_t<T, U>, Ts...> {};
+struct strict_common_type<T, U, Ts...>
+    : strict_common_type<strict_common_type_t<T, U>, Ts...> {};
 
 } // namespace ac

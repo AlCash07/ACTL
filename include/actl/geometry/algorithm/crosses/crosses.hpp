@@ -10,7 +10,11 @@
 
 namespace ac {
 
-template <class Policy, class T, class U, geometry::enable_int_if_swap<T, U> = 0>
+template <
+    class Policy,
+    class T,
+    class U,
+    geometry::enable_int_if_swap<T, U> = 0>
 bool crosses(const Policy& policy, const T& lhs, const U& rhs) {
     return crosses(policy, rhs, lhs);
 }

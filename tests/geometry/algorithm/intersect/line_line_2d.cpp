@@ -18,7 +18,10 @@ TEST_CASE("general position") {
     CHECK(1u == res.size());
     CHECK_NEAR(point{3, 2}, res[0], 1e-12);
     intersect(
-        policy, line<int>{{1, 1}, {5, 3}}, line<int>{{0, 1}, {4, 3}}, std::back_inserter(res));
+        policy,
+        line<int>{{1, 1}, {5, 3}},
+        line<int>{{0, 1}, {4, 3}},
+        std::back_inserter(res));
     CHECK(1u == res.size());
 }
 
@@ -62,15 +65,21 @@ TEST_CASE("common all kinds") {
                     auto l1 = make_any_line(p1, s1, p3, e1);
                     any_line<int> res;
                     CHECK(&res + 1, intersect(default_policy, l0, l1 == &res));
-                    auto sok = s1 == endpoint::free ? std::pair{p0, s0} : std::pair{p1, s1};
-                    auto eok = e0 == endpoint::free ? std::pair{p3, e1} : std::pair{p2, e0};
+                    auto sok = s1 == endpoint::free ? std::pair{p0, s0}
+                                                    : std::pair{p1, s1};
+                    auto eok = e0 == endpoint::free ? std::pair{p3, e1}
+                                                    : std::pair{p2, e0};
                     CHECK(equal_lines(
-                        make_any_line(sok.first, sok.second, eok.first, eok.second), res));
+                        make_any_line(
+                            sok.first, sok.second, eok.first, eok.second),
+                        res));
                     l0 = make_any_line(p1, s0, p2, e0);
                     l1 = make_any_line(p1, s1, p2, e1);
                     CHECK(&res + 1 == intersect(default_policy, l0, l1, &res));
                     CHECK(equal_lines(
-                        make_any_line(p1, std::max(s0, s1), p2, std::max(e0, e1)), res));
+                        make_any_line(
+                            p1, std::max(s0, s1), p2, std::max(e0, e1)),
+                        res));
                 }
             }
         }

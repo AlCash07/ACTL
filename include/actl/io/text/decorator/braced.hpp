@@ -16,12 +16,16 @@ struct braced {
     struct format_tag;
 };
 
-template <class AC, enable_int_if<is_container_v<AC> && is_associative_range_v<AC>> = 0>
+template <
+    class AC,
+    enable_int_if<is_container_v<AC> && is_associative_range_v<AC>> = 0>
 auto encode(braced, const AC& cont) {
     return batch{'{', make_range(cont), '}'};
 }
 
-template <class SC, enable_int_if<is_container_v<SC> && is_sequence_range_v<SC>> = 0>
+template <
+    class SC,
+    enable_int_if<is_container_v<SC> && is_sequence_range_v<SC>> = 0>
 auto encode(braced, const SC& cont) {
     return batch{'[', make_range(cont), ']'};
 }

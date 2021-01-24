@@ -11,7 +11,7 @@ BinPackArguments: false
 BinPackParameters: false
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
-ColumnLimit: 100
+ColumnLimit: 80
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 DerivePointerAlignment: false

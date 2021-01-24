@@ -9,13 +9,20 @@
 #include <memory>
 #include "test.hpp"
 
-static_assert(std::is_same_v<ac::dummy_container, ac::rebind_container_t<none, int>>);
 static_assert(
-    std::is_same_v<ac::dummy_container, ac::rebind_container_t<ac::dummy_container, int>>);
-static_assert(std::is_same_v<ac::dummy_container, ac::rebind_container_t<std::vector<int>, none>>);
-static_assert(std::is_same_v<std::vector<int>, ac::rebind_container_t<std::vector<none>, int>>);
+    std::is_same_v<ac::dummy_container, ac::rebind_container_t<none, int>>);
+static_assert(std::is_same_v<
+              ac::dummy_container,
+              ac::rebind_container_t<ac::dummy_container, int>>);
+static_assert(std::is_same_v<
+              ac::dummy_container,
+              ac::rebind_container_t<std::vector<int>, none>>);
+static_assert(std::is_same_v<
+              std::vector<int>,
+              ac::rebind_container_t<std::vector<none>, int>>);
 
 static_assert(ac::is_smart_pointer<std::unique_ptr<float>>::value);
-static_assert(ac::is_smart_pointer<const std::unique_ptr<std::vector<int>>>::value);
+static_assert(
+    ac::is_smart_pointer<const std::unique_ptr<std::vector<int>>>::value);
 static_assert(ac::is_smart_pointer<std::shared_ptr<float>>::value);
 static_assert(!ac::is_smart_pointer<std::vector<float>>::value);

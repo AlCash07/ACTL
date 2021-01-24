@@ -28,7 +28,10 @@ batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x) {
         fmt.indent = true;
         return {raw{cspan<C>{}}, repeat<C>{}, x};
     } else {
-        return {raw{cspan<C>{&fmt.endl, 1}}, repeat<C>{fmt.fill, fmt.count * fmt.level}, x};
+        return {
+            raw{cspan<C>{&fmt.endl, 1}},
+            repeat<C>{fmt.fill, fmt.count * fmt.level},
+            x};
     }
 }
 

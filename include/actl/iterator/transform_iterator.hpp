@@ -25,8 +25,10 @@ struct transform_iter_types : default_iterator_adaptor_types {
 };
 
 template <class Iter, class F, class V>
-using transform_iter_base =
-    iterator_adaptor<transform_iterator<Iter, F, V>, Iter, transform_iter_types<F, V>>;
+using transform_iter_base = iterator_adaptor<
+    transform_iterator<Iter, F, V>,
+    Iter,
+    transform_iter_types<F, V>>;
 
 } // namespace detail
 
@@ -43,7 +45,8 @@ class transform_iterator : public detail::transform_iter_base<Iter, F, V> {
 public:
     template <class... Ts>
     transform_iterator(const Iter& iter, Ts&&... args)
-        : detail::transform_iter_base<Iter, F, V>{iter}, f_{std::forward<Ts>(args)...} {}
+        : detail::transform_iter_base<Iter, F, V>{iter}
+        , f_{std::forward<Ts>(args)...} {}
 };
 
 } // namespace ac

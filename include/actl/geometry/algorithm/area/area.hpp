@@ -10,7 +10,11 @@
 
 namespace ac {
 
-template <class Policy, class T, class U, geometry::enable_int_if_swap<T, U> = 0>
+template <
+    class Policy,
+    class T,
+    class U,
+    geometry::enable_int_if_swap<T, U> = 0>
 auto area(const Policy& policy, const T& lhs, const U& rhs) {
     if constexpr (geometry_traits<T>::dimension == 2) {
         return -area(policy, rhs, lhs);

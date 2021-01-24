@@ -36,9 +36,11 @@ public:
 
 } // namespace detail
 
-/// Polygon - closed polyline defined by the sequence of vertices, that all lie in the same plane.
-/// Algorithms usually expect vertices to go in counter-clockwise order.
-/// @tparam T either a point (then std::vector is used as container) or a range of points.
+/// Polygon - closed polyline defined by the sequence of vertices, that all lie
+/// in the same plane. Algorithms usually expect vertices to go in
+/// counter-clockwise order.
+/// @tparam T either a point (then std::vector is used as container) or a range
+/// of points.
 template <class T>
 class polygon : public detail::polygon<T> {
 public:
@@ -46,7 +48,8 @@ public:
 };
 
 template <class T>
-struct geometry_traits<polygon<T>> : geometry_traits_base<polygon_tag, value_type_t<polygon<T>>> {};
+struct geometry_traits<polygon<T>>
+    : geometry_traits_base<polygon_tag, value_type_t<polygon<T>>> {};
 
 /// Simple polygon - the boundary doesn't cross itself.
 template <class T>
@@ -110,8 +113,8 @@ template <class T>
 struct geometry_traits<convex_polygon<T>>
     : geometry_traits_base<convex_polygon_tag, value_type_t<polygon<T>>> {};
 
-/// Theoretically, every convex polygon is monotone. However, our definition of monotone polygon
-/// requires special properties.
+/// Theoretically, every convex polygon is monotone. However, our definition of
+/// monotone polygon requires special properties.
 template <class T>
 class convex_monotone_polygon : public monotone_polygon<T> {
 public:
@@ -121,7 +124,8 @@ public:
     convex_monotone_polygon(const convex_polygon<T1>& polygon) {
         this->resize(polygon.size());
         auto minmax = minmax_element(polygon);
-        std::rotate_copy(polygon.begin(), minmax.first, polygon.end(), this->begin());
+        std::rotate_copy(
+            polygon.begin(), minmax.first, polygon.end(), this->begin());
         this->right_ = minmax.second - minmax.first;
         if (this->right_ < 0)
             this->right_ += static_cast<index>(polygon.size());
@@ -134,6 +138,8 @@ public:
 
 template <class T>
 struct geometry_traits<convex_monotone_polygon<T>>
-    : geometry_traits_base<convex_monotone_polygon_tag, value_type_t<polygon<T>>> {};
+    : geometry_traits_base<
+          convex_monotone_polygon_tag,
+          value_type_t<polygon<T>>> {};
 
 } // namespace ac

@@ -13,7 +13,8 @@
 
 namespace ac {
 
-/// This policy implies that lines are in general position (don't coincide but can be parallel).
+/// This policy implies that lines are in general position (don't coincide but
+/// can be parallel).
 template <class Policy>
 struct general_position_policy {
     explicit general_position_policy(const Policy& x) : policy{x} {}
@@ -71,12 +72,18 @@ OutIter intersect(
     OutIter dst) //
 {
     return intersect(
-        line_scalar_policy{gpp.policy}, lhs, rhs, detail::scalar_to_point_adaptor{lhs, dst});
+        line_scalar_policy{gpp.policy},
+        lhs,
+        rhs,
+        detail::scalar_to_point_adaptor{lhs, dst});
 }
 
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
 OutIter intersect(
-    const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs, OutIter dst) //
+    const Policy& policy,
+    const line<T0, 2, K0>& lhs,
+    const line<T1, 2, K1>& rhs,
+    OutIter dst) //
 {
     auto tarea = area(policy, rhs.vector, lhs.vector);
     auto v = lhs.begin - rhs.begin;

@@ -32,7 +32,8 @@ constexpr auto operator||(cdp<T, DepthT> lhs, cdp<U, DepthU> rhs) {
 } // namespace detail
 
 template <class... Ts>
-using major_category = decltype((... || detail::cdp<category_t<Ts>, nesting_depth_v<Ts>>{}));
+using major_category =
+    decltype((... || detail::cdp<category_t<Ts>, nesting_depth_v<Ts>>{}));
 
 template <class... Ts>
 using major_category_t = typename major_category<Ts...>::category;

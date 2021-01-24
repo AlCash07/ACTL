@@ -17,8 +17,8 @@ namespace detail {
 
 template <class Op, class... Ts>
 struct result {
-    using type =
-        decltype(std::declval<Op>().template resolve<Ts...>().evaluate(std::declval<Ts>()...));
+    using type = decltype(std::declval<Op>().template resolve<Ts...>().evaluate(
+        std::declval<Ts>()...));
     using tag = category_t<remove_cvref_t<type>>;
 };
 
@@ -29,7 +29,9 @@ struct expression_base {};
 
 template <class Op, class... Ts>
 struct expression
-    : expression_base<expression<Op, Ts...>, typename detail::result<Op, Ts...>::tag> {
+    : expression_base<
+          expression<Op, Ts...>,
+          typename detail::result<Op, Ts...>::tag> {
     using category = typename detail::result<Op, Ts...>::tag;
     struct enable_operators;
 
@@ -44,7 +46,9 @@ struct expression
     }
 };
 
-template <class... Ts, enable_int_if<1 == (... + int{is_operation_v<remove_cvref_t<Ts>>})> = 0>
+template <
+    class... Ts,
+    enable_int_if<1 == (... + int{is_operation_v<remove_cvref_t<Ts>>})> = 0>
 constexpr auto make_expression(Ts&&... xs) {
     return expression<value_if_small<Ts>...>{{}, {std::forward<Ts>(xs)...}};
 }

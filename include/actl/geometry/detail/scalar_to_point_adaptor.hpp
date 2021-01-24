@@ -15,9 +15,11 @@ namespace ac::detail {
 template <class Line, class Iter>
 class scalar_to_point_adaptor : public output_iterator_types {
 public:
-    explicit scalar_to_point_adaptor(const Line& line, Iter iter) : line_{&line}, iter_{iter} {}
+    explicit scalar_to_point_adaptor(const Line& line, Iter iter)
+        : line_{&line}, iter_{iter} {}
 
-    scalar_to_point_adaptor& operator=(const scalar_to_point_adaptor&) = default;
+    scalar_to_point_adaptor& operator=(const scalar_to_point_adaptor&) =
+        default;
 
     template <class T>
     void operator=(const T& x) {

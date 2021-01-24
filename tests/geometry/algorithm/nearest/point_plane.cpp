@@ -8,5 +8,8 @@
 #include "test.hpp"
 
 TEST_CASE("default") {
-    CHECK_NEAR(point{-1, -1, 1}, nearest(point{0, 1, 4}, plane<int>{{1, 2, 3}, 0}).second, 1e-12);
+    CHECK_NEAR(
+        point{-1, -1, 1},
+        nearest(point{0, 1, 4}, plane<int>{{1, 2, 3}, 0}).second,
+        1e-12);
 }

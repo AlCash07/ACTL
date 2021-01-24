@@ -31,7 +31,8 @@ struct ssa_types {
         friend class semi_static_array<T, Is...>;
         friend struct ac::iterator_core_access;
 
-        explicit iterator(index i, const T* arr_iter) : i_{i}, arr_iter_{arr_iter} {}
+        explicit iterator(index i, const T* arr_iter)
+            : i_{i}, arr_iter_{arr_iter} {}
 
         T get() const {
             return static_array<T, Is...>{}[i_];
@@ -68,7 +69,9 @@ struct ssa_types {
 
 template <class T, T... Is>
 class semi_static_array
-    : public range_facade<semi_static_array<T, Is...>, detail::ssa_types<T, Is...>> {
+    : public range_facade<
+          semi_static_array<T, Is...>,
+          detail::ssa_types<T, Is...>> {
     static constexpr size_t N = (0 + ... + (Is == dynamic_size));
     using array_t = std::array<T, N>;
 
@@ -81,8 +84,10 @@ public:
 
     template <
         class... Ts,
-        enable_int_if<((sizeof...(Ts) == N) && ... && std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr semi_static_array(Ts&&... xs) : a_{std::forward<Ts>(xs)...} {}
+        enable_int_if<
+            ((sizeof...(Ts) == N) && ... && std::is_convertible_v<Ts, T>)> = 0>
+    explicit constexpr semi_static_array(Ts&&... xs)
+        : a_{std::forward<Ts>(xs)...} {}
 
     template <class R>
     explicit semi_static_array(R&& range) {

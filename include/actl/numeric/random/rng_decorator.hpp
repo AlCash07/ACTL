@@ -37,7 +37,8 @@ struct rng_decorator : public Rng {
         return uniform(T{}, to);
     }
 
-    /// Generates normal (Gaussian) random number with mean = @p mean and stddev = @p stddev.
+    /// Generates normal (Gaussian) random number with mean = @p mean and stddev
+    /// = @p stddev.
     template <class T = double, enable_int_if<std::is_floating_point_v<T>> = 0>
     T normal(T mean = T{}, T stddev = T{1}) {
         return std::normal_distribution<T>{mean, stddev}(*this);

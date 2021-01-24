@@ -45,7 +45,8 @@ struct scalar_operation : operation<Op> {
 
     template <class... Ts>
     constexpr auto evaluate(const Ts&... xs) const {
-        if constexpr ((... && is_subcategory_of_v<category_t<Ts>, arithmetic_tag>)) {
+        if constexpr ((... &&
+                       is_subcategory_of_v<category_t<Ts>, arithmetic_tag>)) {
             using T = strict_common_type_t<decltype(eval(xs))...>;
             if constexpr (!is_integral_constant_v<T>)
                 return this->derived().eval_scalar(convert<T>(eval(xs))...);
@@ -60,7 +61,8 @@ struct scalar_operation : operation<Op> {
 };
 
 template <class T>
-constexpr bool is_scalar_operation_v = is_subcategory_of_v<category_t<T>, scalar_operation_tag>;
+constexpr bool is_scalar_operation_v =
+    is_subcategory_of_v<category_t<T>, scalar_operation_tag>;
 
 template <class T>
 constexpr bool is_comparison_operation_v =

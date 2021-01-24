@@ -12,9 +12,10 @@
 
 namespace ac {
 
-// For binary tree, the output is standard. Otherwise, a vertex is printed between each pair of
-// children or once after them if there are less than 2 children.
-// The output has from n (for binary tree) to 2 n - 3 (for star graph) vertices.
+// For binary tree, the output is standard. Otherwise, a vertex is printed
+// between each pair of children or once after them if there are less than 2
+// children. The output has from n (for binary tree) to 2 n - 3 (for star graph)
+// vertices.
 template <class VertexOutIter, class VertexStateMap>
 struct inorder_printer {
     VertexOutIter dst;
@@ -60,22 +61,22 @@ struct vertex_printer {
 template <class Graph, class VertexOutIter>
 void inorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) {
     auto state = make_default_vertex_map<char>(graph);
-    depth_first_search{inorder_printer<VertexOutIter, decltype(state)>{dst, std::move(state)}}(
-        graph, s);
+    depth_first_search{inorder_printer<VertexOutIter, decltype(state)>{
+        dst, std::move(state)}}(graph, s);
 }
 
 template <class Graph, class VertexOutIter>
 void postorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) {
     depth_first_search{
-        vertex_printer<on_vertex_finish, VertexOutIter>{dst}, make_default_discovered_flag(graph)}(
-        graph, s);
+        vertex_printer<on_vertex_finish, VertexOutIter>{dst},
+        make_default_discovered_flag(graph)}(graph, s);
 }
 
 template <class Graph, class VertexOutIter>
 void preorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst) {
     depth_first_search{
-        vertex_printer<on_vertex_start, VertexOutIter>{dst}, make_default_discovered_flag(graph)}(
-        graph, s);
+        vertex_printer<on_vertex_start, VertexOutIter>{dst},
+        make_default_discovered_flag(graph)}(graph, s);
 }
 
 /// Outputs topological sort of the DAG in reverse order.

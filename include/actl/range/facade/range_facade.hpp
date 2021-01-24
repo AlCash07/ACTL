@@ -1,5 +1,5 @@
-// Range facade is designed to produce complete range interface from a class with just two methods
-// begin() and end() that return iterators.
+// Range facade is designed to produce complete range interface from a class
+// with just two methods begin() and end() that return iterators.
 //
 // Copyright 2017 Oleksandr Bacherikov.
 //
@@ -18,7 +18,8 @@ namespace ac {
 
 namespace detail {
 
-#define ENABLE_IF_HAS_CONST template <class U = T, class = typename U::const_iterator>
+#define ENABLE_IF_HAS_CONST \
+    template <class U = T, class = typename U::const_iterator>
 
 template <class D, class T, class C>
 class rng_facade : public T {
@@ -124,12 +125,14 @@ public:
 
     constexpr decltype(auto) operator[](size_type n) const {
         ACTL_ASSERT(0 <= n && n < size());
-        return derived().begin()[static_cast<typename base_t::difference_type>(n)];
+        return derived()
+            .begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
     ENABLE_IF_HAS_CONST constexpr decltype(auto) operator[](size_type n) {
         ACTL_ASSERT(0 <= n && n < size());
-        return derived().begin()[static_cast<typename base_t::difference_type>(n)];
+        return derived()
+            .begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
     constexpr auto size() const {
@@ -146,7 +149,9 @@ public:
 } // namespace detail
 
 template <class Range, class Types>
-using range_facade = detail::
-    rng_facade<Range, detail::range_types<Types>, iterator_category_t<typename Types::iterator>>;
+using range_facade = detail::rng_facade<
+    Range,
+    detail::range_types<Types>,
+    iterator_category_t<typename Types::iterator>>;
 
 } // namespace ac

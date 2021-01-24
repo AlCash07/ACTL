@@ -15,7 +15,8 @@ TEST_CASE("predecessor_edge_recorder bfs") {
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());
-    breadth_first_search{predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)}(
+    breadth_first_search{
+        predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)}(
         graph, 0);
     CHECK(
         std::vector<E>{
@@ -32,7 +33,8 @@ TEST_CASE("predecessor_edge_recorder dfs") {
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());
-    depth_first_search{predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)}(
+    depth_first_search{
+        predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)}(
         graph, 0);
     CHECK(
         std::vector<E>{

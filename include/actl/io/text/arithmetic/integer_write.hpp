@@ -50,17 +50,21 @@ template <
     class Int,
     enable_int_if_text<Format> = 0,
     enable_int_if<
-        std::is_integral_v<Int> && !std::is_same_v<Int, char> && !std::is_same_v<Int, bool>> = 0>
+        std::is_integral_v<Int> && !std::is_same_v<Int, char> &&
+        !std::is_same_v<Int, bool>> = 0>
 auto encode(Format& fmt, Int x) {
     using UInt = std::make_unsigned_t<Int>;
     UInt base = fmt.base;
     if (base == 0)
         base = 10;
-    detail::int_string<1 + detail::digit_count(std::numeric_limits<UInt>::max(), UInt{2})> s;
+    detail::int_string<
+        1 + detail::digit_count(std::numeric_limits<UInt>::max(), UInt{2})>
+        s;
     auto last = s.available().end();
     if constexpr (std::is_signed_v<Int>) {
         if (x < 0) {
-            last = detail::uitoa(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
+            last =
+                detail::uitoa(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
             *--last = '-';
         } else {
             last = detail::uitoa(last, fmt, static_cast<UInt>(x), base);

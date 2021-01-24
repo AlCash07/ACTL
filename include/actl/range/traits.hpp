@@ -40,17 +40,20 @@ template <class T>
 constexpr bool is_container_v = range_traits<T>::is_container;
 
 template <class T>
-constexpr bool is_simple_associative_range_v = range_traits<T>::is_simple_associative;
+constexpr bool is_simple_associative_range_v =
+    range_traits<T>::is_simple_associative;
 
 template <class T>
-constexpr bool is_pair_associative_range_v = range_traits<T>::is_pair_associative;
+constexpr bool is_pair_associative_range_v =
+    range_traits<T>::is_pair_associative;
 
 template <class T>
 constexpr bool is_associative_range_v =
     is_simple_associative_range_v<T> || is_pair_associative_range_v<T>;
 
 template <class C>
-constexpr bool is_sequence_range_v = is_range_v<C> && !is_associative_range_v<C>;
+constexpr bool is_sequence_range_v =
+    is_range_v<C> && !is_associative_range_v<C>;
 
 template <class T>
 constexpr bool is_sorted_range_v = range_traits<T>::is_sorted;

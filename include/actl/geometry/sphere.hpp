@@ -11,7 +11,8 @@
 namespace ac {
 
 /// N-dimensional sphere.
-// TODO: add bool parameter indicating if the inside is included, i.e. we have a disk.
+// TODO: add bool parameter indicating if the inside is included, i.e. we have a
+// disk.
 template <class T, index N = 3>
 class sphere {
 public:
@@ -25,7 +26,8 @@ public:
         : center{center}, radius{static_cast<T>(radius)} {}
 
     template <class T1>
-    explicit constexpr sphere(const sphere<T1, N>& rhs) : sphere{rhs.center, rhs.radius} {}
+    explicit constexpr sphere(const sphere<T1, N>& rhs)
+        : sphere{rhs.center, rhs.radius} {}
 
     friend void swap(sphere& lhs, sphere& rhs) {
         using std::swap;
@@ -41,7 +43,8 @@ template <index N, class T0, class T1>
 sphere(const point<T0, N>&, const T1&) -> sphere<geometry::scalar_t<T0, T1>, N>;
 
 template <index N, class T>
-struct geometry_traits<sphere<T, N>> : geometry_traits_base<sphere_tag, point<T, N>> {};
+struct geometry_traits<sphere<T, N>>
+    : geometry_traits_base<sphere_tag, point<T, N>> {};
 
 template <class Policy, index N, class T>
 constexpr bool degenerate(const Policy& policy, const sphere<T, N>& s) {

@@ -19,7 +19,8 @@ TEST_CASE("filtered_map to_bool") {
 
 TEST_CASE("filtered_map lambda") {
     int x0;
-    auto map = filtered_map{std::vector<int>{3, 2, 6}, [&x0](int x) { return x != x0; }};
+    auto map = filtered_map{
+        std::vector<int>{3, 2, 6}, [&x0](int x) { return x != x0; }};
     x0 = 3;
     using C = std::vector<std::pair<int, int>>;
     auto r = map_range(map);

@@ -27,8 +27,8 @@ template <class Op, class Policy>
 struct can_apply_policy<
     Op,
     Policy,
-    std::void_t<decltype(apply_policy(std::declval<Op>(), std::declval<Policy>()))>>
-    : std::true_type {};
+    std::void_t<decltype(apply_policy(
+        std::declval<Op>(), std::declval<Policy>()))>> : std::true_type {};
 
 template <class Op, class Policy>
 constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {

@@ -15,7 +15,9 @@ namespace ac {
 
 /// O(log N).
 template <class Policy, class T, class U>
-enum within within(const Policy& policy, const point<T>& p, const monotone_polygon<U>& poly) {
+enum within within(
+    const Policy& policy, const point<T>& p, const monotone_polygon<U>& poly) //
+{
     if (poly.empty())
         return within::outside;
     if (poly.size() == 1)
@@ -27,8 +29,10 @@ enum within within(const Policy& policy, const point<T>& p, const monotone_polyg
     auto lit = std::lower_bound(first + 1, first + right, p, less(policy));
     auto orient = orientation(policy, p, lit[0], lit[-1]);
     if (orient == orientation2d::right) {
-        auto uit = std::lower_bound(poly.rbegin(), poly.rend() - right - 1, p, less(policy));
-        orient = orientation(policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]);
+        auto uit = std::lower_bound(
+            poly.rbegin(), poly.rend() - right - 1, p, less(policy));
+        orient = orientation(
+            policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]);
     }
     return detail::to_inclusion(orient);
 }

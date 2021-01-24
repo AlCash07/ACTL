@@ -18,12 +18,15 @@ struct arg_t {
     struct enable_operators;
 
     template <class T, class... Ts>
-    constexpr decltype(auto) operator()([[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs) const {
+    constexpr decltype(auto) operator()(
+        [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs) const //
+    {
         static_assert(1 + sizeof...(Ts) == N || N == -1);
         if constexpr (I == 0)
             return std::forward<T>(x);
         else
-            return arg_t<I - 1, (N == -1 ? -1 : N - 1)>{}(std::forward<Ts>(xs)...);
+            return arg_t<I - 1, (N == -1 ? -1 : N - 1)>{}(
+                std::forward<Ts>(xs)...);
     }
 };
 template <index I, index N>

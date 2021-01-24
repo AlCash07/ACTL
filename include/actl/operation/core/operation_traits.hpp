@@ -22,7 +22,8 @@ struct operation_tag {
 };
 
 template <class T>
-constexpr bool is_operation_v = is_subcategory_of_v<category_t<T>, operation_tag>;
+constexpr bool is_operation_v =
+    is_subcategory_of_v<category_t<T>, operation_tag>;
 
 template <class Operation, class T>
 struct neutral_element;

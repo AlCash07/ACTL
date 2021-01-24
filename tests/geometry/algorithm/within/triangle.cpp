@@ -18,10 +18,12 @@ TEST_CASE("all cases") {
     for (auto p : std::vector<point<int>>{{1, 1}, {3, 2}, {2, 3}}) {
         CHECK(within::inside == within(p, triangle));
     }
-    for (auto p : std::vector<point<int>>{{-4, -2}, {-1, -2}, {5, 1}, {6, 3}, {4, 8}, {0, 6}}) {
+    for (auto p : std::vector<point<int>>{
+             {-4, -2}, {-1, -2}, {5, 1}, {6, 3}, {4, 8}, {0, 6}}) {
         CHECK(within::outside == within(p, triangle));
     }
-    for (auto p : std::vector<point<int>>{{-1, -1}, {1, 0}, {6, 1}, {3, 4}, {2, 5}, {-9, 7}}) {
+    for (auto p : std::vector<point<int>>{
+             {-1, -1}, {1, 0}, {6, 1}, {3, 4}, {2, 5}, {-9, 7}}) {
         CHECK(within::outside == within(p, triangle));
     }
 }

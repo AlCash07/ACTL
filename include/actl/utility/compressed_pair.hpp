@@ -58,8 +58,9 @@ struct cpb2 : ebo<T> {
 
 } // namespace detail
 
-/// Pair that utilizes empty-base optimization in case one of the elements is empty.
-/// Reference: http://talesofcpp.fusionfenix.com/post-18/episode-ten-when-size-does-matter
+/// Pair that utilizes empty-base optimization in case one of the elements is
+/// empty. Reference:
+/// http://talesofcpp.fusionfenix.com/post-18/episode-ten-when-size-does-matter
 template <class T1, class T2>
 class compressed_pair
     : private detail::cpb1<T1>
@@ -72,7 +73,8 @@ public:
 
     template <class T, class... Ts>
     explicit constexpr compressed_pair(T&& first, Ts&&... second)
-        : detail::cpb1<T1>{std::forward<T>(first)}, detail::cpb2<T2>{std::forward<Ts>(second)...} {}
+        : detail::cpb1<T1>{std::forward<T>(first)}
+        , detail::cpb2<T2>{std::forward<Ts>(second)...} {}
 
     constexpr compressed_pair(const compressed_pair&) = default;
     constexpr compressed_pair& operator=(const compressed_pair&) = default;
@@ -109,12 +111,16 @@ auto& get(const compressed_pair<T1, T2>& p) {
 }
 
 template <class T1, class T2>
-auto operator==(const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+auto operator==(
+    const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) //
+{
     return equal(lhs.first(), rhs.first()) && equal(lhs.second(), rhs.second());
 }
 
 template <class T1, class T2>
-auto operator<(const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) {
+auto operator<(
+    const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs) //
+{
     return less(lhs, rhs);
 }
 

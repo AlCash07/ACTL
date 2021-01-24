@@ -39,12 +39,16 @@ TEST_CASE("braced simple associative container") {
 }
 
 TEST_CASE("braced pair associative container") {
-    test_write("{0:1 1:0 2:1 3:0}", sbts(), std::map<int, int>{{3, 0}, {2, 1}, {1, 0}, {0, 1}});
+    test_write(
+        "{0:1 1:0 2:1 3:0}",
+        sbts(),
+        std::map<int, int>{{3, 0}, {2, 1}, {1, 0}, {0, 1}});
 }
 
 TEST_CASE("braced nested") {
     test_write(
         "{[(0 1)] [(2 3) (4 5)] [(6 7)]}",
         sbts(),
-        std::set<std::vector<std::pair<int, int>>>{{{0, 1}}, {{2, 3}, {4, 5}}, {{6, 7}}});
+        std::set<std::vector<std::pair<int, int>>>{
+            {{0, 1}}, {{2, 3}, {4, 5}}, {{6, 7}}});
 }

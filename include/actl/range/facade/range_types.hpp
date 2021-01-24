@@ -41,7 +41,8 @@ struct crange_ts<CIter, true> : crange_ts<CIter, false> {
 template <class T, class = void>
 struct range_types : range_ts<typename T::iterator> {
     using typename range_ts<typename T::iterator>::difference_type;
-    using size_type = deduce_t<typename T::size_type, std::make_unsigned_t<difference_type>>;
+    using size_type =
+        deduce_t<typename T::size_type, std::make_unsigned_t<difference_type>>;
 };
 
 template <class T>

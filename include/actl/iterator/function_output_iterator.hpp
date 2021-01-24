@@ -14,7 +14,9 @@ namespace ac {
 /// Iterator that applies a function to each assigned value.
 template <class Function>
 class function_output_iterator
-    : public iterator_facade<function_output_iterator<Function>, output_iterator_types> {
+    : public iterator_facade<
+          function_output_iterator<Function>,
+          output_iterator_types> {
 public:
     explicit function_output_iterator(const Function& f = {}) : f_{f} {}
 

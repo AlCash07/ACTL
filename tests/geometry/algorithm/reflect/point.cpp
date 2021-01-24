@@ -9,5 +9,8 @@
 #include "test.hpp"
 
 TEST_CASE("plane") {
-    CHECK_NEAR(point{-2, -3, -2}, reflect(point{0, 1, 4}, plane<int>{{1, 2, 3}, 0}), 1e-12);
+    CHECK_NEAR(
+        point{-2, -3, -2},
+        reflect(point{0, 1, 4}, plane<int>{{1, 2, 3}, 0}),
+        1e-12);
 }

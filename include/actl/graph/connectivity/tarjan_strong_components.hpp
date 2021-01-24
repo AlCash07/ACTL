@@ -71,7 +71,8 @@ void find_strong_components(const Graph& graph, ComponentMap&& map) {
     auto scf = get_strong_component_finder(
         graph,
         detail::component_stack{std::forward<ComponentMap>(map)},
-        // Values of the next two maps can be compressed into bits of one int per vertex.
+        // Values of the next two maps can be compressed into bits of one int
+        // per vertex.
         make_default_vertex_map<int>(graph),
         make_default_vertex_map<bool>(graph));
     depth_first_search{scf}(graph);

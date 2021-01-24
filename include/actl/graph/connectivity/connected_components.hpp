@@ -31,14 +31,15 @@ template <class Map>
 connected_component_recorder(Map&&) -> connected_component_recorder<Map>;
 
 template <class Map, class T>
-vertex_initializer<connected_component_recorder<Map>> make_connected_component_recorder(
-    Map&& component, T value) {
+vertex_initializer<connected_component_recorder<Map>>
+make_connected_component_recorder(Map&& component, T value) {
     return {{std::forward<Map>(component)}, value};
 }
 
 template <class Graph>
 auto make_default_connected_component_recorder(const Graph& graph) {
-    return make_connected_component_recorder(make_default_vertex_map<int>(graph), -1);
+    return make_connected_component_recorder(
+        make_default_vertex_map<int>(graph), -1);
 }
 
 } // namespace ac

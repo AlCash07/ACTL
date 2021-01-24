@@ -29,8 +29,11 @@ public:
     using pointer = T*;
     using const_pointer = const T*;
 
-    template <class... Ts, enable_int_if<(... && std::is_convertible_v<Ts, T>)> = 0>
-    constexpr point_base(Ts&&... xs) : coordinates_{T{std::forward<Ts>(xs)}...} {}
+    template <
+        class... Ts,
+        enable_int_if<(... && std::is_convertible_v<Ts, T>)> = 0>
+    constexpr point_base(Ts&&... xs)
+        : coordinates_{T{std::forward<Ts>(xs)}...} {}
 
     // TODO: make explicit when conversion is narrowing.
     template <class T1>
@@ -156,39 +159,56 @@ constexpr auto operator-(const point<T0, N>& lhs, const point<T1, N>& rhs) {
 
 template <class Policy, index N, class T0, class T1>
 constexpr bool perform(
-    equal_t, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) //
+    equal_t,
+    const Policy& policy,
+    const point<T0, N>& lhs,
+    const point<T1, N>& rhs) //
 {
     return equal(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
 constexpr bool perform(
-    less_t, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) //
+    less_t,
+    const Policy& policy,
+    const point<T0, N>& lhs,
+    const point<T1, N>& rhs) //
 {
     return less(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
-constexpr auto perform(Mul, const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
+constexpr auto perform(
+    Mul, const Policy& policy, const point<T0, N>& lhs, const T1& factor) //
+{
     return detail::apply<N>(
-        [&policy, &factor](const T0& x) { return mul(policy, x, factor); }, lhs);
+        [&policy, &factor](const T0& x) { return mul(policy, x, factor); },
+        lhs);
 }
 
 template <class Policy, index N, class T0, class T1>
-constexpr auto perform(Mul, const Policy& policy, const T0& factor, const point<T1, N>& rhs) {
+constexpr auto perform(
+    Mul, const Policy& policy, const T0& factor, const point<T1, N>& rhs) //
+{
     return detail::apply<N>(
-        [&policy, &factor](const T1& x) { return mul(policy, factor, x); }, rhs);
+        [&policy, &factor](const T1& x) { return mul(policy, factor, x); },
+        rhs);
 }
 
 template <class Policy, index N, class T0, class T1>
-constexpr auto perform(Div, const Policy& policy, const point<T0, N>& lhs, const T1& factor) {
+constexpr auto perform(
+    Div, const Policy& policy, const point<T0, N>& lhs, const T1& factor) //
+{
     ACTL_ASSERT(!equal(policy, factor, 0));
     return detail::apply<N>(
-        [&policy, &factor](const T0& x) { return div(policy, x, factor); }, lhs);
+        [&policy, &factor](const T0& x) { return div(policy, x, factor); },
+        lhs);
 }
 
 template <class Policy, index N, class T0, class T1>
-constexpr auto dot(const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) {
+constexpr auto dot(
+    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) //
+{
     result_t<Mul, Policy, T0, T1> res = 0;
     for (index i = 0; i < N; ++i)
         res += product(policy, lhs[i], rhs[i]);
@@ -200,7 +220,11 @@ constexpr auto dot(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return dot(default_policy, lhs, rhs);
 }
 
-template <class Policy, index N, class T, enable_int_if<is_policy_v<Policy>> = 0>
+template <
+    class Policy,
+    index N,
+    class T,
+    enable_int_if<is_policy_v<Policy>> = 0>
 constexpr auto dot(const Policy& policy, const point<T, N>& p) {
     return dot(policy, p, p);
 }
@@ -273,7 +297,9 @@ template <class T>
 using point2d = point<T, 2>;
 
 template <class Policy, class T0, class T1>
-constexpr bool y_compare(const Policy& policy, const point<T0>& lhs, const point<T1>& rhs) {
+constexpr bool y_compare(
+    const Policy& policy, const point<T0>& lhs, const point<T1>& rhs) //
+{
     int v = cmp3way(policy, lhs[1], rhs[1]);
     return v < 0 || (v == 0 && less(policy, lhs[0], rhs[0]));
 }
@@ -295,7 +321,9 @@ template <class T>
 using point3d = point<T, 3>;
 
 template <class Policy, class T0, class T1>
-constexpr auto cross(const Policy& policy, const point3d<T0>& lhs, const point3d<T1>& rhs) {
+constexpr auto cross(
+    const Policy& policy, const point3d<T0>& lhs, const point3d<T1>& rhs) //
+{
     return point{
         product(policy, lhs[1], rhs[2]) - product(policy, lhs[2], rhs[1]),
         product(policy, lhs[2], rhs[0]) - product(policy, lhs[0], rhs[2]),

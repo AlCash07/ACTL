@@ -13,7 +13,8 @@ namespace ac {
 
 /// Input iterator wrapper that reads only a limited number of elements.
 template <class Iterator>
-class limited_input_iterator : public iterator_adaptor<limited_input_iterator<Iterator>, Iterator> {
+class limited_input_iterator
+    : public iterator_adaptor<limited_input_iterator<Iterator>, Iterator> {
     using base_t = iterator_adaptor<limited_input_iterator<Iterator>, Iterator>;
 
 public:

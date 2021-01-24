@@ -26,7 +26,8 @@ index write_final_batch(D& od, F& fmt, const T& x, std::index_sequence<Is...>) {
 
 template <class D, class F, class... Ts>
 index write_pre_final(D& od, F& fmt, const batch<Ts...>& x) {
-    return write_final_batch(od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
+    return write_final_batch(
+        od, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
 template <class D, class F, class T, size_t... Is>
@@ -36,7 +37,8 @@ bool read_final_batch(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
 
 template <class D, class F, class... Ts>
 bool read_pre_final(D& id, F& fmt, batch<Ts...>& x) {
-    return read_final_batch(id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
+    return read_final_batch(
+        id, fmt, x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
 namespace detail {
@@ -57,7 +59,12 @@ struct batch_resolver<D, FF, F, Batch, std::index_sequence<Is...>> {
 
 template <class D, class FF, class F, class... Ts>
 struct arg_resolver<D, FF, F, batch<Ts...>, false>
-    : batch_resolver<D, FF, F, batch<Ts...>, std::make_index_sequence<sizeof...(Ts)>> {};
+    : batch_resolver<
+          D,
+          FF,
+          F,
+          batch<Ts...>,
+          std::make_index_sequence<sizeof...(Ts)>> {};
 
 } // namespace detail
 

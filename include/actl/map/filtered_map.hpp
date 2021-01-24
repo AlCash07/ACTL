@@ -29,7 +29,8 @@ struct test_second : public ebo<Pred> {
     }
 };
 
-/// Container property map with traversal interface that skips values not satisfying predicate.
+/// Container property map with traversal interface that skips values not
+/// satisfying predicate.
 template <class Map, class Predicate = to_bool>
 class filtered_map : private compressed_pair<Map, test_second<Predicate>> {
     using base_t = compressed_pair<Map, test_second<Predicate>>;
@@ -64,7 +65,8 @@ struct map_traits<filtered_map<M, P>> : map_traits<M> {
 };
 
 template <class M, class P>
-struct map_traits<const filtered_map<M, P>> : map_traits<filtered_map<const M, P>> {};
+struct map_traits<const filtered_map<M, P>>
+    : map_traits<filtered_map<const M, P>> {};
 
 template <class M, class P>
 struct map_ops<filtered_map<M, P>> : map_ops<M> {

@@ -29,7 +29,8 @@ TEST_CASE("horizontal line all cases") {
         {8, 0},
         {5, 3}};
     std::vector<double> ts;
-    intersect(line_scalar_policy{geometry_policy}, seg, poly, std::back_inserter(ts));
+    intersect(
+        line_scalar_policy{geometry_policy}, seg, poly, std::back_inserter(ts));
     sort(ts);
     CHECK_NEAR(std::vector{0, 1, 2, 5, 6, 9}, ts, 1e-12);
 }

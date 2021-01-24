@@ -48,7 +48,8 @@ constexpr auto apply_policy_to_composite(
     const Policy& policy,
     std::index_sequence<Is...>) //
 {
-    return operation_composer<Outer>{}(apply_policy_if_can(std::get<Is>(op.inner()), policy)...);
+    return operation_composer<Outer>{}(
+        apply_policy_if_can(std::get<Is>(op.inner()), policy)...);
 }
 
 template <
@@ -56,8 +57,11 @@ template <
     class... Inner,
     class Policy,
     enable_int_if<(... || can_apply_policy<Inner, Policy>::value)> = 0>
-constexpr auto apply_policy(const composite_operation<Outer, Inner...>& op, const Policy& policy) {
-    return apply_policy_to_composite(op, policy, std::make_index_sequence<sizeof...(Inner)>{});
+constexpr auto apply_policy(
+    const composite_operation<Outer, Inner...>& op, const Policy& policy) //
+{
+    return apply_policy_to_composite(
+        op, policy, std::make_index_sequence<sizeof...(Inner)>{});
 }
 
 } // namespace ac
