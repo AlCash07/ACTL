@@ -28,4 +28,4 @@ struct category : category_sfinae<T, void> {};
 template <class T>
 using category_t = typename category<T>::type;
 
-}  // namespace ac
+} // namespace ac

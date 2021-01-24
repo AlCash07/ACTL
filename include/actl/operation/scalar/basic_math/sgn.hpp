@@ -20,4 +20,4 @@ struct sgn_t : scalar_operation<sgn_t, 1> {
 };
 constexpr sgn_t sgn;
 
-}  // namespace ac
+} // namespace ac

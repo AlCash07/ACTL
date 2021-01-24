@@ -43,4 +43,4 @@ auto make_default_color_recorder(const Graph& graph) {
     return color_recorder{make_default_vertex_map<colors>(graph)};
 }
 
-}  // namespace ac
+} // namespace ac

@@ -40,6 +40,6 @@ auto make_parser(Format&, std::basic_string<C, T, A>& x) {
     return till{x, is_space};
 }
 
-}  // namespace io
+} // namespace io
 
-}  // namespace ac
+} // namespace ac

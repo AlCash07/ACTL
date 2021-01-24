@@ -21,7 +21,7 @@ struct span_types {
     using size_type = index;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class T, index N = dynamic_size>
 class span : public contiguous_range_facade<span<T, N>, detail::span_types<T>> {
@@ -97,4 +97,4 @@ struct is_span : std::false_type {};
 template <class T, index N>
 struct is_span<span<T, N>, T> : std::true_type {};
 
-}  // namespace ac
+} // namespace ac

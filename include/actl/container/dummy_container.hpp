@@ -80,4 +80,4 @@ struct range_traits<dummy_container> : default_range_traits {
     static constexpr bool is_container = true;
 };
 
-}  // namespace ac
+} // namespace ac

@@ -25,4 +25,4 @@ constexpr auto operator!(T&& x) {
     return logical_not(pass<T>(x));
 }
 
-}  // namespace ac
+} // namespace ac

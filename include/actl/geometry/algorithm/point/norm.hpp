@@ -21,4 +21,4 @@ auto norm(const point<T, N>& p) {
     return norm(geometry_policy, p);
 }
 
-}  // namespace ac
+} // namespace ac

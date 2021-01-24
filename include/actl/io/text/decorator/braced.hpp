@@ -31,4 +31,4 @@ auto encode(braced, const T& x) {
     return batch{'(', x, ')'};
 }
 
-}  // namespace ac::io
+} // namespace ac::io

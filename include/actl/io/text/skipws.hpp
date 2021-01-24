@@ -21,4 +21,4 @@ auto encode(skipws&, T& x) {
     return batch{ws, x};
 }
 
-}  // namespace ac::io
+} // namespace ac::io

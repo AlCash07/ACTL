@@ -46,7 +46,7 @@ struct format_resolver<D, FF, composed_format<First, Second>, T> {
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class First, class Second, class Manipulator>
 void manipulate(composed_format<First, Second>& fmt, const Manipulator& m) {
@@ -54,4 +54,4 @@ void manipulate(composed_format<First, Second>& fmt, const Manipulator& m) {
     manipulate(fmt.second, m);
 }
 
-}  // namespace ac::io
+} // namespace ac::io

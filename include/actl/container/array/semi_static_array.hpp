@@ -64,7 +64,7 @@ struct ssa_types {
     using size_type = index;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class T, T... Is>
 class semi_static_array
@@ -124,4 +124,4 @@ struct range_traits<semi_static_array<T, Is...>> : default_range_traits {
     static constexpr index static_size = sizeof...(Is);
 };
 
-}  // namespace ac
+} // namespace ac

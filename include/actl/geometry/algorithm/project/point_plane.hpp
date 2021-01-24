@@ -17,4 +17,4 @@ auto project(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl
     return p - product(policy, t, pl.normal);
 }
 
-}  // namespace ac
+} // namespace ac

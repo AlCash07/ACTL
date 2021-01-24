@@ -18,4 +18,4 @@ struct const_map_traits<dummy_map> : map_traits_base<void, void, void, false, tr
 template <class K, class V>
 constexpr void put(dummy_map, K, V) {}
 
-}  // namespace ac
+} // namespace ac

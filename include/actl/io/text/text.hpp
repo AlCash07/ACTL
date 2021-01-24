@@ -135,4 +135,4 @@ void manipulate(Format& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
 }
 
-}  // namespace ac::io
+} // namespace ac::io

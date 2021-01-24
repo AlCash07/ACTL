@@ -16,4 +16,4 @@ auto area(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) 
     return area(policy, p - l.begin, l.vector);
 }
 
-}  // namespace ac
+} // namespace ac

@@ -65,7 +65,7 @@ struct iterator<const T, std::void_t<typename traits_t<T>::const_iterator>> {
     using type = typename traits_t<T>::const_iterator;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class T>
 using value_type_t = typename detail::traits_t<T>::value_type;
@@ -85,4 +85,4 @@ using iterator_t = typename detail::iterator<T>::type;
 template <class T>
 using size_type_t = typename detail::traits_t<T>::size_type;
 
-}  // namespace ac
+} // namespace ac

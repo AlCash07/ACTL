@@ -18,4 +18,4 @@ auto distance(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& p
     return ratio(policy, abs(pl(policy, p)), norm(policy, pl.normal));
 }
 
-}  // namespace ac
+} // namespace ac

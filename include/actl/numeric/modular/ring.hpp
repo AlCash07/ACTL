@@ -32,7 +32,7 @@ struct static_quotient_ring_impl : quotient_ring_base<Z, true> {
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <uint64_t Mod, class Z = std::conditional_t<(Mod > (1ull << 32)), uint64_t, uint32_t>>
 using static_quotient_ring = detail::static_quotient_ring_impl<Z, (Z)Mod>;
@@ -191,4 +191,4 @@ struct ring_element : Ring {
 template <uint64_t Mod>
 using int_modulo = ring_element<static_quotient_ring<Mod>>;
 
-}  // namespace ac
+} // namespace ac

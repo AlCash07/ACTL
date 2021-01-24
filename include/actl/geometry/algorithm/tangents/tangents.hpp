@@ -20,4 +20,4 @@ OutIter tangents(const T& lhs, const U& rhs, OutIter dst) {
     return tangents(geometry_policy, lhs, rhs, dst);
 }
 
-}  // namespace ac
+} // namespace ac

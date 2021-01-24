@@ -26,4 +26,4 @@ constexpr auto operator~(T&& x) {
     return bit_not(pass<T>(x));
 }
 
-}  // namespace ac
+} // namespace ac

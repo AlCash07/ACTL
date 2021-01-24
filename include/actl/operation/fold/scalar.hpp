@@ -20,4 +20,4 @@ constexpr auto product = fold(mul);
 constexpr auto max_element = fold(max);
 constexpr auto min_element = fold(min);
 
-}  // namespace ac
+} // namespace ac

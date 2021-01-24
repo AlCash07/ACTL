@@ -98,4 +98,4 @@ struct full_edge<V, OE, directed> {
     OE e_out;
 };
 
-}  // namespace ac::detail
+} // namespace ac::detail

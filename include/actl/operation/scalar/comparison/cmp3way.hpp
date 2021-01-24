@@ -21,4 +21,4 @@ struct cmp3way_t : scalar_operation<cmp3way_t, 2> {
 };
 constexpr cmp3way_t cmp3way;
 
-}  // namespace ac
+} // namespace ac

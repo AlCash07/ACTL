@@ -39,4 +39,4 @@ public:
 
 #undef ENABLE_IF_HAS_CONST
 
-}  // namespace ac
+} // namespace ac

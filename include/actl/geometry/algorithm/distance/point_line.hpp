@@ -20,4 +20,4 @@ auto distance(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>&
     return ratio(policy, abs(area(policy, p, l)), norm(policy, l.vector));
 }
 
-}  // namespace ac
+} // namespace ac

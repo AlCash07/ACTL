@@ -52,4 +52,4 @@ struct category_sfinae<T*, std::enable_if_t<!std::is_object_v<T>>> {
     using type = scalar_tag;
 };
 
-}  // namespace ac
+} // namespace ac

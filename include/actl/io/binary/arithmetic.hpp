@@ -27,4 +27,4 @@ bool deserialize(Device& id, Format&, T& x, binary) {
     return ok;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

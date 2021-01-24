@@ -61,4 +61,4 @@ auto sort_by_angle(T&& x, Ts&&... xs) {
     return sort_by_angle(geometry_policy, x, xs...);
 }
 
-}  // namespace ac
+} // namespace ac

@@ -39,4 +39,4 @@ auto make_default_discovered_flag(const Graph& graph) {
     return discovered_flag{make_default_vertex_map<bool>(graph)};
 }
 
-}  // namespace ac
+} // namespace ac

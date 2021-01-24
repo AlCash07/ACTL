@@ -48,7 +48,7 @@ struct range_category<std::random_access_iterator_tag> {
     using type = random_access_range_tag;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class T>
 struct category_sfinae<T, std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>>
@@ -77,4 +77,4 @@ template <class T>
 struct nesting_depth<T, std::enable_if_t<is_range_v<T>>>
     : index_constant<1 + nesting_depth_v<value_type_t<T>>> {};
 
-}  // namespace ac
+} // namespace ac

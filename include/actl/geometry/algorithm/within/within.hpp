@@ -23,4 +23,4 @@ enum within within(const point<T, N>& lhs, const U& rhs) {
     return within(geometry_policy, lhs, rhs);
 }
 
-}  // namespace ac
+} // namespace ac

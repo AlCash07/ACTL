@@ -27,4 +27,4 @@ auto area(const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) 
     }
 }
 
-}  // namespace ac
+} // namespace ac

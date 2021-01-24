@@ -24,4 +24,4 @@ T binary_pow(T value, Int power) {
     return res * value;
 }
 
-}  // namespace ac
+} // namespace ac

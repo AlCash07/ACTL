@@ -115,7 +115,7 @@ constexpr auto apply(Operation op, const Points&... points) {
     return dst;
 }
 
-}  // namespace detail
+} // namespace detail
 
 /* Vector operations */
 
@@ -156,14 +156,14 @@ constexpr auto operator-(const point<T0, N>& lhs, const point<T1, N>& rhs) {
 
 template <class Policy, index N, class T0, class T1>
 constexpr bool perform(
-    equal_t, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs)  //
+    equal_t, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) //
 {
     return equal(policy, span{lhs}, span{rhs});
 }
 
 template <class Policy, index N, class T0, class T1>
 constexpr bool perform(
-    less_t, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs)  //
+    less_t, const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) //
 {
     return less(policy, span{lhs}, span{rhs});
 }
@@ -260,7 +260,7 @@ public:
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 /// 2-dimensional point specialization.
 template <class T>
@@ -307,4 +307,4 @@ constexpr auto cross(const point3d<T0>& lhs, const point3d<T1>& rhs) {
     return cross(default_policy, lhs, rhs);
 }
 
-}  // namespace ac
+} // namespace ac

@@ -16,4 +16,4 @@ struct fold_t {
 
 constexpr operation_composer<fold_t> fold;
 
-}  // namespace ac
+} // namespace ac

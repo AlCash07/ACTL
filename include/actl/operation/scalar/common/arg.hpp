@@ -33,4 +33,4 @@ constexpr arg_t<0, 1> x_;
 constexpr arg_t<0, 2> lhs_;
 constexpr arg_t<1, 2> rhs_;
 
-}  // namespace ac
+} // namespace ac

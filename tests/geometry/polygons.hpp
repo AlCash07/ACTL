@@ -51,4 +51,4 @@ convex_polygon<point<int>> get_max_convex_polygon(int max_coordinate) {
     return poly;
 }
 
-}  // namespace ac
+} // namespace ac

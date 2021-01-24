@@ -59,7 +59,7 @@ auto nearest(const Policy& policy, const span<Point>& points, const span<Point>&
     return res;
 }
 
-}  // namespace detail
+} // namespace detail
 
 /// Minimum distance between two different points from the set : O(N log N).
 template <
@@ -78,4 +78,4 @@ auto nearest(const Policy& policy, T& points) {
     return detail::nearest<Point>(policy, points, tmp).second;
 }
 
-}  // namespace ac
+} // namespace ac

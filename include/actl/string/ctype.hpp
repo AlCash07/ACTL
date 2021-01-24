@@ -24,4 +24,4 @@ inline constexpr bool is_space(char c) {
     return static_cast<unsigned char>(c - '\t') < 5 || c == ' ';
 }
 
-}  // namespace ac
+} // namespace ac

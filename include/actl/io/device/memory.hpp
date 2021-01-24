@@ -109,4 +109,4 @@ public:
 template <mode_t Mode, class Char = char>
 using memory = in_memory<Mode, Char>;
 
-}  // namespace ac::io
+} // namespace ac::io

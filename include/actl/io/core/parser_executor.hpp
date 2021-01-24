@@ -50,4 +50,4 @@ parser_executor(T&, P) -> parser_executor<T, P>;
 template <class P>
 parser_executor(P) -> parser_executor<void, P>;
 
-}  // namespace ac::io
+} // namespace ac::io

@@ -30,4 +30,4 @@ out_t<T> out(T&& x) {
     return {std::forward<T>(x)};
 }
 
-}  // namespace ac
+} // namespace ac

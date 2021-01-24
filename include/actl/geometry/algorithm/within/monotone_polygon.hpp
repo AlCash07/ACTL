@@ -33,4 +33,4 @@ enum within within(const Policy& policy, const point<T>& p, const monotone_polyg
     return detail::to_inclusion(orient);
 }
 
-}  // namespace ac
+} // namespace ac

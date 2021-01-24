@@ -23,4 +23,4 @@ bool crosses(const Policy& policy, const plane<T0, N>& lhs, const plane<T1, N>& 
     return collinear(policy, point{lhs.normal[i], lhs.d}, point{rhs.normal[i], rhs.d});
 }
 
-}  // namespace ac
+} // namespace ac

@@ -20,4 +20,4 @@ auto distance(const T& lhs, const U& rhs) {
     return distance(geometry_policy, rhs, lhs);
 }
 
-}  // namespace ac
+} // namespace ac

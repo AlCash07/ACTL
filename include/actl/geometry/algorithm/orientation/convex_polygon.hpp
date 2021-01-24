@@ -19,4 +19,4 @@ orientation2d orientation(const Policy& policy, const convex_polygon<T>& poly) {
     return orientation(policy, it[0], it[1], it[2]);
 }
 
-}  // namespace ac
+} // namespace ac

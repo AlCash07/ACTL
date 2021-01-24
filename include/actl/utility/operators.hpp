@@ -44,4 +44,4 @@ constexpr auto operator>=(const T& lhs, const U& rhs) -> decltype(!(lhs < rhs)) 
     return !(lhs < rhs);
 }
 
-}  // namespace ac::operators
+} // namespace ac::operators

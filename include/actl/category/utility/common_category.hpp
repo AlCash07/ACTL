@@ -39,9 +39,9 @@ constexpr auto operator&&(category_wrap<T> lhs, category_wrap<U> rhs) {
     }
 }
 
-}  // namespace detail
+} // namespace detail
 
 template <class... Ts>
 using common_category_t = typename decltype((... && detail::category_wrap<Ts>{}))::type;
 
-}  // namespace ac
+} // namespace ac

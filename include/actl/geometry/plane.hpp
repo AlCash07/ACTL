@@ -15,8 +15,8 @@ namespace ac {
 template <class T, index N = 3>
 class plane {
 public:
-    point<T, N> normal;  // normal vector
-    T d;                 // distance from origin to the plane times the norm of normal
+    point<T, N> normal; // normal vector
+    T d;                // distance from origin to the plane times the norm of normal
 
     constexpr plane() = default;
 
@@ -79,4 +79,4 @@ constexpr bool degenerate(const Policy& policy, const plane<T, N>& pl) {
     return degenerate(policy, pl.normal);
 }
 
-}  // namespace ac
+} // namespace ac

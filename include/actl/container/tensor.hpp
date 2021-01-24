@@ -125,7 +125,7 @@ public:
 
     template <class Dims>
     tensor_data(index size, const nd_initializer_list_t<T, N>& il, Dims dims) : base_t{size} {
-        index strides[std::max(N - 1, (index)1)];  // array of size 0 is not standard-compliant
+        index strides[std::max(N - 1, (index)1)]; // array of size 0 is not standard-compliant
         if constexpr (N >= 2) {
             strides[N - 2] = dims[N - 1];
             for (index i = N - 3; i >= 0; --i)
@@ -142,7 +142,7 @@ public:
 private:
     template <index I, class Dims>
     T* initialize(
-        T* ptr, const nd_initializer_list_t<T, N - I>& il, Dims dims, const index* strides)  //
+        T* ptr, const nd_initializer_list_t<T, N - I>& il, Dims dims, const index* strides) //
     {
         ACTL_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N) {
@@ -499,7 +499,7 @@ struct tensor {
 template <class T>
 struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
-}  // namespace detail
+} // namespace detail
 
 struct tensor_tag {
     using base = unclassified_tag;
@@ -545,4 +545,4 @@ using tensor = typename detail::tensor<T, N>::type;
 template <class T, index N = dynamic_size>
 using tensor_view = detail::tensor_base<T*, detail::dimensions_t<N>>;
 
-}  // namespace ac
+} // namespace ac

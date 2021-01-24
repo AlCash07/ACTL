@@ -42,4 +42,4 @@ struct output_type<std::insert_iterator<Container>> {
 template <class OutIter>
 using output_type_t = typename output_type<OutIter>::type;
 
-}  // namespace ac
+} // namespace ac

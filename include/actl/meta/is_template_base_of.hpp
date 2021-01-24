@@ -19,7 +19,7 @@ std::true_type test_base(const B<Ts...>*);
 template <template <class...> class>
 std::false_type test_base(const void*);
 
-}  // namespace detail
+} // namespace detail
 
 template <template <class...> class B, class D, class = void>
 struct is_template_base_of : std::true_type {};
@@ -31,4 +31,4 @@ struct is_template_base_of<B, D, std::void_t<decltype(detail::test_base<B>(std::
 template <template <class...> class B, class D>
 constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;
 
-}  // namespace ac
+} // namespace ac

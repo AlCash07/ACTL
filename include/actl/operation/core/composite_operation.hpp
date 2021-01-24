@@ -46,7 +46,7 @@ template <class Outer, class... Inner, class Policy, size_t... Is>
 constexpr auto apply_policy_to_composite(
     const composite_operation<Outer, Inner...>& op,
     const Policy& policy,
-    std::index_sequence<Is...>)  //
+    std::index_sequence<Is...>) //
 {
     return operation_composer<Outer>{}(apply_policy_if_can(std::get<Is>(op.inner()), policy)...);
 }
@@ -60,4 +60,4 @@ constexpr auto apply_policy(const composite_operation<Outer, Inner...>& op, cons
     return apply_policy_to_composite(op, policy, std::make_index_sequence<sizeof...(Inner)>{});
 }
 
-}  // namespace ac
+} // namespace ac

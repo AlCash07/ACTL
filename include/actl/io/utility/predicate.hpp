@@ -27,4 +27,4 @@ struct predicate {
     }
 };
 
-}  // namespace ac::io
+} // namespace ac::io

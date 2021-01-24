@@ -33,4 +33,4 @@ struct neutral_element<min_t, T> {
     }
 };
 
-}  // namespace ac
+} // namespace ac

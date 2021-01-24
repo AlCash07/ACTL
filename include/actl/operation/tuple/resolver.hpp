@@ -24,4 +24,4 @@ struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
     }
 };
 
-}  // namespace ac
+} // namespace ac

@@ -15,4 +15,4 @@ decltype(auto) project(const point<T, N>& src, const U& dst) {
     return project(geometry_policy, src, dst);
 }
 
-}  // namespace ac
+} // namespace ac

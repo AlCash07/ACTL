@@ -19,4 +19,4 @@ struct sqr_t : scalar_operation<sqr_t, 1> {
 };
 constexpr sqr_t sqr;
 
-}  // namespace ac
+} // namespace ac

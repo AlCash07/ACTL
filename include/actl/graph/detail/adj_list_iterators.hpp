@@ -133,4 +133,4 @@ struct edge_iter<G, two_vertices> {
     using type = typename G::traits::edges::template edge_iterator<edge_t<G>>;
 };
 
-}  // namespace ac::detail
+} // namespace ac::detail

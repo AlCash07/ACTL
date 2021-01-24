@@ -32,4 +32,4 @@ enum within within(const Policy& policy, const point<T>& p, const polygon<U>& tr
     return within::border;
 }
 
-}  // namespace ac
+} // namespace ac

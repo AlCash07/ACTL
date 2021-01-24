@@ -23,4 +23,4 @@ index write_final(Device& od, Format& fmt, const raw<T>& x) {
     return write_final(od, fmt, x.value);
 }
 
-}  // namespace ac::io
+} // namespace ac::io

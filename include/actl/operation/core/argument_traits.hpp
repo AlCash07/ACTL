@@ -34,7 +34,7 @@ struct value_if<false, T> {
 template <bool B, class T>
 using value_type_if_t = typename value_if<B, T>::type;
 
-}  // namespace detail
+} // namespace detail
 
 template <class T, class U = remove_cvref_t<T>>
 using value_if_small = std::conditional_t<std::is_empty_v<U> || std::is_arithmetic_v<U>, U, T>;
@@ -61,4 +61,4 @@ auto& eval(const T (&x)[N]) {
     return x;
 }
 
-}  // namespace ac
+} // namespace ac

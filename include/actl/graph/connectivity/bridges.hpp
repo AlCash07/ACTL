@@ -35,7 +35,7 @@ struct once_equal<All, All> {
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Graph, bool ParallelEdges>
 struct bridge_context
@@ -133,4 +133,4 @@ void find_two_edge_connected_components(const Graph& graph, ComponentMap&& map) 
         graph, dummy_output_iterator{}, std::forward<ComponentMap>(map));
 }
 
-}  // namespace ac
+} // namespace ac

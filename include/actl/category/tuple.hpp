@@ -43,10 +43,10 @@ template <class T, size_t... Is>
 struct tuple_depth<T, std::index_sequence<Is...>>
     : index_constant<1 + max_nesting_depth_v<std::tuple_element_t<Is, T>...>> {};
 
-}  // namespace detail
+} // namespace detail
 
 template <class T>
 struct nesting_depth<T, std::enable_if_t<is_tuple_v<T>>>
     : detail::tuple_depth<T, tuple_indices_t<T>> {};
 
-}  // namespace ac
+} // namespace ac

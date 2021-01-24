@@ -17,4 +17,4 @@ enum within within(const Policy& policy, const point<T0, N>& p, const sphere<T1,
     return static_cast<enum within>(1 + cmp3way(policy, distance(policy, p, s.center), s.radius));
 }
 
-}  // namespace ac
+} // namespace ac

@@ -63,7 +63,7 @@ struct filtered_range_types {
     using size_type = size_type_t<remove_cvref_t<R>>;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Range, class Predicate>
 class filtered_range
@@ -100,4 +100,4 @@ auto filter_range(Range&& range, Predicate pred) {
     return filtered_range<Range, Predicate>{std::forward<Range>(range), std::move(pred)};
 }
 
-}  // namespace ac
+} // namespace ac

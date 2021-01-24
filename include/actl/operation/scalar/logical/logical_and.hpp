@@ -35,4 +35,4 @@ constexpr auto operator&&(T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-}  // namespace ac
+} // namespace ac

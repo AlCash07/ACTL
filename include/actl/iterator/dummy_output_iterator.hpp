@@ -31,4 +31,4 @@ struct dummy_output_iterator : output_iterator_types {
     }
 };
 
-}  // namespace ac
+} // namespace ac

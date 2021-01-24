@@ -18,7 +18,7 @@ std::map<int, int> get_map() {
     return {kv.begin(), kv.end()};
 }
 
-}  // namespace
+} // namespace
 
 template <bool Writable, class Map>
 void test_associative_map(Map&& map) {

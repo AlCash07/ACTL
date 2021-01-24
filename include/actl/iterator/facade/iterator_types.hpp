@@ -30,4 +30,4 @@ struct output_iterator_types {
     using difference_type = void;
 };
 
-}  // namespace ac
+} // namespace ac

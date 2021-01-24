@@ -36,4 +36,4 @@ struct map_ops<logging_map<M, OI>> : map_ops<M> {
     }
 };
 
-}  // namespace ac
+} // namespace ac

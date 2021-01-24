@@ -34,4 +34,4 @@ constexpr auto operator|(Op&& op, Policy&& policy) {
     return tuned_operation<Op, Policy>{std::forward<Op>(op), std::forward<Policy>(policy)};
 }
 
-}  // namespace ac
+} // namespace ac

@@ -48,7 +48,7 @@ struct cm_range<M1, M2, V, false, false> {
     using type = void;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Map1, class Map2, class... Maps>
 class composite_map : public composite_map<composite_map<Map1, Map2>, Maps...> {};
@@ -123,4 +123,4 @@ struct map_ops<CM, std::void_t<typename CM::is_composite_map>> {
 template <class... Maps>
 composite_map(Maps&&...) -> composite_map<Maps...>;
 
-}  // namespace ac
+} // namespace ac

@@ -30,4 +30,4 @@ cspan<char> encode(Format& fmt, Bool x) {
         return {x ? &one_c : &zero_c, 1};
 }
 
-}  // namespace ac::io
+} // namespace ac::io

@@ -99,4 +99,4 @@ public:
 template <mode_t Mode, class Char = char>
 using string = in_string<Mode, Char>;
 
-}  // namespace ac::io
+} // namespace ac::io

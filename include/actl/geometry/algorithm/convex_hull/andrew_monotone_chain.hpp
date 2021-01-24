@@ -58,4 +58,4 @@ span<T> convex_hull(const span<T>& points) {
     return convex_hull(andrew_monotone_chain_policy{default_policy}, points);
 }
 
-}  // namespace ac
+} // namespace ac

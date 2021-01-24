@@ -29,4 +29,4 @@ constexpr auto apply_policy(less_t, const absolute_error<E>& policy) {
     return policy.epsilon() < rhs_ - lhs_;
 }
 
-}  // namespace ac
+} // namespace ac

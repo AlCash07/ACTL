@@ -22,7 +22,7 @@ struct result {
     using tag = category_t<remove_cvref_t<type>>;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Derived, class Tag>
 struct expression_base {};
@@ -69,4 +69,4 @@ constexpr void assign(out_t<T>& dst, const expression<Ts...>& e) {
     assign_impl(dst.x, e, std::make_index_sequence<sizeof...(Ts) - 1>{});
 }
 
-}  // namespace ac
+} // namespace ac

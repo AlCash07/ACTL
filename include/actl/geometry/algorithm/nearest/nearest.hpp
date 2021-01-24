@@ -22,4 +22,4 @@ auto nearest(T&& x, Ts&&... xs) {
     return nearest(geometry_policy, x, xs...);
 }
 
-}  // namespace ac
+} // namespace ac

@@ -57,4 +57,4 @@ struct map_ops<MM, std::void_t<typename MM::class_t, typename MM::member_t>> : m
     }
 };
 
-}  // namespace ac
+} // namespace ac

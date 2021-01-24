@@ -42,4 +42,4 @@ auto perform(Sqrt, defer_sqrt, const T& x) {
     return square_root{x};
 }
 
-}  // namespace ac
+} // namespace ac

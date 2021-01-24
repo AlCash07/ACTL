@@ -52,7 +52,7 @@ index write_final(Device& od, Format&, const escaped_string<Char>& s) {
     return res;
 }
 
-}  // namespace detail
+} // namespace detail
 
 template <class C, enable_int_if<std::is_same_v<C, char>> = 0>
 auto encode(escaped, const C& c) {
@@ -64,4 +64,4 @@ auto encode(escaped, const S& s) {
     return batch{'\"', detail::escaped_string<char>{s}, '\"'};
 }
 
-}  // namespace ac::io
+} // namespace ac::io

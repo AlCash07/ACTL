@@ -86,4 +86,4 @@ void topological_sort(const Graph& graph, VertexOutIter dst) {
         make_default_discovered_flag(graph)}(graph);
 }
 
-}  // namespace ac
+} // namespace ac

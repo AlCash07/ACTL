@@ -20,7 +20,7 @@ OutIter intersect(
     line_scalar_policy<Policy> lsp,
     const line<T, 2, K>& l,
     const convex_polygon<U>& poly,
-    OutIter dst)  //
+    OutIter dst) //
 {
     auto& policy = lsp.policy;
     ACTL_ASSERT(!degenerate(policy, l));
@@ -49,4 +49,4 @@ OutIter intersect(
     return intersect_chain(right, left, right_orient, dst);
 }
 
-}  // namespace ac
+} // namespace ac

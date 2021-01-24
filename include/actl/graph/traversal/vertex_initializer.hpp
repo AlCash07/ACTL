@@ -29,4 +29,4 @@ struct vertex_initializer : Base {
     map_value_t<map_t> value;
 };
 
-}  // namespace ac
+} // namespace ac

@@ -44,4 +44,4 @@ void manipulate(indented<C>& fmt, change_level<Deeper>) {
     fmt.level += Deeper ? 1 : -1;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

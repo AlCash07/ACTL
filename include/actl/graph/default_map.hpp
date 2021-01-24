@@ -32,4 +32,4 @@ auto make_default_edge_map(const Graph& graph) {
     }
 }
 
-}  // namespace ac
+} // namespace ac

@@ -37,4 +37,4 @@ Char* uitoa(Char* last, Format& fmt, UInt x, UInt base) {
     return last;
 }
 
-}  // namespace ac::io::detail
+} // namespace ac::io::detail

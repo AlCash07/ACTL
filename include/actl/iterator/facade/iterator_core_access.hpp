@@ -42,4 +42,4 @@ struct iterator_core_access {
     }
 };
 
-}  // namespace ac
+} // namespace ac

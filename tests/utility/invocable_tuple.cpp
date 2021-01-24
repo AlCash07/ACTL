@@ -24,7 +24,7 @@ struct increment {
     }
 };
 
-}  // namespace
+} // namespace
 
 TEST_CASE("invocable_tuple") {
     using CS = ac::invocable_tuple<const_op<bool, 1>, const_op<bool, 2>, const_op<increment, 3>>;

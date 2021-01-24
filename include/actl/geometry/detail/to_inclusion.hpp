@@ -15,4 +15,4 @@ enum within to_inclusion(orientation2d x) {
     return static_cast<enum within>(1 - static_cast<int>(x) + static_cast<int>(within::inside));
 }
 
-}  // namespace ac::detail
+} // namespace ac::detail

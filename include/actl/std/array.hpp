@@ -28,4 +28,4 @@ struct rebind<std::array<T, N>, To> {
     using type = std::array<To, N>;
 };
 
-}  // namespace ac
+} // namespace ac

@@ -76,4 +76,4 @@ protected:
     }
 };
 
-}  // namespace ac::detail
+} // namespace ac::detail

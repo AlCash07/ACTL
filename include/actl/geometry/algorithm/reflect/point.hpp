@@ -20,4 +20,4 @@ auto reflect(const point<T, N>& src, const U& dst) {
     return reflect(geometry_policy, src, dst);
 }
 
-}  // namespace ac
+} // namespace ac

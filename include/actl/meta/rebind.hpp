@@ -46,7 +46,7 @@ struct rebind0<C<Ts...>, To> {
     using type = C<typename rebind1<Ts, To, nth_type_t<0, Ts...>>::type...>;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class T, size_t N, class To>
 struct rebind<T[N], To> {
@@ -71,4 +71,4 @@ struct rebind : detail::rebind0<T, To> {};
 template <class T, class To>
 using rebind_t = typename rebind<T, To>::type;
 
-}  // namespace ac
+} // namespace ac

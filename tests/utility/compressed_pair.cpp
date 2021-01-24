@@ -38,7 +38,7 @@ TEST_CASE("order") {
 
 namespace {
 struct fin final : none {};
-}  // namespace
+} // namespace
 
 static_assert(2 * sizeof(int) == sizeof(compressed_pair<int, int>));
 // Objects of the same class can't share address.

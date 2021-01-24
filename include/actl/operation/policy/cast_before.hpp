@@ -21,4 +21,4 @@ constexpr auto apply_policy(const Op& op, cast_before<Op, T>) {
     return op(cast<T>);
 }
 
-}  // namespace ac
+} // namespace ac

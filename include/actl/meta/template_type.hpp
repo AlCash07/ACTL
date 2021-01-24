@@ -25,4 +25,4 @@ struct template_type<C<Ts...>> {
     using type = nth_type_t<0, Ts...>;
 };
 
-}  // namespace ac
+} // namespace ac

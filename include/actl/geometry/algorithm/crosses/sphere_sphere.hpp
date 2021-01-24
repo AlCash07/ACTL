@@ -19,4 +19,4 @@ bool crosses(const Policy& policy, const sphere<T0, N>& lhs, const sphere<T1, N>
            !less(policy, lhs.radius + rhs.radius, centers_dist);
 }
 
-}  // namespace ac
+} // namespace ac

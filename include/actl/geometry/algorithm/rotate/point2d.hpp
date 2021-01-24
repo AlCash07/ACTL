@@ -23,4 +23,4 @@ auto rotate(const Policy& policy, const point<T0>& p, const T1& angle, const poi
     return origin + rotate(policy, p - origin, angle);
 }
 
-}  // namespace ac
+} // namespace ac

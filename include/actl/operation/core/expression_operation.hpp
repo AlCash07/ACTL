@@ -66,4 +66,4 @@ constexpr auto apply_policy(const expression_op<Ts...>& eop, const Policy& polic
     return apply_policy_impl(eop, policy, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
-}  // namespace ac
+} // namespace ac

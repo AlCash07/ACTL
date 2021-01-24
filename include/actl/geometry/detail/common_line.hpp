@@ -17,7 +17,7 @@ const auto& max_endpoint(
     const Policy& policy,
     const std::pair<T, endpoint>& lhs,
     const std::pair<T, endpoint>& rhs,
-    bool start)  //
+    bool start) //
 {
     if (lhs.second == endpoint::free) {
         if (rhs.second != endpoint::free) {
@@ -39,7 +39,7 @@ const auto& max_endpoint(
 
 template <class Policy, index N, class T0, class K0, class T1, class K1, class OutIter>
 OutIter common_line(
-    const Policy& policy, const line<T0, N, K0>& lhs, const line<T1, N, K1>& rhs, OutIter dst)  //
+    const Policy& policy, const line<T0, N, K0>& lhs, const line<T1, N, K1>& rhs, OutIter dst) //
 {
     using point_t = point<geometry::scalar_t<T0, T1>, N>;
     auto get_point = [&policy](const auto& l, bool start) {
@@ -55,4 +55,4 @@ OutIter common_line(
     return dst;
 }
 
-}  // namespace ac::detail
+} // namespace ac::detail

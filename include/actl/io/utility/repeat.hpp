@@ -47,4 +47,4 @@ index write_final(Device& od, Format&, const repeat<Char>& x) {
     return x.count;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

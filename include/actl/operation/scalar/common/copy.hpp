@@ -26,4 +26,4 @@ constexpr void assign(out_t<T>& dst, const U& y) {
     copy(dst, y);
 }
 
-}  // namespace ac
+} // namespace ac

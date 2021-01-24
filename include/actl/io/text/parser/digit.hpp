@@ -35,4 +35,4 @@ bool is_digit(UInt digit, UInt base) {
     return digit < base;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

@@ -29,4 +29,4 @@ auto area(const Policy& policy, const T& poly) {
     return res;
 }
 
-}  // namespace ac
+} // namespace ac

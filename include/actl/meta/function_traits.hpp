@@ -66,4 +66,4 @@ public:
     using argument_type = argument_type_t<N + 1, O>;
 };
 
-}  // namespace ac
+} // namespace ac

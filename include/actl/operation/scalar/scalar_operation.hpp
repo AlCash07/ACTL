@@ -66,4 +66,4 @@ template <class T>
 constexpr bool is_comparison_operation_v =
     is_subcategory_of_v<category_t<T>, comparison_operation_tag>;
 
-}  // namespace ac
+} // namespace ac

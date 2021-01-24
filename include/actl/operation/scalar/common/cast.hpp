@@ -23,4 +23,4 @@ struct cast_t : scalar_operation<cast_t<To>, 1> {
 template <class T>
 constexpr cast_t<T> cast;
 
-}  // namespace ac
+} // namespace ac

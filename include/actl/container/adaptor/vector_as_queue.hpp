@@ -64,7 +64,7 @@ public:
 
 protected:
     Vector vector_;
-    size_type begin_ = 0;  // not an iterator since vector can reallocate
+    size_type begin_ = 0; // not an iterator since vector can reallocate
 };
 
-}  // namespace ac
+} // namespace ac

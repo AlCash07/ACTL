@@ -61,11 +61,11 @@ void test_swap(T x, T y) {
 template <class T>
 void test_regular_type(T x, T y) {
     test_regular_traits<T>();
-    CHECK(x != y);  // this is required for test to work
+    CHECK(x != y); // this is required for test to work
     test_default_constructor<T>();
     test_copy(x, y);
     test_move(x, y);
     test_swap(x, y);
 }
 
-}  // namespace ac
+} // namespace ac

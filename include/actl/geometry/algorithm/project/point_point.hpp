@@ -16,4 +16,4 @@ auto& project(const Policy& policy, const point<T0, N>&, const point<T1, N>& dst
     return dst;
 }
 
-}  // namespace ac
+} // namespace ac

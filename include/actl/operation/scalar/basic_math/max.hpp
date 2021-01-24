@@ -33,4 +33,4 @@ struct neutral_element<max_t, T> {
     }
 };
 
-}  // namespace ac
+} // namespace ac

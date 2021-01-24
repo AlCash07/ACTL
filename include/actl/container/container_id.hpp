@@ -199,4 +199,4 @@ container_id<C> id_find(const C& cont, const T& value) {
     return iterator_to_id(cont, find(cont, value));
 }
 
-}  // namespace ac
+} // namespace ac

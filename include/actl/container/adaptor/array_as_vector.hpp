@@ -102,4 +102,4 @@ protected:
     iterator end_;
 };
 
-}  // namespace ac
+} // namespace ac

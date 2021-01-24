@@ -16,4 +16,4 @@ auto distance(const Policy& policy, const point<T0, N>& p0, const point<T1, N>& 
     return norm(policy, p0 - p1);
 }
 
-}  // namespace ac
+} // namespace ac

@@ -143,10 +143,10 @@ public:
 
 #undef ENABLE_IF_HAS_CONST
 
-}  // namespace detail
+} // namespace detail
 
 template <class Range, class Types>
 using range_facade = detail::
     rng_facade<Range, detail::range_types<Types>, iterator_category_t<typename Types::iterator>>;
 
-}  // namespace ac
+} // namespace ac

@@ -67,4 +67,4 @@ MATH_OP2(atan2_t, atan2)
 #undef MATH_OP1
 #undef MATH_OP2
 
-}  // namespace ac
+} // namespace ac

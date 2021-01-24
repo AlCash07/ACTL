@@ -32,4 +32,4 @@ private:
     index value = 6;
 };
 
-}  // namespace ac::io
+} // namespace ac::io

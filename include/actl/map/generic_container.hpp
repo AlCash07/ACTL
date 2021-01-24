@@ -28,7 +28,7 @@ struct get_id_ref {
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class C>
 struct map_traits<C, detail::enable_if_gc_t<C>>
@@ -54,4 +54,4 @@ struct map_ops<C, detail::enable_if_gc_t<C>> : map_put<C> {
     }
 };
 
-}  // namespace ac
+} // namespace ac

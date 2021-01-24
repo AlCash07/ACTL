@@ -39,4 +39,4 @@ struct nested_scope_guard {
 
 struct colon {};
 
-}  // namespace ac::io
+} // namespace ac::io

@@ -37,4 +37,4 @@ constexpr auto apply_policy(const Op& op, allow_promotion) {
     return operation_composer<Promotion>{}(op);
 }
 
-}  // namespace ac
+} // namespace ac

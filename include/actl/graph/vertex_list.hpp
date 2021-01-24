@@ -38,7 +38,7 @@ public:
 template <class VC>
 class vertex_list<VC, none> {
 public:
-    using vertex_container = rebind_container_t<VC, value_type_t<VC>>;  // to handle none
+    using vertex_container = rebind_container_t<VC, value_type_t<VC>>; // to handle none
     using vertex = container_id<vertex_container>;
     using vertex_iterator = container_id_iterator<vertex_container>;
 
@@ -99,4 +99,4 @@ protected:
     vertex_container vertices_;
 };
 
-}  // namespace ac
+} // namespace ac

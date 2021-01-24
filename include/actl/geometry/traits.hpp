@@ -94,8 +94,8 @@ template <class T0, class T1>
 using enable_int_if_swap = enable_int_if<id<T1>::value < id<T0>::value>;
 // clang-format on
 
-}  // namespace geometry
+} // namespace geometry
 
 cast_before<Div, double> geometry_policy;
 
-}  // namespace ac
+} // namespace ac

@@ -52,8 +52,8 @@ struct rng_decorator : public Rng {
             for (auto c : value) {
                 this->state[0] += static_cast<typename Rng::result_type>(c);
             }
-        } while (base() == base());  // improbable unless RNG state is degenerate
+        } while (base() == base()); // improbable unless RNG state is degenerate
     }
 };
 
-}  // namespace ac
+} // namespace ac

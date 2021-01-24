@@ -41,4 +41,4 @@ constexpr decltype(auto) operator&=(T&& lhs, U&& rhs) {
     return bit_and(inout(std::forward<T>(lhs)), pass<U>(rhs));
 }
 
-}  // namespace ac
+} // namespace ac

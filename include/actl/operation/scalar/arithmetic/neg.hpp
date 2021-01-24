@@ -26,4 +26,4 @@ constexpr auto operator-(T&& x) {
     return neg(pass<T>(x));
 }
 
-}  // namespace ac
+} // namespace ac

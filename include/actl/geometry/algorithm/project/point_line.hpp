@@ -22,4 +22,4 @@ auto project(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& 
     return l(project(line_scalar_policy{policy}, p, l));
 }
 
-}  // namespace ac
+} // namespace ac

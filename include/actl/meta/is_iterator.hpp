@@ -19,7 +19,7 @@ struct is_iter : std::false_type {};
 template <class T>
 struct is_iter<T, void_t<typename std::iterator_traits<T>::iterator_category>> : std::true_type {};
 
-}  // namespace detail
+} // namespace detail
 
 template <class T, class = void>
 struct is_iterator : detail::is_iter<T> {};
@@ -32,4 +32,4 @@ constexpr bool is_iterator_v = is_iterator<T>::value;
 
 // TODO: implement is_output_iterator trait.
 
-}  // namespace ac
+} // namespace ac

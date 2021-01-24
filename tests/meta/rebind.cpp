@@ -17,7 +17,7 @@ struct R {};
 struct A {};
 struct B {};
 
-}  // namespace
+} // namespace
 
 namespace ac {
 
@@ -26,7 +26,7 @@ struct rebind<R<T>, U> {
     using type = int;
 };
 
-}  // namespace ac
+} // namespace ac
 
 // Specialization has the highest priority.
 static_assert(std::is_same_v<int, ac::rebind_t<R<A>, B>>);

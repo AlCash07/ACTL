@@ -94,4 +94,4 @@ struct edge_list_traits<Dir, V, EC, none> {
     using container = dummy_container;
 };
 
-}  // namespace ac::detail
+} // namespace ac::detail

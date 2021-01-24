@@ -26,4 +26,4 @@ constexpr auto operator<(T&& lhs, U&& rhs) {
     return less(pass<T>(lhs), pass<U>(rhs));
 }
 
-}  // namespace ac
+} // namespace ac

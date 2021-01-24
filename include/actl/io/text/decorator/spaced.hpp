@@ -69,4 +69,4 @@ void manipulate(spaced<S, C>& fmt, change_level<Deeper>) {
     fmt.separate = !Deeper;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

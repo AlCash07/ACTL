@@ -15,4 +15,4 @@ auto rotate(const point<T, N>& p, const Ts&... args) {
     return rotate(geometry_policy, p, args...);
 }
 
-}  // namespace ac
+} // namespace ac

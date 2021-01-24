@@ -27,4 +27,4 @@ bool line_test(const Policy& policy, line_kind kind, const T& num, const U& den)
     return endpoint_test(policy, begin(kind), 0, num) && endpoint_test(policy, end(kind), num, den);
 }
 
-}  // namespace ac::detail
+} // namespace ac::detail

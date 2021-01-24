@@ -24,7 +24,7 @@ struct deduced_iter_types {
     using difference_type = deduce_t<typename T::difference_type, difference_type_t<Iter>>;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Derived, class Iter, class Types = void>
 class iterator_adaptor : public iterator_facade<Derived, detail::deduced_iter_types<Iter, Types>> {
@@ -76,4 +76,4 @@ private:
     Iter iter_;
 };
 
-}  // namespace ac
+} // namespace ac

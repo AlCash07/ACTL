@@ -12,4 +12,4 @@ namespace ac {
 
 constexpr index dynamic_size = -1;
 
-}  // namespace ac
+} // namespace ac

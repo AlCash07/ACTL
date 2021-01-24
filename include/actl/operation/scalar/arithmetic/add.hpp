@@ -41,4 +41,4 @@ constexpr decltype(auto) operator+=(T&& lhs, U&& rhs) {
     return add(inout(std::forward<T>(lhs)), pass<U>(rhs));
 }
 
-}  // namespace ac
+} // namespace ac

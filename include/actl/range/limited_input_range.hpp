@@ -16,4 +16,4 @@ auto make_limited_input_range(Iterator iter, int limit) {
     return make_range(limited_input_iterator{iter, limit}, limited_input_iterator<Iterator>{});
 }
 
-}  // namespace ac
+} // namespace ac

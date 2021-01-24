@@ -28,4 +28,4 @@ constexpr size_t hash_value(const T& x) {
     return hash_access::hash(x);
 }
 
-}  // namespace ac
+} // namespace ac

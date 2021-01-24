@@ -19,4 +19,4 @@ struct flush_t {
 };
 constexpr flush_t flush;
 
-}  // namespace ac::io
+} // namespace ac::io

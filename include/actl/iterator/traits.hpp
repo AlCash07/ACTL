@@ -27,7 +27,7 @@ struct is_const_iterator : is_const_pointer<typename std::iterator_traits<T>::po
 template <class T>
 struct is_const_iterator<T, false> : std::false_type {};
 
-}  // namespace detail
+} // namespace detail
 
 template <class T>
 constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
@@ -35,4 +35,4 @@ constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 template <class T>
 constexpr bool is_non_const_iterator_v = is_iterator_v<T> && !is_const_iterator_v<T>;
 
-}  // namespace ac
+} // namespace ac

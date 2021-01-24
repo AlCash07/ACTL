@@ -24,4 +24,4 @@ struct nth_type<N, T, Ts...> : nth_type<N - 1, Ts...> {};
 template <size_t N, class... Ts>
 using nth_type_t = typename nth_type<N, Ts...>::type;
 
-}  // namespace ac
+} // namespace ac

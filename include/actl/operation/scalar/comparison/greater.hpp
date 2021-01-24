@@ -24,4 +24,4 @@ constexpr auto operator>(T&& lhs, U&& rhs) {
     return greater(pass<T>(lhs), pass<U>(rhs));
 }
 
-}  // namespace ac
+} // namespace ac

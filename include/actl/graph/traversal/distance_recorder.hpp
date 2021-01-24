@@ -38,4 +38,4 @@ auto make_default_distance_recorder(const Graph& graph) {
     return make_distance_recorder(make_default_vertex_map<int>(graph), -1);
 }
 
-}  // namespace ac
+} // namespace ac

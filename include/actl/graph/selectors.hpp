@@ -24,4 +24,4 @@ struct two_vertices {};
 
 struct vertex_property {};
 
-}  // namespace ac
+} // namespace ac

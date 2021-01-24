@@ -95,11 +95,11 @@ auto get_second(Map&& map) {
     return composite_map{std::forward<Map>(map), second_map<map_reference_t<Map>>{}};
 }
 
-}  // namespace ac::detail
+} // namespace ac::detail
 
 namespace ac {
 
 template <class K>
 struct map_traits<detail::second_map<K>> : detail::second_map<K>::traits {};
 
-}  // namespace ac
+} // namespace ac

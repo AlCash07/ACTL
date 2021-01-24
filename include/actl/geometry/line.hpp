@@ -91,7 +91,7 @@ private:
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 /// N-dimensional line in parametric form, that can be a line (by default), a ray, or a segment.
 template <class T, index N = 2, class Kind = detail::static_kind<line_kind::free>>
@@ -187,14 +187,14 @@ constexpr auto make_any_line(
     const point<T0, N>& a,
     const point<T1, N>& b,
     line_kind kind = line_kind::free,
-    bool vector = false)  //
+    bool vector = false) //
 {
     return any_line<geometry::scalar_t<T0, T1>, N>{a, b, kind, vector};
 }
 
 template <index N, class T0, class T1, class Line = any_line<geometry::scalar_t<T0, T1>, N>>
 constexpr Line make_any_line(
-    const point<T0, N>& a, endpoint akind, const point<T1, N>& b, endpoint bkind)  //
+    const point<T0, N>& a, endpoint akind, const point<T1, N>& b, endpoint bkind) //
 {
     if (akind < bkind)
         return make_any_line(b, bkind, a, akind);
@@ -215,4 +215,4 @@ struct line_scalar_policy : virtual policy {
     const Policy& policy;
 };
 
-}  // namespace ac
+} // namespace ac

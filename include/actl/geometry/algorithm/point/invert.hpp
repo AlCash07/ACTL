@@ -28,4 +28,4 @@ auto invert(const point<T, N>& p, const U& x) {
     return invert(geometry_policy, p, x);
 }
 
-}  // namespace ac
+} // namespace ac

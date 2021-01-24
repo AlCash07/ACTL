@@ -156,4 +156,4 @@ bool next_permutation(Range& dst, Compare comp) {
     return std::next_permutation(std::begin(dst), std::end(dst), comp);
 }
 
-}  // namespace ac
+} // namespace ac

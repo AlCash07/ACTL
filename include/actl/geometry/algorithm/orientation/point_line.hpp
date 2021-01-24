@@ -16,4 +16,4 @@ constexpr auto orientation(const Policy& policy, const point<T0, N>& p, const li
     return orientation(policy, p - l.begin, l.vector);
 }
 
-}  // namespace ac
+} // namespace ac

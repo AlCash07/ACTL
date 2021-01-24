@@ -57,4 +57,4 @@ template <class AM>
 struct map_traits<AM, std::void_t<typename AM::is_accounting_map>>
     : AM::template traits<std::is_const_v<AM>> {};
 
-}  // namespace ac
+} // namespace ac

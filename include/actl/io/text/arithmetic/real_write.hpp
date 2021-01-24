@@ -44,7 +44,7 @@ index write_final(D& od, F& fmt, const float_string& x) {
     return write_final(od, fmt, cspan<char>{x});
 }
 
-}  // namespace detail
+} // namespace detail
 
 template <
     class Format,
@@ -99,4 +99,4 @@ auto encode(Format& fmt, Float x) {
     return res;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

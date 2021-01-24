@@ -19,4 +19,4 @@ bool between_endpoints(const Policy& policy, const point<T0, N>& p, const line<T
     return endpoint_test(policy, end(l.kind()), 0, dot(policy, l.begin - p, p - l.end()));
 }
 
-}  // namespace ac::detail
+} // namespace ac::detail

@@ -90,4 +90,4 @@ struct rebind<hash_function<T>, To> {
     using type = hash_function<>;
 };
 
-}  // namespace ac
+} // namespace ac

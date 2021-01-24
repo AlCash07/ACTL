@@ -58,4 +58,4 @@ constexpr bool is_sorted_range_v = range_traits<T>::is_sorted;
 template <class T>
 constexpr bool is_unique_range_v = range_traits<T>::is_unique;
 
-}  // namespace ac
+} // namespace ac

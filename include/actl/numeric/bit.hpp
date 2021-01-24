@@ -59,4 +59,4 @@ To bit_cast(const From& src) noexcept {
     return dst;
 }
 
-}  // namespace ac
+} // namespace ac

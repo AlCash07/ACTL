@@ -55,4 +55,4 @@ auto irange(Int first, Int last, StepType step) {
     return make_range(begin, integer_iterator_with_step<Int>{first + step * step_count, step});
 }
 
-}  // namespace ac
+} // namespace ac

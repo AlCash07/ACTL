@@ -66,4 +66,4 @@ bool read_final(Device& id, Format& fmt, T& x) {
     return serialization_access::read(x, id, fmt);
 }
 
-}  // namespace ac::io
+} // namespace ac::io

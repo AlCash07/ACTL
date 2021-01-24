@@ -77,4 +77,4 @@ void find_strong_components(const Graph& graph, ComponentMap&& map) {
     depth_first_search{scf}(graph);
 }
 
-}  // namespace ac
+} // namespace ac

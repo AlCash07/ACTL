@@ -20,4 +20,4 @@ template <class Tag>
 struct category_level<Tag, std::void_t<typename Tag::base>>
     : index_constant<1 + category_level_v<typename Tag::base>> {};
 
-}  // namespace ac
+} // namespace ac

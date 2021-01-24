@@ -24,4 +24,4 @@ enum within within(const Policy& policy, const point<T>& p, const simple_polygon
     }
 }
 
-}  // namespace ac
+} // namespace ac

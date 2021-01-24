@@ -24,4 +24,4 @@ auto area(const T& x, const Ts&... xs) {
     return area(geometry_policy, x, xs...);
 }
 
-}  // namespace ac
+} // namespace ac

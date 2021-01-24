@@ -29,4 +29,4 @@ struct on_edge_not_relaxed {};
 struct on_edge_minimized {};
 struct on_edge_not_minimized {};
 
-}  // namespace ac
+} // namespace ac

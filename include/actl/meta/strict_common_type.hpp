@@ -42,4 +42,4 @@ struct strict_common_type<T, U> {
 template <class T, class U, class... Ts>
 struct strict_common_type<T, U, Ts...> : strict_common_type<strict_common_type_t<T, U>, Ts...> {};
 
-}  // namespace ac
+} // namespace ac

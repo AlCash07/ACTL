@@ -16,4 +16,4 @@ struct range_traits<std::vector<T, A>> : default_range_traits {
     static constexpr bool is_container = true;
 };
 
-}  // namespace ac
+} // namespace ac

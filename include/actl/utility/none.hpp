@@ -25,4 +25,4 @@ template <>        struct replace_void<const void> { using type = const none; };
 template <class T>
 using replace_void_t = typename replace_void<T>::type;
 
-}  // namespace ac
+} // namespace ac

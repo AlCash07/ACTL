@@ -19,4 +19,4 @@ bool crosses(const Policy& policy, const plane<T0, N>& pl, const sphere<T1, N>& 
     return !less(policy, dist, product(policy, s.radius, norm(policy, pl.normal)));
 }
 
-}  // namespace ac
+} // namespace ac

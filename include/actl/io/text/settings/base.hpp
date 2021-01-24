@@ -40,4 +40,4 @@ constexpr base_t hex{16};
 constexpr base_t octal{8};
 constexpr base_t detect_base{0};
 
-}  // namespace ac::io
+} // namespace ac::io

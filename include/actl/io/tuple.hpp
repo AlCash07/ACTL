@@ -26,7 +26,7 @@ bool read_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
     return read(id, fmt, get<Is>(x)...);
 }
 
-}  // namespace detail
+} // namespace detail
 
 template <class Device, class Format, class T, enable_int_if<is_tuple_v<T>> = 0>
 index write_final(Device& od, Format& fmt, const T& x) {
@@ -40,4 +40,4 @@ bool read_final(Device& id, Format& fmt, T& x) {
     return detail::read_tuple(id, fmt, x, std::make_index_sequence<std::tuple_size_v<T>>{});
 }
 
-}  // namespace ac::io
+} // namespace ac::io

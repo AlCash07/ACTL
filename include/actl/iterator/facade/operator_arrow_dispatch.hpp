@@ -11,7 +11,7 @@
 namespace ac::detail {
 
 template <class Ref>
-struct operator_arrow_dispatch {  // proxy references
+struct operator_arrow_dispatch { // proxy references
     struct proxy {
         explicit proxy(const Ref& ref) : ref_{ref} {}
         Ref* operator->() {
@@ -28,7 +28,7 @@ struct operator_arrow_dispatch {  // proxy references
 };
 
 template <class T>
-struct operator_arrow_dispatch<T&> {  // "real" references
+struct operator_arrow_dispatch<T&> { // "real" references
     using type = T*;
 
     static type apply(T& x) {
@@ -37,8 +37,8 @@ struct operator_arrow_dispatch<T&> {  // "real" references
 };
 
 template <>
-struct operator_arrow_dispatch<void> {  // output iterator
+struct operator_arrow_dispatch<void> { // output iterator
     using type = void;
 };
 
-}  // namespace ac::detail
+} // namespace ac::detail

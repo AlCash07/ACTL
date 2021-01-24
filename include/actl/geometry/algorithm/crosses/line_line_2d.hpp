@@ -33,7 +33,7 @@ private:
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Policy, class T0, class K0, class T1, class K1>
 bool crosses(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) {
@@ -42,9 +42,9 @@ bool crosses(const Policy& policy, const line<T0, 2, K0>& lhs, const line<T1, 2,
 
 template <class Policy, class T0, class K0, class T1, class K1>
 bool crosses(
-    general_position_policy<Policy> gpp, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs)  //
+    general_position_policy<Policy> gpp, const line<T0, 2, K0>& lhs, const line<T1, 2, K1>& rhs) //
 {
     return crosses(line_scalar_policy{gpp.policy}, lhs, rhs);
 }
 
-}  // namespace ac
+} // namespace ac

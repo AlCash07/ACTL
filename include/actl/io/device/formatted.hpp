@@ -23,4 +23,4 @@ Format& deduce_format(formatted<Device, Format>& dev) {
     return dev;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

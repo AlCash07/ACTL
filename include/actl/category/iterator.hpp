@@ -47,7 +47,7 @@ struct iter_category<std::random_access_iterator_tag> {
     using type = random_access_iterator_tag;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class T>
 struct category_sfinae<T, std::enable_if_t<is_iterator_v<T>>>
@@ -67,4 +67,4 @@ template <class T>
 constexpr bool is_random_access_iterator_v =
     is_subcategory_of_v<category_t<T>, random_access_iterator_tag>;
 
-}  // namespace ac
+} // namespace ac

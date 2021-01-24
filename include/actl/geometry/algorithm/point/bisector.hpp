@@ -20,4 +20,4 @@ auto bisector(const point<T0, N>& lhs, const point<T1, N>& rhs) {
     return bisector(geometry_policy, lhs, rhs);
 }
 
-}  // namespace ac
+} // namespace ac

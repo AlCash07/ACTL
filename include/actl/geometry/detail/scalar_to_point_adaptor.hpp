@@ -43,4 +43,4 @@ private:
     Iter iter_;
 };
 
-}  // namespace ac::detail
+} // namespace ac::detail

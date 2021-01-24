@@ -117,7 +117,7 @@ public:
         const Graph& graph,
         vertex_t<Graph> s,
         Stack&& stack = {},
-        VertexPredicate is_terminator = {})  //
+        VertexPredicate is_terminator = {}) //
     {
         for (auto u : graph.vertices())
             invoke_all(on_vertex_initialize{}, u);
@@ -142,4 +142,4 @@ public:
 template <class... Components>
 depth_first_search(Components&&...) -> depth_first_search<Components...>;
 
-}  // namespace ac
+} // namespace ac

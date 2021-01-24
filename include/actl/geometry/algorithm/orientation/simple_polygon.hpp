@@ -20,4 +20,4 @@ orientation2d orientation(const Policy& policy, const simple_polygon<T>& poly) {
     return orientation(policy, it[-1], it[0], it[1]);
 }
 
-}  // namespace ac
+} // namespace ac

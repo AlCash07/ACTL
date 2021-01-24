@@ -60,4 +60,4 @@ struct operation {
     }
 };
 
-}  // namespace ac
+} // namespace ac

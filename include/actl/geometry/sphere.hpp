@@ -66,4 +66,4 @@ struct polar_angle_policy : virtual policy {
     const Policy& policy;
 };
 
-}  // namespace ac
+} // namespace ac

@@ -11,9 +11,9 @@
 namespace ac {
 
 enum class orientation2d {
-    left = -1,      // counter-clockwise
-    collinear = 0,  // degenerate
-    right = 1       // clockwise
+    left = -1,     // counter-clockwise
+    collinear = 0, // degenerate
+    right = 1      // clockwise
 };
 
 orientation2d operator-(orientation2d x) {
@@ -56,4 +56,4 @@ bool collinear(const Ts&... xs) {
     return static_cast<int>(orientation(xs...)) == 0;
 }
 
-}  // namespace ac
+} // namespace ac

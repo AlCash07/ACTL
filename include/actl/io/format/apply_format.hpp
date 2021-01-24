@@ -38,4 +38,4 @@ decltype(auto) apply_format_read(Format& fmt, T& x) {
         return x;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

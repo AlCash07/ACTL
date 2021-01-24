@@ -21,4 +21,4 @@ auto nearest(const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& 
     return Pair{p, project(policy, p, l)};
 }
 
-}  // namespace ac
+} // namespace ac

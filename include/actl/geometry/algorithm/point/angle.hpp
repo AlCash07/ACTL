@@ -27,7 +27,7 @@ auto angle(
     const Policy& policy,
     const point<T0, N>& lhs,
     const point<T1, N>& rhs,
-    const point<T2, N>& origin)  //
+    const point<T2, N>& origin) //
 {
     return angle(policy, lhs - origin, rhs - origin);
 }
@@ -37,4 +37,4 @@ auto angle(const T& x, const Ts&... xs) {
     return angle(geometry_policy, x, xs...);
 }
 
-}  // namespace ac
+} // namespace ac

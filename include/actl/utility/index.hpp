@@ -17,4 +17,4 @@ using index = std::ptrdiff_t;
 template <index N>
 using index_constant = std::integral_constant<index, N>;
 
-}  // namespace ac
+} // namespace ac

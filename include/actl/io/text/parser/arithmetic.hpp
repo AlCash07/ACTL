@@ -37,4 +37,4 @@ auto make_parser(Format& fmt, Float& x) {
     return parser_executor{x, float_unchecked_parser<Float>{fmt.base}};
 }
 
-}  // namespace ac::io
+} // namespace ac::io

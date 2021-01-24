@@ -64,4 +64,4 @@ private:
     B b_;
 };
 
-}  // namespace ac::detail
+} // namespace ac::detail

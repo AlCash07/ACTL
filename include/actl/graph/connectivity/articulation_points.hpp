@@ -86,7 +86,7 @@ auto get_articulation_point_finder(const G&, Ts&&... args) {
 
 template <class Graph, class ArticulationMap, class ComponentMap>
 void find_articulation_points_and_components(
-    const Graph& graph, ArticulationMap&& articulation_map, ComponentMap&& component_map)  //
+    const Graph& graph, ArticulationMap&& articulation_map, ComponentMap&& component_map) //
 {
     auto apf = get_articulation_point_finder(
         graph,
@@ -108,4 +108,4 @@ void find_biconnected_components(const Graph& graph, ComponentMap&& map) {
     find_articulation_points_and_components(graph, dummy_map{}, std::forward<ComponentMap>(map));
 }
 
-}  // namespace ac
+} // namespace ac

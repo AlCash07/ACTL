@@ -35,7 +35,7 @@ predecessor_recorder(Map&&) -> predecessor_recorder<Map>;
 
 template <class Map, class T>
 vertex_initializer<predecessor_recorder<Map>> make_predecessor_recorder(
-    Map&& predecessor, T value)  //
+    Map&& predecessor, T value) //
 {
     return {{std::forward<Map>(predecessor)}, value};
 }
@@ -46,4 +46,4 @@ auto make_default_predecessor_recorder(const Graph& graph) {
         make_default_vertex_map<vertex_t<Graph>>(graph), graph.null_vertex());
 }
 
-}  // namespace ac
+} // namespace ac

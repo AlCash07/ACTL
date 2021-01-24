@@ -114,7 +114,7 @@ public:
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Derived, class Types>
 class iterator_facade
@@ -146,4 +146,4 @@ constexpr Iter operator+(typename T::difference_type n, const iterator_facade<It
     return rhs + n;
 }
 
-}  // namespace ac
+} // namespace ac

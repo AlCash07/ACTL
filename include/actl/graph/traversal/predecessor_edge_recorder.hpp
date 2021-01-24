@@ -34,4 +34,4 @@ auto make_default_predecessor_edge_recorder(const Graph& graph) {
     return predecessor_edge_recorder{make_default_vertex_map<edge_t<Graph>>(graph)};
 }
 
-}  // namespace ac
+} // namespace ac

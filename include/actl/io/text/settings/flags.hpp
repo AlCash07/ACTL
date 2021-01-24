@@ -25,14 +25,14 @@ enum : flag_t {
     hexfloat = 1 << 7
 };
 
-}  // namespace flag
+} // namespace flag
 
 namespace groups {
 
 enum : flag_t { floatfield };
 
-}  // namespace groups
+} // namespace groups
 
 const flag_t group_bits[] = {flag::fixed | flag::scientific | flag::hexfloat};
 
-}  // namespace ac::io
+} // namespace ac::io

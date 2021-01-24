@@ -38,4 +38,4 @@ auto data(T&& x) {
     }
 }
 
-}  // namespace ac
+} // namespace ac

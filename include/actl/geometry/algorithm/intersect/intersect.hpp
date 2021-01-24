@@ -27,4 +27,4 @@ OutIter intersect(const T& lhs, const U& rhs, OutIter dst) {
     return intersect(geometry_policy, lhs, rhs, dst);
 }
 
-}  // namespace ac
+} // namespace ac

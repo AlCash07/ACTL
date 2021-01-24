@@ -177,9 +177,9 @@ public:
     }
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Directed, class Vertex, class EdgeContainer = std::vector<none>>
 using edge_list = detail::edge_list_impl<Directed, Vertex, EdgeContainer, two_vertices>;
 
-}  // namespace ac
+} // namespace ac

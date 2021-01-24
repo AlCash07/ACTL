@@ -26,4 +26,4 @@ struct range_traits<std::multiset<T, C, A>> : default_range_traits {
     static constexpr bool is_sorted = true;
 };
 
-}  // namespace ac
+} // namespace ac

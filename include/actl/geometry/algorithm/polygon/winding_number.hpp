@@ -50,4 +50,4 @@ int winding_number(const Policy& policy, const point<T>& p, const polygon<U>& po
     return res;
 }
 
-}  // namespace ac
+} // namespace ac

@@ -32,4 +32,4 @@ auto antipodal_vertices(const convex_polygon<T>& poly, OutIter dst) {
     return antipodal_vertices(geometry_policy, poly, dst);
 }
 
-}  // namespace ac
+} // namespace ac

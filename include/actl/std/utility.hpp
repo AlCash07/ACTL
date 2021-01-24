@@ -18,4 +18,4 @@ constexpr size_t hash_value(const std::pair<T1, T2>& x) {
     return hash_value(x.first, x.second);
 }
 
-}  // namespace ac
+} // namespace ac

@@ -83,4 +83,4 @@ bool read_final(Device& id, Format& fmt, R& x) {
         return read_range(id, fmt, x);
 }
 
-}  // namespace ac::io
+} // namespace ac::io

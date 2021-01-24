@@ -13,4 +13,4 @@ namespace ac {
 template <class T, class Char = char>
 constexpr bool is_string_v = std::is_convertible_v<T, std::basic_string_view<Char>>;
 
-}  // namespace ac
+} // namespace ac

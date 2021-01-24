@@ -59,6 +59,6 @@ template <class D, class FF, class F, class... Ts>
 struct arg_resolver<D, FF, F, batch<Ts...>, false>
     : batch_resolver<D, FF, F, batch<Ts...>, std::make_index_sequence<sizeof...(Ts)>> {};
 
-}  // namespace detail
+} // namespace detail
 
-}  // namespace ac::io
+} // namespace ac::io

@@ -53,7 +53,7 @@ auto apply_policy(equal_t, const abs_rel_error<T>& policy) {
     return policy;
 }
 
-}  // namespace ac
+} // namespace ac
 
 template <class T>
 void check_sets(std::vector<T> expected, std::vector<T> actual) {

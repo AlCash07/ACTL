@@ -28,7 +28,7 @@ template <class Iter, class F, class V>
 using transform_iter_base =
     iterator_adaptor<transform_iterator<Iter, F, V>, Iter, transform_iter_types<F, V>>;
 
-}  // namespace detail
+} // namespace detail
 
 template <class Iter, class F, class V>
 class transform_iterator : public detail::transform_iter_base<Iter, F, V> {
@@ -46,4 +46,4 @@ public:
         : detail::transform_iter_base<Iter, F, V>{iter}, f_{std::forward<Ts>(args)...} {}
 };
 
-}  // namespace ac
+} // namespace ac

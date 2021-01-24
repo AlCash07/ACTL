@@ -16,4 +16,4 @@ auto nearest(const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl
     return std::pair{p, project(policy, p, pl)};
 }
 
-}  // namespace ac
+} // namespace ac

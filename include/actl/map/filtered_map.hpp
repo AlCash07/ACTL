@@ -84,4 +84,4 @@ struct map_ops<const filtered_map<M, P>> : map_ops<const M> {
 template <class T, int N, class Predicate>
 using filtered_array_map = filtered_map<std::array<T, N>, Predicate>;
 
-}  // namespace ac
+} // namespace ac

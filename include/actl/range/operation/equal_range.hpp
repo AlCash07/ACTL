@@ -30,4 +30,4 @@ struct overload<equal_t, range_tag, T, U> {
     }
 };
 
-}  // namespace ac
+} // namespace ac

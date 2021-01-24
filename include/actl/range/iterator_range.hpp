@@ -22,7 +22,7 @@ struct iter_range_types {
     using size_type = difference_type_t<Iter>;
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class Iter, class Traits = default_range_traits>
 class iterator_range
@@ -70,4 +70,4 @@ auto make_crange(const Container& cont) {
     return make_range(cont);
 }
 
-}  // namespace ac
+} // namespace ac

@@ -23,6 +23,6 @@ struct skip : private predicate<T> {
     }
 };
 
-constexpr auto ws = skip{is_space};  // skip whitespace
+constexpr auto ws = skip{is_space}; // skip whitespace
 
-}  // namespace ac::io
+} // namespace ac::io

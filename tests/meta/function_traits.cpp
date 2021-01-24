@@ -42,7 +42,7 @@ struct const_function_object {
     S operator()() const;
 };
 
-}  // namespace
+} // namespace
 
 using member_function = decltype(&S::member_function);
 static_assert(3ul == ac::arity_v<member_function>);

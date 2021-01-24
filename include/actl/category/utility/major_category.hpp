@@ -14,7 +14,7 @@ namespace ac {
 namespace detail {
 
 template <class Category, index Depth>
-struct cdp {  // category-depth pair
+struct cdp { // category-depth pair
     using category = Category;
     static constexpr index depth = Depth;
 };
@@ -29,7 +29,7 @@ constexpr auto operator||(cdp<T, DepthT> lhs, cdp<U, DepthU> rhs) {
         return lhs;
 }
 
-}  // namespace detail
+} // namespace detail
 
 template <class... Ts>
 using major_category = decltype((... || detail::cdp<category_t<Ts>, nesting_depth_v<Ts>>{}));
@@ -37,4 +37,4 @@ using major_category = decltype((... || detail::cdp<category_t<Ts>, nesting_dept
 template <class... Ts>
 using major_category_t = typename major_category<Ts...>::category;
 
-}  // namespace ac
+} // namespace ac

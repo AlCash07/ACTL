@@ -18,7 +18,7 @@ OutIter intersect(
     line_scalar_policy<Policy> lsp,
     const line<T0, N, K>& l,
     const sphere<T1, N>& s,
-    OutIter dst)  //
+    OutIter dst) //
 {
     auto& policy = lsp.policy;
     auto vdot = dot(policy, l.vector);
@@ -43,4 +43,4 @@ OutIter intersect(
     return dst;
 }
 
-}  // namespace ac
+} // namespace ac

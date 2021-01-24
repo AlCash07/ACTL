@@ -49,4 +49,4 @@ struct range_types<T, std::void_t<typename T::const_iterator>>
     : range_types<T, int>
     , crange_ts<typename T::const_iterator> {};
 
-}  // namespace ac::detail
+} // namespace ac::detail

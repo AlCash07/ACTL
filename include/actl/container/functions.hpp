@@ -49,4 +49,4 @@ iterator_t<C> find(C& cont, const T& value) {
     }
 }
 
-}  // namespace ac
+} // namespace ac

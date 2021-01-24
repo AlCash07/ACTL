@@ -49,4 +49,4 @@ auto extreme_vertex(const convex_polygon<T>& poly, Function direction) {
     return extreme_vertex(geometry_policy, poly, direction);
 }
 
-}  // namespace ac
+} // namespace ac

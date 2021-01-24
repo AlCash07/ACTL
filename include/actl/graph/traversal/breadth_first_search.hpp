@@ -31,7 +31,7 @@ public:
         const Graph& graph,
         const Source& source,
         VertexQueue&& queue = {},
-        VertexPredicate is_terminator = {})  //
+        VertexPredicate is_terminator = {}) //
     {
         using V = vertex_t<Graph>;
         for (V u : graph.vertices())
@@ -82,4 +82,4 @@ public:
 template <class... Components>
 breadth_first_search(Components&&...) -> breadth_first_search<Components...>;
 
-}  // namespace ac
+} // namespace ac

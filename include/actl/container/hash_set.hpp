@@ -39,4 +39,4 @@ struct range_traits<hash_multiset<T, H, E, A>> : default_range_traits {
     static constexpr bool is_container = true;
 };
 
-}  // namespace ac
+} // namespace ac

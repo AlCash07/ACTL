@@ -27,7 +27,7 @@ struct is_multi_point
 template <class T>
 struct is_multi_point<T, false> : std::false_type {};
 
-}  // namespace detail
+} // namespace detail
 
 template <class T>
 struct geometry_traits<T, std::enable_if_t<detail::is_multi_point<T>::value>>
@@ -82,4 +82,4 @@ struct indexed_multi_point {
 template <class I, class P>
 indexed_multi_point(I&&, P&&) -> indexed_multi_point<I, P>;
 
-}  // namespace ac
+} // namespace ac

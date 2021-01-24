@@ -21,4 +21,4 @@ struct select_t : scalar_operation<select_t, 3> {
 };
 constexpr select_t select;
 
-}  // namespace ac
+} // namespace ac

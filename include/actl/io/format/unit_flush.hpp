@@ -21,4 +21,4 @@ auto encode(unit_flush&, const T& x) {
     return batch{x, flush_t{}};
 }
 
-}  // namespace ac::io
+} // namespace ac::io

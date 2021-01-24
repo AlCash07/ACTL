@@ -22,7 +22,7 @@ OutIter intersect(
     line_scalar_policy<Policy> lsp,
     const line<T, 2, K>& l,
     const simple_polygon<U>& poly,
-    OutIter dst)  //
+    OutIter dst) //
 {
     auto& policy = lsp.policy;
     // TODO: fix the case when polygon touches the line.
@@ -52,4 +52,4 @@ OutIter intersect(
     return dst;
 }
 
-}  // namespace ac
+} // namespace ac

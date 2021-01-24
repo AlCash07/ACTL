@@ -41,4 +41,4 @@ auto make_default_connected_component_recorder(const Graph& graph) {
     return make_connected_component_recorder(make_default_vertex_map<int>(graph), -1);
 }
 
-}  // namespace ac
+} // namespace ac

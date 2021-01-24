@@ -15,4 +15,4 @@ constexpr index digit_count(T x, U base) {
     return x == 0 ? 0 : 1 + digit_count(x / base, base);
 }
 
-}  // namespace ac::io::detail
+} // namespace ac::io::detail

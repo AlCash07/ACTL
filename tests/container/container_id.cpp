@@ -33,7 +33,7 @@ TEST_CASE("set id") {
     CHECK(std::set<int>{0, 4} == c);
 }
 
-#if 0  // TODO: fix map end dereference in get_id_key
+#if 0 // TODO: fix map end dereference in get_id_key
 TEST_CASE("id_key") {
     using sid = container_id<std::set<int>>;
     std::set<int> c = {0, 2, 4};

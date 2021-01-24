@@ -74,4 +74,4 @@ auto cyclic_begin(Range& range) {
     return cyclic_iterator{range, std::begin(range)};
 }
 
-}  // namespace ac
+} // namespace ac

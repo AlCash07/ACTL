@@ -54,4 +54,4 @@ bool read_final(Device& id, Format&, till<T, P> x) {
     return true;
 }
 
-}  // namespace ac::io
+} // namespace ac::io

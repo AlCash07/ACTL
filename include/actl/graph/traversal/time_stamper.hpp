@@ -52,7 +52,7 @@ auto make_in_out_time_stamper(Map&& in_time, Map&& out_time) {
 
 template <class Map, class T>
 vertex_initializer<in_out_time_stamper<Map, T>> make_in_out_time_stamper(
-    Map&& in_time, Map&& out_time, T value)  //
+    Map&& in_time, Map&& out_time, T value) //
 {
     return {{{std::forward<Map>(in_time)}, std::forward<Map>(out_time)}, value};
 }
@@ -62,4 +62,4 @@ auto make_default_time_stamper(const Graph& graph) {
     return make_time_stamper(make_default_vertex_map<int>(graph), -1);
 }
 
-}  // namespace ac
+} // namespace ac

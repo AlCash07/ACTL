@@ -31,4 +31,4 @@ struct overload : overload<Op, typename Category::base, Ts...> {};
 template <class Op, class... Ts>
 struct overload<Op, unclassified_tag, Ts...> : default_overload<Op> {};
 
-}  // namespace ac
+} // namespace ac

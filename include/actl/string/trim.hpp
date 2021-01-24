@@ -29,4 +29,4 @@ inline std::string trim(const std::string& str) {
     return trim(str, is_space);
 }
 
-}  // namespace ac
+} // namespace ac

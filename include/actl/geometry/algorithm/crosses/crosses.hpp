@@ -20,4 +20,4 @@ bool crosses(const T& lhs, const U& rhs) {
     return crosses(geometry_policy, rhs, lhs);
 }
 
-}  // namespace ac
+} // namespace ac

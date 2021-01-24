@@ -60,4 +60,4 @@ constexpr T& find_dst(inout_t<T>& x, Ts&...) {
     return x.x;
 }
 
-}  // namespace ac
+} // namespace ac

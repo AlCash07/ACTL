@@ -33,4 +33,4 @@ struct const_map_traits<identity_map<K, V>>
           false,
           std::is_convertible_v<V, K>> {};
 
-}  // namespace ac
+} // namespace ac

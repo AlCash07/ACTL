@@ -56,4 +56,4 @@ template <auto O, class V>
 struct const_map_traits<static_shift_map<O, V>>
     : map_traits_base<decltype(O), V, use_default, true, false, true> {};
 
-}  // namespace ac
+} // namespace ac

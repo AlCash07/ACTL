@@ -38,4 +38,4 @@ constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy) {
         return std::forward<Op>(op);
 }
 
-}  // namespace ac
+} // namespace ac

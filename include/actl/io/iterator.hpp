@@ -89,4 +89,4 @@ auto make_output_device_iterator(Device& device) {
     return output_device_iterator<T, Device>{device};
 }
 
-}  // namespace ac
+} // namespace ac

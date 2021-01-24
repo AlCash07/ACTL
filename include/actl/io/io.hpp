@@ -191,4 +191,4 @@ bool read_size(Device& id, Format& fmt, T& size) {
     return read(id, fmt, size);
 }
 
-}  // namespace ac::io
+} // namespace ac::io

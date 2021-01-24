@@ -27,7 +27,7 @@ struct is_io_tuple<T, false> : decltype(serialization_access{}.is_io_tuple<T>(0)
 template <class T>
 constexpr bool is_io_tuple_v = is_io_tuple<T>::value;
 
-}  // namespace ac::io
+} // namespace ac::io
 
 namespace ac::io::detail {
 
@@ -89,4 +89,4 @@ bool read_impl(D& id, FF& full_fmt, F& fmt, T&& x) {
     return arg_resolver<D, FF, F, std::remove_reference_t<T>>::read(id, full_fmt, fmt, x);
 }
 
-}  // namespace ac::io::detail
+} // namespace ac::io::detail

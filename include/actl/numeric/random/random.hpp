@@ -15,4 +15,4 @@ using default_random = rng_decorator<xoroshiro128cplus>;
 
 static default_random random;
 
-}  // namespace ac
+} // namespace ac

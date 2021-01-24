@@ -34,7 +34,7 @@ public:
     using polygon<std::vector<Point>>::polygon;
 };
 
-}  // namespace detail
+} // namespace detail
 
 /// Polygon - closed polyline defined by the sequence of vertices, that all lie in the same plane.
 /// Algorithms usually expect vertices to go in counter-clockwise order.
@@ -136,4 +136,4 @@ template <class T>
 struct geometry_traits<convex_monotone_polygon<T>>
     : geometry_traits_base<convex_monotone_polygon_tag, value_type_t<polygon<T>>> {};
 
-}  // namespace ac
+} // namespace ac

@@ -15,4 +15,4 @@ struct always_false {
     }
 };
 
-}  // namespace ac
+} // namespace ac

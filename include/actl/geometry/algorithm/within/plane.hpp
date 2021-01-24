@@ -16,4 +16,4 @@ enum within within(const Policy& policy, const point<T0, N>& p, const plane<T1, 
     return equal(policy, pl(policy, p), 0) ? within::border : within::outside;
 }
 
-}  // namespace ac
+} // namespace ac

@@ -47,4 +47,4 @@ public:
 template <class... Funcs>
 invocable_tuple(Funcs&&...) -> invocable_tuple<Funcs...>;
 
-}  // namespace ac
+} // namespace ac

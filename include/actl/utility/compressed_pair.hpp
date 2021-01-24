@@ -56,7 +56,7 @@ struct cpb2 : ebo<T> {
     using ebo<T>::ebo;
 };
 
-}  // namespace detail
+} // namespace detail
 
 /// Pair that utilizes empty-base optimization in case one of the elements is empty.
 /// Reference: http://talesofcpp.fusionfenix.com/post-18/episode-ten-when-size-does-matter
@@ -118,7 +118,7 @@ auto operator<(const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>
     return less(lhs, rhs);
 }
 
-}  // namespace ac
+} // namespace ac
 
 namespace std {
 
@@ -137,4 +137,4 @@ struct tuple_element<1, ac::compressed_pair<T1, T2>> {
     using type = T2;
 };
 
-}  // namespace std
+} // namespace std

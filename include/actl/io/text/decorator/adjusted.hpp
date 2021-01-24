@@ -51,4 +51,4 @@ auto encode(const adjusted<Char>& fmt, Char x) {
     return batch{repeat{fmt.fill, l}, std::move(x), repeat{fmt.fill, r}};
 }
 
-}  // namespace ac::io
+} // namespace ac::io

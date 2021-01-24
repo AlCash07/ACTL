@@ -28,4 +28,4 @@ auto max_distance(const convex_polygon<T>& poly) {
     return max_distance(geometry_policy, poly);
 }
 
-}  // namespace ac
+} // namespace ac

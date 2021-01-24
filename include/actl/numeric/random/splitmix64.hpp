@@ -33,4 +33,4 @@ private:
     uint64_t state_;
 };
 
-}  // namespace ac
+} // namespace ac

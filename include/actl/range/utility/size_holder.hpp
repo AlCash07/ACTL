@@ -40,4 +40,4 @@ private:
     index size_;
 };
 
-}  // namespace ac
+} // namespace ac

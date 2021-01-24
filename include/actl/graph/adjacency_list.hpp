@@ -224,7 +224,7 @@ public:
     void operator[](edge) const {}
 };
 
-}  // namespace detail
+} // namespace detail
 
 template <class VC, class E, class R>
 struct const_map_traits<detail::edge_map<VC, E, R>> : detail::edge_map<VC, E, R>::traits {};
@@ -342,4 +342,4 @@ public:
     friend in_edge_iterator;
 };
 
-}  // namespace ac
+} // namespace ac

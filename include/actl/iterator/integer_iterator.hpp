@@ -102,4 +102,4 @@ private:
     Int step_ = 1;
 };
 
-}  // namespace ac
+} // namespace ac

@@ -35,4 +35,4 @@ private:
     Function f_;
 };
 
-}  // namespace ac
+} // namespace ac

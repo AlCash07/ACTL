@@ -61,4 +61,4 @@ struct are_same<T, T, Ts...> : are_same<T, Ts...> {};
 template <class... Ts>
 constexpr bool are_same_v = are_same<Ts...>::value;
 
-}  // namespace ac
+} // namespace ac

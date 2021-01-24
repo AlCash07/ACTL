@@ -7,4 +7,4 @@
 #pragma once
 
 namespace ac {
-}  // namespace ac
+} // namespace ac

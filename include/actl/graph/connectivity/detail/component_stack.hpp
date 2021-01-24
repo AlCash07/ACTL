@@ -72,4 +72,4 @@ component_stack(Map&&) -> component_stack<Map, std::stack<map_key_t<Map>>>;
 
 component_stack(dummy_map)->component_stack<dummy_map, void>;
 
-}  // namespace ac::detail
+} // namespace ac::detail

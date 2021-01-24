@@ -21,4 +21,4 @@ constexpr size_t hash_value(const std::tuple<Ts...>& x) {
     return hash_tuple(x, std::make_index_sequence<sizeof...(Ts)>{});
 }
 
-}  // namespace ac
+} // namespace ac

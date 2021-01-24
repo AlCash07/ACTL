@@ -21,4 +21,4 @@ enum within within(const Policy& policy, const point<T0, N>& p, const line<T1, N
     return detail::between_endpoints(policy, p, l) ? within::border : within::outside;
 }
 
-}  // namespace ac
+} // namespace ac
