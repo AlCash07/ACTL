@@ -11,12 +11,10 @@
 
 namespace ac {
 
-// clang-format off
 template <
     class Directed,
-    class EdgeContainer   = std::vector<none>,
+    class EdgeContainer = std::vector<none>,
     class VertexContainer = none>
-// clang-format on
 class vertex_edge_list
     : public vertex_list<VertexContainer>
     , public edge_list<Directed, container_id<VertexContainer>, EdgeContainer> {

@@ -12,14 +12,12 @@
 
 namespace ac {
 
-// clang-format off
 template <
-    class Directed, 
-    class OutEdgeContainer = std::vector<none>, 
-    class EdgeContainer    = none,      
-    class VertexContainer  = std::vector<none>>
+    class Directed,
+    class OutEdgeContainer = std::vector<none>,
+    class EdgeContainer = none,
+    class VertexContainer = std::vector<none>>
 class adjacency_list;
-// clang-format on
 
 namespace detail {
 
