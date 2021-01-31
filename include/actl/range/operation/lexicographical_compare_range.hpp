@@ -38,16 +38,13 @@ inline constexpr operation_composer<lexicographical_compare_range_t>
 
 template <class T, class U>
 struct overload<cmp3way_t, range_tag, T, U> {
-    static constexpr auto resolve(cmp3way_t op) {
-        return lexicographical_compare_range(op.resolve_nested<T, U>());
-    }
+    static constexpr auto formula =
+        lexicographical_compare_range(resolve<T, U>.nested(cmp3way));
 };
 
 template <class T, class U>
 struct overload<less_t, range_tag, T, U> {
-    static constexpr auto resolve(less_t) {
-        return cmp3way < zero_;
-    }
+    static constexpr auto formula = cmp3way < zero_;
 };
 
 } // namespace ac

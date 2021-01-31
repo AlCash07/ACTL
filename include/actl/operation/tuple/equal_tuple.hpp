@@ -35,9 +35,8 @@ inline constexpr operation_composer<equal_tuple_t> equal_tuple;
 
 template <class T, class U>
 struct overload<equal_t, tuple_tag, T, U> {
-    static constexpr auto resolve(equal_t op) {
-        return tuple_op_resolver<T, U>::resolve(equal_tuple, op);
-    }
+    static constexpr auto formula =
+        tuple_op_resolver<T, U>::resolve(equal_tuple, equal);
 };
 
 } // namespace ac

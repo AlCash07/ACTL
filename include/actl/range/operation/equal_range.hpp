@@ -26,9 +26,7 @@ inline constexpr operation_composer<equal_range_t> equal_range;
 
 template <class T, class U>
 struct overload<equal_t, range_tag, T, U> {
-    static constexpr auto resolve(equal_t op) {
-        return equal_range(op.resolve_nested<T, U>());
-    }
+    static constexpr auto formula = equal_range(resolve<T, U>.nested(equal));
 };
 
 } // namespace ac

@@ -33,17 +33,13 @@ inline constexpr operation_composer<lexicographical_compare_tuple_t>
 
 template <class T, class U>
 struct overload<cmp3way_t, tuple_tag, T, U> {
-    static constexpr auto resolve(cmp3way_t op) {
-        return tuple_op_resolver<T, U>::resolve(
-            lexicographical_compare_tuple, op);
-    };
+    static constexpr auto formula = tuple_op_resolver<T, U>::resolve(
+        lexicographical_compare_tuple, cmp3way);
 };
 
 template <class T, class U>
 struct overload<less_t, tuple_tag, T, U> {
-    static constexpr auto resolve(less_t) {
-        return cmp3way < zero_;
-    }
+    static constexpr auto formula = cmp3way < zero_;
 };
 
 } // namespace ac

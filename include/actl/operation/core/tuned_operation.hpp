@@ -8,24 +8,14 @@
 
 #include <actl/operation/core/operation_traits.hpp>
 #include <actl/operation/core/policy.hpp>
-#include <tuple>
 
 namespace ac {
 
 template <class Op, class Policy>
-class tuned_operation : public operation<tuned_operation<Op, Policy>> {
-    std::tuple<Op, Policy> t;
-
-public:
-    template <class... Ts>
-    explicit constexpr tuned_operation(Ts&&... xs)
-        : t{std::forward<Ts>(xs)...} {}
-
-    template <class... Ts>
-    constexpr decltype(auto) resolve() const {
-        return apply_policy_if_can(
-            std::get<0>(t).template resolve<Ts...>(), std::get<1>(t));
-    }
+struct tuned_operation : operation<tuned_operation<Op, Policy>> {
+    // [[no_unique_address]]
+    Op operation;
+    Policy policy;
 };
 
 template <
@@ -36,7 +26,15 @@ template <
         is_policy_v<remove_cvref_t<Policy>>> = 0>
 constexpr auto operator|(Op&& op, Policy&& policy) {
     return tuned_operation<Op, Policy>{
-        std::forward<Op>(op), std::forward<Policy>(policy)};
+        {}, std::forward<Op>(op), std::forward<Policy>(policy)};
 }
+
+template <class Op, class Policy, class Category, class... Ts>
+struct overload<tuned_operation<Op, Policy>, Category, Ts...> {
+    static constexpr decltype(auto) resolve(
+        const tuned_operation<Op, Policy>& op) {
+        return apply_policy_if_can(ac::resolve<Ts...>(op.operation), op.policy);
+    }
+};
 
 } // namespace ac

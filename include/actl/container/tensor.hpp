@@ -541,9 +541,8 @@ struct tensor_equal_t {
 
 template <class T, class U>
 struct overload<equal_t, tensor_tag, T, U> {
-    static constexpr auto resolve(equal_t op) {
-        return operation_composer<tensor_equal_t>(op.resolve_nested<T, U>());
-    }
+    static constexpr auto formula =
+        operation_composer<tensor_equal_t>(resolve<T, U>.nested(equal));
 };
 
 /// N-dimensional array with dimensions completely or partially known at compile
