@@ -11,7 +11,6 @@
 #include <actl/assert.hpp>
 #include <actl/category/all.hpp>
 #include <actl/container/all.hpp>
-#include <actl/functional/all.hpp>
 // #include <actl/geometry/all.hpp>
 // #include <actl/graph/all.hpp>
 #include <actl/io/all.hpp>

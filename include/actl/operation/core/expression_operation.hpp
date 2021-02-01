@@ -6,67 +6,52 @@
 
 #pragma once
 
-#include <actl/operation/core/argument_traits.hpp>
+#include <actl/operation/core/expression.hpp>
 #include <actl/operation/core/policy.hpp>
 
 namespace ac {
 
-template <class... Ts>
-struct expression_op : operation<expression_op<Ts...>> {
-    std::tuple<Ts...> args;
+template <class Derived>
+struct expression_base<Derived, operation_tag> {
+    struct type : operation<Derived> {
+        template <class... Ts>
+        constexpr auto evaluate(const Ts&... xs) const {
+            return eval(expand_expression(this->derived(), xs...));
+        }
 
-    template <class... Us>
-    explicit constexpr expression_op(Us&&... xs)
-        : args{std::forward<Us>(xs)...} {}
-
-    template <class... Us>
-    constexpr auto evaluate(const Us&... xs) const {
-        return eval(expand_expression(*this, xs...));
-    }
-
-    template <class T, class... Us>
-    constexpr void evaluate_to(T& dst, const Us&... xs) const {
-        assign(out(dst), expand_expression(*this, xs...));
-    }
+        template <class T, class... Ts>
+        constexpr void evaluate_to(T& dst, const Ts&... xs) const {
+            assign(out(dst), expand_expression(this->derived(), xs...));
+        }
+    };
 };
-
-template <
-    class... Ts,
-    enable_int_if<1 < (... + int{is_operation_v<remove_cvref_t<Ts>>})> = 0>
-constexpr auto make_expression(Ts&&... xs) {
-    return expression_op<value_if_small<Ts>...>{std::forward<Ts>(xs)...};
-}
 
 template <class Op, class... Ts>
 constexpr decltype(auto) expand_expression(
     const Op& op, [[maybe_unused]] const Ts&... xs) //
 {
-    if constexpr (!is_operation_v<Op>)
-        return op;
+    if constexpr (is_operation_v<Op>)
+        if constexpr (is_expression<Op>::value)
+            return expand_impl(
+                std::make_index_sequence<Op::argument_count>{}, op, xs...);
+        else
+            return op(xs...);
     else
-        return op(xs...);
+        return op;
 }
 
-template <size_t... Is, class EO, class... Us>
+template <size_t... Is, class EOp, class... Ts>
 constexpr auto expand_impl(
-    std::index_sequence<Is...>, const EO& eop, const Us&... xs) //
+    std::index_sequence<Is...>, const EOp& eop, const Ts&... xs) //
 {
     return make_expression(
-        std::get<0>(eop.args),
+        eop.operation(),
         expand_expression(std::get<Is + 1>(eop.args), xs...)...);
 }
 
-template <class... Ts, class... Us>
-constexpr auto expand_expression(
-    const expression_op<Ts...>& eop, const Us&... xs) //
-{
-    return expand_impl(
-        std::make_index_sequence<sizeof...(Ts) - 1>{}, eop, xs...);
-}
-
-template <class EO, class Policy, size_t... Is>
+template <class EOp, class Policy, size_t... Is>
 constexpr auto apply_policy_impl(
-    const EO& eop, const Policy policy, std::index_sequence<Is...>) //
+    const EOp& eop, const Policy policy, std::index_sequence<Is...>) //
 {
     return make_expression(
         apply_policy_if_can(std::get<Is>(eop.args), policy)...);
@@ -75,9 +60,11 @@ constexpr auto apply_policy_impl(
 template <
     class... Ts,
     class Policy,
-    enable_int_if<(... || can_apply_policy<Ts, Policy>::value)> = 0>
+    enable_int_if<
+        is_operation_v<expression<Ts...>> &&
+        (... || can_apply_policy<Ts, Policy>::value)> = 0>
 constexpr auto apply_policy(
-    const expression_op<Ts...>& eop, const Policy& policy) //
+    const expression<Ts...>& eop, const Policy& policy) //
 {
     return apply_policy_impl(
         eop, policy, std::make_index_sequence<sizeof...(Ts)>{});
