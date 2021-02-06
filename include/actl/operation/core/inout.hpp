@@ -15,6 +15,8 @@ struct inout_t {
     struct enable_operators;
 
     T x;
+
+    explicit constexpr inout_t(T&& x) : x{std::forward<T>(x)} {}
 };
 
 template <class T>
@@ -30,7 +32,7 @@ template <class... Ts>
 inline constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);
 
 template <class T>
-decltype(auto) inout(T&& x) {
+inline constexpr decltype(auto) inout(T&& x) {
     if constexpr (is_inout_v<T>)
         return std::forward<T>(x);
     else

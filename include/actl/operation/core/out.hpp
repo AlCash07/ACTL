@@ -14,6 +14,8 @@ template <class T>
 struct out_t {
     T x;
 
+    explicit constexpr out_t(T&& x) : x{std::forward<T>(x)} {}
+
     constexpr operator T() {
         return x;
     }
@@ -26,8 +28,8 @@ struct out_t {
 };
 
 template <class T>
-out_t<T> out(T&& x) {
-    return {std::forward<T>(x)};
+inline constexpr auto out(T&& x) {
+    return out_t<T>{std::forward<T>(x)};
 }
 
 } // namespace ac
