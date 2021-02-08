@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct fold_t {
+struct fold_f {
     static constexpr index inner_count = 1;
 };
 

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct sub_t : scalar_operation<sub_t, 2> {
+struct sub_f : scalar_operation<sub_f, 2> {
     using category = additive_operation_tag;
     using argument_category = arithmetic_tag;
 
@@ -19,7 +19,7 @@ struct sub_t : scalar_operation<sub_t, 2> {
         return lhs - rhs;
     }
 };
-inline constexpr sub_t sub;
+inline constexpr sub_f sub;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator-(T&& lhs, U&& rhs) {

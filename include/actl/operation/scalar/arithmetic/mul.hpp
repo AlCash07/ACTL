@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct mul_t : scalar_operation<mul_t, 2> {
+struct mul_f : scalar_operation<mul_f, 2> {
     using category = multiplicative_operation_tag;
     using argument_category = arithmetic_tag;
 
@@ -22,10 +22,10 @@ struct mul_t : scalar_operation<mul_t, 2> {
         return lhs * rhs;
     }
 };
-inline constexpr mul_t mul;
+inline constexpr mul_f mul;
 
 template <class T>
-struct neutral_element<mul_t, T> {
+struct neutral_element<mul_f, T> {
     static constexpr T value() {
         return T{1};
     }

@@ -11,13 +11,13 @@
 
 namespace ac {
 
-struct greater_equal_t : scalar_operation<greater_equal_t, 2> {
+struct greater_equal_f : scalar_operation<greater_equal_f, 2> {
     using category = ordering_operation_tag;
     using argument_category = scalar_tag;
 
     static constexpr auto formula = !less;
 };
-inline constexpr greater_equal_t greater_equal;
+inline constexpr greater_equal_f greater_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator>=(T&& lhs, U&& rhs) {

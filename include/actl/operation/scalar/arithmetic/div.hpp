@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct div_t : scalar_operation<div_t, 2> {
+struct div_f : scalar_operation<div_f, 2> {
     using category = multiplicative_operation_tag;
     using argument_category = arithmetic_tag;
 
@@ -19,7 +19,7 @@ struct div_t : scalar_operation<div_t, 2> {
         return lhs / rhs;
     }
 };
-inline constexpr div_t div;
+inline constexpr div_f div;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator/(T&& lhs, U&& rhs) {

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct bit_and_t : scalar_operation<bit_and_t, 2> {
+struct bit_and_f : scalar_operation<bit_and_f, 2> {
     using category = bitwise_operation_tag;
     using argument_category = integral_tag;
 
@@ -22,10 +22,10 @@ struct bit_and_t : scalar_operation<bit_and_t, 2> {
         return lhs & rhs;
     }
 };
-inline constexpr bit_and_t bit_and;
+inline constexpr bit_and_f bit_and;
 
 template <class T>
-struct neutral_element<bit_and_t, T> {
+struct neutral_element<bit_and_f, T> {
     static constexpr T value() {
         return T{-1};
     }

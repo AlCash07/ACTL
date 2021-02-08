@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct neg_t : scalar_operation<neg_t, 1> {
+struct neg_f : scalar_operation<neg_f, 1> {
     using category = additive_operation_tag;
     using argument_category = arithmetic_tag;
 
@@ -19,7 +19,7 @@ struct neg_t : scalar_operation<neg_t, 1> {
         return -x;
     }
 };
-inline constexpr neg_t neg;
+inline constexpr neg_f neg;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator-(T&& x) {

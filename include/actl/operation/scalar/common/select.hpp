@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct select_t : scalar_operation<select_t, 3> {
+struct select_f : scalar_operation<select_f, 3> {
     using category = scalar_operation_tag;
     using argument_category = arithmetic_tag;
 
@@ -19,6 +19,6 @@ struct select_t : scalar_operation<select_t, 3> {
         return condition ? eval(lhs) : eval(rhs);
     }
 };
-inline constexpr select_t select;
+inline constexpr select_f select;
 
 } // namespace ac

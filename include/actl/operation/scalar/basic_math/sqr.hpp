@@ -11,12 +11,12 @@
 
 namespace ac {
 
-struct sqr_t : scalar_operation<sqr_t, 1> {
+struct sqr_f : scalar_operation<sqr_f, 1> {
     using category = multiplicative_operation_tag;
     using argument_category = arithmetic_tag;
 
     static constexpr auto formula = mul(x_, x_);
 };
-inline constexpr sqr_t sqr;
+inline constexpr sqr_f sqr;
 
 } // namespace ac

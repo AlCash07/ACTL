@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct logical_and_t : scalar_operation<logical_and_t, 2> {
+struct logical_and_f : scalar_operation<logical_and_f, 2> {
     using category = logical_operation_tag;
     using argument_category = boolean_tag;
 
@@ -21,10 +21,10 @@ struct logical_and_t : scalar_operation<logical_and_t, 2> {
         return lhs && rhs;
     }
 };
-inline constexpr logical_and_t logical_and;
+inline constexpr logical_and_f logical_and;
 
 template <class T>
-struct neutral_element<logical_and_t, T> {
+struct neutral_element<logical_and_f, T> {
     static constexpr T value() {
         return T{true};
     }

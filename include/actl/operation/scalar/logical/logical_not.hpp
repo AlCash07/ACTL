@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct logical_not_t : scalar_operation<logical_not_t, 1> {
+struct logical_not_f : scalar_operation<logical_not_f, 1> {
     using category = logical_operation_tag;
     using argument_category = boolean_tag;
 
@@ -18,7 +18,7 @@ struct logical_not_t : scalar_operation<logical_not_t, 1> {
         return !x;
     }
 };
-inline constexpr logical_not_t logical_not;
+inline constexpr logical_not_f logical_not;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator!(T&& x) {

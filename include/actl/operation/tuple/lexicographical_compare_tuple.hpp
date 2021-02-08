@@ -15,7 +15,7 @@
 
 namespace ac {
 
-struct lexicographical_compare_tuple_t {
+struct lexicographical_compare_tuple_f {
     static constexpr index inner_count = -1;
 
     template <size_t I = 0, class Cmp3WayOps, class T, class U>
@@ -28,17 +28,17 @@ struct lexicographical_compare_tuple_t {
             return select(v == 0, evaluate<I + 1>(ops, lhs, rhs), v);
     }
 };
-inline constexpr operation_composer<lexicographical_compare_tuple_t>
+inline constexpr operation_composer<lexicographical_compare_tuple_f>
     lexicographical_compare_tuple;
 
 template <class T, class U>
-struct overload<cmp3way_t, tuple_tag, T, U> {
+struct overload<cmp3way_f, tuple_tag, T, U> {
     static constexpr auto formula = tuple_op_resolver<T, U>::resolve(
         lexicographical_compare_tuple, cmp3way);
 };
 
 template <class T, class U>
-struct overload<less_t, tuple_tag, T, U> {
+struct overload<less_f, tuple_tag, T, U> {
     static constexpr auto formula = cmp3way < zero_;
 };
 

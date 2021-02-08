@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct equal_t : scalar_operation<equal_t, 2> {
+struct equal_f : scalar_operation<equal_f, 2> {
     using category = equality_operation_tag;
     using argument_category = scalar_tag;
 
@@ -21,7 +21,7 @@ struct equal_t : scalar_operation<equal_t, 2> {
         return lhs == rhs;
     }
 };
-inline constexpr equal_t equal;
+inline constexpr equal_f equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator==(T&& lhs, U&& rhs) {

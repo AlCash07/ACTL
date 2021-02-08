@@ -12,7 +12,7 @@
 
 namespace ac {
 
-struct max_t : scalar_operation<max_t, 2> {
+struct max_f : scalar_operation<max_f, 2> {
     using category = scalar_operation_tag;
     using argument_category = scalar_tag;
 
@@ -24,10 +24,10 @@ struct max_t : scalar_operation<max_t, 2> {
         return eval(select(less(lhs, rhs), rhs, lhs));
     }
 };
-inline constexpr max_t max;
+inline constexpr max_f max;
 
 template <class T>
-struct neutral_element<max_t, T> {
+struct neutral_element<max_f, T> {
     static constexpr T value() {
         return std::numeric_limits<T>::lowest();
     }

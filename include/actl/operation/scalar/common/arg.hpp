@@ -11,7 +11,7 @@
 namespace ac {
 
 template <index I, index N>
-struct arg_t {
+struct arg_f {
     using category = operation_tag;
     using argument_category = unclassified_tag;
 
@@ -25,15 +25,15 @@ struct arg_t {
         if constexpr (I == 0)
             return std::forward<T>(x);
         else
-            return arg_t<I - 1, (N == -1 ? -1 : N - 1)>{}(
+            return arg_f<I - 1, (N == -1 ? -1 : N - 1)>{}(
                 std::forward<Ts>(xs)...);
     }
 };
 template <index I, index N>
-inline constexpr arg_t<I, N> arg;
+inline constexpr arg_f<I, N> arg;
 
-inline constexpr arg_t<0, 1> x_;
-inline constexpr arg_t<0, 2> lhs_;
-inline constexpr arg_t<1, 2> rhs_;
+inline constexpr arg_f<0, 1> x_;
+inline constexpr arg_f<0, 2> lhs_;
+inline constexpr arg_f<1, 2> rhs_;
 
 } // namespace ac

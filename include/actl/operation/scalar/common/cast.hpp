@@ -11,7 +11,7 @@
 namespace ac {
 
 template <class To>
-struct cast_t : scalar_operation<cast_t<To>, 1> {
+struct cast_f : scalar_operation<cast_f<To>, 1> {
     using category = scalar_operation_tag;
     using argument_category = arithmetic_tag;
 
@@ -21,6 +21,6 @@ struct cast_t : scalar_operation<cast_t<To>, 1> {
     }
 };
 template <class T>
-inline constexpr cast_t<T> cast;
+inline constexpr cast_f<T> cast;
 
 } // namespace ac

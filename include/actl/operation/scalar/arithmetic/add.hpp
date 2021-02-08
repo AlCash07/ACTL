@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct add_t : scalar_operation<add_t, 2> {
+struct add_f : scalar_operation<add_f, 2> {
     using category = additive_operation_tag;
     using argument_category = arithmetic_tag;
 
@@ -22,10 +22,10 @@ struct add_t : scalar_operation<add_t, 2> {
         return lhs + rhs;
     }
 };
-inline constexpr add_t add;
+inline constexpr add_f add;
 
 template <class T>
-struct neutral_element<add_t, T> {
+struct neutral_element<add_f, T> {
     static constexpr T value() {
         return T{0};
     }

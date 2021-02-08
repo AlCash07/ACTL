@@ -12,7 +12,7 @@
 
 namespace ac {
 
-struct common_t : scalar_operation<common_t, 2> {
+struct common_f : scalar_operation<common_f, 2> {
     using category = scalar_operation_tag;
     using argument_category = unclassified_tag;
 
@@ -72,10 +72,10 @@ struct common_t : scalar_operation<common_t, 2> {
         return eval_scalar(eval_scalar(x0, x1), x2, xs...);
     }
 };
-inline constexpr common_t common;
+inline constexpr common_f common;
 
 template <class T>
-struct neutral_element<common_t, T> {
+struct neutral_element<common_f, T> {
     static constexpr none value() {
         return none{};
     }

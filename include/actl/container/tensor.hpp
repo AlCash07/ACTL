@@ -524,7 +524,7 @@ struct category<ac::detail::tensor_base<Ts...>> {
     using type = tensor_tag;
 };
 
-struct tensor_equal_t {
+struct tensor_equal_f {
     static constexpr index inner_count = 1;
 
     template <class EqualOp, class T, class U>
@@ -540,9 +540,9 @@ struct tensor_equal_t {
 };
 
 template <class T, class U>
-struct overload<equal_t, tensor_tag, T, U> {
+struct overload<equal_f, tensor_tag, T, U> {
     static constexpr auto formula =
-        operation_composer<tensor_equal_t>(resolve<T, U>.nested(equal));
+        operation_composer<tensor_equal_f>(resolve<T, U>.nested(equal));
 };
 
 /// N-dimensional array with dimensions completely or partially known at compile

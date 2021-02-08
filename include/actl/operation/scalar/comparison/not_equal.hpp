@@ -11,7 +11,7 @@
 
 namespace ac {
 
-struct not_equal_t : scalar_operation<not_equal_t, 2> {
+struct not_equal_f : scalar_operation<not_equal_f, 2> {
     using category = equality_operation_tag;
     using argument_category = scalar_tag;
 
@@ -19,7 +19,7 @@ struct not_equal_t : scalar_operation<not_equal_t, 2> {
 
     static constexpr auto formula = !equal;
 };
-inline constexpr not_equal_t not_equal;
+inline constexpr not_equal_f not_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr auto operator!=(T&& lhs, U&& rhs) {

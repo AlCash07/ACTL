@@ -13,12 +13,12 @@
 
 namespace ac {
 
-struct cmp3way_t : scalar_operation<cmp3way_t, 2> {
+struct cmp3way_f : scalar_operation<cmp3way_f, 2> {
     using category = ordering_operation_tag;
     using argument_category = scalar_tag;
 
     static constexpr auto formula = cast<int>(greater) - cast<int>(less);
 };
-inline constexpr cmp3way_t cmp3way;
+inline constexpr cmp3way_f cmp3way;
 
 } // namespace ac

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct bit_not_t : scalar_operation<bit_not_t, 1> {
+struct bit_not_f : scalar_operation<bit_not_f, 1> {
     using category = bitwise_operation_tag;
     using argument_category = integral_tag;
 
@@ -19,7 +19,7 @@ struct bit_not_t : scalar_operation<bit_not_t, 1> {
         return ~x;
     }
 };
-inline constexpr bit_not_t bit_not;
+inline constexpr bit_not_f bit_not;
 
 template <class T, enable_operators<T> = 0>
 constexpr auto operator~(T&& x) {

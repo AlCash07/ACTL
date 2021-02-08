@@ -13,7 +13,7 @@
 
 namespace ac {
 
-struct equal_range_t {
+struct equal_range_f {
     static constexpr index inner_count = 1;
 
     template <class EqualOp, class T, class U>
@@ -22,10 +22,10 @@ struct equal_range_t {
             std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
     }
 };
-inline constexpr operation_composer<equal_range_t> equal_range;
+inline constexpr operation_composer<equal_range_f> equal_range;
 
 template <class T, class U>
-struct overload<equal_t, range_tag, T, U> {
+struct overload<equal_f, range_tag, T, U> {
     static constexpr auto formula = equal_range(resolve<T, U>.nested(equal));
 };
 
