@@ -11,25 +11,23 @@
 namespace ac {
 
 template <class T>
-struct out_t {
+struct out {
     T x;
 
-    explicit constexpr out_t(T&& x) : x{std::forward<T>(x)} {}
+    explicit constexpr out(T&& x) : x{std::forward<T>(x)} {}
 
     constexpr operator T() {
         return x;
     }
 
     template <class U>
-    out_t& operator=(const U& y) {
+    out& operator=(const U& y) {
         assign(*this, y);
         return *this;
     }
 };
 
 template <class T>
-inline constexpr auto out(T&& x) {
-    return out_t<T>{std::forward<T>(x)};
-}
+out(T&&) -> out<T>;
 
 } // namespace ac

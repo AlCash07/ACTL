@@ -9,8 +9,8 @@
 #include <actl/category/scalar.hpp>
 #include <actl/operation/core/argument_traits.hpp>
 #include <actl/operation/core/operation_traits.hpp>
-#include <actl/operation/core/out.hpp>
 #include <actl/operation/core/overload.hpp>
+#include <actl/operation/out.hpp>
 #include <tuple>
 
 namespace ac {
@@ -122,7 +122,7 @@ constexpr decltype(auto) eval(const expression<Ts...>& e) {
 }
 
 template <class T, class... Ts>
-constexpr void assign(out_t<T>& dst, const expression<Ts...>& e) {
+constexpr void assign(out<T>& dst, const expression<Ts...>& e) {
     using helper = expression_helper<expression<Ts...>>;
     if constexpr (helper::is_resolved)
         helper::assign_impl(dst.x, e);

@@ -11,19 +11,22 @@
 namespace ac {
 
 template <class T>
-struct inout_t {
+struct inout {
     struct enable_operators;
 
     T x;
 
-    explicit constexpr inout_t(T&& x) : x{std::forward<T>(x)} {}
+    explicit constexpr inout(T&& x) : x{std::forward<T>(x)} {}
 };
+
+template <class T>
+inout(T&&) -> inout<T>;
 
 template <class T>
 struct is_inout : std::false_type {};
 
 template <class T>
-struct is_inout<inout_t<T>> : std::true_type {};
+struct is_inout<inout<T>> : std::true_type {};
 
 template <class T>
 inline constexpr bool is_inout_v = is_inout<remove_cvref_t<T>>::value;
@@ -32,18 +35,10 @@ template <class... Ts>
 inline constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);
 
 template <class T>
-inline constexpr decltype(auto) inout(T&& x) {
-    if constexpr (is_inout_v<T>)
-        return std::forward<T>(x);
-    else
-        return inout_t<T>{std::forward<T>(x)};
-}
+struct raw<inout<T>> : raw<T> {};
 
 template <class T>
-struct raw<inout_t<T>> : raw<T> {};
-
-template <class T>
-constexpr const T& remove_inout(const inout_t<T>& x) {
+constexpr const T& remove_inout(const inout<T>& x) {
     return x.x;
 }
 
@@ -58,7 +53,7 @@ constexpr auto& find_dst(T&, Ts&... xs) {
 }
 
 template <class T, class... Ts>
-constexpr T& find_dst(inout_t<T>& x, Ts&...) {
+constexpr T& find_dst(inout<T>& x, Ts&...) {
     return x.x;
 }
 

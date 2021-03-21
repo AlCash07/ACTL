@@ -7,9 +7,9 @@
 #pragma once
 
 #include <actl/operation/core/expression_operation.hpp>
-#include <actl/operation/core/inout.hpp>
 #include <actl/operation/core/overload.hpp>
 #include <actl/operation/core/tuned_operation.hpp>
+#include <actl/operation/inout.hpp>
 
 namespace ac {
 

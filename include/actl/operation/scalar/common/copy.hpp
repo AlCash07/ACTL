@@ -22,7 +22,7 @@ struct copy_f : scalar_operation<copy_f, 1> {
 inline constexpr copy_f copy;
 
 template <class T, class U>
-constexpr void assign(out_t<T>& dst, const U& y) {
+constexpr void assign(out<T>& dst, const U& y) {
     copy(dst, y);
 }
 
