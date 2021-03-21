@@ -38,7 +38,7 @@ constexpr auto operator|(T&& lhs, U&& rhs) {
 
 template <class T, class U, enable_operators<T, U> = 0>
 constexpr decltype(auto) operator|=(T&& lhs, U&& rhs) {
-    return bit_or(inout(std::forward<T>(lhs)), pass<U>(rhs));
+    return bit_or(inout{std::forward<T>(lhs)}, pass<U>(rhs));
 }
 
 } // namespace ac

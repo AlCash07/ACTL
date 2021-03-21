@@ -14,8 +14,6 @@ template <class T>
 struct out {
     T x;
 
-    explicit constexpr out(T&& x) : x{std::forward<T>(x)} {}
-
     constexpr operator T() {
         return x;
     }

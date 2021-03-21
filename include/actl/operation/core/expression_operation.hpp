@@ -21,7 +21,7 @@ struct expression_base<Derived, operation_tag> {
 
         template <class T, class... Ts>
         constexpr void evaluate_to(T& dst, const Ts&... xs) const {
-            assign(out(dst), expand_expression(this->derived(), xs...));
+            assign(out{dst}, expand_expression(this->derived(), xs...));
         }
     };
 };

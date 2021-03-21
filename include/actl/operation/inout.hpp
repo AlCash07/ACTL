@@ -15,8 +15,6 @@ struct inout {
     struct enable_operators;
 
     T x;
-
-    explicit constexpr inout(T&& x) : x{std::forward<T>(x)} {}
 };
 
 template <class T>
