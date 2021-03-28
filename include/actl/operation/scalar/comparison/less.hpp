@@ -10,6 +10,8 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct less_f : scalar_operation<less_f, 2> {
     using category = ordering_operation_tag;
     using argument_category = scalar_tag;
@@ -18,6 +20,15 @@ struct less_f : scalar_operation<less_f, 2> {
     static constexpr bool eval_scalar(T lhs, U rhs) {
         return lhs < rhs;
     }
+};
+inline constexpr less_f less;
+
+} // namespace scalar
+
+struct less_f : operation<less_f> {
+    using category = ordering_operation_tag;
+
+    static constexpr auto formula = scalar::less;
 };
 inline constexpr less_f less;
 

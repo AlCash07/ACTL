@@ -10,6 +10,8 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct bit_not_f : scalar_operation<bit_not_f, 1> {
     using category = bitwise_operation_tag;
     using argument_category = integral_tag;
@@ -18,6 +20,15 @@ struct bit_not_f : scalar_operation<bit_not_f, 1> {
     static constexpr T eval_scalar(T x) {
         return ~x;
     }
+};
+inline constexpr bit_not_f bit_not;
+
+} // namespace scalar
+
+struct bit_not_f : operation<bit_not_f> {
+    using category = bitwise_operation_tag;
+
+    static constexpr auto formula = scalar::bit_not;
 };
 inline constexpr bit_not_f bit_not;
 

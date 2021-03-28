@@ -49,7 +49,7 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
 };
 
 template <class T>
-auto apply_policy(equal_f, const abs_rel_error<T>& policy) {
+auto apply_policy(scalar::equal_f, const abs_rel_error<T>& policy) {
     return policy;
 }
 

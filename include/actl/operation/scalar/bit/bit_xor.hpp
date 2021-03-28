@@ -10,17 +10,28 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct bit_xor_f : scalar_operation<bit_xor_f, 2> {
     using category = bitwise_operation_tag;
     using argument_category = integral_tag;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs ^ rhs;
     }
+};
+inline constexpr bit_xor_f bit_xor;
+
+} // namespace scalar
+
+struct bit_xor_f : operation<bit_xor_f> {
+    using category = bitwise_operation_tag;
+
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
+
+    static constexpr auto formula = scalar::bit_xor;
 };
 inline constexpr bit_xor_f bit_xor;
 

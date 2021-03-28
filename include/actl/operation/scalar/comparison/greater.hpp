@@ -11,9 +11,8 @@
 
 namespace ac {
 
-struct greater_f : scalar_operation<greater_f, 2> {
+struct greater_f : operation<greater_f> {
     using category = ordering_operation_tag;
-    using argument_category = scalar_tag;
 
     static constexpr auto formula = rhs_ < lhs_;
 };

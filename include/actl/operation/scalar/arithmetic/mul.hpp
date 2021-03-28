@@ -10,17 +10,28 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct mul_f : scalar_operation<mul_f, 2> {
     using category = multiplicative_operation_tag;
     using argument_category = arithmetic_tag;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs * rhs;
     }
+};
+inline constexpr mul_f mul;
+
+} // namespace scalar
+
+struct mul_f : operation<mul_f> {
+    using category = multiplicative_operation_tag;
+
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
+
+    static constexpr auto formula = scalar::mul;
 };
 inline constexpr mul_f mul;
 

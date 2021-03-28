@@ -10,6 +10,8 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct div_f : scalar_operation<div_f, 2> {
     using category = multiplicative_operation_tag;
     using argument_category = arithmetic_tag;
@@ -18,6 +20,15 @@ struct div_f : scalar_operation<div_f, 2> {
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs / rhs;
     }
+};
+inline constexpr div_f div;
+
+} // namespace scalar
+
+struct div_f : operation<div_f> {
+    using category = multiplicative_operation_tag;
+
+    static constexpr auto formula = scalar::div;
 };
 inline constexpr div_f div;
 

@@ -13,9 +13,8 @@
 
 namespace ac {
 
-struct cmp3way_f : scalar_operation<cmp3way_f, 2> {
+struct cmp3way_f : operation<cmp3way_f> {
     using category = ordering_operation_tag;
-    using argument_category = scalar_tag;
 
     static constexpr auto formula = cast<int>(greater) - cast<int>(less);
 };

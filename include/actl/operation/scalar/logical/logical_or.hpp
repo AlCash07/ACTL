@@ -10,16 +10,27 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct logical_or_f : scalar_operation<logical_or_f, 2> {
     using category = logical_operation_tag;
     using argument_category = boolean_tag;
 
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
-
     static constexpr bool eval_scalar(bool lhs, bool rhs) {
         return lhs || rhs;
     }
+};
+inline constexpr logical_or_f logical_or;
+
+} // namespace scalar
+
+struct logical_or_f : operation<logical_or_f> {
+    using category = logical_operation_tag;
+
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
+
+    static constexpr auto formula = scalar::logical_or;
 };
 inline constexpr logical_or_f logical_or;
 

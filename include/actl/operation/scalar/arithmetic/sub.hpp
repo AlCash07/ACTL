@@ -10,6 +10,8 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct sub_f : scalar_operation<sub_f, 2> {
     using category = additive_operation_tag;
     using argument_category = arithmetic_tag;
@@ -18,6 +20,15 @@ struct sub_f : scalar_operation<sub_f, 2> {
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs - rhs;
     }
+};
+inline constexpr sub_f sub;
+
+} // namespace scalar
+
+struct sub_f : operation<sub_f> {
+    using category = additive_operation_tag;
+
+    static constexpr auto formula = scalar::sub;
 };
 inline constexpr sub_f sub;
 

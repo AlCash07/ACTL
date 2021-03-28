@@ -11,9 +11,8 @@
 
 namespace ac {
 
-struct less_equal_f : scalar_operation<less_equal_f, 2> {
+struct less_equal_f : operation<less_equal_f> {
     using category = ordering_operation_tag;
-    using argument_category = scalar_tag;
 
     static constexpr auto formula = !greater;
 };
