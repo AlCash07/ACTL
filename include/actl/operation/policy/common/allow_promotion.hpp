@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/operation/core/composite_operation.hpp>
+#include <actl/operation/scalar/arithmetic/add.hpp>
 #include <actl/operation/scalar/common/cast.hpp>
 #include <actl/operation/scalar/common/select.hpp>
 
@@ -33,7 +34,11 @@ struct Promotion {
     }
 };
 
-template <class Op, enable_int_if<is_scalar_operation_v<Op>> = 0>
+template <
+    class Op,
+    enable_int_if<
+        is_scalar_operation_v<Op> &&
+        is_subcategory_of_v<typename Op::argument_category, scalar_tag>> = 0>
 constexpr auto apply_policy(const Op& op, allow_promotion) {
     return operation_composer<Promotion>{}(op);
 }

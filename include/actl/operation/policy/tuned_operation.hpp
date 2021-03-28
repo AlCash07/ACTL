@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/core/operation_traits.hpp>
-#include <actl/operation/core/policy.hpp>
+#include <actl/operation/policy/policy.hpp>
 
 namespace ac {
 
@@ -25,16 +24,8 @@ template <
         is_operation_v<remove_cvref_t<Op>> &&
         is_policy_v<remove_cvref_t<Policy>>> = 0>
 constexpr auto operator|(Op&& op, Policy&& policy) {
-    return tuned_operation<Op, Policy>{
+    return tuned_operation<value_if_small<Op>, value_if_small<Policy>>{
         {}, std::forward<Op>(op), std::forward<Policy>(policy)};
 }
-
-template <class Op, class Policy, class Category, class... Ts>
-struct overload<tuned_operation<Op, Policy>, Category, Ts...> {
-    static constexpr decltype(auto) resolve(
-        const tuned_operation<Op, Policy>& op) {
-        return apply_policy_if_can(ac::resolve<Ts...>(op.operation), op.policy);
-    }
-};
 
 } // namespace ac

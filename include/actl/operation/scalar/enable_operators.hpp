@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/type_traits.hpp>
-#include <actl/operation/core/policy.hpp>
+#include <actl/operation/policy/policy.hpp>
 
 namespace ac {
 

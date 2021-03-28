@@ -10,17 +10,28 @@
 
 namespace ac {
 
+namespace scalar {
+
 struct add_f : scalar_operation<add_f, 2> {
     using category = additive_operation_tag;
     using argument_category = arithmetic_tag;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs + rhs;
     }
+};
+inline constexpr add_f add;
+
+} // namespace scalar
+
+struct add_f : operation<add_f> {
+    using category = additive_operation_tag;
+
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
+
+    static constexpr auto formula = scalar::add;
 };
 inline constexpr add_f add;
 

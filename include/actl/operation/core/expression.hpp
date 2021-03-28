@@ -9,7 +9,7 @@
 #include <actl/category/scalar.hpp>
 #include <actl/operation/core/argument_traits.hpp>
 #include <actl/operation/core/operation_traits.hpp>
-#include <actl/operation/core/overload.hpp>
+#include <actl/operation/core/resolve_overload.hpp>
 #include <actl/operation/out.hpp>
 #include <tuple>
 
@@ -64,8 +64,12 @@ struct expression
 
     std::tuple<Op, Ts...> args;
 
-    constexpr auto& operation() const {
+    constexpr auto& operation() const& {
         return std::get<0>(args);
+    }
+
+    constexpr auto&& operation() && {
+        return std::get<0>(std::move(args));
     }
 };
 
@@ -84,12 +88,19 @@ struct is_expression : std::false_type {};
 template <class... Ts>
 struct is_expression<expression<Ts...>> : std::true_type {};
 
+template <class T>
+inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
+
+template <class Expr>
+using argument_indices =
+    std::make_index_sequence<remove_cvref_t<Expr>::argument_count>;
+
 template <class... Ts>
 constexpr auto make_expression(Ts&&... xs) {
     return expression<value_if_small<Ts>...>{{}, {std::forward<Ts>(xs)...}};
 }
 
-template <class Expr, class S = std::make_index_sequence<Expr::argument_count>>
+template <class Expr, class S = argument_indices<Expr>>
 struct expression_helper;
 
 template <class Op, class... Ts, size_t... Is>
