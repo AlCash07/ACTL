@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/operation/policy/absolute_error.hpp>
+#include <actl/operation/policy/common/absolute_error.hpp>
 #include "test.hpp"
 
 constexpr double eps = 1e-9;
