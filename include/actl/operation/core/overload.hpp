@@ -13,7 +13,7 @@ namespace ac {
 
 template <class Op, class = void>
 struct default_overload {
-    struct is_unchanged;
+    struct is_resolved;
 
     static constexpr const Op& resolve(const Op& op) {
         return op;
@@ -37,5 +37,18 @@ struct overload<Op, unclassified_tag, Ts...> : default_overload<Op> {};
 
 template <class Op, class... Ts>
 using major_overload = overload<Op, major_category_t<Ts...>, Ts...>;
+
+template <class Void, class... Ts>
+struct is_overload_resolved : std::false_type {};
+
+template <class Op, class... Ts>
+struct is_overload_resolved<
+    std::void_t<typename major_overload<Op, Ts...>::is_resolved>,
+    Op,
+    Ts...> : std::true_type {};
+
+template <class... Ts>
+inline constexpr bool is_overload_resolved_v =
+    is_overload_resolved<void, raw_t<Ts>...>::value;
 
 } // namespace ac

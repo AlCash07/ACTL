@@ -42,17 +42,4 @@ struct resolve_t {
 template <class... Ts>
 inline constexpr resolve_t<raw_t<Ts>...> resolve;
 
-template <class Void, class... Ts>
-struct is_overload_unchanged : std::false_type {};
-
-template <class Op, class... Ts>
-struct is_overload_unchanged<
-    std::void_t<typename major_overload<Op, Ts...>::is_unchanged>,
-    Op,
-    Ts...> : std::true_type {};
-
-template <class... Ts>
-inline constexpr bool is_overload_unchanged_v =
-    is_overload_unchanged<void, raw_t<Ts>...>::value;
-
 } // namespace ac

@@ -14,8 +14,7 @@ template <class EOp, class Policy, size_t... Is>
 constexpr auto apply_policy_impl(
     const EOp& eop, const Policy policy, std::index_sequence<Is...>) //
 {
-    return make_expression(
-        apply_policy_if_can(std::get<Is>(eop.args), policy)...);
+    return expression{apply_policy_if_can(std::get<Is>(eop.args), policy)...};
 }
 
 template <

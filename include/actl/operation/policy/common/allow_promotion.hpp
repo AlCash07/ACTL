@@ -29,7 +29,7 @@ struct Promotion {
 
     template <class Op, class... Ts>
     static constexpr auto evaluate(const Op& op, const Ts&... xs) {
-        using CT = std::common_type_t<Ts...>;
+        using CT = std::common_type_t<decltype(eval(xs))...>;
         return op.evaluate(cast<CT>(xs)...);
     }
 };

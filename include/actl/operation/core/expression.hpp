@@ -31,7 +31,7 @@ struct expr_result1<false, Op, Ts...> {
 };
 
 template <bool, class... Ts>
-struct expr_result0 : expr_result1<is_overload_unchanged_v<Ts...>, Ts...> {};
+struct expr_result0 : expr_result1<is_overload_resolved_v<Ts...>, Ts...> {};
 
 template <class... Ts>
 struct expr_result0<false, Ts...> {
@@ -64,6 +64,9 @@ struct expression
 
     std::tuple<Op, Ts...> args;
 
+    template <class... Us>
+    constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...} {}
+
     constexpr auto& operation() const& {
         return std::get<0>(args);
     }
@@ -72,6 +75,9 @@ struct expression
         return std::get<0>(std::move(args));
     }
 };
+
+template <class... Ts>
+expression(Ts&&...) -> expression<value_if_small<Ts>...>;
 
 template <class... Ts>
 struct expression_base<expression<Ts...>, scalar_tag> {
@@ -95,11 +101,6 @@ template <class Expr>
 using argument_indices =
     std::make_index_sequence<remove_cvref_t<Expr>::argument_count>;
 
-template <class... Ts>
-constexpr auto make_expression(Ts&&... xs) {
-    return expression<value_if_small<Ts>...>{{}, {std::forward<Ts>(xs)...}};
-}
-
 template <class Expr, class S = argument_indices<Expr>>
 struct expression_helper;
 
@@ -107,14 +108,15 @@ template <class Op, class... Ts, size_t... Is>
 struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
     using Expr = expression<Op, Ts...>;
 
-    static constexpr bool is_resolved = is_overload_unchanged_v<Op, Ts...>;
+    static constexpr bool is_resolved = is_overload_resolved_v<Op, Ts...>;
 
     static constexpr auto resolve(const Expr& e) {
-        return ac::resolve<Ts...>(e.operation())(std::get<Is + 1>(e.args)...);
+        return expression{
+            ac::resolve<Ts...>(e.operation()), std::get<Is + 1>(e.args)...};
     }
 
     static constexpr decltype(auto) eval_impl(const Expr& e) {
-        return eval(e.operation().evaluate(std::get<Is + 1>(e.args)...));
+        return e.operation().evaluate(std::get<Is + 1>(e.args)...);
     }
 
     template <class T>

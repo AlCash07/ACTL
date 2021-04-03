@@ -21,7 +21,7 @@ struct resolve_under_policy {
     static constexpr decltype(auto) resolve(
         Op&& op, const Policy& policy, const Policies&... policies) //
     {
-        if constexpr (is_overload_unchanged_v<Op, Ts...>)
+        if constexpr (is_overload_resolved_v<Op, Ts...>)
             if constexpr (sizeof...(Policies) == 0)
                 return ac::resolve<Ts...>(
                     apply_policy_if_can(std::forward<Op>(op), policy));
@@ -55,14 +55,14 @@ struct resolve_under_policy {
     }
 
     template <
-        class Expr,
+        class EOp,
         class... Policies,
-        enable_int_if<is_expression_v<Expr>> = 0>
+        enable_int_if<is_expression_v<EOp>> = 0>
     static constexpr decltype(auto) resolve(
-        Expr&& e, const Policies&... policies) //
+        EOp&& eop, const Policies&... policies) //
     {
         return resolve_expression(
-            argument_indices<Expr>{}, std::forward<Expr>(e), policies...);
+            argument_indices<EOp>{}, std::forward<EOp>(eop), policies...);
     }
 };
 

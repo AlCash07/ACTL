@@ -42,9 +42,9 @@ template <size_t... Is, class EOp, class... Ts>
 constexpr auto expand_impl(
     std::index_sequence<Is...>, const EOp& eop, const Ts&... xs) //
 {
-    return make_expression(
+    return expression{
         eop.operation(),
-        expand_expression(std::get<Is + 1>(eop.args), xs...)...);
+        expand_expression(std::get<Is + 1>(eop.args), xs...)...};
 }
 
 } // namespace ac

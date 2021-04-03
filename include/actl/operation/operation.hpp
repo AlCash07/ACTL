@@ -36,14 +36,14 @@ struct operation {
     }
 
     template <class... Ts, enable_int_if<!is_any_inout_v<Ts...>> = 0>
-    constexpr decltype(auto) operator()(Ts&&... xs) const& {
-        return make_expression(derived(), std::forward<Ts>(xs)...);
+    constexpr auto operator()(Ts&&... xs) const& {
+        return expression{derived(), std::forward<Ts>(xs)...};
     }
 
     template <class... Ts, enable_int_if<!is_any_inout_v<Ts...>> = 0>
-    constexpr decltype(auto) operator()(Ts&&... xs) && {
-        return make_expression(
-            static_cast<Derived&&>(*this), std::forward<Ts>(xs)...);
+    constexpr auto operator()(Ts&&... xs) && {
+        return expression{
+            static_cast<Derived&&>(*this), std::forward<Ts>(xs)...};
     }
 };
 
