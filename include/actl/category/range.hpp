@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/category/scalar.hpp>
-#include <actl/category/utility/is_subcategory_of.hpp>
 #include <actl/category/utility/nesting_depth.hpp>
 #include <actl/meta/dependent.hpp>
 #include <actl/meta/is_range.hpp>

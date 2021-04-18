@@ -54,14 +54,4 @@ constexpr const T&& pass(std::remove_reference_t<T>&& x) {
     return static_cast<const T&&>(x);
 }
 
-template <class T>
-constexpr T eval(const T& x) {
-    return x;
-}
-
-template <class T, size_t N>
-auto& eval(const T (&x)[N]) {
-    return x;
-}
-
 } // namespace ac

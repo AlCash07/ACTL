@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/category/category.hpp>
+#include <actl/category/utility/is_subcategory_of.hpp>
 
 namespace ac {
 
@@ -51,5 +52,9 @@ template <class T>
 struct category_sfinae<T*, std::enable_if_t<!std::is_object_v<T>>> {
     using type = scalar_tag;
 };
+
+template <class T>
+inline constexpr bool is_scalar_v =
+    is_subcategory_of_v<category_t<T>, scalar_tag>;
 
 } // namespace ac

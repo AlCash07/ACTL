@@ -80,15 +80,6 @@ struct expression
 template <class... Ts>
 expression(Ts&&...) -> expression<value_if_small<Ts>...>;
 
-template <class... Ts>
-struct expression_base<expression<Ts...>, scalar_tag> {
-    struct type {
-        constexpr operator typename detail::expr_result<Ts...>::type() const {
-            return eval(static_cast<const expression<Ts...>&>(*this));
-        }
-    };
-};
-
 template <class T>
 struct is_expression : std::false_type {};
 
@@ -118,24 +109,11 @@ struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
             std::get<Is + 1>(e.args)...};
     }
 
-    static constexpr decltype(auto) eval_impl(const Expr& e) {
-        return e.operation().evaluate(std::get<Is + 1>(e.args)...);
-    }
-
     template <class T>
     static constexpr void assign_impl(T& dst, const Expr& e) {
         e.operation().evaluate_to(dst, std::get<Is + 1>(e.args)...);
     }
 };
-
-template <class... Ts>
-constexpr decltype(auto) eval(const expression<Ts...>& e) {
-    using helper = expression_helper<expression<Ts...>>;
-    if constexpr (helper::is_resolved)
-        return helper::eval_impl(e);
-    else
-        return eval(helper::resolve_expr(e));
-}
 
 template <class T, class... Ts>
 constexpr void assign(out<T>& dst, const expression<Ts...>& e) {
