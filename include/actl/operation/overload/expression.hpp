@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/core/expression_operation.hpp>
+#include <actl/operation/core/operation_expression.hpp>
 
 namespace ac {
 
@@ -31,17 +31,17 @@ constexpr auto make_resolved_expression(Context context, Op&& op, Ts&&... xs) {
         std::forward<Ts>(xs)...};
 }
 
-template <class... Ts, class Context, class EOp, size_t... Is>
+template <class... Ts, class Context, class OE, size_t... Is>
 constexpr auto resolve_expression(
     Context context,
-    EOp&& eop,
+    OE&& oe,
     std::index_sequence<Is...>) //
 {
     return make_resolved_expression(
         context,
-        static_cast<EOp&&>(eop).operation(),
+        static_cast<OE&&>(oe).operation(),
         resolve_if_can<Ts...>(
-            context, std::get<Is + 1>(static_cast<EOp&&>(eop).args))...);
+            context, std::get<Is + 1>(static_cast<OE&&>(oe).args))...);
 }
 
 } // namespace detail
@@ -49,13 +49,12 @@ constexpr auto resolve_expression(
 template <
     class... Ts,
     class Context,
-    class EOp,
+    class OE,
     enable_int_if<
-        is_expression_v<EOp> && !is_overload_resolved_v<Context, EOp, Ts...>> =
-        0>
-constexpr auto resolve(Context context, EOp&& eop) {
+        is_expression_v<OE> && !is_overload_resolved_v<Context, OE, Ts...>> = 0>
+constexpr auto resolve(Context context, OE&& oe) {
     return detail::resolve_expression<Ts...>(
-        context, std::forward<EOp>(eop), argument_indices<EOp>{});
+        context, std::forward<OE>(oe), argument_indices<OE>{});
 }
 
 } // namespace ac

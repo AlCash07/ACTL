@@ -10,6 +10,27 @@
 
 namespace ac {
 
+template <class Op, class... Ts>
+constexpr decltype(auto) expand_expression(
+    const Op& op, [[maybe_unused]] const Ts&... xs) //
+{
+    if constexpr (is_operation_v<Op>)
+        if constexpr (is_expression_v<Op>)
+            return expand_impl(argument_indices<Op>{}, op, xs...);
+        else
+            return op(xs...);
+    else
+        return op;
+}
+
+template <size_t... Is, class OE, class... Ts>
+constexpr auto expand_impl(
+    std::index_sequence<Is...>, const OE& oe, const Ts&... xs) //
+{
+    return expression{
+        oe.operation(), expand_expression(std::get<Is + 1>(oe.args), xs...)...};
+}
+
 template <class Derived>
 struct expression_base<Derived, operation_tag> {
     struct type : operation<Derived> {
@@ -24,27 +45,5 @@ struct expression_base<Derived, operation_tag> {
         }
     };
 };
-
-template <class Op, class... Ts>
-constexpr decltype(auto) expand_expression(
-    const Op& op, [[maybe_unused]] const Ts&... xs) //
-{
-    if constexpr (is_operation_v<Op>)
-        if constexpr (is_expression_v<Op>)
-            return expand_impl(argument_indices<Op>{}, op, xs...);
-        else
-            return op(xs...);
-    else
-        return op;
-}
-
-template <size_t... Is, class EOp, class... Ts>
-constexpr auto expand_impl(
-    std::index_sequence<Is...>, const EOp& eop, const Ts&... xs) //
-{
-    return expression{
-        eop.operation(),
-        expand_expression(std::get<Is + 1>(eop.args), xs...)...};
-}
 
 } // namespace ac
