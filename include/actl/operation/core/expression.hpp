@@ -9,8 +9,8 @@
 #include <actl/category/scalar.hpp>
 #include <actl/operation/core/argument_traits.hpp>
 #include <actl/operation/core/operation_traits.hpp>
-#include <actl/operation/core/resolve_overload.hpp>
 #include <actl/operation/out.hpp>
+#include <actl/operation/overload/resolve.hpp>
 #include <tuple>
 
 namespace ac {
@@ -25,13 +25,14 @@ struct expr_result1 {
 
 template <class Op, class... Ts>
 struct expr_result1<false, Op, Ts...> {
-    using type = decltype(
-        eval(resolve<Ts...>(std::declval<Op>())(std::declval<Ts>()...)));
+    using type = decltype(eval(resolve<Ts...>(
+        default_context{}, std::declval<Op>())(std::declval<Ts>()...)));
     using tag = category_t<remove_cvref_t<type>>;
 };
 
 template <bool, class... Ts>
-struct expr_result0 : expr_result1<is_overload_resolved_v<Ts...>, Ts...> {};
+struct expr_result0
+    : expr_result1<is_overload_resolved_v<default_context, Ts...>, Ts...> {};
 
 template <class... Ts>
 struct expr_result0<false, Ts...> {
@@ -108,11 +109,13 @@ template <class Op, class... Ts, size_t... Is>
 struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
     using Expr = expression<Op, Ts...>;
 
-    static constexpr bool is_resolved = is_overload_resolved_v<Op, Ts...>;
+    static constexpr bool is_resolved =
+        is_overload_resolved_v<default_context, Op, Ts...>;
 
-    static constexpr auto resolve(const Expr& e) {
+    static constexpr auto resolve_expr(const Expr& e) {
         return expression{
-            ac::resolve<Ts...>(e.operation()), std::get<Is + 1>(e.args)...};
+            resolve<Ts...>(default_context{}, e.operation()),
+            std::get<Is + 1>(e.args)...};
     }
 
     static constexpr decltype(auto) eval_impl(const Expr& e) {
@@ -131,7 +134,7 @@ constexpr decltype(auto) eval(const expression<Ts...>& e) {
     if constexpr (helper::is_resolved)
         return helper::eval_impl(e);
     else
-        return eval(helper::resolve(e));
+        return eval(helper::resolve_expr(e));
 }
 
 template <class T, class... Ts>
@@ -140,7 +143,7 @@ constexpr void assign(out<T>& dst, const expression<Ts...>& e) {
     if constexpr (helper::is_resolved)
         helper::assign_impl(dst.x, e);
     else
-        assign(dst, helper::resolve(e));
+        assign(dst, helper::resolve_expr(e));
 }
 
 } // namespace ac

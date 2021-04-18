@@ -20,7 +20,7 @@ else()
     target_compile_options(run_tests PRIVATE
     -Wall -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align
     -pedantic -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector
-    -ftemplate-backtrace-limit=0)
+    -ftemplate-backtrace-limit=0 -fconstexpr-backtrace-limit=0)
 
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -fsanitize=undefined")
 endif()

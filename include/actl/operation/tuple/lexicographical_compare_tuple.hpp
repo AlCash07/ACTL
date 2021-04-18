@@ -33,7 +33,7 @@ inline constexpr operation_composer<lexicographical_compare_tuple_f>
 
 template <class T, class U>
 struct overload<cmp3way_f, tuple_tag, T, U> {
-    static constexpr auto formula = tuple_op_resolver<T, U>::resolve(
+    static constexpr auto formula = tuple_op_resolver<T, U>::resolve_tuple(
         lexicographical_compare_tuple, cmp3way);
 };
 

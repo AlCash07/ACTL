@@ -39,7 +39,7 @@ inline constexpr operation_composer<lexicographical_compare_range_f>
 template <class T, class U>
 struct overload<cmp3way_f, range_tag, T, U> {
     static constexpr auto formula =
-        lexicographical_compare_range(resolve<T, U>.nested(cmp3way));
+        lexicographical_compare_range(resolve_nested<T, U>(cmp3way));
 };
 
 template <class T, class U>

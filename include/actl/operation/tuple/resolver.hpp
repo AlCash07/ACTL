@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/category/tuple.hpp>
-#include <actl/operation/core/resolve_overload.hpp>
+#include <actl/operation/overload/resolve.hpp>
 
 namespace ac {
 
@@ -19,10 +19,10 @@ struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
     static_assert(std::tuple_size_v<T> == std::tuple_size_v<U>);
 
     template <class Composer, class Op>
-    static constexpr auto resolve(Composer composer, const Op& op) {
-        return composer(ac::resolve<
-                        std::tuple_element_t<Is, T>,
-                        std::tuple_element_t<Is, U>>(op)...);
+    static constexpr auto resolve_tuple(Composer composer, const Op& op) {
+        return composer(
+            resolve<std::tuple_element_t<Is, T>, std::tuple_element_t<Is, U>>(
+                default_context{}, op)...);
     }
 };
 

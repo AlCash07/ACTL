@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <actl/operation/core/expression_operation.hpp>
-#include <actl/operation/core/resolve_overload.hpp>
 #include <actl/operation/inout.hpp>
-#include <actl/operation/policy/resolve_under_policy.hpp>
+#include <actl/operation/overload/expression.hpp>
+#include <actl/operation/overload/resolve.hpp>
+#include <actl/operation/policy/resolve.hpp>
 
 namespace ac {
 
@@ -29,7 +29,7 @@ struct operation {
     constexpr decltype(auto) operator()(Ts&&... xs) const& {
         static_assert(
             1 == (... + is_inout_v<Ts>), "single inout argument expected");
-        decltype(auto) op = resolve<Ts...>(derived());
+        decltype(auto) op = resolve_if_can<Ts...>(default_context{}, derived());
         auto& dst = find_dst(xs...);
         op.evaluate_to(dst, remove_inout(xs)...);
         return dst;

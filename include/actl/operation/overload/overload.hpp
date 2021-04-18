@@ -12,17 +12,7 @@
 namespace ac {
 
 template <class Op, class = void>
-struct default_overload {
-    struct is_resolved;
-
-    static constexpr const Op& resolve(const Op& op) {
-        return op;
-    }
-
-    static constexpr Op resolve(Op&& op) {
-        return std::move(op);
-    }
-};
+struct default_overload {};
 
 template <class Op>
 struct default_overload<Op, std::void_t<decltype(Op::formula)>> {
@@ -36,19 +26,30 @@ template <class Op, class... Ts>
 struct overload<Op, unclassified_tag, Ts...> : default_overload<Op> {};
 
 template <class Op, class... Ts>
-using major_overload = overload<Op, major_category_t<Ts...>, Ts...>;
+struct primary_overload
+    : overload<raw_t<Op>, major_category_t<raw_t<Ts>...>, raw_t<Ts>...> {
+    template <
+        class O =
+            overload<raw_t<Op>, major_category_t<raw_t<Ts>...>, raw_t<Ts>...>>
+    static constexpr auto resolve(Op&&)
+        -> std::remove_const_t<decltype(O::formula)> {
+        return std::remove_const_t<decltype(O::formula)>{};
+    }
+};
 
-template <class Void, class... Ts>
-struct is_overload_resolved : std::false_type {};
+namespace detail {
+
+template <class T, class Op, class = void>
+struct has_resolve : std::false_type {};
+
+template <class T, class Op>
+struct has_resolve<T, Op, std::void_t<decltype(T::resolve(std::declval<Op>()))>>
+    : std::true_type {};
+
+} // namespace detail
 
 template <class Op, class... Ts>
-struct is_overload_resolved<
-    std::void_t<typename major_overload<Op, Ts...>::is_resolved>,
-    Op,
-    Ts...> : std::true_type {};
-
-template <class... Ts>
-inline constexpr bool is_overload_resolved_v =
-    is_overload_resolved<void, raw_t<Ts>...>::value;
+inline constexpr bool is_primary_overload_resolved_v =
+    !detail::has_resolve<primary_overload<Op, Ts...>, Op>::value;
 
 } // namespace ac
