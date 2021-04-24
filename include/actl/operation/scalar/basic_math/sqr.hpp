@@ -15,7 +15,7 @@ struct sqr_f : scalar_operation<sqr_f, 1> {
     using category = multiplicative_operation_tag;
     using argument_category = arithmetic_tag;
 
-    static constexpr auto formula = mul(x_, x_);
+    static constexpr auto formula = x_ * x_;
 };
 inline constexpr sqr_f sqr;
 

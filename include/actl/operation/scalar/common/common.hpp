@@ -75,7 +75,7 @@ struct common_f : scalar_operation<common_f, 2> {
 inline constexpr common_f common;
 
 template <class T>
-struct neutral_element<common_f, T> {
+struct identity_element<common_f, T> {
     static constexpr none value() {
         return none{};
     }

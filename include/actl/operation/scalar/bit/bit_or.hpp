@@ -36,7 +36,7 @@ struct bit_or_f : operation<bit_or_f> {
 inline constexpr bit_or_f bit_or;
 
 template <class T>
-struct neutral_element<bit_or_f, T> {
+struct identity_element<bit_or_f, T> {
     static constexpr T value() {
         return T{0};
     }

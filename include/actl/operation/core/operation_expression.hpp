@@ -11,12 +11,12 @@
 namespace ac {
 
 template <class Op, class... Ts>
-constexpr decltype(auto) expand_expression(
+constexpr decltype(auto) pass_arguments(
     const Op& op, [[maybe_unused]] const Ts&... xs) //
 {
     if constexpr (is_operation_v<Op>)
         if constexpr (is_expression_v<Op>)
-            return expand_impl(argument_indices<Op>{}, op, xs...);
+            return pass_arguments_impl(argument_indices<Op>{}, op, xs...);
         else
             return op(xs...);
     else
@@ -24,24 +24,27 @@ constexpr decltype(auto) expand_expression(
 }
 
 template <size_t... Is, class OE, class... Ts>
-constexpr auto expand_impl(
+constexpr auto pass_arguments_impl(
     std::index_sequence<Is...>, const OE& oe, const Ts&... xs) //
 {
     return expression{
-        oe.operation(), expand_expression(std::get<Is + 1>(oe.args), xs...)...};
+        oe.operation(), pass_arguments(std::get<Is + 1>(oe.args), xs...)...};
 }
+
+template <class Derived>
+struct operation;
 
 template <class Derived>
 struct expression_base<Derived, operation_tag> {
     struct type : operation<Derived> {
         template <class... Ts>
         constexpr auto evaluate(const Ts&... xs) const {
-            return eval(expand_expression(this->derived(), xs...));
+            return eval(pass_arguments(this->derived(), xs...));
         }
 
         template <class T, class... Ts>
         constexpr void evaluate_to(T& dst, const Ts&... xs) const {
-            assign(out{dst}, expand_expression(this->derived(), xs...));
+            assign(out{dst}, pass_arguments(this->derived(), xs...));
         }
     };
 };

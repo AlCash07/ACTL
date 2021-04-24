@@ -36,7 +36,7 @@ struct bit_xor_f : operation<bit_xor_f> {
 inline constexpr bit_xor_f bit_xor;
 
 template <class T>
-struct neutral_element<bit_xor_f, T> {
+struct identity_element<bit_xor_f, T> {
     static constexpr T value() {
         return T{0};
     }

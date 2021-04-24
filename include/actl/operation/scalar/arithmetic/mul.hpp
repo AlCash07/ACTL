@@ -36,7 +36,7 @@ struct mul_f : operation<mul_f> {
 inline constexpr mul_f mul;
 
 template <class T>
-struct neutral_element<mul_f, T> {
+struct identity_element<mul_f, T> {
     static constexpr T value() {
         return T{1};
     }

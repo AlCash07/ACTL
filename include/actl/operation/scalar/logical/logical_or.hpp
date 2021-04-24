@@ -35,7 +35,7 @@ struct logical_or_f : operation<logical_or_f> {
 inline constexpr logical_or_f logical_or;
 
 template <class T>
-struct neutral_element<logical_or_f, T> {
+struct identity_element<logical_or_f, T> {
     static constexpr T value() {
         return T{false};
     }

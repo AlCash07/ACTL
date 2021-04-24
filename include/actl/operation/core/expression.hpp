@@ -10,7 +10,7 @@
 #include <actl/operation/core/argument_traits.hpp>
 #include <actl/operation/core/operation_traits.hpp>
 #include <actl/operation/out.hpp>
-#include <actl/operation/overload/resolve.hpp>
+#include <actl/operation/overload/resolve_overload.hpp>
 #include <tuple>
 
 namespace ac {
@@ -25,7 +25,7 @@ struct expr_result1 {
 
 template <class Op, class... Ts>
 struct expr_result1<false, Op, Ts...> {
-    using type = decltype(eval(resolve<Ts...>(
+    using type = decltype(eval(resolve_overload<Ts...>(
         default_context{}, std::declval<Op>())(std::declval<Ts>()...)));
     using tag = category_t<remove_cvref_t<type>>;
 };
@@ -105,7 +105,7 @@ struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
 
     static constexpr auto resolve_expr(const Expr& e) {
         return expression{
-            resolve<Ts...>(default_context{}, e.operation()),
+            resolve_overload<Ts...>(default_context{}, e.operation()),
             std::get<Is + 1>(e.args)...};
     }
 

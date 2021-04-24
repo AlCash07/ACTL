@@ -17,7 +17,7 @@ struct bit_not_f : scalar_operation<bit_not_f, 1> {
     using argument_category = integral_tag;
 
     template <class T>
-    static constexpr T eval_scalar(T x) {
+    static constexpr auto eval_scalar(T x) {
         return ~x;
     }
 };

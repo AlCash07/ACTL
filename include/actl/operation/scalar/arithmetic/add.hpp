@@ -36,7 +36,7 @@ struct add_f : operation<add_f> {
 inline constexpr add_f add;
 
 template <class T>
-struct neutral_element<add_f, T> {
+struct identity_element<add_f, T> {
     static constexpr T value() {
         return T{0};
     }

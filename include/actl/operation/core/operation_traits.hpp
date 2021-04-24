@@ -13,10 +13,6 @@
 
 namespace ac {
 
-// Base class for operations.
-template <class Derived>
-struct operation;
-
 struct operation_tag {
     using base = unclassified_tag;
 };
@@ -26,7 +22,7 @@ inline constexpr bool is_operation_v =
     is_subcategory_of_v<category_t<T>, operation_tag>;
 
 template <class Operation, class T>
-struct neutral_element;
+struct identity_element;
 
 template <class T>
 struct nesting_depth<T, std::enable_if_t<is_operation_v<T>>>

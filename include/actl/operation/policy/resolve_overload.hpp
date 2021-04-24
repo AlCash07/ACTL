@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/overload/resolve.hpp>
+#include <actl/operation/overload/resolve_overload.hpp>
 #include <actl/operation/policy/tuned_operation.hpp>
 
 namespace ac {
@@ -24,23 +24,24 @@ template <
     enable_int_if<
         is_primary_overload_resolved_v<Op, Ts...> &&
         can_apply_policy_v<Op, Policy>> = 0>
-constexpr auto resolve(policy_context<Base, Policy> context, Op&& op) {
+constexpr auto resolve_overload(policy_context<Base, Policy> context, Op&& op) {
     auto result = apply_policy(std::forward<Op>(op), context.policy);
     if constexpr (is_overload_resolved_v<Base, decltype(result), Ts...>)
         return std::move(result);
     else
-        return resolve<Ts...>(Base{context}, std::move(result));
+        return resolve_overload<Ts...>(Base{context}, std::move(result));
 }
 
 template <class... Ts, class Context, class Op, class Policy>
-constexpr decltype(auto) resolve(
+constexpr decltype(auto) resolve_overload(
     Context context, const tuned_operation<Op, Policy>& op) //
 {
     using PolicyContext = policy_context<Context, Policy>;
     if constexpr (is_overload_resolved_v<PolicyContext, Op, Ts...>)
         return op.operation;
     else
-        return resolve<Ts...>(PolicyContext{context, op.policy}, op.operation);
+        return resolve_overload<Ts...>(
+            PolicyContext{context, op.policy}, op.operation);
 }
 
 } // namespace ac

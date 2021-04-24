@@ -27,7 +27,7 @@ struct min_f : scalar_operation<min_f, 2> {
 inline constexpr min_f min;
 
 template <class T>
-struct neutral_element<min_f, T> {
+struct identity_element<min_f, T> {
     static constexpr T value() {
         return std::numeric_limits<T>::max();
     }
