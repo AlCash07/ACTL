@@ -2,7 +2,7 @@
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at
-// http://www.boost.org/LICENSE_1_0.txt)
+//   http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
 
@@ -13,7 +13,7 @@ namespace ac {
 template <class... Ts>
 struct expression_base<expression<Ts...>, scalar_tag> {
     struct type {
-        constexpr operator typename detail::expr_result<Ts...>::type() const {
+        constexpr operator resolved_result_type_t<Ts...>() const {
             return eval(static_cast<const expression<Ts...>&>(*this));
         }
     };

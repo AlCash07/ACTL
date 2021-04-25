@@ -38,6 +38,11 @@ template <class Derived>
 struct expression_base<Derived, operation_tag> {
     struct type : operation<Derived> {
         template <class... Ts>
+        using result_type =
+            typename expression_result_type<decltype(pass_arguments(
+                std::declval<Derived>(), std::declval<Ts>()...))>::type;
+
+        template <class... Ts>
         constexpr auto evaluate(const Ts&... xs) const {
             return eval(pass_arguments(this->derived(), xs...));
         }

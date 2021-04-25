@@ -6,44 +6,13 @@
 
 #pragma once
 
-#include <actl/category/scalar.hpp>
 #include <actl/operation/core/argument_traits.hpp>
-#include <actl/operation/core/operation_traits.hpp>
+#include <actl/operation/core/result_type.hpp>
 #include <actl/operation/out.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
 #include <tuple>
 
 namespace ac {
-
-namespace detail {
-
-template <bool, class Op, class... Ts>
-struct expr_result1 {
-    using type = decltype(std::declval<Op>().evaluate(std::declval<Ts>()...));
-    using tag = category_t<remove_cvref_t<type>>;
-};
-
-template <class Op, class... Ts>
-struct expr_result1<false, Op, Ts...> {
-    using type = decltype(eval(resolve_overload<Ts...>(
-        default_context{}, std::declval<Op>())(std::declval<Ts>()...)));
-    using tag = category_t<remove_cvref_t<type>>;
-};
-
-template <bool, class... Ts>
-struct expr_result0
-    : expr_result1<is_overload_resolved_v<default_context, Ts...>, Ts...> {};
-
-template <class... Ts>
-struct expr_result0<false, Ts...> {
-    using tag = operation_tag;
-};
-
-template <class... Ts>
-using expr_result =
-    expr_result0<1 == (... + int{is_operation_v<remove_cvref_t<Ts>>}), Ts...>;
-
-} // namespace detail
 
 template <class Derived, class Tag>
 struct expression_base : expression_base<Derived, typename Tag::base> {};
@@ -57,8 +26,8 @@ template <class Op, class... Ts>
 struct expression
     : expression_base<
           expression<Op, Ts...>,
-          typename detail::expr_result<Op, Ts...>::tag>::type {
-    using category = typename detail::expr_result<Op, Ts...>::tag;
+          resolved_result_category_t<Op, Ts...>>::type {
+    using category = resolved_result_category_t<Op, Ts...>;
     struct enable_operators;
 
     static constexpr size_t argument_count = sizeof...(Ts);
@@ -92,6 +61,11 @@ inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
 template <class Expr>
 using argument_indices =
     std::make_index_sequence<remove_cvref_t<Expr>::argument_count>;
+
+template <class... Ts>
+struct expression_result_type<expression<Ts...>> {
+    using type = resolved_result_type_t<Ts...>;
+};
 
 template <class Expr, class S = argument_indices<Expr>>
 struct expression_helper;
