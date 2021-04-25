@@ -29,21 +29,32 @@ struct expression_result_type {
     using type = T;
 };
 
+template <bool, class Op, class... Ts>
+struct resolved_result_type1 : result_type<void, remove_cvref_t<Op>, Ts...> {};
+
 template <class Op, class... Ts>
-constexpr decltype(auto) resolved_result_type() {
-    if constexpr ((... || is_operation_v<remove_cvref_t<Ts>>))
-        return operation_tag{};
-    else if constexpr (is_overload_resolved_v<default_context, Op, Ts...>)
-        return typename result_type<void, remove_cvref_t<Op>, Ts...>::type{};
-    else {
-        using E = decltype(resolve_overload<Ts...>(
-            default_context{}, std::declval<Op>())(std::declval<Ts>()...));
-        return typename expression_result_type<E>::type{};
-    }
-}
+struct resolved_result_type1<false, Op, Ts...>
+    : expression_result_type<decltype(resolve_overload<Ts...>(
+          default_context{}, std::declval<Op>())(std::declval<Ts>()...))> {};
+
+template <bool, class... Ts>
+struct resolved_result_type0
+    : resolved_result_type1<
+          is_overload_resolved_v<default_context, Ts...>,
+          Ts...> {};
 
 template <class... Ts>
-using resolved_result_type_t = decltype(resolved_result_type<Ts...>());
+struct resolved_result_type0<true, Ts...> {
+    using type = operation_tag;
+};
+
+template <class... Ts>
+using resolved_result_type = resolved_result_type0<
+    1 < (... + int{is_operation_v<remove_cvref_t<Ts>>}),
+    Ts...>;
+
+template <class... Ts>
+using resolved_result_type_t = typename resolved_result_type<Ts...>::type;
 
 template <class T>
 inline constexpr bool is_category_v = is_subcategory_of_v<T, unclassified_tag>;
