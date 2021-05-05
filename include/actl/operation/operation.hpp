@@ -29,7 +29,7 @@ struct operation {
     constexpr decltype(auto) operator()(Ts&&... xs) const& {
         static_assert(
             1 == (... + is_inout_v<Ts>), "single inout argument expected");
-        decltype(auto) op =
+        auto&& op =
             resolve_overload_if_can<Ts...>(default_context{}, derived());
         auto& dst = find_dst(xs...);
         op.evaluate_to(dst, remove_inout(xs)...);
