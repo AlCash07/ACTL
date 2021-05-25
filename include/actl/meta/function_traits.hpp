@@ -29,7 +29,8 @@ template <class F>
 using return_type_t = typename function_traits<F>::return_type;
 
 template <size_t N, class F>
-using argument_type_t = typename function_traits<F>::template argument_type<N>;
+using parameter_type_t =
+    typename function_traits<F>::template parameter_type<N>;
 
 // function pointer
 template <class R, class... Ts>
@@ -45,7 +46,7 @@ struct function_traits<R(Ts...)>
     using return_type = R;
 
     template <size_t N>
-    using argument_type = type_at_t<N, Ts...>;
+    using parameter_type = type_at_t<N, Ts...>;
 };
 
 // member function pointer
@@ -71,7 +72,7 @@ public:
     using return_type = return_type_t<O>;
 
     template <size_t N>
-    using argument_type = argument_type_t<N + 1, O>;
+    using parameter_type = parameter_type_t<N + 1, O>;
 };
 
 } // namespace ac
