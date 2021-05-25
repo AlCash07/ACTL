@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/meta/nth_type.hpp>
+#include <actl/meta/type_at.hpp>
 #include <type_traits>
 
 namespace ac {
@@ -45,7 +45,7 @@ struct function_traits<R(Ts...)>
     using return_type = R;
 
     template <size_t N>
-    using argument_type = nth_type_t<N, Ts...>;
+    using argument_type = type_at_t<N, Ts...>;
 };
 
 // member function pointer

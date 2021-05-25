@@ -51,7 +51,7 @@ struct rebind0
 template <template <class...> class C, class... Ts, class To>
 struct rebind0<C<Ts...>, To>
 {
-    using type = C<typename rebind1<Ts, To, nth_type_t<0, Ts...>>::type...>;
+    using type = C<typename rebind1<Ts, To, type_at_t<0, Ts...>>::type...>;
 };
 
 } // namespace detail

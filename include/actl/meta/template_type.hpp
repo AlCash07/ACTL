@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/nth_type.hpp>
+#include <actl/meta/type_at.hpp>
 
 namespace ac {
 
@@ -25,7 +25,7 @@ struct template_type<T[N]>
 template <template <class...> class C, class... Ts>
 struct template_type<C<Ts...>>
 {
-    using type = nth_type_t<0, Ts...>;
+    using type = type_at_t<0, Ts...>;
 };
 
 } // namespace ac

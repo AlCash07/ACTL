@@ -11,19 +11,19 @@
 namespace ac {
 
 template <size_t N, class... Ts>
-struct nth_type;
+struct type_at;
 
 template <class T, class... Ts>
-struct nth_type<0, T, Ts...>
+struct type_at<0, T, Ts...>
 {
     using type = T;
 };
 
 template <size_t N, class T, class... Ts>
-struct nth_type<N, T, Ts...> : nth_type<N - 1, Ts...>
+struct type_at<N, T, Ts...> : type_at<N - 1, Ts...>
 {};
 
 template <size_t N, class... Ts>
-using nth_type_t = typename nth_type<N, Ts...>::type;
+using type_at_t = typename type_at<N, Ts...>::type;
 
 } // namespace ac
