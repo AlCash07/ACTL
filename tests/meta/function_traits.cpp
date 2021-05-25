@@ -57,35 +57,78 @@ struct S
     int const_member_function() const;
     int const_member_function_noexcept() const noexcept;
 
+    int reference_member_function() &;
+    int reference_member_function_noexcept() & noexcept;
+    int const_reference_member_function() const&;
+    int const_reference_member_function_noexcept() const& noexcept;
+
+    int rvalue_reference_member_function() &&;
+    int rvalue_reference_member_function_noexcept() && noexcept;
+    int const_rvalue_reference_member_function() const&&;
+    int const_rvalue_reference_member_function_noexcept() const&& noexcept;
+
     const int& member_function_params(const int, int&&) const noexcept;
 };
 
+template <class MemFn, class ClassParam, bool IsNoexcept>
+void test_member_function_traits()
+{
+    static_assert(1ul == ac::arity_v<MemFn>);
+    static_assert(std::is_same_v<int, ac::return_type_t<MemFn>>);
+    static_assert(std::is_same_v<ClassParam, ac::parameter_type_t<0, MemFn>>);
+    static_assert(IsNoexcept == ac::is_noexcept_v<MemFn>);
+}
+
 } // namespace
 
-using mem_fn = decltype(&S::member_function);
-static_assert(1ul == ac::arity_v<mem_fn>);
-static_assert(std::is_same_v<int, ac::return_type_t<mem_fn>>);
-static_assert(std::is_same_v<S&, ac::parameter_type_t<0, mem_fn>>);
-static_assert(!ac::is_noexcept_v<mem_fn>);
-
-using mem_fn_noexcept = decltype(&S::member_function_noexcept);
-static_assert(1ul == ac::arity_v<mem_fn_noexcept>);
-static_assert(std::is_same_v<int, ac::return_type_t<mem_fn_noexcept>>);
-static_assert(std::is_same_v<S&, ac::parameter_type_t<0, mem_fn_noexcept>>);
-static_assert(ac::is_noexcept_v<mem_fn_noexcept>);
-
-using const_mem_fn = decltype(&S::const_member_function);
-static_assert(1ul == ac::arity_v<const_mem_fn>);
-static_assert(std::is_same_v<int, ac::return_type_t<const_mem_fn>>);
-static_assert(std::is_same_v<const S&, ac::parameter_type_t<0, const_mem_fn>>);
-static_assert(!ac::is_noexcept_v<const_mem_fn>);
-
-using const_mem_fn_noexcept = decltype(&S::const_member_function_noexcept);
-static_assert(1ul == ac::arity_v<const_mem_fn_noexcept>);
-static_assert(std::is_same_v<int, ac::return_type_t<const_mem_fn_noexcept>>);
-static_assert(
-    std::is_same_v<const S&, ac::parameter_type_t<0, const_mem_fn_noexcept>>);
-static_assert(ac::is_noexcept_v<const_mem_fn_noexcept>);
+TEST_CASE("member function pointers")
+{
+    test_member_function_traits<decltype(&S::member_function), S&, false>();
+    test_member_function_traits<
+        decltype(&S::member_function_noexcept),
+        S&,
+        true>();
+    test_member_function_traits<
+        decltype(&S::const_member_function),
+        const S&,
+        false>();
+    test_member_function_traits<
+        decltype(&S::const_member_function_noexcept),
+        const S&,
+        true>();
+    test_member_function_traits<
+        decltype(&S::reference_member_function),
+        S&,
+        false>();
+    test_member_function_traits<
+        decltype(&S::reference_member_function_noexcept),
+        S&,
+        true>();
+    test_member_function_traits<
+        decltype(&S::const_reference_member_function),
+        const S&,
+        false>();
+    test_member_function_traits<
+        decltype(&S::const_reference_member_function_noexcept),
+        const S&,
+        true>();
+    test_member_function_traits<
+        decltype(&S::rvalue_reference_member_function),
+        S&&,
+        false>();
+    test_member_function_traits<
+        decltype(&S::rvalue_reference_member_function_noexcept),
+        S&&,
+        true>();
+    test_member_function_traits<
+        decltype(&S::const_rvalue_reference_member_function),
+        const S&&,
+        false>();
+    test_member_function_traits<
+        decltype(&S::const_rvalue_reference_member_function_noexcept),
+        const S&&,
+        true>();
+}
 
 using mem_fn_params = decltype(&S::member_function_params);
 static_assert(3ul == ac::arity_v<mem_fn_params>);

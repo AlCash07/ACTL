@@ -89,6 +89,46 @@ struct function_traits<Return (Class::*)(Params...) const noexcept>
     : function_traits<Return(const Class&, Params...) noexcept>
 {};
 
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...)&>
+    : function_traits<Return(Class&, Params...)>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...)& noexcept>
+    : function_traits<Return(Class&, Params...) noexcept>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) const&>
+    : function_traits<Return(const Class&, Params...)>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) const& noexcept>
+    : function_traits<Return(const Class&, Params...) noexcept>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) &&>
+    : function_traits<Return(Class&&, Params...)>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...)&& noexcept>
+    : function_traits<Return(Class&&, Params...) noexcept>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) const&&>
+    : function_traits<Return(const Class&&, Params...)>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) const&& noexcept>
+    : function_traits<Return(const Class&&, Params...) noexcept>
+{};
+
 template <class Function>
 struct function_object_traits<
     Function,
