@@ -14,57 +14,88 @@
 
 namespace ac {
 
-template <class F, class = void>
+template <class Function, class = void>
 struct function_object_traits
 {};
 
-template <class F>
-struct function_traits : function_object_traits<std::remove_reference_t<F>>
+template <class Function>
+struct function_traits
+    : function_object_traits<std::remove_reference_t<Function>>
 {};
 
-template <class F>
-inline constexpr size_t arity_v = function_traits<F>::arity;
+template <class Function>
+inline constexpr size_t arity_v = function_traits<Function>::arity;
 
-template <class F>
-using return_type_t = typename function_traits<F>::return_type;
+template <class Function>
+using return_type_t = typename function_traits<Function>::return_type;
 
-template <size_t N, class F>
+template <size_t N, class Function>
 using parameter_type_t =
-    typename function_traits<F>::template parameter_type<N>;
+    typename function_traits<Function>::template parameter_type<N>;
 
-// function pointer
-template <class R, class... Ts>
-struct function_traits<R (*)(Ts...)> : function_traits<R(Ts...)>
-{};
+template <class Function>
+inline constexpr bool is_noexcept_v = function_traits<Function>::is_noexcept;
 
 // free function
-template <class R, class... Ts>
-struct function_traits<R(Ts...)>
+template <class Return, class... Params>
+struct function_traits<Return(Params...)>
 {
-    static constexpr size_t arity = sizeof...(Ts);
+    static constexpr size_t arity = sizeof...(Params);
 
-    using return_type = R;
+    using return_type = Return;
 
     template <size_t N>
-    using parameter_type = type_at_t<N, Ts...>;
+    using parameter_type = type_at_t<N, Params...>;
+
+    static constexpr bool is_noexcept = false;
 };
 
+template <class Return, class... Params>
+struct function_traits<Return(Params...) noexcept>
+    : function_traits<Return(Params...)>
+{
+    static constexpr bool is_noexcept = true;
+};
+
+// function pointer
+template <class Return, class... Params>
+struct function_traits<Return (*)(Params...)>
+    : function_traits<Return(Params...)>
+{};
+
+template <class Return, class... Params>
+struct function_traits<Return (*)(Params...) noexcept>
+    : function_traits<Return(Params...) noexcept>
+{};
+
 // member function pointer
-template <class C, class R, class... Args>
-struct function_traits<R (C::*)(Args...)> : function_traits<R(C&, Args...)>
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...)>
+    : function_traits<Return(Class&, Params...)>
 {};
 
-// const member function pointer
-template <class C, class R, class... Args>
-struct function_traits<R (C::*)(Args...) const>
-    : function_traits<R(const C&, Args...)>
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) noexcept>
+    : function_traits<Return(Class&, Params...) noexcept>
 {};
 
-template <class F>
-struct function_object_traits<F, std::void_t<decltype(&F::operator())>>
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) const>
+    : function_traits<Return(const Class&, Params...)>
+{};
+
+template <class Class, class Return, class... Params>
+struct function_traits<Return (Class::*)(Params...) const noexcept>
+    : function_traits<Return(const Class&, Params...) noexcept>
+{};
+
+template <class Function>
+struct function_object_traits<
+    Function,
+    std::void_t<decltype(&Function::operator())>>
 {
 private:
-    using O = decltype(&F::operator());
+    using O = decltype(&Function::operator());
 
 public:
     static constexpr size_t arity = arity_v<O> - 1;
@@ -73,6 +104,8 @@ public:
 
     template <size_t N>
     using parameter_type = parameter_type_t<N + 1, O>;
+
+    static constexpr bool is_noexcept = is_noexcept_v<O>;
 };
 
 } // namespace ac
