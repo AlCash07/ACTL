@@ -8,7 +8,8 @@
 #include "geometry/polygons.hpp"
 #include "test.hpp"
 
-TEST_CASE("trident") {
+TEST_CASE("trident")
+{
     auto poly = get_trident_polygon();
     reverse(poly);
     CHECK(-22 == area(poly));

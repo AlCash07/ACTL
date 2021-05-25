@@ -12,13 +12,16 @@ namespace ac {
 
 /// Property map that simply casts the key. Fitting to be a default map.
 template <class Key, class Value = Key>
-class identity_map {
+class identity_map
+{
 public:
-    constexpr static Value get(Key key) {
+    constexpr static Value get(Key key)
+    {
         return static_cast<Value>(key);
     }
 
-    constexpr static Key invert(Value value) {
+    constexpr static Key invert(Value value)
+    {
         return static_cast<Key>(value);
     }
 };
@@ -31,6 +34,7 @@ struct const_map_traits<identity_map<K, V>>
           use_default,
           std::is_convertible_v<K, V>,
           false,
-          std::is_convertible_v<V, K>> {};
+          std::is_convertible_v<V, K>>
+{};
 
 } // namespace ac

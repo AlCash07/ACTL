@@ -10,7 +10,8 @@
 #include "graph/test_edges.hpp"
 #include "graph/test_vertices.hpp"
 
-TEST_CASE("adjacency_list none") {
+TEST_CASE("adjacency_list none")
+{
     adjacency_list<directed> graph(2);
     graph.add_edge(0, 2);
     graph.add_vertex();
@@ -19,14 +20,16 @@ TEST_CASE("adjacency_list none") {
 }
 
 template <class Dir, class OEC, class EC, class VC>
-void test_adjacency_list() {
+void test_adjacency_list()
+{
     adjacency_list<Dir, OEC, EC, VC> graph;
     auto vs = test_vertices(graph);
     test_edges<true>(graph, vs[0], vs[1], vs[2]);
 }
 
 template <class Dir>
-void test_adjacency_list1() {
+void test_adjacency_list1()
+{
     test_adjacency_list<Dir, hash_set<bundle>, none, std::vector<bundle>>();
     test_adjacency_list<
         Dir,
@@ -45,7 +48,8 @@ void test_adjacency_list1() {
         hash_multiset<bundle>>();
 }
 
-TEST_CASE("adjacency_list bundle") {
+TEST_CASE("adjacency_list bundle")
+{
     test_adjacency_list1<directed>();
     test_adjacency_list1<undirected>();
     test_adjacency_list1<bidirectional>();

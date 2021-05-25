@@ -12,10 +12,12 @@ namespace ac {
 
 /// Variation of Xoroshiro128+ random engine that passes TestU01 and PractRAND
 /// tests. Speed on Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz: 0.38 cycles/byte.
-struct xoroshiro128cplus {
+struct xoroshiro128cplus
+{
     using result_type = uint64_t;
 
-    uint64_t operator()() {
+    uint64_t operator()()
+    {
         uint64_t x = state[0];
         uint64_t y = state[1];
         uint64_t r = x + y;
@@ -27,10 +29,13 @@ struct xoroshiro128cplus {
         return r + (x + y < y);
     }
 
-    static constexpr uint64_t min() {
+    static constexpr uint64_t min()
+    {
         return uint64_t{};
     }
-    static constexpr uint64_t max() {
+
+    static constexpr uint64_t max()
+    {
         return ~uint64_t{};
     }
 

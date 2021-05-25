@@ -16,7 +16,8 @@ namespace ac {
 /// This policy implies that lines are in general position (don't coincide but
 /// can be parallel).
 template <class Policy>
-struct general_position_policy {
+struct general_position_policy
+{
     explicit general_position_policy(const Policy& x) : policy{x} {}
 
     const Policy& policy;
@@ -31,9 +32,10 @@ bool cross_test(
     const line<T1, 2, K1>& rhs,
     T2 tarea,
     T2 larea,
-    T2 rarea) //
+    T2 rarea)
 {
-    if (less(policy, tarea, 0)) {
+    if (less(policy, tarea, 0))
+    {
         tarea = -tarea;
         larea = -larea;
         rarea = -rarea;
@@ -49,7 +51,7 @@ OutIter intersect(
     line_scalar_policy<Policy> lsp,
     const line<T0, 2, K0>& lhs,
     const line<T1, 2, K1>& rhs,
-    OutIter dst) //
+    OutIter dst)
 {
     auto& policy = lsp.policy;
     auto tarea = area(policy, rhs.vector, lhs.vector);
@@ -69,7 +71,7 @@ OutIter intersect(
     general_position_policy<Policy> gpp,
     const line<T0, 2, K0>& lhs,
     const line<T1, 2, K1>& rhs,
-    OutIter dst) //
+    OutIter dst)
 {
     return intersect(
         line_scalar_policy{gpp.policy},
@@ -83,12 +85,13 @@ OutIter intersect(
     const Policy& policy,
     const line<T0, 2, K0>& lhs,
     const line<T1, 2, K1>& rhs,
-    OutIter dst) //
+    OutIter dst)
 {
     auto tarea = area(policy, rhs.vector, lhs.vector);
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
-    if (equal(policy, tarea, 0)) {
+    if (equal(policy, tarea, 0))
+    {
         if (!equal(policy, larea, 0))
             return dst;
         return detail::common_line(policy, lhs, rhs, dst);

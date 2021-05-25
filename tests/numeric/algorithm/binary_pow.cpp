@@ -7,7 +7,8 @@
 #include <actl/numeric/algorithm/binary_pow.hpp>
 #include "test.hpp"
 
-TEST_CASE("binary_pow correctness") {
+TEST_CASE("binary_pow correctness")
+{
     CHECK(1 == binary_pow(1024, 0));
     CHECK(1 << 15 == binary_pow(2, 15));
     CHECK(1 << 16 == binary_pow(2, 16));

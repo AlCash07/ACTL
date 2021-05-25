@@ -13,7 +13,8 @@
 namespace ac {
 
 template <class T>
-struct input_device_iterator_types {
+struct input_device_iterator_types
+{
     using iterator_category = std::input_iterator_tag;
     using value_type = T;
     using reference = const T&;
@@ -26,11 +27,13 @@ template <class T, class Device>
 class input_device_iterator
     : public iterator_facade<
           input_device_iterator<T, Device>,
-          input_device_iterator_types<T>> {
+          input_device_iterator_types<T>>
+{
 public:
     explicit input_device_iterator() = default;
 
-    explicit input_device_iterator(Device& device) : device_{&device} {
+    explicit input_device_iterator(Device& device) : device_{&device}
+    {
         increment();
     }
 
@@ -39,17 +42,20 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    const T& dereference() const {
+    const T& dereference() const
+    {
         return value_;
     }
 
-    void increment() {
+    void increment()
+    {
         ACTL_ASSERT(device_);
         if (!io::read(*device_, value_))
             device_ = nullptr;
     }
 
-    bool equals(const input_device_iterator& rhs) const {
+    bool equals(const input_device_iterator& rhs) const
+    {
         return device_ == rhs.device_;
     }
 
@@ -58,7 +64,8 @@ private:
 };
 
 template <class T, class Device>
-auto make_input_device_iterator(Device& device) {
+auto make_input_device_iterator(Device& device)
+{
     return input_device_iterator<T, Device>{device};
 }
 
@@ -68,20 +75,23 @@ template <class T, class Device>
 class output_device_iterator
     : public iterator_facade<
           output_device_iterator<T, Device>,
-          output_iterator_types> {
+          output_iterator_types>
+{
 public:
     explicit output_device_iterator(Device& device) : device_{&device} {}
 
     output_device_iterator(const output_device_iterator&) = default;
 
-    void operator=(const T& value) const {
+    void operator=(const T& value) const
+    {
         io::write(*device_, value);
     }
 
 private:
     friend struct ac::iterator_core_access;
 
-    const output_device_iterator& dereference() const {
+    const output_device_iterator& dereference() const
+    {
         return *this;
     }
 
@@ -91,7 +101,8 @@ private:
 };
 
 template <class T, class Device>
-auto make_output_device_iterator(Device& device) {
+auto make_output_device_iterator(Device& device)
+{
     return output_device_iterator<T, Device>{device};
 }
 

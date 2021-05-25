@@ -12,21 +12,22 @@
 namespace ac {
 
 template <class Policy, index N, class T0, class T1>
-auto invert(const Policy& policy, const point<T0, N>& p, const T1& radius) {
+auto invert(const Policy& policy, const point<T0, N>& p, const T1& radius)
+{
     ACTL_ASSERT(!degenerate(policy, p));
     auto t = ratio(policy, sqr(policy, radius), dot(policy, p));
     return product(policy, p, t);
 }
 
 template <class Policy, index N, class T0, class T1>
-auto invert(
-    const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s) //
+auto invert(const Policy& policy, const point<T0, N>& p, const sphere<T1, N>& s)
 {
     return s.center + invert(policy, p - s.center, s.radius);
 }
 
 template <index N, class T, class U>
-auto invert(const point<T, N>& p, const U& x) {
+auto invert(const point<T, N>& p, const U& x)
+{
     return invert(geometry_policy, p, x);
 }
 

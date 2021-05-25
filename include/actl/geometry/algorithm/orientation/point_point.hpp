@@ -13,7 +13,7 @@ namespace ac {
 
 template <class Policy, class T0, class T1, enable_int_if_policy<Policy> = 0>
 constexpr orientation2d orientation(
-    const Policy& policy, const point<T0>& lhs, const point<T1>& rhs) //
+    const Policy& policy, const point<T0>& lhs, const point<T1>& rhs)
 {
     return static_cast<orientation2d>(sgn(policy, area(policy, rhs, lhs)));
 }
@@ -28,7 +28,7 @@ constexpr orientation2d orientation(
     const Policy& policy,
     const point<T0>& lhs,
     const point<T1>& rhs,
-    const point<T2>& origin) //
+    const point<T2>& origin)
 {
     return orientation(policy, lhs - origin, rhs - origin);
 }
@@ -40,14 +40,16 @@ template <
     class T1,
     enable_int_if_policy<Policy> = 0>
 enum orientation orientation(
-    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs) //
+    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs)
 {
     index i = 0;
-    for (; i < N && equal(policy, lhs[i], 0); ++i) {
+    for (; i < N && equal(policy, lhs[i], 0); ++i)
+    {
         if (!equal(policy, rhs[i], 0))
             return orientation::non_collinear;
     }
-    for (index j = i + 1; j < N; ++j) {
+    for (index j = i + 1; j < N; ++j)
+    {
         if (!collinear(policy, point{lhs[i], lhs[j]}, point{rhs[i], rhs[j]}))
             return orientation::non_collinear;
     }

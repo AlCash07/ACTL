@@ -11,7 +11,8 @@
 namespace ac {
 
 template <class Op, class Policy>
-struct tuned_operation : operation<tuned_operation<Op, Policy>> {
+struct tuned_operation : operation<tuned_operation<Op, Policy>>
+{
     // [[no_unique_address]]
     Op operation;
     Policy policy;
@@ -23,7 +24,8 @@ template <
     enable_int_if<
         is_operation_v<remove_cvref_t<Op>> &&
         is_policy_v<remove_cvref_t<Policy>>> = 0>
-constexpr auto operator|(Op&& op, Policy&& policy) {
+constexpr auto operator|(Op&& op, Policy&& policy)
+{
     return tuned_operation<value_if_small<Op>, value_if_small<Policy>>{
         {}, std::forward<Op>(op), std::forward<Policy>(policy)};
 }

@@ -12,27 +12,33 @@
 namespace ac {
 
 template <class Op, class = void>
-struct default_overload {};
+struct default_overload
+{};
 
 template <class Op>
-struct default_overload<Op, std::void_t<decltype(Op::formula)>> {
+struct default_overload<Op, std::void_t<decltype(Op::formula)>>
+{
     static constexpr auto formula = Op::formula;
 };
 
 template <class Op, class Category, class... Ts>
-struct overload : overload<Op, typename Category::base, Ts...> {};
+struct overload : overload<Op, typename Category::base, Ts...>
+{};
 
 template <class Op, class... Ts>
-struct overload<Op, unclassified_tag, Ts...> : default_overload<Op> {};
+struct overload<Op, unclassified_tag, Ts...> : default_overload<Op>
+{};
 
 template <class Op, class... Ts>
 struct primary_overload
-    : overload<raw_t<Op>, major_category_t<raw_t<Ts>...>, raw_t<Ts>...> {
+    : overload<raw_t<Op>, major_category_t<raw_t<Ts>...>, raw_t<Ts>...>
+{
     template <
         class O =
             overload<raw_t<Op>, major_category_t<raw_t<Ts>...>, raw_t<Ts>...>>
     static constexpr auto resolve(Op&&)
-        -> std::remove_const_t<decltype(O::formula)> {
+        -> std::remove_const_t<decltype(O::formula)>
+    {
         return std::remove_const_t<decltype(O::formula)>{};
     }
 };
@@ -40,11 +46,13 @@ struct primary_overload
 namespace detail {
 
 template <class T, class Op, class = void>
-struct has_resolve : std::false_type {};
+struct has_resolve : std::false_type
+{};
 
 template <class T, class Op>
 struct has_resolve<T, Op, std::void_t<decltype(T::resolve(std::declval<Op>()))>>
-    : std::true_type {};
+    : std::true_type
+{};
 
 } // namespace detail
 

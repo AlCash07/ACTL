@@ -7,7 +7,8 @@
 #include <actl/operation/scalar/logical/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("logical") {
+TEST_CASE("logical")
+{
     STATIC_ASSERT_WORKAROUND(true == ac::logical_not(false));
     STATIC_ASSERT_WORKAROUND(false == ac::logical_not(true));
     STATIC_ASSERT_WORKAROUND(true == ac::logical_and(true, true));

@@ -11,7 +11,8 @@
 namespace ac {
 
 /// Indicates default type or policy where supported.
-struct use_default {};
+struct use_default
+{};
 
 template <class T, class Default>
 using deduce_type =

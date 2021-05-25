@@ -7,7 +7,8 @@
 #include <actl/io/device/string.hpp>
 #include "test.hpp"
 
-TEST_CASE("input") {
+TEST_CASE("input")
+{
     std::string s = "abcde";
     io::string<io::in> id{s};
     CHECK('a' == id.get());
@@ -23,7 +24,8 @@ TEST_CASE("input") {
     CHECK('\0' == id.get());
 }
 
-TEST_CASE("output") {
+TEST_CASE("output")
+{
     std::string s;
     io::string<io::app> od{s};
     CHECK(1l == od.write('a'));

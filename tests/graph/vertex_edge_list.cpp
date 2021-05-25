@@ -8,7 +8,8 @@
 #include <actl/std/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("vertex_edge_list vector") {
+TEST_CASE("vertex_edge_list vector")
+{
     vertex_edge_list<
         directed,
         std::vector<std::string>,
@@ -26,7 +27,8 @@ TEST_CASE("vertex_edge_list vector") {
     CHECK(0l == graph.edge_count());
 }
 
-TEST_CASE("vertex_edge_list set") {
+TEST_CASE("vertex_edge_list set")
+{
     vertex_edge_list<directed, std::vector<std::string>, std::set<std::string>>
         graph;
     auto e = graph.add_edge("v0", "v2", "e02");

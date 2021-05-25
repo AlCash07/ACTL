@@ -12,7 +12,8 @@
 
 namespace ac {
 
-struct sgn_f : scalar_operation<sgn_f, 1> {
+struct sgn_f : scalar_operation<sgn_f, 1>
+{
     using category = comparison_operation_tag;
     using argument_category = arithmetic_tag;
 

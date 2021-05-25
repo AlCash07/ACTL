@@ -15,10 +15,17 @@
 namespace ac::io {
 
 template <class Float>
-class float_unchecked_parser {
+class float_unchecked_parser
+{
     using UInt = unsigned long long;
 
-    enum class states { empty, sign, integral, point };
+    enum class states
+    {
+        empty,
+        sign,
+        integral,
+        point
+    };
 
     states state = states::empty;
     sign_parser<true> sign;
@@ -27,7 +34,8 @@ class float_unchecked_parser {
     Float x = 0;
     Float power = 1;
 
-    auto parse_int(cspan<char> s) {
+    auto parse_int(cspan<char> s)
+    {
         uint_unchecked_parser<UInt> parser{base};
         index length =
             parser.parse(s.size() <= max_length ? s : s.first(max_length));
@@ -40,11 +48,14 @@ public:
         , max_length{
               detail::digit_count(
                   std::numeric_limits<UInt>::max(), this->base) -
-              1} {}
+              1}
+    {}
 
-    index parse(cspan<char> s) {
+    index parse(cspan<char> s)
+    {
         index i = 0;
-        switch (state) {
+        switch (state)
+        {
             case states::empty:
                 i += sign.parse(s);
                 state = states::sign;
@@ -53,27 +64,33 @@ public:
             case states::sign:
                 if (auto [p, length] = parse_int(s.subspan(i)); length == 0)
                     break;
-                else {
+                else
+                {
                     x = static_cast<Float>(p);
                     i += length;
                     state = states::integral;
                 }
             case states::integral:
-                while (i != s.size()) {
+                while (i != s.size())
+                {
                     auto [p, length] = parse_int(s.subspan(i));
-                    if (length == 0) {
-                        if (s[i] == '.') {
+                    if (length == 0)
+                    {
+                        if (s[i] == '.')
+                        {
                             ++i;
                             state = states::point;
                             break;
-                        } else
+                        }
+                        else
                             return i;
                     }
                     x = x * binary_pow(base, length) + p;
                     i += length;
                 }
             case states::point:
-                while (i != s.size()) {
+                while (i != s.size())
+                {
                     auto [p, length] = parse_int(s.subspan(i));
                     if (length == 0)
                         break;
@@ -85,11 +102,13 @@ public:
         return i;
     }
 
-    bool ready() const {
+    bool ready() const
+    {
         return state != states::empty && state != states::sign;
     }
 
-    Float value() const {
+    Float value() const
+    {
         return sign.value(x);
     }
 };

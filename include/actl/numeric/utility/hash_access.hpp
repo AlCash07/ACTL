@@ -10,7 +10,8 @@
 
 namespace ac {
 
-struct hash_access {
+struct hash_access
+{
     template <class T, class = decltype(std::declval<const T>().hash())>
     std::true_type has_hash(int);
 
@@ -18,7 +19,8 @@ struct hash_access {
     std::false_type has_hash(...);
 
     template <class T>
-    static constexpr size_t hash(const T& x) {
+    static constexpr size_t hash(const T& x)
+    {
         return x.hash();
     }
 };
@@ -26,7 +28,8 @@ struct hash_access {
 template <
     class T,
     enable_int_if<decltype(hash_access{}.has_hash<T>(0))::value> = 0>
-constexpr size_t hash_value(const T& x) {
+constexpr size_t hash_value(const T& x)
+{
     return hash_access::hash(x);
 }
 

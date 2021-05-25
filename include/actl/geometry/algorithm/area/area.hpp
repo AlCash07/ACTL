@@ -15,16 +15,21 @@ template <
     class T,
     class U,
     geometry::enable_int_if_swap<T, U> = 0>
-auto area(const Policy& policy, const T& lhs, const U& rhs) {
-    if constexpr (geometry_traits<T>::dimension == 2) {
+auto area(const Policy& policy, const T& lhs, const U& rhs)
+{
+    if constexpr (geometry_traits<T>::dimension == 2)
+    {
         return -area(policy, rhs, lhs);
-    } else {
+    }
+    else
+    {
         return area(policy, rhs, lhs);
     }
 }
 
 template <class T, class... Ts, disable_int_if_policy<T> = 0>
-auto area(const T& x, const Ts&... xs) {
+auto area(const T& x, const Ts&... xs)
+{
     return area(geometry_policy, x, xs...);
 }
 

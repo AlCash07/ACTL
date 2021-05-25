@@ -8,7 +8,8 @@
 #include <actl/utility/none.hpp>
 #include "test.hpp"
 
-TEST_CASE("member_access") {
+TEST_CASE("member_access")
+{
     compressed_pair<int, std::string> p{2, 'a', 'b', 'a'};
     CHECK(2 == p.first());
     CHECK("aba"sv == p.second());
@@ -22,14 +23,16 @@ TEST_CASE("member_access") {
 
 using pii = compressed_pair<int, int>;
 
-TEST_CASE("equality") {
+TEST_CASE("equality")
+{
     CHECK(pii{0, 1} == pii{0, 1});
     CHECK(pii{0, 1} != pii{0, 0});
     CHECK(pii{0, 1} != pii{1, 1});
     CHECK(pii{0, 1} != pii{1, 0});
 }
 
-TEST_CASE("order") {
+TEST_CASE("order")
+{
     CHECK_FALSE(pii{0, 0} < pii{0, 0});
     CHECK(pii{0, 1} >= pii{0, 0});
     CHECK(pii{0, 1} <= pii{1, 0});
@@ -37,7 +40,8 @@ TEST_CASE("order") {
 }
 
 namespace {
-struct fin final : none {};
+struct fin final : none
+{};
 } // namespace
 
 static_assert(2 * sizeof(int) == sizeof(compressed_pair<int, int>));

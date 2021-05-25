@@ -18,7 +18,7 @@ template <class Policy, class T, class U>
 enum within within(
     const Policy& policy,
     const point<T>& p,
-    const convex_monotone_polygon<U>& poly) //
+    const convex_monotone_polygon<U>& poly)
 {
     if (poly.empty())
         return within::outside;
@@ -28,20 +28,24 @@ enum within within(
     auto first = poly.begin();
     if (less(policy, p, poly[0]) || less(policy, first[right], p))
         return within::outside;
-    switch (orientation(policy, p, first[right], poly[0])) {
-        case orientation2d::collinear: {
+    switch (orientation(policy, p, first[right], poly[0]))
+    {
+        case orientation2d::collinear:
+        {
             if (equal(policy, p, poly[0]) || equal(policy, p, first[right]))
                 return within::border;
             return right == 1 || right + 1 == poly.size() ? within::border
                                                           : within::inside;
         }
-        case orientation2d::left: { // lower chain
+        case orientation2d::left: // lower chain
+        {
             auto lit =
                 std::lower_bound(first + 1, first + right, p, less(policy));
             return detail::to_inclusion(
                 orientation(policy, p, lit[0], lit[-1]));
         }
-        case orientation2d::right: { // upper chain
+        case orientation2d::right: // upper chain
+        {
             auto uit = std::lower_bound(
                 poly.rbegin(), poly.rend() - right - 1, p, less(policy));
             return detail::to_inclusion(orientation(

@@ -9,7 +9,8 @@
 
 using namespace ac::io;
 
-TEST_CASE("read unsigned long long") {
+TEST_CASE("read unsigned long long")
+{
     const auto max_ull = std::numeric_limits<unsigned long long>::max();
     text f;
     unsigned long long x{};
@@ -36,7 +37,8 @@ TEST_CASE("read unsigned long long") {
     test_read(0ull, "0x0xf", f);
 }
 
-TEST_CASE("read long long") {
+TEST_CASE("read long long")
+{
     const auto max_ull = std::numeric_limits<long long>::max();
     const auto min_ull = std::numeric_limits<long long>::min();
     text f;
@@ -71,7 +73,8 @@ TEST_CASE("read long long") {
     test_read<false>(x, "0x8000000000000000", f);
 }
 
-TEST_CASE("determin_ulle base") {
+TEST_CASE("determin_ulle base")
+{
     text f{0, detect_base};
     test_read<true>(10, "10", f);
     test_read<true>(2, "0b10", f);
@@ -81,7 +84,8 @@ TEST_CASE("determin_ulle base") {
     test_read<true>(16, "0X10", f);
 }
 
-TEST_CASE("multiple signs") {
+TEST_CASE("multiple signs")
+{
     text f;
     int x{};
     test_read<false>(x, "++1", f);

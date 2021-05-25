@@ -11,12 +11,14 @@
 namespace ac {
 
 template <class T, class Int>
-T binary_pow(T value, Int power) {
+T binary_pow(T value, Int power)
+{
     ACTL_ASSERT(power >= 0);
     T res{1};
     if (power == 0)
         return res;
-    for (; power > 1; power >>= 1) {
+    for (; power > 1; power >>= 1)
+    {
         if (power & 1)
             res *= value;
         value *= value;

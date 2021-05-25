@@ -12,7 +12,8 @@
 namespace ac::io {
 
 template <class UInt>
-class uint_unchecked_parser {
+class uint_unchecked_parser
+{
     UInt x = 0;
     UInt base;
 
@@ -20,9 +21,11 @@ public:
     explicit uint_unchecked_parser(UInt base) : base{base} {}
 
     template <digit_kind Kind>
-    index parse_impl(cspan<char> s) {
+    index parse_impl(cspan<char> s)
+    {
         index i = 0;
-        for (; i != s.size(); ++i) {
+        for (; i != s.size(); ++i)
+        {
             UInt d = to_digit<UInt, Kind>(s[i]);
             if (!is_digit(d, base))
                 break;
@@ -31,15 +34,18 @@ public:
         return i;
     }
 
-    index parse(cspan<char> s) {
+    index parse(cspan<char> s)
+    {
         return base <= 10 ? parse_impl<digit>(s) : parse_impl<alnum>(s);
     }
 
-    bool ready() const {
+    bool ready() const
+    {
         return true;
     }
 
-    UInt value() const {
+    UInt value() const
+    {
         return x;
     }
 };

@@ -16,7 +16,8 @@
 #include "test.hpp"
 
 template <bool TestAdjacency = false, class Graph, class V = vertex_t<Graph>>
-void test_edges(Graph& graph, V v0, V v1, V v2) {
+void test_edges(Graph& graph, V v0, V v1, V v2)
+{
     std::vector<edge_t<Graph>> es;
     es.push_back(graph.add_edge(v0, v1, 0, "e01"));
     es.push_back(graph.add_edge(v0, v2, 1, "e02"));
@@ -43,9 +44,11 @@ void test_edges(Graph& graph, V v0, V v1, V v2) {
     auto e02 = graph.find_edge(v0, v2);
     CHECK_EQUAL_SETS(std::vector{v0, v2}, {e02.source(), e02.target()});
     CHECK(es[1] == e02);
-    if constexpr (TestAdjacency) {
+    if constexpr (TestAdjacency)
+    {
         std::map<V, std::vector<V>> outs, ins;
-        auto add_edge = [&](V u, V v) {
+        auto add_edge = [&](V u, V v)
+        {
             outs[u].push_back(v);
             if constexpr (Graph::is_undirected)
                 if (u != v)
@@ -61,7 +64,8 @@ void test_edges(Graph& graph, V v0, V v1, V v2) {
             add_edge(v0, v1);
         if (ok10)
             add_edge(v1, v0);
-        for (auto v : {v0, v1, v2}) {
+        for (auto v : {v0, v1, v2})
+        {
             CHECK_EQUAL_SETS(outs[v], get_targets(graph.out_edges(v)));
             if constexpr (Graph::is_undirected)
                 CHECK_EQUAL_SETS(outs[v], get_sources(graph.in_edges(v)));

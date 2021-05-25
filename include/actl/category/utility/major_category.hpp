@@ -14,13 +14,15 @@ namespace ac {
 namespace detail {
 
 template <class Category, index Depth>
-struct cdp { // category-depth pair
+struct cdp // category-depth pair
+{
     using category = Category;
     static constexpr index depth = Depth;
 };
 
 template <class T, index DepthT, class U, index DepthU>
-constexpr auto operator||(cdp<T, DepthT> lhs, cdp<U, DepthU> rhs) {
+constexpr auto operator||(cdp<T, DepthT> lhs, cdp<U, DepthU> rhs)
+{
     if constexpr (DepthT == DepthU)
         return cdp<common_category_t<T, U>, DepthT>{};
     else if constexpr (DepthT < DepthU)

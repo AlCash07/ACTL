@@ -16,17 +16,21 @@ using iterator_category_t = typename std::iterator_traits<T>::iterator_category;
 namespace detail {
 
 template <class T>
-struct is_const_pointer : std::false_type {};
+struct is_const_pointer : std::false_type
+{};
 
 template <class T>
-struct is_const_pointer<const T*> : std::true_type {};
+struct is_const_pointer<const T*> : std::true_type
+{};
 
 template <class T, bool = is_iterator_v<T>>
 struct is_const_iterator
-    : is_const_pointer<typename std::iterator_traits<T>::pointer> {};
+    : is_const_pointer<typename std::iterator_traits<T>::pointer>
+{};
 
 template <class T>
-struct is_const_iterator<T, false> : std::false_type {};
+struct is_const_iterator<T, false> : std::false_type
+{};
 
 } // namespace detail
 

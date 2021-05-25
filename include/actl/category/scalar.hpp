@@ -22,14 +22,19 @@ struct boolean_tag           { using base = unsigned_integral_tag; };
 // clang-format on
 
 template <class T>
-struct category_sfinae<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
-    static auto f() {
-        if constexpr (std::is_integral_v<T>) {
+struct category_sfinae<T, std::enable_if_t<std::is_arithmetic_v<T>>>
+{
+    static auto f()
+    {
+        if constexpr (std::is_integral_v<T>)
+        {
             if constexpr (std::is_signed_v<T>)
                 return signed_integral_tag{};
             else
                 return unsigned_integral_tag{};
-        } else {
+        }
+        else
+        {
             if constexpr (std::is_floating_point_v<T>)
                 return floating_point_tag{};
             else
@@ -41,15 +46,18 @@ struct category_sfinae<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
 };
 
 template <>
-struct category<bool> {
+struct category<bool>
+{
     using type = boolean_tag;
 };
 
 template <class T, T X>
-struct category<std::integral_constant<T, X>> : category<T> {};
+struct category<std::integral_constant<T, X>> : category<T>
+{};
 
 template <class T>
-struct category_sfinae<T*, std::enable_if_t<!std::is_object_v<T>>> {
+struct category_sfinae<T*, std::enable_if_t<!std::is_object_v<T>>>
+{
     using type = scalar_tag;
 };
 

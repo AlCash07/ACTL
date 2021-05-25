@@ -12,12 +12,14 @@ namespace ac {
 
 namespace scalar {
 
-struct add_f : scalar_operation<add_f, 2> {
+struct add_f : scalar_operation<add_f, 2>
+{
     using category = additive_operation_tag;
     using argument_category = arithmetic_tag;
 
     template <class T, class U>
-    static constexpr auto eval_scalar(T lhs, U rhs) {
+    static constexpr auto eval_scalar(T lhs, U rhs)
+    {
         return lhs + rhs;
     }
 };
@@ -25,7 +27,8 @@ inline constexpr add_f add;
 
 } // namespace scalar
 
-struct add_f : operation<add_f> {
+struct add_f : operation<add_f>
+{
     using category = additive_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -36,19 +39,23 @@ struct add_f : operation<add_f> {
 inline constexpr add_f add;
 
 template <class T>
-struct identity_element<add_f, T> {
-    static constexpr T value() {
+struct identity_element<add_f, T>
+{
+    static constexpr T value()
+    {
         return T{0};
     }
 };
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr auto operator+(T&& lhs, U&& rhs) {
+constexpr auto operator+(T&& lhs, U&& rhs)
+{
     return add(pass<T>(lhs), pass<U>(rhs));
 }
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr decltype(auto) operator+=(T&& lhs, U&& rhs) {
+constexpr decltype(auto) operator+=(T&& lhs, U&& rhs)
+{
     return add(inout{std::forward<T>(lhs)}, pass<U>(rhs));
 }
 

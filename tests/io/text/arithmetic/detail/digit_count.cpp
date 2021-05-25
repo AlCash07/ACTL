@@ -7,7 +7,8 @@
 #include <actl/io/text/arithmetic/detail/digit_count.hpp>
 #include "test.hpp"
 
-TEST_CASE("digit_count") {
+TEST_CASE("digit_count")
+{
     using io::detail::digit_count;
     CHECK(2l == digit_count(8, 3));
     CHECK(9l == digit_count(999'999'999, 10));

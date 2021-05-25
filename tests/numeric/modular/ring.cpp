@@ -9,7 +9,8 @@
 #include <actl/numeric/random/random.hpp>
 #include "test.hpp"
 
-TEST_CASE("static_quotient_ring::arithmetic") {
+TEST_CASE("static_quotient_ring::arithmetic")
+{
     using ring =
         static_quotient_ring<18446744073709551557ull>; // largest uint64_t prime
                                                        // number

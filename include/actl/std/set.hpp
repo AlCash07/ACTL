@@ -12,7 +12,8 @@
 namespace ac {
 
 template <class T, class C, class A>
-struct range_traits<std::set<T, C, A>> : default_range_traits {
+struct range_traits<std::set<T, C, A>> : default_range_traits
+{
     static constexpr bool is_simple_associative = true;
     static constexpr bool is_container = true;
     static constexpr bool is_sorted = true;
@@ -20,7 +21,8 @@ struct range_traits<std::set<T, C, A>> : default_range_traits {
 };
 
 template <class T, class C, class A>
-struct range_traits<std::multiset<T, C, A>> : default_range_traits {
+struct range_traits<std::multiset<T, C, A>> : default_range_traits
+{
     static constexpr bool is_simple_associative = true;
     static constexpr bool is_container = true;
     static constexpr bool is_sorted = true;

@@ -13,9 +13,7 @@ namespace ac {
 
 template <class CharPredicate0, class CharPredicate1>
 std::string trim(
-    const std::string& str,
-    CharPredicate0 skip_left,
-    CharPredicate1 skip_right) //
+    const std::string& str, CharPredicate0 skip_left, CharPredicate1 skip_right)
 {
     auto l = str.begin();
     auto r = str.end();
@@ -25,11 +23,13 @@ std::string trim(
 }
 
 template <class CharPredicate>
-std::string trim(const std::string& str, CharPredicate skip) {
+std::string trim(const std::string& str, CharPredicate skip)
+{
     return trim(str, skip, skip);
 }
 
-inline std::string trim(const std::string& str) {
+inline std::string trim(const std::string& str)
+{
     return trim(str, is_space);
 }
 

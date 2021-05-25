@@ -35,17 +35,20 @@ static_assert(
 
 namespace {
 
-struct S {
+struct S
+{
     const int& member_function(const int, int&&);
 
     int* const_member_function() const;
 };
 
-struct function_object {
+struct function_object
+{
     const void* operator()(const S*, int&&, S);
 };
 
-struct const_function_object {
+struct const_function_object
+{
     S operator()() const;
 };
 

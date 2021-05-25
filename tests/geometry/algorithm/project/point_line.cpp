@@ -7,7 +7,8 @@
 #include <actl/geometry/algorithm/project/point_line.hpp>
 #include "test.hpp"
 
-TEST_CASE("scalar") {
+TEST_CASE("scalar")
+{
     ASSERT_ALMOST_EQUAL(
         0.5,
         project(
@@ -17,7 +18,8 @@ TEST_CASE("scalar") {
         1e-12);
 }
 
-TEST_CASE("point") {
+TEST_CASE("point")
+{
     CHECK_NEAR(
         point{3, 2}, project(point{2, 4}, line<int>{{1, 1}, {5, 3}}), 1e-12);
 }

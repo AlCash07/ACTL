@@ -7,10 +7,12 @@
 #include <actl/geometry/algorithm/within/line.hpp>
 #include "test.hpp"
 
-TEST_CASE("all cases") {
+TEST_CASE("all cases")
+{
     std::vector<point<int>> points{
         {-1, 0}, {1, 1}, {3, 2}, {5, 3}, {7, 4}, {4, 3}};
-    auto test_points = [&points](line_kind kind) {
+    auto test_points = [&points](line_kind kind)
+    {
         any_line<int> l{points[1], points[3], kind};
         std::vector<bool> w;
         for (const auto& p : points)

@@ -19,18 +19,22 @@ namespace ac::io {
 
 namespace detail {
 
-class float_string {
+class float_string
+{
 public:
-    span<char> reserve(index size) {
+    span<char> reserve(index size)
+    {
         ptr_ = std::make_unique<char[]>(static_cast<size_t>(size));
         return {ptr_.get(), size};
     }
 
-    explicit operator cspan<char>() const {
+    explicit operator cspan<char>() const
+    {
         return data_;
     }
 
-    void set_span(cspan<char> value) {
+    void set_span(cspan<char> value)
+    {
         data_ = value;
     }
 
@@ -40,7 +44,8 @@ private:
 };
 
 template <class D, class F>
-index write_final(D& od, F& fmt, const float_string& x) {
+index write_final(D& od, F& fmt, const float_string& x)
+{
     return write_final(od, fmt, cspan<char>{x});
 }
 
@@ -51,27 +56,36 @@ template <
     class Float,
     enable_int_if_text<Format> = 0,
     enable_int_if<std::is_floating_point_v<Float>> = 0>
-auto encode(Format& fmt, Float x) {
+auto encode(Format& fmt, Float x)
+{
     detail::float_string res;
     span<char> s;
     char* first;
     char sign{};
-    if (std::signbit(x)) {
+    if (std::signbit(x))
+    {
         sign = '-';
         x = -x;
-    } else {
+    }
+    else
+    {
         if (fmt.getf(flag::showpos))
             sign = '+';
     }
-    if (std::isnan(x)) {
+    if (std::isnan(x))
+    {
         s = res.reserve(4);
         first = s.begin() + 1;
         std::memcpy(first, fmt.getf(flag::uppercase) ? "NAN" : "nan", 3);
-    } else if (std::isinf(x)) {
+    }
+    else if (std::isinf(x))
+    {
         s = res.reserve(4);
         first = s.begin() + 1;
         std::memcpy(first, fmt.getf(flag::uppercase) ? "INF" : "inf", 3);
-    } else {
+    }
+    else
+    {
         using UInt = unsigned long long;
         UInt base = fmt.base;
         index precision = fmt.precision;
@@ -79,7 +93,8 @@ auto encode(Format& fmt, Float x) {
         auto integer_part = static_cast<UInt>(x);
         auto fractional_part =
             static_cast<UInt>((x - integer_part) * base_power + Float{0.5});
-        if (fractional_part >= base_power) {
+        if (fractional_part >= base_power)
+        {
             ++integer_part;
             fractional_part = 0;
         }
@@ -89,7 +104,8 @@ auto encode(Format& fmt, Float x) {
                 base < 10 ? UInt{2} : UInt{10}) +
             1 + std::max(index{0}, precision));
         first = s.end() - precision;
-        if (0 < precision) {
+        if (0 < precision)
+        {
             std::fill(
                 first, detail::uitoa(s.end(), fmt, fractional_part, base), '0');
         }

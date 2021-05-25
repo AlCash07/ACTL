@@ -10,14 +10,16 @@
 #include "graph/sample_graphs.hpp"
 #include "test.hpp"
 
-TEST_CASE("predecessor_recorder bfs") {
+TEST_CASE("predecessor_recorder bfs")
+{
     auto graph = sample_undirected_graph();
     std::vector<int> pred((size_t)graph.vertex_count());
     breadth_first_search{make_predecessor_recorder(pred, -1)}(graph, 0);
     CHECK(std::vector<int>{0, 0, 1, 0, 3, 3} == pred);
 }
 
-TEST_CASE("predecessor_recorder dfs") {
+TEST_CASE("predecessor_recorder dfs")
+{
     auto graph = sample_undirected_graph();
     std::vector<int> pred((size_t)graph.vertex_count());
     depth_first_search{make_predecessor_recorder(pred, -1)}(graph, 0);

@@ -14,18 +14,21 @@
 
 namespace ac {
 
-struct lexicographical_compare_range_f {
+struct lexicographical_compare_range_f
+{
     static constexpr index inner_count = 1;
 
     template <class Cmp3WayOp, class T, class U>
-    static int evaluate(const Cmp3WayOp& op, const T& lhs, const U& rhs) {
+    static int evaluate(const Cmp3WayOp& op, const T& lhs, const U& rhs)
+    {
         // Can't use std::lexicographical_compare because it doesn't compare
         // 3-way.
         auto lfirst = std::begin(lhs);
         auto llast = std::end(lhs);
         auto rfirst = std::begin(rhs);
         auto rlast = std::end(rhs);
-        for (; (lfirst != llast) && (rfirst != rlast); ++lfirst, ++rfirst) {
+        for (; (lfirst != llast) && (rfirst != rlast); ++lfirst, ++rfirst)
+        {
             const int v = op(*lfirst, *rfirst);
             if (v != 0)
                 return v;
@@ -37,13 +40,15 @@ inline constexpr operation_composer<lexicographical_compare_range_f>
     lexicographical_compare_range;
 
 template <class T, class U>
-struct overload<cmp3way_f, range_tag, T, U> {
+struct overload<cmp3way_f, range_tag, T, U>
+{
     static constexpr auto formula =
         lexicographical_compare_range(resolve_nested<T, U>(cmp3way));
 };
 
 template <class T, class U>
-struct overload<less_f, range_tag, T, U> {
+struct overload<less_f, range_tag, T, U>
+{
     static constexpr auto formula = cmp3way < zero_;
 };
 

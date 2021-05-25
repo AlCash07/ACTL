@@ -19,14 +19,17 @@ static std::vector<int> xs2 = {5, 4, 1, 4};
 static std::vector<int> sorted_xs2 = {1, 4, 4, 5};
 static std::vector<int> unique_xs2 = {1, 4, 5};
 
-void compare_sorted(const std::vector<int>& expected, std::vector<int> actual) {
+void compare_sorted(const std::vector<int>& expected, std::vector<int> actual)
+{
     sort(actual);
     CHECK(expected == actual);
 }
 
-TEST_CASE("list functions") {
+TEST_CASE("list functions")
+{
     std::list<int> c;
-    for (auto x : xs) {
+    for (auto x : xs)
+    {
         auto res = emplace(c, x);
         CHECK(x == *res.first);
         CHECK(res.second);
@@ -38,9 +41,11 @@ TEST_CASE("list functions") {
     CHECK(xs2 == std::vector<int>(c.begin(), c.end()));
 }
 
-TEST_CASE("set functions") {
+TEST_CASE("set functions")
+{
     std::set<int> c;
-    for (size_t i = 0; i < xs.size(); ++i) {
+    for (size_t i = 0; i < xs.size(); ++i)
+    {
         auto res = emplace(c, xs[i]);
         CHECK(xs[i] == *res.first);
         CHECK((i < 4) == res.second);
@@ -52,9 +57,11 @@ TEST_CASE("set functions") {
     CHECK(unique_xs2 == std::vector<int>(c.begin(), c.end()));
 }
 
-TEST_CASE("multiset functions") {
+TEST_CASE("multiset functions")
+{
     std::multiset<int> c;
-    for (auto x : xs) {
+    for (auto x : xs)
+    {
         auto resms = emplace(c, x);
         CHECK(x == *resms.first);
         CHECK(resms.second);
@@ -66,9 +73,11 @@ TEST_CASE("multiset functions") {
     CHECK(sorted_xs2 == std::vector<int>(c.begin(), c.end()));
 }
 
-TEST_CASE("hash_set functions") {
+TEST_CASE("hash_set functions")
+{
     hash_set<int> c;
-    for (size_t i = 0; i < xs.size(); ++i) {
+    for (size_t i = 0; i < xs.size(); ++i)
+    {
         auto res = emplace(c, xs[i]);
         CHECK(xs[i] == *res.first);
         bool inserted = i < 4;
@@ -81,9 +90,11 @@ TEST_CASE("hash_set functions") {
     compare_sorted(unique_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST_CASE("hash_multiset functions") {
+TEST_CASE("hash_multiset functions")
+{
     hash_multiset<int> c;
-    for (auto x : xs) {
+    for (auto x : xs)
+    {
         auto res = emplace(c, x);
         CHECK(x == *res.first);
         CHECK(res.second);
@@ -95,9 +106,11 @@ TEST_CASE("hash_multiset functions") {
     compare_sorted(sorted_xs2, std::vector<int>(c.begin(), c.end()));
 }
 
-TEST_CASE("vector functions") {
+TEST_CASE("vector functions")
+{
     std::vector<int> c;
-    for (auto x : xs) {
+    for (auto x : xs)
+    {
         auto res = emplace(c, x);
         CHECK(x == *res.first);
         CHECK(res.second);

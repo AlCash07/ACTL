@@ -10,7 +10,8 @@
 #include "test.hpp"
 
 template <class... Ts>
-void test_write(const std::string& expected, Ts&&... args) {
+void test_write(const std::string& expected, Ts&&... args)
+{
     std::string s;
     write(io::string<io::app>{s}, std::forward<Ts>(args)...);
     CHECK(expected == s);
@@ -18,14 +19,13 @@ void test_write(const std::string& expected, Ts&&... args) {
 
 template <bool Valid = true, class T, class... Ts>
 void test_read(
-    [[maybe_unused]] const T& expected,
-    const std::string& input,
-    Ts&&... args) //
+    [[maybe_unused]] const T& expected, const std::string& input, Ts&&... args)
 {
     T x;
     CHECK(
         Valid == read(io::string<io::in>{input}, std::forward<Ts>(args)..., x));
-    if constexpr (Valid) {
+    if constexpr (Valid)
+    {
         CHECK_EQUAL(expected, x);
     }
 }

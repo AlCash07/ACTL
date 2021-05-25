@@ -15,7 +15,8 @@
 namespace ac {
 
 template <class... Components>
-class breadth_first_search : public invocable_tuple<Components...> {
+class breadth_first_search : public invocable_tuple<Components...>
+{
     using base_t = invocable_tuple<Components...>;
     using base_t::invoke_all;
 
@@ -31,42 +32,53 @@ public:
         const Graph& graph,
         const Source& source,
         VertexQueue&& queue = {},
-        VertexPredicate is_terminator = {}) //
+        VertexPredicate is_terminator = {})
     {
         using V = vertex_t<Graph>;
         for (V u : graph.vertices())
             invoke_all(on_vertex_initialize{}, u);
         while (!queue.empty())
             queue.pop();
-        auto discover = [&](V u) {
+        auto discover = [&](V u)
+        {
             invoke_all(on_vertex_discover{}, u);
-            if (is_terminator(u)) {
+            if (is_terminator(u))
+            {
                 invoke_all(on_search_finish{}, u);
                 return false;
             }
             queue.push(u);
             return true;
         };
-        if constexpr (std::is_same_v<Source, V>) {
+        if constexpr (std::is_same_v<Source, V>)
+        {
             invoke_all(on_search_start{}, source);
             if (!discover(source))
                 return;
-        } else {
-            for (V s : source) {
+        }
+        else
+        {
+            for (V s : source)
+            {
                 invoke_all(on_search_start{}, s);
                 if (!discover(s))
                     return;
             }
         }
-        while (!queue.empty()) {
+        while (!queue.empty())
+        {
             V u = queue.front();
             queue.pop();
             invoke_all(on_vertex_start{}, u);
-            for (auto e : graph.out_edges(u)) {
+            for (auto e : graph.out_edges(u))
+            {
                 V v = e.target();
-                if (base_t::invoke_first(is_vertex_discovered{}, v)) {
+                if (base_t::invoke_first(is_vertex_discovered{}, v))
+                {
                     invoke_all(on_non_tree_edge{}, e);
-                } else {
+                }
+                else
+                {
                     invoke_all(on_tree_edge_start{}, e);
                     if (!discover(v))
                         return;

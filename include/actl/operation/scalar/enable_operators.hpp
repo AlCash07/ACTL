@@ -14,11 +14,13 @@ namespace ac {
 namespace detail {
 
 template <class T, class = void>
-struct enable_operators_impl : std::false_type {};
+struct enable_operators_impl : std::false_type
+{};
 
 template <class T>
 struct enable_operators_impl<T, std::void_t<typename T::enable_operators>>
-    : std::true_type {};
+    : std::true_type
+{};
 
 } // namespace detail
 

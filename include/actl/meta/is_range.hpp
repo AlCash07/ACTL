@@ -11,27 +11,31 @@
 namespace ac {
 
 template <class T, class = void>
-struct is_range : std::false_type {};
+struct is_range : std::false_type
+{};
 
 template <class T> // & is needed for C arrays
 struct is_range<
     T,
     std::void_t<decltype(
         std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
-    : std::true_type {};
+    : std::true_type
+{};
 
 template <class T>
 inline constexpr bool is_range_v = is_range<T>::value;
 
 template <class T, class = void>
-struct is_contiguous_range : std::false_type {};
+struct is_contiguous_range : std::false_type
+{};
 
 template <class T> // & is needed for C arrays
 struct is_contiguous_range<
     T,
     std::void_t<decltype(
         std::data(std::declval<T&>()), std::size(std::declval<T&>()))>>
-    : std::true_type {};
+    : std::true_type
+{};
 
 template <class T>
 inline constexpr bool is_contiguous_range_v = is_contiguous_range<T>::value;

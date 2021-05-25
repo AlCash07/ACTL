@@ -7,7 +7,8 @@
 #include <actl/geometry/algorithm/intersect/line_simple_polygon.hpp>
 #include "test.hpp"
 
-TEST_CASE("horizontal line all cases") {
+TEST_CASE("horizontal line all cases")
+{
     ray<int> seg{{0, 0}, {1, 0}};
     simple_polygon<point<int>> poly{
         {0, 3},

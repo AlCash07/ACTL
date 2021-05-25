@@ -28,22 +28,26 @@ template <class C>
 struct range_category;
 
 template <>
-struct range_category<std::input_iterator_tag> {
+struct range_category<std::input_iterator_tag>
+{
     using type = input_range_tag;
 };
 
 template <>
-struct range_category<std::forward_iterator_tag> {
+struct range_category<std::forward_iterator_tag>
+{
     using type = forward_range_tag;
 };
 
 template <>
-struct range_category<std::bidirectional_iterator_tag> {
+struct range_category<std::bidirectional_iterator_tag>
+{
     using type = bidirectional_range_tag;
 };
 
 template <>
-struct range_category<std::random_access_iterator_tag> {
+struct range_category<std::random_access_iterator_tag>
+{
     using type = random_access_range_tag;
 };
 
@@ -54,10 +58,12 @@ struct category_sfinae<
     T,
     std::enable_if_t<is_range_v<T> && !is_contiguous_range_v<T>>>
     : detail::range_category<
-          typename std::iterator_traits<iterator_t<T>>::iterator_category> {};
+          typename std::iterator_traits<iterator_t<T>>::iterator_category>
+{};
 
 template <class T>
-struct category_sfinae<T, std::enable_if_t<is_contiguous_range_v<T>>> {
+struct category_sfinae<T, std::enable_if_t<is_contiguous_range_v<T>>>
+{
     using type = contiguous_range_tag;
 };
 
@@ -79,6 +85,7 @@ inline constexpr bool is_random_access_range_v =
 
 template <class T>
 struct nesting_depth<T, std::enable_if_t<is_range_v<T>>>
-    : index_constant<1 + nesting_depth_v<value_type_t<T>>> {};
+    : index_constant<1 + nesting_depth_v<value_type_t<T>>>
+{};
 
 } // namespace ac

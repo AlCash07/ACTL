@@ -12,7 +12,8 @@
 // 1 - 0 - 7   6
 // |   |
 // 2 - 3   4 - 5
-TEST_CASE("connected components basic") {
+TEST_CASE("connected components basic")
+{
     adjacency_list<undirected> graph;
     graph.add_edge(0, 1);
     graph.add_edge(1, 2);

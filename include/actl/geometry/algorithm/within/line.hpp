@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1, class K>
 enum within within(
-    const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l) //
+    const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l)
 {
     if (degenerate(policy, l))
         return equal(policy, p, l.begin) ? within::border : within::outside;

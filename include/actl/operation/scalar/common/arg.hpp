@@ -11,7 +11,8 @@
 namespace ac {
 
 template <index I, index N>
-struct arg_f {
+struct arg_f
+{
     using category = operation_tag;
     using argument_category = unclassified_tag;
 
@@ -19,7 +20,7 @@ struct arg_f {
 
     template <class T, class... Ts>
     constexpr decltype(auto) operator()(
-        [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs) const //
+        [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs) const
     {
         static_assert(1 + sizeof...(Ts) == N || N == -1);
         if constexpr (I == 0)

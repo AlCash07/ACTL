@@ -16,7 +16,8 @@ namespace ac::detail {
 // Special compressed_pair that mimics either T1 or T2 (defined by index I) for
 // the operations required by set and hash set.
 template <class T1, class T2, index I>
-class mimic_pair : private compressed_pair<T1, T2> {
+class mimic_pair : private compressed_pair<T1, T2>
+{
     using base_t = compressed_pair<T1, T2>;
 
 public:
@@ -32,10 +33,14 @@ public:
     using base_t::first;
     using base_t::second;
 
-    constexpr decltype(auto) key() const {
-        if constexpr (I == 1) {
+    constexpr decltype(auto) key() const
+    {
+        if constexpr (I == 1)
+        {
             return this->first();
-        } else {
+        }
+        else
+        {
             return this->second();
         }
     }
@@ -43,23 +48,29 @@ public:
 private:
     friend struct ac::hash_access;
 
-    size_t hash() const {
+    size_t hash() const
+    {
         return hash_value(key());
     }
 };
 
 template <class T, class = void>
-struct is_mimic_pair : std::false_type {};
+struct is_mimic_pair : std::false_type
+{};
 
 template <class T>
-struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>>
-    : std::true_type {};
+struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type
+{};
 
 template <class T>
-decltype(auto) get_key(const T& x) {
-    if constexpr (is_mimic_pair<T>::value) {
+decltype(auto) get_key(const T& x)
+{
+    if constexpr (is_mimic_pair<T>::value)
+    {
         return x.key();
-    } else {
+    }
+    else
+    {
         return x;
     }
 }
@@ -68,7 +79,8 @@ template <
     class T,
     class U,
     enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-auto operator==(const T& lhs, const U& rhs) {
+auto operator==(const T& lhs, const U& rhs)
+{
     return equal(get_key(lhs), get_key(rhs));
 }
 
@@ -76,12 +88,14 @@ template <
     class T,
     class U,
     enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-auto operator<(const T& lhs, const U& rhs) {
+auto operator<(const T& lhs, const U& rhs)
+{
     return less(get_key(lhs), get_key(rhs));
 }
 
 template <class Key>
-class second_map {
+class second_map
+{
     using R = decltype(std::declval<Key>().second());
 
 public:
@@ -92,17 +106,20 @@ public:
         true,
         !std::is_const_v<std::remove_reference_t<R>>>;
 
-    R get(Key key) {
+    R get(Key key)
+    {
         return key.second();
     }
 
-    void put(Key key, remove_cvref_t<R> value) {
+    void put(Key key, remove_cvref_t<R> value)
+    {
         get(key) = value;
     }
 };
 
 template <class Map>
-auto get_second(Map&& map) {
+auto get_second(Map&& map)
+{
     return composite_map{
         std::forward<Map>(map), second_map<map_reference_t<Map>>{}};
 }
@@ -112,6 +129,7 @@ auto get_second(Map&& map) {
 namespace ac {
 
 template <class K>
-struct map_traits<detail::second_map<K>> : detail::second_map<K>::traits {};
+struct map_traits<detail::second_map<K>> : detail::second_map<K>::traits
+{};
 
 } // namespace ac

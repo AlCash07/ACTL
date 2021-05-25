@@ -11,7 +11,8 @@
 #include "graph/sample_graphs.hpp"
 #include "test.hpp"
 
-TEST_CASE("predecessor_edge_recorder bfs") {
+TEST_CASE("predecessor_edge_recorder bfs")
+{
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());
@@ -29,7 +30,8 @@ TEST_CASE("predecessor_edge_recorder bfs") {
         } == pred);
 }
 
-TEST_CASE("predecessor_edge_recorder dfs") {
+TEST_CASE("predecessor_edge_recorder dfs")
+{
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());

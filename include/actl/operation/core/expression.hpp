@@ -15,18 +15,22 @@
 namespace ac {
 
 template <class Derived, class Tag>
-struct expression_base : expression_base<Derived, typename Tag::base> {};
+struct expression_base : expression_base<Derived, typename Tag::base>
+{};
 
 template <class Derived>
-struct expression_base<Derived, unclassified_tag> {
-    struct type {};
+struct expression_base<Derived, unclassified_tag>
+{
+    struct type
+    {};
 };
 
 template <class Op, class... Ts>
 struct expression
     : expression_base<
           expression<Op, Ts...>,
-          resolved_result_category_t<Op, Ts...>>::type {
+          resolved_result_category_t<Op, Ts...>>::type
+{
     using category = resolved_result_category_t<Op, Ts...>;
     struct enable_operators;
 
@@ -35,13 +39,16 @@ struct expression
     std::tuple<Op, Ts...> args;
 
     template <class... Us>
-    constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...} {}
+    constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...}
+    {}
 
-    constexpr auto& operation() const& {
+    constexpr auto& operation() const&
+    {
         return std::get<0>(args);
     }
 
-    constexpr auto&& operation() && {
+    constexpr auto&& operation() &&
+    {
         return std::get<0>(std::move(args));
     }
 };
@@ -50,10 +57,12 @@ template <class... Ts>
 expression(Ts&&...) -> expression<value_if_small<Ts>...>;
 
 template <class T>
-struct is_expression : std::false_type {};
+struct is_expression : std::false_type
+{};
 
 template <class... Ts>
-struct is_expression<expression<Ts...>> : std::true_type {};
+struct is_expression<expression<Ts...>> : std::true_type
+{};
 
 template <class T>
 inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
@@ -63,7 +72,8 @@ using argument_indices =
     std::make_index_sequence<remove_cvref_t<Expr>::argument_count>;
 
 template <class... Ts>
-struct expression_result_type<expression<Ts...>> {
+struct expression_result_type<expression<Ts...>>
+{
     using type = resolved_result_type_t<Ts...>;
 };
 
@@ -71,26 +81,30 @@ template <class Expr, class S = argument_indices<Expr>>
 struct expression_helper;
 
 template <class Op, class... Ts, size_t... Is>
-struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
+struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>>
+{
     using Expr = expression<Op, Ts...>;
 
     static constexpr bool is_resolved =
         is_overload_resolved_v<default_context, Op, Ts...>;
 
-    static constexpr auto resolve_expr(const Expr& e) {
+    static constexpr auto resolve_expr(const Expr& e)
+    {
         return expression{
             resolve_overload<Ts...>(default_context{}, e.operation()),
             std::get<Is + 1>(e.args)...};
     }
 
     template <class T>
-    static constexpr void assign_impl(T& dst, const Expr& e) {
+    static constexpr void assign_impl(T& dst, const Expr& e)
+    {
         e.operation().evaluate_to(dst, std::get<Is + 1>(e.args)...);
     }
 };
 
 template <class T, class... Ts>
-constexpr void assign(out<T>& dst, const expression<Ts...>& e) {
+constexpr void assign(out<T>& dst, const expression<Ts...>& e)
+{
     using helper = expression_helper<expression<Ts...>>;
     if constexpr (helper::is_resolved)
         helper::assign_impl(dst.x, e);

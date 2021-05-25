@@ -7,7 +7,8 @@
 #include <actl/geometry/algorithm/crosses/plane_sphere.hpp>
 #include "test.hpp"
 
-TEST_CASE("all cases") {
+TEST_CASE("all cases")
+{
     point v{3, 4, 12};
     sphere<int> s{{0, 0, 0}, 13};
     CHECK_FALSE(crosses(plane{v, 168}, s));

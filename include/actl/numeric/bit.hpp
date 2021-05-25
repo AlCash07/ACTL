@@ -15,34 +15,40 @@
 namespace ac {
 
 template <class T = use_default, class I>
-constexpr auto bit(const I& i) {
+constexpr auto bit(const I& i)
+{
     ACTL_ASSERT(i >= 0);
     return deduce_t<T, I>{1} << i;
 }
 
 template <class T, class I>
-constexpr bool has_bit(const T& x, const I& i) {
+constexpr bool has_bit(const T& x, const I& i)
+{
     ACTL_ASSERT(i >= 0);
     return (x >> i & T{1}) != 0;
 }
 
 template <class T>
-constexpr bool has_bits(const T& x, const T& bits) {
+constexpr bool has_bits(const T& x, const T& bits)
+{
     return (x & bits) == bits;
 }
 
 template <class T>
-constexpr T clear_bits(const T& x, const T& bits) {
+constexpr T clear_bits(const T& x, const T& bits)
+{
     return x & ~bits;
 }
 
 template <class T, class I>
-constexpr T clear_bit(const T& x, const I& i) {
+constexpr T clear_bit(const T& x, const I& i)
+{
     return clear_bits(x, bit<T>(i));
 }
 
 template <class T>
-constexpr T set_bits(T& x, const T& mask, const T& bits) {
+constexpr T set_bits(T& x, const T& mask, const T& bits)
+{
     return clear_bits(x, mask) | (bits & mask);
 }
 
@@ -54,7 +60,8 @@ template <
         sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> &&
         std::is_trivially_copyable_v<To> &&
         std::is_trivially_copyable_v<From>> = 0>
-To bit_cast(const From& src) noexcept {
+To bit_cast(const From& src) noexcept
+{
     To dst;
     std::memcpy(&dst, &src, sizeof(To));
     return dst;

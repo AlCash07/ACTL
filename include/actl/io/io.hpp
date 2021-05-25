@@ -44,10 +44,12 @@ inline constexpr bool is_line_buffered = (Mode & line_buffered) > 0;
 template <class Device>
 using char_t = typename Device::char_type;
 
-struct device_base {};
+struct device_base
+{};
 
 template <mode_t Mode, class Char>
-struct device : device_base {
+struct device : device_base
+{
     static_assert(is_in<Mode> || is_out<Mode>, "invalid mode");
 
     using char_type = Char;
@@ -59,38 +61,46 @@ template <class T>
 inline constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
 
 template <class T, class = void>
-struct has_input_buffer : std::false_type {};
+struct has_input_buffer : std::false_type
+{};
 
 template <class T>
 struct has_input_buffer<
     T,
-    std::void_t<decltype(std::declval<T>().input_data())>> : std::true_type {};
+    std::void_t<decltype(std::declval<T>().input_data())>> : std::true_type
+{};
 
 template <class T, class = void>
-struct has_output_buffer : std::false_type {};
+struct has_output_buffer : std::false_type
+{};
 
 template <class T>
 struct has_output_buffer<
     T,
-    std::void_t<decltype(std::declval<T>().output_data())>> : std::true_type {};
+    std::void_t<decltype(std::declval<T>().output_data())>> : std::true_type
+{};
 
 /* Format */
 
-struct binary {
+struct binary
+{
     struct format_tag;
 };
 
 template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
-binary deduce_format(Device&) {
+binary deduce_format(Device&)
+{
     return {};
 }
 
 template <class T, class Tag, class = void>
-struct has_format_tag : std::false_type {};
+struct has_format_tag : std::false_type
+{};
 
 template <class T, class Tag>
 struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
-    : std::is_same<typename T::format_tag, Tag> {};
+    : std::is_same<typename T::format_tag, Tag>
+{};
 
 /* Common types support */
 
@@ -100,7 +110,8 @@ template <
     class T,
     enable_int_if<
         std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
-index write_final(Device&, Format&, T&) {
+index write_final(Device&, Format&, T&)
+{
     return 0;
 }
 
@@ -110,7 +121,8 @@ template <
     class T,
     enable_int_if<
         std::is_empty_v<T> && !std::is_invocable_r_v<index, T&, Device&>> = 0>
-bool read_final(Device&, Format&, T&) {
+bool read_final(Device&, Format&, T&)
+{
     return true;
 }
 
@@ -119,12 +131,14 @@ using enable_int_if_byte =
     enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
 
 template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
-index write_final(Device& od, Format&, B byte) {
+index write_final(Device& od, Format&, B byte)
+{
     return od.write(static_cast<char_t<Device>>(byte));
 }
 
 template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, B& byte) {
+bool read_final(Device& id, Format&, B& byte)
+{
     byte = static_cast<B>(id.get());
     return !id.eof();
 }
@@ -135,7 +149,8 @@ template <
     class B,
     index N,
     enable_int_if_byte<B> = 0>
-index write_final(Device& od, Format&, span<B, N> s) {
+index write_final(Device& od, Format&, span<B, N> s)
+{
     return od.write(
         {reinterpret_cast<const char_t<Device>*>(s.data()), s.size()});
 }
@@ -146,7 +161,8 @@ template <
     class B,
     index N,
     enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, span<B, N>& s) {
+bool read_final(Device& id, Format&, span<B, N>& s)
+{
     return id.read({reinterpret_cast<char_t<Device>*>(s.data()), s.size()}) ==
            s.size();
 }
@@ -157,7 +173,8 @@ template <
     class B,
     index N,
     enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, cspan<B, N>& s) {
+bool read_final(Device& id, Format&, cspan<B, N>& s)
+{
     span sc{reinterpret_cast<const char*>(s.data()), s.size()};
     return parser_executor{const_data_parser{sc}}(id);
 }
@@ -169,7 +186,8 @@ template <
     class Format,
     class T,
     enable_int_if<std::is_invocable_r_v<index, T&, Device&>> = 0>
-index write_final(Device& id, Format&, T& f) {
+index write_final(Device& id, Format&, T& f)
+{
     return f(id);
 }
 
@@ -178,7 +196,8 @@ template <
     class Format,
     class T,
     enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
-bool read_final(Device& od, Format&, T& f) {
+bool read_final(Device& od, Format&, T& f)
+{
     return f(od);
 }
 
@@ -187,30 +206,40 @@ bool read_final(Device& od, Format&, T& f) {
    lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
-index write(Device&& od, Format&& fmt, const Ts&... args) {
-    if constexpr (is_format_v<Format>) {
+index write(Device&& od, Format&& fmt, const Ts&... args)
+{
+    if constexpr (is_format_v<Format>)
+    {
         return (... + detail::write_impl(od, fmt, fmt, args));
-    } else {
+    }
+    else
+    {
         return write(od, deduce_format(od), fmt, args...);
     }
 }
 
 template <class Device, class Format, class... Ts>
-bool read(Device&& id, Format&& fmt, Ts&&... args) {
-    if constexpr (is_format_v<Format>) {
+bool read(Device&& id, Format&& fmt, Ts&&... args)
+{
+    if constexpr (is_format_v<Format>)
+    {
         return (... && detail::read_impl(id, fmt, fmt, args));
-    } else {
+    }
+    else
+    {
         return read(id, deduce_format(id), fmt, args...);
     }
 }
 
 template <class Device, class Format, class T>
-index write_size(Device& od, Format& fmt, const T& size) {
+index write_size(Device& od, Format& fmt, const T& size)
+{
     return write(od, fmt, size);
 }
 
 template <class Device, class Format, class T>
-bool read_size(Device& id, Format& fmt, T& size) {
+bool read_size(Device& id, Format& fmt, T& size)
+{
     return read(id, fmt, size);
 }
 

@@ -18,7 +18,8 @@ namespace ac::operators {
 // type size increasing, reference:
 // https://www.boost.org/doc/libs/1_70_0/libs/utility/operators.htm#old_lib_note
 template <class B = none>
-struct base : B {
+struct base : B
+{
     using B::B;
 };
 
@@ -27,25 +28,26 @@ using enable_derived_operators =
     enable_int_if<(... || is_template_base_of_v<base, Ts>)>;
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator!=(const T& lhs, const U& rhs)
-    -> decltype(!(lhs == rhs)) {
+constexpr auto operator!=(const T& lhs, const U& rhs) -> decltype(!(lhs == rhs))
+{
     return !(lhs == rhs);
 }
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator>(const T& lhs, const U& rhs) -> decltype(rhs < lhs) {
+constexpr auto operator>(const T& lhs, const U& rhs) -> decltype(rhs < lhs)
+{
     return rhs < lhs;
 }
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator<=(const T& lhs, const U& rhs)
-    -> decltype(!(lhs > rhs)) {
+constexpr auto operator<=(const T& lhs, const U& rhs) -> decltype(!(lhs > rhs))
+{
     return !(lhs > rhs);
 }
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator>=(const T& lhs, const U& rhs)
-    -> decltype(!(lhs < rhs)) {
+constexpr auto operator>=(const T& lhs, const U& rhs) -> decltype(!(lhs < rhs))
+{
     return !(lhs < rhs);
 }
 

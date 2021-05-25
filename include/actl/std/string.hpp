@@ -15,20 +15,24 @@
 namespace ac {
 
 template <class C, class T, class A>
-struct range_traits<std::basic_string<C, T, A>> : default_range_traits {
+struct range_traits<std::basic_string<C, T, A>> : default_range_traits
+{
     static constexpr bool is_container = true;
 };
 
 namespace io {
 
 template <class Device, class C, class T, class A, class P>
-void read_till(Device& id, till<std::basic_string<C, T, A>&, P> x) {
+void read_till(Device& id, till<std::basic_string<C, T, A>&, P> x)
+{
     index length = std::max(index{16}, static_cast<index>(x.value.capacity()));
-    for (index last = 0;; length = last += length) {
+    for (index last = 0;; length = last += length)
+    {
         x.value.resize(static_cast<size_t>(last + length));
         auto* ptr = &x.value[static_cast<size_t>(last)];
         index chars_read = read_till(id, till{span{ptr, length}, x.terminator});
-        if (chars_read < length) {
+        if (chars_read < length)
+        {
             x.value.resize(static_cast<size_t>(last + chars_read));
             return;
         }
@@ -41,7 +45,8 @@ template <
     class T,
     class A,
     enable_int_if_text<Format> = 0>
-auto make_parser(Format&, std::basic_string<C, T, A>& x) {
+auto make_parser(Format&, std::basic_string<C, T, A>& x)
+{
     return till{x, is_space};
 }
 

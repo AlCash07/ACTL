@@ -12,12 +12,14 @@ namespace ac {
 
 namespace scalar {
 
-struct less_f : scalar_operation<less_f, 2> {
+struct less_f : scalar_operation<less_f, 2>
+{
     using category = ordering_operation_tag;
     using argument_category = scalar_tag;
 
     template <class T, class U>
-    static constexpr bool eval_scalar(T lhs, U rhs) {
+    static constexpr bool eval_scalar(T lhs, U rhs)
+    {
         return lhs < rhs;
     }
 };
@@ -25,7 +27,8 @@ inline constexpr less_f less;
 
 } // namespace scalar
 
-struct less_f : operation<less_f> {
+struct less_f : operation<less_f>
+{
     using category = ordering_operation_tag;
 
     static constexpr auto formula = scalar::less;
@@ -33,7 +36,8 @@ struct less_f : operation<less_f> {
 inline constexpr less_f less;
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr auto operator<(T&& lhs, U&& rhs) {
+constexpr auto operator<(T&& lhs, U&& rhs)
+{
     return less(pass<T>(lhs), pass<U>(rhs));
 }
 

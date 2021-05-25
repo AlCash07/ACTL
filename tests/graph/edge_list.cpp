@@ -9,7 +9,8 @@
 #include <actl/std/all.hpp>
 #include "graph/test_edges.hpp"
 
-TEST_CASE("edge_list none") {
+TEST_CASE("edge_list none")
+{
     edge_list<directed, int> graph;
     auto e = graph.add_edge(2, 3);
     CHECK(2 == e.source());
@@ -18,12 +19,14 @@ TEST_CASE("edge_list none") {
 }
 
 template <class Dir, class EC>
-void test_edge_list() {
+void test_edge_list()
+{
     edge_list<Dir, int, EC> graph;
     test_edges(graph, 0, 1, 2);
 }
 
-TEST_CASE("edge_list bundle") {
+TEST_CASE("edge_list bundle")
+{
     test_edge_list<directed, std::vector<bundle>>();
     test_edge_list<undirected, std::vector<bundle>>();
     test_edge_list<directed, std::set<bundle>>();

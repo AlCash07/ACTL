@@ -13,7 +13,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 auto distance(
-    const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1) //
+    const Policy& policy, const point<T0, N>& p0, const point<T1, N>& p1)
 {
     return norm(policy, p0 - p1);
 }

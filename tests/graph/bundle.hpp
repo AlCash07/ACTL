@@ -9,21 +9,27 @@
 #include <actl/std/string.hpp>
 #include <actl/std/utility.hpp>
 
-struct bundle {
+struct bundle
+{
     int i;
     std::string s;
 
     explicit bundle() = default;
+
     explicit bundle(int i, std::string s) : i{i}, s{s} {};
 
-    bool operator<(const bundle& rhs) const {
+    bool operator<(const bundle& rhs) const
+    {
         return i < rhs.i;
     }
-    bool operator==(const bundle& rhs) const {
+
+    bool operator==(const bundle& rhs) const
+    {
         return i == rhs.i;
     }
 
-    size_t hash() const {
+    size_t hash() const
+    {
         return ac::hash_value(i);
     }
 };

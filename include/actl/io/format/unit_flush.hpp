@@ -12,12 +12,14 @@
 namespace ac::io {
 
 // Format that flushes after each unit.
-struct unit_flush {
+struct unit_flush
+{
     struct format_tag;
 };
 
 template <class T>
-auto encode(unit_flush&, const T& x) {
+auto encode(unit_flush&, const T& x)
+{
     return batch{x, flush_t{}};
 }
 

@@ -7,7 +7,8 @@
 #include <actl/geometry/algorithm/intersect/line_sphere.hpp>
 #include "test.hpp"
 
-TEST_CASE("2d line all cases") {
+TEST_CASE("2d line all cases")
+{
     circle<int> c{{0, 0}, 5};
     using vpd = std::vector<point<double>>;
     vpd res;
@@ -21,7 +22,8 @@ TEST_CASE("2d line all cases") {
     CHECK_NEAR(vpd{{4.0, -3.0}, {4.0, 3.0}}, res, 1e-12);
 }
 
-TEST_CASE("2d ray") {
+TEST_CASE("2d ray")
+{
     circle<int> c{{0, 0}, 5};
     using vpd = std::vector<point<double>>;
     vpd res;

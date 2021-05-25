@@ -10,11 +10,13 @@
 #include <actl/std/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("vector id") {
+TEST_CASE("vector id")
+{
     using vid = container_id<std::vector<int>>;
     CHECK(std::is_same_v<int, vid>);
     std::vector<int> c = {0, 2, 4};
-    for (auto id : id_range(c)) {
+    for (auto id : id_range(c))
+    {
         CHECK(2 * id == c[(unsigned)id]);
     }
     auto id = id_begin(c);
@@ -22,10 +24,12 @@ TEST_CASE("vector id") {
     CHECK(std::vector<int>{0, 4} == c);
 }
 
-TEST_CASE("set id") {
+TEST_CASE("set id")
+{
     std::set<int> c = {0, 2, 4};
     int i = 0;
-    for (auto id : id_range(c)) {
+    for (auto id : id_range(c))
+    {
         CHECK(2 * i == id_at(c, id));
         ++i;
     }

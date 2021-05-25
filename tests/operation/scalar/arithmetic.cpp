@@ -7,7 +7,8 @@
 #include <actl/operation/scalar/arithmetic/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("arithmetic") {
+TEST_CASE("arithmetic")
+{
     STATIC_ASSERT_WORKAROUND(-6 == ac::neg(6));
     STATIC_ASSERT_WORKAROUND(2 == ac::neg(-2));
     STATIC_ASSERT_WORKAROUND(8 == ac::add(6, 2));

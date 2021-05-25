@@ -19,7 +19,8 @@
 #endif
 
 #define ACTL_ASSERT(condition)                                  \
-    if (!(condition)) {                                         \
+    if (!(condition))                                           \
+    {                                                           \
         throw std::runtime_error(                               \
             std::string{} + #condition + " in line " +          \
             std::to_string(__LINE__) + " in " + FUNCTION_NAME); \

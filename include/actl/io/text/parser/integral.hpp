@@ -14,8 +14,14 @@
 namespace ac::io {
 
 template <class Int>
-class integral_parser {
-    enum class states { empty, sign, value };
+class integral_parser
+{
+    enum class states
+    {
+        empty,
+        sign,
+        value
+    };
 
     states state = states::empty;
     sign_parser<std::is_signed_v<Int>> sign;
@@ -25,9 +31,11 @@ class integral_parser {
 public:
     explicit integral_parser(uint8_t base) : base{base} {}
 
-    index parse(cspan<char> s) {
+    index parse(cspan<char> s)
+    {
         index i = 0;
-        switch (state) {
+        switch (state)
+        {
             case states::empty:
                 i += sign.parse(s);
                 state = states::sign;
@@ -46,11 +54,13 @@ public:
         return i;
     }
 
-    bool ready() const {
+    bool ready() const
+    {
         return inner.ready() || (inner.empty() && base.zero());
     }
 
-    Int value() const {
+    Int value() const
+    {
         return sign.value(inner.value());
     }
 };

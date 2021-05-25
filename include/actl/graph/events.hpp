@@ -10,6 +10,7 @@
 
 namespace ac {
 
+// clang-format off
 struct on_search_start {};
 struct on_search_finish {};
 
@@ -28,5 +29,6 @@ struct on_edge_relaxed {};
 struct on_edge_not_relaxed {};
 struct on_edge_minimized {};
 struct on_edge_not_minimized {};
+// clang-format on
 
 } // namespace ac

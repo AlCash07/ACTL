@@ -31,7 +31,8 @@ using namespace ac;
 namespace ac {
 
 template <class T>
-struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
+struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2>
+{
     using category = scalar_operation_tag;
     using argument_category = scalar_tag;
 
@@ -41,7 +42,8 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
 
     T eps;
 
-    bool eval_scalar(T lhs, T rhs) const {
+    bool eval_scalar(T lhs, T rhs) const
+    {
         T numerator = abs(lhs - rhs);
         T denominator = max(max(abs(lhs), abs(rhs)), T{1});
         return numerator <= eps * denominator;
@@ -49,30 +51,35 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
 };
 
 template <class T>
-auto apply_policy(scalar::equal_f, const abs_rel_error<T>& policy) {
+auto apply_policy(scalar::equal_f, const abs_rel_error<T>& policy)
+{
     return policy;
 }
 
 } // namespace ac
 
 template <class T>
-void check_sets(std::vector<T> expected, std::vector<T> actual) {
+void check_sets(std::vector<T> expected, std::vector<T> actual)
+{
     sort(expected);
     sort(actual);
     CHECK(expected == actual);
 }
 
 template <class T, class U, class E>
-void check_near(const T& expected, const U& actual, E eps) {
+void check_near(const T& expected, const U& actual, E eps)
+{
     CHECK((ac::equal | ac::abs_rel_error<E>{eps})(expected, actual));
 }
 
 template <class T, class U>
-void check_equal(const T& expected, const U& actual) {
+void check_equal(const T& expected, const U& actual)
+{
     CHECK(ac::equal(expected, actual));
 }
 
 template <class T, class U>
-void check_not_equal(const T& not_expected, const U& actual) {
+void check_not_equal(const T& not_expected, const U& actual)
+{
     CHECK_FALSE(ac::equal(not_expected, actual));
 }

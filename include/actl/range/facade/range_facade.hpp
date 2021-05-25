@@ -22,55 +22,72 @@ namespace detail {
     template <class U = T, class = typename U::const_iterator>
 
 template <class D, class T, class C>
-class rng_facade : public T {
+class rng_facade : public T
+{
 public:
-    ENABLE_IF_HAS_CONST constexpr auto cbegin() const {
+    ENABLE_IF_HAS_CONST constexpr auto cbegin() const
+    {
         return derived().begin();
     }
-    ENABLE_IF_HAS_CONST constexpr auto cend() const {
+
+    ENABLE_IF_HAS_CONST constexpr auto cend() const
+    {
         return derived().end();
     }
 
-    constexpr bool empty() const {
-        return derived().begin() == derived().end();
-    }
-    ENABLE_IF_HAS_CONST constexpr bool empty() {
+    constexpr bool empty() const
+    {
         return derived().begin() == derived().end();
     }
 
-    explicit constexpr operator bool() const {
-        return !empty();
+    ENABLE_IF_HAS_CONST constexpr bool empty()
+    {
+        return derived().begin() == derived().end();
     }
-    ENABLE_IF_HAS_CONST explicit constexpr operator bool() {
+
+    explicit constexpr operator bool() const
+    {
         return !empty();
     }
 
-    constexpr decltype(auto) front() const {
+    ENABLE_IF_HAS_CONST explicit constexpr operator bool()
+    {
+        return !empty();
+    }
+
+    constexpr decltype(auto) front() const
+    {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) front() {
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) front()
+    {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
 protected:
-    constexpr const D& derived() const {
+    constexpr const D& derived() const
+    {
         return static_cast<const D&>(*this);
     }
-    constexpr D& derived() {
+
+    constexpr D& derived()
+    {
         return static_cast<D&>(*this);
     }
 };
 
 template <class T, class = void>
-struct crev_iter {
+struct crev_iter
+{
     using type = typename T::reverse_iterator;
 };
 
 template <class T>
-struct crev_iter<T, std::void_t<typename T::const_reverse_iterator>> {
+struct crev_iter<T, std::void_t<typename T::const_reverse_iterator>>
+{
     using type = typename T::const_reverse_iterator;
 };
 
@@ -79,35 +96,48 @@ using crev_iter_t = typename crev_iter<T>::type;
 
 template <class D, class T>
 class rng_facade<D, T, std::bidirectional_iterator_tag>
-    : public rng_facade<D, T, std::forward_iterator_tag> {
+    : public rng_facade<D, T, std::forward_iterator_tag>
+{
 public:
-    constexpr auto rbegin() const {
+    constexpr auto rbegin() const
+    {
         return crev_iter_t<T>{this->derived().end()};
     }
-    ENABLE_IF_HAS_CONST constexpr auto rbegin() {
+
+    ENABLE_IF_HAS_CONST constexpr auto rbegin()
+    {
         return typename T::reverse_iterator{this->derived().end()};
     }
-    ENABLE_IF_HAS_CONST constexpr auto crbegin() const {
+
+    ENABLE_IF_HAS_CONST constexpr auto crbegin() const
+    {
         return rbegin();
     }
 
-    constexpr auto rend() const {
+    constexpr auto rend() const
+    {
         return crev_iter_t<T>{this->derived().begin()};
     }
-    ENABLE_IF_HAS_CONST constexpr auto rend() {
+
+    ENABLE_IF_HAS_CONST constexpr auto rend()
+    {
         return typename T::reverse_iterator{this->derived().begin()};
     }
-    ENABLE_IF_HAS_CONST constexpr auto crend() const {
+
+    ENABLE_IF_HAS_CONST constexpr auto crend() const
+    {
         return rend();
     }
 
-    constexpr decltype(auto) back() const {
+    constexpr decltype(auto) back() const
+    {
         ACTL_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) back() {
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) back()
+    {
         ACTL_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
@@ -116,30 +146,35 @@ public:
 
 template <class D, class T>
 class rng_facade<D, T, std::random_access_iterator_tag>
-    : public rng_facade<D, T, std::bidirectional_iterator_tag> {
+    : public rng_facade<D, T, std::bidirectional_iterator_tag>
+{
     using base_t = rng_facade<D, T, std::bidirectional_iterator_tag>;
     using base_t::derived;
 
 public:
     using typename base_t::size_type;
 
-    constexpr decltype(auto) operator[](size_type n) const {
+    constexpr decltype(auto) operator[](size_type n) const
+    {
         ACTL_ASSERT(0 <= n && n < size());
         return derived()
             .begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) operator[](size_type n) {
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) operator[](size_type n)
+    {
         ACTL_ASSERT(0 <= n && n < size());
         return derived()
             .begin()[static_cast<typename base_t::difference_type>(n)];
     }
 
-    constexpr auto size() const {
+    constexpr auto size() const
+    {
         return static_cast<size_type>(derived().end() - derived().begin());
     }
 
-    ENABLE_IF_HAS_CONST constexpr auto size() {
+    ENABLE_IF_HAS_CONST constexpr auto size()
+    {
         return static_cast<size_type>(derived().end() - derived().begin());
     }
 };

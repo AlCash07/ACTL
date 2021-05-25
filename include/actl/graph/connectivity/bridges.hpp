@@ -17,8 +17,10 @@ namespace ac {
 namespace detail {
 
 template <bool Once, bool Other>
-struct once_equal {
-    operator bool() {
+struct once_equal
+{
+    operator bool()
+    {
         if (x_ == Other)
             return Other;
         x_ = Other;
@@ -29,8 +31,10 @@ struct once_equal {
 };
 
 template <bool All>
-struct once_equal<All, All> {
-    constexpr operator bool() {
+struct once_equal<All, All>
+{
+    constexpr operator bool()
+    {
         return All;
     }
 };
@@ -40,7 +44,8 @@ struct once_equal<All, All> {
 template <class Graph, bool ParallelEdges>
 struct bridge_context
     : dfs_context<Graph>
-    , detail::once_equal<true, !ParallelEdges> {
+    , detail::once_equal<true, !ParallelEdges>
+{
     using dfs_context<Graph>::dfs_context;
 };
 
@@ -51,47 +56,57 @@ template <
     class TimeMap,
     class RootMap,
     class DfsStack>
-struct bridge_finder {
+struct bridge_finder
+{
     static_assert(Graph::is_undirected);
 
     using V = vertex_t<Graph>;
     using E = edge_t<Graph>;
     using T = map_value_t<TimeMap>;
 
-    void operator()(on_vertex_initialize, V u) {
+    void operator()(on_vertex_initialize, V u)
+    {
         put(time_low, u, 0);
     }
-    bool operator()(is_vertex_discovered, V u) {
+
+    bool operator()(is_vertex_discovered, V u)
+    {
         return get(time_low, u) != 0;
     }
 
-    void operator()(on_vertex_start, V u) {
+    void operator()(on_vertex_start, V u)
+    {
         put(time_low, u, ++time_now);
         components.push(u);
     }
 
-    void operator()(on_non_tree_edge, E e) {
+    void operator()(on_non_tree_edge, E e)
+    {
         V v = e.target();
-        if (!dfs_stack.empty()) {
+        if (!dfs_stack.empty())
+        {
             auto& top = dfs_stack.top();
             if (top.vertex() == v && top)
                 return;
         }
         T low = get(time_low, v);
         V u = e.source();
-        if (get(time_low, u) > low) {
+        if (get(time_low, u) > low)
+        {
             put(time_low, u, low);
             put(not_root, u, true);
         }
     }
 
-    void operator()(on_tree_edge_finish, E e) {
+    void operator()(on_tree_edge_finish, E e)
+    {
         operator()(on_non_tree_edge{}, e);
         if (!get(not_root, e.target()))
             *bridges++ = e;
     }
 
-    void operator()(on_vertex_finish, V u) {
+    void operator()(on_vertex_finish, V u)
+    {
         if (!get(not_root, u))
             components.pop(u);
     }
@@ -105,7 +120,8 @@ struct bridge_finder {
 };
 
 template <class G, class... Ts>
-auto get_bridge_finder(const G&, Ts&&... args) {
+auto get_bridge_finder(const G&, Ts&&... args)
+{
     return bridge_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
@@ -115,7 +131,7 @@ template <
     class BridgeOutIter,
     class ComponentMap>
 void find_bridges_and_components(
-    const Graph& graph, BridgeOutIter bridges, ComponentMap&& map) //
+    const Graph& graph, BridgeOutIter bridges, ComponentMap&& map)
 {
     auto bf = get_bridge_finder(
         graph,
@@ -132,13 +148,13 @@ void find_bridges_and_components(
 }
 
 template <bool ParallelEdges = true, class Graph, class BridgeOutIter>
-void find_bridges(const Graph& graph, BridgeOutIter bridges) {
+void find_bridges(const Graph& graph, BridgeOutIter bridges)
+{
     find_bridges_and_components<ParallelEdges>(graph, bridges, dummy_map{});
 }
 
 template <bool ParallelEdges = true, class Graph, class ComponentMap>
-void find_two_edge_connected_components(
-    const Graph& graph, ComponentMap&& map) //
+void find_two_edge_connected_components(const Graph& graph, ComponentMap&& map)
 {
     find_bridges_and_components<ParallelEdges>(
         graph, dummy_output_iterator{}, std::forward<ComponentMap>(map));

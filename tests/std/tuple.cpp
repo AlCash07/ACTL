@@ -10,7 +10,8 @@
 
 using namespace ac::io;
 
-TEST_CASE("tuple write") {
+TEST_CASE("tuple write")
+{
     char s[5];
     CHECK(
         3 <= write(
@@ -20,7 +21,8 @@ TEST_CASE("tuple write") {
     CHECK_EQUAL("aca"sv, span{s, 3});
 }
 
-TEST_CASE("tuple read") {
+TEST_CASE("tuple read")
+{
     std::string s = "abaca";
     memory<bin | in> id{s};
     std::tuple<char, char, char> x;

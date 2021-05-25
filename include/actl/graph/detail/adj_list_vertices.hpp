@@ -13,7 +13,8 @@
 namespace ac::detail {
 
 template <class Dir, class OEC, class EC, class VC, class T = value_type_t<VC>>
-class adj_list_vertices : public adj_list_vertices<Dir, OEC, EC, VC, none> {
+class adj_list_vertices : public adj_list_vertices<Dir, OEC, EC, VC, none>
+{
     using base_t = adj_list_vertices<Dir, OEC, EC, VC, none>;
 
 public:
@@ -21,24 +22,31 @@ public:
 
     using base_t::base_t;
 
-    auto operator[](vertex_property) {
-        return get_second(this->vertices_);
-    }
-    auto operator[](vertex_property) const {
+    auto operator[](vertex_property)
+    {
         return get_second(this->vertices_);
     }
 
-    T& operator[](vertex v) {
+    auto operator[](vertex_property) const
+    {
+        return get_second(this->vertices_);
+    }
+
+    T& operator[](vertex v)
+    {
         return get((*this)[vertex_property{}], v);
     }
-    const T& operator[](vertex v) const {
+
+    const T& operator[](vertex v) const
+    {
         return get((*this)[vertex_property{}], v);
     }
 };
 
 template <class Dir, class OEC, class EC, class VC>
 class adj_list_vertices<Dir, OEC, EC, VC, none>
-    : public adj_list_traits<Dir, OEC, EC, VC>::vertices {
+    : public adj_list_traits<Dir, OEC, EC, VC>::vertices
+{
     using base_t = typename adj_list_traits<Dir, OEC, EC, VC>::vertices;
 
 public:
@@ -54,24 +62,33 @@ public:
     using base_t::base_t;
 
 protected:
-    auto& data(vertex u) {
-        return id_at(this->vertices_, u).first();
-    }
-    auto& data(vertex u) const {
+    auto& data(vertex u)
+    {
         return id_at(this->vertices_, u).first();
     }
 
-    auto& outs(vertex u) {
-        return data(u).out_edges;
+    auto& data(vertex u) const
+    {
+        return id_at(this->vertices_, u).first();
     }
-    auto& outs(vertex u) const {
+
+    auto& outs(vertex u)
+    {
         return data(u).out_edges;
     }
 
-    auto& ins(vertex u) {
+    auto& outs(vertex u) const
+    {
+        return data(u).out_edges;
+    }
+
+    auto& ins(vertex u)
+    {
         return data(u).in_edges;
     }
-    auto& ins(vertex u) const {
+
+    auto& ins(vertex u) const
+    {
         return data(u).in_edges;
     }
 };

@@ -7,6 +7,7 @@
 #pragma once
 
 namespace ac {
+// clang-format off
 
 /* Selectors for Directed template parameter */
 
@@ -25,4 +26,5 @@ struct two_vertices {};
 
 struct vertex_property {};
 
+// clang-format on
 } // namespace ac

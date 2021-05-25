@@ -7,7 +7,8 @@
 #include <actl/geometry/algorithm/polygon/max_distance.hpp>
 #include "test.hpp"
 
-TEST_CASE("default") {
+TEST_CASE("default")
+{
     convex_polygon<point<double>> poly{
         {-0.9846, -1.53251},
         {3.88558, -2.37188},

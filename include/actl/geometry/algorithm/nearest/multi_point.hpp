@@ -18,18 +18,22 @@ namespace detail {
 
 template <class Point, class Policy>
 auto nearest(
-    const Policy& policy, const span<Point>& points, const span<Point>& tmp) //
+    const Policy& policy, const span<Point>& points, const span<Point>& tmp)
 {
     using T = decltype(distance(policy, points[0], points[0]));
     using Pair = std::pair<T, std::pair<Point, Point>>;
-    auto y_comp = [&policy](const Point& lhs, const Point& rhs) {
+    auto y_comp = [&policy](const Point& lhs, const Point& rhs)
+    {
         return less(policy, lhs.y(), rhs.y());
     };
     const index n = points.size();
-    if (n <= 3) {
+    if (n <= 3)
+    {
         Pair res;
-        for (index i = 0; i != n; ++i) {
-            for (index j = i + 1; j != n; ++j) {
+        for (index i = 0; i != n; ++i)
+        {
+            for (index j = i + 1; j != n; ++j)
+            {
                 auto dist = distance(policy, points[i], points[j]);
                 if (j == 1 || dist < res.first)
                     res = std::pair{dist, std::pair{points[i], points[j]}};
@@ -47,9 +51,12 @@ auto nearest(
     merge(points.first(middle), points.last(n - middle), tmp.begin(), y_comp);
     copy(tmp.first(n), points.begin());
     index count = 0;
-    for (const auto& p : points) {
-        if (less(policy, abs(p.x() - middle_x), res.first)) {
-            for (index i = count - 1; i >= 0; --i) {
+    for (const auto& p : points)
+    {
+        if (less(policy, abs(p.x() - middle_x), res.first))
+        {
+            for (index i = count - 1; i >= 0; --i)
+            {
                 if (!less(policy, p.y() - tmp[i].y(), res.first))
                     break;
                 auto dist = distance(policy, p, tmp[i]);
@@ -70,10 +77,12 @@ template <
     class T,
     enable_int_if<is_multi_point_v<T> && geometry_traits<T>::dimension == 2> =
         0>
-auto nearest(const Policy& policy, T& points) {
+auto nearest(const Policy& policy, T& points)
+{
     ACTL_ASSERT(points.size() > 1);
     sort(points, less(policy));
-    for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j) {
+    for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j)
+    {
         if (equal(policy, *i, *j))
             return std::pair{*i, *j};
     }

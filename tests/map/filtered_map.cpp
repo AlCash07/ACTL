@@ -8,7 +8,8 @@
 #include <actl/std/vector.hpp>
 #include "test.hpp"
 
-TEST_CASE("filtered_map to_bool") {
+TEST_CASE("filtered_map to_bool")
+{
     auto map = filtered_map{std::vector<int>{3, 2, 0, 6}};
     CHECK(3 == get(map, 0));
     put(map, 1, 0);
@@ -17,10 +18,15 @@ TEST_CASE("filtered_map to_bool") {
     CHECK(C{{0, 3}, {3, 6}} == C{r.begin(), r.end()});
 }
 
-TEST_CASE("filtered_map lambda") {
+TEST_CASE("filtered_map lambda")
+{
     int x0;
     auto map = filtered_map{
-        std::vector<int>{3, 2, 6}, [&x0](int x) { return x != x0; }};
+        std::vector<int>{3, 2, 6},
+        [&x0](int x)
+        {
+            return x != x0;
+        }};
     x0 = 3;
     using C = std::vector<std::pair<int, int>>;
     auto r = map_range(map);

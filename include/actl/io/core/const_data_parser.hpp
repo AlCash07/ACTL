@@ -11,16 +11,19 @@
 
 namespace ac::io {
 
-struct const_data_parser {
+struct const_data_parser
+{
     cspan<char> pending;
 
-    index parse(cspan<char> s) {
+    index parse(cspan<char> s)
+    {
         auto matching = mismatch(pending, s).second - s.begin();
         pending = pending.subspan(matching);
         return matching;
     }
 
-    bool ready() const {
+    bool ready() const
+    {
         return pending.empty();
     }
 };

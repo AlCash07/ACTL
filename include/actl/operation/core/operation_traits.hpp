@@ -13,7 +13,8 @@
 
 namespace ac {
 
-struct operation_tag {
+struct operation_tag
+{
     using base = unclassified_tag;
 };
 
@@ -26,6 +27,7 @@ struct identity_element;
 
 template <class T>
 struct nesting_depth<T, std::enable_if_t<is_operation_v<T>>>
-    : index_constant<std::numeric_limits<index>::max()> {};
+    : index_constant<std::numeric_limits<index>::max()>
+{};
 
 } // namespace ac

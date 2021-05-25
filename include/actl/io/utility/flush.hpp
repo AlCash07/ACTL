@@ -10,9 +10,11 @@
 
 namespace ac::io {
 
-struct flush_t {
+struct flush_t
+{
     template <class Device>
-    index operator()(Device& od) const {
+    index operator()(Device& od) const
+    {
         od.flush();
         return 0;
     }

@@ -14,7 +14,8 @@ using flag_t = uint32_t;
 
 namespace flag {
 
-enum : flag_t {
+enum : flag_t
+{
     boolalpha = 1 << 0,
     uppercase = 1 << 1,
     showbase = 1 << 2,
@@ -29,7 +30,10 @@ enum : flag_t {
 
 namespace groups {
 
-enum : flag_t { floatfield };
+enum : flag_t
+{
+    floatfield
+};
 
 } // namespace groups
 

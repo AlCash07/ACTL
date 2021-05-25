@@ -14,7 +14,8 @@
 
 using Log = std::vector<std::pair<int, colors>>;
 
-TEST_CASE("color_recorder bfs") {
+TEST_CASE("color_recorder bfs")
+{
     auto graph = sample_undirected_graph();
     Log log;
     auto map = logging_map{
@@ -43,7 +44,8 @@ TEST_CASE("color_recorder bfs") {
         } == log);
 }
 
-TEST_CASE("color_recorder dfs") {
+TEST_CASE("color_recorder dfs")
+{
     auto graph = sample_undirected_graph();
     Log log;
     auto map = logging_map{

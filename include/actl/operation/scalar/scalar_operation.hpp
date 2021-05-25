@@ -33,21 +33,26 @@ struct logical_operation_tag { using base = scalar_operation_tag; };
 // clang-format on
 
 template <class Op, index Arity>
-struct scalar_operation : operation<Op> {
+struct scalar_operation : operation<Op>
+{
     template <class T>
-    static constexpr T convert(T x) {
+    static constexpr T convert(T x)
+    {
         return x;
     }
 
     template <class T, class U, U X>
-    static constexpr T convert(std::integral_constant<U, X>) {
+    static constexpr T convert(std::integral_constant<U, X>)
+    {
         return T{X};
     }
 
     template <class... Ts>
-    constexpr auto evaluate(const Ts&... xs) const {
+    constexpr auto evaluate(const Ts&... xs) const
+    {
         if constexpr ((... &&
-                       is_subcategory_of_v<category_t<Ts>, arithmetic_tag>)) {
+                       is_subcategory_of_v<category_t<Ts>, arithmetic_tag>))
+        {
             using T = strict_common_type_t<decltype(eval(xs))...>;
             if constexpr (!is_integral_constant_v<T>)
                 return this->derived().eval_scalar(convert<T>(eval(xs))...);
@@ -56,7 +61,8 @@ struct scalar_operation : operation<Op> {
     }
 
     template <class T, class... Ts>
-    constexpr void evaluate_to(T& dst, const Ts&... xs) const {
+    constexpr void evaluate_to(T& dst, const Ts&... xs) const
+    {
         dst = evaluate(xs...);
     }
 };

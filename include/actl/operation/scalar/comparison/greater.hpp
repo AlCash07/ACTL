@@ -11,7 +11,8 @@
 
 namespace ac {
 
-struct greater_f : operation<greater_f> {
+struct greater_f : operation<greater_f>
+{
     using category = ordering_operation_tag;
 
     static constexpr auto formula = rhs_ < lhs_;
@@ -19,7 +20,8 @@ struct greater_f : operation<greater_f> {
 inline constexpr greater_f greater;
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr auto operator>(T&& lhs, U&& rhs) {
+constexpr auto operator>(T&& lhs, U&& rhs)
+{
     return greater(pass<T>(lhs), pass<U>(rhs));
 }
 

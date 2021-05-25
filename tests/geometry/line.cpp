@@ -7,7 +7,8 @@
 #include <actl/geometry/line.hpp>
 #include "test.hpp"
 
-TEST_CASE("any_line") {
+TEST_CASE("any_line")
+{
     point a{3, 1};
     point b{1, 5};
     auto l = make_any_line(a, endpoint::open, b, endpoint::free);

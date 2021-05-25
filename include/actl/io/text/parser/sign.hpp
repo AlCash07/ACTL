@@ -11,11 +11,13 @@
 namespace ac::io {
 
 template <bool Signed>
-class sign_parser {
+class sign_parser
+{
     bool negate = false;
 
 public:
-    index parse(cspan<char> s) {
+    index parse(cspan<char> s)
+    {
         char c = s[0];
         if constexpr (Signed)
             if (c == '-')
@@ -24,7 +26,8 @@ public:
     }
 
     template <class Int>
-    auto max_abs() const {
+    auto max_abs() const
+    {
         using UInt = std::make_unsigned_t<Int>;
         constexpr auto max_v = std::numeric_limits<UInt>::max();
         if constexpr (Signed)
@@ -34,10 +37,14 @@ public:
     }
 
     template <class T>
-    auto value(T x) const {
-        if constexpr (std::is_floating_point_v<T>) {
+    auto value(T x) const
+    {
+        if constexpr (std::is_floating_point_v<T>)
+        {
             return negate ? -x : x;
-        } else {
+        }
+        else
+        {
             using Int = std::make_signed_t<T>;
             if constexpr (Signed)
                 return negate ? ~static_cast<Int>(x - 1) : static_cast<Int>(x);

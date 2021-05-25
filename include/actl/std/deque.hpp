@@ -12,7 +12,8 @@
 namespace ac {
 
 template <class T, class A>
-struct range_traits<std::deque<T, A>> : default_range_traits {
+struct range_traits<std::deque<T, A>> : default_range_traits
+{
     static constexpr bool is_container = true;
 };
 

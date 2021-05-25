@@ -14,19 +14,22 @@
 namespace ac {
 
 template <class Derived>
-struct operation {
+struct operation
+{
     using category = operation_tag;
     struct enable_operators;
 
     static constexpr bool is_associative = false;
     static constexpr bool is_commutative = false;
 
-    constexpr const Derived& derived() const noexcept {
+    constexpr const Derived& derived() const noexcept
+    {
         return static_cast<const Derived&>(*this);
     }
 
     template <class... Ts, enable_int_if<is_any_inout_v<Ts...>> = 0>
-    constexpr decltype(auto) operator()(Ts&&... xs) const& {
+    constexpr decltype(auto) operator()(Ts&&... xs) const&
+    {
         static_assert(
             1 == (... + is_inout_v<Ts>), "single inout argument expected");
         auto&& op =
@@ -37,12 +40,14 @@ struct operation {
     }
 
     template <class... Ts, enable_int_if<!is_any_inout_v<Ts...>> = 0>
-    constexpr auto operator()(Ts&&... xs) const& {
+    constexpr auto operator()(Ts&&... xs) const&
+    {
         return expression{derived(), std::forward<Ts>(xs)...};
     }
 
     template <class... Ts, enable_int_if<!is_any_inout_v<Ts...>> = 0>
-    constexpr auto operator()(Ts&&... xs) && {
+    constexpr auto operator()(Ts&&... xs) &&
+    {
         return expression{
             static_cast<Derived&&>(*this), std::forward<Ts>(xs)...};
     }

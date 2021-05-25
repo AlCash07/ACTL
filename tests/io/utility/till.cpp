@@ -10,7 +10,8 @@
 
 using namespace ac::io;
 
-TEST_CASE("getline") {
+TEST_CASE("getline")
+{
     std::string s = "line\nnext";
     memory<bin | in> id{s};
     char x[9] = {};

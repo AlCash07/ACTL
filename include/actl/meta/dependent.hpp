@@ -14,18 +14,22 @@ namespace ac {
 namespace detail {
 
 template <class T, class = void>
-struct traits {
+struct traits
+{
     using type = T;
 };
 
 template <class T>
-struct traits<T, std::enable_if_t<is_iterator_v<std::remove_cv_t<T>>>> {
+struct traits<T, std::enable_if_t<is_iterator_v<std::remove_cv_t<T>>>>
+{
     using type = std::iterator_traits<std::remove_cv_t<T>>;
 };
 
 template <class T, size_t N>
-struct traits<T[N]> {
-    struct type : std::iterator_traits<T*> {
+struct traits<T[N]>
+{
+    struct type : std::iterator_traits<T*>
+    {
         using value_type = T;
         using iterator = T*;
         using size_type = size_t;
@@ -36,32 +40,38 @@ template <class T>
 using traits_t = typename traits<T>::type;
 
 template <class T, class = void>
-struct reference {
+struct reference
+{
     using type = typename traits_t<T>::reference;
 };
 
 template <class T>
-struct reference<const T, std::void_t<typename traits_t<T>::const_reference>> {
+struct reference<const T, std::void_t<typename traits_t<T>::const_reference>>
+{
     using type = typename traits_t<T>::const_reference;
 };
 
 template <class T, class = void>
-struct pointer {
+struct pointer
+{
     using type = typename traits_t<T>::pointer;
 };
 
 template <class T>
-struct pointer<const T, std::void_t<typename traits_t<T>::const_pointer>> {
+struct pointer<const T, std::void_t<typename traits_t<T>::const_pointer>>
+{
     using type = typename traits_t<T>::const_pointer;
 };
 
 template <class T, class = void>
-struct iterator {
+struct iterator
+{
     using type = typename traits_t<T>::iterator;
 };
 
 template <class T>
-struct iterator<const T, std::void_t<typename traits_t<T>::const_iterator>> {
+struct iterator<const T, std::void_t<typename traits_t<T>::const_iterator>>
+{
     using type = typename traits_t<T>::const_iterator;
 };
 

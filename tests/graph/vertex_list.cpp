@@ -9,7 +9,8 @@
 #include <actl/std/all.hpp>
 #include "graph/test_vertices.hpp"
 
-TEST_CASE("none") {
+TEST_CASE("none")
+{
     vertex_list<> graph{3};
     CHECK(std::pair{3, true} == graph.try_add_vertex());
     CHECK(4 == graph.add_vertex());
@@ -17,7 +18,8 @@ TEST_CASE("none") {
     graph.remove_vertex(2);
     CHECK(4l == graph.vertex_count());
     int i = 0;
-    for (auto v : graph.vertices()) {
+    for (auto v : graph.vertices())
+    {
         CHECK(i == v);
         ++i;
     }
@@ -27,14 +29,16 @@ TEST_CASE("none") {
 }
 
 template <class VC>
-void test_vertex_list() {
+void test_vertex_list()
+{
     vertex_list<VC> graph;
     auto vs = test_vertices(graph);
     graph.remove_vertex(vs[1]);
     CHECK((long)vs.size() - 1 == graph.vertex_count());
 }
 
-TEST_CASE("bundle") {
+TEST_CASE("bundle")
+{
     test_vertex_list<std::vector<bundle>>();
     test_vertex_list<std::list<bundle>>();
     test_vertex_list<std::set<bundle>>();

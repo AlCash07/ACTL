@@ -10,7 +10,8 @@
 
 using namespace ac::io;
 
-TEST_CASE("write pair") {
+TEST_CASE("write pair")
+{
     char s[3];
     CHECK(
         2 <= write(
@@ -20,7 +21,8 @@ TEST_CASE("write pair") {
     CHECK_EQUAL("ac"sv, span{s, 2});
 }
 
-TEST_CASE("read pair") {
+TEST_CASE("read pair")
+{
     std::string s = "aba";
     memory<bin | in> id{s};
     std::pair<char, char> x;

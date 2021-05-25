@@ -20,7 +20,7 @@ OutIter intersect(
     line_scalar_policy<Policy> lsp,
     const line<T, 2, K>& l,
     const convex_polygon<U>& poly,
-    OutIter dst) //
+    OutIter dst)
 {
     auto& policy = lsp.policy;
     ACTL_ASSERT(!degenerate(policy, l));
@@ -30,7 +30,10 @@ OutIter intersect(
     auto left = cyclic_iterator{
         poly,
         extreme_vertex(policy, poly, [&l](const auto&) { return -l.vector; })};
-    auto vertex_orient = [&](auto it) { return orientation(policy, *it, l); };
+    auto vertex_orient = [&](auto it)
+    {
+        return orientation(policy, *it, l);
+    };
     auto right_orient = vertex_orient(right);
     auto left_orient = vertex_orient(left);
     if (left_orient == orientation2d::left ||
@@ -39,18 +42,23 @@ OutIter intersect(
     // TODO: in case line passes through exactly one vertex, it's reported
     // twice. Fix this.
     auto intersect_chain =
-        [&](auto first, auto last, orientation2d first_orient, OutIter dst) {
-            while (first + 1 != last) {
-                auto middle = first + (last - first) / 2;
-                if (vertex_orient(middle) == first_orient) {
-                    first = middle;
-                } else {
-                    last = middle;
-                }
+        [&](auto first, auto last, orientation2d first_orient, OutIter dst)
+    {
+        while (first + 1 != last)
+        {
+            auto middle = first + (last - first) / 2;
+            if (vertex_orient(middle) == first_orient)
+            {
+                first = middle;
             }
-            return intersect(
-                line_scalar_policy{policy}, l, make_line(*first, *last), dst);
-        };
+            else
+            {
+                last = middle;
+            }
+        }
+        return intersect(
+            line_scalar_policy{policy}, l, make_line(*first, *last), dst);
+    };
     dst = intersect_chain(left, right, left_orient, dst);
     return intersect_chain(right, left, right_orient, dst);
 }

@@ -10,23 +10,28 @@
 namespace {
 
 template <class T, int V>
-struct const_op {
-    constexpr int operator()(T) const {
+struct const_op
+{
+    constexpr int operator()(T) const
+    {
         return V;
     }
 };
 
-struct increment {
+struct increment
+{
     int v;
 
-    constexpr void operator()(int x) {
+    constexpr void operator()(int x)
+    {
         v += x;
     }
 };
 
 } // namespace
 
-TEST_CASE("invocable_tuple") {
+TEST_CASE("invocable_tuple")
+{
     using CS = ac::invocable_tuple<
         const_op<bool, 1>,
         const_op<bool, 2>,
@@ -34,7 +39,8 @@ TEST_CASE("invocable_tuple") {
     static_assert(1 == CS{}.invoke_first(true));
     static_assert(3 == CS{}.invoke_first(increment{1}));
 
-    SECTION("invoke_all") {
+    SECTION("invoke_all")
+    {
         increment inc[3] = {{0}, {1}, {2}};
         ac::invocable_tuple c{inc[0], inc[1], inc[2]};
         c.invoke_all(2);

@@ -14,7 +14,8 @@
 //   0   4    6
 //    \ /    /
 //     1 <- 5
-TEST_CASE("tarjan_strong_components basic") {
+TEST_CASE("tarjan_strong_components basic")
+{
     adjacency_list<directed> graph;
     graph.add_edge(0, 1);
     graph.add_edge(0, 3);
@@ -31,7 +32,8 @@ TEST_CASE("tarjan_strong_components basic") {
     std::vector<int> components(9);
     find_strong_components(graph, components);
     test_partition({{0, 2, 3}, {1}, {4}, {5}, {6, 7, 8}}, components);
-    for (auto e : graph.edges()) {
+    for (auto e : graph.edges())
+    {
         CHECK(components[(size_t)e.source()] >= components[(size_t)e.target()]);
     }
 }

@@ -7,7 +7,8 @@
 #include <actl/operation/scalar/comparison/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("comparison") {
+TEST_CASE("comparison")
+{
     STATIC_ASSERT_WORKAROUND(true == ac::equal(2, 2));
     STATIC_ASSERT_WORKAROUND(false == ac::equal(2, 6));
     STATIC_ASSERT_WORKAROUND(true == ac::not_equal(2, 6));

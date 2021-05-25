@@ -10,13 +10,15 @@
 
 namespace ac::io {
 
-struct escaped {
+struct escaped
+{
     struct format_tag;
 };
 
 namespace detail {
 
-inline char escape(char c) {
+inline char escape(char c)
+{
     // clang-format off
     switch (c) {
         case '\0': return '0';
@@ -36,14 +38,17 @@ inline char escape(char c) {
 }
 
 template <class Char>
-struct escaped_string {
+struct escaped_string
+{
     std::basic_string_view<Char> value;
 };
 
 template <class Device, class Format, class Char>
-index write_final(Device& od, Format&, const escaped_string<Char>& s) {
+index write_final(Device& od, Format&, const escaped_string<Char>& s)
+{
     index res{};
-    for (auto c : s.value) {
+    for (auto c : s.value)
+    {
         using C = char_t<Device>;
         auto e = escape(c);
         res += e ? od.write(static_cast<C>('\\')) + od.write(static_cast<C>(e))
@@ -55,12 +60,14 @@ index write_final(Device& od, Format&, const escaped_string<Char>& s) {
 } // namespace detail
 
 template <class C, enable_int_if<std::is_same_v<C, char>> = 0>
-auto encode(escaped, const C& c) {
+auto encode(escaped, const C& c)
+{
     return batch{'\'', detail::escaped_string<char>{{&c, 1}}, '\''};
 }
 
 template <class S, enable_int_if<is_string_v<S>> = 0>
-auto encode(escaped, const S& s) {
+auto encode(escaped, const S& s)
+{
     return batch{'\"', detail::escaped_string<char>{s}, '\"'};
 }
 

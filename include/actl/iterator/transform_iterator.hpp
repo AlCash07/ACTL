@@ -19,7 +19,8 @@ class transform_iterator;
 namespace detail {
 
 template <class F, class V>
-struct transform_iter_types : default_iterator_adaptor_types {
+struct transform_iter_types : default_iterator_adaptor_types
+{
     using value_type = return_type_t<F>;
     using reference = deduce_t<V, remove_cvref_t<return_type_t<F>>>;
 };
@@ -33,10 +34,12 @@ using transform_iter_base = iterator_adaptor<
 } // namespace detail
 
 template <class Iter, class F, class V>
-class transform_iterator : public detail::transform_iter_base<Iter, F, V> {
+class transform_iterator : public detail::transform_iter_base<Iter, F, V>
+{
     friend struct ac::iterator_core_access;
 
-    auto dereference() const {
+    auto dereference() const
+    {
         return f_(*this->base());
     }
 
@@ -46,7 +49,8 @@ public:
     template <class... Ts>
     transform_iterator(const Iter& iter, Ts&&... args)
         : detail::transform_iter_base<Iter, F, V>{iter}
-        , f_{std::forward<Ts>(args)...} {}
+        , f_{std::forward<Ts>(args)...}
+    {}
 };
 
 } // namespace ac

@@ -12,11 +12,13 @@ namespace ac {
 
 namespace scalar {
 
-struct logical_not_f : scalar_operation<logical_not_f, 1> {
+struct logical_not_f : scalar_operation<logical_not_f, 1>
+{
     using category = logical_operation_tag;
     using argument_category = boolean_tag;
 
-    static constexpr bool eval_scalar(bool x) {
+    static constexpr bool eval_scalar(bool x)
+    {
         return !x;
     }
 };
@@ -24,7 +26,8 @@ inline constexpr logical_not_f logical_not;
 
 } // namespace scalar
 
-struct logical_not_f : operation<logical_not_f> {
+struct logical_not_f : operation<logical_not_f>
+{
     using category = logical_operation_tag;
 
     static constexpr auto formula = scalar::logical_not;
@@ -32,7 +35,8 @@ struct logical_not_f : operation<logical_not_f> {
 inline constexpr logical_not_f logical_not;
 
 template <class T, enable_operators<T> = 0>
-constexpr auto operator!(T&& x) {
+constexpr auto operator!(T&& x)
+{
     return logical_not(pass<T>(x));
 }
 

@@ -13,13 +13,15 @@ namespace ac {
 
 /// Map that applies given function to the key.
 template <class Function>
-class function_map {
+class function_map
+{
 public:
     static_assert(arity_v<Function> == 1);
 
     explicit function_map(Function f = {}) : f_{f} {}
 
-    map_reference_t<function_map> get(map_key_t<function_map> key) const {
+    map_reference_t<function_map> get(map_key_t<function_map> key) const
+    {
         return f_(key);
     }
 
@@ -29,6 +31,7 @@ private:
 
 template <class F>
 struct const_map_traits<function_map<F>>
-    : map_traits_base<argument_type_t<0, F>, return_type_t<F>> {};
+    : map_traits_base<argument_type_t<0, F>, return_type_t<F>>
+{};
 
 } // namespace ac

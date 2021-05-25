@@ -11,7 +11,8 @@
 
 namespace ac {
 
-struct sqr_f : scalar_operation<sqr_f, 1> {
+struct sqr_f : scalar_operation<sqr_f, 1>
+{
     using category = multiplicative_operation_tag;
     using argument_category = arithmetic_tag;
 

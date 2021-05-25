@@ -12,7 +12,8 @@
 namespace ac::io {
 
 template <class Char>
-struct repeat {
+struct repeat
+{
     explicit repeat() : c{}, count{0} {}
     explicit repeat(Char c, index count) : c{c}, count{count} {}
 
@@ -21,14 +22,19 @@ struct repeat {
 };
 
 template <class Device, class Format, class Char>
-index write_final(Device& od, Format&, const repeat<Char>& x) {
+index write_final(Device& od, Format&, const repeat<Char>& x)
+{
     index count = x.count;
-    if constexpr (has_output_buffer<Device>::value) {
+    if constexpr (has_output_buffer<Device>::value)
+    {
         auto s = od.output_data();
-        if (count <= s.size()) {
+        if (count <= s.size())
+        {
             std::fill_n(s.data(), count, x.c);
             od.move(count);
-        } else {
+        }
+        else
+        {
             std::fill_n(s.data(), s.size(), x.c);
             od.move(s.size());
             count -= s.size();
@@ -36,12 +42,15 @@ index write_final(Device& od, Format&, const repeat<Char>& x) {
             std::fill_n(s.data(), std::min(count, s.size()), x.c);
             // Here we assume that s references device buffer and does not
             // change.
-            for (index n = count / s.size(); n > 0; --n) {
+            for (index n = count / s.size(); n > 0; --n)
+            {
                 od.move(s.size());
             }
             od.move(count % s.size());
         }
-    } else {
+    }
+    else
+    {
         for (; 0 < count; --count)
             od.write(static_cast<char_t<Device>>(x.c));
     }

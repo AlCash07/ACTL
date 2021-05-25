@@ -9,7 +9,8 @@
 #include <actl/std/vector.hpp>
 #include "test.hpp"
 
-TEST_CASE("logging_map vector") {
+TEST_CASE("logging_map vector")
+{
     std::vector<int> v(4);
     using Log = std::vector<std::pair<int, int>>;
     Log log;

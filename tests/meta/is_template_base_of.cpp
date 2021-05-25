@@ -9,8 +9,13 @@
 #include "test.hpp"
 
 namespace {
-class public_derived : public std::vector<int> {};
-class private_derived : private std::vector<int> {};
+
+class public_derived : public std::vector<int>
+{};
+
+class private_derived : private std::vector<int>
+{};
+
 } // namespace
 
 static_assert(ac::is_template_base_of_v<std::vector, std::vector<double>>);

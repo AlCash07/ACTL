@@ -7,7 +7,8 @@
 #include <actl/operation/scalar/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("inout parameter") {
+TEST_CASE("inout parameter")
+{
     int x = 4;
     CHECK(5 == ac::max(5, ac::inout{x}));
     CHECK(5 == x);

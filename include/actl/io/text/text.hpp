@@ -16,21 +16,25 @@
 
 namespace ac::io {
 
-struct text_tag {};
+struct text_tag
+{};
 
 template <class T>
 using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
 
 template <flag_t Flags = 0, uint8_t Base = 10, index Precision = 6>
-class text_static {
+class text_static
+{
 public:
     using format_tag = text_tag;
 
-    static constexpr flag_t flags() {
+    static constexpr flag_t flags()
+    {
         return Flags;
     }
 
-    static constexpr bool getf(flag_t flag) {
+    static constexpr bool getf(flag_t flag)
+    {
         return has_bits(Flags, flag);
     }
 
@@ -39,28 +43,38 @@ public:
     static constexpr precision_t precision = precision_t{Precision};
 };
 
-class text {
+class text
+{
 public:
     using format_tag = text_tag;
 
-    flag_t flags() const {
+    flag_t flags() const
+    {
         return flags_;
     }
-    void flags(flag_t value) {
+
+    void flags(flag_t value)
+    {
         flags_ = value;
     }
 
-    bool getf(flag_t flag) const {
+    bool getf(flag_t flag) const
+    {
         return has_bits(flags(), flag);
     }
-    void setf(flag_t flag) {
+
+    void setf(flag_t flag)
+    {
         flags_ |= flag;
     }
-    void unsetf(flag_t flag) {
+
+    void unsetf(flag_t flag)
+    {
         flags_ = clear_bits(flags_, flag);
     }
 
-    void setf(flag_t flag, flag_t group) {
+    void setf(flag_t flag, flag_t group)
+    {
         flags_ = set_bits(flags_, group_bits[group], flag);
     }
 
@@ -70,7 +84,8 @@ public:
 };
 
 template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
-text_static<> deduce_format(Device&) {
+text_static<> deduce_format(Device&)
+{
     return {};
 }
 
@@ -79,24 +94,28 @@ template <
     class S,
     enable_int_if_text<Format> = 0,
     enable_int_if<is_string_v<S>> = 0>
-auto encode(Format&, const S& s) {
+auto encode(Format&, const S& s)
+{
     return span{std::basic_string_view<value_type_t<S>>{s}};
 }
 
 template <class Device, class... Ts>
-index writeln(Device&& od, Ts&&... args) {
+index writeln(Device&& od, Ts&&... args)
+{
     return write(od, args..., raw{'\n'});
 }
 
 /* I/O manipulators analogous to https://en.cppreference.com/w/cpp/io/manip */
 
 template <flag_t Flag, bool Value>
-struct setf {
+struct setf
+{
     struct is_manipulator;
 };
 
 template <flag_t Group, flag_t Flag>
-struct setg {
+struct setg
+{
     struct is_manipulator;
 };
 
@@ -127,7 +146,8 @@ inline constexpr setf<flag::showpoint, true> showpoint{};
 inline constexpr setf<flag::showpoint, false> noshowpoint{};
 
 template <class Format, flag_t Flag, bool Value>
-void manipulate(Format& fmt, setf<Flag, Value>) {
+void manipulate(Format& fmt, setf<Flag, Value>)
+{
     if constexpr (Value)
         fmt.setf(Flag);
     else
@@ -135,7 +155,8 @@ void manipulate(Format& fmt, setf<Flag, Value>) {
 }
 
 template <class Format, flag_t Group, flag_t Flag>
-void manipulate(Format& fmt, setg<Group, Flag>) {
+void manipulate(Format& fmt, setg<Group, Flag>)
+{
     fmt.setf(Flag, Group);
 }
 

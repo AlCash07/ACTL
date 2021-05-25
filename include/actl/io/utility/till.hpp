@@ -12,7 +12,8 @@
 namespace ac::io {
 
 template <class T, class P>
-struct till {
+struct till
+{
     explicit constexpr till(T x, P pred) : value{x}, terminator{pred} {}
 
     T value;
@@ -23,11 +24,14 @@ template <class T, class P>
 till(T&&, P) -> till<T, P>;
 
 template <class Device, class P, index N>
-index read_till(Device& id, till<span<char, N>, P> x) {
+index read_till(Device& id, till<span<char, N>, P> x)
+{
     index i = 0;
     const index size = x.value.size();
-    if constexpr (has_input_buffer<Device>::value) {
-        while (true) {
+    if constexpr (has_input_buffer<Device>::value)
+    {
+        while (true)
+        {
             auto s = id.input_data();
             auto end = std::min(s.end(), s.begin() + (size - i));
             auto ptr = s.begin();
@@ -37,8 +41,11 @@ index read_till(Device& id, till<span<char, N>, P> x) {
             if (i == size || s.empty() || ptr != end)
                 break;
         };
-    } else {
-        for (; i < size; ++i) {
+    }
+    else
+    {
+        for (; i < size; ++i)
+        {
             auto c = id.get();
             if (id.eof() || x.terminator(c))
                 break;
@@ -49,7 +56,8 @@ index read_till(Device& id, till<span<char, N>, P> x) {
 }
 
 template <class Device, class Format, class T, class P>
-bool read_final(Device& id, Format&, till<T, P> x) {
+bool read_final(Device& id, Format&, till<T, P> x)
+{
     read_till(id, x);
     return true;
 }

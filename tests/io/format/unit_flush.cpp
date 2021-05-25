@@ -12,7 +12,8 @@
 using namespace ac;
 using namespace ac::io;
 
-TEST_CASE("unit_flush") {
+TEST_CASE("unit_flush")
+{
     char array[1] = {};
     buffered<memory<bin | io::out>, char[2]> od{array};
     write(od, unit_flush{}, 'x');

@@ -12,11 +12,13 @@
 namespace ac::io {
 
 template <class T>
-struct skip : private predicate<T> {
+struct skip : private predicate<T>
+{
     explicit constexpr skip(T value) : predicate<T>{value} {}
 
     template <class Device>
-    bool operator()(Device& id) const {
+    bool operator()(Device& id) const
+    {
         while (!id.eof() && predicate<T>::operator()(id.peek()))
             id.move(1);
         return true;

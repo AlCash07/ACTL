@@ -14,7 +14,8 @@ namespace ac {
 
 // Workaround for CWG 1558: https://en.cppreference.com/w/cpp/types/void_t
 template <class... Ts>
-struct make_void {
+struct make_void
+{
     using type = void;
 };
 
@@ -22,16 +23,19 @@ template <class... Ts>
 using void_t = typename make_void<Ts...>::type;
 
 template <bool B, class T>
-struct add_const_if : std::conditional<B, const T, T> {};
+struct add_const_if : std::conditional<B, const T, T>
+{};
 
 template <bool B, class T>
 using add_const_if_t = typename add_const_if<B, T>::type;
 
 template <class T>
-struct is_integral_constant : std::false_type {};
+struct is_integral_constant : std::false_type
+{};
 
 template <class T, T N>
-struct is_integral_constant<std::integral_constant<T, N>> : std::true_type {};
+struct is_integral_constant<std::integral_constant<T, N>> : std::true_type
+{};
 
 template <class T>
 inline constexpr bool is_integral_constant_v = is_integral_constant<T>::value;
@@ -51,13 +55,16 @@ inline constexpr bool is_char_v =
     is_one_of_v<T, char, wchar_t, char16_t, char32_t>;
 
 template <class... Ts>
-struct are_same : std::false_type {};
+struct are_same : std::false_type
+{};
 
 template <class T>
-struct are_same<T> : std::true_type {};
+struct are_same<T> : std::true_type
+{};
 
 template <class T, class... Ts>
-struct are_same<T, T, Ts...> : are_same<T, Ts...> {};
+struct are_same<T, T, Ts...> : are_same<T, Ts...>
+{};
 
 template <class... Ts>
 inline constexpr bool are_same_v = are_same<Ts...>::value;

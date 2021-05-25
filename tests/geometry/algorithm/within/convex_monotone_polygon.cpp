@@ -8,9 +8,11 @@
 #include "geometry/polygons.hpp"
 #include "test.hpp"
 
-TEST_CASE("octagon") {
+TEST_CASE("octagon")
+{
     auto poly = get_octagon();
-    for (auto p : poly) {
+    for (auto p : poly)
+    {
         CHECK(within::border == within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
@@ -21,7 +23,8 @@ TEST_CASE("octagon") {
              {0, -3},
              {3, 0},
              {0, 3},
-             {-3, 0}}) {
+             {-3, 0}})
+    {
         CHECK(within::border == within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
@@ -33,11 +36,13 @@ TEST_CASE("octagon") {
              {2, 1},
              {1, 2},
              {-1, 2},
-             {-2, 1}}) {
+             {-2, 1}})
+    {
         CHECK(within::inside == within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
-             {-6, -2}, {6, 2}, {0, -4}, {4, 0}, {0, 4}, {-4, 0}}) {
+             {-6, -2}, {6, 2}, {0, -4}, {4, 0}, {0, 4}, {-4, 0}})
+    {
         CHECK(within::outside == within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
@@ -48,7 +53,8 @@ TEST_CASE("octagon") {
              {3, 2},
              {2, 3},
              {-2, 3},
-             {-3, 2}}) {
+             {-3, 2}})
+    {
         CHECK(within::outside == within(p, poly));
     }
 }

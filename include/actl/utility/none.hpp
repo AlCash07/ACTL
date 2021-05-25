@@ -10,9 +10,11 @@ namespace ac {
 
 /// Empty class to enable void instantiation and take advantage of empty-base
 /// optimization.
-struct none {
+struct none
+{
     template <class... Ts>
-    explicit constexpr none(Ts...) {}
+    explicit constexpr none(Ts...)
+    {}
 
     using value_type = none;
 };

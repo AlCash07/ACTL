@@ -7,8 +7,10 @@
 #include <actl/string/ctype.hpp>
 #include "test.hpp"
 
-TEST_CASE("ctype correctness") {
-    for (char c = std::numeric_limits<char>::min();; ++c) {
+TEST_CASE("ctype correctness")
+{
+    for (char c = std::numeric_limits<char>::min();; ++c)
+    {
         auto uc = static_cast<unsigned char>(c);
         CHECK((isdigit(uc) != 0) == is_digit(c));
         CHECK((islower(uc) != 0) == is_lower(c));

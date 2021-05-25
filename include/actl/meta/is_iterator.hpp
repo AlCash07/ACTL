@@ -14,20 +14,23 @@ namespace ac {
 namespace detail {
 
 template <class T, class = void>
-struct is_iter : std::false_type {};
+struct is_iter : std::false_type
+{};
 
 template <class T>
 struct is_iter<T, void_t<typename std::iterator_traits<T>::iterator_category>>
-    : std::true_type {};
+    : std::true_type
+{};
 
 } // namespace detail
 
 template <class T, class = void>
-struct is_iterator : detail::is_iter<T> {};
+struct is_iterator : detail::is_iter<T>
+{};
 
 template <class T>
-struct is_iterator<T*, std::enable_if_t<!std::is_object_v<T>>>
-    : std::false_type {};
+struct is_iterator<T*, std::enable_if_t<!std::is_object_v<T>>> : std::false_type
+{};
 
 template <class T>
 inline constexpr bool is_iterator_v = is_iterator<T>::value;

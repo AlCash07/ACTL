@@ -12,7 +12,8 @@
 namespace ac {
 
 template <class Iterator>
-auto make_limited_input_range(Iterator iter, int limit) {
+auto make_limited_input_range(Iterator iter, int limit)
+{
     return make_range(
         limited_input_iterator{iter, limit},
         limited_input_iterator<Iterator>{});

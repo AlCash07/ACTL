@@ -10,13 +10,15 @@
 
 using namespace ac::io;
 
-TEST_CASE("write char") {
+TEST_CASE("write char")
+{
     char s[2];
     CHECK(2l == write(memory<bin | io::out>{s}, 'a', 'b', 'c'));
     CHECK_EQUAL("ab"sv, s);
 }
 
-TEST_CASE("read char") {
+TEST_CASE("read char")
+{
     std::string s = "ab";
     memory<bin | in> id{s};
     char a, b;
@@ -26,13 +28,15 @@ TEST_CASE("read char") {
     CHECK_FALSE(read(id, a));
 }
 
-TEST_CASE("write char array") {
+TEST_CASE("write char array")
+{
     char s[7];
     CHECK(7l == write(memory<io::out>{s}, "aba", "cabad"));
     CHECK_EQUAL("abacaba"sv, s);
 }
 
-TEST_CASE("read span<char>") {
+TEST_CASE("read span<char>")
+{
     std::string s = "abacaba";
     memory<bin | in> id{s};
     char a[3], b[3];
@@ -42,7 +46,8 @@ TEST_CASE("read span<char>") {
     CHECK_FALSE(read(id, span{a}));
 }
 
-TEST_CASE("read string_view") {
+TEST_CASE("read string_view")
+{
     std::string s = "abacaba";
     memory<in> id{s};
     CHECK(read(id, "aba"sv));

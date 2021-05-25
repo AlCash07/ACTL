@@ -23,27 +23,32 @@ struct random_access_iterator_tag { using base = bidirectional_iterator_tag; };
 namespace detail {
 
 template <class C>
-struct iter_category {
+struct iter_category
+{
     using type = iterator_tag;
 };
 
 template <>
-struct iter_category<std::input_iterator_tag> {
+struct iter_category<std::input_iterator_tag>
+{
     using type = input_iterator_tag;
 };
 
 template <>
-struct iter_category<std::forward_iterator_tag> {
+struct iter_category<std::forward_iterator_tag>
+{
     using type = forward_iterator_tag;
 };
 
 template <>
-struct iter_category<std::bidirectional_iterator_tag> {
+struct iter_category<std::bidirectional_iterator_tag>
+{
     using type = bidirectional_iterator_tag;
 };
 
 template <>
-struct iter_category<std::random_access_iterator_tag> {
+struct iter_category<std::random_access_iterator_tag>
+{
     using type = random_access_iterator_tag;
 };
 
@@ -51,8 +56,8 @@ struct iter_category<std::random_access_iterator_tag> {
 
 template <class T>
 struct category_sfinae<T, std::enable_if_t<is_iterator_v<T>>>
-    : detail::iter_category<
-          typename std::iterator_traits<T>::iterator_category> {};
+    : detail::iter_category<typename std::iterator_traits<T>::iterator_category>
+{};
 
 template <class T>
 inline constexpr bool is_input_iterator_v =

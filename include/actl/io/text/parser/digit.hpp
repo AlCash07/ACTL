@@ -11,14 +11,22 @@
 
 namespace ac::io {
 
-enum digit_kind { digit, alnum };
+enum digit_kind
+{
+    digit,
+    alnum
+};
 
 template <class UInt, digit_kind kind>
-UInt to_digit(char c) {
+UInt to_digit(char c)
+{
     static_assert(std::is_unsigned_v<UInt>);
-    if constexpr (kind == digit) {
+    if constexpr (kind == digit)
+    {
         return static_cast<UInt>(c - '0');
-    } else {
+    }
+    else
+    {
         if (ac::is_digit(c))
             return static_cast<UInt>(c - '0');
         else if (is_upper(c))
@@ -31,7 +39,8 @@ UInt to_digit(char c) {
 }
 
 template <class UInt>
-bool is_digit(UInt digit, UInt base) {
+bool is_digit(UInt digit, UInt base)
+{
     return digit < base;
 }
 

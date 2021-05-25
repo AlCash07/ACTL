@@ -12,27 +12,33 @@
 namespace ac {
 
 template <index N>
-class size_holder {
+class size_holder
+{
 public:
     static_assert(N >= 0);
 
-    constexpr size_holder(index n [[maybe_unused]]) {
+    constexpr size_holder(index n [[maybe_unused]])
+    {
         ACTL_ASSERT(n == N);
     }
 
-    static constexpr index size() {
+    static constexpr index size()
+    {
         return N;
     }
 };
 
 template <>
-class size_holder<dynamic_size> {
+class size_holder<dynamic_size>
+{
 public:
-    constexpr size_holder(index n) : size_{n} {
+    constexpr size_holder(index n) : size_{n}
+    {
         ACTL_ASSERT(n >= 0);
     }
 
-    constexpr index size() const {
+    constexpr index size() const
+    {
         return size_;
     }
 

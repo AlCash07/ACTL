@@ -12,14 +12,17 @@
 namespace ac {
 
 template <class T, class... Ts>
-struct tuple_op_resolver : tuple_op_resolver<tuple_indices_t<T>, T, Ts...> {};
+struct tuple_op_resolver : tuple_op_resolver<tuple_indices_t<T>, T, Ts...>
+{};
 
 template <size_t... Is, class T, class U>
-struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
+struct tuple_op_resolver<std::index_sequence<Is...>, T, U>
+{
     static_assert(std::tuple_size_v<T> == std::tuple_size_v<U>);
 
     template <class Composer, class Op>
-    static constexpr auto resolve_tuple(Composer composer, const Op& op) {
+    static constexpr auto resolve_tuple(Composer composer, const Op& op)
+    {
         return composer(resolve_overload<
                         std::tuple_element_t<Is, T>,
                         std::tuple_element_t<Is, U>>(default_context{}, op)...);

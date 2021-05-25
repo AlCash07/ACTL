@@ -13,7 +13,8 @@
 
 namespace ac {
 
-struct cmp3way_f : operation<cmp3way_f> {
+struct cmp3way_f : operation<cmp3way_f>
+{
     using category = ordering_operation_tag;
 
     static constexpr auto formula = cast<int>(greater) - cast<int>(less);

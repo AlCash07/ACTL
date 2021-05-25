@@ -11,7 +11,8 @@
 
 namespace ac {
 
-struct less_equal_f : operation<less_equal_f> {
+struct less_equal_f : operation<less_equal_f>
+{
     using category = ordering_operation_tag;
 
     static constexpr auto formula = !greater;
@@ -19,7 +20,8 @@ struct less_equal_f : operation<less_equal_f> {
 inline constexpr less_equal_f less_equal;
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr auto operator<=(T&& lhs, U&& rhs) {
+constexpr auto operator<=(T&& lhs, U&& rhs)
+{
     return less_equal(pass<T>(lhs), pass<U>(rhs));
 }
 

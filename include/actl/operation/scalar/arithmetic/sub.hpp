@@ -12,12 +12,14 @@ namespace ac {
 
 namespace scalar {
 
-struct sub_f : scalar_operation<sub_f, 2> {
+struct sub_f : scalar_operation<sub_f, 2>
+{
     using category = additive_operation_tag;
     using argument_category = arithmetic_tag;
 
     template <class T, class U>
-    static constexpr auto eval_scalar(T lhs, U rhs) {
+    static constexpr auto eval_scalar(T lhs, U rhs)
+    {
         return lhs - rhs;
     }
 };
@@ -25,7 +27,8 @@ inline constexpr sub_f sub;
 
 } // namespace scalar
 
-struct sub_f : operation<sub_f> {
+struct sub_f : operation<sub_f>
+{
     using category = additive_operation_tag;
 
     static constexpr auto formula = scalar::sub;
@@ -33,12 +36,14 @@ struct sub_f : operation<sub_f> {
 inline constexpr sub_f sub;
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr auto operator-(T&& lhs, U&& rhs) {
+constexpr auto operator-(T&& lhs, U&& rhs)
+{
     return sub(pass<T>(lhs), pass<U>(rhs));
 }
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr decltype(auto) operator-=(T&& lhs, U&& rhs) {
+constexpr decltype(auto) operator-=(T&& lhs, U&& rhs)
+{
     return sub(inout{std::forward<T>(lhs)}, pass<U>(rhs));
 }
 

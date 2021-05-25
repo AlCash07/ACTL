@@ -23,17 +23,23 @@ using rebind_container_t = std::conditional_t<
 /* std::data extension for smart pointers */
 
 template <class T, class = void>
-struct is_smart_pointer : std::false_type {};
+struct is_smart_pointer : std::false_type
+{};
 
 template <class T>
 struct is_smart_pointer<T, std::void_t<decltype(std::declval<T>().get())>>
-    : std::is_pointer<decltype(std::declval<T>().get())> {};
+    : std::is_pointer<decltype(std::declval<T>().get())>
+{};
 
 template <class T>
-auto data(T&& x) {
-    if constexpr (is_smart_pointer<T>::value) {
+auto data(T&& x)
+{
+    if constexpr (is_smart_pointer<T>::value)
+    {
         return x.get();
-    } else {
+    }
+    else
+    {
         return std::data(x);
     }
 }

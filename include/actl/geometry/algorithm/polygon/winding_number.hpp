@@ -18,7 +18,7 @@ namespace ac {
 /// http://geomalgorithms.com/a03-_inclusion.html
 template <class Policy, class T, class U>
 int winding_number(
-    const Policy& policy, const point<T>& p, const polygon<U>& poly) //
+    const Policy& policy, const point<T>& p, const polygon<U>& poly)
 {
     static constexpr int boundary = std::numeric_limits<int>::max();
     if (poly.empty())
@@ -27,23 +27,31 @@ int winding_number(
     if (n == 1)
         return equal(policy, p, poly[0]) ? boundary : 0;
     int res = 0;
-    for (auto i = cyclic_begin(poly); n-- > 0; ++i) {
+    for (auto i = cyclic_begin(poly); n-- > 0; ++i)
+    {
         if (equal(policy, p, *i))
             return boundary;
         auto j = i + 1;
-        if (equal(policy, i->y(), p.y()) && equal(policy, j->y(), p.y())) {
-            if (less(policy, i->x(), j->x())) {
+        if (equal(policy, i->y(), p.y()) && equal(policy, j->y(), p.y()))
+        {
+            if (less(policy, i->x(), j->x()))
+            {
                 if (!less(policy, p.x(), i->x()) &&
                     !less(policy, j->x(), p.x()))
                     return boundary;
-            } else {
+            }
+            else
+            {
                 if (!less(policy, p.x(), j->x()) &&
                     !less(policy, i->x(), p.x()))
                     return boundary;
             }
-        } else {
+        }
+        else
+        {
             bool below = less(policy, i->y(), p.y());
-            if (below != less(policy, j->y(), p.y())) {
+            if (below != less(policy, j->y(), p.y()))
+            {
                 auto orient = orientation(policy, p, *j, *i);
                 if (orient == orientation2d::collinear)
                     return boundary;

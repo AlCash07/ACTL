@@ -10,13 +10,17 @@
 #include "geometry/epsilon.hpp"
 #include "test.hpp"
 
-TEST_CASE("default") {
+TEST_CASE("default")
+{
     point o{3, 4};
     circle<int> c{o, 2};
-    for (int x : irange(9)) {
-        for (int y : irange(9)) {
+    for (int x : irange(9))
+    {
+        for (int y : irange(9))
+        {
             point p{x, y};
-            if (p != o) {
+            if (p != o)
+            {
                 auto i = invert(p, c);
                 CHECK_NEAR(sqr(c.radius), norm(p - o) * norm(i - o), 1e-12);
                 CHECK(collinear(absolute_error9, p - o, i - o));

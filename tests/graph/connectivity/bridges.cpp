@@ -13,7 +13,8 @@
 // 0 - 2 - 4   6
 // | \   \ |
 // 1 - 3   5 - 7
-TEST_CASE("bridges simple") {
+TEST_CASE("bridges simple")
+{
     using Graph = adjacency_list<undirected>;
     Graph graph;
     graph.add_edge(0, 1);
@@ -33,7 +34,8 @@ TEST_CASE("bridges simple") {
 }
 
 // 0 = 1 - 2 = 3 - 4
-TEST_CASE("bridges with parallel edges") {
+TEST_CASE("bridges with parallel edges")
+{
     using Graph = adjacency_list<undirected>;
     Graph graph;
     graph.add_edge(0, 1);

@@ -10,20 +10,24 @@
 
 namespace ac {
 
-struct unclassified_tag {};
+struct unclassified_tag
+{};
 
 template <class T, class>
-struct category_sfinae {
+struct category_sfinae
+{
     using type = unclassified_tag;
 };
 
 template <class T>
-struct category_sfinae<T, void_t<typename T::category>> {
+struct category_sfinae<T, void_t<typename T::category>>
+{
     using type = typename T::category;
 };
 
 template <class T>
-struct category : category_sfinae<T, void> {};
+struct category : category_sfinae<T, void>
+{};
 
 template <class T>
 using category_t = typename category<T>::type;

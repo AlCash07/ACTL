@@ -9,28 +9,32 @@
 #include <actl/std/array.hpp>
 #include "test.hpp"
 
-TEST_CASE("irange") {
+TEST_CASE("irange")
+{
     CHECK(ac::irange(2, 0).empty());
     CHECK(ac::irange(2, 2).empty());
     CHECK_EQUAL(std::array{2, 3, 4}, ac::irange(2, 5));
     CHECK_EQUAL(std::array{0, 1}, ac::irange(2));
 }
 
-TEST_CASE("drange") {
+TEST_CASE("drange")
+{
     CHECK(ac::drange(2, 4).empty());
     CHECK_EQUAL(std::array{2}, ac::drange(2, 2));
     CHECK_EQUAL(std::array{-1, -2}, ac::drange(-1, -2));
     CHECK_EQUAL(std::array{2, 1, 0}, ac::drange(2));
 }
 
-TEST_CASE("irange with step > 0") {
+TEST_CASE("irange with step > 0")
+{
     CHECK(ac::irange(2, 0, 2).empty());
     CHECK(ac::irange(2, 2, 2).empty());
     CHECK_EQUAL(std::array{2, 4}, ac::irange(2, 6, 2));
     CHECK_EQUAL(std::array{-5, -3}, ac::irange(-5, -2, 2));
 }
 
-TEST_CASE("irange with step < 0") {
+TEST_CASE("irange with step < 0")
+{
     CHECK(ac::irange(2, 4, -2).empty());
     CHECK_EQUAL(std::array{2}, ac::irange(2, 2, -2));
     CHECK_EQUAL(std::array{5, 3}, ac::irange(5, 3, -2));

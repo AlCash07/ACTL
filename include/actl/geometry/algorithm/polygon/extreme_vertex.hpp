@@ -18,12 +18,14 @@ namespace ac {
 /// C (2nd Edition), p. 270.
 template <class Policy, class T, class Function>
 auto extreme_vertex(
-    const Policy& policy, const convex_polygon<T>& poly, Function direction) //
+    const Policy& policy, const convex_polygon<T>& poly, Function direction)
 {
-    auto vertex_cmp = [&](auto i, auto j) {
+    auto vertex_cmp = [&](auto i, auto j)
+    {
         return orientation(policy, direction(*j), *j - *i);
     };
-    auto is_extreme = [&](auto iter) {
+    auto is_extreme = [&](auto iter)
+    {
         auto i = cyclic_iterator{poly, iter};
         auto v = vertex_cmp(i + 1, i);
         return std::pair{
@@ -35,15 +37,19 @@ auto extreme_vertex(
     auto [first_ok, first_sgn] = is_extreme(first);
     if (first_ok)
         return first;
-    for (auto last = poly.end(); first + 1 != last;) {
+    for (auto last = poly.end(); first + 1 != last;)
+    {
         auto middle = first + (last - first) / 2;
         auto [middle_ok, middle_sgn] = is_extreme(middle);
         if (middle_ok)
             return middle;
         if (first_sgn != middle_sgn ? first_sgn < middle_sgn
-                                    : first_sgn == vertex_cmp(first, middle)) {
+                                    : first_sgn == vertex_cmp(first, middle))
+        {
             last = middle;
-        } else {
+        }
+        else
+        {
             first = middle;
             first_sgn = middle_sgn;
         }
@@ -52,7 +58,8 @@ auto extreme_vertex(
 }
 
 template <class T, class Function>
-auto extreme_vertex(const convex_polygon<T>& poly, Function direction) {
+auto extreme_vertex(const convex_polygon<T>& poly, Function direction)
+{
     return extreme_vertex(geometry_policy, poly, direction);
 }
 

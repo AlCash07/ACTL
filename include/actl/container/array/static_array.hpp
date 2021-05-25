@@ -14,7 +14,8 @@ namespace ac {
 namespace detail {
 
 template <class T>
-struct sa_types {
+struct sa_types
+{
     using iterator = const T*;
     using size_type = index;
 };
@@ -25,28 +26,33 @@ template <class T, T... Is>
 class static_array
     : public contiguous_range_facade<
           static_array<T, Is...>,
-          detail::sa_types<T>> {
+          detail::sa_types<T>>
+{
     static constexpr std::array<T, sizeof...(Is)> array = {Is...};
 
 public:
     explicit constexpr static_array() = default;
 
     template <class R>
-    explicit constexpr static_array(R&& range) {
+    explicit constexpr static_array(R&& range)
+    {
         ACTL_ASSERT(equal(array, range));
     }
 
-    static constexpr const T* data() {
+    static constexpr const T* data()
+    {
         return array.data();
     }
 
-    static constexpr index size() {
+    static constexpr index size()
+    {
         return index{array.size()};
     }
 };
 
 template <class T, T... Is>
-struct range_traits<static_array<T, Is...>> : default_range_traits {
+struct range_traits<static_array<T, Is...>> : default_range_traits
+{
     static constexpr index static_size = sizeof...(Is);
 };
 

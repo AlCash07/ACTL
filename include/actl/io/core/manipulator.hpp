@@ -11,33 +11,41 @@
 namespace ac::io {
 
 template <class T, class = void>
-struct is_manipulator : std::false_type {};
+struct is_manipulator : std::false_type
+{};
 
 template <class T>
 struct is_manipulator<T, std::void_t<typename T::is_manipulator>>
-    : std::true_type {};
+    : std::true_type
+{};
 
 template <class Format, class Manipulator>
-void manipulate(Format&, const Manipulator&) {}
+void manipulate(Format&, const Manipulator&)
+{}
 
 template <bool Deeper>
-struct change_level {
+struct change_level
+{
     struct is_manipulator;
 };
 
 template <class Format>
-struct nested_scope_guard {
-    explicit nested_scope_guard(Format& fmt) : fmt{fmt} {
+struct nested_scope_guard
+{
+    explicit nested_scope_guard(Format& fmt) : fmt{fmt}
+    {
         manipulate(fmt, change_level<true>{});
     }
 
-    ~nested_scope_guard() {
+    ~nested_scope_guard()
+    {
         manipulate(fmt, change_level<false>{});
     }
 
     Format& fmt;
 };
 
-struct colon {};
+struct colon
+{};
 
 } // namespace ac::io

@@ -11,7 +11,8 @@
 
 using namespace ac::io;
 
-TEST_CASE("skipws") {
+TEST_CASE("skipws")
+{
     std::string s = " \n\ta\n";
     memory<in> id{s};
     char a{};

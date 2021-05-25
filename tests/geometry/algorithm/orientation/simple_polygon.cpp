@@ -8,6 +8,7 @@
 #include "geometry/polygons.hpp"
 #include "test.hpp"
 
-TEST_CASE("star") {
+TEST_CASE("star")
+{
     CHECK(orientation2d::left == orientation(get_star_polygon()));
 }

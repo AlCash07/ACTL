@@ -12,11 +12,13 @@
 
 namespace ac {
 
-class splitmix64 {
+class splitmix64
+{
 public:
     using result_type = uint64_t;
 
-    static uint64_t next(uint64_t x) {
+    static uint64_t next(uint64_t x)
+    {
         x += 0x9e3779b97f4a7c15;
         x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
         x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
@@ -25,7 +27,8 @@ public:
 
     explicit splitmix64(uint64_t seed = {}) : state_{seed} {}
 
-    uint64_t operator()() {
+    uint64_t operator()()
+    {
         return state_ = next(state_);
     }
 

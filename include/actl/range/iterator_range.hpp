@@ -17,7 +17,8 @@ namespace ac {
 namespace detail {
 
 template <class Iter>
-struct iter_range_types {
+struct iter_range_types
+{
     using iterator = Iter;
     using size_type = difference_type_t<Iter>;
 };
@@ -28,16 +29,20 @@ template <class Iter, class Traits = default_range_traits>
 class iterator_range
     : public range_facade<
           iterator_range<Iter, Traits>,
-          detail::iter_range_types<Iter>> {
+          detail::iter_range_types<Iter>>
+{
 public:
     constexpr iterator_range() = default;
 
     constexpr iterator_range(Iter begin, Iter end) : begin_{begin}, end_{end} {}
 
-    constexpr Iter begin() const {
+    constexpr Iter begin() const
+    {
         return begin_;
     }
-    constexpr Iter end() const {
+
+    constexpr Iter end() const
+    {
         return end_;
     }
 
@@ -47,28 +52,33 @@ private:
 };
 
 template <class Iter, class Traits>
-struct range_traits<iterator_range<Iter, Traits>> : Traits {
+struct range_traits<iterator_range<Iter, Traits>> : Traits
+{
     static constexpr bool is_container = false;
 };
 
 template <class Traits = default_range_traits, class Iterator>
-auto make_range(Iterator first, Iterator last) {
+auto make_range(Iterator first, Iterator last)
+{
     return iterator_range<Iterator, Traits>{first, last};
 }
 
 template <class Traits = default_range_traits, class Iterator, class Int>
-auto make_range(Iterator first, Int n) {
+auto make_range(Iterator first, Int n)
+{
     return iterator_range<Iterator, Traits>{first, std::next(first, n)};
 }
 
 template <class Container>
-auto make_range(Container&& cont) {
+auto make_range(Container&& cont)
+{
     return make_range<range_traits<std::remove_reference_t<Container>>>(
         std::begin(cont), std::end(cont));
 }
 
 template <class Container>
-auto make_crange(const Container& cont) {
+auto make_crange(const Container& cont)
+{
     return make_range(cont);
 }
 

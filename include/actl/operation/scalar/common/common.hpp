@@ -12,7 +12,8 @@
 
 namespace ac {
 
-struct common_f : scalar_operation<common_f, 2> {
+struct common_f : scalar_operation<common_f, 2>
+{
     using category = scalar_operation_tag;
     using argument_category = unclassified_tag;
 
@@ -20,63 +21,74 @@ struct common_f : scalar_operation<common_f, 2> {
     static constexpr bool is_commutative = true;
 
     template <class... Ts>
-    constexpr auto evaluate(const Ts&... xs) const {
+    constexpr auto evaluate(const Ts&... xs) const
+    {
         return eval_scalar(eval(xs)...);
     }
 
     template <class T>
-    static constexpr T eval_scalar(T x) {
+    static constexpr T eval_scalar(T x)
+    {
         return x;
     }
 
     template <class T>
-    static T eval_scalar(T x, T y) {
+    static T eval_scalar(T x, T y)
+    {
         ACTL_ASSERT(x == y);
         return x;
     }
 
-    static constexpr auto eval_scalar(none, none) {
+    static constexpr auto eval_scalar(none, none)
+    {
         return none{};
     }
 
     template <class T>
-    static constexpr T eval_scalar(T x, none) {
+    static constexpr T eval_scalar(T x, none)
+    {
         return x;
     }
 
     template <class U>
-    static constexpr U eval_scalar(none, U y) {
+    static constexpr U eval_scalar(none, U y)
+    {
         return y;
     }
 
     template <class T, T X>
     static constexpr auto eval_scalar(
-        std::integral_constant<T, X> x, std::integral_constant<T, X>) //
+        std::integral_constant<T, X> x, std::integral_constant<T, X>)
     {
         return x;
     }
 
     template <class T, T X, class U, enable_int_if<std::is_integral_v<U>> = 0>
-    static auto eval_scalar(std::integral_constant<T, X> x, U y) {
+    static auto eval_scalar(std::integral_constant<T, X> x, U y)
+    {
         ACTL_ASSERT(X == y);
         return x;
     }
 
     template <class T, class U, U Y, enable_int_if<std::is_integral_v<T>> = 0>
-    static auto eval_scalar(T x, std::integral_constant<U, Y> y) {
+    static auto eval_scalar(T x, std::integral_constant<U, Y> y)
+    {
         return eval_scalar(y, x);
     }
 
     template <class T0, class T1, class T2, class... Ts>
-    static constexpr auto eval_scalar(T0 x0, T1 x1, T2 x2, Ts... xs) {
+    static constexpr auto eval_scalar(T0 x0, T1 x1, T2 x2, Ts... xs)
+    {
         return eval_scalar(eval_scalar(x0, x1), x2, xs...);
     }
 };
 inline constexpr common_f common;
 
 template <class T>
-struct identity_element<common_f, T> {
-    static constexpr none value() {
+struct identity_element<common_f, T>
+{
+    static constexpr none value()
+    {
         return none{};
     }
 };

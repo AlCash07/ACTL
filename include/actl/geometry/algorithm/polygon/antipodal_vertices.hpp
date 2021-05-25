@@ -17,10 +17,12 @@ namespace ac {
 /// this vertex in the output.
 template <class Policy, class T, class OutIter>
 auto antipodal_vertices(
-    const Policy& policy, const convex_polygon<T>& poly, OutIter dst) //
+    const Policy& policy, const convex_polygon<T>& poly, OutIter dst)
 {
-    for (auto i = poly.begin(), j = i + 1; j != poly.end(); ++i) {
-        for (; j != poly.end(); ++j) {
+    for (auto i = poly.begin(), j = i + 1; j != poly.end(); ++i)
+    {
+        for (; j != poly.end(); ++j)
+        {
             *dst++ = std::pair{i, j};
             auto vecj = *(j + 1 != poly.end() ? j + 1 : poly.begin()) - *j;
             if (!left_turn(policy, i[1] - *i, vecj))
@@ -31,7 +33,8 @@ auto antipodal_vertices(
 }
 
 template <class T, class OutIter>
-auto antipodal_vertices(const convex_polygon<T>& poly, OutIter dst) {
+auto antipodal_vertices(const convex_polygon<T>& poly, OutIter dst)
+{
     return antipodal_vertices(geometry_policy, poly, dst);
 }
 

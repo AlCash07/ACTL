@@ -12,7 +12,8 @@
 namespace ac {
 
 template <class Base, class Policy>
-struct policy_context : Base {
+struct policy_context : Base
+{
     const Policy& policy;
 };
 
@@ -24,7 +25,8 @@ template <
     enable_int_if<
         is_primary_overload_resolved_v<Op, Ts...> &&
         can_apply_policy_v<Op, Policy>> = 0>
-constexpr auto resolve_overload(policy_context<Base, Policy> context, Op&& op) {
+constexpr auto resolve_overload(policy_context<Base, Policy> context, Op&& op)
+{
     auto result = apply_policy(std::forward<Op>(op), context.policy);
     if constexpr (is_overload_resolved_v<Base, decltype(result), Ts...>)
         return std::move(result);
@@ -34,7 +36,7 @@ constexpr auto resolve_overload(policy_context<Base, Policy> context, Op&& op) {
 
 template <class... Ts, class Context, class Op, class Policy>
 constexpr decltype(auto) resolve_overload(
-    Context context, const tuned_operation<Op, Policy>& op) //
+    Context context, const tuned_operation<Op, Policy>& op)
 {
     using PolicyContext = policy_context<Context, Policy>;
     if constexpr (is_overload_resolved_v<PolicyContext, Op, Ts...>)

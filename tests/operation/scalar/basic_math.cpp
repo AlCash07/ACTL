@@ -8,7 +8,8 @@
 #include <limits>
 #include "test.hpp"
 
-TEST_CASE("basic_math") {
+TEST_CASE("basic_math")
+{
     STATIC_ASSERT_WORKAROUND(1 == ac::sgn(std::numeric_limits<double>::max()));
     STATIC_ASSERT_WORKAROUND(-1 == ac::sgn(std::numeric_limits<int>::min()));
     STATIC_ASSERT_WORKAROUND(

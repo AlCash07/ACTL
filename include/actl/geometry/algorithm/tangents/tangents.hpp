@@ -16,14 +16,14 @@ template <
     class U,
     class OutIter,
     geometry::enable_int_if_swap<T, U> = 0>
-OutIter tangents(
-    const Policy& policy, const T& lhs, const U& rhs, OutIter dst) //
+OutIter tangents(const Policy& policy, const T& lhs, const U& rhs, OutIter dst)
 {
     return tangents(policy, rhs, lhs, dst);
 }
 
 template <class T, class U, class OutIter>
-OutIter tangents(const T& lhs, const U& rhs, OutIter dst) {
+OutIter tangents(const T& lhs, const U& rhs, OutIter dst)
+{
     return tangents(geometry_policy, lhs, rhs, dst);
 }
 

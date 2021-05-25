@@ -11,14 +11,17 @@
 namespace ac {
 
 template <class D, class B, class = void>
-struct is_subcategory_of : std::false_type {};
+struct is_subcategory_of : std::false_type
+{};
 
 template <class B>
-struct is_subcategory_of<B, B, void> : std::true_type {};
+struct is_subcategory_of<B, B, void> : std::true_type
+{};
 
 template <class D, class B>
 struct is_subcategory_of<D, B, std::void_t<typename D::base>>
-    : is_subcategory_of<typename D::base, B> {};
+    : is_subcategory_of<typename D::base, B>
+{};
 
 template <class D, class Base>
 inline constexpr bool is_subcategory_of_v = is_subcategory_of<D, Base>::value;

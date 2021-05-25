@@ -12,19 +12,23 @@
 namespace ac::io {
 
 // Number of digits after the decimal point.
-class precision_t {
+class precision_t
+{
 public:
     explicit constexpr precision_t() = default;
 
-    explicit constexpr precision_t(index x) : value{x} {
+    explicit constexpr precision_t(index x) : value{x}
+    {
         ACTL_ASSERT(x >= 0);
     }
 
-    precision_t& operator=(index x) {
+    precision_t& operator=(index x)
+    {
         return *this = precision_t{x};
     }
 
-    constexpr operator index() const {
+    constexpr operator index() const
+    {
         return value;
     }
 

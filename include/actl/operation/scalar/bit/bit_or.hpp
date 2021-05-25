@@ -12,12 +12,14 @@ namespace ac {
 
 namespace scalar {
 
-struct bit_or_f : scalar_operation<bit_or_f, 2> {
+struct bit_or_f : scalar_operation<bit_or_f, 2>
+{
     using category = bitwise_operation_tag;
     using argument_category = integral_tag;
 
     template <class T, class U>
-    static constexpr auto eval_scalar(T lhs, U rhs) {
+    static constexpr auto eval_scalar(T lhs, U rhs)
+    {
         return lhs | rhs;
     }
 };
@@ -25,7 +27,8 @@ inline constexpr bit_or_f bit_or;
 
 } // namespace scalar
 
-struct bit_or_f : operation<bit_or_f> {
+struct bit_or_f : operation<bit_or_f>
+{
     using category = bitwise_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -36,19 +39,23 @@ struct bit_or_f : operation<bit_or_f> {
 inline constexpr bit_or_f bit_or;
 
 template <class T>
-struct identity_element<bit_or_f, T> {
-    static constexpr T value() {
+struct identity_element<bit_or_f, T>
+{
+    static constexpr T value()
+    {
         return T{0};
     }
 };
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr auto operator|(T&& lhs, U&& rhs) {
+constexpr auto operator|(T&& lhs, U&& rhs)
+{
     return bit_or(pass<T>(lhs), pass<U>(rhs));
 }
 
 template <class T, class U, enable_operators<T, U> = 0>
-constexpr decltype(auto) operator|=(T&& lhs, U&& rhs) {
+constexpr decltype(auto) operator|=(T&& lhs, U&& rhs)
+{
     return bit_or(inout{std::forward<T>(lhs)}, pass<U>(rhs));
 }
 

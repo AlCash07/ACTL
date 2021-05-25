@@ -13,25 +13,31 @@ namespace ac {
 namespace detail {
 
 template <class T>
-struct category_wrap {
+struct category_wrap
+{
     using type = T;
 };
 
 template <class T>
-constexpr auto base(category_wrap<T>) {
+constexpr auto base(category_wrap<T>)
+{
     return category_wrap<typename T::base>{};
 }
 
 template <class T, class U>
-constexpr auto operator&&(category_wrap<T> lhs, category_wrap<U> rhs) {
+constexpr auto operator&&(category_wrap<T> lhs, category_wrap<U> rhs)
+{
     constexpr index llevel = category_level_v<T>;
     constexpr index rlevel = category_level_v<U>;
-    if constexpr (llevel == rlevel) {
+    if constexpr (llevel == rlevel)
+    {
         if constexpr (std::is_same_v<T, U>)
             return lhs;
         else
             return base(lhs) && base(rhs);
-    } else {
+    }
+    else
+    {
         if constexpr (llevel < rlevel)
             return lhs && base(rhs);
         else

@@ -10,19 +10,22 @@
 
 namespace ac {
 
-struct copy_f : scalar_operation<copy_f, 1> {
+struct copy_f : scalar_operation<copy_f, 1>
+{
     using category = scalar_operation_tag;
     using argument_category = arithmetic_tag;
 
     template <class T>
-    static constexpr T eval_scalar(T x) {
+    static constexpr T eval_scalar(T x)
+    {
         return x;
     }
 };
 inline constexpr copy_f copy;
 
 template <class T, class U>
-constexpr void assign(out<T>& dst, const U& y) {
+constexpr void assign(out<T>& dst, const U& y)
+{
     copy(dst, y);
 }
 

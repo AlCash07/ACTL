@@ -14,17 +14,20 @@ namespace ac {
 namespace detail {
 
 template <index N>
-struct max_v : index_constant<N> {};
+struct max_v : index_constant<N>
+{};
 
 template <index N, index M>
-constexpr auto operator||(max_v<N>, max_v<M>) {
+constexpr auto operator||(max_v<N>, max_v<M>)
+{
     return max_v < N < M ? M : N > {};
 }
 
 } // namespace detail
 
 template <class T, class = void>
-struct nesting_depth : index_constant<0> {};
+struct nesting_depth : index_constant<0>
+{};
 
 template <class T>
 inline constexpr index nesting_depth_v =
@@ -32,7 +35,8 @@ inline constexpr index nesting_depth_v =
 
 template <class... Ts>
 struct max_nesting_depth
-    : index_constant<(... || detail::max_v<nesting_depth_v<Ts>>{})> {};
+    : index_constant<(... || detail::max_v<nesting_depth_v<Ts>>{})>
+{};
 
 template <class... Ts>
 inline constexpr index max_nesting_depth_v = max_nesting_depth<Ts...>::value;

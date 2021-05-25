@@ -18,7 +18,7 @@ OutIter intersect(
     const Policy& policy,
     const circle<T0>& lhs,
     const circle<T1>& rhs,
-    OutIter dst) //
+    OutIter dst)
 {
     auto centers_vector = rhs.center - lhs.center;
     auto centers_dist2 = dot(policy, centers_vector);
@@ -33,9 +33,12 @@ OutIter intersect(
     auto a = ratio(policy, lradius2 - rradius2, centers_dist2);
     auto projection =
         lhs.center + product(policy, ratio(policy, a + 1, 2), centers_vector);
-    if (sgn0 == 0 || sgn1 == 0) {
+    if (sgn0 == 0 || sgn1 == 0)
+    {
         *dst++ = projection;
-    } else {
+    }
+    else
+    {
         auto b = ratio(policy, lradius2 + rradius2, centers_dist2);
         auto offset = ratio(
             policy,
@@ -54,7 +57,7 @@ OutIter intersect(
     polar_angle_policy<Policy> pap,
     const circle<T0>& lhs,
     const circle<T1>& rhs,
-    OutIter dst) //
+    OutIter dst)
 {
     auto centers_vector = rhs.center - lhs.center;
     auto centers_angle = angle(pap.policy, centers_vector);

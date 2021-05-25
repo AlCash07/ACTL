@@ -7,7 +7,8 @@
 #include <actl/io/device/memory.hpp>
 #include "test.hpp"
 
-TEST_CASE("memory input") {
+TEST_CASE("memory input")
+{
     const char s[] = "abcdef";
     io::memory<io::in> id{span{s, s + 5}};
     CHECK('a' == id.get());
@@ -22,7 +23,8 @@ TEST_CASE("memory input") {
     CHECK('\0' == id.get());
 }
 
-TEST_CASE("memory output") {
+TEST_CASE("memory output")
+{
     char s[5];
     io::memory<io::out> od{s};
     CHECK(1l == od.write('a'));

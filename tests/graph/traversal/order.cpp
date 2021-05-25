@@ -8,21 +8,24 @@
 #include "graph/sample_graphs.hpp"
 #include "test.hpp"
 
-TEST_CASE("inorder") {
+TEST_CASE("inorder")
+{
     auto graph = sample_undirected_tree();
     std::vector<int> order;
     inorder(graph, 0, std::back_inserter(order));
     CHECK(std::vector<int>{1, 0, 3, 2, 6, 4, 2, 5} == order);
 }
 
-TEST_CASE("postorder") {
+TEST_CASE("postorder")
+{
     auto graph = sample_undirected_tree();
     std::vector<int> order;
     postorder(graph, 0, std::back_inserter(order));
     CHECK(std::vector<int>{1, 3, 6, 4, 5, 2, 0} == order);
 }
 
-TEST_CASE("preorder") {
+TEST_CASE("preorder")
+{
     auto graph = sample_undirected_tree();
     std::vector<int> order;
     preorder(graph, 0, std::back_inserter(order));
@@ -36,7 +39,8 @@ TEST_CASE("preorder") {
 // | 3   7
 // |/    |
 // 4     8
-TEST_CASE("topological_sort") {
+TEST_CASE("topological_sort")
+{
     adjacency_list<directed> graph;
     graph.add_edge(0, 1);
     graph.add_edge(0, 2);
@@ -51,10 +55,12 @@ TEST_CASE("topological_sort") {
     topological_sort(graph, std::back_inserter(order));
     CHECK(n == (ac::index)order.size());
     std::vector<int> idx(order.size());
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i)
+    {
         idx[(size_t)order[(size_t)i]] = i;
     }
-    for (auto e : graph.edges()) {
+    for (auto e : graph.edges())
+    {
         CHECK(idx[(size_t)e.target()] < idx[(size_t)e.source()]);
     }
 }

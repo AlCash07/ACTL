@@ -15,7 +15,8 @@
 namespace ac::io {
 
 template <class Format, enable_int_if_text<Format> = 0>
-auto make_parser(Format& fmt, bool& x) {
+auto make_parser(Format& fmt, bool& x)
+{
     return parser_executor{x, boolean_parser{fmt.getf(flag::boolalpha)}};
 }
 
@@ -24,7 +25,8 @@ template <
     class Int,
     enable_int_if_text<Format> = 0,
     enable_int_if<std::is_integral_v<Int> && !is_char_v<Int>> = 0>
-auto make_parser(Format& fmt, Int& x) {
+auto make_parser(Format& fmt, Int& x)
+{
     return parser_executor{x, integral_parser<Int>{fmt.base}};
 }
 
@@ -33,7 +35,8 @@ template <
     class Float,
     enable_int_if_text<Format> = 0,
     enable_int_if<std::is_floating_point_v<Float>> = 0>
-auto make_parser(Format& fmt, Float& x) {
+auto make_parser(Format& fmt, Float& x)
+{
     return parser_executor{x, float_unchecked_parser<Float>{fmt.base}};
 }
 

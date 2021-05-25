@@ -14,21 +14,25 @@ namespace {
 
 static C kv{{1, 1}, {2, 7}, {5, 25}};
 
-std::map<int, int> get_map() {
+std::map<int, int> get_map()
+{
     return {kv.begin(), kv.end()};
 }
 
 } // namespace
 
 template <bool Writable, class Map>
-void test_associative_map(Map&& map) {
-    for (auto [key, value] : kv) {
+void test_associative_map(Map&& map)
+{
+    for (auto [key, value] : kv)
+    {
         CHECK(value == get(map, key));
     }
     CHECK(0 == get(map, 0));
     CHECK(0 == get(map, 3));
     C expected = kv;
-    if constexpr (Writable) {
+    if constexpr (Writable)
+    {
         expected.emplace_back(3, 2);
         put(map, 3, 2);
         CHECK(2 == get(map, 3));
@@ -37,14 +41,16 @@ void test_associative_map(Map&& map) {
     CHECK_EQUAL_SETS(expected, {r.begin(), r.end()});
 }
 
-TEST_CASE("pair_associative_container reference") {
+TEST_CASE("pair_associative_container reference")
+{
     auto map = get_map();
     test_associative_map<true>(map);
     CHECK(4ul == map.size());
     CHECK(2 == map[3]);
 }
 
-TEST_CASE("pair_associative_container const_reference") {
+TEST_CASE("pair_associative_container const_reference")
+{
     const auto map = get_map();
     test_associative_map<false>(map);
 }

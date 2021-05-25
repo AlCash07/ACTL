@@ -8,7 +8,8 @@
 #include <actl/range/irange.hpp>
 #include "test.hpp"
 
-std::vector<point<int>> get_points() {
+std::vector<point<int>> get_points()
+{
     return {
         {2, 0},
         {0, 2},
@@ -21,7 +22,8 @@ std::vector<point<int>> get_points() {
         {0, 0}};
 }
 
-TEST_CASE("points") {
+TEST_CASE("points")
+{
     auto points = get_points();
     sort_by_angle(points);
     std::vector<point<int>> expected{
@@ -37,7 +39,8 @@ TEST_CASE("points") {
     CHECK(expected == points);
 }
 
-TEST_CASE("indices") {
+TEST_CASE("indices")
+{
     indexed_multi_point points{std::vector<int>{}, get_points()};
     auto r = irange((int)points.points.size());
     points.indices.assign(r.begin(), r.end());

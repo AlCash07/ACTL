@@ -10,23 +10,30 @@
 
 namespace ac {
 
-struct dummy_output_iterator : output_iterator_types {
+struct dummy_output_iterator : output_iterator_types
+{
     using pointer = void;
 
     using R = dummy_output_iterator&;
 
     template <class T>
-    R operator=(const T&) {
+    R operator=(const T&)
+    {
         return *this;
     }
 
-    R operator*() {
+    R operator*()
+    {
         return *this;
     }
-    R operator++() {
+
+    R operator++()
+    {
         return *this;
     }
-    R operator++(int) {
+
+    R operator++(int)
+    {
         return *this;
     }
 };

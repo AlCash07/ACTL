@@ -11,7 +11,8 @@
 namespace ac {
 
 template <class T>
-void test_regular_traits() {
+void test_regular_traits()
+{
     static_assert(std::is_object_v<T>);
     static_assert(std::is_default_constructible_v<T>);
     static_assert(std::is_destructible_v<T>);
@@ -23,13 +24,15 @@ void test_regular_traits() {
 }
 
 template <class T>
-void test_default_constructor() {
+void test_default_constructor()
+{
     T x;
     CHECK(x == x);
 }
 
 template <class T>
-void test_copy(const T x, const T y) {
+void test_copy(const T x, const T y)
+{
     T z{x};
     CHECK(x == z);
     CHECK(y != z);
@@ -39,7 +42,8 @@ void test_copy(const T x, const T y) {
 }
 
 template <class T>
-void test_move(T x, T y) {
+void test_move(T x, T y)
+{
     T x1{x}, y1{y};
     T z{std::move(x1)};
     CHECK(x == z);
@@ -50,7 +54,8 @@ void test_move(T x, T y) {
 }
 
 template <class T>
-void test_swap(T x, T y) {
+void test_swap(T x, T y)
+{
     T x1{x}, y1{y};
     using std::swap;
     swap(x1, y1);
@@ -59,7 +64,8 @@ void test_swap(T x, T y) {
 }
 
 template <class T>
-void test_regular_type(T x, T y) {
+void test_regular_type(T x, T y)
+{
     test_regular_traits<T>();
     CHECK(x != y); // this is required for test to work
     test_default_constructor<T>();

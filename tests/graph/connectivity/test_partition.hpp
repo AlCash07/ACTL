@@ -10,14 +10,18 @@
 
 template <class T>
 void test_partition(
-    const std::vector<std::vector<size_t>>& expected, const T& actual) //
+    const std::vector<std::vector<size_t>>& expected, const T& actual)
 {
-    for (size_t i = 0; i < expected.size(); ++i) {
-        for (auto v : expected[i]) {
+    for (size_t i = 0; i < expected.size(); ++i)
+    {
+        for (auto v : expected[i])
+        {
             CHECK(actual[expected[i][0]] == actual[v]);
         }
-        for (size_t j = 0; j < expected.size(); ++j) {
-            if (i != j) {
+        for (size_t j = 0; j < expected.size(); ++j)
+        {
+            if (i != j)
+            {
                 CHECK(actual[expected[i][0]] != actual[expected[j][0]]);
             }
         }
