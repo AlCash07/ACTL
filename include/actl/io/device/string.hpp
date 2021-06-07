@@ -41,7 +41,7 @@ public:
         return 1;
     }
 
-    index write(const cspan<Char>& src)
+    index write(cspan<Char> src)
     {
         s_.append(src.data(), static_cast<size_t>(src.size()));
         return src.size();
@@ -89,7 +89,7 @@ public:
         return c;
     }
 
-    index read(const span<Char>& dst)
+    index read(span<Char> dst)
     {
         index count =
             std::min(dst.size(), static_cast<index>(s_.size()) - pos_);

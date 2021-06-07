@@ -63,7 +63,7 @@ public:
         return c;
     }
 
-    index read(const span<Char>& dst)
+    index read(span<Char> dst)
     {
         Char* dstPtr = dst.data();
         index count = dst.size();
@@ -135,7 +135,7 @@ protected:
         ptr_ = std::data(buf_);
     }
 
-    void write_impl(const cspan<Char>& src)
+    void write_impl(cspan<Char> src)
     {
         const Char* srcPtr = src.data();
         index count = src.size();
@@ -185,7 +185,7 @@ public:
         return 1;
     }
 
-    index write(const cspan<Char>& src)
+    index write(cspan<Char> src)
     {
         if constexpr (is_line_buffered<base_t::mode>)
         {

@@ -50,7 +50,7 @@ template <index... Is>
 inline constexpr index static_product_v = (1 * ... * Is);
 
 template <class Int>
-index compute_product(const cspan<Int>& x)
+index compute_product(cspan<Int> x)
 {
     index res = 1;
     for (auto v : x)
