@@ -17,33 +17,31 @@ struct policy_context : Base
     const Policy& policy;
 };
 
-template <
-    class... Ts,
-    class Base,
-    class Policy,
-    class Op,
-    enable_int_if<
-        is_primary_overload_resolved_v<Op, Ts...> &&
-        can_apply_policy_v<Op, Policy>> = 0>
-constexpr auto resolve_overload(policy_context<Base, Policy> context, Op&& op)
+template <class Base, class Policy, class Op, class... Ts>
+struct context_overload<
+    std::enable_if_t<can_apply_policy_v<Op, Policy>>,
+    policy_context<Base, Policy>,
+    Op,
+    Ts...>
 {
-    auto result = apply_policy(std::forward<Op>(op), context.policy);
-    if constexpr (is_overload_resolved_v<Base, decltype(result), Ts...>)
-        return std::move(result);
-    else
-        return resolve_overload<Ts...>(Base{context}, std::move(result));
-}
-
-template <class... Ts, class Context, class Op, class Policy>
-constexpr decltype(auto) resolve_overload(
-    Context context, const tuned_operation<Op, Policy>& op)
-{
-    using PolicyContext = policy_context<Context, Policy>;
-    if constexpr (is_overload_resolved_v<PolicyContext, Op, Ts...>)
-        return op.operation;
-    else
+    template <class Op1>
+    static constexpr auto resolve(
+        policy_context<Base, Policy> context, Op1&& op)
+    {
         return resolve_overload<Ts...>(
-            PolicyContext{context, op.policy}, op.operation);
-}
+            Base{context}, apply_policy(std::forward<Op1>(op), context.policy));
+    }
+};
+
+template <class Context, class Op, class Policy, class... Ts>
+struct overload_resolver<void, Context, tuned_operation<Op, Policy>, Ts...>
+{
+    static constexpr decltype(auto) resolve(
+        Context context, const tuned_operation<Op, Policy>& op)
+    {
+        return resolve_overload<Ts...>(
+            policy_context<Context, Policy>{context, op.policy}, op.operation);
+    }
+};
 
 } // namespace ac

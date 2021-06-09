@@ -32,8 +32,7 @@ struct operation
     {
         static_assert(
             1 == (... + is_inout_v<Ts>), "single inout argument expected");
-        auto&& op =
-            resolve_overload_if_can<Ts...>(default_context{}, derived());
+        auto&& op = resolve_overload<Ts...>(default_context{}, derived());
         auto& dst = find_dst(xs...);
         op.evaluate_to(dst, remove_inout(xs)...);
         return dst;
