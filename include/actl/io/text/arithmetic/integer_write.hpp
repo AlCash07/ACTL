@@ -45,7 +45,7 @@ private:
 };
 
 template <class D, class F, uint8_t Size>
-index write_final(D& od, F& fmt, const int_string<Size>& x)
+bool write_final(D& od, F& fmt, const int_string<Size>& x)
 {
     return write_final(od, fmt, cspan<char>{x});
 }

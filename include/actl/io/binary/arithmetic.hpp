@@ -17,10 +17,10 @@ template <
     class Format,
     class T,
     enable_int_if<std::is_arithmetic_v<T>> = 0>
-index serialize(Device& od, Format&, const T& x, binary)
+bool serialize(Device& od, Format&, const T& x, binary)
 {
     auto bytes = bit_cast<std::array<std::byte, sizeof(T)>>(x);
-    return od.write(bytes);
+    return od.write(bytes) == static_cast<index>(bytes.size());
 }
 
 template <

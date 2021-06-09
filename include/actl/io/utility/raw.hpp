@@ -20,7 +20,7 @@ template <class T>
 raw(T) -> raw<T>;
 
 template <class Device, class Format, class T>
-index write_final(Device& od, Format& fmt, const raw<T>& x)
+bool write_final(Device& od, Format& fmt, const raw<T>& x)
 {
     return write_final(od, fmt, x.value);
 }

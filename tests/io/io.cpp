@@ -13,7 +13,7 @@ using namespace ac::io;
 TEST_CASE("write char")
 {
     char s[2];
-    CHECK(2l == write(memory<bin | io::out>{s}, 'a', 'b', 'c'));
+    CHECK(!write(memory<bin | io::out>{s}, 'a', 'b', 'c'));
     CHECK_EQUAL("ab"sv, s);
 }
 
@@ -31,7 +31,7 @@ TEST_CASE("read char")
 TEST_CASE("write char array")
 {
     char s[7];
-    CHECK(7l == write(memory<io::out>{s}, "aba", "cabad"));
+    CHECK(!write(memory<io::out>{s}, "aba", "cabad"));
     CHECK_EQUAL("abacaba"sv, s);
 }
 

@@ -35,7 +35,7 @@ inline constexpr bool is_io_tuple_v = is_io_tuple<T>::value;
 namespace ac::io::detail {
 
 template <class D, class F, class T>
-index write_pre_final(D& od, F& fmt, const T& x)
+bool write_pre_final(D& od, F& fmt, const T& x)
 {
     if constexpr (!is_tuple_v<T> && is_io_tuple_v<T>)
     {
@@ -66,7 +66,7 @@ bool read_pre_final(D& id, F& fmt, T&& x)
 template <class D, class FF, class F, class T>
 struct format_resolver
 {
-    static index write(D& od, FF& full_fmt, F& fmt, const T& x)
+    static bool write(D& od, FF& full_fmt, F& fmt, const T& x)
     {
         return write_pre_final(od, full_fmt, apply_format_write(fmt, x));
     }
@@ -84,10 +84,10 @@ struct arg_resolver : format_resolver<D, FF, F, T>
 template <class D, class FF, class F, class T>
 struct arg_resolver<D, FF, F, T, true>
 {
-    static index write(D&, FF&, F& fmt, const T& x)
+    static bool write(D&, FF&, F& fmt, const T& x)
     {
         manipulate(fmt, x);
-        return 0;
+        return true;
     }
 
     static bool read(D&, FF&, F& fmt, T& x)
@@ -98,7 +98,7 @@ struct arg_resolver<D, FF, F, T, true>
 };
 
 template <class D, class FF, class F, class T>
-index write_impl(D& od, FF& full_fmt, F& fmt, const T& x)
+bool write_impl(D& od, FF& full_fmt, F& fmt, const T& x)
 {
     return arg_resolver<D, FF, F, T>::write(od, full_fmt, fmt, x);
 }

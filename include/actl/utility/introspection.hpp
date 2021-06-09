@@ -10,18 +10,18 @@
 #include <actl/numeric/utility/hash_access.hpp>
 
 // Defines write_final and read_final functions for composite types.
-#define DEFINE_SERIALIZATION(...)                    \
-    friend struct ac::io::serialization_access;      \
-    struct is_io_tuple;                              \
-    template <class Device, class Format>            \
-    index write_final(Device& od, Format& fmt) const \
-    {                                                \
-        return write(od, fmt, __VA_ARGS__);          \
-    }                                                \
-    template <class Device, class Format>            \
-    bool read_final(Device& id, Format& fmt)         \
-    {                                                \
-        return read(id, fmt, __VA_ARGS__);           \
+#define DEFINE_SERIALIZATION(...)                   \
+    friend struct ac::io::serialization_access;     \
+    struct is_io_tuple;                             \
+    template <class Device, class Format>           \
+    bool write_final(Device& od, Format& fmt) const \
+    {                                               \
+        return write(od, fmt, __VA_ARGS__);         \
+    }                                               \
+    template <class Device, class Format>           \
+    bool read_final(Device& id, Format& fmt)        \
+    {                                               \
+        return read(id, fmt, __VA_ARGS__);          \
     }
 
 // Defines hash for composite types.

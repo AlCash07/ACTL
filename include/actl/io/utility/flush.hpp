@@ -13,10 +13,10 @@ namespace ac::io {
 struct flush_t
 {
     template <class Device>
-    index operator()(Device& od) const
+    bool operator()(Device& od) const
     {
         od.flush();
-        return 0;
+        return true;
     }
 };
 inline constexpr flush_t flush;

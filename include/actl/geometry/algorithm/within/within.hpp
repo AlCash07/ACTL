@@ -18,7 +18,7 @@ enum class within
 };
 
 template <class Device, class Format>
-index write(Device& od, Format& fmt, enum within x)
+bool write(Device& od, Format& fmt, enum within x)
 {
     constexpr const char* within_name[] = {"inside", "border", "outside"};
     return write(od, fmt, within_name[static_cast<index>(x)]);

@@ -100,7 +100,7 @@ auto encode(Format&, const S& s)
 }
 
 template <class Device, class... Ts>
-index writeln(Device&& od, Ts&&... args)
+bool writeln(Device&& od, Ts&&... args)
 {
     return write(od, args..., raw{'\n'});
 }

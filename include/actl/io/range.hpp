@@ -34,15 +34,16 @@ decltype(auto) element_representation(T& x)
 }
 
 template <class Device, class Format, class R, enable_int_if<is_range_v<R>> = 0>
-index write_final(Device& od, Format& fmt, const R& x)
+bool write_final(Device& od, Format& fmt, const R& x)
 {
     nested_scope_guard g{fmt};
-    index res{};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
-        res = write_size(od, fmt, x.size());
+        if (!write_size(od, fmt, x.size()))
+            return false;
     for (const auto& value : x)
-        res += write(od, fmt, element_representation<R>(value));
-    return res;
+        if (!write(od, fmt, element_representation<R>(value)))
+            return false;
+    return true;
 }
 
 template <class D, class F, class R>

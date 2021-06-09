@@ -44,17 +44,19 @@ struct escaped_string
 };
 
 template <class Device, class Format, class Char>
-index write_final(Device& od, Format&, const escaped_string<Char>& s)
+bool write_final(Device& od, Format&, const escaped_string<Char>& s)
 {
-    index res{};
     for (auto c : s.value)
     {
         using C = char_t<Device>;
         auto e = escape(c);
-        res += e ? od.write(static_cast<C>('\\')) + od.write(static_cast<C>(e))
-                 : od.write(static_cast<C>(c));
+        bool ok =
+            e ? od.write(static_cast<C>('\\')) && od.write(static_cast<C>(e))
+              : od.write(static_cast<C>(c));
+        if (!ok)
+            return false;
     }
-    return res;
+    return true;
 }
 
 } // namespace detail

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/meta/type_traits.hpp>
-#include <actl/utility/index.hpp>
 
 namespace ac::io {
 
@@ -32,7 +31,7 @@ struct serialization_access
     std::false_type has_write(...);
 
     template <class T, class... Ts>
-    static index write_final(const T& x, Ts&... args)
+    static bool write_final(const T& x, Ts&... args)
     {
         return x.write_final(args...);
     }
@@ -59,7 +58,7 @@ template <
     class T,
     enable_int_if<decltype(
         serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
-index write_final(Device& od, Format& fmt, const T& x)
+bool write_final(Device& od, Format& fmt, const T& x)
 {
     return serialization_access::write_final(x, od, fmt);
 }

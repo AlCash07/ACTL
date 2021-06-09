@@ -110,9 +110,9 @@ template <
     class T,
     enable_int_if<
         std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
-index write_final(Device&, Format&, T&)
+bool write_final(Device&, Format&, T&)
 {
-    return 0;
+    return true;
 }
 
 template <
@@ -120,7 +120,7 @@ template <
     class Format,
     class T,
     enable_int_if<
-        std::is_empty_v<T> && !std::is_invocable_r_v<index, T&, Device&>> = 0>
+        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
 bool read_final(Device&, Format&, T&)
 {
     return true;
@@ -131,9 +131,9 @@ using enable_int_if_byte =
     enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
 
 template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
-index write_final(Device& od, Format&, B byte)
+bool write_final(Device& od, Format&, B byte)
 {
-    return od.write(static_cast<char_t<Device>>(byte));
+    return od.write(static_cast<char_t<Device>>(byte)) == 1;
 }
 
 template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
@@ -149,10 +149,11 @@ template <
     class B,
     index N,
     enable_int_if_byte<B> = 0>
-index write_final(Device& od, Format&, span<B, N> s)
+bool write_final(Device& od, Format&, span<B, N> s)
 {
     return od.write(
-        {reinterpret_cast<const char_t<Device>*>(s.data()), s.size()});
+               {reinterpret_cast<const char_t<Device>*>(s.data()), s.size()}) ==
+           s.size();
 }
 
 template <
@@ -185,8 +186,8 @@ template <
     class Device,
     class Format,
     class T,
-    enable_int_if<std::is_invocable_r_v<index, T&, Device&>> = 0>
-index write_final(Device& id, Format&, T& f)
+    enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
+bool write_final(Device& id, Format&, T& f)
 {
     return f(id);
 }
@@ -206,11 +207,11 @@ bool read_final(Device& od, Format&, T& f)
    lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
-index write(Device&& od, Format&& fmt, const Ts&... args)
+bool write(Device&& od, Format&& fmt, const Ts&... args)
 {
     if constexpr (is_format_v<Format>)
     {
-        return (... + detail::write_impl(od, fmt, fmt, args));
+        return (... && detail::write_impl(od, fmt, fmt, args));
     }
     else
     {
@@ -232,7 +233,7 @@ bool read(Device&& id, Format&& fmt, Ts&&... args)
 }
 
 template <class Device, class Format, class T>
-index write_size(Device& od, Format& fmt, const T& size)
+bool write_size(Device& od, Format& fmt, const T& size)
 {
     return write(od, fmt, size);
 }

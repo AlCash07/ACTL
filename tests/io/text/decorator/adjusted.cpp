@@ -53,8 +53,8 @@ TEST_CASE("fill")
     auto fmt = text_static{} >>= adjusted{4, adjust_to::center, '*'};
     char s[14];
     memory<io::out> od{s};
-    CHECK(4l == write(od, fmt, 'a'));
-    CHECK(6l == write(od, fmt, "bacaba"));
-    CHECK(4l == write(od, fmt, 42));
+    CHECK(write(od, fmt, 'a'));
+    CHECK(write(od, fmt, "bacaba"));
+    CHECK(write(od, fmt, 42));
     CHECK_EQUAL("*a**bacaba*42*"sv, s);
 }

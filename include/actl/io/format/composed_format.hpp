@@ -47,7 +47,7 @@ namespace detail {
 template <class D, class FF, class First, class Second, class T>
 struct format_resolver<D, FF, composed_format<First, Second>, T>
 {
-    static index write(
+    static bool write(
         D& od, FF& full_fmt, composed_format<First, Second>& fmt, const T& x)
     {
         return write_impl(

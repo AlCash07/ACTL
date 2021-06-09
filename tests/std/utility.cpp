@@ -13,11 +13,8 @@ using namespace ac::io;
 TEST_CASE("write pair")
 {
     char s[3];
-    CHECK(
-        2 <= write(
-                 memory<bin | io::out>{s},
-                 std::pair{'a', 'c'},
-                 std::pair{'b', 'c'}));
+    CHECK(!write(
+        memory<bin | io::out>{s}, std::pair{'a', 'c'}, std::pair{'b', 'c'}));
     CHECK_EQUAL("ac"sv, span{s, 2});
 }
 

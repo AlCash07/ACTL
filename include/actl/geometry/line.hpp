@@ -99,7 +99,7 @@ private:
     friend struct ac::io::serialization_access;
 
     template <class Device, class Format>
-    index write_final(Device& od, Format& fmt) const
+    bool write_final(Device& od, Format& fmt) const
     {
         return write(od, fmt, static_cast<int>(kind_));
     }
