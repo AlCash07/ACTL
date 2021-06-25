@@ -74,6 +74,7 @@ struct are_same<T, T, Ts...> : are_same<T, Ts...>
 template <class... Ts>
 inline constexpr bool are_same_v = are_same<Ts...>::value;
 
+// TODO: replace with std::equality_comparable when C++20 is available.
 template <class T, class = void>
 struct is_equality_comparable : std::false_type
 {};
