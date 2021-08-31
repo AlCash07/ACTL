@@ -9,10 +9,8 @@
 #include <actl/range/operation/equal_range.hpp>
 #include "test.hpp"
 
-TEST_CASE("simple operation")
-{
-    STATIC_ASSERT_WORKAROUND(3LL == (ac::add | ac::allow_promotion{})(1, 2LL));
-}
+// simple operation
+static_assert(3LL == (ac::add | ac::allow_promotion{})(1, 2LL));
 
 TEST_CASE("nested composite operation")
 {
@@ -23,10 +21,7 @@ TEST_CASE("nested composite operation")
     CHECK((ac::equal | ac::allow_promotion{})(lhs, rhs));
 }
 
-TEST_CASE("nested expression operation")
-{
-    constexpr auto sum3 = ac::add + 3LL;
-    STATIC_ASSERT_WORKAROUND(6LL == sum3(1LL, 2LL));
-    STATIC_ASSERT_WORKAROUND(
-        6LL == (sum3 | ac::allow_promotion{})(short{1}, int{2}));
-}
+// nested expression operation
+constexpr auto sum3 = ac::add + 3LL;
+static_assert(6LL == sum3(1LL, 2LL));
+static_assert(6LL == (sum3 | ac::allow_promotion{})(short{1}, int{2}));

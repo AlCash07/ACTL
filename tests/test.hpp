@@ -17,12 +17,6 @@
 using std::string_view_literals::operator""sv;
 using namespace ac;
 
-#if defined(_MSC_VER)
-#define STATIC_ASSERT_WORKAROUND CHECK
-#else
-#define STATIC_ASSERT_WORKAROUND static_assert
-#endif
-
 #define CHECK_EQUAL check_equal
 #define CHECK_NOT_EQUAL check_not_equal
 #define CHECK_EQUAL_SETS check_sets
