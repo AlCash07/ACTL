@@ -82,8 +82,7 @@ TEST_CASE("iterator_facade")
             int_iterator<std::random_access_iterator_tag>{5});
     }
 
+    constexpr int_iterator<std::random_access_iterator_tag> iter{2};
     // iterator_facade propagates noexcept
-    test_iterator_noexcept(
-        int_iterator<std::random_access_iterator_tag>{2},
-        std::random_access_iterator_tag{});
+    test_iterator_noexcept(iter, std::random_access_iterator_tag{});
 }
