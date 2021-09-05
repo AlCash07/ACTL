@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/integral_constant.hpp>
 #include <actl/operation/core/composite_operation.hpp>
-#include <actl/operation/scalar/common/constants.hpp>
 #include <actl/operation/scalar/common/select.hpp>
 #include <actl/operation/scalar/comparison/cmp3way.hpp>
 #include <actl/operation/scalar/comparison/less.hpp>
@@ -43,7 +43,7 @@ struct overload<cmp3way_f, tuple_tag, T, U>
 template <class T, class U>
 struct overload<less_f, tuple_tag, T, U>
 {
-    static constexpr auto formula = cmp3way < zero_;
+    static constexpr auto formula = cmp3way < 0_c;
 };
 
 } // namespace ac

@@ -9,6 +9,5 @@
 #include <actl/operation/scalar/common/arg.hpp>
 #include <actl/operation/scalar/common/cast.hpp>
 #include <actl/operation/scalar/common/common.hpp>
-#include <actl/operation/scalar/common/constants.hpp>
 #include <actl/operation/scalar/common/copy.hpp>
 #include <actl/operation/scalar/common/select.hpp>
