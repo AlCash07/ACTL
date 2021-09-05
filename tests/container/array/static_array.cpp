@@ -7,22 +7,19 @@
 #include <actl/container/array/static_array.hpp>
 #include "regular.hpp"
 
-TEST_CASE("static_array is regular")
+TEST_CASE("static_array")
 {
-    test_regular_traits<static_array<int, 1, 3>>();
-}
+    using sa = static_array<int, 1, 3>;
+    static_assert(std::is_standard_layout_v<sa>);
+    test_regular_traits<sa>();
 
-TEST_CASE("empty static_array")
-{
-    constexpr static_array<int> sa{};
-    static_assert(0 == sa.size());
-}
+    // empty
+    static_assert(0 == static_array<int>{}.size());
 
-TEST_CASE("static_array contents")
-{
-    constexpr static_array<int, 3, 0, 2> sa{};
-    static_assert(3 == sa.size());
-    static_assert(3 == sa[0]);
-    static_assert(0 == sa[1]);
-    static_assert(2 == sa[2]);
+    // contents
+    constexpr static_array<int, 3, 0, 2> a{};
+    static_assert(3 == a.size());
+    static_assert(3 == a[0]);
+    static_assert(0 == a[1]);
+    static_assert(2 == a[2]);
 }

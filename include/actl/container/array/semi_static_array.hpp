@@ -34,35 +34,35 @@ struct ssa_types
         friend class semi_static_array<T, Is...>;
         friend struct ac::iterator_core_access;
 
-        explicit iterator(index i, const T* arr_iter)
+        explicit constexpr iterator(index i, const T* arr_iter)
             : i_{i}, arr_iter_{arr_iter}
         {}
 
-        T get() const
+        constexpr T get() const
         {
             return static_array<T, Is...>{}[i_];
         }
 
-        T dereference() const
+        constexpr T dereference() const
         {
             return get() == dynamic_size ? *arr_iter_ : get();
         }
 
-        void increment()
+        constexpr void increment()
         {
             if (get() == dynamic_size)
                 ++arr_iter_;
             ++i_;
         }
 
-        void decrement()
+        constexpr void decrement()
         {
             if (get() == dynamic_size)
                 --arr_iter_;
             --i_;
         }
 
-        bool equals(const iterator& rhs) const
+        constexpr bool equals(const iterator& rhs) const
         {
             return i_ == rhs.i_;
         }
@@ -100,8 +100,8 @@ public:
         : a_{std::forward<Ts>(xs)...}
     {}
 
-    template <class R>
-    explicit semi_static_array(R&& range)
+    template <class R, enable_int_if<is_range_v<R>> = 0>
+    explicit constexpr semi_static_array(R&& range)
     {
         auto iter = begin();
         for (const auto& x : range)
@@ -115,12 +115,12 @@ public:
         ACTL_ASSERT(iter == end());
     }
 
-    auto begin() const
+    constexpr auto begin() const
     {
         return iterator{0, a_.data()};
     }
 
-    auto end() const
+    constexpr auto end() const
     {
         return iterator{size(), a_.data() + a_.size()};
     }
@@ -130,14 +130,14 @@ public:
         return index{sizeof...(Is)};
     }
 
-    T operator[](index i) const
+    constexpr T operator[](index i) const
     {
         auto it = begin();
         std::advance(it, i);
         return *it;
     }
 
-    friend void swap(semi_static_array& lhs, semi_static_array& rhs)
+    friend constexpr void swap(semi_static_array& lhs, semi_static_array& rhs)
     {
         lhs.a_.swap(rhs.a_);
     }

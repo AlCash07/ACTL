@@ -7,19 +7,20 @@
 #include <actl/container/array/semi_static_array.hpp>
 #include "regular.hpp"
 
-TEST_CASE("semi_static_array is regular")
+TEST_CASE("semi_static_array")
 {
-    // using ssa = semi_static_array<int, 2, -1, 3, -1>;
+    using ssa = semi_static_array<int, 2, -1, 3, -1>;
+    static_assert(std::is_standard_layout_v<ssa>);
     // test_regular_type(ssa{5, 4}, ssa{4, 4});
-}
 
-TEST_CASE("semi_static_array contents")
-{
-    std::array a{3, 5, 4, 2};
-    semi_static_array<int, 3, -1, -1, 2> sa{a};
-    static_assert(4 == sa.size());
-    for (int i = 0; i < a.size(); ++i)
+    SECTION("contents")
     {
-        CHECK(a[(size_t)i] == sa[i]);
+        constexpr std::array array{3, 5, 4, 2};
+        const semi_static_array<int, 3, -1, -1, 2> a{array};
+        static_assert(4 == a.size());
+        for (int i = 0; i < a.size(); ++i)
+        {
+            CHECK(array[(size_t)i] == a[i]);
+        }
     }
 }
