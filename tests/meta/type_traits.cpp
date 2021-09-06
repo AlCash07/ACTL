@@ -26,3 +26,6 @@ static_assert(are_same_v<int, int, int, int>);
 static_assert(!are_same_v<int*, int, int, int>);
 static_assert(!are_same_v<int, int, int&, int>);
 static_assert(!are_same_v<int, int, int, double>);
+
+static_assert(ac::is_equality_comparable_v<int>);
+static_assert(!ac::is_equality_comparable_v<void>);

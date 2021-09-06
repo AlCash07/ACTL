@@ -74,4 +74,20 @@ struct are_same<T, T, Ts...> : are_same<T, Ts...>
 template <class... Ts>
 inline constexpr bool are_same_v = are_same<Ts...>::value;
 
+template <class T, class = void>
+struct is_equality_comparable : std::false_type
+{};
+
+template <class T>
+struct is_equality_comparable<
+    T,
+    std::void_t<decltype(
+        std::declval<T>() == std::declval<T>(),
+        std::declval<T>() != std::declval<T>())>> : std::true_type
+{};
+
+template <class T>
+inline constexpr bool is_equality_comparable_v =
+    is_equality_comparable<T>::value;
+
 } // namespace ac
