@@ -7,7 +7,7 @@ Project is fully configured for Visual Studio Code with [cmake-tools](https://ma
 
 Other IDEs are supported via CMake, please see _.vscode/settings.json_ for the configuration. Preferred CMake generator can be set there for VSCode as well.
 
-On Windows, `"cmake.generator"` should be changed to `"Visual Studio 16 2019"` in _.vscode/settings.json_. Older versions are not supported because of the numerous MSVC compiler bugs.
+On Windows, `"cmake.generator"` should be changed to `"Visual Studio 16 2019"` in _.vscode/settings.json_. Version 16.10.2 or higher is required because of the numerous bugs in the older versions.
 
 Tests are written in Catch2 and are run using _run_tests_ target.
 

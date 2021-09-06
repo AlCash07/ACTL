@@ -13,10 +13,9 @@ TEST_CASE("common")
     static_assert(std::is_same_v<
                   none,
                   decltype(eval(ac::common(none{}, none{}, none{})))>);
-    STATIC_ASSERT_WORKAROUND(
-        1 == eval(ac::common(none{}, one{}, none{})).value);
-    STATIC_ASSERT_WORKAROUND(1 == eval(ac::common(one{})).value);
-    STATIC_ASSERT_WORKAROUND(1 == eval(ac::common(one{}, one{}, one{})).value);
+    static_assert(1 == eval(ac::common(none{}, one{}, none{})).value);
+    static_assert(1 == eval(ac::common(one{})).value);
+    static_assert(1 == eval(ac::common(one{}, one{}, one{})).value);
     int x = 1;
     static_assert(std::is_same_v<one, decltype(eval(ac::common(x, one{}, x)))>);
     CHECK(2 == ac::common(2, 2, 2));
