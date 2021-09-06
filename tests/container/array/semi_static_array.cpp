@@ -55,7 +55,7 @@ TEST_CASE("semi_static_array")
     static_assert(ssa1{4, 5} != ssa2{3, 6});
 
     // comparison with static_array
-    ssa3 = ac::semi_static_array<int, 2, -1>;
+    using ssa3 = ac::semi_static_array<int, 2, -1>;
     static_assert(ssa3{3} == ac::static_array<int, 2, 3>{});
     static_assert(ssa3{3} != ac::static_array<int, 1, 3>{});
     static_assert(ssa3{4} != ac::static_array<int, 2, 3>{});
