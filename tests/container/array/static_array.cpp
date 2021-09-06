@@ -5,19 +5,21 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/array/static_array.hpp>
-#include "regular.hpp"
+#include "test_regular.hpp"
 
 TEST_CASE("static_array")
 {
-    using sa = static_array<int, 1, 3>;
+    using sa = ac::static_array<int, 1, 3>;
+    static_assert(std::is_trivial_v<sa>);
+    static_assert(ac::is_trivially_moveable_v<sa>);
     static_assert(std::is_standard_layout_v<sa>);
-    test_regular_traits<sa>();
+    ac::test_nothrow_regular_traits<sa>();
 
     // empty
-    static_assert(0 == static_array<int>{}.size());
+    static_assert(0 == ac::static_array<int>{}.size());
 
     // contents
-    constexpr static_array<int, 3, 0, 2> a{};
+    constexpr ac::static_array<int, 3, 0, 2> a{};
     static_assert(3 == a.size());
     static_assert(3 == a[0]);
     static_assert(0 == a[1]);

@@ -12,8 +12,10 @@ namespace ac {
 /// optimization.
 struct none
 {
+    none() noexcept = default;
+
     template <class... Ts>
-    explicit constexpr none(Ts...)
+    explicit constexpr none(Ts...) noexcept
     {}
 
     using value_type = none;

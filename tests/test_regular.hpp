@@ -21,17 +21,34 @@ void test_regular_traits()
     static_assert(std::is_move_constructible_v<T>);
     static_assert(std::is_move_assignable_v<T>);
     static_assert(std::is_swappable_v<T>);
+    static_assert(ac::is_equality_comparable_v<T>);
 }
 
 template <class T>
-void test_default_constructor()
+void test_nothrow_regular_traits()
+{
+    static_assert(std::is_object_v<T>);
+    static_assert(std::is_nothrow_default_constructible_v<T>);
+    static_assert(std::is_nothrow_destructible_v<T>);
+    static_assert(std::is_nothrow_copy_constructible_v<T>);
+    static_assert(std::is_nothrow_copy_assignable_v<T>);
+    static_assert(std::is_nothrow_move_constructible_v<T>);
+    static_assert(std::is_nothrow_move_assignable_v<T>);
+    static_assert(std::is_nothrow_swappable_v<T>);
+    static_assert(noexcept(
+        std::declval<T>() == std::declval<T>(),
+        std::declval<T>() != std::declval<T>()));
+}
+
+template <class T>
+void test_regular_default_constructor()
 {
     T x;
     CHECK(x == x);
 }
 
 template <class T>
-void test_copy(const T x, const T y)
+void test_regular_copy(const T x, const T y)
 {
     T z{x};
     CHECK(x == z);
@@ -42,7 +59,7 @@ void test_copy(const T x, const T y)
 }
 
 template <class T>
-void test_move(T x, T y)
+void test_regular_move(T x, T y)
 {
     T x1{x}, y1{y};
     T z{std::move(x1)};
@@ -54,7 +71,7 @@ void test_move(T x, T y)
 }
 
 template <class T>
-void test_swap(T x, T y)
+void test_regular_swap(T x, T y)
 {
     T x1{x}, y1{y};
     using std::swap;
@@ -64,14 +81,14 @@ void test_swap(T x, T y)
 }
 
 template <class T>
-void test_regular_type(T x, T y)
+void test_regular(T x, T y)
 {
     test_regular_traits<T>();
-    CHECK(x != y); // this is required for test to work
-    test_default_constructor<T>();
-    test_copy(x, y);
-    test_move(x, y);
-    test_swap(x, y);
+    REQUIRE(x != y);
+    test_regular_default_constructor<T>();
+    test_regular_copy(x, y);
+    test_regular_move(x, y);
+    test_regular_swap(x, y);
 }
 
 } // namespace ac

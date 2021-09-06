@@ -22,38 +22,64 @@ struct sa_types
 
 } // namespace detail
 
-template <class T, T... Is>
+template <class T, T... Values>
 class static_array
     : public contiguous_range_facade<
-          static_array<T, Is...>,
+          static_array<T, Values...>,
           detail::sa_types<T>>
 {
-    static constexpr std::array<T, sizeof...(Is)> array = {Is...};
+    static constexpr std::array<T, sizeof...(Values)> array = {Values...};
 
 public:
-    explicit constexpr static_array() = default;
+    constexpr static_array() noexcept = default;
 
-    template <class R>
+    template <class R, enable_int_if<is_range_v<R>> = 0>
     explicit constexpr static_array(R&& range)
     {
         ACTL_ASSERT(equal(array, range));
     }
 
-    static constexpr const T* data()
+    static constexpr const T* data() noexcept
     {
         return array.data();
     }
 
-    static constexpr index size()
+    static constexpr index size() noexcept
     {
         return index{array.size()};
     }
+
+    friend constexpr std::true_type operator==(
+        static_array, static_array) noexcept
+    {
+        return {};
+    }
+
+    friend constexpr std::false_type operator!=(
+        static_array, static_array) noexcept
+    {
+        return {};
+    }
+
+    template <T... OtherValues>
+    friend constexpr std::false_type operator==(
+        static_array, static_array<T, OtherValues...>) noexcept
+    {
+        return {};
+    }
+
+    template <T... OtherValues>
+    friend constexpr std::true_type operator!=(
+        static_array, static_array<T, OtherValues...>) noexcept
+    {
+        return {};
+    }
 };
 
-template <class T, T... Is>
-struct range_traits<static_array<T, Is...>> : default_range_traits
+template <class T, T... Values>
+struct range_traits<static_array<T, Values...>> : default_range_traits
 {
-    static constexpr index static_size = sizeof...(Is);
+    static constexpr index static_size = sizeof...(Values);
 };
 
 } // namespace ac

@@ -13,12 +13,12 @@
 
 namespace ac {
 
-template <class T, T... Is>
+template <class T, T... Values>
 class semi_static_array;
 
 namespace detail {
 
-template <class T, T... Is>
+template <class T, T... Values>
 struct ssa_types
 {
     struct iter_types
@@ -31,16 +31,16 @@ struct ssa_types
 
     class iterator : public iterator_facade<iterator, iter_types>
     {
-        friend class semi_static_array<T, Is...>;
+        friend class semi_static_array<T, Values...>;
         friend struct ac::iterator_core_access;
 
-        explicit constexpr iterator(index i, const T* arr_iter)
+        explicit constexpr iterator(index i, const T* arr_iter) noexcept
             : i_{i}, arr_iter_{arr_iter}
         {}
 
         constexpr T get() const
         {
-            return static_array<T, Is...>{}[i_];
+            return static_array<T, Values...>{}[i_];
         }
 
         constexpr T dereference() const
@@ -76,21 +76,31 @@ struct ssa_types
 
 } // namespace detail
 
-template <class T, T... Is>
+template <class T, T... Values>
 class semi_static_array
     : public range_facade<
-          semi_static_array<T, Is...>,
-          detail::ssa_types<T, Is...>>
+          semi_static_array<T, Values...>,
+          detail::ssa_types<T, Values...>>
 {
-    static constexpr size_t N = (0 + ... + (Is == dynamic_size));
+    static constexpr size_t N = (0 + ... + (Values == dynamic_size));
     using array_t = std::array<T, N>;
 
     array_t a_;
 
-public:
-    using iterator = typename detail::ssa_types<T, Is...>::iterator;
+    template <class Array, size_t... Is>
+    constexpr auto equal_impl(
+        const Array& rhs, std::index_sequence<Is...>) const noexcept
+    {
+        if constexpr (size() != Array::size())
+            return std::false_type{};
+        else
+            return (... && ((*this)[Is] == rhs[Is]));
+    }
 
-    explicit constexpr semi_static_array() = default;
+public:
+    using iterator = typename detail::ssa_types<T, Values...>::iterator;
+
+    constexpr semi_static_array() noexcept = default;
 
     template <
         class... Ts,
@@ -104,7 +114,7 @@ public:
     explicit constexpr semi_static_array(R&& range)
     {
         auto iter = begin();
-        for (const auto& x : range)
+        for (auto&& x : range)
         {
             if (iter.get() == dynamic_size)
                 a_[static_cast<size_t>(iter.arr_iter_ - a_.data())] = x;
@@ -125,9 +135,9 @@ public:
         return iterator{size(), a_.data() + a_.size()};
     }
 
-    static constexpr index size()
+    static constexpr index size() noexcept
     {
-        return index{sizeof...(Is)};
+        return index{sizeof...(Values)};
     }
 
     constexpr T operator[](index i) const
@@ -137,16 +147,33 @@ public:
         return *it;
     }
 
-    friend constexpr void swap(semi_static_array& lhs, semi_static_array& rhs)
+    friend constexpr void swap(
+        semi_static_array& lhs, semi_static_array& rhs) noexcept
     {
         lhs.a_.swap(rhs.a_);
     }
+
+    template <T... OtherValues>
+    friend constexpr auto operator==(
+        const semi_static_array& lhs,
+        const semi_static_array<T, OtherValues...>& rhs) noexcept
+    {
+        return lhs.equal_impl(rhs, std::make_index_sequence<size()>{});
+    }
+
+    template <T... OtherValues>
+    friend constexpr auto operator!=(
+        const semi_static_array& lhs,
+        const semi_static_array<T, OtherValues...>& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
 };
 
-template <class T, T... Is>
-struct range_traits<semi_static_array<T, Is...>> : default_range_traits
+template <class T, T... Values>
+struct range_traits<semi_static_array<T, Values...>> : default_range_traits
 {
-    static constexpr index static_size = sizeof...(Is);
+    static constexpr index static_size = sizeof...(Values);
 };
 
 } // namespace ac
