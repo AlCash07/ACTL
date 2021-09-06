@@ -21,6 +21,9 @@ TEST_CASE("semi_static_array")
     ac::test_nothrow_regular_traits<ssa>();
     ac::test_regular(ssa{5, 4}, ssa{4, 4});
 
+    // constructor from std::array
+    static_assert(ssa{5, 4} == ssa{std::array{5, 4}});
+
     SECTION("element access")
     {
         constexpr std::array array{3, 5, 4, 2};
@@ -43,27 +46,17 @@ TEST_CASE("semi_static_array")
     }
 
     // comparison of different types
-    static_assert(
-        ac::semi_static_array<int, 2, 3, -1, -1>{4, 5} ==
-        ac::semi_static_array<int, 2, -1, 4, -1>{3, 5});
-    static_assert(
-        ac::semi_static_array<int, 2, 3, -1, -1>{4, 5} !=
-        ac::semi_static_array<int, 1, -1, 4, -1>{3, 5});
-    static_assert(
-        ac::semi_static_array<int, 2, 3, -1, -1>{4, 5} !=
-        ac::semi_static_array<int, 2, -1, 4, -1>{2, 5});
-    static_assert(
-        ac::semi_static_array<int, 2, 3, -1, -1>{2, 5} !=
-        ac::semi_static_array<int, 2, -1, 4, -1>{3, 5});
-    static_assert(
-        ac::semi_static_array<int, 2, 3, -1, -1>{4, 5} !=
-        ac::semi_static_array<int, 2, -1, 4, -1>{3, 6});
+    using ssa1 = ac::semi_static_array<int, 2, 3, -1, -1>;
+    using ssa2 = ac::semi_static_array<int, 2, -1, 4, -1>;
+    static_assert(ssa1{4, 5} == ssa2{3, 5});
+    static_assert(ssa1{4, 5} != ac::semi_static_array<int, 1, -1, 4, -1>{3, 5});
+    static_assert(ssa1{4, 5} != ssa2{2, 5});
+    static_assert(ssa1{2, 5} != ssa2{3, 5});
+    static_assert(ssa1{4, 5} != ssa2{3, 6});
 
     // comparison with static_array
-    static_assert(
-        ac::semi_static_array<int, 2, -1>{3} == ac::static_array<int, 2, 3>{});
-    static_assert(
-        ac::semi_static_array<int, 2, -1>{3} != ac::static_array<int, 1, 3>{});
-    static_assert(
-        ac::semi_static_array<int, 2, -1>{4} != ac::static_array<int, 2, 3>{});
+    ssa3 = ac::semi_static_array<int, 2, -1>;
+    static_assert(ssa3{3} == ac::static_array<int, 2, 3>{});
+    static_assert(ssa3{3} != ac::static_array<int, 1, 3>{});
+    static_assert(ssa3{4} != ac::static_array<int, 2, 3>{});
 }

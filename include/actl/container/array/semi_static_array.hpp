@@ -119,11 +119,19 @@ public:
         enable_int_if<
             ((sizeof...(Ts) == dynamic_count) && ... &&
              std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr semi_static_array(Ts&&... xs)
-        : a_{std::forward<Ts>(xs)...}
+    explicit constexpr semi_static_array(Ts... xs) : a_{xs...}
     {}
 
-    template <class R, enable_int_if<is_range_v<R>> = 0>
+    explicit constexpr semi_static_array(const std::array<T, dynamic_count>& a)
+        : a_{a}
+    {}
+
+    template <
+        class R,
+        enable_int_if<
+            is_range_v<R> &&
+            !std::is_same_v<remove_cvref_t<R>, std::array<T, dynamic_count>>> =
+            0>
     explicit constexpr semi_static_array(R&& range)
     {
         auto iter = begin();
