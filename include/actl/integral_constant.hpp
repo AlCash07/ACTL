@@ -118,6 +118,8 @@ struct constant_from_string
 
 } // namespace detail
 
+inline namespace constant_literals {
+
 template <char... Cs>
 constexpr auto operator""_c()
 {
@@ -130,5 +132,7 @@ constexpr auto operator""_cll()
     return typename detail::constant_from_string<unsigned long long, Cs...>::
         type{};
 }
+
+} // namespace constant_literals
 
 } // namespace ac

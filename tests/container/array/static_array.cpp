@@ -5,7 +5,13 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/array/static_array.hpp>
+#include <actl/integral_constant.hpp>
 #include "test_regular.hpp"
+
+using namespace ac::constant_literals;
+
+template <int I>
+using int_c_t = std::integral_constant<int, I>;
 
 TEST_CASE("static_array")
 {
@@ -15,13 +21,17 @@ TEST_CASE("static_array")
     static_assert(std::is_standard_layout_v<sa>);
     ac::test_nothrow_regular_traits<sa>();
 
-    // empty
+    // size
     static_assert(0 == ac::static_array<int>{}.size());
 
-    // contents
     constexpr ac::static_array<int, 3, 0, 2> a{};
     static_assert(3 == a.size());
+
+    // element access
     static_assert(3 == a[0]);
+    static_assert(std::is_same_v<int_c_t<3>, decltype(a[0_c])>);
     static_assert(0 == a[1]);
+    static_assert(std::is_same_v<int_c_t<0>, decltype(a[1_c])>);
     static_assert(2 == a[2]);
+    static_assert(std::is_same_v<int_c_t<2>, decltype(a[2_c])>);
 }

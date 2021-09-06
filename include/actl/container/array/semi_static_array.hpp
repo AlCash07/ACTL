@@ -82,8 +82,20 @@ class semi_static_array
           semi_static_array<T, Values...>,
           detail::ssa_types<T, Values...>>
 {
-    static constexpr size_t N = (0 + ... + (Values == dynamic_size));
-    using array_t = std::array<T, N>;
+    static constexpr size_t dynamic_count =
+        (0 + ... + (Values == dynamic_size));
+    using array_t = std::array<T, dynamic_count>;
+
+    template <size_t I>
+    static constexpr size_t dynamic_index()
+    {
+        size_t result = 0;
+        for (size_t i = 0; i < I; ++i)
+            result += size_t{
+                static_array<T, Values...>{}[static_cast<index>(i)] ==
+                dynamic_size};
+        return result;
+    }
 
     array_t a_;
 
@@ -105,7 +117,8 @@ public:
     template <
         class... Ts,
         enable_int_if<
-            ((sizeof...(Ts) == N) && ... && std::is_convertible_v<Ts, T>)> = 0>
+            ((sizeof...(Ts) == dynamic_count) && ... &&
+             std::is_convertible_v<Ts, T>)> = 0>
     explicit constexpr semi_static_array(Ts&&... xs)
         : a_{std::forward<Ts>(xs)...}
     {}
@@ -145,6 +158,24 @@ public:
         auto it = begin();
         std::advance(it, i);
         return *it;
+    }
+
+    template <auto I>
+    constexpr auto operator[](
+        std::integral_constant<decltype(I), I> i) const noexcept
+    {
+        constexpr auto static_x = static_array<T, Values...>{}[i];
+        if constexpr (static_x == dynamic_size)
+            return a_[dynamic_index<I>()];
+        else
+            return static_x;
+    }
+
+    template <auto I>
+    constexpr auto operator[](std::integral_constant<decltype(I), I> i) noexcept
+        -> std::enable_if_t<static_array<T, Values...>{}[i] == dynamic_size, T&>
+    {
+        return a_[dynamic_index<I>()];
     }
 
     friend constexpr void swap(

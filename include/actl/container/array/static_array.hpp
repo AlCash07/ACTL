@@ -28,6 +28,10 @@ class static_array
           static_array<T, Values...>,
           detail::sa_types<T>>
 {
+    using base_t = contiguous_range_facade<
+        static_array<T, Values...>,
+        detail::sa_types<T>>;
+
     static constexpr std::array<T, sizeof...(Values)> array = {Values...};
 
 public:
@@ -47,6 +51,16 @@ public:
     static constexpr index size() noexcept
     {
         return index{array.size()};
+    }
+
+    using base_t::operator[];
+
+    template <auto I>
+    constexpr auto operator[](
+        std::integral_constant<decltype(I), I>) const noexcept
+    {
+        static_assert(0 <= I && I < size());
+        return std::integral_constant<T, array[I]>{};
     }
 
     friend constexpr void swap(static_array&, static_array&) noexcept {}

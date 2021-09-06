@@ -6,8 +6,7 @@
 
 #include <actl/integral_constant.hpp>
 
-using ac::operator""_c;
-using ac::operator""_cll;
+using namespace ac::constant_literals;
 
 static_assert(2 == 2_c);
 
