@@ -49,30 +49,20 @@ public:
         return index{array.size()};
     }
 
-    friend constexpr std::true_type operator==(
-        static_array, static_array) noexcept
-    {
-        return {};
-    }
+    friend constexpr void swap(static_array&, static_array&) noexcept {}
 
-    friend constexpr std::false_type operator!=(
-        static_array, static_array) noexcept
+    template <T... OtherValues>
+    friend constexpr auto operator==(
+        static_array, static_array<T, OtherValues...>) noexcept
     {
-        return {};
+        return std::bool_constant<(... && (Values == OtherValues))>{};
     }
 
     template <T... OtherValues>
-    friend constexpr std::false_type operator==(
+    friend constexpr auto operator!=(
         static_array, static_array<T, OtherValues...>) noexcept
     {
-        return {};
-    }
-
-    template <T... OtherValues>
-    friend constexpr std::true_type operator!=(
-        static_array, static_array<T, OtherValues...>) noexcept
-    {
-        return {};
+        return std::bool_constant<!(... && (Values == OtherValues))>{};
     }
 };
 

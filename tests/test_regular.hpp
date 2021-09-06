@@ -61,7 +61,7 @@ void test_regular_copy(const T x, const T y)
 template <class T>
 void test_regular_move(T x, T y)
 {
-    T x1{x}, y1{y};
+    T x1{x};
     T z{std::move(x1)};
     CHECK(x == z);
     CHECK(y != z);
