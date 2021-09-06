@@ -43,4 +43,12 @@ TEST_CASE("semi_static_array")
     static_assert(
         ac::semi_static_array<int, 2, 3, -1, -1>{4, 5} !=
         ac::semi_static_array<int, 2, -1, 4, -1>{3, 6});
+
+    // comparison with static_array
+    static_assert(
+        ac::semi_static_array<int, 2, -1>{3} == ac::static_array<int, 2, 3>{});
+    static_assert(
+        ac::semi_static_array<int, 2, -1>{3} != ac::static_array<int, 1, 3>{});
+    static_assert(
+        ac::semi_static_array<int, 2, -1>{4} != ac::static_array<int, 2, 3>{});
 }

@@ -153,18 +153,16 @@ public:
         lhs.a_.swap(rhs.a_);
     }
 
-    template <T... OtherValues>
+    template <class Array>
     friend constexpr auto operator==(
-        const semi_static_array& lhs,
-        const semi_static_array<T, OtherValues...>& rhs) noexcept
+        const semi_static_array& lhs, const Array& rhs) noexcept
     {
         return lhs.equal_impl(rhs, std::make_index_sequence<size()>{});
     }
 
-    template <T... OtherValues>
+    template <class Array>
     friend constexpr auto operator!=(
-        const semi_static_array& lhs,
-        const semi_static_array<T, OtherValues...>& rhs) noexcept
+        const semi_static_array& lhs, const Array& rhs) noexcept
     {
         return !(lhs == rhs);
     }
