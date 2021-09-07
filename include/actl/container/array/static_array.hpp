@@ -47,9 +47,9 @@ public:
     template <
         class... Ts,
         enable_int_if<
-            ((sizeof...(Ts) > 0 && sizeof...(Ts) == sizeof...(Values)) && ... &&
-             std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr static_array(Ts... xs) noexcept(
+            sizeof...(Ts) + 1 == sizeof...(Values) &&
+            (... && std::is_convertible_v<Ts, T>)> = 0>
+    explicit constexpr static_array(T x, Ts... xs) noexcept(
         ACTL_ASSERT_IS_NOEXCEPT())
         : static_array{std::array<T, size()>{xs...}}
     {}
