@@ -38,10 +38,21 @@ public:
     constexpr static_array() noexcept = default;
 
     template <class R, enable_int_if<is_range_v<R>> = 0>
-    explicit constexpr static_array(R&& range)
+    explicit constexpr static_array(R&& range) noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT())
     {
         ACTL_ASSERT(equal(array, range));
     }
+
+    template <
+        class... Ts,
+        enable_int_if<
+            ((sizeof...(Ts) > 0 && sizeof...(Ts) == sizeof...(Values)) && ... &&
+             std::is_convertible_v<Ts, T>)> = 0>
+    explicit constexpr static_array(Ts... xs) noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT())
+        : static_array{std::array<T, size()>{xs...}}
+    {}
 
     static constexpr const T* data() noexcept
     {

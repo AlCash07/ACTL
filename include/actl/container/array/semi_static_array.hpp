@@ -38,31 +38,31 @@ struct ssa_types
             : i_{i}, arr_iter_{arr_iter}
         {}
 
-        constexpr T get() const
+        constexpr T get() const noexcept
         {
             return static_array<T, Values...>{}[i_];
         }
 
-        constexpr T dereference() const
+        constexpr T dereference() const noexcept
         {
             return get() == dynamic_size ? *arr_iter_ : get();
         }
 
-        constexpr void increment()
+        constexpr void increment() noexcept
         {
             if (get() == dynamic_size)
                 ++arr_iter_;
             ++i_;
         }
 
-        constexpr void decrement()
+        constexpr void decrement() noexcept
         {
             if (get() == dynamic_size)
                 --arr_iter_;
             --i_;
         }
 
-        constexpr bool equals(const iterator& rhs) const
+        constexpr bool equals(const iterator& rhs) const noexcept
         {
             return i_ == rhs.i_;
         }
@@ -84,20 +84,23 @@ class semi_static_array
 {
     static constexpr size_t dynamic_count =
         (0 + ... + (Values == dynamic_size));
+
     using array_t = std::array<T, dynamic_count>;
 
-    template <size_t I>
-    static constexpr size_t dynamic_index()
+    array_t array_;
+
+    template <size_t... Is>
+    static constexpr size_t dymanic_index_impl(
+        std::index_sequence<Is...>) noexcept
     {
-        size_t result = 0;
-        for (size_t i = 0; i < I; ++i)
-            result += size_t{
-                static_array<T, Values...>{}[static_cast<index>(i)] ==
-                dynamic_size};
-        return result;
+        return (
+            0 + ... +
+            size_t{static_array<T, Values...>{}[index{Is}] == dynamic_size});
     }
 
-    array_t a_;
+    template <size_t I>
+    static constexpr size_t dynamic_index =
+        dymanic_index_impl(std::make_index_sequence<I>{});
 
     template <class Array, size_t... Is>
     constexpr auto equal_impl(
@@ -116,14 +119,13 @@ public:
 
     template <
         class... Ts,
+        size_t N = sizeof...(Ts),
         enable_int_if<
-            ((sizeof...(Ts) == dynamic_count) && ... &&
+            ((N != dynamic_count && N == sizeof...(Values)) && ... &&
              std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr semi_static_array(Ts... xs) : a_{xs...}
-    {}
-
-    explicit constexpr semi_static_array(const std::array<T, dynamic_count>& a)
-        : a_{a}
+    explicit constexpr semi_static_array(Ts... xs) noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT())
+        : semi_static_array{std::array<T, sizeof...(Values)>{xs...}}
     {}
 
     template <
@@ -132,13 +134,15 @@ public:
             is_range_v<R> &&
             !std::is_same_v<remove_cvref_t<R>, std::array<T, dynamic_count>>> =
             0>
-    explicit constexpr semi_static_array(R&& range)
+    explicit constexpr semi_static_array(R&& range) noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT())
+        : array_{} // default initialization is needed here to support constexpr
     {
         auto iter = begin();
         for (auto&& x : range)
         {
             if (iter.get() == dynamic_size)
-                a_[static_cast<size_t>(iter.arr_iter_ - a_.data())] = x;
+                array_[static_cast<size_t>(iter.arr_iter_ - array_.data())] = x;
             else
                 ACTL_ASSERT(x == iter.get());
             ++iter;
@@ -146,14 +150,27 @@ public:
         ACTL_ASSERT(iter == end());
     }
 
-    constexpr auto begin() const
+    template <
+        class... Ts,
+        enable_int_if<
+            ((sizeof...(Ts) == dynamic_count) && ... &&
+             std::is_convertible_v<Ts, T>)> = 0>
+    explicit constexpr semi_static_array(Ts... xs) noexcept : array_{xs...}
+    {}
+
+    explicit constexpr semi_static_array(
+        const std::array<T, dynamic_count>& a) noexcept
+        : array_{a}
+    {}
+
+    constexpr auto begin() const noexcept
     {
-        return iterator{0, a_.data()};
+        return iterator{0, array_.data()};
     }
 
-    constexpr auto end() const
+    constexpr auto end() const noexcept
     {
-        return iterator{size(), a_.data() + a_.size()};
+        return iterator{size(), array_.data() + array_.size()};
     }
 
     static constexpr index size() noexcept
@@ -161,7 +178,7 @@ public:
         return index{sizeof...(Values)};
     }
 
-    constexpr T operator[](index i) const
+    constexpr T operator[](index i) const noexcept
     {
         auto it = begin();
         std::advance(it, i);
@@ -174,7 +191,7 @@ public:
     {
         constexpr auto static_x = static_array<T, Values...>{}[i];
         if constexpr (static_x == dynamic_size)
-            return a_[dynamic_index<I>()];
+            return array_[dynamic_index<I>];
         else
             return static_x;
     }
@@ -183,13 +200,13 @@ public:
     constexpr auto operator[](std::integral_constant<decltype(I), I> i) noexcept
         -> std::enable_if_t<static_array<T, Values...>{}[i] == dynamic_size, T&>
     {
-        return a_[dynamic_index<I>()];
+        return array_[dynamic_index<I>];
     }
 
     friend constexpr void swap(
         semi_static_array& lhs, semi_static_array& rhs) noexcept
     {
-        lhs.a_.swap(rhs.a_);
+        lhs.array_.swap(rhs.array_);
     }
 
     template <class Array>

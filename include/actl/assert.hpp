@@ -32,3 +32,9 @@
 
 #endif
 #endif
+
+#ifdef ACTL_DEBUG
+#define ACTL_ASSERT_IS_NOEXCEPT() 0
+#else
+#define ACTL_ASSERT_IS_NOEXCEPT() 1
+#endif
