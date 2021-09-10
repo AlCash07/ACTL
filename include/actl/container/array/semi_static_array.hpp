@@ -130,11 +130,8 @@ public:
 
     template <
         class R,
-        enable_int_if<
-            is_range_v<R> &&
-            !std::is_same_v<remove_cvref_t<R>, std::array<T, dynamic_count>>> =
-            0>
-    explicit constexpr semi_static_array(R&& range) noexcept(
+        enable_int_if<is_range_v<R> && static_size_v<R> != dynamic_count> = 0>
+    explicit constexpr semi_static_array(const R& range) noexcept(
         ACTL_ASSERT_IS_NOEXCEPT())
         : array_{} // default initialization is needed here to support constexpr
     {
@@ -158,10 +155,14 @@ public:
     explicit constexpr semi_static_array(Ts... xs) noexcept : array_{xs...}
     {}
 
-    explicit constexpr semi_static_array(
-        const std::array<T, dynamic_count>& a) noexcept
-        : array_{a}
-    {}
+    template <
+        class R,
+        enable_int_if<is_range_v<R> && static_size_v<R> == dynamic_count> = 0>
+    explicit constexpr semi_static_array(const R& dynamic) noexcept : array_{}
+    {
+        for (size_t i = 0; i < dynamic_count; ++i)
+            array_[i] = static_cast<T>(dynamic[i]);
+    }
 
     constexpr auto begin() const noexcept
     {

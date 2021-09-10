@@ -22,7 +22,7 @@ TEST_CASE("semi_static_array")
     ac::test_regular(ssa{5, 4}, ssa{4, 4});
 
     // constructor from std::array
-    static_assert(ssa{5, 4} == ssa{std::array{5, 4}});
+    static_assert(ssa{5, 4} == ssa{std::array{5u, 4u}});
 
     SECTION("element access")
     {
