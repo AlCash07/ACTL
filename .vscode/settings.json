@@ -2,10 +2,8 @@
     "editor.rulers": [80],
     "editor.wordWrapColumn": 80,
     "cmake.generator": "Ninja",
-    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.sourceDirectory": "${workspaceFolder}/tests",
     "cmake.buildDirectory": "${workspaceFolder}/build",
-    "cmake.configureArgs": [
-        "-DBUILD_TESTS=ON",
-    ],
+    "cmake.configureArgs": [],
     "cmake.buildArgs": [],
 }

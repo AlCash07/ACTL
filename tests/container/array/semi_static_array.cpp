@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/array/semi_static_array.hpp>
-#include "test_regular.hpp"
+#include <actl_test/base/concept/regular.hpp>
 
 using namespace ac::constant_literals;
 
