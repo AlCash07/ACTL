@@ -4,6 +4,18 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "git: stop tracking vscode",
+            "type": "shell",
+            "command": "./scripts/git_stop_tracking_vscode.sh",
+            "problemMatcher": [],
+        },
+        {
+            "label": "git: start tracking vscode",
+            "type": "shell",
+            "command": "./scripts/git_start_tracking_vscode.sh",
+            "problemMatcher": [],
+        },
+        {
             "label": "run",
             "type": "shell",
             "command": "${command:cmake.launchTargetPath}",

@@ -1,6 +1,6 @@
 #include <actl/iterator/facade/iterator_facade.hpp>
-#include "iterator/test_iterator.hpp"
-#include "iterator/test_iterator_noexcept.hpp"
+#include <actl_test/iterator/iterator.hpp>
+#include <actl_test/iterator/iterator_noexcept.hpp>
 
 namespace {
 
@@ -15,9 +15,8 @@ struct int_iterator_types
 
 template <class Category>
 class int_iterator
-    : public iterator_facade<
-          int_iterator<Category>,
-          int_iterator_types<Category>>
+    : public ac::
+          iterator_facade<int_iterator<Category>, int_iterator_types<Category>>
 {
 public:
     explicit constexpr int_iterator() = default;

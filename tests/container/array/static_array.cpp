@@ -6,7 +6,7 @@
 
 #include <actl/container/array/static_array.hpp>
 #include <actl/integral_constant.hpp>
-#include "test_regular.hpp"
+#include <actl_test/base/concept/regular.hpp>
 
 using namespace ac::constant_literals;
 

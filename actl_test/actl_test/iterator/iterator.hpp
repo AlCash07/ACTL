@@ -4,9 +4,9 @@
 #include <actl/meta/dependent.hpp>
 #include <actl/meta/type_traits.hpp>
 #include <actl/utility/none.hpp>
+#include <actl_test/base/concept/regular.hpp>
+#include <actl_test/operation/relational_operators.hpp>
 #include <iterator>
-#include "test_regular.hpp"
-#include "test_relational_operators.hpp"
 
 namespace ac {
 
