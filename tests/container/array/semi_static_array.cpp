@@ -15,10 +15,9 @@ using int_c_t = std::integral_constant<int, I>;
 TEST_CASE("semi_static_array")
 {
     using ssa = ac::semi_static_array<int, 2, -1, 3, -1>;
-    // static_assert(std::is_trivial_v<ssa>);
-    static_assert(ac::is_trivially_moveable_v<ssa>);
     static_assert(std::is_standard_layout_v<ssa>);
-    ac::test_nothrow_regular_traits<ssa>();
+    ac::test_trivially_semiregular_type_traits<ssa>();
+    ac::test_nothrow_regular_type_traits<ssa>();
     ac::test_regular(ssa{5, 4}, ssa{4, 4});
 
     // constructor from std::array

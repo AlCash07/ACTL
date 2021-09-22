@@ -47,11 +47,6 @@ using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 template <bool B>
 using enable_int_if = std::enable_if_t<B, int>;
 
-template <class T>
-inline constexpr bool is_trivially_moveable_v =
-    std::is_trivially_move_constructible_v<T>&&
-        std::is_trivially_move_assignable_v<T>;
-
 template <class T, class... Ts>
 inline constexpr bool is_one_of_v = (... || std::is_same_v<T, Ts>);
 

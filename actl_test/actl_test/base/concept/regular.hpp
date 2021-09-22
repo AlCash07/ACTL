@@ -1,3 +1,5 @@
+// https://en.cppreference.com/w/cpp/concepts/regular
+//
 // Copyright 2020 Oleksandr Bacherikov.
 //
 // Distributed under the Boost Software License, Version 1.0
@@ -6,38 +8,24 @@
 
 #pragma once
 
+#include <actl_test/base/concept/semiregular.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 namespace ac {
 
 template <class T>
-void test_regular_traits()
+void test_regular_type_traits()
 {
-    static_assert(std::is_object_v<T>);
-    static_assert(std::is_default_constructible_v<T>);
-    static_assert(std::is_destructible_v<T>);
-    static_assert(std::is_copy_constructible_v<T>);
-    static_assert(std::is_copy_assignable_v<T>);
-    static_assert(std::is_move_constructible_v<T>);
-    static_assert(std::is_move_assignable_v<T>);
-    static_assert(std::is_swappable_v<T>);
+    test_semiregular_type_traits<T>();
     static_assert(ac::is_equality_comparable_v<T>);
 }
 
 template <class T>
-void test_nothrow_regular_traits()
+void test_nothrow_regular_type_traits()
 {
-    static_assert(std::is_object_v<T>);
-    static_assert(std::is_nothrow_default_constructible_v<T>);
-    static_assert(std::is_nothrow_destructible_v<T>);
-    static_assert(std::is_nothrow_copy_constructible_v<T>);
-    static_assert(std::is_nothrow_copy_assignable_v<T>);
-    static_assert(std::is_nothrow_move_constructible_v<T>);
-    static_assert(std::is_nothrow_move_assignable_v<T>);
-    static_assert(std::is_nothrow_swappable_v<T>);
-    static_assert(noexcept(
-        std::declval<T>() == std::declval<T>(),
-        std::declval<T>() != std::declval<T>()));
+    test_nothrow_semiregular_type_traits<T>();
+    static_assert(noexcept(std::declval<T>() == std::declval<T>()));
+    static_assert(noexcept(std::declval<T>() != std::declval<T>()));
 }
 
 template <class T>
@@ -83,7 +71,7 @@ void test_regular_swap(T x, T y)
 template <class T>
 void test_regular(T x, T y)
 {
-    test_regular_traits<T>();
+    test_regular_type_traits<T>();
     REQUIRE(x != y);
     test_regular_default_constructor<T>();
     test_regular_copy(x, y);
