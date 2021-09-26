@@ -16,12 +16,12 @@ namespace ac {
 template <class T>
 using tuple_indices_t = std::make_index_sequence<std::tuple_size_v<T>>;
 
-template <class T, bool = is_range_v<T>, class = void>
+template <class T, class = void>
 struct is_tuple : std::false_type
 {};
 
 template <class T>
-struct is_tuple<T, false, std::void_t<decltype(std::tuple_size<T>::value)>>
+struct is_tuple<T, std::void_t<decltype(std::tuple_size<T>::value)>>
     : std::true_type
 {};
 
@@ -34,7 +34,7 @@ struct tuple_tag
 };
 
 template <class T>
-struct category_sfinae<T, std::enable_if_t<is_tuple_v<T>>>
+struct category_sfinae<T, std::enable_if_t<is_tuple_v<T> && !is_range_v<T>>>
 {
     using type = tuple_tag;
 };
@@ -52,7 +52,7 @@ struct tuple_depth<T, std::index_sequence<Is...>>
 } // namespace detail
 
 template <class T>
-struct nesting_depth<T, std::enable_if_t<is_tuple_v<T>>>
+struct nesting_depth<T, std::enable_if_t<is_tuple_v<T> && !is_range_v<T>>>
     : detail::tuple_depth<T, tuple_indices_t<T>>
 {};
 

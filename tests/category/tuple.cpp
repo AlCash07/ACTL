@@ -12,6 +12,4 @@
 
 static_assert(ac::is_tuple_v<std::pair<int, int>>);
 static_assert(ac::is_tuple_v<std::tuple<int, int, int>>);
-// Array isn't a tuple even though std::tuple_size is defined for it, because
-// it's a range.
-static_assert(!ac::is_tuple_v<std::array<int, 2>>);
+static_assert(ac::is_tuple_v<std::array<int, 2>>);
