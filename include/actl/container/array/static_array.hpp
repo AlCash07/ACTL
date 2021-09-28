@@ -40,7 +40,7 @@ class static_array
     static constexpr bool can_construct_from()
     {
         if constexpr (sizeof...(Ts) == sizeof...(Values))
-            return (... && can_convert_v<t_constant<Values>, Ts>);
+            return (... && can_convert_to_v<t_constant<Values>, Ts>);
         else
             return false;
     }
@@ -102,7 +102,7 @@ private:
     static constexpr void check_values(Ts... xs) noexcept(
         ACTL_ASSERT_IS_NOEXCEPT())
     {
-        (..., convert<t_constant<Values>>(xs));
+        (..., convert_to<t_constant<Values>>(xs));
     }
 };
 

@@ -87,7 +87,7 @@ class semi_static_array
     static constexpr bool can_construct_from()
     {
         if constexpr (sizeof...(Ts) == sizeof...(Values))
-            return (... && can_convert_v<extent_holder_t<Values>, Ts>);
+            return (... && can_convert_to_v<extent_holder_t<Values>, Ts>);
         else
             return false;
     }
@@ -222,7 +222,8 @@ private:
         Ts... xs) noexcept(ACTL_ASSERT_IS_NOEXCEPT())
         : array_{}
     {
-        (..., assign_at<Is>(convert<extent_holder_t<static_values[Is]>>(xs)));
+        (...,
+         assign_at<Is>(convert_to<extent_holder_t<static_values[Is]>>(xs)));
     }
 };
 

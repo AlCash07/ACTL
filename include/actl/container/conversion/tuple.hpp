@@ -1,7 +1,7 @@
 #pragma once
 
 #include <actl/category/tuple.hpp>
-#include <actl/container/conversion/convert.hpp>
+#include <actl/container/conversion/convert_to.hpp>
 #include <tuple>
 
 namespace ac {
@@ -16,15 +16,15 @@ template <class To, class From, size_t... Is>
 struct tuple_conversion<To, From, std::index_sequence<Is...>>
 {
     static constexpr bool value =
-        (... && can_convert_v<
+        (... && can_convert_to_v<
                     std::tuple_element_t<Is, To>,
                     std::tuple_element_t<Is, From>>);
 
     static constexpr To convert(From&& x) noexcept(noexcept(To{
-        ac::convert<std::tuple_element_t<Is, To>>(
+        convert_to<std::tuple_element_t<Is, To>>(
             std::get<Is>(std::forward<From>(x)))...}))
     {
-        return To{ac::convert<std::tuple_element_t<Is, To>>(
+        return To{convert_to<std::tuple_element_t<Is, To>>(
             std::get<Is>(std::forward<From>(x)))...};
     }
 };
