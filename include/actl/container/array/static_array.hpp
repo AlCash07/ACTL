@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/container/conversion/integral_constant.hpp>
 #include <actl/range/facade/contiguous_range_facade.hpp>
 #include <actl/std/array.hpp>
 
@@ -17,7 +18,7 @@ template <class T>
 struct sa_types
 {
     using iterator = const T*;
-    using size_type = index;
+    using size_type = size_t;
 };
 
 } // namespace detail
@@ -32,36 +33,44 @@ class static_array
         static_array<T, Values...>,
         detail::sa_types<T>>;
 
+    template <T Value>
+    using t_constant = std::integral_constant<T, Value>;
+
+    template <class... Ts>
+    static constexpr bool can_construct_from()
+    {
+        if constexpr (sizeof...(Ts) == sizeof...(Values))
+            return (... && can_convert_v<t_constant<Values>, Ts>);
+        else
+            return false;
+    }
+
     static constexpr std::array<T, sizeof...(Values)> array = {Values...};
 
 public:
-    constexpr static_array() noexcept = default;
-
-    template <class R, enable_int_if<is_range_v<R>> = 0>
-    explicit constexpr static_array(R&& range) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT())
+    static constexpr std::integral_constant<size_t, array.size()>
+    size() noexcept
     {
-        ACTL_ASSERT(equal(array, range));
+        return {};
     }
 
+    constexpr static_array() noexcept = default;
+
+    // TODO: remove explicit first parameter
+    // when std::is_trivial implementation is fixes in clang
     template <
+        class T0,
         class... Ts,
-        enable_int_if<
-            sizeof...(Ts) + 1 == sizeof...(Values) &&
-            (... && std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr static_array(T x, Ts... xs) noexcept(
+        enable_int_if<can_construct_from<T0, Ts...>()> = 0>
+    explicit constexpr static_array(T0 x0, Ts... xs) noexcept(
         ACTL_ASSERT_IS_NOEXCEPT())
-        : static_array{std::array<T, size()>{xs...}}
-    {}
+    {
+        check_values(x0, xs...);
+    }
 
     static constexpr const T* data() noexcept
     {
         return array.data();
-    }
-
-    static constexpr index size() noexcept
-    {
-        return index{array.size()};
     }
 
     using base_t::operator[];
@@ -76,18 +85,24 @@ public:
 
     friend constexpr void swap(static_array&, static_array&) noexcept {}
 
-    template <T... OtherValues>
-    friend constexpr auto operator==(
-        static_array, static_array<T, OtherValues...>) noexcept
+    friend constexpr std::true_type operator==(
+        static_array, static_array) noexcept
     {
-        return std::bool_constant<(... && (Values == OtherValues))>{};
+        return {};
     }
 
-    template <T... OtherValues>
-    friend constexpr auto operator!=(
-        static_array, static_array<T, OtherValues...>) noexcept
+    friend constexpr std::false_type operator!=(
+        static_array, static_array) noexcept
     {
-        return std::bool_constant<!(... && (Values == OtherValues))>{};
+        return {};
+    }
+
+private:
+    template <class... Ts>
+    static constexpr void check_values(Ts... xs) noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT())
+    {
+        (..., convert<t_constant<Values>>(xs));
     }
 };
 

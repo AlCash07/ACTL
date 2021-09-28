@@ -5,30 +5,31 @@
 
 namespace ac {
 
-inline constexpr size_t dynamic_extent = std::numeric_limits<size_t>::max();
+template <class T = size_t>
+inline constexpr T dynamic_extent = static_cast<T>(-1);
 
 template <size_t N>
 using size_constant = std::integral_constant<size_t, N>;
 
-template <size_t StaticExtent>
+template <auto StaticExtent, class T = decltype(StaticExtent)>
 using extent_holder_t = std::conditional_t<
-    StaticExtent == dynamic_extent,
-    size_t,
-    size_constant<StaticExtent>>;
+    StaticExtent == dynamic_extent<T>,
+    T,
+    std::integral_constant<T, StaticExtent>>;
 
 template <class T>
 struct static_value
 {
-    static constexpr size_t value = dynamic_extent;
+    static constexpr size_t value = dynamic_extent<T>;
 };
 
-template <size_t N>
-struct static_value<size_constant<N>>
+template <class T, T N>
+struct static_value<std::integral_constant<T, N>>
 {
-    static constexpr size_t value = N;
+    static constexpr T value = N;
 };
 
 template <class T>
-inline constexpr size_t static_v = static_value<T>::value;
+inline constexpr auto static_v = static_value<T>::value;
 
 } // namespace ac
