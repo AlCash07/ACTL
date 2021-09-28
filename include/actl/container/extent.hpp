@@ -20,7 +20,7 @@ using extent_holder_t = std::conditional_t<
 template <class T>
 struct static_value
 {
-    static constexpr size_t value = dynamic_extent<T>;
+    static constexpr T value = dynamic_extent<T>;
 };
 
 template <class T, T N>
