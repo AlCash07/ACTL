@@ -48,9 +48,14 @@ class static_array
     static constexpr std::array<T, sizeof...(Values)> array = {Values...};
 
 public:
-    static constexpr t_constant<array.size()> size() noexcept
+    static constexpr size_t size() noexcept
     {
-        return {};
+        return array.size();
+    }
+
+    static constexpr const T* data() noexcept
+    {
+        return array.data();
     }
 
     constexpr static_array() noexcept = default;
@@ -65,11 +70,6 @@ public:
         ACTL_ASSERT_IS_NOEXCEPT())
     {
         check_values(x0, xs...);
-    }
-
-    static constexpr const T* data() noexcept
-    {
-        return array.data();
     }
 
     using base_t::operator[];

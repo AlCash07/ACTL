@@ -9,79 +9,11 @@
 #include <actl/assert.hpp>
 #include <actl/container/array/static_array.hpp>
 #include <actl/container/extent.hpp>
-#include <actl/iterator/facade/iterator_facade.hpp>
-#include <actl/range/facade/range_facade.hpp>
 
 namespace ac {
 
 template <class T, T... Values>
-class semi_static_array;
-
-namespace detail {
-
-template <class T, T... Values>
-struct ssa_types
-{
-    struct iter_types
-    {
-        using iterator_category = std::bidirectional_iterator_tag;
-        using value_type = T;
-        using reference = T;
-        using difference_type = use_default;
-    };
-
-    class iterator : public iterator_facade<iterator, iter_types>
-    {
-        friend class semi_static_array<T, Values...>;
-        friend struct ac::iterator_core_access;
-
-        explicit constexpr iterator(size_t i, const T* arr_iter) noexcept
-            : i_{i}, arr_iter_{arr_iter}
-        {}
-
-        constexpr T get() const noexcept
-        {
-            return static_array<T, Values...>{}[i_];
-        }
-
-        constexpr T dereference() const noexcept
-        {
-            return get() == dynamic_extent<T> ? *arr_iter_ : get();
-        }
-
-        constexpr void increment() noexcept
-        {
-            if (get() == dynamic_extent<T>)
-                ++arr_iter_;
-            ++i_;
-        }
-
-        constexpr void decrement() noexcept
-        {
-            if (get() == dynamic_extent<T>)
-                --arr_iter_;
-            --i_;
-        }
-
-        constexpr bool equals(const iterator& rhs) const noexcept
-        {
-            return i_ == rhs.i_;
-        }
-
-        size_t i_;
-        const T* arr_iter_;
-    };
-
-    using size_type = size_t;
-};
-
-} // namespace detail
-
-template <class T, T... Values>
 class semi_static_array
-    : public range_facade<
-          semi_static_array<T, Values...>,
-          detail::ssa_types<T, Values...>>
 {
     template <class... Ts>
     static constexpr bool can_construct_from()
@@ -93,6 +25,9 @@ class semi_static_array
     }
 
 public:
+    using value_type = T;
+    using size_type = size_t;
+
     static constexpr auto static_values = static_array<T, Values...>{};
 
     static constexpr size_t size_dynamic() noexcept
@@ -101,8 +36,6 @@ public:
     }
 
     static_assert(size_dynamic() > 0);
-
-    using iterator = typename detail::ssa_types<T, Values...>::iterator;
 
     constexpr semi_static_array() noexcept = default;
 
@@ -129,26 +62,17 @@ public:
         : array_{static_cast<T>(x0), static_cast<T>(xs)...}
     {}
 
-    constexpr auto begin() const noexcept
+    static constexpr size_t size() noexcept
     {
-        return iterator{0, array_.data()};
-    }
-
-    constexpr auto end() const noexcept
-    {
-        return iterator{size(), array_.data() + array_.size()};
-    }
-
-    static constexpr auto size() noexcept
-    {
-        return size_constant<sizeof...(Values)>{};
+        return sizeof...(Values);
     }
 
     constexpr T operator[](size_t i) const noexcept
     {
-        auto it = begin();
-        std::advance(it, i);
-        return *it;
+        if (static_values[i] != dynamic_extent<T>)
+            return static_values[i];
+        else
+            return array_[dynamic_index_f(i)];
     }
 
     template <auto I>
@@ -161,9 +85,11 @@ public:
             return array_[dynamic_index<I>];
     }
 
-    template <class U, U I>
-    constexpr auto operator[](std::integral_constant<U, I>) noexcept
-        -> std::enable_if_t<static_values[I] == dynamic_extent<T>, T&>
+    template <
+        class U,
+        U I,
+        enable_int_if<static_values[I] == dynamic_extent<T>> = 0>
+    constexpr T& operator[](std::integral_constant<U, I>) noexcept
     {
         return array_[dynamic_index<I>];
     }
@@ -206,6 +132,14 @@ private:
     template <size_t I>
     static constexpr size_t dynamic_index =
         dymanic_index_impl(std::make_index_sequence<I>{});
+
+    static constexpr size_t dynamic_index_f(size_t i)
+    {
+        size_t result = 0;
+        for (size_t j = 0; j < i; ++j)
+            result += static_values[j] == dynamic_extent<T>;
+        return result;
+    }
 
     template <size_t I>
     constexpr void assign_at([[maybe_unused]] T x) noexcept(
