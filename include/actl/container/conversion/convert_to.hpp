@@ -4,16 +4,26 @@
 
 namespace ac {
 
-template <class To, class From, class = void>
-struct conversion
+template <class To, class From>
+struct conversion_default : std::true_type
 {
-    static constexpr bool value = std::is_constructible_v<To, From>;
-
     static constexpr To convert(From&& x) noexcept(noexcept(static_cast<To>(x)))
     {
         return static_cast<To>(x);
     }
 };
+
+template <class To, class From, class = void>
+struct conversion_sfinae : std::false_type
+{};
+
+template <class To, class From>
+struct conversion
+    : std::conditional_t<
+          std::is_constructible_v<To, From>,
+          conversion_default<To, From>,
+          conversion_sfinae<To, From>>
+{};
 
 template <class To, class From>
 inline constexpr bool can_convert_to_v = conversion<To, From>::value;
