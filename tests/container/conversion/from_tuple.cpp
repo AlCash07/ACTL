@@ -14,23 +14,14 @@ static_assert(
 static_assert(!ac::can_convert_to_v<tuple_ic, std::tuple<int, S>>);
 static_assert(!ac::can_convert_to_v<tuple_ic, std::tuple<S, char>>);
 
-/* can convert from a prefix tuple */
-static_assert(ac::can_convert_to_v<tuple_ic, std::tuple<int>>);
-static_assert(noexcept(ac::convert_to<tuple_ic>(std::tuple<int>{4})));
-static_assert(tuple_ic{4, 0} == ac::convert_to<tuple_ic>(std::tuple<int>{4}));
-static_assert(!ac::can_convert_to_v<std::tuple<int>, tuple_ic>);
-
-/* tuple with a single element */
+/* interoperability with the first element */
 static_assert(ac::can_convert_to_v<int, std::tuple<int>>);
 static_assert(noexcept(ac::convert_to<int>(std::tuple<int>{4})));
 static_assert(4 == ac::convert_to<int>(std::tuple<int>{4}));
 
-/* interoperability with the first element */
-static_assert(ac::can_convert_to_v<tuple_ic, int>);
-static_assert(noexcept(ac::convert_to<tuple_ic>(4)));
-static_assert(tuple_ic{4, 0} == ac::convert_to<tuple_ic>(4));
-static_assert(!ac::can_convert_to_v<tuple_ic, S>);
 static_assert(!ac::can_convert_to_v<int, tuple_ic>);
+static_assert(!ac::can_convert_to_v<std::tuple<int>, tuple_ic>);
+static_assert(!ac::can_convert_to_v<tuple_ic, S>);
 
 TEST_CASE("tuple to vector")
 {

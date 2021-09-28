@@ -95,9 +95,9 @@ class semi_static_array
 public:
     static constexpr auto static_values = static_array<T, Values...>{};
 
-    static constexpr auto size_dynamic()
+    static constexpr size_t size_dynamic() noexcept
     {
-        return size_constant<(0 + ... + size_t{Values == dynamic_extent<T>})>{};
+        return (0 + ... + size_t{Values == dynamic_extent<T>});
     }
 
     static_assert(size_dynamic() > 0);
@@ -109,7 +109,6 @@ public:
     template <
         class T0,
         class... Ts,
-        size_t N = sizeof...(Ts),
         enable_int_if<
             sizeof...(Ts) + 1 != size_dynamic() &&
             can_construct_from<T0, Ts...>()> = 0>

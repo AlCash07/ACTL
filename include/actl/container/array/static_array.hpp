@@ -48,8 +48,7 @@ class static_array
     static constexpr std::array<T, sizeof...(Values)> array = {Values...};
 
 public:
-    static constexpr std::integral_constant<size_t, array.size()>
-    size() noexcept
+    static constexpr t_constant<array.size()> size() noexcept
     {
         return {};
     }
@@ -106,9 +105,9 @@ private:
     }
 };
 
-template <class... Ts, Ts... Values>
-static_array(std::integral_constant<Ts, Values>...)
-    -> static_array<std::common_type_t<Ts...>, Values...>;
+template <class T, T... Values>
+static_array(std::integral_constant<T, Values>...)
+    -> static_array<T, Values...>;
 
 template <class T, T... Values>
 struct range_traits<static_array<T, Values...>> : default_range_traits
