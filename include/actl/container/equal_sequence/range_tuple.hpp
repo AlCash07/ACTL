@@ -24,6 +24,7 @@ template <
 constexpr bool equal_sequence(const T& lhs, const U& rhs) noexcept
 {
     constexpr size_t n = std::tuple_size_v<T>;
+    static_assert(noexcept(rhs.size()));
     if (rhs.size() != n)
         return false;
     return detail::equal_tuple_range(lhs, rhs, std::make_index_sequence<n>{});

@@ -8,6 +8,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/array/static_array.hpp>
+#include <actl/container/extent.hpp>
 #include <actl/iterator/facade/iterator_facade.hpp>
 #include <actl/range/facade/range_facade.hpp>
 
@@ -34,7 +35,7 @@ struct ssa_types
         friend class semi_static_array<T, Values...>;
         friend struct ac::iterator_core_access;
 
-        explicit constexpr iterator(index i, const T* arr_iter) noexcept
+        explicit constexpr iterator(size_t i, const T* arr_iter) noexcept
             : i_{i}, arr_iter_{arr_iter}
         {}
 
@@ -45,19 +46,19 @@ struct ssa_types
 
         constexpr T dereference() const noexcept
         {
-            return get() == dynamic_size ? *arr_iter_ : get();
+            return get() == dynamic_extent<T> ? *arr_iter_ : get();
         }
 
         constexpr void increment() noexcept
         {
-            if (get() == dynamic_size)
+            if (get() == dynamic_extent<T>)
                 ++arr_iter_;
             ++i_;
         }
 
         constexpr void decrement() noexcept
         {
-            if (get() == dynamic_size)
+            if (get() == dynamic_extent<T>)
                 --arr_iter_;
             --i_;
         }
@@ -67,11 +68,11 @@ struct ssa_types
             return i_ == rhs.i_;
         }
 
-        index i_;
+        size_t i_;
         const T* arr_iter_;
     };
 
-    using size_type = index;
+    using size_type = size_t;
 };
 
 } // namespace detail
@@ -82,87 +83,50 @@ class semi_static_array
           semi_static_array<T, Values...>,
           detail::ssa_types<T, Values...>>
 {
-    static constexpr size_t dynamic_count =
-        (0 + ... + (Values == dynamic_size));
-
-    using array_t = std::array<T, dynamic_count>;
-
-    array_t array_;
-
-    template <size_t... Is>
-    static constexpr size_t dymanic_index_impl(
-        std::index_sequence<Is...>) noexcept
+    template <class... Ts>
+    static constexpr bool can_construct_from()
     {
-        return (
-            0 + ... +
-            size_t{static_array<T, Values...>{}[index{Is}] == dynamic_size});
-    }
-
-    template <size_t I>
-    static constexpr size_t dynamic_index =
-        dymanic_index_impl(std::make_index_sequence<I>{});
-
-    template <class Array, size_t... Is>
-    constexpr auto equal_impl(
-        const Array& rhs, std::index_sequence<Is...>) const noexcept
-    {
-        if constexpr (size() != Array::size())
-            return std::false_type{};
+        if constexpr (sizeof...(Ts) == sizeof...(Values))
+            return (... && can_convert_v<extent_holder_t<Values>, Ts>);
         else
-            return (... && ((*this)[Is] == rhs[Is]));
+            return false;
     }
 
 public:
+    static constexpr auto static_values = static_array<T, Values...>{};
+
+    static constexpr auto size_dynamic()
+    {
+        return size_constant<(0 + ... + size_t{Values == dynamic_extent<T>})>{};
+    }
+
+    static_assert(size_dynamic() > 0);
+
     using iterator = typename detail::ssa_types<T, Values...>::iterator;
 
     constexpr semi_static_array() noexcept = default;
 
     template <
+        class T0,
         class... Ts,
         size_t N = sizeof...(Ts),
         enable_int_if<
-            ((N != dynamic_count && N == sizeof...(Values)) && ... &&
-             std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr semi_static_array(Ts... xs) noexcept(
+            sizeof...(Ts) + 1 != size_dynamic() &&
+            can_construct_from<T0, Ts...>()> = 0>
+    explicit constexpr semi_static_array(T0 x0, Ts... xs) noexcept(
         ACTL_ASSERT_IS_NOEXCEPT())
-        : semi_static_array{std::array<T, sizeof...(Values)>{xs...}}
+        : semi_static_array{indexes, x0, xs...}
     {}
 
-    template <
-        class R,
-        enable_int_if<is_range_v<R> && static_size_v<R> != dynamic_count> = 0>
-    explicit constexpr semi_static_array(const R& range) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT())
-        : array_{} // default initialization is needed here to support constexpr
-    {
-        auto iter = begin();
-        for (auto&& x : range)
-        {
-            if (iter.get() == dynamic_size)
-                array_[static_cast<size_t>(iter.arr_iter_ - array_.data())] = x;
-            else
-                ACTL_ASSERT(x == iter.get());
-            ++iter;
-        }
-        ACTL_ASSERT(iter == end());
-    }
-
+    // The first parameter is needed because of the bug in std::is_trivial impl.
     template <
         class... Ts,
         enable_int_if<
-            ((sizeof...(Ts) == dynamic_count) && ... &&
-             std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr semi_static_array(Ts... xs) noexcept : array_{xs...}
+            sizeof...(Ts) + 1 == size_dynamic() &&
+            (... && std::is_convertible_v<Ts, T>)> = 0>
+    explicit constexpr semi_static_array(T x, Ts... xs) noexcept
+        : array_{x, static_cast<T>(xs)...}
     {}
-
-    template <
-        class R,
-        enable_int_if<is_range_v<R> && static_size_v<R> == dynamic_count> = 0>
-    explicit constexpr semi_static_array(const R& dynamic) noexcept : array_{}
-    {
-        for (size_t i = 0; i < dynamic_count; ++i)
-            array_[i] = static_cast<T>(dynamic[i]);
-    }
 
     constexpr auto begin() const noexcept
     {
@@ -174,12 +138,12 @@ public:
         return iterator{size(), array_.data() + array_.size()};
     }
 
-    static constexpr index size() noexcept
+    static constexpr auto size() noexcept
     {
-        return index{sizeof...(Values)};
+        return size_constant<sizeof...(Values)>{};
     }
 
-    constexpr T operator[](index i) const noexcept
+    constexpr T operator[](size_t i) const noexcept
     {
         auto it = begin();
         std::advance(it, i);
@@ -190,16 +154,15 @@ public:
     constexpr auto operator[](
         std::integral_constant<decltype(I), I> i) const noexcept
     {
-        constexpr auto static_x = static_array<T, Values...>{}[i];
-        if constexpr (static_x == dynamic_size)
-            return array_[dynamic_index<I>];
+        if constexpr (static_values[i] != dynamic_extent<T>)
+            return static_values[i];
         else
-            return static_x;
+            return array_[dynamic_index<I>];
     }
 
-    template <auto I>
-    constexpr auto operator[](std::integral_constant<decltype(I), I> i) noexcept
-        -> std::enable_if_t<static_array<T, Values...>{}[i] == dynamic_size, T&>
+    template <class U, U I>
+    constexpr auto operator[](std::integral_constant<U, I>) noexcept
+        -> std::enable_if_t<static_values[I] == dynamic_extent<T>, T&>
     {
         return array_[dynamic_index<I>];
     }
@@ -210,18 +173,54 @@ public:
         lhs.array_.swap(rhs.array_);
     }
 
-    template <class Array>
     friend constexpr auto operator==(
-        const semi_static_array& lhs, const Array& rhs) noexcept
+        const semi_static_array& lhs, const semi_static_array& rhs) noexcept
     {
-        return lhs.equal_impl(rhs, std::make_index_sequence<size()>{});
+        for (size_t i = 0; i != size_dynamic(); ++i)
+            if (lhs.array_[i] != rhs.array_[i])
+                return false;
+        return true;
     }
 
-    template <class Array>
     friend constexpr auto operator!=(
-        const semi_static_array& lhs, const Array& rhs) noexcept
+        const semi_static_array& lhs, const semi_static_array& rhs) noexcept
     {
         return !(lhs == rhs);
+    }
+
+private:
+    using array_t = std::array<T, size_dynamic()>;
+
+    array_t array_;
+
+    static constexpr auto indexes = std::make_index_sequence<size()>{};
+
+    template <size_t... Is>
+    static constexpr size_t dymanic_index_impl(
+        std::index_sequence<Is...>) noexcept
+    {
+        return (0 + ... + size_t{static_values[Is] == dynamic_extent<T>});
+    }
+
+    template <size_t I>
+    static constexpr size_t dynamic_index =
+        dymanic_index_impl(std::make_index_sequence<I>{});
+
+    template <size_t I>
+    constexpr void assign_at([[maybe_unused]] T x) noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT())
+    {
+        if constexpr (static_values[I] == dynamic_extent<T>)
+            array_[dynamic_index<I>] = x;
+    }
+
+    template <size_t... Is, class... Ts>
+    explicit constexpr semi_static_array(
+        std::index_sequence<Is...>,
+        Ts... xs) noexcept(ACTL_ASSERT_IS_NOEXCEPT())
+        : array_{}
+    {
+        (..., assign_at<Is>(convert<extent_holder_t<static_values[Is]>>(xs)));
     }
 };
 

@@ -96,7 +96,7 @@ struct constant_impl<U, X, true>
 };
 
 template <class U, char... Cs>
-struct constant_from_string
+struct constant_from_str
 {
     using number = to_number<Cs...>;
 
@@ -113,8 +113,10 @@ struct constant_from_string
         return x;
     }
 
-    using type =
-        typename constant_impl<U, fold(U{0}, typename number::digits{})>::type;
+    using unsigned_type =
+        std::integral_constant<U, fold(U{0}, typename number::digits{})>;
+
+    using type = typename constant_impl<U, unsigned_type::value>::type;
 };
 
 } // namespace detail
@@ -124,14 +126,27 @@ inline namespace constant_literals {
 template <char... Cs>
 constexpr auto operator""_c()
 {
-    return typename detail::constant_from_string<unsigned, Cs...>::type{};
+    return typename detail::constant_from_str<unsigned, Cs...>::type{};
+}
+
+template <char... Cs>
+constexpr auto operator""_uc()
+{
+    return typename detail::constant_from_str<unsigned, Cs...>::unsigned_type{};
 }
 
 template <char... Cs>
 constexpr auto operator""_cll()
 {
-    return typename detail::constant_from_string<unsigned long long, Cs...>::
-        type{};
+    return
+        typename detail::constant_from_str<unsigned long long, Cs...>::type{};
+}
+
+template <char... Cs>
+constexpr auto operator""_ucll()
+{
+    return typename detail::constant_from_str<unsigned long long, Cs...>::
+        unsigned_type{};
 }
 
 } // namespace constant_literals

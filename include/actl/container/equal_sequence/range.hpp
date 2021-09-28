@@ -20,7 +20,7 @@ template <
     enable_int_if<detail::is_range_seq_v<T> && detail::is_range_seq_v<U>> = 0>
 constexpr bool equal_sequence(const T& lhs, const U& rhs) noexcept
 {
-    static_assert(noexcept(lhs.size(), rhs.size(), lhs[0], rhs[0]));
+    static_assert(noexcept(lhs.size(), lhs[0], rhs.size(), rhs[0]));
     auto n = lhs.size();
     if (rhs.size() != n)
         return false;
