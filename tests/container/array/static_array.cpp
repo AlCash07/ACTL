@@ -33,6 +33,8 @@ void test_static_array_constructors()
     static_assert(!std::is_constructible_v<sa2, int, int, int>);
     static_assert(!std::is_constructible_v<sa2, int, void*>);
     static_assert(!std::is_constructible_v<sa2, decltype(2_c), int>);
+    /* CTAD */
+    static_assert(ac::equal_same_type(array, ac::static_array{3_c, 1_c}));
 }
 
 } // namespace

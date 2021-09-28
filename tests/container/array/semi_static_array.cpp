@@ -28,18 +28,21 @@ void test_static_array_constructors()
 {
     using ssa4 = ac::semi_static_array<unsigned int, 3, -1u, -1u, 2>;
     constexpr ssa4 array{5, 4};
-    // from dynamic values
+    /* from dynamic values */
     static_assert(array == ssa4{5_c, 4u});
     static_assert(!std::is_constructible_v<ssa4, int>);
     static_assert(!std::is_constructible_v<ssa4, int, int, int>);
     static_assert(!std::is_constructible_v<ssa4, int, void*>);
-    // from all values
+    /* from all values */
     static_assert(array == ssa4{3, 5u, 4, 2u});
     static_assert(array == ssa4{3_c, 5_c, 4, 2});
     CHECK_THROWS(ssa4{2, 2, 2, 2});
     static_assert(!std::is_constructible_v<ssa4, int, int, int, int, int>);
     static_assert(!std::is_constructible_v<ssa4, decltype(4_c), int, int, int>);
     static_assert(!std::is_constructible_v<ssa4, int, void*, int, int>);
+    /* CTAD */
+    static_assert(
+        ac::equal_same_type(array, ac::semi_static_array{3_uc, 5u, 4u, 2_uc}));
 }
 
 } // namespace

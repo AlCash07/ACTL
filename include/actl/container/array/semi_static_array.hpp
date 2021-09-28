@@ -120,12 +120,14 @@ public:
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
     template <
+        class T0,
         class... Ts,
         enable_int_if<
             sizeof...(Ts) + 1 == size_dynamic() &&
+            std::is_convertible_v<T0, T> &&
             (... && std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr semi_static_array(T x, Ts... xs) noexcept
-        : array_{x, static_cast<T>(xs)...}
+    explicit constexpr semi_static_array(T0 x0, Ts... xs) noexcept
+        : array_{static_cast<T>(x0), static_cast<T>(xs)...}
     {}
 
     constexpr auto begin() const noexcept
@@ -223,6 +225,11 @@ private:
         (..., assign_at<Is>(convert<extent_holder_t<static_values[Is]>>(xs)));
     }
 };
+
+template <class... Ts, enable_int_if<are_same_v<decltype(static_v<Ts>)...>> = 0>
+semi_static_array(Ts...) -> semi_static_array<
+    std::common_type_t<decltype(static_v<Ts>)...>,
+    static_v<Ts>...>;
 
 template <class T, T... Values>
 struct range_traits<semi_static_array<T, Values...>> : default_range_traits

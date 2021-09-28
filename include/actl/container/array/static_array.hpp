@@ -106,6 +106,10 @@ private:
     }
 };
 
+template <class... Ts, Ts... Values>
+static_array(std::integral_constant<Ts, Values>...)
+    -> static_array<std::common_type_t<Ts...>, Values...>;
+
 template <class T, T... Values>
 struct range_traits<static_array<T, Values...>> : default_range_traits
 {
