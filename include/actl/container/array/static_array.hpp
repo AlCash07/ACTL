@@ -82,6 +82,12 @@ public:
         return std::integral_constant<T, array[I]>{};
     }
 
+    template <size_t I>
+    constexpr auto get() const noexcept
+    {
+        return (*this)[t_constant<I>{}];
+    }
+
     friend constexpr void swap(static_array&, static_array&) noexcept {}
 
     friend constexpr std::true_type operator==(
@@ -116,3 +122,19 @@ struct range_traits<static_array<T, Values...>> : default_range_traits
 };
 
 } // namespace ac
+
+namespace std {
+
+template <class T, T... Values>
+struct tuple_size<ac::static_array<T, Values...>>
+{
+    static constexpr size_t value = sizeof...(Values);
+};
+
+template <size_t I, class T, T... Values>
+struct tuple_element<I, ac::static_array<T, Values...>>
+{
+    using type = decltype(ac::static_array<T, Values...>{}.template get<I>());
+};
+
+} // namespace std

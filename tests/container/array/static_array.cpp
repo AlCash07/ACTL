@@ -60,4 +60,11 @@ TEST_CASE("static_array")
         static_assert(
             ac::equal_same_type(std::integral_constant<int, -1>{}, array[1_c]));
     }
+    SECTION("structured binding")
+    {
+        static_assert(noexcept(array.get<1>()));
+        auto [x0, x1] = array; // can't be constexpr yet
+        CHECK(3 == x0);
+        CHECK(-1 == x1);
+    }
 }

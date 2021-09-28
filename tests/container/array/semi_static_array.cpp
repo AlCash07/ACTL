@@ -49,30 +49,35 @@ void test_static_array_constructors()
 
 TEST_CASE("semi_static_array")
 {
-    using ssa2 = ac::semi_static_array<size_t, ac::dynamic_extent<>, 2>;
-    using ssa4 = ac::semi_static_array<int, 3, -1, -1, 2>;
+    using ssa2 = ac::semi_static_array<size_t, 3, ac::dynamic_extent<>>;
+    using ssa4 = ac::semi_static_array<int, -1, 3, -1, 2>;
     test_semi_static_array_type_traits<ssa2>();
     test_semi_static_array_type_traits<ssa4>();
-    constexpr ssa4 array{5, 4};
-    ac::test_regular(array, ssa4{4, 4});
+    ac::test_regular(ssa4{5, 4}, ssa4{4, 4});
     test_static_array_constructors();
-
     SECTION("element access")
     {
+        constexpr ssa4 array{5, 4};
         static_assert(4 == array.size());
-        static_assert(ac::equal_same_type(3_c, array[0_c]));
+        static_assert(ac::equal_same_type(3_c, array[1_c]));
         static_assert(ac::equal_same_type(2_c, array[3_c]));
         for (size_t i = 0; i < array.size(); ++i)
         {
-            CHECK(std::array{3, 5, 4, 2}[i] == array[i]);
+            CHECK(std::array{5, 3, 4, 2}[i] == array[i]);
         }
     }
-
     SECTION("dynamic element modification")
     {
-        ac::semi_static_array<unsigned int, 3, -1u> mutable_a{2};
-        CHECK(2 == mutable_a[1]);
+        ssa2 mutable_a{1};
+        CHECK(1 == mutable_a[1]);
         mutable_a[1_c] = 5;
         CHECK(5 == mutable_a[1]);
+    }
+    SECTION("structured binding")
+    {
+        static_assert(noexcept(ssa2{}.get<1>()));
+        auto [x0, x1] = ssa2{1}; // can't be constexpr yet
+        CHECK(3 == x0);
+        CHECK(1 == x1);
     }
 }
