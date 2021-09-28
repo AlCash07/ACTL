@@ -94,6 +94,12 @@ public:
         return array_[dynamic_index<I>];
     }
 
+    template <size_t I>
+    constexpr auto get() const noexcept
+    {
+        return (*this)[size_constant<I>{}];
+    }
+
     friend constexpr void swap(
         semi_static_array& lhs, semi_static_array& rhs) noexcept
     {
@@ -172,3 +178,20 @@ struct range_traits<semi_static_array<T, Values...>> : default_range_traits
 };
 
 } // namespace ac
+
+namespace std {
+
+template <class T, T... Values>
+struct tuple_size<ac::semi_static_array<T, Values...>>
+{
+    static constexpr size_t value = sizeof...(Values);
+};
+
+template <size_t I, class T, T... Values>
+struct tuple_element<I, ac::semi_static_array<T, Values...>>
+{
+    using type =
+        decltype(ac::semi_static_array<T, Values...>{}.template get<I>());
+};
+
+} // namespace std
