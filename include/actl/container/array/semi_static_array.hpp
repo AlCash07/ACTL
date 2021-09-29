@@ -88,11 +88,9 @@ public:
             return dynamic_values[dynamic_index<I>];
     }
 
-    template <
-        class U,
-        U I,
-        enable_int_if<static_values[I] == dynamic_extent<T>> = 0>
-    constexpr T& operator[](std::integral_constant<U, I>) noexcept
+    template <class U, U I>
+    constexpr auto operator[](std::integral_constant<U, I>) noexcept
+        -> std::enable_if_t<static_values[I] == dynamic_extent<T>, T&>
     {
         return dynamic_values[dynamic_index<I>];
     }
