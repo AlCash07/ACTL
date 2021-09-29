@@ -1,5 +1,6 @@
 #pragma once
 
+#include <actl/utility/use_default.hpp>
 #include <limits>
 #include <type_traits>
 
@@ -17,19 +18,19 @@ using extent_holder_t = std::conditional_t<
     T,
     std::integral_constant<T, StaticExtent>>;
 
-template <class T>
+template <class T, class Dst>
 struct static_value
 {
-    static constexpr T value = dynamic_extent<T>;
+    static constexpr auto value = dynamic_extent<deduce_t<Dst, T>>;
 };
 
-template <class T, T N>
-struct static_value<std::integral_constant<T, N>>
+template <class T, T N, class Dst>
+struct static_value<std::integral_constant<T, N>, Dst>
 {
-    static constexpr T value = N;
+    static constexpr auto value = deduce_t<Dst, T>{N};
 };
 
-template <class T>
-inline constexpr auto static_v = static_value<T>::value;
+template <class T, class Dst = use_default>
+inline constexpr auto static_v = static_value<T, Dst>::value;
 
 } // namespace ac
