@@ -28,7 +28,10 @@ public:
     using value_type = T;
     using size_type = size_t;
 
-    static constexpr auto static_values = static_array<T, Values...>{};
+    static constexpr size_t size() noexcept
+    {
+        return sizeof...(Values);
+    }
 
     static constexpr size_t size_dynamic() noexcept
     {
@@ -36,6 +39,10 @@ public:
     }
 
     static_assert(size_dynamic() > 0);
+
+    static constexpr auto static_values = static_array<T, Values...>{};
+
+    std::array<T, size_dynamic()> dynamic_values;
 
     constexpr semi_static_array() noexcept = default;
 
@@ -59,20 +66,16 @@ public:
             std::is_convertible_v<T0, T> &&
             (... && std::is_convertible_v<Ts, T>)> = 0>
     explicit constexpr semi_static_array(T0 x0, Ts... xs) noexcept
-        : array_{static_cast<T>(x0), static_cast<T>(xs)...}
+        : dynamic_values{static_cast<T>(x0), static_cast<T>(xs)...}
     {}
 
-    static constexpr size_t size() noexcept
+    constexpr T operator[](size_t i) const noexcept(ACTL_ASSERT_IS_NOEXCEPT())
     {
-        return sizeof...(Values);
-    }
-
-    constexpr T operator[](size_t i) const noexcept
-    {
+        ACTL_ASSERT(i < size());
         if (static_values[i] != dynamic_extent<T>)
             return static_values[i];
         else
-            return array_[dynamic_index_f(i)];
+            return dynamic_values[dynamic_index_f(i)];
     }
 
     template <auto I>
@@ -82,7 +85,7 @@ public:
         if constexpr (static_values[i] != dynamic_extent<T>)
             return static_values[i];
         else
-            return array_[dynamic_index<I>];
+            return dynamic_values[dynamic_index<I>];
     }
 
     template <
@@ -91,7 +94,7 @@ public:
         enable_int_if<static_values[I] == dynamic_extent<T>> = 0>
     constexpr T& operator[](std::integral_constant<U, I>) noexcept
     {
-        return array_[dynamic_index<I>];
+        return dynamic_values[dynamic_index<I>];
     }
 
     template <size_t I>
@@ -103,14 +106,14 @@ public:
     friend constexpr void swap(
         semi_static_array& lhs, semi_static_array& rhs) noexcept
     {
-        lhs.array_.swap(rhs.array_);
+        lhs.dynamic_values.swap(rhs.dynamic_values);
     }
 
     friend constexpr auto operator==(
         const semi_static_array& lhs, const semi_static_array& rhs) noexcept
     {
         for (size_t i = 0; i != size_dynamic(); ++i)
-            if (lhs.array_[i] != rhs.array_[i])
+            if (lhs.dynamic_values[i] != rhs.dynamic_values[i])
                 return false;
         return true;
     }
@@ -122,10 +125,6 @@ public:
     }
 
 private:
-    using array_t = std::array<T, size_dynamic()>;
-
-    array_t array_;
-
     static constexpr auto indexes = std::make_index_sequence<size()>{};
 
     template <size_t... Is>
@@ -152,14 +151,14 @@ private:
         ACTL_ASSERT_IS_NOEXCEPT())
     {
         if constexpr (static_values[I] == dynamic_extent<T>)
-            array_[dynamic_index<I>] = x;
+            dynamic_values[dynamic_index<I>] = x;
     }
 
     template <size_t... Is, class... Ts>
     explicit constexpr semi_static_array(
         std::index_sequence<Is...>,
         Ts... xs) noexcept(ACTL_ASSERT_IS_NOEXCEPT())
-        : array_{}
+        : dynamic_values{}
     {
         (...,
          assign_at<Is>(convert_to<extent_holder_t<static_values[Is]>>(xs)));

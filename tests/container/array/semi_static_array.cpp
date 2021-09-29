@@ -26,58 +26,113 @@ void test_semi_static_array_type_traits()
 
 void test_static_array_constructors()
 {
-    using ssa4 = ac::semi_static_array<unsigned int, 3, -1u, -1u, 2>;
-    constexpr ssa4 array{5, 4};
+    using ssa3XX2 = ac::semi_static_array<int, 3, -1, -1, 2>;
+    /* default constructor fills all the dynamic extents with 0 */
+    static_assert(ssa3XX2{0, 0} == ssa3XX2{});
+    constexpr ssa3XX2 array{5, 4};
     /* from dynamic values */
-    static_assert(array == ssa4{5_c, 4u});
-    static_assert(!std::is_constructible_v<ssa4, int>);
-    static_assert(!std::is_constructible_v<ssa4, int, int, int>);
-    static_assert(!std::is_constructible_v<ssa4, int, void*>);
+    static_assert(array == ssa3XX2{5_c, 4u});
+    static_assert(!std::is_constructible_v<ssa3XX2, int>);
+    static_assert(!std::is_constructible_v<ssa3XX2, int, int, int>);
+    static_assert(!std::is_constructible_v<ssa3XX2, int, void*>);
     /* from all values */
-    static_assert(array == ssa4{3, 5u, 4, 2u});
-    static_assert(array == ssa4{3_c, 5_c, 4, 2});
-    CHECK_THROWS(ssa4{2, 2, 2, 2});
-    static_assert(!std::is_constructible_v<ssa4, int, int, int, int, int>);
-    static_assert(!std::is_constructible_v<ssa4, decltype(4_c), int, int, int>);
-    static_assert(!std::is_constructible_v<ssa4, int, void*, int, int>);
+    static_assert(array == ssa3XX2{3, 5u, 4, 2u});
+    static_assert(array == ssa3XX2{3_c, 5_c, 4, 2});
+    CHECK_THROWS(ssa3XX2{2, 2, 2, 2});
+    static_assert(!std::is_constructible_v<ssa3XX2, int, int, int, int, int>);
+    static_assert(
+        !std::is_constructible_v<ssa3XX2, decltype(4_c), int, int, int>);
+    static_assert(!std::is_constructible_v<ssa3XX2, int, void*, int, int>);
     /* CTAD */
     static_assert(
-        ac::equal_same_type(array, ac::semi_static_array{3_uc, 5u, 4u, 2_uc}));
+        ac::equal_same_type(array, ac::semi_static_array{3_c, 5, 4, 2_c}));
+}
+
+template <class Array, class D>
+constexpr Array fill_dynamic_values(Array src, D dynamic) noexcept
+{
+    size_t d = 0;
+    for (size_t i = 0; i < src.size(); ++i)
+        if (src[i] == ac::dynamic_extent<typename Array::value_type>)
+            src[i] = dynamic[d++];
+    return src;
+}
+
+template <auto X>
+inline constexpr auto const_v = std::integral_constant<decltype(X), X>{};
+
+template <class T, T... StaticValues, T... DynamicValues, size_t... Is>
+void test_semi_static_array_interface_impl(
+    std::integer_sequence<T, DynamicValues...>, std::index_sequence<Is...>)
+{
+    using Array = ac::semi_static_array<T, StaticValues...>;
+    constexpr Array array{DynamicValues...};
+    constexpr auto values = fill_dynamic_values(
+        std::array{StaticValues...}, std::array{DynamicValues...});
+    /* size */
+    static_assert(noexcept(Array::size()));
+    static_assert(sizeof...(StaticValues) == Array::size());
+    static_assert(noexcept(Array::size_dynamic()));
+    static_assert(sizeof...(DynamicValues) == Array::size_dynamic());
+    /* element access */
+    static_assert(((StaticValues == array.static_values[Is]) && ...));
+    static_assert(ACTL_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
+    static_assert(((values[Is] == array[Is]) && ...));
+    static_assert(((noexcept(array[const_v<Is>])) && ...));
+    static_assert(
+        (std::is_same_v<
+             ac::extent_holder_t<StaticValues>,
+             decltype(array[const_v<Is>])> &&
+         ...));
+    static_assert(((values[Is] == array[const_v<Is>]) && ...));
+    static_assert(((noexcept(array.template get<Is>())) && ...));
+    static_assert(
+        (ac::equal_same_type(array[const_v<Is>], array.template get<Is>()) &&
+         ...));
+}
+
+template <class T, T... StaticValues, class DynamicValues>
+void test_semi_static_array_interface(DynamicValues)
+{
+    test_semi_static_array_interface_impl<T, StaticValues...>(
+        DynamicValues{}, std::make_index_sequence<sizeof...(StaticValues)>{});
 }
 
 } // namespace
 
 TEST_CASE("semi_static_array")
 {
-    using ssa2 = ac::semi_static_array<size_t, 3, ac::dynamic_extent<>>;
-    using ssa4 = ac::semi_static_array<int, -1, 3, -1, 2>;
-    test_semi_static_array_type_traits<ssa2>();
-    test_semi_static_array_type_traits<ssa4>();
-    ac::test_regular(ssa4{5, 4}, ssa4{4, 4});
+    static constexpr size_t dyn = ac::dynamic_extent<>;
+    using ssa4X = ac::semi_static_array<int, 4, -1>;
+    using ssaX3X2 = ac::semi_static_array<size_t, dyn, 3, dyn, 2>;
+    test_semi_static_array_type_traits<ssa4X>();
+    test_semi_static_array_type_traits<ssaX3X2>();
+    ac::test_regular(ssaX3X2{5, 4}, ssaX3X2{4, 4});
     test_static_array_constructors();
-    SECTION("element access")
-    {
-        constexpr ssa4 array{5, 4};
-        static_assert(4 == array.size());
-        static_assert(ac::equal_same_type(3_c, array[1_c]));
-        static_assert(ac::equal_same_type(2_c, array[3_c]));
-        for (size_t i = 0; i < array.size(); ++i)
-        {
-            CHECK(std::array{5, 3, 4, 2}[i] == array[i]);
-        }
-    }
+    test_semi_static_array_interface<size_t, 4, dyn>(std::index_sequence<2>{});
+    test_semi_static_array_interface<size_t, dyn, 2>(std::index_sequence<4>{});
+    test_semi_static_array_interface<int, -1, 3, -1>(
+        std::integer_sequence<int, 5, 2>{});
     SECTION("dynamic element modification")
     {
-        ssa2 mutable_a{1};
-        CHECK(1 == mutable_a[1]);
-        mutable_a[1_c] = 5;
-        CHECK(5 == mutable_a[1]);
+        ssa4X mutable_array{5};
+        CHECK(5 == mutable_array[1]);
+        mutable_array[1_c] = 3;
+        CHECK(3 == mutable_array[1]);
+        mutable_array.dynamic_values[0] = 2;
+        CHECK(2 == mutable_array[1]);
     }
     SECTION("structured binding")
     {
-        static_assert(noexcept(ssa2{}.get<1>()));
-        auto [x0, x1] = ssa2{1}; // can't be constexpr yet
-        CHECK(3 == x0);
-        CHECK(1 == x1);
+        auto [x0, x1] = ssa4X{2}; // can't be constexpr yet
+        CHECK(ac::equal_same_type(4_c, x0));
+        CHECK(ac::equal_same_type(2, x1));
+    }
+    /* equality */ {
+        static_assert(noexcept(ssaX3X2{} == ssaX3X2{}));
+        static_assert(noexcept(ssaX3X2{} != ssaX3X2{}));
+        static_assert(ssaX3X2{5, 0} == ssaX3X2{5, 0});
+        static_assert(!(ssaX3X2{5, 0} == ssaX3X2{}));
+        static_assert(!(ssaX3X2{5, 0} == ssaX3X2{5, 1}));
     }
 }
