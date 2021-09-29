@@ -1,14 +1,10 @@
 #include <actl/container/array/semi_static_array_selector.hpp>
-#include <actl/container/conversion/from_tuple.hpp>
-#include <actl/container/conversion/integral_constant.hpp>
 #include <actl/container/equal_sequence/range_tuple.hpp>
 
 template <class T, T... Values>
 using ssa = ac::semi_static_array_t<T, Values...>;
 
 inline constexpr size_t dyn = ac::dynamic_extent<>;
-
-/* equal_sequence */
 
 /* sequences with 1 element */
 static_assert(ac::equal_sequence(ssa<size_t, 4>{}, ssa<size_t, dyn>{4}));

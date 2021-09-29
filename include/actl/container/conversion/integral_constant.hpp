@@ -25,7 +25,8 @@ struct conversion<
 {
     static constexpr bool value = X == Y;
 
-    static constexpr std::integral_constant<To, X> convert(From) noexcept
+    static constexpr std::integral_constant<To, X> convert(
+        std::integral_constant<From, Y>) noexcept
     {
         return {};
     }

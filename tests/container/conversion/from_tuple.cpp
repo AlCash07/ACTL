@@ -8,6 +8,7 @@ using tuple_ic = std::tuple<int, char>;
 
 /* tuples with the same number of elements */
 static_assert(ac::can_convert_to_v<tuple_ic, std::tuple<char, int>>);
+static_assert(ac::can_convert_to_v<tuple_ic, const std::tuple<char, int>&>);
 static_assert(noexcept(ac::convert_to<tuple_ic>(std::tuple<char, int>{4, 2})));
 static_assert(
     tuple_ic{4, 2} == ac::convert_to<tuple_ic>(std::tuple<char, int>{4, 2}));
@@ -16,6 +17,7 @@ static_assert(!ac::can_convert_to_v<tuple_ic, std::tuple<S, char>>);
 
 /* interoperability with the first element */
 static_assert(ac::can_convert_to_v<int, std::tuple<int>>);
+static_assert(ac::can_convert_to_v<int, std::tuple<int>&>);
 static_assert(noexcept(ac::convert_to<int>(std::tuple<int>{4})));
 static_assert(4 == ac::convert_to<int>(std::tuple<int>{4}));
 
