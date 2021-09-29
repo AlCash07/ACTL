@@ -79,7 +79,7 @@ public:
         std::integral_constant<decltype(I), I>) const noexcept
     {
         static_assert(0 <= I && I < size());
-        return std::integral_constant<T, array[I]>{};
+        return t_constant<array[I]>{};
     }
 
     template <size_t I>
