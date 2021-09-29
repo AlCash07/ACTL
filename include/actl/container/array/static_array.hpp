@@ -83,9 +83,9 @@ public:
     }
 
     template <size_t I>
-    constexpr auto get() const noexcept
+    friend constexpr auto get(static_array src) noexcept
     {
-        return (*this)[t_constant<I>{}];
+        return src[t_constant<I>{}];
     }
 
     friend constexpr void swap(static_array&, static_array&) noexcept {}
@@ -134,7 +134,7 @@ struct tuple_size<ac::static_array<T, Values...>>
 template <size_t I, class T, T... Values>
 struct tuple_element<I, ac::static_array<T, Values...>>
 {
-    using type = decltype(ac::static_array<T, Values...>{}.template get<I>());
+    using type = decltype(get<I>(ac::static_array<T, Values...>{}));
 };
 
 } // namespace std

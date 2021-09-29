@@ -12,8 +12,9 @@ template <class T, class U, size_t... Is>
 constexpr bool equal_tuple(
     const T& lhs, const U& rhs, std::index_sequence<Is...>) noexcept
 {
-    static_assert(noexcept((... && (std::get<Is>(lhs) == std::get<Is>(rhs)))));
-    return (... && (std::get<Is>(lhs) == std::get<Is>(rhs)));
+    using std::get;
+    static_assert(noexcept((... && (get<Is>(lhs) == get<Is>(rhs)))));
+    return (... && (get<Is>(lhs) == get<Is>(rhs)));
 }
 
 } // namespace detail
