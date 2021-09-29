@@ -60,10 +60,11 @@ void test_static_array_interface_impl(std::index_sequence<Is...>)
     static_assert(((noexcept(array[const_v<Is>])) && ...));
     static_assert(
         (ac::equal_same_type(const_v<Values>, array[const_v<Is>]) && ...));
-    static_assert(((noexcept(array.template get<Is>())) && ...));
+    /* tuple interface */
+    using std::get;
+    static_assert(((noexcept(get<Is>(array))) && ...));
     static_assert(
-        (ac::equal_same_type(array[const_v<Is>], array.template get<Is>()) &&
-         ...));
+        (ac::equal_same_type(array[const_v<Is>], get<Is>(array)) && ...));
     /* equality */
     static_assert(noexcept(array == array));
     static_assert(array == array);

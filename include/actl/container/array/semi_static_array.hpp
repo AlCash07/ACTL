@@ -96,9 +96,9 @@ public:
     }
 
     template <size_t I>
-    constexpr auto get() const noexcept
+    friend constexpr auto get(const semi_static_array& src) noexcept
     {
-        return (*this)[size_constant<I>{}];
+        return src[size_constant<I>{}];
     }
 
     friend constexpr void swap(
@@ -187,8 +187,7 @@ struct tuple_size<ac::semi_static_array<T, Values...>>
 template <size_t I, class T, T... Values>
 struct tuple_element<I, ac::semi_static_array<T, Values...>>
 {
-    using type =
-        decltype(ac::semi_static_array<T, Values...>{}.template get<I>());
+    using type = decltype(get<I>(ac::semi_static_array<T, Values...>{}));
 };
 
 } // namespace std
