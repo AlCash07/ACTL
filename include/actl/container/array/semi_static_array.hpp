@@ -12,6 +12,20 @@
 
 namespace ac {
 
+namespace detail {
+
+// TODO: remove when std::array operator== is constexpr.
+template <class Array>
+constexpr bool equal_array(const Array& lhs, const Array& rhs) noexcept
+{
+    for (size_t i = 0; i != lhs.size(); ++i)
+        if (lhs[i] != rhs[i])
+            return false;
+    return true;
+}
+
+} // namespace detail
+
 template <class T, T... Values>
 class semi_static_array
 {
@@ -110,10 +124,7 @@ public:
     friend constexpr auto operator==(
         const semi_static_array& lhs, const semi_static_array& rhs) noexcept
     {
-        for (size_t i = 0; i != size_dynamic(); ++i)
-            if (lhs.dynamic_values[i] != rhs.dynamic_values[i])
-                return false;
-        return true;
+        return detail::equal_array(lhs.dynamic_values, rhs.dynamic_values);
     }
 
     friend constexpr auto operator!=(
