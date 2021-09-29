@@ -26,54 +26,61 @@ class rng_facade : public T
 {
 public:
     ENABLE_IF_HAS_CONST constexpr auto cbegin() const
+        noexcept(noexcept(derived().begin()))
     {
         return derived().begin();
     }
 
     ENABLE_IF_HAS_CONST constexpr auto cend() const
+        noexcept(noexcept(derived().end()))
     {
         return derived().end();
     }
 
     constexpr bool empty() const
+        noexcept(noexcept(derived().begin() == derived().end()))
     {
         return derived().begin() == derived().end();
     }
 
-    ENABLE_IF_HAS_CONST constexpr bool empty()
+    ENABLE_IF_HAS_CONST constexpr bool empty() noexcept(
+        noexcept(derived().begin() == derived().end()))
     {
         return derived().begin() == derived().end();
     }
 
-    explicit constexpr operator bool() const
+    explicit constexpr operator bool() const noexcept(noexcept(!empty()))
     {
         return !empty();
     }
 
-    ENABLE_IF_HAS_CONST explicit constexpr operator bool()
+    ENABLE_IF_HAS_CONST explicit constexpr operator bool() noexcept(
+        noexcept(!empty()))
     {
         return !empty();
     }
 
     constexpr decltype(auto) front() const
+        noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin()))
     {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) front()
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) front() noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin()))
     {
         ACTL_ASSERT(!empty());
         return *derived().begin();
     }
 
 protected:
-    constexpr const D& derived() const
+    constexpr const D& derived() const noexcept
     {
         return static_cast<const D&>(*this);
     }
 
-    constexpr D& derived()
+    constexpr D& derived() noexcept
     {
         return static_cast<D&>(*this);
     }
@@ -98,15 +105,18 @@ template <class D, class T>
 class rng_facade<D, T, std::bidirectional_iterator_tag>
     : public rng_facade<D, T, std::forward_iterator_tag>
 {
+protected:
+    using rng_facade<D, T, std::forward_iterator_tag>::derived;
+
 public:
     constexpr auto rbegin() const
     {
-        return crev_iter_t<T>{this->derived().end()};
+        return crev_iter_t<T>{derived().end()};
     }
 
     ENABLE_IF_HAS_CONST constexpr auto rbegin()
     {
-        return typename T::reverse_iterator{this->derived().end()};
+        return typename T::reverse_iterator{derived().end()};
     }
 
     ENABLE_IF_HAS_CONST constexpr auto crbegin() const
@@ -116,12 +126,12 @@ public:
 
     constexpr auto rend() const
     {
-        return crev_iter_t<T>{this->derived().begin()};
+        return crev_iter_t<T>{derived().begin()};
     }
 
     ENABLE_IF_HAS_CONST constexpr auto rend()
     {
-        return typename T::reverse_iterator{this->derived().begin()};
+        return typename T::reverse_iterator{derived().begin()};
     }
 
     ENABLE_IF_HAS_CONST constexpr auto crend() const
@@ -130,16 +140,18 @@ public:
     }
 
     constexpr decltype(auto) back() const
+        noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--derived().end()))
     {
         ACTL_ASSERT(!this->empty());
-        auto last = this->derived().end();
+        auto last = derived().end();
         return *--last;
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) back()
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) back() noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--derived().end()))
     {
         ACTL_ASSERT(!this->empty());
-        auto last = this->derived().end();
+        auto last = derived().end();
         return *--last;
     }
 };
@@ -152,28 +164,33 @@ class rng_facade<D, T, std::random_access_iterator_tag>
     using base_t::derived;
 
 public:
+    using typename base_t::difference_type;
     using typename base_t::size_type;
 
     constexpr decltype(auto) operator[](size_type n) const
+        noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(
+            derived().begin()[static_cast<difference_type>(n)]))
     {
         ACTL_ASSERT(0 <= n && n < size());
-        return derived()
-            .begin()[static_cast<typename base_t::difference_type>(n)];
+        return derived().begin()[static_cast<difference_type>(n)];
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) operator[](size_type n)
+    ENABLE_IF_HAS_CONST constexpr decltype(auto)
+    operator[](size_type n) noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(
+        derived().begin()[static_cast<difference_type>(n)]))
     {
         ACTL_ASSERT(0 <= n && n < size());
-        return derived()
-            .begin()[static_cast<typename base_t::difference_type>(n)];
+        return derived().begin()[static_cast<difference_type>(n)];
     }
 
-    constexpr auto size() const
+    constexpr auto size() const noexcept(
+        noexcept(static_cast<size_type>(derived().end() - derived().begin())))
     {
         return static_cast<size_type>(derived().end() - derived().begin());
     }
 
-    ENABLE_IF_HAS_CONST constexpr auto size()
+    ENABLE_IF_HAS_CONST constexpr auto size() noexcept(
+        noexcept(static_cast<size_type>(derived().end() - derived().begin())))
     {
         return static_cast<size_type>(derived().end() - derived().begin());
     }

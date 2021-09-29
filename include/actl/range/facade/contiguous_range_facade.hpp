@@ -17,33 +17,36 @@ template <class Range, class Types>
 class contiguous_range_facade
     : public range_facade<contiguous_range_facade<Range, Types>, Types>
 {
-    constexpr Range& derived()
+    constexpr Range& derived() noexcept
     {
         return static_cast<Range&>(*this);
     }
 
-    constexpr const Range& derived() const
+    constexpr const Range& derived() const noexcept
     {
         return static_cast<const Range&>(*this);
     }
 
 public:
-    constexpr decltype(auto) begin() const
+    constexpr decltype(auto) begin() const noexcept(noexcept(derived().data()))
     {
         return derived().data();
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) begin()
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) begin() noexcept(
+        noexcept(derived().data()))
     {
         return derived().data();
     }
 
     constexpr decltype(auto) end() const
+        noexcept(noexcept(begin() + derived().size()))
     {
         return begin() + derived().size();
     }
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) end()
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) end() noexcept(
+        noexcept(begin() + derived().size()))
     {
         return begin() + derived().size();
     }
