@@ -75,10 +75,9 @@ struct from_tuple<To, From, std::index_sequence<Is...>>
 
 template <class To, class From>
 struct conversion_sfinae<
+    std::enable_if_t<is_tuple_v<remove_cvref_t<From>>>,
     To,
-    From,
-    std::enable_if_t<is_tuple_v<remove_cvref_t<From>>>>
-    : detail::from_tuple<To, From>
+    From> : detail::from_tuple<To, From>
 {};
 
 } // namespace ac

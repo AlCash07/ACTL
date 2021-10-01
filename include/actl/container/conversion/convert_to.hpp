@@ -4,35 +4,39 @@
 
 namespace ac {
 
-template <class To, class From>
+template <class To, class... Args>
 struct conversion_default : std::true_type
 {
-    static constexpr To convert(From&& x) noexcept(noexcept(static_cast<To>(x)))
+    static constexpr To convert(Args&&... xs) noexcept(
+        noexcept(To(std::forward<Args>(xs)...)))
     {
-        return static_cast<To>(x);
+        return To(std::forward<Args>(xs)...);
     }
 };
 
-template <class To, class From, class = void>
+template <class AlwaysVoid, class To, class... Args>
 struct conversion_sfinae : std::false_type
 {};
 
-template <class To, class From>
+template <class To, class... Args>
 struct conversion
     : std::conditional_t<
-          std::is_constructible_v<To, From>,
-          conversion_default<To, From>,
-          conversion_sfinae<To, From>>
+          std::is_constructible_v<To, Args...>,
+          conversion_default<To, Args...>,
+          conversion_sfinae<void, To, Args...>>
 {};
 
-template <class To, class From>
-inline constexpr bool can_convert_to_v = conversion<To, From>::value;
+template <class To, class... Args>
+inline constexpr bool can_convert_to_v = conversion<To, Args...>::value;
 
-template <class To, class From, enable_int_if<can_convert_to_v<To, From>> = 0>
-constexpr To convert_to(From&& x) noexcept(
-    noexcept(conversion<To, From>::convert(std::forward<From>(x))))
+template <
+    class To,
+    class... Args,
+    enable_int_if<can_convert_to_v<To, Args...>> = 0>
+constexpr To convert_to(Args&&... xs) noexcept(
+    noexcept(conversion<To, Args...>::convert(std::forward<Args>(xs)...)))
 {
-    return conversion<To, From>::convert(std::forward<From>(x));
+    return conversion<To, Args...>::convert(std::forward<Args>(xs)...);
 }
 
 } // namespace ac
