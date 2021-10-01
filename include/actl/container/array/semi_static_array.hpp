@@ -51,7 +51,8 @@ public:
 
     constexpr semi_static_array() noexcept = default;
 
-    explicit constexpr semi_static_array(extent_holder_t<Values>... xs) noexcept
+    explicit constexpr semi_static_array(
+        extent_holder_t<T, Values>... xs) noexcept
         : semi_static_array{indexes, xs...}
     {}
 
@@ -148,17 +149,19 @@ private:
 
     template <size_t... Is>
     explicit constexpr semi_static_array(
-        std::index_sequence<Is...>, extent_holder_t<Values>... xs) noexcept
+        std::index_sequence<Is...>, extent_holder_t<T, Values>... xs) noexcept
         : dynamic_values{}
     {
         (..., assign_at<Is>(xs));
     }
 };
 
-template <class... Ts, enable_int_if<are_same_v<decltype(static_v<Ts>)...>> = 0>
+template <
+    class... Ts,
+    enable_int_if<are_same_v<decltype(static_extent_v<Ts>)...>> = 0>
 semi_static_array(Ts...) -> semi_static_array<
-    std::common_type_t<decltype(static_v<Ts>)...>,
-    static_v<Ts>...>;
+    std::common_type_t<decltype(static_extent_v<Ts>)...>,
+    static_extent_v<Ts>...>;
 
 template <class T, T... Values>
 struct range_traits<semi_static_array<T, Values...>> : default_range_traits
