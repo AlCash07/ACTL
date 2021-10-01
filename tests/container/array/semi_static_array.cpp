@@ -80,7 +80,7 @@ void test_semi_static_array_interface_impl(
     static_assert(((noexcept(array[const_v<Is>])) && ...));
     static_assert(
         (std::is_same_v<
-             ac::extent_holder_t<StaticValues>,
+             ac::extent_holder_t<T, StaticValues>,
              decltype(array[const_v<Is>])> &&
          ...));
     static_assert(((values[Is] == array[const_v<Is>]) && ...));
