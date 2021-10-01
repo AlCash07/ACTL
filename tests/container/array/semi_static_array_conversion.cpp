@@ -1,6 +1,6 @@
 #include <actl/container/array/semi_static_array_selector.hpp>
 #include <actl/container/conversion/from_tuple.hpp>
-#include <actl/container/conversion/integral_constant.hpp>
+#include <actl/container/conversion/to_integral_constant.hpp>
 
 template <class T, T... Values>
 using ssa = ac::semi_static_array_t<T, Values...>;
