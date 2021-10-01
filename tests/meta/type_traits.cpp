@@ -26,3 +26,17 @@ static_assert(!are_same_v<int, int, int, double>);
 
 static_assert(ac::is_equality_comparable_v<int>);
 static_assert(!ac::is_equality_comparable_v<void>);
+
+struct aggregate
+{
+    int x;
+    float y;
+};
+
+static_assert(ac::can_list_initialize_v<int, int>);
+static_assert(!ac::can_list_initialize_v<int, long long>);
+static_assert(ac::can_list_initialize_v<aggregate, int, float>);
+static_assert(!ac::can_list_initialize_v<aggregate, int, int>);
+static_assert(ac::can_list_initialize_v<int[3], int, int, int>);
+static_assert(ac::can_list_initialize_v<int[3], int, int>);
+static_assert(!ac::can_list_initialize_v<int[3], int, int, int, int>);
