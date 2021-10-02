@@ -29,30 +29,32 @@ constexpr bool equal_array(const Array& lhs, const Array& rhs) noexcept
 template <class T, T... Values>
 class semi_static_array
 {
+    static constexpr size_t size_dyn_v =
+        (0 + ... + size_t{Values == dynamic_extent<T>});
+
 public:
     using value_type = T;
     using size_type = size_t;
 
-    static constexpr size_t size() noexcept
+    static constexpr size_constant<sizeof...(Values)> size() noexcept
     {
-        return sizeof...(Values);
+        return {};
     }
 
-    static constexpr size_t size_dynamic() noexcept
+    static constexpr size_constant<size_dyn_v> size_dynamic() noexcept
     {
-        return (0 + ... + size_t{Values == dynamic_extent<T>});
+        return {};
     }
 
-    static_assert(size_dynamic() > 0);
+    static_assert(size_dyn_v > 0);
 
     static constexpr auto static_values = static_array<T, Values...>{};
 
-    std::array<T, size_dynamic()> dynamic_values;
+    std::array<T, size_dyn_v> dynamic_values;
 
     constexpr semi_static_array() noexcept = default;
 
-    explicit constexpr semi_static_array(
-        extent_holder_t<T, Values>... xs) noexcept
+    constexpr semi_static_array(extent_holder_t<T, Values>... xs) noexcept
         : semi_static_array{indexes, xs...}
     {}
 
@@ -61,10 +63,9 @@ public:
         class T0,
         class... Ts,
         enable_int_if<
-            sizeof...(Ts) + 1 == size_dynamic() &&
-            std::is_convertible_v<T0, T> &&
+            1 + sizeof...(Ts) == size_dyn_v && std::is_convertible_v<T0, T> &&
             (... && std::is_convertible_v<Ts, T>)> = 0>
-    explicit constexpr semi_static_array(T0 x0, Ts... xs) noexcept
+    constexpr semi_static_array(T0 x0, Ts... xs) noexcept
         : dynamic_values{static_cast<T>(x0), static_cast<T>(xs)...}
     {}
 

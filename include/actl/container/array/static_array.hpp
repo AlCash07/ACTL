@@ -47,9 +47,9 @@ class static_array
     static constexpr std::array<T, sizeof...(Values)> array = {Values...};
 
 public:
-    static constexpr size_t size() noexcept
+    static constexpr auto size() noexcept
     {
-        return array.size();
+        return std::integral_constant<size_t, array.size()>{};
     }
 
     static constexpr const T* data() noexcept
@@ -65,7 +65,7 @@ public:
         class T0,
         class... Ts,
         enable_int_if<can_construct_from<T0, Ts...>()> = 0>
-    explicit constexpr static_array(T0, Ts...) noexcept
+    constexpr static_array(T0, Ts...) noexcept
     {}
 
     using base_t::operator[];
