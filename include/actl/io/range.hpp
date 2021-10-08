@@ -9,6 +9,7 @@
 #include <actl/category/range.hpp>
 #include <actl/container/functions.hpp>
 #include <actl/io/io.hpp>
+#include <actl/meta/static_size.hpp>
 #include <actl/range/traits.hpp>
 
 namespace ac::io {

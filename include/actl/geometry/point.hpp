@@ -113,9 +113,7 @@ struct geometry_traits<point<T, N>>
 
 template <class T, index N>
 struct range_traits<point<T, N>> : default_range_traits
-{
-    static constexpr size_t static_size = N;
-};
+{};
 
 namespace detail {
 
