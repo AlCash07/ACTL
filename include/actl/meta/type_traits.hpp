@@ -29,6 +29,9 @@ struct add_const_if : std::conditional<B, const T, T>
 template <bool B, class T>
 using add_const_if_t = typename add_const_if<B, T>::type;
 
+template <size_t N>
+using size_constant = std::integral_constant<size_t, N>;
+
 template <class T>
 struct is_integral_constant : std::false_type
 {};

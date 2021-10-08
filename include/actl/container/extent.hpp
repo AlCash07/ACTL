@@ -1,16 +1,13 @@
 #pragma once
 
+#include <actl/meta/type_traits.hpp>
 #include <actl/utility/use_default.hpp>
 #include <limits>
-#include <type_traits>
 
 namespace ac {
 
 template <class T = size_t>
 inline constexpr T dynamic_extent = static_cast<T>(-1);
-
-template <size_t N>
-using size_constant = std::integral_constant<size_t, N>;
 
 template <class T, T StaticExtent>
 using extent_holder_t = std::conditional_t<

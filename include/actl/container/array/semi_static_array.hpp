@@ -164,12 +164,6 @@ semi_static_array(Ts...) -> semi_static_array<
     std::common_type_t<decltype(static_extent_v<Ts>)...>,
     static_extent_v<Ts>...>;
 
-template <class T, T... Values>
-struct range_traits<semi_static_array<T, Values...>> : default_range_traits
-{
-    static constexpr size_t static_size = sizeof...(Values);
-};
-
 } // namespace ac
 
 namespace std {

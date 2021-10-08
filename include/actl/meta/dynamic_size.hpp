@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <cstddef>
+
 namespace ac {
 
 inline constexpr size_t dynamic_size = size_t(-1);

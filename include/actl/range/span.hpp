@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/category/range.hpp>
+#include <actl/meta/static_size.hpp>
 #include <actl/range/facade/contiguous_range_facade.hpp>
 #include <actl/range/traits.hpp>
 #include <actl/range/utility/size_holder.hpp>
@@ -100,9 +101,7 @@ span(Range&&) -> span<
 
 template <class T, size_t N>
 struct range_traits<span<T, N>> : default_range_traits
-{
-    static constexpr size_t static_size = N;
-};
+{};
 
 template <class T, size_t N = dynamic_size>
 using cspan = span<const T, N>;

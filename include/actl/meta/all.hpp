@@ -7,11 +7,13 @@
 #pragma once
 
 #include <actl/meta/dependent.hpp>
+#include <actl/meta/dynamic_size.hpp>
 #include <actl/meta/function_traits.hpp>
 #include <actl/meta/is_iterator.hpp>
 #include <actl/meta/is_range.hpp>
 #include <actl/meta/is_template_base_of.hpp>
 #include <actl/meta/nested_or_default.hpp>
 #include <actl/meta/rebind.hpp>
+#include <actl/meta/static_size.hpp>
 #include <actl/meta/type_at.hpp>
 #include <actl/meta/type_traits.hpp>
