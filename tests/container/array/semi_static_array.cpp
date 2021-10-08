@@ -5,6 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/array/semi_static_array.hpp>
+#include <actl/integral_constant.hpp>
 #include <actl_test/base/concept/regular.hpp>
 #include <actl_test/base/equal_same_type.hpp>
 

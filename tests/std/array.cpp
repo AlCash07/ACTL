@@ -6,7 +6,6 @@
 
 #include <actl/range/traits.hpp>
 #include <actl/std/array.hpp>
-#include "test.hpp"
 
 using Array = std::array<int, 2>;
 static_assert(ac::is_container_v<Array>);
