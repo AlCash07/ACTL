@@ -20,9 +20,10 @@ constexpr bool equal_tuple_range(
 template <
     class T,
     class U,
-    enable_int_if<is_tuple_v<T> && detail::is_range_seq_v<U>> = 0>
+    enable_int_if<is_tuple_v<T> && is_dynamic_range_v<U>> = 0>
 constexpr bool equal_sequence(const T& lhs, const U& rhs) noexcept
 {
+    static_assert(is_random_access_range_v<U>);
     constexpr size_t n = std::tuple_size_v<T>;
     static_assert(noexcept(rhs.size()));
     if (rhs.size() != n)
@@ -33,7 +34,7 @@ constexpr bool equal_sequence(const T& lhs, const U& rhs) noexcept
 template <
     class T,
     class U,
-    enable_int_if<detail::is_range_seq_v<T> && is_tuple_v<U>> = 0>
+    enable_int_if<is_dynamic_range_v<T> && is_tuple_v<U>> = 0>
 constexpr bool equal_sequence(const T& lhs, const U& rhs) noexcept
 {
     return equal_sequence(rhs, lhs);
