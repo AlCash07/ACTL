@@ -16,7 +16,7 @@ class sign_parser
     bool negate = false;
 
 public:
-    index parse(cspan<char> s)
+    size_t parse(cspan<char> s)
     {
         char c = s[0];
         if constexpr (Signed)

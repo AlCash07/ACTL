@@ -14,7 +14,7 @@ namespace ac {
 
 struct default_range_traits
 {
-    static constexpr index static_size = dynamic_size;
+    static constexpr size_t static_size = dynamic_size;
     static constexpr bool is_container = false;
     static constexpr bool is_simple_associative = false;
     static constexpr bool is_pair_associative = false;
@@ -33,12 +33,12 @@ struct range_traits<const T> : range_traits<T>
 template <class T, size_t N>
 struct range_traits<T[N]> : default_range_traits
 {
-    static constexpr index static_size = static_cast<index>(N);
+    static constexpr size_t static_size = N;
     static constexpr bool is_container = true;
 };
 
 template <class T>
-inline constexpr index static_size_v = range_traits<T>::static_size;
+inline constexpr size_t static_size_v = range_traits<T>::static_size;
 
 template <class T>
 inline constexpr bool is_container_v = range_traits<T>::is_container;

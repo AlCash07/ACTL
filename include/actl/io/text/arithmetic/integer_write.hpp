@@ -19,14 +19,14 @@ template <uint8_t Size>
 class int_string
 {
 public:
-    void set_size(index size)
+    void set_size(size_t size)
     {
         data_[Size] = static_cast<char>(size);
     }
 
     void set_start(const char* x)
     {
-        set_size(data_ + Size - x);
+        set_size(static_cast<size_t>(data_ + Size - x));
     }
 
     span<char, Size> available()
@@ -36,7 +36,7 @@ public:
 
     explicit operator cspan<char>() const
     {
-        const index size = data_[Size];
+        const size_t size = static_cast<size_t>(data_[Size]);
         return {std::end(data_) - 1 - size, size};
     }
 

@@ -35,15 +35,15 @@ public:
             s = {};
     }
 
-    index write(Char c)
+    size_t write(Char c)
     {
         s_ += c;
         return 1;
     }
 
-    index write(cspan<Char> src)
+    size_t write(cspan<Char> src)
     {
-        s_.append(src.data(), static_cast<size_t>(src.size()));
+        s_.append(src.data(), src.size());
         return src.size();
     }
 
@@ -66,7 +66,7 @@ class in_string<Mode, Char, true> : public out_string<Mode, Char>
 protected:
     using base_t = out_string<Mode, Char>;
     using base_t::s_;
-    index pos_ = 0;
+    size_t pos_ = 0;
 
 public:
     using base_t::base_t;
@@ -78,8 +78,7 @@ public:
 
     Char peek()
     {
-        auto i = static_cast<size_t>(pos_);
-        return i < s_.size() ? s_[i] : Char{};
+        return pos_ < s_.size() ? s_[pos_] : Char{};
     }
 
     Char get()
@@ -89,24 +88,24 @@ public:
         return c;
     }
 
-    index read(span<Char> dst)
+    size_t read(span<Char> dst)
     {
-        index count =
-            std::min(dst.size(), static_cast<index>(s_.size()) - pos_);
-        std::memcpy(dst.data(), s_.data() + pos_, static_cast<size_t>(count));
+        size_t count =
+            std::min(dst.size(), static_cast<size_t>(s_.size() - pos_));
+        std::memcpy(dst.data(), s_.data() + pos_, count);
         pos_ += count;
         return count;
     }
 
     void move(index offset)
     {
-        pos_ += offset;
-        ACTL_ASSERT(0 <= pos_ && pos_ <= static_cast<index>(s_.size()));
+        pos_ = static_cast<size_t>(static_cast<index>(pos_) + offset);
+        ACTL_ASSERT(pos_ <= s_.size());
     }
 
     bool eof() const
     {
-        return static_cast<index>(s_.size()) < pos_;
+        return s_.size() < pos_;
     }
 };
 

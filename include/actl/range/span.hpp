@@ -19,30 +19,31 @@ template <class T>
 struct span_types
 {
     using iterator = T*;
-    using size_type = index;
+    using size_type = size_t;
 };
 
 } // namespace detail
 
-template <class T, index N = dynamic_size>
+template <class T, size_t N = dynamic_size>
 class span : public contiguous_range_facade<span<T, N>, detail::span_types<T>>
 {
 public:
     using element_type = T;
 
-    static constexpr index extent = N;
+    static constexpr size_t extent = N;
 
-    template <index M = N, enable_int_if<M <= 0> = 0>
+    template <size_t M = N, enable_int_if<M == 0 || M == dynamic_size> = 0>
     constexpr span() : storage_{nullptr, 0}
     {}
 
-    constexpr span(T* ptr, index count) : storage_{ptr, count} {}
+    constexpr span(T* ptr, size_t count) : storage_{ptr, count} {}
 
-    constexpr span(T* first, T* last) : span{first, last - first} {}
+    constexpr span(T* first, T* last)
+        : span{first, static_cast<size_t>(last - first)}
+    {}
 
     template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-    constexpr span(Range&& r)
-        : span{std::data(r), static_cast<index>(std::size(r))}
+    constexpr span(Range&& r) : span{std::data(r), std::size(r)}
     {}
 
     constexpr T* data() const
@@ -50,39 +51,39 @@ public:
         return storage_.data;
     }
 
-    constexpr index size() const
+    constexpr size_t size() const
     {
         return storage_.size();
     }
 
-    constexpr span<T> first(index n) const
+    constexpr span<T> first(size_t n) const
     {
-        ACTL_ASSERT(0 <= n && n <= size());
+        ACTL_ASSERT(n <= size());
         return {data(), n};
     }
 
-    constexpr span<T> last(index n) const
+    constexpr span<T> last(size_t n) const
     {
-        ACTL_ASSERT(0 <= n && n <= size());
+        ACTL_ASSERT(n <= size());
         return {this->end() - n, n};
     }
 
-    constexpr span<T> subspan(index offset, index count) const
+    constexpr span<T> subspan(size_t offset, size_t count) const
     {
-        ACTL_ASSERT(0 <= offset && offset + count <= size());
+        ACTL_ASSERT(offset + count <= size());
         return {data() + offset, count};
     }
 
-    constexpr span<T> subspan(index offset) const
+    constexpr span<T> subspan(size_t offset) const
     {
-        return subspan(offset, size() - offset);
+        return subspan(offset, static_cast<size_t>(size() - offset));
     }
 
 private:
     struct storage_t : size_holder<N>
     {
         T* data;
-        constexpr storage_t(T* ptr, index count)
+        constexpr storage_t(T* ptr, size_t count)
             : size_holder<N>{count}, data{ptr}
         {
             ACTL_ASSERT(ptr || count == 0);
@@ -97,13 +98,13 @@ span(Range&&) -> span<
     std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
     static_size_v<std::remove_reference_t<Range>>>;
 
-template <class T, index N>
+template <class T, size_t N>
 struct range_traits<span<T, N>> : default_range_traits
 {
-    static constexpr index static_size = N;
+    static constexpr size_t static_size = N;
 };
 
-template <class T, index N = dynamic_size>
+template <class T, size_t N = dynamic_size>
 using cspan = span<const T, N>;
 
 template <class S, class T>

@@ -12,40 +12,40 @@
 
 using namespace ac::io;
 
-using pii = std::pair<ac::index, ac::index>;
+using pss = std::pair<size_t, size_t>;
 
 TEST_CASE("adjustment::left")
 {
     adjusted fmt{4};
-    CHECK(pii{0, 0} == adjustment(fmt, 8));
-    CHECK(pii{0, 0} == adjustment(fmt, 4));
-    CHECK(pii{0, 3} == adjustment(fmt, 1));
+    CHECK(pss{0, 0} == adjustment(fmt, 8));
+    CHECK(pss{0, 0} == adjustment(fmt, 4));
+    CHECK(pss{0, 3} == adjustment(fmt, 1));
 }
 
 TEST_CASE("adjustment::right")
 {
     adjusted fmt{4, adjust_to::right};
-    CHECK(pii{0, 0} == adjustment(fmt, 8));
-    CHECK(pii{0, 0} == adjustment(fmt, 4));
-    CHECK(pii{3, 0} == adjustment(fmt, 1));
+    CHECK(pss{0, 0} == adjustment(fmt, 8));
+    CHECK(pss{0, 0} == adjustment(fmt, 4));
+    CHECK(pss{3, 0} == adjustment(fmt, 1));
 }
 
 TEST_CASE("adjustment::center")
 {
     adjusted fmt{4, adjust_to::center};
-    CHECK(pii{0, 0} == adjustment(fmt, 8));
-    CHECK(pii{0, 0} == adjustment(fmt, 4));
-    CHECK(pii{1, 1} == adjustment(fmt, 2));
-    CHECK(pii{1, 2} == adjustment(fmt, 1));
+    CHECK(pss{0, 0} == adjustment(fmt, 8));
+    CHECK(pss{0, 0} == adjustment(fmt, 4));
+    CHECK(pss{1, 1} == adjustment(fmt, 2));
+    CHECK(pss{1, 2} == adjustment(fmt, 1));
 }
 
 TEST_CASE("adjustment::center_right")
 {
     adjusted fmt{4, adjust_to::center_right};
-    CHECK(pii{0, 0} == adjustment(fmt, 8));
-    CHECK(pii{0, 0} == adjustment(fmt, 4));
-    CHECK(pii{1, 1} == adjustment(fmt, 2));
-    CHECK(pii{2, 1} == adjustment(fmt, 1));
+    CHECK(pss{0, 0} == adjustment(fmt, 8));
+    CHECK(pss{0, 0} == adjustment(fmt, 4));
+    CHECK(pss{1, 1} == adjustment(fmt, 2));
+    CHECK(pss{2, 1} == adjustment(fmt, 1));
 }
 
 TEST_CASE("fill")

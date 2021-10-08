@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
-#include <actl/utility/index.hpp>
-
 namespace ac::io {
 
 // Number of digits after the decimal point.
@@ -17,23 +14,20 @@ class precision_t
 public:
     explicit constexpr precision_t() = default;
 
-    explicit constexpr precision_t(index x) : value{x}
-    {
-        ACTL_ASSERT(x >= 0);
-    }
+    explicit constexpr precision_t(size_t x) : value{x} {}
 
-    precision_t& operator=(index x)
+    precision_t& operator=(size_t x)
     {
         return *this = precision_t{x};
     }
 
-    constexpr operator index() const
+    constexpr operator size_t() const
     {
         return value;
     }
 
 private:
-    index value = 6;
+    size_t value = 6;
 };
 
 } // namespace ac::io

@@ -22,7 +22,7 @@ struct text_tag
 template <class T>
 using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
 
-template <flag_t Flags = 0, uint8_t Base = 10, index Precision = 6>
+template <flag_t Flags = 0, uint8_t Base = 10, size_t Precision = 6>
 class text_static
 {
 public:

@@ -76,7 +76,7 @@ public:
         return c == EOF ? Char{} : static_cast<Char>(c);
     }
 
-    index read(span<Char> dst)
+    size_t read(span<Char> dst)
     {
         size_t res{};
         if constexpr (is_line_buffered<Mode>)
@@ -87,13 +87,9 @@ public:
         }
         else
         {
-            res = std::fread(
-                dst.data(),
-                sizeof(Char),
-                static_cast<size_t>(dst.size()),
-                this->file_);
+            res = std::fread(dst.data(), sizeof(Char), dst.size(), this->file_);
         }
-        return static_cast<index>(res);
+        return res;
     }
 
     void move(index offset)
@@ -117,18 +113,14 @@ class file<Mode, Char, true> : public in_file<Mode, Char>
 public:
     using in_file<Mode, Char>::in_file;
 
-    index write(Char c)
+    size_t write(Char c)
     {
         return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0;
     }
 
-    index write(cspan<Char> src)
+    size_t write(cspan<Char> src)
     {
-        return static_cast<index>(std::fwrite(
-            src.data(),
-            sizeof(Char),
-            static_cast<size_t>(src.size()),
-            this->file_));
+        return std::fwrite(src.data(), sizeof(Char), src.size(), this->file_);
     }
 
     void flush()

@@ -106,7 +106,7 @@ static_array(std::integral_constant<T, Values>...)
 template <class T, T... Values>
 struct range_traits<static_array<T, Values...>> : default_range_traits
 {
-    static constexpr index static_size = sizeof...(Values);
+    static constexpr size_t static_size = sizeof...(Values);
 };
 
 } // namespace ac

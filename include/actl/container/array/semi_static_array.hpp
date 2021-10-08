@@ -167,7 +167,7 @@ semi_static_array(Ts...) -> semi_static_array<
 template <class T, T... Values>
 struct range_traits<semi_static_array<T, Values...>> : default_range_traits
 {
-    static constexpr index static_size = sizeof...(Values);
+    static constexpr size_t static_size = sizeof...(Values);
 };
 
 } // namespace ac

@@ -24,11 +24,11 @@ template <class Char = char>
 struct adjusted
 {
     explicit constexpr adjusted(
-        index width, adjust_to where = adjust_to::left, Char fill = ' ')
+        size_t width, adjust_to where = adjust_to::left, Char fill = ' ')
         : width{width}, where{where}, fill{fill}
     {}
 
-    index width;
+    size_t width;
     adjust_to where;
     Char fill;
 
@@ -36,15 +36,15 @@ struct adjusted
 };
 
 template <class Format>
-constexpr std::pair<index, index> adjustment(const Format& fmt, index size)
+constexpr std::pair<size_t, size_t> adjustment(const Format& fmt, size_t size)
 {
-    size = fmt.width - size;
-    if (size <= 0)
+    if (fmt.width <= size)
         return {0, 0};
+    size = static_cast<size_t>(fmt.width - size);
     auto p = (static_cast<uint8_t>(fmt.where) &
               static_cast<uint8_t>(adjust_to::center)) != 0
                  ? std::pair{size / 2, size - size / 2}
-                 : std::pair{index{}, size};
+                 : std::pair{size_t{}, size};
     return (static_cast<uint8_t>(fmt.where) &
             static_cast<uint8_t>(adjust_to::right)) != 0
                ? std::pair{p.second, p.first}

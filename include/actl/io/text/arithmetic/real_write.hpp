@@ -22,9 +22,9 @@ namespace detail {
 class float_string
 {
 public:
-    span<char> reserve(index size)
+    span<char> reserve(size_t size)
     {
-        ptr_ = std::make_unique<char[]>(static_cast<size_t>(size));
+        ptr_ = std::make_unique<char[]>(size);
         return {ptr_.get(), size};
     }
 
@@ -88,7 +88,7 @@ auto encode(Format& fmt, Float x)
     {
         using UInt = unsigned long long;
         UInt base = fmt.base;
-        index precision = fmt.precision;
+        size_t precision = fmt.precision;
         auto base_power = binary_pow(base, precision);
         auto integer_part = static_cast<UInt>(x);
         auto fractional_part =
@@ -102,7 +102,7 @@ auto encode(Format& fmt, Float x)
             detail::digit_count(
                 std::numeric_limits<UInt>::max(),
                 base < 10 ? UInt{2} : UInt{10}) +
-            1 + std::max(index{0}, precision));
+            1 + std::max(size_t{0}, precision));
         first = s.end() - precision;
         if (0 < precision)
         {

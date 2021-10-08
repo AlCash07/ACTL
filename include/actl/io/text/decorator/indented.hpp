@@ -18,8 +18,8 @@ struct indented
 
     Char fill = ' ';
     Char endl = '\n';
-    index count = 1;
-    index level = 0;
+    size_t count = 1;
+    size_t level = 0;
     bool indent = false;
 };
 

@@ -28,9 +28,9 @@ public:
     UInt max;
 
     template <digit_kind Kind>
-    index parse_impl(cspan<char> s)
+    size_t parse_impl(cspan<char> s)
     {
-        index i = 0;
+        size_t i = 0;
         if (state == states::empty)
         {
             x = to_digit<UInt, Kind>(s[i]);
@@ -64,7 +64,7 @@ public:
         return i;
     }
 
-    index parse(cspan<char> s)
+    size_t parse(cspan<char> s)
     {
         return base <= 10 ? parse_impl<digit>(s) : parse_impl<alnum>(s);
     }
