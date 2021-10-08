@@ -15,10 +15,10 @@ template <class Char>
 struct repeat
 {
     explicit repeat() : c{}, count{0} {}
-    explicit repeat(Char c, index count) : c{c}, count{count} {}
+    explicit repeat(Char c, size_t count) : c{c}, count{count} {}
 
     Char c;
-    index count;
+    size_t count;
 };
 
 template <class Device, class Format, class Char>
@@ -30,22 +30,22 @@ bool write_final(Device& od, Format&, repeat<Char> x)
         if (x.count <= s.size())
         {
             std::fill_n(s.data(), x.count, x.c);
-            od.move(x.count);
+            od.move(static_cast<index>(x.count));
         }
         else
         {
             std::fill_n(s.data(), s.size(), x.c);
-            od.move(s.size());
+            od.move(static_cast<index>(s.size()));
             x.count -= s.size();
             s = od.output_data();
             std::fill_n(s.data(), std::min(x.count, s.size()), x.c);
             // Here we assume that s references device buffer and does not
             // change.
-            for (index n = x.count / s.size(); n > 0; --n)
+            for (size_t n = x.count / s.size(); n > 0; --n)
             {
-                od.move(s.size());
+                od.move(static_cast<index>(s.size()));
             }
-            od.move(x.count % s.size());
+            od.move(static_cast<index>(x.count % s.size()));
         }
     }
     else

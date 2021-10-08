@@ -26,7 +26,7 @@ struct boolean_parser
 public:
     explicit boolean_parser(bool alpha) : alpha{alpha} {}
 
-    index parse(cspan<char> s)
+    size_t parse(cspan<char> s)
     {
         if (state == states::empty)
         {

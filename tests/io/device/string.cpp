@@ -15,12 +15,12 @@ TEST_CASE("input")
     CHECK('b' == id.get());
     id.move(-1);
     char dst[9];
-    CHECK(4l == id.read({dst, 5}));
+    CHECK(4ul == id.read({dst, 5}));
     CHECK("bcde"sv == std::string(dst, dst + 4));
     s += 'f';
-    CHECK(1l == id.read({dst, 3}));
+    CHECK(1ul == id.read({dst, 3}));
     CHECK("f"sv == std::string(dst, dst + 1));
-    CHECK(0l == id.read({dst, 3}));
+    CHECK(0ul == id.read({dst, 3}));
     CHECK('\0' == id.get());
 }
 
@@ -28,7 +28,7 @@ TEST_CASE("output")
 {
     std::string s;
     io::string<io::app> od{s};
-    CHECK(1l == od.write('a'));
-    CHECK(3l == od.write({"bcd", 3}));
+    CHECK(1ul == od.write('a'));
+    CHECK(3ul == od.write({"bcd", 3}));
     CHECK("abcd"sv == s);
 }

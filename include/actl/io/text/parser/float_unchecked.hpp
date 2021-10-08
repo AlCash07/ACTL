@@ -30,14 +30,14 @@ class float_unchecked_parser
     states state = states::empty;
     sign_parser<true> sign;
     const UInt base;
-    const index max_length;
+    const size_t max_length;
     Float x = 0;
     Float power = 1;
 
     auto parse_int(cspan<char> s)
     {
         uint_unchecked_parser<UInt> parser{base};
-        index length =
+        size_t length =
             parser.parse(s.size() <= max_length ? s : s.first(max_length));
         return std::pair{parser.value(), length};
     }
@@ -51,9 +51,9 @@ public:
               1}
     {}
 
-    index parse(cspan<char> s)
+    size_t parse(cspan<char> s)
     {
-        index i = 0;
+        size_t i = 0;
         switch (state)
         {
             case states::empty:

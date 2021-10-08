@@ -57,9 +57,9 @@ class base_parser
 public:
     explicit base_parser(uint8_t base) : base{base} {}
 
-    index parse(cspan<char> s)
+    size_t parse(cspan<char> s)
     {
-        index i = 0;
+        size_t i = 0;
         switch (state)
         {
             case states::empty:

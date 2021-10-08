@@ -59,7 +59,7 @@ public:
         return {ptr_, end()};
     }
 
-    index write(Char c)
+    size_t write(Char c)
     {
         if (ptr_ >= end())
             return 0;
@@ -67,11 +67,10 @@ public:
         return 1;
     }
 
-    index write(cspan<Char> src)
+    size_t write(cspan<Char> src)
     {
-        index count = std::min(src.size(), end() - ptr_);
-        std::memcpy(
-            ptr_, src.data(), static_cast<size_t>(count) * sizeof(Char));
+        size_t count = std::min(src.size(), static_cast<size_t>(end() - ptr_));
+        std::memcpy(ptr_, src.data(), count * sizeof(Char));
         ptr_ += count;
         return count;
     }
@@ -114,10 +113,10 @@ public:
         return c;
     }
 
-    index read(span<Char> dst)
+    size_t read(span<Char> dst)
     {
-        index count = std::min(dst.size(), end() - ptr_);
-        std::memcpy(dst.data(), ptr_, static_cast<size_t>(count));
+        size_t count = std::min(dst.size(), static_cast<size_t>(end() - ptr_));
+        std::memcpy(dst.data(), ptr_, count);
         ptr_ += count;
         return count;
     }

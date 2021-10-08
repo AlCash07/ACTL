@@ -6,10 +6,8 @@
 
 #pragma once
 
-#include <actl/utility/index.hpp>
-
 namespace ac {
 
-inline constexpr index dynamic_size = -1;
+inline constexpr size_t dynamic_size = size_t(-1);
 
 } // namespace ac

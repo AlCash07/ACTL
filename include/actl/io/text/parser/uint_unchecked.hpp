@@ -21,9 +21,9 @@ public:
     explicit uint_unchecked_parser(UInt base) : base{base} {}
 
     template <digit_kind Kind>
-    index parse_impl(cspan<char> s)
+    size_t parse_impl(cspan<char> s)
     {
-        index i = 0;
+        size_t i = 0;
         for (; i != s.size(); ++i)
         {
             UInt d = to_digit<UInt, Kind>(s[i]);
@@ -34,7 +34,7 @@ public:
         return i;
     }
 
-    index parse(cspan<char> s)
+    size_t parse(cspan<char> s)
     {
         return base <= 10 ? parse_impl<digit>(s) : parse_impl<alnum>(s);
     }

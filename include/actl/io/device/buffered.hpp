@@ -63,21 +63,21 @@ public:
         return c;
     }
 
-    index read(span<Char> dst)
+    size_t read(span<Char> dst)
     {
         Char* dstPtr = dst.data();
-        index count = dst.size();
-        index available = end_ - ptr_;
+        size_t count = dst.size();
+        size_t available = static_cast<size_t>(end_ - ptr_);
         if (count < available)
         {
             std::copy_n(ptr_, count, dstPtr);
             ptr_ += count;
             return count;
         }
-        index res = available;
+        size_t res = available;
         dstPtr = std::copy_n(ptr_, available, dstPtr);
         count -= available;
-        index remainder = count % std::size(base_t::buf_);
+        size_t remainder = count % std::size(base_t::buf_);
         if (remainder < count)
         {
             res += Device::read({dstPtr, count - remainder});
@@ -138,8 +138,8 @@ protected:
     void write_impl(cspan<Char> src)
     {
         const Char* srcPtr = src.data();
-        index count = src.size();
-        index available = std::end(buf_) - ptr_;
+        size_t count = src.size();
+        size_t available = static_cast<size_t>(std::end(buf_) - ptr_);
         if (count < available)
         {
             if (count == 1)
@@ -157,7 +157,7 @@ protected:
             Device::write(buf_);
             srcPtr += available;
             count -= available;
-            index remainder = count % std::size(buf_);
+            size_t remainder = count % std::size(buf_);
             if (remainder < count)
             {
                 Device::write({srcPtr, count - remainder});
@@ -178,14 +178,14 @@ public:
         return {ptr_, std::end(buf_)};
     }
 
-    index write(Char c)
+    size_t write(Char c)
     {
         *ptr_ = c;
         move(1);
         return 1;
     }
 
-    index write(cspan<Char> src)
+    size_t write(cspan<Char> src)
     {
         if constexpr (is_line_buffered<base_t::mode>)
         {

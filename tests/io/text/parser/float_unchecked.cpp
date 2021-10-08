@@ -12,7 +12,7 @@ using namespace ac::io;
 TEST_CASE("read double")
 {
     text f;
-    double x;
+    double x{};
     test_read<false>(x, ".1", f);
     CHECK(read(io::string<io::in>{"+0.123456789"}, f, x));
     CHECK_NEAR(0.123456789, x, 1e-12);

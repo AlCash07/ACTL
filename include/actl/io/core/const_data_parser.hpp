@@ -15,9 +15,10 @@ struct const_data_parser
 {
     cspan<char> pending;
 
-    index parse(cspan<char> s)
+    size_t parse(cspan<char> s)
     {
-        auto matching = mismatch(pending, s).second - s.begin();
+        size_t matching =
+            static_cast<size_t>(mismatch(pending, s).second - s.begin());
         pending = pending.subspan(matching);
         return matching;
     }

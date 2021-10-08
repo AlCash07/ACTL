@@ -147,7 +147,7 @@ template <
     class Device,
     class Format,
     class B,
-    index N,
+    size_t N,
     enable_int_if_byte<B> = 0>
 bool write_final(Device& od, Format&, span<B, N> s)
 {
@@ -160,7 +160,7 @@ template <
     class Device,
     class Format,
     class B,
-    index N,
+    size_t N,
     enable_int_if_byte<B> = 0>
 bool read_final(Device& id, Format&, span<B, N>& s)
 {
@@ -172,7 +172,7 @@ template <
     class Device,
     class Format,
     class B,
-    index N,
+    size_t N,
     enable_int_if_byte<B> = 0>
 bool read_final(Device& id, Format&, cspan<B, N>& s)
 {

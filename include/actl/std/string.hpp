@@ -25,15 +25,16 @@ namespace io {
 template <class Device, class C, class T, class A, class P>
 void read_till(Device& id, till<std::basic_string<C, T, A>&, P> x)
 {
-    index length = std::max(index{16}, static_cast<index>(x.value.capacity()));
-    for (index last = 0;; length = last += length)
+    size_t length = std::max(size_t{16}, x.value.capacity());
+    for (size_t last = 0;; length = last += length)
     {
-        x.value.resize(static_cast<size_t>(last + length));
-        auto* ptr = &x.value[static_cast<size_t>(last)];
-        index chars_read = read_till(id, till{span{ptr, length}, x.terminator});
+        x.value.resize(last + length);
+        auto* ptr = &x.value[last];
+        size_t chars_read =
+            read_till(id, till{span{ptr, length}, x.terminator});
         if (chars_read < length)
         {
-            x.value.resize(static_cast<size_t>(last + chars_read));
+            x.value.resize(last + chars_read);
             return;
         }
     }

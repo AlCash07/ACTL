@@ -25,7 +25,7 @@ public:
         ACTL_ASSERT(x == 0 || 1 < x && x <= 36);
     }
 
-    base_t& operator=(index x)
+    base_t& operator=(size_t x)
     {
         return *this = base_t{x};
     }

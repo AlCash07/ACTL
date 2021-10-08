@@ -23,11 +23,11 @@ struct till
 template <class T, class P>
 till(T&&, P) -> till<T, P>;
 
-template <class Device, class P, index N>
-index read_till(Device& id, till<span<char, N>, P> x)
+template <class Device, class P, size_t N>
+size_t read_till(Device& id, till<span<char, N>, P> x)
 {
-    index i = 0;
-    const index size = x.value.size();
+    size_t i = 0;
+    const size_t size = x.value.size();
     if constexpr (has_input_buffer<Device>::value)
     {
         while (true)

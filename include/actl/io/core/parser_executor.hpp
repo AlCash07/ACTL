@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <actl/utility/index.hpp>
+
 namespace ac::io {
 
 template <class Device, class Parser>
@@ -15,7 +17,7 @@ bool parsed_available_data(Device& id, Parser& parser)
     if (s.empty())
         return false;
     auto offset = parser.parse(s);
-    id.move(offset);
+    id.move(static_cast<index>(offset));
     return offset == s.size();
 }
 
