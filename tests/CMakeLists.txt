@@ -18,7 +18,6 @@ target_link_libraries(actl_unit_tests actl_test Catch2::Catch2WithMain)
 target_compile_definitions(actl_unit_tests PRIVATE ACTL_DEBUG)
 if(MSVC)
     target_compile_options(actl_unit_tests PRIVATE
-        /W4
         /EHsc   # warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
         /wd4455 # warning C4455: literal suffix identifiers that do not start with an underscore are reserved
     )
