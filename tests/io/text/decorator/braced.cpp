@@ -8,6 +8,7 @@
 #include <actl/io/text/decorator/braced.hpp>
 #include <actl/io/text/decorator/spaced.hpp>
 #include <actl/io/text/text.hpp>
+#include <actl/io/tuple.hpp>
 #include <actl/std/all.hpp>
 #include "io/text/test_io.hpp"
 #include "test.hpp"

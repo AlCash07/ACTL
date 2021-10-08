@@ -5,25 +5,28 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/io/device/memory.hpp>
-#include <actl/std/utility.hpp>
+#include <actl/io/tuple.hpp>
+#include <tuple>
 #include "test.hpp"
 
 using namespace ac::io;
 
-TEST_CASE("write pair")
+TEST_CASE("tuple write")
 {
-    char s[3];
+    char s[5];
     CHECK(!write(
-        memory<bin | io::out>{s}, std::pair{'a', 'c'}, std::pair{'b', 'c'}));
-    CHECK_EQUAL("ac"sv, span{s, 2});
+        memory<bin | io::out>{s},
+        std::tuple{'a', 'c', 'a'},
+        std::tuple{'b', 'a', 'c'}));
+    CHECK_EQUAL("aca"sv, span{s, 3});
 }
 
-TEST_CASE("read pair")
+TEST_CASE("tuple read")
 {
-    std::string s = "aba";
+    std::string s = "abaca";
     memory<bin | in> id{s};
-    std::pair<char, char> x;
+    std::tuple<char, char, char> x;
     CHECK(read(id, x));
-    CHECK(std::pair{'a', 'b'} == x);
+    CHECK(std::tuple{'a', 'b', 'a'} == x);
     CHECK_FALSE(read(id, x));
 }

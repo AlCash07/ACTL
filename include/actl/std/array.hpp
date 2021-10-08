@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/io/range.hpp>
 #include <actl/meta/rebind.hpp>
+#include <actl/range/traits.hpp>
 #include <array>
 
 namespace ac {

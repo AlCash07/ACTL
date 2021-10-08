@@ -6,7 +6,6 @@
 
 #include <actl/range/traits.hpp>
 #include <actl/std/list.hpp>
-#include "test.hpp"
 
 using List = std::list<int>;
 static_assert(ac::is_container_v<List>);

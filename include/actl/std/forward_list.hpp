@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/io/range.hpp>
+#include <actl/range/traits.hpp>
 #include <forward_list>
 
 namespace ac {
