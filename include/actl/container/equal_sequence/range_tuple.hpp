@@ -11,8 +11,9 @@ template <class T, class U, size_t... Is>
 constexpr bool equal_tuple_range(
     const T& lhs, const U& rhs, std::index_sequence<Is...>) noexcept
 {
-    static_assert(noexcept((... && (std::get<Is>(lhs) == rhs[Is]))));
-    return (... && (std::get<Is>(lhs) == rhs[Is]));
+    using std::get;
+    static_assert(noexcept((... && (get<Is>(lhs) == rhs[Is]))));
+    return (... && (get<Is>(lhs) == rhs[Is]));
 }
 
 } // namespace detail
