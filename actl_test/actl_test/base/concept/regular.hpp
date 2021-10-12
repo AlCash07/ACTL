@@ -29,6 +29,14 @@ void test_nothrow_regular_type_traits()
 }
 
 template <class T>
+void test_nothrow_except_copy_regular_type_traits()
+{
+    test_nothrow_except_copy_semiregular_type_traits<T>();
+    static_assert(noexcept(std::declval<T>() == std::declval<T>()));
+    static_assert(noexcept(std::declval<T>() != std::declval<T>()));
+}
+
+template <class T>
 void test_regular_default_constructor()
 {
     T x;

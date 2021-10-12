@@ -30,4 +30,13 @@ void test_nothrow_semiregular_type_traits()
     static_assert(std::is_nothrow_default_constructible_v<T>);
 }
 
+template <class T>
+void test_nothrow_except_copy_semiregular_type_traits()
+{
+    test_nothrow_movable_type_traits<T>();
+    static_assert(!std::is_nothrow_copy_constructible_v<T>);
+    static_assert(!std::is_nothrow_copy_assignable_v<T>);
+    static_assert(std::is_nothrow_default_constructible_v<T>);
+}
+
 } // namespace ac
