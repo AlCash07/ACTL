@@ -30,4 +30,11 @@ void test_nothrow_copyable_type_traits()
     static_assert(std::is_nothrow_copy_assignable_v<T>);
 }
 
+template <class T>
+void test_copy_can_throw()
+{
+    static_assert(!std::is_nothrow_copy_constructible_v<T>);
+    static_assert(!std::is_nothrow_copy_assignable_v<T>);
+}
+
 } // namespace ac
