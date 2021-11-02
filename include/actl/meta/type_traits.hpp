@@ -32,6 +32,9 @@ using add_const_if_t = typename add_const_if<B, T>::type;
 template <size_t N>
 using size_constant = std::integral_constant<size_t, N>;
 
+template <size_t N>
+inline constexpr auto size_c = size_constant<N>{};
+
 template <class T>
 struct is_integral_constant : std::false_type
 {};
