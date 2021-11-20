@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/meta/integral_constant.hpp>
 #include <actl/range/facade/contiguous_range_facade.hpp>
 #include <actl/std/array.hpp>
 

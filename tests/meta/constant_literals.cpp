@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/integral_constant.hpp>
+#include <actl/meta/constant_literals.hpp>
 
 using namespace ac::constant_literals;
 

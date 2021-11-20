@@ -1,6 +1,7 @@
 #pragma once
 
 #include <actl/meta/dynamic_size.hpp>
+#include <actl/meta/integral_constant.hpp>
 #include <actl/meta/type_traits.hpp>
 #include <utility> // for std::tuple_size
 
