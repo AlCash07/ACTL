@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/category/range.hpp>
-#include <actl/integral_constant.hpp>
+#include <actl/meta/constant_literals.hpp>
 #include <actl/operation/core/composite_operation.hpp>
 #include <actl/operation/scalar/comparison/cmp3way.hpp>
 #include <actl/operation/scalar/comparison/less.hpp>
