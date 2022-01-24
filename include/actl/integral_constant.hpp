@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <limits>
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
