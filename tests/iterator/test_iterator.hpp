@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <actl/iterator/traits.hpp>

@@ -1,5 +1,6 @@
 #include <actl/iterator/facade/iterator_facade.hpp>
 #include "iterator/test_iterator.hpp"
+#include "iterator/test_iterator_noexcept.hpp"
 
 namespace {
 
@@ -80,4 +81,9 @@ TEST_CASE("iterator_facade")
             int_iterator<std::random_access_iterator_tag>{2},
             int_iterator<std::random_access_iterator_tag>{5});
     }
+
+    // iterator_facade propagates noexcept
+    test_iterator_noexcept(
+        int_iterator<std::random_access_iterator_tag>{2},
+        std::random_access_iterator_tag{});
 }

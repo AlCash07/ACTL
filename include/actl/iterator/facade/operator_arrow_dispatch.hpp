@@ -10,22 +10,29 @@
 
 namespace ac::detail {
 
+// operator->() needs special support for input iterators to strictly meet the
+// standard's requirements. If *i is not a reference type, we must still
+// produce an lvalue to which a pointer can be formed. We do that by
+// returning a proxy object containing an instance of the reference object.
 template <class Ref>
-struct operator_arrow_dispatch // proxy references
+struct operator_arrow_dispatch
 {
     struct proxy
     {
-        explicit proxy(const Ref& ref) : ref_{ref} {}
-        Ref* operator->()
+        explicit proxy(const Ref& ref) noexcept(noexcept(Ref{ref})) : ref_{ref}
+        {}
+
+        Ref* operator->() noexcept
         {
             return std::addressof(ref_);
         }
+
         Ref ref_;
     };
 
     using type = proxy;
 
-    static type apply(const Ref& x)
+    static type apply(const Ref& x) noexcept(noexcept(type{x}))
     {
         return type{x};
     }
@@ -36,7 +43,7 @@ struct operator_arrow_dispatch<T&> // "real" references
 {
     using type = T*;
 
-    static type apply(T& x)
+    static type apply(T& x) noexcept
     {
         return std::addressof(x);
     }
