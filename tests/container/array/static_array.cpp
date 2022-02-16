@@ -26,13 +26,11 @@ void test_static_array_constructors()
 {
     using sa31 = ac::static_array<int, 3, 1>;
     constexpr sa31 array;
-    static_assert(array == sa31{3, 1});
     static_assert(array == sa31{3_c, 1_c});
-    CHECK_THROWS(sa31{3, 2});
+    static_assert(!std::is_constructible_v<sa31, decltype(2_c), decltype(1_c)>);
+    static_assert(!std::is_constructible_v<sa31, decltype(3_c), decltype(2_c)>);
+    static_assert(!std::is_constructible_v<sa31, int, int>);
     static_assert(!std::is_constructible_v<sa31, int>);
-    static_assert(!std::is_constructible_v<sa31, int, int, int>);
-    static_assert(!std::is_constructible_v<sa31, int, void*>);
-    static_assert(!std::is_constructible_v<sa31, decltype(2_c), int>);
     /* CTAD */
 #ifndef _MSC_VER // internal compiler error
     static_assert(ac::equal_same_type(array, ac::static_array{3_c, 1_c}));
