@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/container/conversion/to_integral_constant.hpp>
 #include <actl/range/facade/contiguous_range_facade.hpp>
 #include <actl/std/array.hpp>
 
@@ -40,7 +39,7 @@ class static_array
     static constexpr bool can_construct_from()
     {
         if constexpr (sizeof...(Ts) == sizeof...(Values))
-            return (... && can_convert_to_v<t_constant<Values>, Ts>);
+            return (... && std::is_same_v<t_constant<Values>, Ts>);
         else
             return false;
     }
@@ -60,17 +59,14 @@ public:
 
     constexpr static_array() noexcept = default;
 
-    // TODO: remove explicit first parameter
-    // when std::is_trivial implementation is fixes in clang
+    // TODO: when std::is_trivial implementation is fixes in clang,
+    // this can be simplified to static_array(t_constant<Values>...)
     template <
         class T0,
         class... Ts,
         enable_int_if<can_construct_from<T0, Ts...>()> = 0>
-    explicit constexpr static_array(T0 x0, Ts... xs) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT())
-    {
-        check_values(x0, xs...);
-    }
+    explicit constexpr static_array(T0, Ts...) noexcept
+    {}
 
     using base_t::operator[];
 
@@ -100,14 +96,6 @@ public:
         static_array, static_array) noexcept
     {
         return {};
-    }
-
-private:
-    template <class... Ts>
-    static constexpr void check_values(Ts... xs) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT())
-    {
-        (..., convert_to<t_constant<Values>>(xs));
     }
 };
 

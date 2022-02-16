@@ -36,9 +36,7 @@ void test_static_array_constructors()
     static_assert(!std::is_constructible_v<ssa3XX2, int, int, int>);
     static_assert(!std::is_constructible_v<ssa3XX2, int, void*>);
     /* from all values */
-    static_assert(array == ssa3XX2{3, 5u, 4, 2u});
-    static_assert(array == ssa3XX2{3_c, 5_c, 4, 2});
-    CHECK_THROWS(ssa3XX2{2, 2, 2, 2});
+    static_assert(array == ssa3XX2{3_c, 5, 4, 2_c});
     static_assert(!std::is_constructible_v<ssa3XX2, int, int, int, int, int>);
     static_assert(
         !std::is_constructible_v<ssa3XX2, decltype(4_c), int, int, int>);

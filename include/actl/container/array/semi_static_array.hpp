@@ -29,15 +29,6 @@ constexpr bool equal_array(const Array& lhs, const Array& rhs) noexcept
 template <class T, T... Values>
 class semi_static_array
 {
-    template <class... Ts>
-    static constexpr bool can_construct_from()
-    {
-        if constexpr (sizeof...(Ts) == sizeof...(Values))
-            return (... && can_convert_to_v<extent_holder_t<Values>, Ts>);
-        else
-            return false;
-    }
-
 public:
     using value_type = T;
     using size_type = size_t;
@@ -60,15 +51,8 @@ public:
 
     constexpr semi_static_array() noexcept = default;
 
-    template <
-        class T0,
-        class... Ts,
-        enable_int_if<
-            sizeof...(Ts) + 1 != size_dynamic() &&
-            can_construct_from<T0, Ts...>()> = 0>
-    explicit constexpr semi_static_array(T0 x0, Ts... xs) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT())
-        : semi_static_array{indexes, x0, xs...}
+    explicit constexpr semi_static_array(extent_holder_t<Values>... xs) noexcept
+        : semi_static_array{indexes, xs...}
     {}
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
@@ -156,21 +140,18 @@ private:
     }
 
     template <size_t I>
-    constexpr void assign_at([[maybe_unused]] T x) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT())
+    constexpr void assign_at([[maybe_unused]] T x) noexcept
     {
         if constexpr (static_values[I] == dynamic_extent<T>)
             dynamic_values[dynamic_index<I>] = x;
     }
 
-    template <size_t... Is, class... Ts>
+    template <size_t... Is>
     explicit constexpr semi_static_array(
-        std::index_sequence<Is...>,
-        Ts... xs) noexcept(ACTL_ASSERT_IS_NOEXCEPT())
+        std::index_sequence<Is...>, extent_holder_t<Values>... xs) noexcept
         : dynamic_values{}
     {
-        (...,
-         assign_at<Is>(convert_to<extent_holder_t<static_values[Is]>>(xs)));
+        (..., assign_at<Is>(xs));
     }
 };
 
