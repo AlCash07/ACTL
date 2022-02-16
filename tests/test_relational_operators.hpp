@@ -27,4 +27,15 @@ void test_relational_operators_for_different_values(
     CHECK_FALSE(smaller >= bigger);
 }
 
+template <class T>
+void test_relational_operators_noexcept(const T& x)
+{
+    static_assert(noexcept(x == x));
+    static_assert(noexcept(x != x));
+    static_assert(noexcept(x < x));
+    static_assert(noexcept(x <= x));
+    static_assert(noexcept(x > x));
+    static_assert(noexcept(x >= x));
+}
+
 } // namespace ac
