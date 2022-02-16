@@ -8,27 +8,27 @@
 #include <functional>
 #include "test.hpp"
 
-using free_function_0_arity = void();
-static_assert(0ul == ac::arity_v<free_function_0_arity>);
-static_assert(std::is_same_v<void, ac::return_type_t<free_function_0_arity>>);
-static_assert(!ac::is_noexcept_v<free_function_0_arity>);
+namespace {
 
-using free_function_0_arity_noexcept = void() noexcept;
-static_assert(0ul == ac::arity_v<free_function_0_arity_noexcept>);
-static_assert(
-    std::is_same_v<void, ac::return_type_t<free_function_0_arity_noexcept>>);
-static_assert(ac::is_noexcept_v<free_function_0_arity_noexcept>);
+template <class Function, bool IsNoexcept>
+void test_free_function_traits()
+{
+    static_assert(0ul == ac::arity_v<Function>);
+    static_assert(std::is_same_v<void, ac::return_type_t<Function>>);
+    static_assert(IsNoexcept == ac::is_noexcept_v<Function>);
+}
 
-using free_function_ptr = free_function_0_arity*;
-static_assert(0ul == ac::arity_v<free_function_ptr>);
-static_assert(std::is_same_v<void, ac::return_type_t<free_function_ptr>>);
-static_assert(!ac::is_noexcept_v<free_function_ptr>);
+} // namespace
 
-using free_function_noexcept_ptr = free_function_0_arity_noexcept*;
-static_assert(0ul == ac::arity_v<free_function_noexcept_ptr>);
-static_assert(
-    std::is_same_v<void, ac::return_type_t<free_function_noexcept_ptr>>);
-static_assert(ac::is_noexcept_v<free_function_noexcept_ptr>);
+TEST_CASE("void 0 arity free function: value, pointer, reference")
+{
+    test_free_function_traits<void(), false>();
+    test_free_function_traits<void() noexcept, true>();
+    test_free_function_traits<void (*)(), false>();
+    test_free_function_traits<void (*)() noexcept, true>();
+    test_free_function_traits<void (&)(), false>();
+    test_free_function_traits<void (&)() noexcept, true>();
+}
 
 using free_function_params =
     int && (int, const int, int&, const int&, int*, const int*) noexcept;
