@@ -24,6 +24,10 @@ struct function_traits
 {};
 
 template <class Function>
+struct function_traits<Function&> : function_traits<Function>
+{};
+
+template <class Function>
 inline constexpr size_t arity_v = function_traits<Function>::arity;
 
 template <class Function>
