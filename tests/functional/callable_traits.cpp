@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/meta/function_traits.hpp>
+#include <actl/functional/callable_traits.hpp>
 #include <functional>
 #include "test.hpp"
 
@@ -15,6 +15,7 @@ void test_free_function_traits()
 {
     static_assert(0ul == ac::arity_v<Function>);
     static_assert(std::is_same_v<void, ac::return_type_t<Function>>);
+    static_assert(!ac::is_member_function_v<Function>);
     static_assert(IsNoexcept == ac::is_noexcept_v<Function>);
 }
 
@@ -46,6 +47,7 @@ static_assert(
     std::is_same_v<int*, ac::parameter_type_t<4, free_function_params>>);
 static_assert(
     std::is_same_v<const int*, ac::parameter_type_t<5, free_function_params>>);
+static_assert(!ac::is_member_function_v<free_function_params>);
 static_assert(ac::is_noexcept_v<free_function_params>);
 
 namespace {
@@ -70,13 +72,14 @@ struct S
     const int& member_function_params(const int, int&&) const noexcept;
 };
 
-template <class MemFn, class ClassParam, bool IsNoexcept>
+template <class MemberF, class ClassParam, bool IsNoexcept>
 void test_member_function_traits()
 {
-    static_assert(1ul == ac::arity_v<MemFn>);
-    static_assert(std::is_same_v<int, ac::return_type_t<MemFn>>);
-    static_assert(std::is_same_v<ClassParam, ac::parameter_type_t<0, MemFn>>);
-    static_assert(IsNoexcept == ac::is_noexcept_v<MemFn>);
+    static_assert(1ul == ac::arity_v<MemberF>);
+    static_assert(std::is_same_v<int, ac::return_type_t<MemberF>>);
+    static_assert(std::is_same_v<ClassParam, ac::parameter_type_t<0, MemberF>>);
+    static_assert(ac::is_member_function_v<MemberF>);
+    static_assert(IsNoexcept == ac::is_noexcept_v<MemberF>);
 }
 
 } // namespace
@@ -136,6 +139,7 @@ static_assert(std::is_same_v<const int&, ac::return_type_t<mem_fn_params>>);
 static_assert(std::is_same_v<const S&, ac::parameter_type_t<0, mem_fn_params>>);
 static_assert(std::is_same_v<int, ac::parameter_type_t<1, mem_fn_params>>);
 static_assert(std::is_same_v<int&&, ac::parameter_type_t<2, mem_fn_params>>);
+static_assert(ac::is_member_function_v<mem_fn_params>);
 static_assert(ac::is_noexcept_v<mem_fn_params>);
 
 namespace {
@@ -171,20 +175,24 @@ static_assert(0ul == ac::arity_v<fn_object>);
 static_assert(0ul == ac::arity_v<fn_object&>);
 static_assert(0ul == ac::arity_v<fn_object&&>);
 static_assert(std::is_same_v<S, ac::return_type_t<fn_object>>);
+static_assert(!ac::is_member_function_v<fn_object>);
 static_assert(!ac::is_noexcept_v<fn_object>);
 
 static_assert(0ul == ac::arity_v<fn_object_noexcept>);
 static_assert(std::is_same_v<S, ac::return_type_t<fn_object_noexcept>>);
+static_assert(!ac::is_member_function_v<fn_object_noexcept>);
 static_assert(ac::is_noexcept_v<fn_object_noexcept>);
 
 static_assert(0ul == ac::arity_v<const_fn_object>);
 static_assert(0ul == ac::arity_v<const const_fn_object>);
 static_assert(0ul == ac::arity_v<const const_fn_object&>);
 static_assert(std::is_same_v<S, ac::return_type_t<const const_fn_object>>);
+static_assert(!ac::is_member_function_v<const_fn_object>);
 static_assert(!ac::is_noexcept_v<const_fn_object>);
 
 static_assert(0ul == ac::arity_v<const_fn_object_noexcept>);
 static_assert(std::is_same_v<S, ac::return_type_t<const_fn_object_noexcept>>);
+static_assert(!ac::is_member_function_v<const_fn_object_noexcept>);
 static_assert(ac::is_noexcept_v<const_fn_object_noexcept>);
 
 static_assert(3ul == ac::arity_v<fn_object_params>);
@@ -195,9 +203,11 @@ static_assert(
     std::is_same_v<const S*, ac::parameter_type_t<0, fn_object_params>>);
 static_assert(std::is_same_v<int&&, ac::parameter_type_t<1, fn_object_params>>);
 static_assert(std::is_same_v<S, ac::parameter_type_t<2, fn_object_params>>);
+static_assert(!ac::is_member_function_v<fn_object_params>);
 static_assert(ac::is_noexcept_v<fn_object_params>);
 
 using std_function = std::function<int*(int&)>;
 static_assert(1ul == ac::arity_v<std_function>);
 static_assert(std::is_same_v<int*, ac::return_type_t<std_function>>);
 static_assert(std::is_same_v<int&, ac::parameter_type_t<0, std_function>>);
+static_assert(!ac::is_member_function_v<std_function>);
