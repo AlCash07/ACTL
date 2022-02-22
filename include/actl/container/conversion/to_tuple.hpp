@@ -22,12 +22,8 @@ struct to_tuple_impl<std::index_sequence<Is...>, To, Args...>
     static constexpr bool value =
         (... && can_convert_to_v<std::tuple_element_t<Is, To>, Args>);
 
-    static constexpr To convert(Args&&... xs) noexcept(noexcept(To{
-        convert_to<std::tuple_element_t<Is, To>>(std::forward<Args>(xs))...}))
-    {
-        return To{convert_to<std::tuple_element_t<Is, To>>(
-            std::forward<Args>(xs))...};
-    }
+    static constexpr To convert(Args&&... xs) AC_DEDUCE_NOEXCEPT_AND_RETURN(To{
+        convert_to<std::tuple_element_t<Is, To>>(std::forward<Args>(xs))...})
 };
 
 template <class To, class... Args>

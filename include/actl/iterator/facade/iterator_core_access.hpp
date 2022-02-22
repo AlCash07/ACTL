@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/functional/deduce_noexcept.hpp>
 #include <actl/meta/dependent.hpp>
 
 namespace ac {
@@ -13,48 +14,29 @@ namespace ac {
 struct iterator_core_access
 {
     template <class Iter>
-    static constexpr reference_t<Iter> dereference(const Iter& iter) noexcept(
-        noexcept(iter.dereference()))
-    {
-        return iter.dereference();
-    }
+    static constexpr reference_t<Iter> dereference(const Iter& iter)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.dereference())
 
     template <class Iter>
-    static constexpr void increment(Iter& iter) noexcept(
-        noexcept(iter.increment()))
-    {
-        iter.increment();
-    }
+    static constexpr void increment(Iter& iter)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.increment())
 
     template <class Iter>
-    static constexpr void decrement(Iter& iter) noexcept(
-        noexcept(iter.decrement()))
-    {
-        iter.decrement();
-    }
+    static constexpr void decrement(Iter& iter)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.decrement())
 
     template <class Iter1, class Iter2>
-    static constexpr bool equal(const Iter1& lhs, const Iter2& rhs) noexcept(
-        noexcept(lhs.equals(rhs)))
-    {
-        return lhs.equals(rhs);
-    }
+    static constexpr bool equal(const Iter1& lhs, const Iter2& rhs)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.equals(rhs))
 
     template <class Iter>
-    static constexpr void advance(
-        Iter& iter,
-        difference_type_t<Iter> n) noexcept(noexcept(iter.advance(n)))
-    {
-        iter.advance(n);
-    }
+    static constexpr void advance(Iter& iter, difference_type_t<Iter> n)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.advance(n))
 
     template <class Iter1, class Iter2>
     static constexpr difference_type_t<Iter1> distance_to(
-        const Iter1& from,
-        const Iter2& to) noexcept(noexcept(from.distance_to(to)))
-    {
-        return from.distance_to(to);
-    }
+        const Iter1& from, const Iter2& to)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(from.distance_to(to))
 };
 
 } // namespace ac

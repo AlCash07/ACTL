@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/category/tuple.hpp>
+#include <actl/functional/deduce_noexcept.hpp>
 #include <actl/meta/can_list_initialize.hpp>
 
 namespace ac {
@@ -14,11 +15,8 @@ namespace ac {
 template <class To, class... Args>
 struct conversion_default : std::true_type
 {
-    static constexpr To convert(Args&&... xs) //
-        noexcept(noexcept(To{std::forward<Args>(xs)...}))
-    {
-        return To{std::forward<Args>(xs)...};
-    }
+    static constexpr To convert(Args&&... xs)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(To{std::forward<Args>(xs)...})
 };
 
 template <class AlwaysVoid, class To, class... Args>
@@ -32,11 +30,8 @@ struct conversion_sfinae<
     To,
     From> : std::true_type
 {
-    static constexpr To convert(From&& x) //
-        noexcept(noexcept(static_cast<To>(std::forward<From>(x))))
-    {
-        return static_cast<To>(std::forward<From>(x));
-    }
+    static constexpr To convert(From&& x)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(static_cast<To>(std::forward<From>(x)))
 };
 
 // List initialization is intentionally used here instead of construction
@@ -54,10 +49,7 @@ template <class To, class... Args>
 inline constexpr bool can_convert_to_v = conversion<To, Args...>::value;
 
 template <class To, class... Args>
-constexpr To convert_to(Args&&... xs) noexcept(
-    noexcept(conversion<To, Args...>::convert(std::forward<Args>(xs)...)))
-{
-    return conversion<To, Args...>::convert(std::forward<Args>(xs)...);
-}
+constexpr To convert_to(Args&&... xs) AC_DEDUCE_NOEXCEPT_AND_RETURN(
+    conversion<To, Args...>::convert(std::forward<Args>(xs)...))
 
 } // namespace ac

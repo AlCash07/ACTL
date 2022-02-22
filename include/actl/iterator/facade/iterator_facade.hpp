@@ -30,18 +30,11 @@ public:
     using difference_type =
         deduce_t<typename T::difference_type, std::ptrdiff_t>;
 
-    constexpr reference operator*() const
-        noexcept(noexcept(iterator_core_access::dereference(derived())))
-    {
-        return iterator_core_access::dereference(derived());
-    }
+    constexpr reference operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        iterator_core_access::dereference(derived()))
 
-    constexpr Iter& operator++() noexcept(
-        noexcept(iterator_core_access::increment(derived())))
-    {
-        iterator_core_access::increment(derived());
-        return derived();
-    }
+    constexpr Iter& operator++() AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        iterator_core_access::increment(derived()), derived())
 
     constexpr Iter operator++(int) noexcept(
         noexcept(Iter{derived()}, ++std::declval<Iter&>()))
@@ -74,11 +67,9 @@ protected:
 public:
     using typename base_t::reference;
 
-    constexpr typename base_t::pointer operator->() const noexcept(
-        noexcept(operator_arrow_dispatch<reference>::apply(*derived())))
-    {
-        return operator_arrow_dispatch<reference>::apply(*derived());
-    }
+    constexpr typename base_t::pointer operator->() const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(
+            operator_arrow_dispatch<reference>::apply(*derived()))
 };
 
 template <class Iter, class T>
@@ -94,12 +85,8 @@ protected:
     using iter_facade<Iter, T, std::forward_iterator_tag>::derived;
 
 public:
-    constexpr Iter& operator--() noexcept(
-        noexcept(iterator_core_access::decrement(derived())))
-    {
-        iterator_core_access::decrement(derived());
-        return derived();
-    }
+    constexpr Iter& operator--() AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        iterator_core_access::decrement(derived()), derived())
 
     constexpr Iter operator--(int) noexcept(
         noexcept(Iter{derived()}, --std::declval<Iter&>()))
@@ -122,23 +109,13 @@ public:
     using typename base_t::difference_type;
 
     constexpr typename base_t::reference operator[](difference_type n) const
-        noexcept(noexcept(*(derived() + n)))
-    {
-        return *(derived() + n);
-    }
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(*(derived() + n))
 
-    constexpr Iter& operator+=(difference_type n) noexcept(
-        noexcept(iterator_core_access::advance(derived(), n)))
-    {
-        iterator_core_access::advance(derived(), n);
-        return derived();
-    }
+    constexpr Iter& operator+=(difference_type n) AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        iterator_core_access::advance(derived(), n), derived())
 
-    constexpr Iter& operator-=(difference_type n) noexcept(
-        noexcept(*this += -n))
-    {
-        return *this += -n;
-    }
+    constexpr Iter& operator-=(difference_type n)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(*this += -n)
 
     constexpr Iter operator+(difference_type n) const
         noexcept(noexcept(Iter{derived()}, std::declval<Iter&>() += n))
@@ -148,10 +125,7 @@ public:
     }
 
     constexpr Iter operator-(difference_type n) const
-        noexcept(noexcept(*this + -n))
-    {
-        return *this + -n;
-    }
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(*this + -n)
 };
 
 } // namespace detail
@@ -162,14 +136,12 @@ class iterator_facade
           iter_facade<Derived, Types, typename Types::iterator_category>
 {};
 
-#define ACTL_ITERATOR_OPERATOR(type, op, expr)                        \
-    template <class Iter, class T>                                    \
-    constexpr type operator op(                                       \
-        const iterator_facade<Iter, T>& lhs,                          \
-        const iterator_facade<Iter, T>& rhs) noexcept(noexcept(expr)) \
-    {                                                                 \
-        return expr;                                                  \
-    }
+#define ACTL_ITERATOR_OPERATOR(type, op, expr) \
+    template <class Iter, class T>             \
+    constexpr type operator op(                \
+        const iterator_facade<Iter, T>& lhs,   \
+        const iterator_facade<Iter, T>& rhs)   \
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(expr)
 
 ACTL_ITERATOR_OPERATOR(
     bool,
@@ -189,10 +161,7 @@ ACTL_ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
 template <class Iter, class T>
 constexpr Iter operator+(
-    typename T::difference_type n,
-    const iterator_facade<Iter, T>& rhs) noexcept(noexcept(rhs + n))
-{
-    return rhs + n;
-}
+    typename T::difference_type n, const iterator_facade<Iter, T>& rhs)
+    AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs + n)
 
 } // namespace ac

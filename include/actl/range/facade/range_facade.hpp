@@ -10,6 +10,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/functional/deduce_noexcept.hpp>
 #include <actl/iterator/traits.hpp>
 #include <actl/range/facade/range_types.hpp>
 #include <iterator>
@@ -26,39 +27,22 @@ class rng_facade : public T
 {
 public:
     ENABLE_IF_HAS_CONST constexpr auto cbegin() const
-        noexcept(noexcept(derived().begin()))
-    {
-        return derived().begin();
-    }
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin())
 
     ENABLE_IF_HAS_CONST constexpr auto cend() const
-        noexcept(noexcept(derived().end()))
-    {
-        return derived().end();
-    }
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().end())
 
     constexpr bool empty() const
-        noexcept(noexcept(derived().begin() == derived().end()))
-    {
-        return derived().begin() == derived().end();
-    }
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin() == derived().end())
 
-    ENABLE_IF_HAS_CONST constexpr bool empty() noexcept(
-        noexcept(derived().begin() == derived().end()))
-    {
-        return derived().begin() == derived().end();
-    }
+    ENABLE_IF_HAS_CONST constexpr bool empty()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin() == derived().end())
 
-    explicit constexpr operator bool() const noexcept(noexcept(!empty()))
-    {
-        return !empty();
-    }
+    explicit constexpr operator bool() const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())
 
-    ENABLE_IF_HAS_CONST explicit constexpr operator bool() noexcept(
-        noexcept(!empty()))
-    {
-        return !empty();
-    }
+    ENABLE_IF_HAS_CONST explicit constexpr operator bool()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())
 
     constexpr decltype(auto) front() const
         noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin()))
@@ -183,17 +167,11 @@ public:
         return derived().begin()[static_cast<difference_type>(n)];
     }
 
-    constexpr auto size() const noexcept(
-        noexcept(static_cast<size_type>(derived().end() - derived().begin())))
-    {
-        return static_cast<size_type>(derived().end() - derived().begin());
-    }
+    constexpr auto size() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        static_cast<size_type>(derived().end() - derived().begin()))
 
-    ENABLE_IF_HAS_CONST constexpr auto size() noexcept(
-        noexcept(static_cast<size_type>(derived().end() - derived().begin())))
-    {
-        return static_cast<size_type>(derived().end() - derived().begin());
-    }
+    ENABLE_IF_HAS_CONST constexpr auto size() AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        static_cast<size_type>(derived().end() - derived().begin()))
 };
 
 #undef ENABLE_IF_HAS_CONST

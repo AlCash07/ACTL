@@ -22,11 +22,8 @@ struct conversion_sfinae<
     static constexpr bool value =
         std::is_constructible_v<To, from_iter, from_iter>;
 
-    static constexpr To convert(const From& x) noexcept(noexcept(To{
-        std::begin(x), std::end(x)}))
-    {
-        return To{std::begin(x), std::end(x)};
-    }
+    static constexpr To convert(const From& x)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(To{std::begin(x), std::end(x)})
 };
 
 } // namespace ac

@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/functional/deduce_noexcept.hpp>
 #include <memory>
 
 namespace ac::detail {
@@ -32,10 +33,7 @@ struct operator_arrow_dispatch
 
     using type = proxy;
 
-    static type apply(const Ref& x) noexcept(noexcept(type{x}))
-    {
-        return type{x};
-    }
+    static type apply(const Ref& x) AC_DEDUCE_NOEXCEPT_AND_RETURN(type{x})
 };
 
 template <class T>

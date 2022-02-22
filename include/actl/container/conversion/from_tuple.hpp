@@ -33,11 +33,8 @@ struct from_tuple<To, From, std::index_sequence<Is...>>
     static constexpr bool value =
         can_convert_to_v<To, decltype(adl_get<Is>(std::declval<From>()))...>;
 
-    static constexpr To convert(From&& x) noexcept(
-        noexcept(convert_to<To>(adl_get<Is>(std::forward<From>(x))...)))
-    {
-        return convert_to<To>(adl_get<Is>(std::forward<From>(x))...);
-    }
+    static constexpr To convert(From&& x) AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        convert_to<To>(adl_get<Is>(std::forward<From>(x))...))
 };
 
 } // namespace detail

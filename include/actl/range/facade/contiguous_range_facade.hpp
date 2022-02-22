@@ -28,28 +28,17 @@ class contiguous_range_facade
     }
 
 public:
-    constexpr decltype(auto) begin() const noexcept(noexcept(derived().data()))
-    {
-        return derived().data();
-    }
+    constexpr decltype(auto) begin() const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) begin() noexcept(
-        noexcept(derived().data()))
-    {
-        return derived().data();
-    }
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) begin()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
 
     constexpr decltype(auto) end() const
-        noexcept(noexcept(begin() + derived().size()))
-    {
-        return begin() + derived().size();
-    }
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(begin() + derived().size())
 
-    ENABLE_IF_HAS_CONST constexpr decltype(auto) end() noexcept(
-        noexcept(begin() + derived().size()))
-    {
-        return begin() + derived().size();
-    }
+    ENABLE_IF_HAS_CONST constexpr decltype(auto) end()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(begin() + derived().size())
 };
 
 #undef ENABLE_IF_HAS_CONST
