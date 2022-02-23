@@ -12,5 +12,6 @@ clang_format_folder () {
     done
 }
 
+clang_format_folder "actl_test"
 clang_format_folder "include"
 clang_format_folder "tests"
