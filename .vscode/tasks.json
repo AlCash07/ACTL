@@ -4,18 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "git: stop tracking vscode",
-            "type": "shell",
-            "command": "./scripts/git/stop_tracking_vscode.sh",
-            "problemMatcher": [],
-        },
-        {
-            "label": "git: start tracking vscode",
-            "type": "shell",
-            "command": "./scripts/git/start_tracking_vscode.sh",
-            "problemMatcher": [],
-        },
-        {
             "label": "run",
             "type": "shell",
             "command": "${command:cmake.launchTargetPath}",
@@ -25,6 +13,26 @@
             "args": [
                 "\"*\"",
             ]
-        }
+        },
+        {
+            "label": "run doxygen",
+            "type": "shell",
+            "command": "./scripts/doc/run_doxygen.sh",
+            "problemMatcher": [],
+        },
+        {
+            "label": "generate documentation",
+            "type": "shell",
+            "command": "./scripts/doc/run_sphinx.sh",
+            "dependsOn": "run doxygen",
+            "problemMatcher": [],
+        },
+        {
+            "label": "publish documentation",
+            "type": "shell",
+            "command": "./scripts/doc/publish.sh",
+            "dependsOn": "generate documentation",
+            "problemMatcher": [],
+        },
     ],
 }

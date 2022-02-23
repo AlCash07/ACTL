@@ -9,7 +9,7 @@ Other IDEs are supported via CMake, please see _.vscode/settings.json_ for the c
 
 On Windows, `"cmake.generator"` should be changed to `"Visual Studio 16 2019"` in _.vscode/settings.json_. Version 16.10.2 or higher is required because of the numerous bugs in the older versions.
 
-Tests are written in Catch2 and are run using _run_tests_ target.
+Tests are written in Catch2 and are run using _actl_unit_tests_ target.
 
 Arguments to filter test cases can be specified in:
 - _.vscode/tasks.json_ for release.
