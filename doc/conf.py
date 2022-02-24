@@ -10,5 +10,4 @@ breathe_default_project = "ACTL"
 
 extensions.append("sphinxjp.themes.basicstrap")
 html_theme = 'basicstrap'
-html_static_path = ['_static']
 html_copy_source = False

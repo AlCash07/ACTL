@@ -1,7 +1,3 @@
-// Traits to extract callable's return and parameter types.
-// Reference: https://functionalcpp.wordpress.com/2013/08/05/function-traits/
-// This is a lightweight analog of Boost.CallableTraits
-//
 // Copyright 2018 Oleksandr Bacherikov.
 //
 // Distributed under the Boost Software License, Version 1.0
@@ -24,23 +20,24 @@ struct callable_traits : function_object_traits<Function>
 {};
 
 template <class Function>
-inline constexpr size_t arity_v = callable_traits<Function>::arity;
-
-template <class Function>
 using return_type_t = typename callable_traits<Function>::return_type;
 
-template <size_t N, class Function>
+template <class Function>
+inline constexpr size_t arity_v = callable_traits<Function>::arity;
+
+template <size_t Index, class Function>
 using parameter_type_t =
-    typename callable_traits<Function>::template parameter_type<N>;
+    typename callable_traits<Function>::template parameter_type<Index>;
 
 template <class Function>
 inline constexpr bool is_member_function_v =
-    callable_traits<Function>::is_member;
+    callable_traits<Function>::is_member_function;
 
 template <class Function>
 inline constexpr bool is_noexcept_v = callable_traits<Function>::is_noexcept;
 
-// function references
+/* function reference */
+
 template <class Function>
 struct callable_traits<Function&> : callable_traits<Function>
 {};
@@ -49,18 +46,19 @@ template <class Function>
 struct callable_traits<Function&&> : callable_traits<Function>
 {};
 
-// free function
+/* free function */
+
 template <class Return, class... Params>
 struct callable_traits<Return(Params...)>
 {
-    static constexpr size_t arity = sizeof...(Params);
-
     using return_type = Return;
 
-    template <size_t N>
-    using parameter_type = type_at_t<N, Params...>;
+    static constexpr size_t arity = sizeof...(Params);
 
-    static constexpr bool is_member = false;
+    template <size_t Index>
+    using parameter_type = type_at_t<Index, Params...>;
+
+    static constexpr bool is_member_function = false;
 
     static constexpr bool is_noexcept = false;
 };
@@ -72,7 +70,8 @@ struct callable_traits<Return(Params...) noexcept>
     static constexpr bool is_noexcept = true;
 };
 
-// function pointer
+/* free function pointer */
+
 template <class Return, class... Params>
 struct callable_traits<Return (*)(Params...)>
     : callable_traits<Return(Params...)>
@@ -83,72 +82,79 @@ struct callable_traits<Return (*)(Params...) noexcept>
     : callable_traits<Return(Params...) noexcept>
 {};
 
-// member function pointer
+/* member function pointer */
+
+namespace detail {
+
 template <class Function>
 struct member_function_traits : callable_traits<Function>
 {
-    static constexpr bool is_member = true;
+    static constexpr bool is_member_function = true;
 };
+
+} // namespace detail
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...)>
-    : member_function_traits<Return(Class&, Params...)>
+    : detail::member_function_traits<Return(Class&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) noexcept>
-    : member_function_traits<Return(Class&, Params...) noexcept>
+    : detail::member_function_traits<Return(Class&, Params...) noexcept>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const>
-    : member_function_traits<Return(const Class&, Params...)>
+    : detail::member_function_traits<Return(const Class&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const noexcept>
-    : member_function_traits<Return(const Class&, Params...) noexcept>
+    : detail::member_function_traits<Return(const Class&, Params...) noexcept>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...)&>
-    : member_function_traits<Return(Class&, Params...)>
+    : detail::member_function_traits<Return(Class&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...)& noexcept>
-    : member_function_traits<Return(Class&, Params...) noexcept>
+    : detail::member_function_traits<Return(Class&, Params...) noexcept>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const&>
-    : member_function_traits<Return(const Class&, Params...)>
+    : detail::member_function_traits<Return(const Class&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const& noexcept>
-    : member_function_traits<Return(const Class&, Params...) noexcept>
+    : detail::member_function_traits<Return(const Class&, Params...) noexcept>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) &&>
-    : member_function_traits<Return(Class&&, Params...)>
+    : detail::member_function_traits<Return(Class&&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...)&& noexcept>
-    : member_function_traits<Return(Class&&, Params...) noexcept>
+    : detail::member_function_traits<Return(Class&&, Params...) noexcept>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const&&>
-    : member_function_traits<Return(const Class&&, Params...)>
+    : detail::member_function_traits<Return(const Class&&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const&& noexcept>
-    : member_function_traits<Return(const Class&&, Params...) noexcept>
+    : detail::member_function_traits<Return(const Class&&, Params...) noexcept>
 {};
+
+/* function object */
 
 template <class Function>
 struct function_object_traits<
@@ -159,14 +165,14 @@ private:
     using Operator = decltype(&Function::operator());
 
 public:
-    static constexpr size_t arity = arity_v<Operator> - 1;
-
     using return_type = return_type_t<Operator>;
 
-    template <size_t N>
-    using parameter_type = parameter_type_t<N + 1, Operator>;
+    static constexpr size_t arity = arity_v<Operator> - 1;
 
-    static constexpr bool is_member = false;
+    template <size_t Index>
+    using parameter_type = parameter_type_t<Index + 1, Operator>;
+
+    static constexpr bool is_member_function = false;
 
     static constexpr bool is_noexcept = is_noexcept_v<Operator>;
 };
