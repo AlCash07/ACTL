@@ -286,6 +286,7 @@ MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = YES
 PREDEFINED             = \
     "AC_DEDUCE_NOEXCEPT_AND_RETURN(expr) = noexcept(noexcept(expr)) { return expr; }" \
+    "AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(expr) = noexcept(noexcept(expr)) -> decltype(expr) { return expr; }" \
     "AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(expr) = noexcept(noexcept(expr)) : expr"
 EXPAND_AS_DEFINED      =
 SEARCH_INCLUDES        = YES

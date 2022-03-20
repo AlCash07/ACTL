@@ -14,6 +14,17 @@
         return __VA_ARGS__;                \
     }
 
+/// Macro that avoids code duplication by returning the given expression from
+/// the function and deducing the `noexcept` specification and return type from
+/// it. This macro is different from AC_DEDUCE_NOEXCEPT_AND_RETURN, because it
+/// correctly disables the function when the expression is ill-formed (SFINAE)
+/// instead of defining a function that always produces a compilation error.
+#define AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(...)        \
+    noexcept(noexcept(__VA_ARGS__))->decltype(__VA_ARGS__) \
+    {                                                      \
+        return __VA_ARGS__;                                \
+    }
+
 /// Macro that avoids code duplication by using the given expression as a member
 /// initializer list and deducing the `noexcept` specification from it.
 /// @note data members aren't supported, only base classes and delegated

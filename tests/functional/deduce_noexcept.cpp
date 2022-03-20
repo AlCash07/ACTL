@@ -17,13 +17,42 @@ constexpr bool is_int(double)
     return false;
 }
 
+/* AC_DEDUCE_NOEXCEPT_AND_RETURN */
+
 template <class T>
-constexpr bool is_int_wrapped(T x) AC_DEDUCE_NOEXCEPT_AND_RETURN(is_int(x))
+constexpr auto is_int_wrapped(T x) AC_DEDUCE_NOEXCEPT_AND_RETURN(is_int(x))
 
 static_assert(noexcept(is_int_wrapped(0)));
 static_assert(is_int_wrapped(0));
 static_assert(!noexcept(is_int_wrapped(0.0)));
 static_assert(!is_int_wrapped(0.0));
+
+/* AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN */
+
+template <class T>
+constexpr auto is_int_wrapped2(T x)
+    AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(is_int(x))
+
+static_assert(noexcept(is_int_wrapped2(0)));
+static_assert(is_int_wrapped2(0));
+static_assert(!noexcept(is_int_wrapped2(0.0)));
+static_assert(!is_int_wrapped2(0.0));
+
+template <class T, class = void>
+struct has_is_int_wrapped : std::false_type
+{};
+
+template <class T>
+struct has_is_int_wrapped<
+    T,
+    std::void_t<decltype(is_int_wrapped2(std::declval<T>()))>> : std::true_type
+{};
+
+static_assert(has_is_int_wrapped<int>::value);
+// This would be a compilation error with AC_DEDUCE_NOEXCEPT_AND_RETURN.
+static_assert(!has_is_int_wrapped<int[2]>::value);
+
+/* AC_DEDUCE_NOEXCEPT_AND_INITIALIZE */
 
 struct Base
 {
