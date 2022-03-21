@@ -10,3 +10,13 @@ Sub-libraries that emerged as helper utilities and can be used in various contex
    :maxdepth: 1
 
    actl/functional
+
+################################
+Contributing
+################################
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   contributing/*
