@@ -1,7 +1,8 @@
 callable_traits
 ================================
 
-:cpp:struct:`ac::callable_traits` provide information about a callable, such as return and parameter types. The following callables are supported:
+:struct:`ac::callable_traits` provide information about a callable, such as return and parameter types.
+The following callables are supported:
 
 * free functions;
 * pointers to free functions;
@@ -9,7 +10,8 @@ callable_traits
 * function objects with a single function call operator;
 * references and rvalue references to all of the above.
 
-This is a lightweight analog of `Boost.CallableTraits <https://www.boost.org/doc/libs/1_78_0/libs/callable_traits/doc/html/index.html>`_ with limited functionality.
+This is a lightweight analog of `Boost.CallableTraits <https://www.boost.org/doc/libs/1_78_0/libs/callable_traits/doc/html/index.html>`_
+with limited functionality.
 
 Outline
 -------
@@ -24,15 +26,16 @@ The most convenient way to use the traits is through the following interface:
 
 The same information is available as members of
 
-.. cpp:struct:: template<class Function> \
-                ac::callable_traits
+.. struct:: template<class Function> \
+            ac::callable_traits
 
 or, only for function objects, as members of
 
-.. cpp:struct:: template<class Function> \
-                ac::function_object_traits
+.. struct:: template<class Function> \
+            ac::function_object_traits
 
 Design
 ------
 
-The following `reference <https://functionalcpp.wordpress.com/2013/08/05/function-traits/>`_ was used at first, but it was heavily expanded.
+The following `reference <https://functionalcpp.wordpress.com/2013/08/05/function-traits/>`_
+was used at first, but it was heavily expanded.
