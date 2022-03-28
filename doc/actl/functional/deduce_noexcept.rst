@@ -22,7 +22,11 @@ Outline
 Detailed outline
 ----------------
 
-.. doxygenfile:: actl/functional/deduce_noexcept.hpp
+.. doxygenfile:: functional/deduce_noexcept.hpp
+
+:source:`Source code <functional/deduce_noexcept>`
+
+:test:`Tests <functional/deduce_noexcept>`
 
 Design
 ------

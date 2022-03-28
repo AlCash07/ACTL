@@ -34,6 +34,10 @@ or, only for function objects, as members of
 .. struct:: template<class Function> \
             ac::function_object_traits
 
+:source:`Source code <functional/callable_traits>`
+
+:test:`Tests <functional/callable_traits>`
+
 Design
 ------
 
