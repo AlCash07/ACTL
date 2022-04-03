@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>deduce_noexcept &mdash; ACTL  documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  false
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="ACTL  documentation" href="../../index.html" />
+    <link rel="up" title="functional" href="../functional.html" />
+    <link rel="next" title="invoke_tuple" href="invoke_tuple.html" />
+    <link rel="prev" title="callable_traits" href="callable_traits.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">ACTL  documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">deduce_noexcept</a><ul>
+<li><a class="reference internal" href="#outline">Outline</a></li>
+<li><a class="reference internal" href="#detailed-outline">Detailed outline</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="callable_traits.html" title="callable_traits" accesskey="P">previous </a></li>
+              <li><a href="invoke_tuple.html" title="invoke_tuple" accesskey="N">next </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../functional.html" accesskey="U">functional</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">deduce_noexcept</a><ul>
+<li><a class="reference internal" href="#outline">Outline</a></li>
+<li><a class="reference internal" href="#detailed-outline">Detailed outline</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="callable_traits.html"
+                          title="previous chapter">callable_traits</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="invoke_tuple.html"
+                          title="next chapter">invoke_tuple</a></p>
+  </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="deduce-noexcept">
+<h1>deduce_noexcept<a class="headerlink" href="#deduce-noexcept" title="Permalink to this headline">¶</a></h1>
+<p>C++ has automatic return type deduction since C++11.
+However, in C++20 there’s still no support for automatic noexcept specification.
+The following utilities make is easier to write noexcept-correct code until we get <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">auto</span></span><span class="p"><span class="pre">)</span></span></code> in the language.</p>
+<p>One caveat worth noting when using these utilities is that operator <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">{})</span></span></code>
+checks not only that the constructor is non-throwing, but also the destructor.
+Unfortunately, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/is_constructible">std::is_nothrow_constructible</a>
+doesn’t help either (see Notes).</p>
+<section id="outline">
+<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
+<p>#define <a class="reference internal" href="#c.AC_DEDUCE_NOEXCEPT_AND_RETURN" title="AC_DEDUCE_NOEXCEPT_AND_RETURN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">AC_DEDUCE_NOEXCEPT_AND_RETURN</span></code></a></p>
+<p>#define <a class="reference internal" href="#c.AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN" title="AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN</span></code></a></p>
+<p>#define <a class="reference internal" href="#c.AC_DEDUCE_NOEXCEPT_AND_INITIALIZE" title="AC_DEDUCE_NOEXCEPT_AND_INITIALIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">AC_DEDUCE_NOEXCEPT_AND_INITIALIZE</span></code></a></p>
+</section>
+<section id="detailed-outline">
+<h2>Detailed outline<a class="headerlink" href="#detailed-outline" title="Permalink to this headline">¶</a></h2>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AC_DEDUCE_NOEXCEPT_AND_RETURN">
+<span class="target" id="deduce__noexcept_8hpp_1ab8d18ef1cf07c37a0dbfbcde4446ea4e"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_DEDUCE_NOEXCEPT_AND_RETURN</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_DEDUCE_NOEXCEPT_AND_RETURN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Macro that avoids code duplication by returning the given expression from the function and deducing the <code class="docutils literal notranslate"><span class="pre">noexcept</span></code> specification from it. For example, the following operator <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="p">(</span><span class="k">noexcept</span><span class="p">(</span><span class="n">rhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lhs</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">rhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lhs</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span>
+</pre></div>
+</div>
+ can be rewritten as <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"> </span><span class="n">AC_DEDUCE_NOEXCEPT_AND_RETURN</span><span class="p">(</span><span class="n">rhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lhs</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN">
+<span class="target" id="deduce__noexcept_8hpp_1a5ca99ce6b16342a846078c3d9ed79e08"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Macro that avoids code duplication by returning the given expression from the function and deducing the <code class="docutils literal notranslate"><span class="pre">noexcept</span></code> specification and return type from it. For example, the following operator <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="p">(</span><span class="k">noexcept</span><span class="p">(</span><span class="n">rhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lhs</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">rhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lhs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">rhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lhs</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span>
+</pre></div>
+</div>
+ can be rewritten as <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN</span><span class="p">(</span><span class="n">rhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lhs</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+ </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This macro is different from <a class="reference internal" href="#deduce__noexcept_8hpp_1ab8d18ef1cf07c37a0dbfbcde4446ea4e"><span class="std std-ref">AC_DEDUCE_NOEXCEPT_AND_RETURN</span></a>, because it correctly disables a function when the expression is ill-formed (SFINAE) instead of defining a function that always produces a compilation error. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AC_DEDUCE_NOEXCEPT_AND_INITIALIZE">
+<span class="target" id="deduce__noexcept_8hpp_1a2f7011d32db8ce69104e48fc57c35405"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_DEDUCE_NOEXCEPT_AND_INITIALIZE</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_DEDUCE_NOEXCEPT_AND_INITIALIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Macro that avoids code duplication by using the given expression as a member initializer list and deducing the <code class="docutils literal notranslate"><span class="pre">noexcept</span></code> specification from it. For example, the following constructor <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Derived</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="p">(</span><span class="k">noexcept</span><span class="p">(</span><span class="n">Base</span><span class="p">{</span><span class="n">x</span><span class="p">}))</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Base</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+</pre></div>
+</div>
+ can be rewritten as <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Derived</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">AC_DEDUCE_NOEXCEPT_AND_INITIALIZE</span><span class="p">(</span><span class="n">Base</span><span class="p">{</span><span class="n">x</span><span class="p">})</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+</pre></div>
+</div>
+ </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Data members aren’t supported, only base classes and delegated constructors. </p>
+</div>
+</dd></dl>
+
+</div>
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/deduce_noexcept.hpp">Source code</a></p>
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/deduce_noexcept.cpp">Tests</a></p>
+</section>
+<section id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>These utilities are inspired by <a class="reference external" href="https://www.boost.org/doc/libs/1_78_0/libs/hof/doc/html/include/boost/hof/returns.html">BOOST_HOF_RETURNS</a>.</p>
+</section>
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">ACTL  documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="callable_traits.html" title="callable_traits" >previous</a></li>
+        <li><a href="invoke_tuple.html" title="invoke_tuple" >next</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../functional.html" >functional</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2022, Oleksandr Bacherikov.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>
