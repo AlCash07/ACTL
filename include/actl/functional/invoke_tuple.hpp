@@ -49,19 +49,18 @@ constexpr void invoke_all_matching_impl(
 
 /// Invokes the first tuple element that is invocable with @p args
 /// (it's required to exist) and returns its result.
-template <
-    class Tuple,
-    class... Args,
-    size_t I = detail::find_first_matching<0, remove_cvref_t<Tuple>, Args...>()>
+template <class Tuple, class... Args>
 constexpr decltype(auto) invoke_first_matching(
     Tuple&& tuple_to_invoke, Args&&... args)
     // TODO: use std::invoke when it's constexpr.
-    AC_DEDUCE_NOEXCEPT_AND_RETURN(std::get<I>(
-        std::forward<Tuple>(tuple_to_invoke))(std::forward<Args>(args)...))
+    AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        std::get<
+            detail::find_first_matching<0, remove_cvref_t<Tuple>, Args...>()>(
+            std::forward<Tuple>(tuple_to_invoke))(std::forward<Args>(args)...))
 
 /// Invokes in order all the tuple elements that are invocable with @p args.
-/// @note @p args aren't forwarded, because they may be shared between multiple
-/// invocations.
+/// @note @p args aren't forwarded to the invocations but passed by reference,
+/// because they may be shared between multiple invocations.
 template <class Tuple, class... Args>
 constexpr void invoke_all_matching(Tuple&& tuple_to_invoke, Args&&... args)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(detail::invoke_all_matching_impl(

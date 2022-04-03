@@ -9,41 +9,76 @@
 
 namespace {
 
-template <class T, int V>
-struct const_op
+/* invoke_first_matching */
+
+struct int_cref_op
 {
-    constexpr int operator()(T) const
+    constexpr int operator()(const int&) const
     {
-        return V;
+        return 0;
     }
 };
 
-struct increment
+struct other_op
 {
-    int v;
-
-    constexpr void operator()(int x)
+    constexpr int operator()(int&&) const noexcept
     {
-        v += x;
+        return 1;
+    }
+    constexpr int operator()(std::byte const&) const noexcept
+    {
+        return 2;
+    }
+    constexpr int operator()(std::byte&&) const noexcept
+    {
+        return 3;
+    }
+};
+
+constexpr std::tuple<int_cref_op, other_op> t2;
+/* The first matching element is chosen even if the match isn't perfect */
+static_assert(0 == ac::invoke_first_matching(t2, int{}));
+/* Arguments are perfectly forwarded */
+constexpr std::byte b{};
+static_assert(2 == ac::invoke_first_matching(t2, b));
+static_assert(3 == ac::invoke_first_matching(t2, std::byte{}));
+/* noexcept is correctly propagated */
+static_assert(!noexcept(ac::invoke_first_matching(t2, int{})));
+static_assert(noexcept(ac::invoke_first_matching(t2, b)));
+
+template <class... Ts>
+struct op
+{
+    bool invoked = false;
+
+    template <class T, ac::enable_int_if<ac::is_one_of_v<T, Ts...>> = 0>
+    constexpr void operator()(T x) noexcept(std::is_same_v<T, int>)
+    {
+        invoked = true;
+    }
+
+    constexpr operator bool() const noexcept
+    {
+        return invoked;
     }
 };
 
 } // namespace
 
-TEST_CASE("invocable_tuple")
+TEST_CASE("invoke_all_matching")
 {
-    using CS = std::
-        tuple<const_op<bool, 1>, const_op<bool, 2>, const_op<increment, 3>>;
-    static_assert(1 == ac::invoke_first_matching(CS{}, true));
-    static_assert(3 == ac::invoke_first_matching(CS{}, increment{1}));
-
-    SECTION("invoke_all")
+    std::tuple<op<int>, op<std::byte>, op<int, std::byte>> t3;
+    SECTION("invoke with int")
     {
-        increment inc[3] = {{0}, {1}, {2}};
-        std::tuple<increment&, increment&, increment&> c{
-            inc[0], inc[1], inc[2]};
-        ac::invoke_all_matching(c, 2);
-        for (int i : ac::irange(3))
-            CHECK(i + 2 == inc[i].v);
+        ac::invoke_all_matching(t3, int{});
+        CHECK(std::tuple{true, false, true} == t3);
     }
+    SECTION("invoke with std::byte")
+    {
+        ac::invoke_all_matching(t3, std::byte{});
+        CHECK(std::tuple{false, true, true} == t3);
+    }
+    /* noexcept is correctly propagated */
+    static_assert(noexcept(ac::invoke_all_matching(t3, int{})));
+    static_assert(!noexcept(ac::invoke_all_matching(t3, std::byte{})));
 }
