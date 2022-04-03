@@ -2,7 +2,12 @@
 ACTL documentation
 ################################
 
-ACTL started as a template library for algorithm competitions, but this led to a development of numerous widely applicable components.
+ACTL started as a template library for algorithm competitions,
+but this led to a development of numerous widely applicable components.
+
+################################
+Contents
+################################
 
 Sub-libraries that emerged as helper utilities and can be used in various contexts:
 
