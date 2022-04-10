@@ -8,7 +8,7 @@
 
 #include <actl/category/range.hpp>
 #include <actl/meta/static_size.hpp>
-#include <actl/range/facade/contiguous_range_facade.hpp>
+#include <actl/range/interface/contiguous_range_interface.hpp>
 #include <actl/range/traits.hpp>
 #include <actl/range/utility/size_holder.hpp>
 
@@ -26,7 +26,8 @@ struct span_types
 } // namespace detail
 
 template <class T, size_t N = dynamic_size>
-class span : public contiguous_range_facade<span<T, N>, detail::span_types<T>>
+class span
+    : public contiguous_range_interface<span<T, N>, detail::span_types<T>>
 {
 public:
     using element_type = T;

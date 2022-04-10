@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/range/facade/range_facade.hpp>
+#include <actl/range/interface/range_interface.hpp>
 #include <actl/range/traits.hpp>
 
 namespace ac {
@@ -27,7 +27,7 @@ struct iter_range_types
 
 template <class Iter, class Traits = default_range_traits>
 class iterator_range
-    : public range_facade<
+    : public range_interface_selector_t<
           iterator_range<Iter, Traits>,
           detail::iter_range_types<Iter>>
 {

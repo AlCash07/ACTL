@@ -9,7 +9,7 @@
 #include <actl/iterator/facade/iterator_adaptor.hpp>
 #include <actl/iterator/traits.hpp>
 #include <actl/meta/type_traits.hpp>
-#include <actl/range/facade/range_facade.hpp>
+#include <actl/range/interface/range_interface.hpp>
 #include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
@@ -78,7 +78,7 @@ struct filtered_range_types
 
 template <class Range, class Predicate>
 class filtered_range
-    : public range_facade<
+    : public range_interface_selector_t<
           filtered_range<Range, Predicate>,
           detail::filtered_range_types<Range, Predicate>>
 {

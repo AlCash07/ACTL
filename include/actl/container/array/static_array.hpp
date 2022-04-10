@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/integral_constant.hpp>
-#include <actl/range/facade/contiguous_range_facade.hpp>
+#include <actl/range/interface/contiguous_range_interface.hpp>
 #include <actl/std/array.hpp>
 
 namespace ac {
@@ -25,11 +25,11 @@ struct sa_types
 
 template <class T, T... Values>
 class static_array
-    : public contiguous_range_facade<
+    : public contiguous_range_interface<
           static_array<T, Values...>,
           detail::sa_types<T>>
 {
-    using base_t = contiguous_range_facade<
+    using base_t = contiguous_range_interface<
         static_array<T, Values...>,
         detail::sa_types<T>>;
 
