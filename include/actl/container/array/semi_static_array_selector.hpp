@@ -10,37 +10,40 @@
 
 namespace ac {
 
-template <class T, T... Values>
+namespace detail {
+
+template <size_t SizeDynamic, class T, T... Values>
 struct semi_static_array_selector
 {
-    static constexpr size_t size = sizeof...(Values);
-
-    template <size_t SizeDynamic>
-    struct impl
-    {
-        using type = ac::semi_static_array<T, Values...>;
-    };
-
-    template <>
-    struct impl<0>
-    {
-        using type = ac::static_array<T, Values...>;
-    };
-
-    // When size is 0, we should prefer the previous specialization.
-    // To do that, we disable this specialization by setting 1 instead of 0.
-    template <>
-    struct impl<size == 0 ? 1 : size>
-    {
-        using type = std::array<T, size>;
-    };
-
-    using type =
-        typename impl<(0 + ... + size_t{Values == dynamic_extent<T>})>::type;
+    using type = ac::semi_static_array<T, Values...>;
 };
 
 template <class T, T... Values>
-using semi_static_array_t =
-    typename semi_static_array_selector<T, Values...>::type;
+struct semi_static_array_selector<0, T, Values...>
+{
+    using type = ac::static_array<T, Values...>;
+};
+
+template <class T, T... Values>
+struct semi_static_array_selector<sizeof...(Values), T, Values...>
+{
+    using type = std::array<T, sizeof...(Values)>;
+};
+
+// This specialization is needed to disambiguate between the two above when size
+// is 0.
+template <class T>
+struct semi_static_array_selector<0, T>
+{
+    using type = ac::static_array<T>;
+};
+
+} // namespace detail
+
+template <class T, T... Values>
+using semi_static_array_t = typename detail::semi_static_array_selector<
+    (0 + ... + size_t{Values == dynamic_extent<T>}),
+    T,
+    Values...>::type;
 
 } // namespace ac
