@@ -56,9 +56,12 @@ struct resolved_result_type0<true, Ts...>
 };
 
 template <class... Ts>
-using resolved_result_type = resolved_result_type0<
-    1 < (... + int{is_operation_v<remove_cvref_t<Ts>>}),
-    Ts...>;
+inline constexpr bool has_operation_arg_v =
+    1 < (... + int{is_operation_v<remove_cvref_t<Ts>>});
+
+template <class... Ts>
+using resolved_result_type =
+    resolved_result_type0<has_operation_arg_v<Ts...>, Ts...>;
 
 template <class... Ts>
 using resolved_result_type_t = typename resolved_result_type<Ts...>::type;

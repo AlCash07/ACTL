@@ -24,9 +24,14 @@ if(MSVC)
 else()
     target_compile_definitions(actl_unit_tests PRIVATE _GLIBCXX_DEBUG _GLIBCXX_DEBUG_PEDANTIC)
     target_compile_options(actl_unit_tests PRIVATE
-    -Wall -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align
-    -pedantic -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector
-    -ftemplate-backtrace-limit=0 -fconstexpr-backtrace-limit=0)
+        -Wall -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align
+        -pedantic -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all
+        -ftemplate-backtrace-limit=0)
 
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -fsanitize=undefined")
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(actl_unit_tests PRIVATE
+            -Wshadow -fconstexpr-backtrace-limit=0)
+    endif()
 endif()

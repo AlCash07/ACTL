@@ -37,18 +37,18 @@ class iterator_adaptor
 public:
     explicit constexpr iterator_adaptor(const Iter& iter) noexcept(
         noexcept(Iter{iter}))
-        : iter_{iter}
+        : base_{iter}
     {}
 
     constexpr const Iter& base() const noexcept
     {
-        return iter_;
+        return base_;
     }
 
 protected:
     constexpr Iter& base_ref() noexcept
     {
-        return iter_;
+        return base_;
     }
 
 private:
@@ -58,26 +58,28 @@ private:
         iterator_facade<Derived, detail::deduced_iter_types<Iter, Types>>;
 
     constexpr reference_t<base_t> dereference() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(*iter_)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(*base())
 
-    constexpr void increment() AC_DEDUCE_NOEXCEPT_AND_RETURN(++iter_, void())
+    constexpr void increment()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), void())
 
-    constexpr void decrement() AC_DEDUCE_NOEXCEPT_AND_RETURN(--iter_, void())
+    constexpr void decrement()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), void())
 
     template <class D = difference_type_t<base_t>>
     constexpr void advance(D n)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(iter_ += n, void())
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n, void())
 
     template <class Derived1, class Iter1, class Types1>
     constexpr bool equals(const iterator_adaptor<Derived1, Iter1, Types1>& rhs)
-        const AC_DEDUCE_NOEXCEPT_AND_RETURN(iter_ == rhs.base())
+        const AC_DEDUCE_NOEXCEPT_AND_RETURN(base() == rhs.base())
 
     template <class Derived1, class Iter1, class Types1>
     constexpr difference_type_t<base_t> distance_to(
         const iterator_adaptor<Derived1, Iter1, Types1>& rhs) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs.base() - iter_)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs.base() - base())
 
-    Iter iter_;
+    Iter base_;
 };
 
 } // namespace ac
