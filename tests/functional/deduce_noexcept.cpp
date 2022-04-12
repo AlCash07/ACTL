@@ -12,8 +12,10 @@ constexpr bool is_int(int) noexcept
     return true;
 }
 
-constexpr bool is_int(double)
+constexpr bool is_int(double x)
 {
+    if (x < 0)
+        throw;
     return false;
 }
 
@@ -24,7 +26,7 @@ constexpr auto is_int_wrapped(T x) AC_DEDUCE_NOEXCEPT_AND_RETURN(is_int(x))
 
 static_assert(noexcept(is_int_wrapped(0)));
 static_assert(is_int_wrapped(0));
-static_assert(!noexcept(is_int_wrapped(0.0)));
+static_assert(!noexcept(is_int_wrapped(-1.0)));
 static_assert(!is_int_wrapped(0.0));
 
 /* AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN */
@@ -35,7 +37,7 @@ constexpr auto is_int_wrapped2(T x)
 
 static_assert(noexcept(is_int_wrapped2(0)));
 static_assert(is_int_wrapped2(0));
-static_assert(!noexcept(is_int_wrapped2(0.0)));
+static_assert(!noexcept(is_int_wrapped2(-1.0)));
 static_assert(!is_int_wrapped2(0.0));
 
 template <class T, class = void>
@@ -72,5 +74,5 @@ struct Derived : Base
 
 static_assert(noexcept(Derived{0}));
 static_assert(Derived{0}.value);
-static_assert(!noexcept(Derived{0.0}));
+static_assert(!noexcept(Derived{-1.0}));
 static_assert(!Derived{0.0}.value);

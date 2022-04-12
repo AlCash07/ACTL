@@ -13,8 +13,10 @@ namespace {
 
 struct int_cref_op
 {
-    constexpr int operator()(const int&) const
+    constexpr int operator()(const int& x) const
     {
+        if (x < 0)
+            throw;
         return 0;
     }
 };
@@ -43,7 +45,7 @@ constexpr std::byte b{};
 static_assert(2 == ac::invoke_first_matching(t2, b));
 static_assert(3 == ac::invoke_first_matching(t2, std::byte{}));
 /* noexcept is correctly propagated */
-static_assert(!noexcept(ac::invoke_first_matching(t2, int{})));
+static_assert(!noexcept(ac::invoke_first_matching(t2, int{-1})));
 static_assert(noexcept(ac::invoke_first_matching(t2, b)));
 
 template <class... Ts>
