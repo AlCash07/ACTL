@@ -57,7 +57,10 @@ struct scalar_operation : operation<Op>
             if constexpr (!is_integral_constant_v<T>)
                 return this->derived().eval_scalar(convert<T>(eval(xs))...);
         }
-        return this->derived().eval_scalar(eval(xs)...);
+        else
+        {
+            return this->derived().eval_scalar(eval(xs)...);
+        }
     }
 
     template <class T, class... Ts>

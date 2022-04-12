@@ -62,14 +62,13 @@ class iter_facade<Iter, T, std::input_iterator_tag>
 {
 protected:
     using base_t = iter_facade<Iter, T, std::output_iterator_tag>;
-    using base_t::derived;
 
 public:
     using typename base_t::reference;
 
     constexpr typename base_t::pointer operator->() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(
-            operator_arrow_dispatch<reference>::apply(*derived()))
+            operator_arrow_dispatch<reference>::apply(*this->derived()))
 };
 
 template <class Iter, class T>
@@ -81,17 +80,14 @@ template <class Iter, class T>
 class iter_facade<Iter, T, std::bidirectional_iterator_tag>
     : public iter_facade<Iter, T, std::forward_iterator_tag>
 {
-protected:
-    using iter_facade<Iter, T, std::forward_iterator_tag>::derived;
-
 public:
     constexpr Iter& operator--() AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        iterator_core_access::decrement(derived()), derived())
+        iterator_core_access::decrement(this->derived()), this->derived())
 
     constexpr Iter operator--(int) noexcept(
-        noexcept(Iter{derived()}, --std::declval<Iter&>()))
+        noexcept(Iter{this->derived()}, --std::declval<Iter&>()))
     {
-        Iter copy = derived();
+        Iter copy = this->derived();
         --*this;
         return copy;
     }
@@ -103,24 +99,23 @@ class iter_facade<Iter, T, std::random_access_iterator_tag>
 {
 protected:
     using base_t = iter_facade<Iter, T, std::bidirectional_iterator_tag>;
-    using base_t::derived;
 
 public:
     using typename base_t::difference_type;
 
     constexpr typename base_t::reference operator[](difference_type n) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(*(derived() + n))
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(*(this->derived() + n))
 
     constexpr Iter& operator+=(difference_type n) AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        iterator_core_access::advance(derived(), n), derived())
+        iterator_core_access::advance(this->derived(), n), this->derived())
 
     constexpr Iter& operator-=(difference_type n)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*this += -n)
 
     constexpr Iter operator+(difference_type n) const
-        noexcept(noexcept(Iter{derived()}, std::declval<Iter&>() += n))
+        noexcept(noexcept(Iter{this->derived()}, std::declval<Iter&>() += n))
     {
-        Iter copy = derived();
+        Iter copy = this->derived();
         return copy += n;
     }
 

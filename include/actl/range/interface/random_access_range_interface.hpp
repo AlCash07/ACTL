@@ -15,7 +15,6 @@ class random_access_range_interface
     : public bidirectional_range_interface<Derived, Types>
 {
     using base_t = bidirectional_range_interface<Derived, Types>;
-    using base_t::derived;
 
 public:
     using typename base_t::difference_type;
@@ -23,14 +22,14 @@ public:
 
     constexpr decltype(auto) operator[](size_type n) const
         noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(
-            derived().begin()[static_cast<difference_type>(n)]))
+            this->derived().begin()[static_cast<difference_type>(n)]))
     {
         ACTL_ASSERT(0 <= n && n < size());
-        return derived().begin()[static_cast<difference_type>(n)];
+        return this->derived().begin()[static_cast<difference_type>(n)];
     }
 
     constexpr auto size() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        static_cast<size_type>(derived().end() - derived().begin()))
+        static_cast<size_type>(this->derived().end() - this->derived().begin()))
 };
 
 template <class Range, class Types>

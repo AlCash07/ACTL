@@ -12,6 +12,7 @@
 #include <actl/range/operation/comparison.hpp>
 #include <actl/std/vector.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <cmath>
 #include <string_view>
 
 using std::string_view_literals::operator""sv;
@@ -39,7 +40,7 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2>
     bool eval_scalar(T lhs, T rhs) const
     {
         T numerator = abs(lhs - rhs);
-        T denominator = max(max(abs(lhs), abs(rhs)), T{1});
+        T denominator = max(max(std::abs(lhs), std::abs(rhs)), T{1});
         return numerator <= eps * denominator;
     }
 };

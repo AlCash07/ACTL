@@ -14,15 +14,12 @@ template <class Derived, class Types>
 class bidirectional_range_interface
     : public basic_range_interface<Derived, Types>
 {
-protected:
-    using basic_range_interface<Derived, Types>::derived;
-
 public:
-    constexpr decltype(auto) back() const
-        noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--derived().end()))
+    constexpr decltype(auto) back() const noexcept(
+        ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end()))
     {
         ACTL_ASSERT(!this->empty());
-        auto last = derived().end();
+        auto last = this->derived().end();
         return *--last;
     }
 };

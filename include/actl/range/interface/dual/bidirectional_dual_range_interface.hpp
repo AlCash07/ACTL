@@ -15,15 +15,13 @@ template <class Derived, class Types>
 class bidirectional_non_const_range_interface
     : public basic_non_const_range_interface<Derived, Types>
 {
-protected:
-    using non_const_range_interface<Derived, Types>::derived;
-
 public:
     constexpr decltype(auto) back() //
-        noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--derived().end()))
+        noexcept(
+            ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end()))
     {
         ACTL_ASSERT(!this->empty());
-        auto last = derived().end();
+        auto last = this->derived().end();
         return *--last;
     }
 };
