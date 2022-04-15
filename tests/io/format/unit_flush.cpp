@@ -4,8 +4,8 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/io/device/buffered.hpp>
 #include <actl/io/device/memory.hpp>
+#include <actl/io/device/wrapper/buffered.hpp>
 #include <actl/io/format/unit_flush.hpp>
 #include "test.hpp"
 
