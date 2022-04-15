@@ -11,6 +11,7 @@
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/parser_executor.hpp>
 #include <actl/io/core/serialization_access.hpp>
+#include <actl/io/device/traits.hpp>
 #include <actl/io/format/composed_format.hpp>
 #include <actl/meta/type_traits.hpp>
 #include <actl/range/span.hpp>
@@ -37,12 +38,6 @@ inline constexpr bool is_in = (Mode & in) > 0;
 template <mode_t Mode>
 inline constexpr bool is_out = (Mode & (out | app)) > 0;
 
-template <class Device>
-using char_t = typename Device::char_type;
-
-struct device_base
-{};
-
 template <mode_t Mode, class Char>
 struct device : device_base
 {
@@ -52,29 +47,6 @@ struct device : device_base
 
     static constexpr mode_t mode = Mode;
 };
-
-template <class T>
-inline constexpr bool is_device_v = std::is_base_of_v<device_base, T>;
-
-template <class T, class = void>
-struct has_input_buffer : std::false_type
-{};
-
-template <class T>
-struct has_input_buffer<
-    T,
-    std::void_t<decltype(std::declval<T>().input_data())>> : std::true_type
-{};
-
-template <class T, class = void>
-struct has_output_buffer : std::false_type
-{};
-
-template <class T>
-struct has_output_buffer<
-    T,
-    std::void_t<decltype(std::declval<T>().output_data())>> : std::true_type
-{};
 
 /* Format */
 
