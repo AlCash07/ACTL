@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/io/device/memory.hpp>
-#include <actl/io/text/text.hpp>
+#include <actl/io/format/text/text.hpp>
 #include "test.hpp"
 
 using namespace ac::io;

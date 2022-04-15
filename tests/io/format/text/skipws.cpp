@@ -5,17 +5,20 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/io/device/memory.hpp>
+#include <actl/io/format/text/skipws.hpp>
 #include <actl/io/format/text/text.hpp>
-#include <actl/io/utility/skip.hpp>
 #include "test.hpp"
 
 using namespace ac::io;
 
-TEST_CASE("whitespace skip")
+TEST_CASE("skipws")
 {
-    memory<in> id{" \n\tb"};
-    char a, b;
-    CHECK(read(id, text{}, a, ws, b));
-    CHECK(' ' == a);
-    CHECK('b' == b);
+    std::string s = " \n\ta\n";
+    memory<in> id{s};
+    char a{};
+    char b{};
+    CHECK(read(id, skipws{} >>= text{}, a));
+    CHECK(read(id, text{}, b));
+    CHECK('a' == a);
+    CHECK('\n' == b);
 }

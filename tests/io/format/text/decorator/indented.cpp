@@ -4,9 +4,10 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#pragma once
+#include <actl/io/format/text/decorator/indented.hpp>
+#include <actl/std/all.hpp>
+#include "test.hpp"
 
-#include <actl/io/format/binary/all.hpp>
-#include <actl/io/format/composed_format.hpp>
-#include <actl/io/format/text/all.hpp>
-#include <actl/io/format/utility/all.hpp>
+using namespace ac::io;
+
+TEST_CASE("json") {}

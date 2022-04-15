@@ -5,17 +5,17 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/io/device/memory.hpp>
-#include <actl/io/format/text/text.hpp>
-#include <actl/io/utility/skip.hpp>
+#include <actl/io/device/wrapper/buffered.hpp>
+#include <actl/io/format/utility/unit_flush.hpp>
 #include "test.hpp"
 
+using namespace ac;
 using namespace ac::io;
 
-TEST_CASE("whitespace skip")
+TEST_CASE("unit_flush")
 {
-    memory<in> id{" \n\tb"};
-    char a, b;
-    CHECK(read(id, text{}, a, ws, b));
-    CHECK(' ' == a);
-    CHECK('b' == b);
+    char array[1] = {};
+    buffered<memory<bin | io::out>, char[2]> od{array};
+    write(od, unit_flush{}, 'x');
+    CHECK(array[0] == 'x');
 }
