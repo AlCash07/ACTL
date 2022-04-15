@@ -135,41 +135,6 @@ protected:
         ptr_ = std::data(buf_);
     }
 
-    void write_impl(cspan<Char> src)
-    {
-        const Char* srcPtr = src.data();
-        size_t count = src.size();
-        size_t available = static_cast<size_t>(std::end(buf_) - ptr_);
-        if (count < available)
-        {
-            if (count == 1)
-            {
-                *ptr_++ = *srcPtr;
-            }
-            else
-            {
-                ptr_ = copy(src, ptr_);
-            }
-        }
-        else
-        {
-            std::copy_n(srcPtr, available, ptr_);
-            Device::write(buf_);
-            srcPtr += available;
-            count -= available;
-            size_t remainder = count % std::size(buf_);
-            if (remainder < count)
-            {
-                Device::write({srcPtr, count - remainder});
-                srcPtr += count - remainder;
-            }
-            if (0 < remainder)
-            {
-                ptr_ = std::copy_n(srcPtr, remainder, std::data(buf_));
-            }
-        }
-    }
-
 public:
     using base_t::base_t;
 
@@ -185,23 +150,32 @@ public:
         return 1;
     }
 
-    size_t write(cspan<Char> src)
+    size_t write(span<const Char> src)
     {
-        if constexpr (is_line_buffered<base_t::mode>)
+        const Char* srcPtr = src.data();
+        size_t count = src.size();
+        size_t available = static_cast<size_t>(std::end(buf_) - ptr_);
+        if (count < available)
         {
-            const Char* last = src.end();
-            while (last != src.data() && last[-1] != '\n')
-                --last;
-            if (last != src.data())
-            {
-                write_impl({src.data(), last});
-                flush();
-            }
-            write_impl({last, src.end()});
+            if (count == 1)
+                *ptr_++ = *srcPtr;
+            else
+                ptr_ = copy(src, ptr_);
         }
         else
         {
-            write_impl(src);
+            std::copy_n(srcPtr, available, ptr_);
+            Device::write(buf_);
+            srcPtr += available;
+            count -= available;
+            size_t remainder = count % std::size(buf_);
+            if (remainder < count)
+            {
+                Device::write({srcPtr, count - remainder});
+                srcPtr += count - remainder;
+            }
+            if (0 < remainder)
+                ptr_ = std::copy_n(srcPtr, remainder, std::data(buf_));
         }
         return src.size();
     }

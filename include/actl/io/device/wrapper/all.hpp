@@ -8,3 +8,4 @@
 
 #include <actl/io/device/wrapper/buffered.hpp>
 #include <actl/io/device/wrapper/formatted.hpp>
+#include <actl/io/device/wrapper/line_buffered.hpp>

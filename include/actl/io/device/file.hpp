@@ -47,6 +47,11 @@ public:
             std::fclose(file_);
     }
 
+    std::FILE* get() const
+    {
+        return file_;
+    }
+
     bool eof() const
     {
         return std::feof(file_) != 0;
@@ -78,18 +83,7 @@ public:
 
     size_t read(span<Char> dst)
     {
-        size_t res{};
-        if constexpr (is_line_buffered<Mode>)
-        {
-            if (std::fgets(
-                    dst.data(), static_cast<int>(dst.size()), this->file_))
-                res = std::strlen(dst.data());
-        }
-        else
-        {
-            res = std::fread(dst.data(), sizeof(Char), dst.size(), this->file_);
-        }
-        return res;
+        return std::fread(dst.data(), sizeof(Char), dst.size(), this->file_);
     }
 
     void move(index offset)
@@ -118,7 +112,7 @@ public:
         return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0;
     }
 
-    size_t write(cspan<Char> src)
+    size_t write(span<const Char> src)
     {
         return std::fwrite(src.data(), sizeof(Char), src.size(), this->file_);
     }
