@@ -97,16 +97,4 @@ bool read(Device&& id, Format&& fmt, Ts&&... args)
     }
 }
 
-template <class Device, class Format, class T>
-bool write_size(Device& od, Format& fmt, const T& size)
-{
-    return write(od, fmt, size);
-}
-
-template <class Device, class Format, class T>
-bool read_size(Device& id, Format& fmt, T& size)
-{
-    return read(id, fmt, size);
-}
-
 } // namespace ac::io

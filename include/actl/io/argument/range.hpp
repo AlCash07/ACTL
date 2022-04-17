@@ -9,6 +9,7 @@
 #include <actl/category/range.hpp>
 #include <actl/container/functions.hpp>
 #include <actl/io/argument/byte_span.hpp>
+#include <actl/io/argument/size.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/traits.hpp>
@@ -40,7 +41,7 @@ bool write_final(Device& od, Format& fmt, const R& x)
 {
     nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
-        if (!write_size(od, fmt, x.size()))
+        if (!write(od, fmt, size{x.size()}))
             return false;
     for (const auto& value : x)
         if (!write(od, fmt, element_representation<R>(value)))
@@ -63,7 +64,7 @@ template <class D, class F, class C>
 bool read_container(D& id, F& fmt, C& x)
 {
     decltype(x.size()) size{};
-    if (!read_size(id, fmt, size))
+    if (!read(id, fmt, io::size{size}))
         return false;
     if constexpr (!is_random_access_range_v<C>)
     {
