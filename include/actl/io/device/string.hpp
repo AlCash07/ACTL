@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/io/device/mode.hpp>
 #include <actl/io/io.hpp>
 #include <actl/std/string.hpp>
 #include <cstring>

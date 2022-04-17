@@ -10,30 +10,14 @@
 #include <actl/io/core/batch.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
+#include <actl/io/device/mode.hpp>
 #include <actl/io/device/traits.hpp>
 #include <actl/io/format/composed_format.hpp>
 #include <actl/meta/type_traits.hpp>
-#include <cstdint>
 
 namespace ac::io {
 
 /* Device */
-
-using mode_t = uint8_t;
-inline constexpr mode_t bin = 0x01;
-inline constexpr mode_t in = 0x02;
-inline constexpr mode_t out = 0x04;
-inline constexpr mode_t app = 0x08;
-inline constexpr mode_t trunc = in | out | app;
-
-template <mode_t Mode>
-inline constexpr bool is_bin = (Mode & bin) > 0;
-
-template <mode_t Mode>
-inline constexpr bool is_in = (Mode & in) > 0;
-
-template <mode_t Mode>
-inline constexpr bool is_out = (Mode & (out | app)) > 0;
 
 template <mode_t Mode, class Char>
 struct device : device_base

@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/io/device/mode.hpp>
 #include <actl/io/format/text/settings/base.hpp>
 #include <actl/io/format/text/settings/flags.hpp>
 #include <actl/io/format/text/settings/precision.hpp>

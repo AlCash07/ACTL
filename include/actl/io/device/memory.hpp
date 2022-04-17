@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/io/device/mode.hpp>
 #include <actl/io/io.hpp>
 #include <actl/range/span.hpp>
 #include <algorithm>
