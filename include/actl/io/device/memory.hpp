@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/io/io.hpp>
+#include <actl/range/span.hpp>
 #include <algorithm>
 #include <cstring>
 

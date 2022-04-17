@@ -4,11 +4,11 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
+#include <actl/io/argument/tuple.hpp>
 #include <actl/io/format/text/arithmetic/all.hpp>
 #include <actl/io/format/text/decorator/braced.hpp>
 #include <actl/io/format/text/decorator/spaced.hpp>
 #include <actl/io/format/text/text.hpp>
-#include <actl/io/tuple.hpp>
 #include <actl/std/all.hpp>
 #include "io/format/text/test_io.hpp"
 #include "test.hpp"

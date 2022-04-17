@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/io/io.hpp>
+#include <actl/meta/type_traits.hpp>
 #include <actl/numeric/bit.hpp>
 #include <actl/std/array.hpp>
 

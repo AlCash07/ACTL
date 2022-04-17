@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/io/argument/empty.hpp>
 #include <type_traits>
 
 namespace ac::io {

@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/io/argument/byte_span.hpp>
 #include <actl/io/format/text/text.hpp>
 
 namespace ac::io {

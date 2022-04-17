@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/io/core/manipulator.hpp>
+#include <actl/io/core/read_write.hpp>
 #include <actl/io/format/apply_format.hpp>
 
 namespace ac::io {

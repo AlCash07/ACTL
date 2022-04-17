@@ -6,16 +6,13 @@
 
 #pragma once
 
+#include <actl/io/argument/byte.hpp>
 #include <actl/io/core/batch.hpp>
-#include <actl/io/core/const_data_parser.hpp>
 #include <actl/io/core/manipulator.hpp>
-#include <actl/io/core/parser_executor.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/device/traits.hpp>
 #include <actl/io/format/composed_format.hpp>
 #include <actl/meta/type_traits.hpp>
-#include <actl/range/span.hpp>
-#include <actl/utility/none.hpp>
 #include <cstdint>
 
 namespace ac::io {
@@ -69,106 +66,6 @@ template <class T, class Tag>
 struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
     : std::is_same<typename T::format_tag, Tag>
 {};
-
-/* Common types support */
-
-template <
-    class Device,
-    class Format,
-    class T,
-    enable_int_if<
-        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
-bool write_final(Device&, Format&, T&)
-{
-    return true;
-}
-
-template <
-    class Device,
-    class Format,
-    class T,
-    enable_int_if<
-        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
-bool read_final(Device&, Format&, T&)
-{
-    return true;
-}
-
-template <class T>
-using enable_int_if_byte =
-    enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
-
-template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
-bool write_final(Device& od, Format&, B byte)
-{
-    return od.write(static_cast<char_t<Device>>(byte)) == 1;
-}
-
-template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, B& byte)
-{
-    byte = static_cast<B>(id.get());
-    return !id.eof();
-}
-
-template <
-    class Device,
-    class Format,
-    class B,
-    size_t N,
-    enable_int_if_byte<B> = 0>
-bool write_final(Device& od, Format&, span<B, N> s)
-{
-    return od.write(
-               {reinterpret_cast<const char_t<Device>*>(s.data()), s.size()}) ==
-           s.size();
-}
-
-template <
-    class Device,
-    class Format,
-    class B,
-    size_t N,
-    enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, span<B, N>& s)
-{
-    return id.read({reinterpret_cast<char_t<Device>*>(s.data()), s.size()}) ==
-           s.size();
-}
-
-template <
-    class Device,
-    class Format,
-    class B,
-    size_t N,
-    enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, cspan<B, N>& s)
-{
-    span sc{reinterpret_cast<const char*>(s.data()), s.size()};
-    return parser_executor{const_data_parser{sc}}(id);
-}
-
-/* Function support */
-
-template <
-    class Device,
-    class Format,
-    class T,
-    enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
-bool write_final(Device& id, Format&, T& f)
-{
-    return f(id);
-}
-
-template <
-    class Device,
-    class Format,
-    class T,
-    enable_int_if<std::is_invocable_r_v<bool, T&, Device&>> = 0>
-bool read_final(Device& od, Format&, T& f)
-{
-    return f(od);
-}
 
 /* Read and write. Absence of std::forward is intentional here to convert rvalue
    references into

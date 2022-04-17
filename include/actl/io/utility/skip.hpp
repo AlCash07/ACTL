@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/io/argument/function.hpp>
 #include <actl/io/utility/predicate.hpp>
 #include <actl/string/ctype.hpp>
 

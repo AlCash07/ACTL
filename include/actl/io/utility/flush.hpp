@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/io/argument/function.hpp>
 #include <actl/utility/index.hpp>
 
 namespace ac::io {

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/io/io.hpp>
+#include <actl/io/device/traits.hpp>
 #include <algorithm>
 
 namespace ac::io {

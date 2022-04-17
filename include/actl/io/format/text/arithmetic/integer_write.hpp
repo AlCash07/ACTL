@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/io/argument/byte_span.hpp>
 #include <actl/io/format/text/arithmetic/detail/digit_count.hpp>
 #include <actl/io/format/text/arithmetic/detail/uitoa.hpp>
 #include <actl/io/format/text/text.hpp>

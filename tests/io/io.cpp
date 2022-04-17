@@ -4,6 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
+#include <actl/io/argument/const_byte_span.hpp>
 #include <actl/io/device/memory.hpp>
 #include <actl/io/format/text/text.hpp>
 #include "test.hpp"
