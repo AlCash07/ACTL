@@ -12,6 +12,7 @@
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/device/mode.hpp>
 #include <actl/io/device/traits.hpp>
+#include <actl/io/format/binary/binary.hpp>
 #include <actl/io/format/composed_format.hpp>
 #include <actl/meta/type_traits.hpp>
 
@@ -30,17 +31,6 @@ struct device : device_base
 };
 
 /* Format */
-
-struct binary
-{
-    struct format_tag;
-};
-
-template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
-binary deduce_format(Device&)
-{
-    return {};
-}
 
 template <class T, class Tag, class = void>
 struct has_format_tag : std::false_type

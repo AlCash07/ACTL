@@ -160,7 +160,7 @@ public:
             if (count == 1)
                 *ptr_++ = *srcPtr;
             else
-                ptr_ = copy(src, ptr_);
+                ptr_ = range_copy(src, ptr_);
         }
         else
         {

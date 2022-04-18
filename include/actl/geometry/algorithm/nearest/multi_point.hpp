@@ -48,7 +48,7 @@ auto nearest(const Policy& policy, span<Point> points, span<Point> tmp)
         rres.first < res.first)
         res = rres;
     merge(points.first(middle), points.last(n - middle), tmp.begin(), y_comp);
-    copy(tmp.first(n), points.begin());
+    range_copy(tmp.first(n), points.begin());
     index count = 0;
     for (const auto& p : points)
     {

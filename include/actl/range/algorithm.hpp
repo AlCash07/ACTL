@@ -34,6 +34,12 @@ std::pair<iterator_t<Range0>, iterator_t<Range1>> mismatch(
         std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
 }
 
+template <class Range, class OutIter>
+OutIter range_copy(const Range& src, OutIter dst)
+{
+    return std::copy(std::begin(src), std::end(src), dst);
+}
+
 template <class Range, class T>
 void fill(Range& dst, const T& value)
 {

@@ -12,8 +12,9 @@
 namespace ac::io {
 
 template <class T>
-using enable_int_if_byte =
-    enable_int_if<std::is_arithmetic_v<T> && sizeof(T) == 1>;
+using enable_int_if_byte = enable_int_if<
+    std::is_same_v<std::remove_cv_t<T>, std::byte> ||
+    (std::is_arithmetic_v<T> && sizeof(T) == 1)>;
 
 template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
 bool write_final(Device& od, Format&, B byte)
