@@ -30,17 +30,6 @@ struct device : device_base
     static constexpr mode_t mode = Mode;
 };
 
-/* Format */
-
-template <class T, class Tag, class = void>
-struct has_format_tag : std::false_type
-{};
-
-template <class T, class Tag>
-struct has_format_tag<T, Tag, std::void_t<typename T::format_tag>>
-    : std::is_same<typename T::format_tag, Tag>
-{};
-
 /* Read and write. Absence of std::forward is intentional here to convert rvalue
    references into
    lvalue references, because I/O doesn't operate with rvalues. */
@@ -49,26 +38,18 @@ template <class Device, class Format, class... Ts>
 bool write(Device&& od, Format&& fmt, const Ts&... args)
 {
     if constexpr (is_format_v<Format>)
-    {
         return (... && detail::write_impl(od, fmt, fmt, args));
-    }
     else
-    {
         return write(od, deduce_format(od), fmt, args...);
-    }
 }
 
 template <class Device, class Format, class... Ts>
 bool read(Device&& id, Format&& fmt, Ts&&... args)
 {
     if constexpr (is_format_v<Format>)
-    {
         return (... && detail::read_impl(id, fmt, fmt, args));
-    }
     else
-    {
         return read(id, deduce_format(id), fmt, args...);
-    }
 }
 
 } // namespace ac::io
