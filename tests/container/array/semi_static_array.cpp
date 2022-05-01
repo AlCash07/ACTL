@@ -57,13 +57,11 @@ constexpr Array fill_dynamic_values(Array src, D dynamic) noexcept
     return src;
 }
 
-template <auto X>
-inline constexpr auto const_v = std::integral_constant<decltype(X), X>{};
-
 template <class T, T... StaticValues, T... DynamicValues, size_t... Is>
 void test_semi_static_array_interface_impl(
     std::integer_sequence<T, DynamicValues...>, std::index_sequence<Is...>)
 {
+    using ac::constant;
     using Array = ac::semi_static_array<T, StaticValues...>;
     constexpr Array array{DynamicValues...};
     constexpr auto values = fill_dynamic_values(
@@ -78,18 +76,18 @@ void test_semi_static_array_interface_impl(
     // TODO: fix this on MSVC
     // static_assert(ACTL_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
     static_assert(((values[Is] == array[Is]) && ...));
-    static_assert(((noexcept(array[const_v<Is>])) && ...));
+    static_assert(((noexcept(array[constant<Is>{}])) && ...));
     static_assert(
         (std::is_same_v<
              ac::extent_holder_t<T, StaticValues>,
-             decltype(array[const_v<Is>])> &&
+             decltype(array[constant<Is>{}])> &&
          ...));
-    static_assert(((values[Is] == array[const_v<Is>]) && ...));
+    static_assert(((values[Is] == array[constant<Is>{}]) && ...));
     /* tuple interface */
     using std::get;
     static_assert(((noexcept(get<Is>(array))) && ...));
     static_assert(
-        (ac::equal_same_type(array[const_v<Is>], get<Is>(array)) && ...));
+        (ac::equal_same_type(array[constant<Is>{}], get<Is>(array)) && ...));
 }
 
 template <class T, T... StaticValues, class DynamicValues>

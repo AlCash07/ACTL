@@ -8,6 +8,7 @@
 
 #include <actl/category/category.hpp>
 #include <actl/category/utility/is_subcategory_of.hpp>
+#include <actl/meta/constant.hpp>
 
 namespace ac {
 
@@ -51,8 +52,8 @@ struct category<bool>
     using type = boolean_tag;
 };
 
-template <class T, T X>
-struct category<std::integral_constant<T, X>> : category<T>
+template <auto X>
+struct category<constant<X>> : category<decltype(X)>
 {};
 
 template <class T>

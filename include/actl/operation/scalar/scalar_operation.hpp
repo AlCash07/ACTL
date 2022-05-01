@@ -41,8 +41,8 @@ struct scalar_operation : operation<Op>
         return x;
     }
 
-    template <class T, class U, U X>
-    static constexpr T convert(std::integral_constant<U, X>)
+    template <class T, auto X>
+    static constexpr T convert(constant<X>)
     {
         return T{X};
     }

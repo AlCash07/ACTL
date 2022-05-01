@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/integral_constant.hpp>
+#include <actl/meta/constant.hpp>
 
 namespace ac {
 

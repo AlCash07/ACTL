@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/integral_constant.hpp>
+#include <actl/meta/constant.hpp>
 #include <actl/range/interface/contiguous_range_interface.hpp>
 #include <actl/std/array.hpp>
 
@@ -33,14 +33,11 @@ class static_array
         static_array<T, Values...>,
         detail::sa_types<T>>;
 
-    template <T Value>
-    using t_constant = std::integral_constant<T, Value>;
-
     template <class... Ts>
     static constexpr bool can_construct_from()
     {
         if constexpr (sizeof...(Ts) == sizeof...(Values))
-            return (... && std::is_same_v<t_constant<Values>, Ts>);
+            return (... && std::is_same_v<constant<Values>, Ts>);
         else
             return false;
     }
@@ -50,7 +47,7 @@ class static_array
 public:
     static constexpr auto size() noexcept
     {
-        return std::integral_constant<size_t, array.size()>{};
+        return constant<array.size()>{};
     }
 
     static constexpr const T* data() noexcept
@@ -72,17 +69,16 @@ public:
     using base_t::operator[];
 
     template <auto I>
-    constexpr auto operator[](
-        std::integral_constant<decltype(I), I>) const noexcept
+    constexpr auto operator[](constant<I>) const noexcept
     {
         static_assert(0 <= I && I < size());
-        return t_constant<array[I]>{};
+        return constant<array[I]>{};
     }
 
     template <size_t I>
     friend constexpr auto get(static_array src) noexcept
     {
-        return src[t_constant<I>{}];
+        return src[constant<I>{}];
     }
 
     friend constexpr void swap(static_array&, static_array&) noexcept {}
@@ -101,8 +97,7 @@ public:
 };
 
 template <class T, T... Values>
-static_array(std::integral_constant<T, Values>...)
-    -> static_array<T, Values...>;
+static_array(constant<Values>...) -> static_array<T, Values...>;
 
 template <class T, T... Values>
 struct range_traits<static_array<T, Values...>> : default_range_traits

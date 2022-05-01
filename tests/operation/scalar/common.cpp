@@ -9,7 +9,7 @@
 
 TEST_CASE("common")
 {
-    using one = std::integral_constant<int, 1>;
+    using one = ac::constant<1>;
     static_assert(std::is_same_v<
                   none,
                   decltype(eval(ac::common(none{}, none{}, none{})))>);

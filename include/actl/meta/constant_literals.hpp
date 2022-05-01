@@ -10,8 +10,8 @@
 
 #pragma once
 
+#include <actl/meta/constant.hpp>
 #include <limits>
-#include <type_traits>
 #include <utility>
 
 namespace ac {

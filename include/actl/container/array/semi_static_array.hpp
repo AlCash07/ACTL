@@ -79,8 +79,7 @@ public:
     }
 
     template <auto I>
-    constexpr auto operator[](
-        std::integral_constant<decltype(I), I> i) const noexcept
+    constexpr auto operator[](constant<I> i) const noexcept
     {
         if constexpr (static_values[i] != dynamic_extent<T>)
             return static_values[i];
@@ -88,8 +87,8 @@ public:
             return dynamic_values[dynamic_index<I>];
     }
 
-    template <class U, U I>
-    constexpr auto operator[](std::integral_constant<U, I>) noexcept
+    template <auto I>
+    constexpr auto operator[](constant<I>) noexcept
         -> std::enable_if_t<static_values[I] == dynamic_extent<T>, T&>
     {
         return dynamic_values[dynamic_index<I>];

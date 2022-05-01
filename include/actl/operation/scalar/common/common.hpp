@@ -56,22 +56,21 @@ struct common_f : scalar_operation<common_f, 2>
         return y;
     }
 
-    template <class T, T X>
-    static constexpr auto eval_scalar(
-        std::integral_constant<T, X> x, std::integral_constant<T, X>)
+    template <auto X>
+    static constexpr auto eval_scalar(constant<X> x, constant<X>)
     {
         return x;
     }
 
-    template <class T, T X, class U, enable_int_if<std::is_integral_v<U>> = 0>
-    static auto eval_scalar(std::integral_constant<T, X> x, U y)
+    template <auto X, class U, enable_int_if<std::is_integral_v<U>> = 0>
+    static auto eval_scalar(constant<X> x, [[maybe_unused]] U y)
     {
         ACTL_ASSERT(X == y);
         return x;
     }
 
-    template <class T, class U, U Y, enable_int_if<std::is_integral_v<T>> = 0>
-    static auto eval_scalar(T x, std::integral_constant<U, Y> y)
+    template <class T, auto Y, enable_int_if<std::is_integral_v<T>> = 0>
+    static auto eval_scalar(T x, constant<Y> y)
     {
         return eval_scalar(y, x);
     }

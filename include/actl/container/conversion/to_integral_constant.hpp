@@ -16,7 +16,7 @@ struct conversion<std::integral_constant<To, X>, From>
 {
     static constexpr bool value = std::is_constructible_v<To, From>;
 
-    static constexpr std::integral_constant<To, X> convert(From&& x) noexcept(
+    static constexpr constant<X> convert(From&& x) noexcept(
         ACTL_ASSERT_IS_NOEXCEPT())
     {
         ACTL_ASSERT(x == X);
@@ -31,8 +31,7 @@ struct conversion<
 {
     static constexpr bool value = X == Y;
 
-    static constexpr std::integral_constant<To, X> convert(
-        std::integral_constant<From, Y>) noexcept
+    static constexpr constant<X> convert(constant<Y>) noexcept
     {
         return {};
     }

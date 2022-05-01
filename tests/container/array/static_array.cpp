@@ -37,12 +37,10 @@ void test_static_array_constructors()
 #endif
 }
 
-template <auto X>
-inline constexpr auto const_v = std::integral_constant<decltype(X), X>{};
-
 template <class T, T... Values, size_t... Is>
 void test_static_array_interface_impl(std::index_sequence<Is...>)
 {
+    using ac::constant;
     using Array = ac::static_array<T, Values...>;
     constexpr Array array;
     /* size */
@@ -55,14 +53,14 @@ void test_static_array_interface_impl(std::index_sequence<Is...>)
     // TODO: fix this on MSVC
     // static_assert(ACTL_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
     static_assert(((Values == array[Is]) && ...));
-    static_assert(((noexcept(array[const_v<Is>])) && ...));
-    static_assert(
-        (ac::equal_same_type(const_v<Values>, array[const_v<Is>]) && ...));
+    static_assert(((noexcept(array[constant<Is>{}])) && ...));
+    static_assert((
+        ac::equal_same_type(constant<Values>{}, array[constant<Is>{}]) && ...));
     /* tuple interface */
     using std::get;
     static_assert(((noexcept(get<Is>(array))) && ...));
     static_assert(
-        (ac::equal_same_type(array[const_v<Is>], get<Is>(array)) && ...));
+        (ac::equal_same_type(array[constant<Is>{}], get<Is>(array)) && ...));
     /* equality */
     static_assert(noexcept(array == array));
     static_assert(array == array);
