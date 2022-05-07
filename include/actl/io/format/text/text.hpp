@@ -12,7 +12,7 @@
 #include <actl/io/format/text/settings/precision.hpp>
 #include <actl/io/io.hpp>
 #include <actl/io/utility/raw.hpp>
-#include <actl/numeric/bit.hpp>
+#include <actl/numeric/bit/operation.hpp>
 #include <actl/string/traits.hpp>
 
 namespace ac::io {

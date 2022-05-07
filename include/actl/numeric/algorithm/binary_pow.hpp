@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/bit.hpp>
+#include <actl/numeric/bit/operation.hpp>
 
 namespace ac {
 

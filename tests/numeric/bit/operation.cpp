@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/numeric/bit.hpp>
+#include <actl/numeric/bit/operation.hpp>
 #include "test.hpp"
 
 constexpr auto two62 = 4611686018427387904ll;
