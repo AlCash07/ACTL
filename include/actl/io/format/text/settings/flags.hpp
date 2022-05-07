@@ -37,6 +37,6 @@ enum : flag_t
 
 } // namespace groups
 
-const flag_t group_bits[] = {flag::fixed | flag::scientific | flag::hexfloat};
+flag_t const group_bits[] = {flag::fixed | flag::scientific | flag::hexfloat};
 
 } // namespace ac::io

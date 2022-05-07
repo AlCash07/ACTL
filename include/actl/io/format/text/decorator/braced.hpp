@@ -20,7 +20,7 @@ struct braced
 template <
     class AC,
     enable_int_if<is_container_v<AC> && is_associative_range_v<AC>> = 0>
-auto encode(braced, const AC& cont)
+auto encode(braced, AC const& cont)
 {
     return batch{'{', make_range(cont), '}'};
 }
@@ -28,13 +28,13 @@ auto encode(braced, const AC& cont)
 template <
     class SC,
     enable_int_if<is_container_v<SC> && is_sequence_range_v<SC>> = 0>
-auto encode(braced, const SC& cont)
+auto encode(braced, SC const& cont)
 {
     return batch{'[', make_range(cont), ']'};
 }
 
 template <class T, enable_int_if<is_io_tuple_v<T>> = 0>
-auto encode(braced, const T& x)
+auto encode(braced, T const& x)
 {
     return batch{'(', x, ')'};
 }

@@ -16,7 +16,7 @@ struct select_f : scalar_operation<select_f, 3>
     using argument_category = arithmetic_tag;
 
     template <class T, class U>
-    constexpr auto evaluate(bool condition, const T& lhs, const U& rhs) const
+    constexpr auto evaluate(bool condition, T const& lhs, U const& rhs) const
     {
         return condition ? eval(lhs) : eval(rhs);
     }

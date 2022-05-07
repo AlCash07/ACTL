@@ -22,9 +22,9 @@ struct operation
     static constexpr bool is_associative = false;
     static constexpr bool is_commutative = false;
 
-    constexpr const Derived& derived() const noexcept
+    constexpr Derived const& derived() const noexcept
     {
-        return static_cast<const Derived&>(*this);
+        return static_cast<Derived const&>(*this);
     }
 
     template <class... Ts, enable_int_if<is_any_inout_v<Ts...>> = 0>

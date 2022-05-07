@@ -24,7 +24,7 @@ struct spaced
     {}
 
     template <class S = Space, enable_int_if<are_same_v<S, Colon>> = 0>
-    explicit constexpr spaced(const Space& space) : spaced{space, space}
+    explicit constexpr spaced(Space const& space) : spaced{space, space}
     {}
 
     template <class S = Space, enable_int_if<are_same_v<char, S, Colon>> = 0>
@@ -37,11 +37,11 @@ struct spaced
 spaced()->spaced<char>;
 
 template <class T>
-auto as_cspan(const T& x)
+auto as_cspan(T const& x)
 {
     if constexpr (is_contiguous_range_v<T>)
     {
-        return span<const value_type_t<T>>{x};
+        return span<value_type_t<T> const>{x};
     }
     else
     {
@@ -65,7 +65,7 @@ auto encode(spaced<S, C>& fmt, T& x)
 }
 
 template <class S, class C, class T>
-decltype(auto) encode(spaced<S, C>& fmt, const raw<T>& x)
+decltype(auto) encode(spaced<S, C>& fmt, raw<T> const& x)
 {
     fmt.separate = false;
     return x;

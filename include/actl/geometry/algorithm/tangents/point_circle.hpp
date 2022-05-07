@@ -16,7 +16,7 @@ namespace ac {
 
 template <class Policy, class T0, class T1, class OutIter>
 OutIter tangents(
-    const Policy& policy, const point<T0>& p, const circle<T1>& c, OutIter dst)
+    Policy const& policy, point<T0> const& p, circle<T1> const& c, OutIter dst)
 {
     switch (within(policy, p, c))
     {
@@ -39,8 +39,8 @@ OutIter tangents(
 template <class Policy, class T0, class T1, class OutIter>
 OutIter tangents(
     polar_angle_policy<Policy> pap,
-    const point<T0>& p,
-    const circle<T1>& c,
+    point<T0> const& p,
+    circle<T1> const& c,
     OutIter dst)
 {
     auto& policy = pap.policy;

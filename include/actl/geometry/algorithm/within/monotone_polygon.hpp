@@ -16,13 +16,13 @@ namespace ac {
 /// O(log N).
 template <class Policy, class T, class U>
 enum within within(
-    const Policy& policy, const point<T>& p, const monotone_polygon<U>& poly)
+    Policy const& policy, point<T> const& p, monotone_polygon<U> const& poly)
 {
     if (poly.empty())
         return within::outside;
     if (poly.size() == 1)
         return equal(policy, p, poly[0]) ? within::border : within::outside;
-    const index right = poly.right();
+    index const right = poly.right();
     auto first = poly.begin();
     if (less(policy, p, poly[0]) || less(policy, first[right], p))
         return within::outside;

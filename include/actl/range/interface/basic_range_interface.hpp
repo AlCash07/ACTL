@@ -35,9 +35,9 @@ public:
     }
 
 protected:
-    constexpr const Derived& derived() const noexcept
+    constexpr Derived const& derived() const noexcept
     {
-        return static_cast<const Derived&>(*this);
+        return static_cast<Derived const&>(*this);
     }
 };
 

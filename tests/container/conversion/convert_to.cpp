@@ -15,7 +15,7 @@ struct P3
 {
     int x, y, z;
 
-    constexpr bool operator==(const P3& rhs) const noexcept
+    constexpr bool operator==(P3 const& rhs) const noexcept
     {
         return x == rhs.x && y == rhs.y && z == rhs.z;
     }

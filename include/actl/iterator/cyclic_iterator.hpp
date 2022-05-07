@@ -74,7 +74,7 @@ private:
         }
     }
 
-    difference_type_t<Iter> distance_to(const cyclic_iterator& rhs) const
+    difference_type_t<Iter> distance_to(cyclic_iterator const& rhs) const
     {
         auto dist = rhs.base() - this->base();
         return dist >= 0 ? dist

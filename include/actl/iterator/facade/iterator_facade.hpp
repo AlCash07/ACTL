@@ -50,9 +50,9 @@ protected:
         return static_cast<Iter&>(*this);
     }
 
-    constexpr const Iter& derived() const noexcept
+    constexpr Iter const& derived() const noexcept
     {
-        return static_cast<const Iter&>(*this);
+        return static_cast<Iter const&>(*this);
     }
 };
 
@@ -134,21 +134,21 @@ class iterator_facade
 #define ACTL_ITERATOR_OPERATOR(type, op, expr) \
     template <class Iter, class T>             \
     constexpr type operator op(                \
-        const iterator_facade<Iter, T>& lhs,   \
-        const iterator_facade<Iter, T>& rhs)   \
+        iterator_facade<Iter, T> const& lhs,   \
+        iterator_facade<Iter, T> const& rhs)   \
         AC_DEDUCE_NOEXCEPT_AND_RETURN(expr)
 
 ACTL_ITERATOR_OPERATOR(
     bool,
     ==,
     iterator_core_access::equal(
-        static_cast<const Iter&>(lhs), static_cast<const Iter&>(rhs)))
+        static_cast<Iter const&>(lhs), static_cast<Iter const&>(rhs)))
 
 ACTL_ITERATOR_OPERATOR(
     auto,
     -,
     iterator_core_access::distance_to(
-        static_cast<const Iter&>(rhs), static_cast<const Iter&>(lhs)))
+        static_cast<Iter const&>(rhs), static_cast<Iter const&>(lhs)))
 
 ACTL_ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
@@ -156,7 +156,7 @@ ACTL_ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
 template <class Iter, class T>
 constexpr Iter operator+(
-    typename T::difference_type n, const iterator_facade<Iter, T>& rhs)
+    typename T::difference_type n, iterator_facade<Iter, T> const& rhs)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs + n)
 
 } // namespace ac

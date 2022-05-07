@@ -48,7 +48,7 @@ struct scalar_operation : operation<Op>
     }
 
     template <class... Ts>
-    constexpr auto evaluate(const Ts&... xs) const
+    constexpr auto evaluate(Ts const&... xs) const
     {
         if constexpr ((... &&
                        is_subcategory_of_v<category_t<Ts>, arithmetic_tag>))
@@ -64,7 +64,7 @@ struct scalar_operation : operation<Op>
     }
 
     template <class T, class... Ts>
-    constexpr void evaluate_to(T& dst, const Ts&... xs) const
+    constexpr void evaluate_to(T& dst, Ts const&... xs) const
     {
         dst = evaluate(xs...);
     }

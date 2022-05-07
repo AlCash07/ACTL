@@ -79,7 +79,7 @@ struct category<iterator_id<Iter>> : category<Iter>
 template <class C>
 struct container_id_traits<C, true, false>
 {
-    using id = iterator_id<iterator_t<const C>>;
+    using id = iterator_id<iterator_t<C const>>;
     using iterator = id;
 };
 
@@ -120,7 +120,7 @@ template <class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
 template <class C>
-container_id<C> id_begin(const C& cont)
+container_id<C> id_begin(C const& cont)
 {
     if constexpr (is_random_access_range_v<C>)
         return 0;
@@ -129,7 +129,7 @@ container_id<C> id_begin(const C& cont)
 }
 
 template <class C>
-container_id<C> id_end(const C& cont)
+container_id<C> id_end(C const& cont)
 {
     if constexpr (is_random_access_range_v<C>)
         return static_cast<container_id<C>>(std::size(cont));
@@ -139,7 +139,7 @@ container_id<C> id_end(const C& cont)
 
 // Returns an invalid Id that is fixed for the given container.
 template <class C>
-container_id<C> id_null(const C& cont)
+container_id<C> id_null(C const& cont)
 {
     if constexpr (is_random_access_range_v<C>)
         return -1;
@@ -148,14 +148,14 @@ container_id<C> id_null(const C& cont)
 }
 
 template <class C>
-auto id_range(const C& cont)
+auto id_range(C const& cont)
 {
     using iterator = container_id_iterator<C>;
     return make_range(iterator{id_begin(cont)}, iterator{id_end(cont)});
 }
 
 template <class C>
-container_id<C> iterator_to_id(const C& cont, iterator_t<const C> iter)
+container_id<C> iterator_to_id(C const& cont, iterator_t<C const> iter)
 {
     if constexpr (is_random_access_range_v<C>)
         return static_cast<container_id<C>>(iter - std::begin(cont));
@@ -164,7 +164,7 @@ container_id<C> iterator_to_id(const C& cont, iterator_t<const C> iter)
 }
 
 template <class C>
-iterator_t<const C> id_to_iterator(const C& cont, container_id<C> id)
+iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
 {
     if constexpr (is_random_access_range_v<C>)
     {
@@ -204,7 +204,7 @@ reference_t<C> id_at(C& cont, container_id<C> id)
 }
 
 template <class C>
-reference_t<const C> id_at(const C& cont, container_id<C> id)
+reference_t<C const> id_at(C const& cont, container_id<C> id)
 {
     id_check(cont, id);
     if constexpr (is_random_access_range_v<C>)
@@ -229,7 +229,7 @@ void id_erase(C& cont, container_id<C> id)
 }
 
 template <class C, class T>
-container_id<C> id_find(const C& cont, const T& value)
+container_id<C> id_find(C const& cont, T const& value)
 {
     return iterator_to_id(cont, find(cont, value));
 }

@@ -11,7 +11,7 @@
 namespace ac {
 
 template <class T>
-void test_relational_operators_for_equal_values(const T& x, const T& y)
+void test_relational_operators_for_equal_values(T const& x, T const& y)
 {
     REQUIRE(x == y);
     CHECK_FALSE(x != y);
@@ -23,7 +23,7 @@ void test_relational_operators_for_equal_values(const T& x, const T& y)
 
 template <class T>
 void test_relational_operators_for_different_values(
-    const T& smaller, const T& bigger)
+    T const& smaller, T const& bigger)
 {
     REQUIRE(smaller < bigger);
     CHECK_FALSE(smaller == bigger);
@@ -34,7 +34,7 @@ void test_relational_operators_for_different_values(
 }
 
 template <class T>
-void test_relational_operators_noexcept(const T& x)
+void test_relational_operators_noexcept(T const& x)
 {
     static_assert(noexcept(x == x));
     static_assert(noexcept(x != x));

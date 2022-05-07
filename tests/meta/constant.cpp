@@ -13,12 +13,12 @@ static_assert(
     std::is_same_v<std::integral_constant<int, 2>, ac::int_constant<2>>);
 
 static_assert(std::is_same_v<
-              const std::integral_constant<int, 2>,
+              std::integral_constant<int, 2> const,
               decltype(ac::int_c<2>)>);
 
 static_assert(
     std::is_same_v<std::integral_constant<size_t, 2>, ac::size_constant<2>>);
 
 static_assert(std::is_same_v<
-              const std::integral_constant<size_t, 2>,
+              std::integral_constant<size_t, 2> const,
               decltype(ac::size_c<2>)>);

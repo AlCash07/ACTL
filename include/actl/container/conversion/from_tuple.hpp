@@ -14,7 +14,7 @@ namespace ac {
 namespace detail {
 
 template <size_t I, class Tuple>
-constexpr decltype(auto) adl_get(const Tuple& x) noexcept
+constexpr decltype(auto) adl_get(Tuple const& x) noexcept
 {
     using std::get;
     static_assert(noexcept(get<I>(x)));

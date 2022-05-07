@@ -18,14 +18,14 @@ template <
     class U,
     class OutIter,
     geometry::enable_int_if_swap<T, U> = 0>
-OutIter intersect(const Policy& policy, const T& lhs, const U& rhs, OutIter dst)
+OutIter intersect(Policy const& policy, T const& lhs, U const& rhs, OutIter dst)
 {
     return intersect(policy, rhs, lhs, dst);
 }
 
 template <class Policy, index N, class T, class K, class U, class OutIter>
 OutIter intersect(
-    const Policy& policy, const line<T, N, K>& l, const U& x, OutIter dst)
+    Policy const& policy, line<T, N, K> const& l, U const& x, OutIter dst)
 {
     return intersect(
         line_scalar_policy{policy},
@@ -35,7 +35,7 @@ OutIter intersect(
 }
 
 template <class T, class U, class OutIter>
-OutIter intersect(const T& lhs, const U& rhs, OutIter dst)
+OutIter intersect(T const& lhs, U const& rhs, OutIter dst)
 {
     return intersect(geometry_policy, lhs, rhs, dst);
 }

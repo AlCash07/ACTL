@@ -12,7 +12,7 @@ namespace ac {
 
 template <class Op, class... Ts>
 constexpr decltype(auto) pass_arguments(
-    const Op& op, [[maybe_unused]] const Ts&... xs)
+    Op const& op, [[maybe_unused]] Ts const&... xs)
 {
     if constexpr (is_operation_v<Op>)
         if constexpr (is_expression_v<Op>)
@@ -25,7 +25,7 @@ constexpr decltype(auto) pass_arguments(
 
 template <size_t... Is, class OE, class... Ts>
 constexpr auto pass_arguments_impl(
-    std::index_sequence<Is...>, const OE& oe, const Ts&... xs)
+    std::index_sequence<Is...>, OE const& oe, Ts const&... xs)
 {
     return expression{
         oe.operation(), pass_arguments(std::get<Is + 1>(oe.args), xs...)...};
@@ -45,13 +45,13 @@ struct expression_base<Derived, operation_tag>
                 std::declval<Derived>(), std::declval<Ts>()...))>::type;
 
         template <class... Ts>
-        constexpr auto evaluate(const Ts&... xs) const
+        constexpr auto evaluate(Ts const&... xs) const
         {
             return eval(pass_arguments(this->derived(), xs...));
         }
 
         template <class T, class... Ts>
-        constexpr void evaluate_to(T& dst, const Ts&... xs) const
+        constexpr void evaluate_to(T& dst, Ts const&... xs) const
         {
             assign(out{dst}, pass_arguments(this->derived(), xs...));
         }

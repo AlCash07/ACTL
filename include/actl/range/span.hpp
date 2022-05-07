@@ -105,7 +105,7 @@ struct range_traits<span<T, N>> : default_range_traits
 {};
 
 template <class T, size_t N = dynamic_size>
-using cspan = span<const T, N>;
+using cspan = span<T const, N>;
 
 template <class S, class T>
 struct is_span : std::false_type

@@ -39,7 +39,7 @@ vertex_initializer<distance_recorder<Map>> make_distance_recorder(
 }
 
 template <class Graph>
-auto make_default_distance_recorder(const Graph& graph)
+auto make_default_distance_recorder(Graph const& graph)
 {
     return make_distance_recorder(make_default_vertex_map<int>(graph), -1);
 }

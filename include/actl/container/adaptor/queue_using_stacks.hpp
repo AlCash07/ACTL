@@ -54,7 +54,7 @@ public:
         return out_stack_.top();
     }
 
-    void push(const T& value)
+    void push(T const& value)
     {
         emplace(value);
     }

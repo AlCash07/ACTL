@@ -75,7 +75,7 @@ class star_polygon : public simple_polygon<T>
 public:
     using point_type = value_type_t<simple_polygon<T>>;
 
-    const point_type& observer() const
+    point_type const& observer() const
     {
         return observer_;
     }
@@ -119,7 +119,7 @@ class convex_polygon : public simple_polygon<T>
 public:
     using simple_polygon<T>::simple_polygon;
 
-    reference_t<const simple_polygon<T>> observer() const
+    reference_t<simple_polygon<T> const> observer() const
     {
         return *this->begin();
     }
@@ -139,7 +139,7 @@ public:
     using monotone_polygon<T>::monotone_polygon;
 
     template <class T1>
-    convex_monotone_polygon(const convex_polygon<T1>& polygon)
+    convex_monotone_polygon(convex_polygon<T1> const& polygon)
     {
         this->resize(polygon.size());
         auto minmax = minmax_element(polygon);
@@ -150,7 +150,7 @@ public:
             this->right_ += static_cast<index>(polygon.size());
     }
 
-    reference_t<const monotone_polygon<T>> observer() const
+    reference_t<monotone_polygon<T> const> observer() const
     {
         return *this->begin();
     }

@@ -21,7 +21,7 @@ struct out
     }
 
     template <class U>
-    out& operator=(const U& y)
+    out& operator=(U const& y)
     {
         assign(*this, y);
         return *this;

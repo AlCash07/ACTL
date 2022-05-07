@@ -21,7 +21,7 @@ struct common_f : scalar_operation<common_f, 2>
     static constexpr bool is_commutative = true;
 
     template <class... Ts>
-    constexpr auto evaluate(const Ts&... xs) const
+    constexpr auto evaluate(Ts const&... xs) const
     {
         return eval_scalar(eval(xs)...);
     }

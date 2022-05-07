@@ -20,7 +20,7 @@ class vector_as_queue
 public:
     using value_type = value_type_t<Vector>;
     using reference = reference_t<Vector>;
-    using const_reference = reference_t<const Vector>;
+    using const_reference = reference_t<Vector const>;
     using size_type = size_type_t<Vector>;
 
     static_assert(std::is_same_v<T, value_type>);
@@ -55,7 +55,7 @@ public:
         return vector_.back();
     }
 
-    void push(const T& value)
+    void push(T const& value)
     {
         emplace(value);
     }

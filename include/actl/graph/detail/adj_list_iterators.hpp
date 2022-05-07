@@ -49,19 +49,19 @@ class adj_list_out_edge_iter
         ++iter_;
     }
 
-    bool equals(const adj_list_out_edge_iter& rhs) const
+    bool equals(adj_list_out_edge_iter const& rhs) const
     {
         return iter_ == rhs.iter_;
     }
 
-    const G* g_;
+    G const* g_;
     vertex_t<G> u_;
     Iter iter_;
 
 public:
     explicit adj_list_out_edge_iter() = default;
 
-    explicit adj_list_out_edge_iter(const G* g, vertex_t<G> u, Iter iter)
+    explicit adj_list_out_edge_iter(G const* g, vertex_t<G> u, Iter iter)
         : g_{g}, u_{u}, iter_{iter}
     {}
 
@@ -123,19 +123,19 @@ class adj_list_edge_iter
         skip_empty();
     }
 
-    bool equals(const adj_list_edge_iter& rhs) const
+    bool equals(adj_list_edge_iter const& rhs) const
     {
         return u_ == rhs.u_ && (is_end() || iter_ == rhs.iter_);
     }
 
-    const G* g_;
+    G const* g_;
     vertex_t<G> u_;
     typename G::out_iter iter_;
 
 public:
     explicit adj_list_edge_iter() = default;
 
-    explicit adj_list_edge_iter(const G* g, bool begin) : g_{g}
+    explicit adj_list_edge_iter(G const* g, bool begin) : g_{g}
     {
         if (begin)
         {

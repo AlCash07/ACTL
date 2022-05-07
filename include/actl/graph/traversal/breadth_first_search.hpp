@@ -33,8 +33,8 @@ public:
         class VertexQueue = std::queue<vertex_t<Graph>>,
         class VertexPredicate = always_false>
     void operator()(
-        const Graph& graph,
-        const Source& source,
+        Graph const& graph,
+        Source const& source,
         VertexQueue&& queue = {},
         VertexPredicate is_terminator = {})
     {

@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 bool crosses(
-    const Policy& policy, const plane<T0, N>& lhs, const plane<T1, N>& rhs)
+    Policy const& policy, plane<T0, N> const& lhs, plane<T1, N> const& rhs)
 {
     ACTL_ASSERT(!degenerate(policy, lhs) && !degenerate(policy, rhs));
     if (!collinear(policy, lhs.normal, rhs.normal))

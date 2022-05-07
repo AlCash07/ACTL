@@ -88,7 +88,7 @@ struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>>
     static constexpr bool is_resolved =
         is_overload_resolved_v<default_context, Op, Ts...>;
 
-    static constexpr auto resolve_expr(const Expr& e)
+    static constexpr auto resolve_expr(Expr const& e)
     {
         return expression{
             resolve_overload<Ts...>(default_context{}, e.operation()),
@@ -96,14 +96,14 @@ struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>>
     }
 
     template <class T>
-    static constexpr void assign_impl(T& dst, const Expr& e)
+    static constexpr void assign_impl(T& dst, Expr const& e)
     {
         e.operation().evaluate_to(dst, std::get<Is + 1>(e.args)...);
     }
 };
 
 template <class T, class... Ts>
-constexpr void assign(out<T>& dst, const expression<Ts...>& e)
+constexpr void assign(out<T>& dst, expression<Ts...> const& e)
 {
     using helper = expression_helper<expression<Ts...>>;
     if constexpr (helper::is_resolved)

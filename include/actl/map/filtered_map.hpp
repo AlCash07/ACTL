@@ -15,7 +15,7 @@ namespace ac {
 struct to_bool
 {
     template <class T>
-    constexpr bool operator()(const T& x) const
+    constexpr bool operator()(T const& x) const
     {
         return static_cast<bool>(x);
     }
@@ -27,7 +27,7 @@ struct test_second : public ebo<Pred>
     using ebo<Pred>::ebo;
 
     template <class Pair>
-    constexpr bool operator()(const Pair& x) const
+    constexpr bool operator()(Pair const& x) const
     {
         return this->get()(x.second);
     }
@@ -51,7 +51,7 @@ public:
         return first();
     }
 
-    operator const Map&() const
+    operator Map const &() const
     {
         return first();
     }
@@ -77,8 +77,8 @@ struct map_traits<filtered_map<M, P>> : map_traits<M>
 };
 
 template <class M, class P>
-struct map_traits<const filtered_map<M, P>>
-    : map_traits<filtered_map<const M, P>>
+struct map_traits<filtered_map<M, P> const>
+    : map_traits<filtered_map<M const, P>>
 {};
 
 template <class M, class P>
@@ -91,9 +91,9 @@ struct map_ops<filtered_map<M, P>> : map_ops<M>
 };
 
 template <class M, class P>
-struct map_ops<const filtered_map<M, P>> : map_ops<const M>
+struct map_ops<filtered_map<M, P> const> : map_ops<M const>
 {
-    static auto map_range(const filtered_map<M, P>& map)
+    static auto map_range(filtered_map<M, P> const& map)
     {
         return map.map_range();
     }

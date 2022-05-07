@@ -47,7 +47,7 @@ class transform_iterator : public detail::transform_iter_base<Iter, F, V>
 
 public:
     template <class... Ts>
-    transform_iterator(const Iter& iter, Ts&&... args)
+    transform_iterator(Iter const& iter, Ts&&... args)
         : detail::transform_iter_base<Iter, F, V>{iter}
         , f_{std::forward<Ts>(args)...}
     {}

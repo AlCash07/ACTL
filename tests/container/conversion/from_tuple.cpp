@@ -19,7 +19,7 @@ using tuple_ci = std::tuple<my_char, int>;
 
 /* tuples with the same number of elements */
 static_assert(ac::can_convert_to_v<tuple_ic, tuple_ci>);
-static_assert(ac::can_convert_to_v<tuple_ic, const tuple_ci&>);
+static_assert(ac::can_convert_to_v<tuple_ic, tuple_ci const&>);
 static_assert(noexcept(ac::convert_to<tuple_ic>(tuple_ci{4, 2})));
 static_assert(tuple_ic{4, 2} == ac::convert_to<tuple_ic>(tuple_ci{4, 2}));
 static_assert(!ac::can_convert_to_v<tuple_ic, std::tuple<my_int, S>>);

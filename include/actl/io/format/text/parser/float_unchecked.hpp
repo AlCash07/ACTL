@@ -29,8 +29,8 @@ class float_unchecked_parser
 
     states state = states::empty;
     sign_parser<true> sign;
-    const UInt base;
-    const size_t max_length;
+    UInt const base;
+    size_t const max_length;
     Float x = 0;
     Float power = 1;
 

@@ -26,7 +26,7 @@ public:
         return *this;
     }
 
-    constexpr const T& get() const noexcept
+    constexpr T const& get() const noexcept
     {
         return *this;
     }
@@ -45,7 +45,7 @@ public:
         return value_;
     }
 
-    constexpr const T& get() const noexcept
+    constexpr T const& get() const noexcept
     {
         return value_;
     }
@@ -90,8 +90,8 @@ public:
         , detail::cpb2<T2>{std::forward<Ts>(second)...}
     {}
 
-    constexpr compressed_pair(const compressed_pair&) = default;
-    constexpr compressed_pair& operator=(const compressed_pair&) = default;
+    constexpr compressed_pair(compressed_pair const&) = default;
+    constexpr compressed_pair& operator=(compressed_pair const&) = default;
 
     constexpr compressed_pair(compressed_pair&&) = default;
     constexpr compressed_pair& operator=(compressed_pair&&) = default;
@@ -101,7 +101,7 @@ public:
         return detail::cpb1<T1>::get();
     }
 
-    constexpr const T1& first() const noexcept
+    constexpr T1 const& first() const noexcept
     {
         return detail::cpb1<T1>::get();
     }
@@ -111,7 +111,7 @@ public:
         return detail::cpb2<T2>::get();
     }
 
-    constexpr const T2& second() const noexcept
+    constexpr T2 const& second() const noexcept
     {
         return detail::cpb2<T2>::get();
     }
@@ -121,7 +121,7 @@ private:
 };
 
 template <size_t I, class T1, class T2>
-auto& get(const compressed_pair<T1, T2>& p)
+auto& get(compressed_pair<T1, T2> const& p)
 {
     if constexpr (I == 0)
     {
@@ -136,14 +136,14 @@ auto& get(const compressed_pair<T1, T2>& p)
 
 template <class T1, class T2>
 auto operator==(
-    const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs)
+    compressed_pair<T1, T2> const& lhs, compressed_pair<T1, T2> const& rhs)
 {
     return equal(lhs.first(), rhs.first()) && equal(lhs.second(), rhs.second());
 }
 
 template <class T1, class T2>
 auto operator<(
-    const compressed_pair<T1, T2>& lhs, const compressed_pair<T1, T2>& rhs)
+    compressed_pair<T1, T2> const& lhs, compressed_pair<T1, T2> const& rhs)
 {
     return less(lhs, rhs);
 }

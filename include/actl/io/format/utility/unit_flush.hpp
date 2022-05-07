@@ -18,7 +18,7 @@ struct unit_flush
 };
 
 template <class T>
-auto encode(unit_flush&, const T& x)
+auto encode(unit_flush&, T const& x)
 {
     return batch{x, flush_t{}};
 }

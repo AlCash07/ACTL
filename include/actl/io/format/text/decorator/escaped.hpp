@@ -46,7 +46,7 @@ struct escaped_string
 };
 
 template <class Device, class Format, class Char>
-bool write_final(Device& od, Format&, const escaped_string<Char>& s)
+bool write_final(Device& od, Format&, escaped_string<Char> const& s)
 {
     for (auto c : s.value)
     {
@@ -64,13 +64,13 @@ bool write_final(Device& od, Format&, const escaped_string<Char>& s)
 } // namespace detail
 
 template <class C, enable_int_if<std::is_same_v<C, char>> = 0>
-auto encode(escaped, const C& c)
+auto encode(escaped, C const& c)
 {
     return batch{'\'', detail::escaped_string<char>{{&c, 1}}, '\''};
 }
 
 template <class S, enable_int_if<is_string_v<S>> = 0>
-auto encode(escaped, const S& s)
+auto encode(escaped, S const& s)
 {
     return batch{'\"', detail::escaped_string<char>{s}, '\"'};
 }

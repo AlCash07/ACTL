@@ -9,7 +9,7 @@
 
 TEST_CASE("memory input")
 {
-    const char s[] = "abcdef";
+    char const s[] = "abcdef";
     io::memory<io::in> id{span{s, s + 5}};
     CHECK('a' == id.get());
     CHECK('b' == id.get());

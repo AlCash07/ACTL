@@ -13,7 +13,7 @@ namespace ac {
 
 /// Counter-clockwise angle.
 template <class Policy, index N, class T, enable_int_if_policy<Policy> = 0>
-auto angle(const Policy& policy, const point<T, N>& p)
+auto angle(Policy const& policy, point<T, N> const& p)
 {
     return atan2(p[1], p[0]);
 }
@@ -25,7 +25,7 @@ template <
     class T1,
     enable_int_if_policy<Policy> = 0>
 auto angle(
-    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs)
+    Policy const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs)
 {
     return atan2(area(policy, lhs, rhs), dot(policy, lhs, rhs));
 }
@@ -38,16 +38,16 @@ template <
     class T2,
     enable_int_if_policy<Policy> = 0>
 auto angle(
-    const Policy& policy,
-    const point<T0, N>& lhs,
-    const point<T1, N>& rhs,
-    const point<T2, N>& origin)
+    Policy const& policy,
+    point<T0, N> const& lhs,
+    point<T1, N> const& rhs,
+    point<T2, N> const& origin)
 {
     return angle(policy, lhs - origin, rhs - origin);
 }
 
 template <class T, class... Ts, disable_int_if_policy<T> = 0>
-auto angle(const T& x, const Ts&... xs)
+auto angle(T const& x, Ts const&... xs)
 {
     return angle(geometry_policy, x, xs...);
 }

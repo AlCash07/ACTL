@@ -40,7 +40,7 @@ constexpr auto invoke_if_can(T&& callable, Args&... args)
 
 template <size_t... Is, class Tuple, class... Args>
 constexpr void invoke_all_matching_impl(
-    std::index_sequence<Is...>, Tuple&& tuple_to_invoke, const Args&... args)
+    std::index_sequence<Is...>, Tuple&& tuple_to_invoke, Args const&... args)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(
         (...,
          invoke_if_can(

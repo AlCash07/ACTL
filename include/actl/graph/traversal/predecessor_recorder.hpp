@@ -45,7 +45,7 @@ vertex_initializer<predecessor_recorder<Map>> make_predecessor_recorder(
 }
 
 template <class Graph>
-auto make_default_predecessor_recorder(const Graph& graph)
+auto make_default_predecessor_recorder(Graph const& graph)
 {
     return make_predecessor_recorder(
         make_default_vertex_map<vertex_t<Graph>>(graph), graph.null_vertex());

@@ -13,10 +13,10 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1, class K>
 auto nearest(
-    const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l)
+    Policy const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
 {
     using Pair =
-        std::pair<const point<T0, N>&, decltype(project(policy, p, l))>;
+        std::pair<point<T0, N> const&, decltype(project(policy, p, l))>;
     if (begin(l.kind()) != endpoint::free &&
         !less(policy, 0, dot(policy, p - l.begin, l.vector)))
         return Pair{p, l.begin};

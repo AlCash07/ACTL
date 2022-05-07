@@ -18,12 +18,12 @@ struct bundle
 
     explicit bundle(int i, std::string s) : i{i}, s{s} {};
 
-    bool operator<(const bundle& rhs) const
+    bool operator<(bundle const& rhs) const
     {
         return i < rhs.i;
     }
 
-    bool operator==(const bundle& rhs) const
+    bool operator==(bundle const& rhs) const
     {
         return i == rhs.i;
     }

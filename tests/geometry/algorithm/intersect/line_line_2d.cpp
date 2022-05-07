@@ -27,7 +27,7 @@ TEST_CASE("general position")
 }
 
 template <ac::index N, class T, class K1, class K2>
-bool equal_lines(const line<T, N, K1>& lhs, const line<T, N, K2>& rhs)
+bool equal_lines(line<T, N, K1> const& lhs, line<T, N, K2> const& rhs)
 {
     if (lhs.kind() != rhs.kind())
         return false;

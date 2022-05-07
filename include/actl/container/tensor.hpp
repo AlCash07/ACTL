@@ -80,7 +80,7 @@ public:
         return data_.data();
     }
 
-    const T* data() const
+    T const* data() const
     {
         return data_.data();
     }
@@ -107,7 +107,7 @@ public:
         return data_.get();
     }
 
-    const T* data() const
+    T const* data() const
     {
         return data_.get();
     }
@@ -139,13 +139,13 @@ public:
         std::copy_n(std::begin(data), size, this->data());
     }
 
-    tensor_data(size_t size, const T& value) : base_t{size}
+    tensor_data(size_t size, T const& value) : base_t{size}
     {
         std::fill_n(this->data(), size, value);
     }
 
     template <class Dims>
-    tensor_data(size_t size, const nd_initializer_list_t<T, N>& il, Dims dims)
+    tensor_data(size_t size, nd_initializer_list_t<T, N> const& il, Dims dims)
         : base_t{size}
     {
         // Array of size 0 is not standard-compliant.
@@ -169,14 +169,14 @@ private:
     template <size_t I, class Dims>
     T* initialize(
         T* ptr,
-        const nd_initializer_list_t<T, N - I>& il,
+        nd_initializer_list_t<T, N - I> const& il,
         Dims dims,
-        const size_t* strides)
+        size_t const* strides)
     {
         ACTL_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N)
         {
-            for (const auto& x : il)
+            for (auto const& x : il)
             {
                 T* end = initialize<I + 1>(ptr, x, dims, strides);
                 ptr += strides[I];
@@ -204,7 +204,7 @@ public:
         return ptr_;
     }
 
-    const T* data() const
+    T const* data() const
     {
         return ptr_;
     }
@@ -255,7 +255,7 @@ class tensor_shape
 
 public:
     template <class... Ts>
-    explicit tensor_shape(const Dims& dims, Ts... args)
+    explicit tensor_shape(Dims const& dims, Ts... args)
         : base_dims{dims}, base_data{size(), args...}
     {}
 
@@ -286,7 +286,7 @@ public:
         return compute_product<Int>(dims_);
     }
 
-    const Dims& dimensions() const
+    Dims const& dimensions() const
     {
         return dims_;
     }
@@ -395,7 +395,7 @@ class tensor_subscript : public tensor_shape<N, Data, Dims>
 
 public:
     using reference = tensor_reference_t<T, N, Dims>;
-    using const_reference = tensor_reference_t<const T, N, Dims>;
+    using const_reference = tensor_reference_t<T const, N, Dims>;
 
     using base_t::base_t;
 
@@ -414,7 +414,7 @@ public:
     const_reference operator[](size_t i) const
     {
         ACTL_ASSERT(0 <= i && i < dimension(0));
-        return tensor_reference<const T, N, Dims>::get(this, i);
+        return tensor_reference<T const, N, Dims>::get(this, i);
     }
 };
 
@@ -433,7 +433,7 @@ public:
         return *this->data();
     }
 
-    constexpr operator const T&() const
+    constexpr operator T const &() const
     {
         return *this->data();
     }
@@ -451,9 +451,9 @@ public:
     using size_type = size_t;
     using difference_type = index;
     using reference = T&;
-    using const_reference = const T&;
+    using const_reference = T const&;
     using pointer = T*;
-    using const_pointer = const T*;
+    using const_pointer = T const*;
     using iterator = pointer;
     using const_iterator = const_pointer;
     using reverse_iterator = std::reverse_iterator<iterator>;
@@ -629,7 +629,7 @@ struct tensor_equal_f
     static constexpr size_t inner_count = 1;
 
     template <class EqualOp, class T, class U>
-    static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs)
+    static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs)
     {
         if (lhs.rank() != rhs.rank())
             return false;

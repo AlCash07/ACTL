@@ -46,7 +46,7 @@ struct reference
 };
 
 template <class T>
-struct reference<const T, std::void_t<typename traits_t<T>::const_reference>>
+struct reference<T const, std::void_t<typename traits_t<T>::const_reference>>
 {
     using type = typename traits_t<T>::const_reference;
 };
@@ -58,7 +58,7 @@ struct pointer
 };
 
 template <class T>
-struct pointer<const T, std::void_t<typename traits_t<T>::const_pointer>>
+struct pointer<T const, std::void_t<typename traits_t<T>::const_pointer>>
 {
     using type = typename traits_t<T>::const_pointer;
 };
@@ -70,7 +70,7 @@ struct iterator
 };
 
 template <class T>
-struct iterator<const T, std::void_t<typename traits_t<T>::const_iterator>>
+struct iterator<T const, std::void_t<typename traits_t<T>::const_iterator>>
 {
     using type = typename traits_t<T>::const_iterator;
 };

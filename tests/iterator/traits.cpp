@@ -9,7 +9,7 @@
 #include "test.hpp"
 
 static_assert(!ac::is_const_iterator_v<int[4]>);
-static_assert(ac::is_const_iterator_v<const int*>);
+static_assert(ac::is_const_iterator_v<int const*>);
 static_assert(ac::is_const_iterator_v<std::vector<int>::const_iterator>);
 
 static_assert(!ac::is_non_const_iterator_v<int[4]>);

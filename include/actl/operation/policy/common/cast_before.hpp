@@ -18,7 +18,7 @@ struct cast_before
 };
 
 template <class Op, class T>
-constexpr auto apply_policy(const Op& op, cast_before<Op, T>)
+constexpr auto apply_policy(Op const& op, cast_before<Op, T>)
 {
     return op(cast<T>);
 }

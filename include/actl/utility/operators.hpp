@@ -29,19 +29,19 @@ using enable_derived_operators =
     enable_int_if<(... || is_template_base_of_v<base, Ts>)>;
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator!=(const T& lhs, const U& rhs)
+constexpr auto operator!=(T const& lhs, U const& rhs)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(!(lhs == rhs))
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator>(const T& lhs, const U& rhs)
+constexpr auto operator>(T const& lhs, U const& rhs)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs < lhs)
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator<=(const T& lhs, const U& rhs)
+constexpr auto operator<=(T const& lhs, U const& rhs)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(!(lhs > rhs))
 
 template <class T, class U, enable_derived_operators<T, U> = 0>
-constexpr auto operator>=(const T& lhs, const U& rhs)
+constexpr auto operator>=(T const& lhs, U const& rhs)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(!(lhs < rhs))
 
 } // namespace ac::operators

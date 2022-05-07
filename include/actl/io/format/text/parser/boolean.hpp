@@ -19,7 +19,7 @@ struct boolean_parser
         suffix
     };
     bool x;
-    const bool alpha;
+    bool const alpha;
     states state = states::empty;
     const_data_parser suffix_parser;
 

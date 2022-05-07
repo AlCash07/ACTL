@@ -16,7 +16,7 @@ namespace ac::io {
 template <mode_t Mode, class Char, bool = is_in<Mode>>
 class in_file : public device<Mode, Char>
 {
-    static constexpr const char* mode_str[14] = {
+    static constexpr char const* mode_str[14] = {
         "r",
         "rb",
         "w",
@@ -38,7 +38,7 @@ public:
         ACTL_ASSERT(file);
     }
 
-    explicit in_file(const char* filename)
+    explicit in_file(char const* filename)
         : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true}
     {}
 
@@ -113,7 +113,7 @@ public:
         return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0;
     }
 
-    size_t write(span<const Char> src)
+    size_t write(span<Char const> src)
     {
         return std::fwrite(src.data(), sizeof(Char), src.size(), this->file_);
     }

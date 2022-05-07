@@ -14,7 +14,7 @@ namespace ac {
 /// O(N).
 template <class Policy, class T, class U>
 enum within within(
-    const Policy& policy, const point<T>& p, const simple_polygon<U>& poly)
+    Policy const& policy, point<T> const& p, simple_polygon<U> const& poly)
 {
     switch (winding_number(policy, p, poly))
     {

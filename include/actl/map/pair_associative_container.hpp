@@ -22,7 +22,7 @@ using enable_if_upac_t =
 template <class AC>
 struct map_traits<AC, detail::enable_if_upac_t<AC>>
     : map_traits_base<
-          const typename AC::key_type,
+          typename AC::key_type const,
           typename AC::mapped_type,
           use_default,
           true,
@@ -36,7 +36,7 @@ template <class AC>
 struct map_ops<AC, detail::enable_if_upac_t<AC>>
 {
     // If key isn't present in container, default value is returned.
-    static map_reference_t<AC> get(const AC& map, map_key_t<AC> key)
+    static map_reference_t<AC> get(AC const& map, map_key_t<AC> key)
     {
         auto it = map.find(key);
         return it == map.end() ? map_reference_t<AC>{} : it->second;

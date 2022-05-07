@@ -120,7 +120,7 @@ struct bridge_finder
 };
 
 template <class G, class... Ts>
-auto get_bridge_finder(const G&, Ts&&... args)
+auto get_bridge_finder(G const&, Ts&&... args)
 {
     return bridge_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
@@ -131,7 +131,7 @@ template <
     class BridgeOutIter,
     class ComponentMap>
 void find_bridges_and_components(
-    const Graph& graph, BridgeOutIter bridges, ComponentMap&& map)
+    Graph const& graph, BridgeOutIter bridges, ComponentMap&& map)
 {
     auto bf = get_bridge_finder(
         graph,
@@ -148,13 +148,13 @@ void find_bridges_and_components(
 }
 
 template <bool ParallelEdges = true, class Graph, class BridgeOutIter>
-void find_bridges(const Graph& graph, BridgeOutIter bridges)
+void find_bridges(Graph const& graph, BridgeOutIter bridges)
 {
     find_bridges_and_components<ParallelEdges>(graph, bridges, dummy_map{});
 }
 
 template <bool ParallelEdges = true, class Graph, class ComponentMap>
-void find_two_edge_connected_components(const Graph& graph, ComponentMap&& map)
+void find_two_edge_connected_components(Graph const& graph, ComponentMap&& map)
 {
     find_bridges_and_components<ParallelEdges>(
         graph, dummy_output_iterator{}, std::forward<ComponentMap>(map));

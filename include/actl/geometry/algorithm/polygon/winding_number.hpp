@@ -18,7 +18,7 @@ namespace ac {
 /// http://geomalgorithms.com/a03-_inclusion.html
 template <class Policy, class T, class U>
 int winding_number(
-    const Policy& policy, const point<T>& p, const polygon<U>& poly)
+    Policy const& policy, point<T> const& p, polygon<U> const& poly)
 {
     static constexpr int boundary = std::numeric_limits<int>::max();
     if (poly.empty())

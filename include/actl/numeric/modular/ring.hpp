@@ -29,7 +29,7 @@ template <class Z, Z Mod>
 struct static_quotient_ring_impl : quotient_ring_base<Z, true>
 {
     constexpr static_quotient_ring_impl() = default;
-    constexpr static_quotient_ring_impl(const static_quotient_ring_impl&) =
+    constexpr static_quotient_ring_impl(static_quotient_ring_impl const&) =
         default;
     static constexpr Z mod()
     {
@@ -57,7 +57,7 @@ struct singleton_quotient_ring : quotient_ring_base<Z>
 };
 
 template <class Z, class R>
-constexpr void mod_add(Z& x, const Z& y, const R& ring)
+constexpr void mod_add(Z& x, Z const& y, R const& ring)
 {
     if (std::is_integral<Z>::value)
     {
@@ -71,7 +71,7 @@ constexpr void mod_add(Z& x, const Z& y, const R& ring)
 }
 
 template <class Z, class R>
-constexpr void mod_sub(Z& x, const Z& y, const R& ring)
+constexpr void mod_sub(Z& x, Z const& y, R const& ring)
 {
     if (std::is_integral<Z>::value)
     {
@@ -84,7 +84,7 @@ constexpr void mod_sub(Z& x, const Z& y, const R& ring)
 }
 
 template <class Z, class R>
-constexpr Z mod_mul_binary(Z x, Z y, const R& ring)
+constexpr Z mod_mul_binary(Z x, Z y, R const& ring)
 {
     for (Z r = Z();;)
     {
@@ -98,7 +98,7 @@ constexpr Z mod_mul_binary(Z x, Z y, const R& ring)
 }
 
 template <class Z, class R>
-constexpr Z mod_mul(const Z& x, const Z& y, const R& ring)
+constexpr Z mod_mul(Z const& x, Z const& y, R const& ring)
 {
     if constexpr (!std::is_integral<Z>::value)
     {
@@ -119,7 +119,7 @@ constexpr Z mod_mul(const Z& x, const Z& y, const R& ring)
 }
 
 template <class Z, class R>
-constexpr Z mod_div(const Z& x, const Z& y, const R& ring)
+constexpr Z mod_div(Z const& x, Z const& y, R const& ring)
 {
     Z p = ring.mod() - y, a = ring.mod() - ring.one(), q = y, b = ring.one();
     for (; q != Z();)
@@ -140,9 +140,9 @@ struct ring_element : Ring
 
     value_type value;
 
-    const Ring& ring() const
+    Ring const& ring() const
     {
-        return static_cast<const Ring&>(*this);
+        return static_cast<Ring const&>(*this);
     }
 
     constexpr ring_element() : value(value_type()) {}
@@ -153,41 +153,41 @@ struct ring_element : Ring
     }
 
     template <class... Args>
-    constexpr ring_element(const value_type& value, Args&&... args)
+    constexpr ring_element(value_type const& value, Args&&... args)
         : Ring(std::forward<Args>(args)...), value(value)
     {}
 
-    constexpr ring_element& operator+=(const ring_element& rhs)
+    constexpr ring_element& operator+=(ring_element const& rhs)
     {
         mod_add(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element& operator-=(const ring_element& rhs)
+    constexpr ring_element& operator-=(ring_element const& rhs)
     {
         mod_sub(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element& operator*=(const ring_element& rhs)
+    constexpr ring_element& operator*=(ring_element const& rhs)
     {
         value = mod_mul(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element& operator/=(const ring_element& rhs)
+    constexpr ring_element& operator/=(ring_element const& rhs)
     {
         value = mod_div(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element operator-(const ring_element& rhs) const
+    constexpr ring_element operator-(ring_element const& rhs) const
     {
         auto r = *this;
         return r -= rhs;
     }
 
-    constexpr ring_element operator+(const ring_element& rhs) const
+    constexpr ring_element operator+(ring_element const& rhs) const
     {
         auto r = *this;
         return r += rhs;
@@ -210,12 +210,12 @@ struct ring_element : Ring
         return ring_element(mod_div(value, rhs.value, ring()), ring());
     }
 
-    constexpr bool operator==(const ring_element& rhs) const
+    constexpr bool operator==(ring_element const& rhs) const
     {
         return value == rhs.value;
     }
 
-    constexpr bool operator!=(const ring_element& rhs) const
+    constexpr bool operator!=(ring_element const& rhs) const
     {
         return value != rhs.value;
     }
@@ -225,7 +225,7 @@ struct ring_element : Ring
         return in >> x.value;
     }
 
-    friend std::ostream& operator<<(std::ostream& out, const ring_element& x)
+    friend std::ostream& operator<<(std::ostream& out, ring_element const& x)
     {
         return out << x.value;
     }

@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class Policy, class T0, class T1>
-auto rotate(const Policy& policy, const point<T0>& p, const T1& angle)
+auto rotate(Policy const& policy, point<T0> const& p, T1 const& angle)
 {
     auto sin = sin(angle);
     auto cos = cos(angle);
@@ -22,10 +22,10 @@ auto rotate(const Policy& policy, const point<T0>& p, const T1& angle)
 
 template <class Policy, class T0, class T1, class T2>
 auto rotate(
-    const Policy& policy,
-    const point<T0>& p,
-    const T1& angle,
-    const point<T2>& origin)
+    Policy const& policy,
+    point<T0> const& p,
+    T1 const& angle,
+    point<T2> const& origin)
 {
     return origin + rotate(policy, p - origin, angle);
 }

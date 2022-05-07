@@ -18,10 +18,10 @@ template <mode_t Mode, class Char, bool = is_out<Mode>>
 class out_string : public device<Mode, Char>
 {
 public:
-    explicit out_string(const std::basic_string<Char>& s) : s_{s} {}
+    explicit out_string(std::basic_string<Char> const& s) : s_{s} {}
 
 protected:
-    const std::basic_string<Char>& s_;
+    std::basic_string<Char> const& s_;
 };
 
 template <mode_t Mode, class Char>

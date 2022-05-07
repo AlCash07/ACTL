@@ -26,7 +26,7 @@ TEST_CASE("random", repeat = 10)
     for (auto i : irange(hull.size()))
     {
         line<int> l{hull[i], hull[i + 1 < hull.size() ? i + 1 : 0]};
-        for (const auto& p : points)
+        for (auto const& p : points)
         {
             CHECK_FALSE(right_turn(l, p));
         }

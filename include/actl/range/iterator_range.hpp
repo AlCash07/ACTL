@@ -77,7 +77,7 @@ auto make_range(Container&& cont)
 }
 
 template <class Container>
-auto make_crange(const Container& cont)
+auto make_crange(Container const& cont)
 {
     return make_range(cont);
 }

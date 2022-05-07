@@ -23,7 +23,7 @@ struct predicate
         {
             return pred == c;
         }
-        else if constexpr (std::is_convertible_v<T, const Char*>)
+        else if constexpr (std::is_convertible_v<T, Char const*>)
         {
             return std::strchr(pred, c) != nullptr;
         }

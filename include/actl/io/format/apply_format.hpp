@@ -21,7 +21,7 @@ DEFINE_CAN(make_parser)
 #undef DEFINE_CAN
 
 template <class Format, class T>
-decltype(auto) apply_format_write(Format& fmt, const T& x)
+decltype(auto) apply_format_write(Format& fmt, T const& x)
 {
     if constexpr (decltype(can_encode(fmt, x))::value)
         return encode(fmt, x);

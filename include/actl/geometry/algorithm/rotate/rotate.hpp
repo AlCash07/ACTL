@@ -11,7 +11,7 @@
 namespace ac {
 
 template <index N, class T, class... Ts>
-auto rotate(const point<T, N>& p, const Ts&... args)
+auto rotate(point<T, N> const& p, Ts const&... args)
 {
     return rotate(geometry_policy, p, args...);
 }

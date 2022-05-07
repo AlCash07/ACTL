@@ -19,7 +19,7 @@ class function_output_iterator
           output_iterator_types>
 {
 public:
-    explicit function_output_iterator(const Function& f = {}) : f_{f} {}
+    explicit function_output_iterator(Function const& f = {}) : f_{f} {}
 
     template <class T>
     void operator=(T&& x) const
@@ -30,7 +30,7 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    const function_output_iterator& dereference() const
+    function_output_iterator const& dereference() const
     {
         return *this;
     }

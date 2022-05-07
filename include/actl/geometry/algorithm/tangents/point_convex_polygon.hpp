@@ -16,15 +16,15 @@ namespace ac {
 /// point. Point must be outside the polygon.
 template <class Policy, class T, class U, class OutIter>
 OutIter tangents(
-    const Policy& policy,
-    const point<T>& p,
-    const convex_polygon<U>& poly,
+    Policy const& policy,
+    point<T> const& p,
+    convex_polygon<U> const& poly,
     OutIter dst)
 {
     *dst++ =
-        extreme_vertex(policy, poly, [&p](const auto& x) { return x - p; });
+        extreme_vertex(policy, poly, [&p](auto const& x) { return x - p; });
     *dst++ =
-        extreme_vertex(policy, poly, [&p](const auto& x) { return p - x; });
+        extreme_vertex(policy, poly, [&p](auto const& x) { return p - x; });
     return dst;
 }
 

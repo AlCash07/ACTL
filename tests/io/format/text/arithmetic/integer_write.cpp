@@ -11,7 +11,7 @@ using namespace ac::io;
 
 TEST_CASE("write unsigned long long")
 {
-    const auto max_ull = std::numeric_limits<unsigned long long>::max();
+    auto const max_ull = std::numeric_limits<unsigned long long>::max();
     text f;
     test_write("0", f, showpos, showbase, 0ull);
     test_write("18446744073709551615", f, max_ull);
@@ -39,8 +39,8 @@ TEST_CASE("write unsigned long long")
 
 TEST_CASE("write long long")
 {
-    const auto min_ll = std::numeric_limits<long long>::min();
-    const auto max_ll = std::numeric_limits<long long>::max();
+    auto const min_ll = std::numeric_limits<long long>::min();
+    auto const max_ll = std::numeric_limits<long long>::max();
     text f;
     test_write("0", f, showbase, 0ll);
     test_write("-9223372036854775808", f, min_ll);

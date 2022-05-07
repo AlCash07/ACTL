@@ -16,9 +16,9 @@ namespace ac {
 template <class Policy>
 struct andrew_monotone_chain_policy
 {
-    andrew_monotone_chain_policy(const Policy& x) : policy{x} {}
+    andrew_monotone_chain_policy(Policy const& x) : policy{x} {}
 
-    const Policy& policy;
+    Policy const& policy;
 };
 
 /// Convex hull of a set of 2d points : O(N log N).
@@ -35,7 +35,7 @@ span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, span<T> points)
         return points;
     auto& policy = amcp.policy;
     auto [a, b] = minmax_element(points, less(policy));
-    auto comp = [l = make_line(*a, *b), &policy](const auto& p)
+    auto comp = [l = make_line(*a, *b), &policy](auto const& p)
     {
         return !right_turn(policy, p, l);
     };
@@ -43,7 +43,7 @@ span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, span<T> points)
     ACTL_ASSERT(2 <= pivot);
     sort(points.first(pivot), less(policy));
     index last = 1;
-    auto pop = [&](const auto& p)
+    auto pop = [&](auto const& p)
     {
         while (last != 0 &&
                !right_turn(policy, p, points[last], points[last - 1]))

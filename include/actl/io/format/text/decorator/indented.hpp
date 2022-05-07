@@ -41,7 +41,7 @@ batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x)
 }
 
 template <class C, class T>
-decltype(auto) encode(indented<C>& fmt, const raw<T>& x)
+decltype(auto) encode(indented<C>& fmt, raw<T> const& x)
 {
     return x;
 }

@@ -14,10 +14,10 @@ namespace detail {
 
 // Implementation reference: https://en.cppreference.com/w/cpp/types/is_base_of
 template <template <class...> class B, class... Ts>
-std::true_type test_base(const B<Ts...>*);
+std::true_type test_base(B<Ts...> const*);
 
 template <template <class...> class>
-std::false_type test_base(const void*);
+std::false_type test_base(void const*);
 
 } // namespace detail
 

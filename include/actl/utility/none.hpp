@@ -24,7 +24,7 @@ struct none
 // clang-format off
 template <class T> struct replace_void             { using type = T;          };
 template <>        struct replace_void<void>       { using type = none;       };
-template <>        struct replace_void<const void> { using type = const none; };
+template <>        struct replace_void<void const> { using type = none const; };
 // clang-format on
 
 template <class T>

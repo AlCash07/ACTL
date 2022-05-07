@@ -12,4 +12,4 @@ static_assert(std::is_empty_v<ac::none>);
 
 static_assert(std::is_same_v<int, ac::replace_void_t<int>>);
 static_assert(std::is_same_v<ac::none, ac::replace_void_t<void>>);
-static_assert(std::is_same_v<const ac::none, ac::replace_void_t<const void>>);
+static_assert(std::is_same_v<ac::none const, ac::replace_void_t<void const>>);

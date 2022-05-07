@@ -12,7 +12,7 @@ namespace ac::detail {
 
 template <class Policy, class T, class U>
 bool endpoint_test(
-    const Policy& policy, endpoint kind, const T& lhs, const U& rhs)
+    Policy const& policy, endpoint kind, T const& lhs, U const& rhs)
 {
     switch (kind)
     {
@@ -26,7 +26,7 @@ bool endpoint_test(
 }
 
 template <class Policy, class T, class U>
-bool line_test(const Policy& policy, line_kind kind, const T& num, const U& den)
+bool line_test(Policy const& policy, line_kind kind, T const& num, U const& den)
 {
     return endpoint_test(policy, begin(kind), 0, num) &&
            endpoint_test(policy, end(kind), num, den);

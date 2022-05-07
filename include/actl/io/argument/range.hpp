@@ -23,7 +23,7 @@ decltype(auto) key_representation(Pair& x)
         return x.first;
     else
         // const_cast is used to read std::map<Key, Value>::value_type
-        // which is std::pair<const Key, Value>.
+        // which is std::pair<Key const, Value>.
         return const_cast<typename Pair::first_type&>(x.first);
 }
 
@@ -37,13 +37,13 @@ decltype(auto) element_representation(T& x)
 }
 
 template <class Device, class Format, class R, enable_int_if<is_range_v<R>> = 0>
-bool write_final(Device& od, Format& fmt, const R& x)
+bool write_final(Device& od, Format& fmt, R const& x)
 {
     nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
         if (!write(od, fmt, size{x.size()}))
             return false;
-    for (const auto& value : x)
+    for (auto const& value : x)
         if (!write(od, fmt, element_representation<R>(value)))
             return false;
     return true;

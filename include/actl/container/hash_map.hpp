@@ -18,7 +18,7 @@ template <
     class T,
     class H = hash_function<>,
     class E = std::equal_to<>,
-    class A = std::allocator<std::pair<const K, T>>>
+    class A = std::allocator<std::pair<K const, T>>>
 using hash_map = std::unordered_map<K, T, H, E, A>;
 
 template <
@@ -26,7 +26,7 @@ template <
     class T,
     class H = hash_function<>,
     class E = std::equal_to<>,
-    class A = std::allocator<std::pair<const K, T>>>
+    class A = std::allocator<std::pair<K const, T>>>
 using hash_multimap = std::unordered_multimap<K, T, H, E, A>;
 
 template <class K, class T, class H, class E, class A>

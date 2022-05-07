@@ -15,9 +15,9 @@ namespace ac {
 
 template <class Policy, class T0, class T1, class OutIter>
 OutIter intersect(
-    const Policy& policy,
-    const circle<T0>& lhs,
-    const circle<T1>& rhs,
+    Policy const& policy,
+    circle<T0> const& lhs,
+    circle<T1> const& rhs,
     OutIter dst)
 {
     auto centers_vector = rhs.center - lhs.center;
@@ -55,8 +55,8 @@ OutIter intersect(
 template <class Policy, class T0, class T1, class OutIter>
 OutIter intersect(
     polar_angle_policy<Policy> pap,
-    const circle<T0>& lhs,
-    const circle<T1>& rhs,
+    circle<T0> const& lhs,
+    circle<T1> const& rhs,
     OutIter dst)
 {
     auto centers_vector = rhs.center - lhs.center;

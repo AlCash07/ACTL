@@ -18,18 +18,18 @@ namespace ac {
 template <class Policy, class T, class K, class U, class OutIter>
 OutIter intersect(
     line_scalar_policy<Policy> lsp,
-    const line<T, 2, K>& l,
-    const convex_polygon<U>& poly,
+    line<T, 2, K> const& l,
+    convex_polygon<U> const& poly,
     OutIter dst)
 {
     auto& policy = lsp.policy;
     ACTL_ASSERT(!degenerate(policy, l));
     auto right = cyclic_iterator{
         poly,
-        extreme_vertex(policy, poly, [&l](const auto&) { return l.vector; })};
+        extreme_vertex(policy, poly, [&l](auto const&) { return l.vector; })};
     auto left = cyclic_iterator{
         poly,
-        extreme_vertex(policy, poly, [&l](const auto&) { return -l.vector; })};
+        extreme_vertex(policy, poly, [&l](auto const&) { return -l.vector; })};
     auto vertex_orient = [&](auto it)
     {
         return orientation(policy, *it, l);

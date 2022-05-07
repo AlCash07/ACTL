@@ -35,12 +35,12 @@ class iterator_adaptor
     : public iterator_facade<Derived, detail::deduced_iter_types<Iter, Types>>
 {
 public:
-    explicit constexpr iterator_adaptor(const Iter& iter) noexcept(
+    explicit constexpr iterator_adaptor(Iter const& iter) noexcept(
         noexcept(Iter{iter}))
         : base_{iter}
     {}
 
-    constexpr const Iter& base() const noexcept
+    constexpr Iter const& base() const noexcept
     {
         return base_;
     }
@@ -71,12 +71,12 @@ private:
         AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n, void())
 
     template <class Derived1, class Iter1, class Types1>
-    constexpr bool equals(const iterator_adaptor<Derived1, Iter1, Types1>& rhs)
+    constexpr bool equals(iterator_adaptor<Derived1, Iter1, Types1> const& rhs)
         const AC_DEDUCE_NOEXCEPT_AND_RETURN(base() == rhs.base())
 
     template <class Derived1, class Iter1, class Types1>
     constexpr difference_type_t<base_t> distance_to(
-        const iterator_adaptor<Derived1, Iter1, Types1>& rhs) const
+        iterator_adaptor<Derived1, Iter1, Types1> const& rhs) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs.base() - base())
 
     Iter base_;

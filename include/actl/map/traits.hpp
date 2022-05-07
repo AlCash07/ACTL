@@ -48,7 +48,7 @@ struct const_map_traits
 {};
 
 template <class T>
-struct const_map_traits<const T> : const_map_traits<T>
+struct const_map_traits<T const> : const_map_traits<T>
 {};
 
 template <class T, class = void>
@@ -146,7 +146,7 @@ template <class T>
 struct map_put
 {
     static constexpr void put(
-        T& map, map_key_t<T> key, const map_value_t<T>& value)
+        T& map, map_key_t<T> key, map_value_t<T> const& value)
     {
         get(map, key) = value;
     }

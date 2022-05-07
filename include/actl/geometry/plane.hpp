@@ -22,17 +22,17 @@ public:
     constexpr plane() = default;
 
     template <class T1 = T, class T2 = T>
-    explicit constexpr plane(const point<T1, N>& normal, const T2& d)
+    explicit constexpr plane(point<T1, N> const& normal, T2 const& d)
         : normal{normal}, d{static_cast<T>(d)}
     {}
 
     template <class T1 = T, class T2 = T>
-    explicit constexpr plane(const point<T1, N>& normal, const point<T2, N>& p)
+    explicit constexpr plane(point<T1, N> const& normal, point<T2, N> const& p)
         : plane{normal, dot(cast_before<Mul, T>{}, normal, p)}
     {}
 
     template <class T1>
-    explicit constexpr plane(const plane<T1, N>& rhs) : plane{rhs.normal, rhs.d}
+    explicit constexpr plane(plane<T1, N> const& rhs) : plane{rhs.normal, rhs.d}
     {}
 
     friend void swap(plane& lhs, plane& rhs)
@@ -44,13 +44,13 @@ public:
 
     // Oriented distance from @p point to the plane times the norm of normal.
     template <class Policy, class T1 = T>
-    constexpr auto operator()(const Policy& policy, const point<T1, N>& p) const
+    constexpr auto operator()(Policy const& policy, point<T1, N> const& p) const
     {
         return dot(policy, normal, p) - d;
     }
 
     template <class T1 = T>
-    constexpr auto operator()(const point<T1, N>& p) const
+    constexpr auto operator()(point<T1, N> const& p) const
     {
         return (*this)(default_policy, p);
     }
@@ -60,10 +60,10 @@ private:
 };
 
 template <index N, class T0, class T1>
-plane(const point<T0, N>&, const T1&) -> plane<geometry::scalar_t<T0, T1>, N>;
+plane(point<T0, N> const&, T1 const&) -> plane<geometry::scalar_t<T0, T1>, N>;
 
 template <index N, class T0, class T1>
-plane(const point<T0, N>&, const point<T1, N>&)
+plane(point<T0, N> const&, point<T1, N> const&)
     -> plane<geometry::scalar_t<T0, T1>, N>;
 
 template <index N, class T>
@@ -75,20 +75,20 @@ template <index N, class... Ts>
 using plane_t = plane<geometry::scalar_t<Ts...>, N>;
 
 template <class T0, class T1>
-constexpr auto make_plane2d(const point<T0>& a, const point<T1>& b)
+constexpr auto make_plane2d(point<T0> const& a, point<T1> const& b)
 {
     return plane_t<2, T0, T1>{perpendicular(b - a), a};
 }
 
 template <class T0, class T1, class T2>
 constexpr auto make_plane3d(
-    const point3d<T0>& a, const point3d<T1>& b, const point3d<T2>& c)
+    point3d<T0> const& a, point3d<T1> const& b, point3d<T2> const& c)
 {
     return plane_t<3, T0, T1, T2>{cross(b - a, c - a), a};
 }
 
 template <class Policy, index N, class T>
-constexpr bool degenerate(const Policy& policy, const plane<T, N>& pl)
+constexpr bool degenerate(Policy const& policy, plane<T, N> const& pl)
 {
     return degenerate(policy, pl.normal);
 }

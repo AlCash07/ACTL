@@ -44,9 +44,9 @@ struct line_buffered<Device, true> : line_buffered<Device, false>
 {
     using line_buffered<Device, false>::line_buffered;
 
-    size_t write(span<const char_t<Device>> src)
+    size_t write(span<char_t<Device> const> src)
     {
-        const auto* last = src.end();
+        auto const* last = src.end();
         while (last != src.data() && last[-1] != '\n')
             --last;
         if (last != src.data())

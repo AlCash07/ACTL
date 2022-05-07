@@ -21,7 +21,7 @@ struct is_manipulator<T, std::void_t<typename T::is_manipulator>>
 {};
 
 template <class Format, class Manipulator>
-void manipulate(Format&, const Manipulator&)
+void manipulate(Format&, Manipulator const&)
 {}
 
 template <bool Deeper>

@@ -20,12 +20,12 @@ enum class within
 template <class Device, class Format>
 bool write(Device& od, Format& fmt, enum within x)
 {
-    constexpr const char* within_name[] = {"inside", "border", "outside"};
+    constexpr char const* within_name[] = {"inside", "border", "outside"};
     return write(od, fmt, within_name[static_cast<index>(x)]);
 }
 
 template <index N, class T, class U>
-enum within within(const point<T, N>& lhs, const U& rhs)
+enum within within(point<T, N> const& lhs, U const& rhs)
 {
     return within(geometry_policy, lhs, rhs);
 }

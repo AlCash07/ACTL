@@ -39,7 +39,7 @@ protected:
 
     constexpr Derived& derived() const noexcept
     {
-        return static_cast<const Derived&>(*this);
+        return static_cast<Derived const&>(*this);
     }
 };
 

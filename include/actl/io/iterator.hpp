@@ -17,7 +17,7 @@ struct input_device_iterator_types
 {
     using iterator_category = std::input_iterator_tag;
     using value_type = T;
-    using reference = const T&;
+    using reference = T const&;
     using difference_type = use_default;
 };
 
@@ -37,12 +37,12 @@ public:
         increment();
     }
 
-    input_device_iterator(const input_device_iterator&) = default;
+    input_device_iterator(input_device_iterator const&) = default;
 
 private:
     friend struct ac::iterator_core_access;
 
-    const T& dereference() const
+    T const& dereference() const
     {
         return value_;
     }
@@ -54,7 +54,7 @@ private:
             device_ = nullptr;
     }
 
-    bool equals(const input_device_iterator& rhs) const
+    bool equals(input_device_iterator const& rhs) const
     {
         return device_ == rhs.device_;
     }
@@ -80,9 +80,9 @@ class output_device_iterator
 public:
     explicit output_device_iterator(Device& device) : device_{&device} {}
 
-    output_device_iterator(const output_device_iterator&) = default;
+    output_device_iterator(output_device_iterator const&) = default;
 
-    void operator=(const T& value) const
+    void operator=(T const& value) const
     {
         io::write(*device_, value);
     }
@@ -90,7 +90,7 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    const output_device_iterator& dereference() const
+    output_device_iterator const& dereference() const
     {
         return *this;
     }

@@ -10,7 +10,7 @@
 
 template <class T>
 void test_partition(
-    const std::vector<std::vector<size_t>>& expected, const T& actual)
+    std::vector<std::vector<size_t>> const& expected, T const& actual)
 {
     for (size_t i = 0; i < expected.size(); ++i)
     {

@@ -101,14 +101,14 @@ struct articulation_point_finder
 };
 
 template <class G, class... Ts>
-auto get_articulation_point_finder(const G&, Ts&&... args)
+auto get_articulation_point_finder(G const&, Ts&&... args)
 {
     return articulation_point_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
 template <class Graph, class ArticulationMap, class ComponentMap>
 void find_articulation_points_and_components(
-    const Graph& graph,
+    Graph const& graph,
     ArticulationMap&& articulation_map,
     ComponentMap&& component_map)
 {
@@ -124,14 +124,14 @@ void find_articulation_points_and_components(
 }
 
 template <class Graph, class ArticulationMap>
-void find_articulation_points(const Graph& graph, ArticulationMap&& map)
+void find_articulation_points(Graph const& graph, ArticulationMap&& map)
 {
     find_articulation_points_and_components(
         graph, std::forward<ArticulationMap>(map), dummy_map{});
 }
 
 template <class Graph, class ComponentMap>
-void find_biconnected_components(const Graph& graph, ComponentMap&& map)
+void find_biconnected_components(Graph const& graph, ComponentMap&& map)
 {
     find_articulation_points_and_components(
         graph, dummy_map{}, std::forward<ComponentMap>(map));

@@ -37,7 +37,7 @@ struct filtered_range_types
     public:
         explicit iterator(
             iterator_t<std::remove_reference_t<R>> iter,
-            const filtered_range<R, P>& range)
+            filtered_range<R, P> const& range)
             : iterator_adaptor<iterator, Iter, iter_types>{iter}, range_{range}
         {
             find_next();
@@ -68,7 +68,7 @@ struct filtered_range_types
             while (!range_.evaluate(*this->base()));
         }
 
-        const filtered_range<R, P>& range_;
+        filtered_range<R, P> const& range_;
     };
 
     using size_type = size_type_t<remove_cvref_t<R>>;
@@ -100,7 +100,7 @@ public:
         return iterator{original().end(), *this};
     }
 
-    const Range& original() const
+    Range const& original() const
     {
         return data_.first();
     }

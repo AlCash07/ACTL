@@ -13,7 +13,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 auto nearest(
-    const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl)
+    Policy const& policy, point<T0, N> const& p, plane<T1, N> const& pl)
 {
     return std::pair{p, project(policy, p, pl)};
 }

@@ -41,7 +41,7 @@ protected:
         return data_.end();
     }
 
-    const span<C> data_;
+    span<C> const data_;
     C* ptr_;
 };
 

@@ -129,14 +129,14 @@ public:
 
     template <class T1 = T, class T2 = T>
     explicit constexpr line(
-        const point<T1, N>& a, const point<T2, N>& b, bool vector = false)
+        point<T1, N> const& a, point<T2, N> const& b, bool vector = false)
         : begin{a}, vector{vector ? point<T, N>{b} : point<T, N>{b - a}}
     {}
 
     template <class T1 = T, class T2 = T>
     explicit constexpr line(
-        const point<T1, N>& a,
-        const point<T2, N>& b,
+        point<T1, N> const& a,
+        point<T2, N> const& b,
         line_kind kind,
         bool vector = false)
         : Kind{kind}
@@ -145,12 +145,12 @@ public:
     {}
 
     template <class T1, class K1>
-    explicit constexpr line(const line<T1, N, K1>& rhs)
+    explicit constexpr line(line<T1, N, K1> const& rhs)
         : Kind{rhs.kind()}, begin{rhs.begin}, vector{rhs.vector}
     {}
 
     template <class T1, class K1>
-    constexpr line& operator=(const line<T1, N, K1>& rhs)
+    constexpr line& operator=(line<T1, N, K1> const& rhs)
     {
         Kind::operator=(rhs.kind());
         begin = rhs.begin;
@@ -172,13 +172,13 @@ public:
     }
 
     template <class Policy, class T1>
-    constexpr auto operator()(const Policy& policy, const T1& t) const
+    constexpr auto operator()(Policy const& policy, T1 const& t) const
     {
         return begin + product(policy, t, vector);
     }
 
     template <class T1>
-    constexpr auto operator()(const T1& t) const
+    constexpr auto operator()(T1 const& t) const
     {
         return (*this)(default_policy, t);
     }
@@ -189,7 +189,7 @@ private:
         return *this;
     }
 
-    const Kind& base() const
+    Kind const& base() const
     {
         return *this;
     }
@@ -213,29 +213,29 @@ struct geometry_traits<line<T, N, K>>
 
 template <index N, class T0, class T1>
 constexpr auto make_line(
-    const point<T0, N>& a, const point<T1, N>& b, bool vector = false)
+    point<T0, N> const& a, point<T1, N> const& b, bool vector = false)
 {
     return line<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
 constexpr auto make_ray(
-    const point<T0, N>& a, const point<T1, N>& b, bool vector = false)
+    point<T0, N> const& a, point<T1, N> const& b, bool vector = false)
 {
     return ray<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
 constexpr auto make_segment(
-    const point<T0, N>& a, const point<T1, N>& b, bool vector = false)
+    point<T0, N> const& a, point<T1, N> const& b, bool vector = false)
 {
     return segment<geometry::scalar_t<T0, T1>, N>{a, b, vector};
 }
 
 template <index N, class T0, class T1>
 constexpr auto make_any_line(
-    const point<T0, N>& a,
-    const point<T1, N>& b,
+    point<T0, N> const& a,
+    point<T1, N> const& b,
     line_kind kind = line_kind::free,
     bool vector = false)
 {
@@ -248,9 +248,9 @@ template <
     class T1,
     class Line = any_line<geometry::scalar_t<T0, T1>, N>>
 constexpr Line make_any_line(
-    const point<T0, N>& a,
+    point<T0, N> const& a,
     endpoint akind,
-    const point<T1, N>& b,
+    point<T1, N> const& b,
     endpoint bkind)
 {
     if (akind < bkind)
@@ -259,7 +259,7 @@ constexpr Line make_any_line(
 }
 
 template <class Policy, index N, class T, class K>
-constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l)
+constexpr bool degenerate(Policy const& policy, line<T, N, K> const& l)
 {
     return degenerate(policy, l.vector);
 }
@@ -269,9 +269,9 @@ constexpr bool degenerate(const Policy& policy, const line<T, N, K>& l)
 template <class Policy>
 struct line_scalar_policy : virtual policy
 {
-    explicit line_scalar_policy(const Policy& x) : policy{x} {}
+    explicit line_scalar_policy(Policy const& x) : policy{x} {}
 
-    const Policy& policy;
+    Policy const& policy;
 };
 
 } // namespace ac

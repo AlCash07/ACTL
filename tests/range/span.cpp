@@ -27,7 +27,7 @@ TEST_CASE("span from array")
 
 TEST_CASE("span from const vector")
 {
-    const std::vector<double> v(N);
+    std::vector<double> const v(N);
     span s{v};
     CHECK(v.data() == s.data());
     CHECK(N == s.size());

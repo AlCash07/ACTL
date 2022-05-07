@@ -14,9 +14,9 @@ static_assert(3LL == (ac::add | ac::allow_promotion{})(1, 2LL));
 
 TEST_CASE("nested composite operation")
 {
-    const std::vector<std::pair<char, long long>> lhs{
+    std::vector<std::pair<char, long long>> const lhs{
         {char{2}, 3}, {char{5}, 8}};
-    const std::vector<std::pair<int, uint16_t>> rhs{
+    std::vector<std::pair<int, uint16_t>> const rhs{
         {2, uint16_t{3}}, {5, uint16_t{8}}};
     CHECK((ac::equal | ac::allow_promotion{})(lhs, rhs));
 }

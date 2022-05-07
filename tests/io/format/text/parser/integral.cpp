@@ -11,7 +11,7 @@ using namespace ac::io;
 
 TEST_CASE("read unsigned long long")
 {
-    const auto max_ull = std::numeric_limits<unsigned long long>::max();
+    auto const max_ull = std::numeric_limits<unsigned long long>::max();
     text f;
     unsigned long long x{};
     test_read(0ull, "0", f);
@@ -39,8 +39,8 @@ TEST_CASE("read unsigned long long")
 
 TEST_CASE("read long long")
 {
-    const auto max_ull = std::numeric_limits<long long>::max();
-    const auto min_ull = std::numeric_limits<long long>::min();
+    auto const max_ull = std::numeric_limits<long long>::max();
+    auto const min_ull = std::numeric_limits<long long>::min();
     text f;
     long long x{};
     test_read<true>(0ull, "+0", f);

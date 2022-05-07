@@ -42,7 +42,7 @@ constexpr decltype(auto) resolve_overload(Context context, Op&& op)
 }
 
 template <class... Ts, class Op>
-constexpr decltype(auto) resolve_nested(const Op& op)
+constexpr decltype(auto) resolve_nested(Op const& op)
 {
     constexpr auto major_depth = major_category<Ts...>::depth;
     return resolve_overload<

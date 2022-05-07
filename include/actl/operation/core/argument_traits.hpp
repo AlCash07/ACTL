@@ -52,11 +52,11 @@ constexpr T&& pass(std::remove_reference_t<T>& x)
 }
 
 template <class T>
-constexpr const T&& pass(std::remove_reference_t<T>&& x)
+constexpr T const&& pass(std::remove_reference_t<T>&& x)
 {
     static_assert(
         !std::is_lvalue_reference_v<T>, "can not pass an rvalue as an lvalue");
-    return static_cast<const T&&>(x);
+    return static_cast<T const&&>(x);
 }
 
 } // namespace ac

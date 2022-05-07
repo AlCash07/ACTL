@@ -38,7 +38,7 @@ template <class Op, class Policy>
 inline constexpr bool can_apply_policy_v = can_apply_policy<Op, Policy>::value;
 
 template <class Op, class Policy>
-constexpr decltype(auto) apply_policy_if_can(Op&& op, const Policy& policy)
+constexpr decltype(auto) apply_policy_if_can(Op&& op, Policy const& policy)
 {
     if constexpr (can_apply_policy<Op, Policy>::value)
         return apply_policy(std::forward<Op>(op), policy);

@@ -150,9 +150,9 @@ public:
         return 1;
     }
 
-    size_t write(span<const Char> src)
+    size_t write(span<Char const> src)
     {
-        const Char* srcPtr = src.data();
+        Char const* srcPtr = src.data();
         size_t count = src.size();
         size_t available = static_cast<size_t>(std::end(buf_) - ptr_);
         if (count < available)

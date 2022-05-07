@@ -20,13 +20,13 @@ struct composite_operation
         : std::tuple<InnerOps...>{std::forward<Ts>(xs)...}
     {}
 
-    constexpr const std::tuple<InnerOps...>& inner() const
+    constexpr std::tuple<InnerOps...> const& inner() const
     {
         return *this;
     }
 
     template <class... Ts>
-    constexpr auto evaluate(const Ts&... xs) const
+    constexpr auto evaluate(Ts const&... xs) const
     {
         if constexpr (sizeof...(InnerOps) == 1)
             return OuterOp::evaluate(std::get<0>(inner()), xs...);
@@ -50,8 +50,8 @@ struct operation_composer
 
 template <class Outer, class... Inner, class Policy, size_t... Is>
 constexpr auto apply_policy_to_composite(
-    const composite_operation<Outer, Inner...>& op,
-    const Policy& policy,
+    composite_operation<Outer, Inner...> const& op,
+    Policy const& policy,
     std::index_sequence<Is...>)
 {
     return operation_composer<Outer>{}(
@@ -64,7 +64,7 @@ template <
     class Policy,
     enable_int_if<(... || can_apply_policy<Inner, Policy>::value)> = 0>
 constexpr auto apply_policy(
-    const composite_operation<Outer, Inner...>& op, const Policy& policy)
+    composite_operation<Outer, Inner...> const& op, Policy const& policy)
 {
     return apply_policy_to_composite(
         op, policy, std::make_index_sequence<sizeof...(Inner)>{});

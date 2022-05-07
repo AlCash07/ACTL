@@ -63,7 +63,7 @@ struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type
 {};
 
 template <class T>
-decltype(auto) get_key(const T& x)
+decltype(auto) get_key(T const& x)
 {
     if constexpr (is_mimic_pair<T>::value)
     {
@@ -79,7 +79,7 @@ template <
     class T,
     class U,
     enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-auto operator==(const T& lhs, const U& rhs)
+auto operator==(T const& lhs, U const& rhs)
 {
     return equal(get_key(lhs), get_key(rhs));
 }
@@ -88,7 +88,7 @@ template <
     class T,
     class U,
     enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
-auto operator<(const T& lhs, const U& rhs)
+auto operator<(T const& lhs, U const& rhs)
 {
     return less(get_key(lhs), get_key(rhs));
 }

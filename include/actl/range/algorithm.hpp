@@ -21,27 +21,27 @@ Function for_each(Range& dst, Function f)
 }
 
 template <class Range, class T>
-difference_type_t<Range> count(const Range& src, const T& value)
+difference_type_t<Range> count(Range const& src, T const& value)
 {
     return std::count(std::begin(src), std::end(src), value);
 }
 
 template <class Range0, class Range1>
 std::pair<iterator_t<Range0>, iterator_t<Range1>> mismatch(
-    const Range0& lhs, const Range1& rhs)
+    Range0 const& lhs, Range1 const& rhs)
 {
     return std::mismatch(
         std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
 }
 
 template <class Range, class OutIter>
-OutIter range_copy(const Range& src, OutIter dst)
+OutIter range_copy(Range const& src, OutIter dst)
 {
     return std::copy(std::begin(src), std::end(src), dst);
 }
 
 template <class Range, class T>
-void fill(Range& dst, const T& value)
+void fill(Range& dst, T const& value)
 {
     std::fill(std::begin(dst), std::end(dst), value);
 }
@@ -95,40 +95,40 @@ void sort(Range&& dst, Compare comp)
 }
 
 template <class Range, class T>
-iterator_t<const Range> lower_bound(const Range& src, const T& value)
+iterator_t<Range const> lower_bound(Range const& src, T const& value)
 {
     return std::lower_bound(std::begin(src), std::end(src), value);
 }
 
 template <class Range, class T, class Compare>
-iterator_t<const Range> lower_bound(
-    const Range& src, const T& value, Compare comp)
+iterator_t<Range const> lower_bound(
+    Range const& src, T const& value, Compare comp)
 {
     return std::lower_bound(std::begin(src), std::end(src), value, comp);
 }
 
 template <class Range, class T>
-iterator_t<const Range> upper_bound(const Range& src, const T& value)
+iterator_t<Range const> upper_bound(Range const& src, T const& value)
 {
     return std::upper_bound(std::begin(src), std::end(src), value);
 }
 
 template <class Range, class T, class Compare>
-iterator_t<const Range> upper_bound(
-    const Range& src, const T& value, Compare comp)
+iterator_t<Range const> upper_bound(
+    Range const& src, T const& value, Compare comp)
 {
     return std::upper_bound(std::begin(src), std::end(src), value, comp);
 }
 
 template <class Range0, class Range1, class OutIter>
-bool merge(const Range0& lhs, const Range1& rhs, OutIter dst)
+bool merge(Range0 const& lhs, Range1 const& rhs, OutIter dst)
 {
     return std::merge(
         std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), dst);
 }
 
 template <class Range0, class Range1, class OutIter, class Compare>
-bool merge(const Range0& lhs, const Range1& rhs, OutIter dst, Compare comp)
+bool merge(Range0 const& lhs, Range1 const& rhs, OutIter dst, Compare comp)
 {
     return std::merge(
         std::begin(lhs),
@@ -140,50 +140,50 @@ bool merge(const Range0& lhs, const Range1& rhs, OutIter dst, Compare comp)
 }
 
 template <class Range>
-iterator_t<const Range> min_element(const Range& src)
+iterator_t<Range const> min_element(Range const& src)
 {
     return std::min_element(std::begin(src), std::end(src));
 }
 
 template <class Range, class Compare>
-iterator_t<const Range> min_element(const Range& src, Compare comp)
+iterator_t<Range const> min_element(Range const& src, Compare comp)
 {
     return std::min_element(std::begin(src), std::end(src), comp);
 }
 
 template <class Range>
-iterator_t<const Range> max_element(const Range& src)
+iterator_t<Range const> max_element(Range const& src)
 {
     return std::max_element(std::begin(src), std::end(src));
 }
 
 template <class Range, class Compare>
-iterator_t<const Range> max_element(const Range& src, Compare comp)
+iterator_t<Range const> max_element(Range const& src, Compare comp)
 {
     return std::max_element(std::begin(src), std::end(src), comp);
 }
 
-template <class Range, class Iterator = iterator_t<const Range>>
-std::pair<Iterator, Iterator> minmax_element(const Range& src)
+template <class Range, class Iterator = iterator_t<Range const>>
+std::pair<Iterator, Iterator> minmax_element(Range const& src)
 {
     return std::minmax_element(std::begin(src), std::end(src));
 }
 
-template <class Range, class Compare, class Iterator = iterator_t<const Range>>
-std::pair<Iterator, Iterator> minmax_element(const Range& src, Compare comp)
+template <class Range, class Compare, class Iterator = iterator_t<Range const>>
+std::pair<Iterator, Iterator> minmax_element(Range const& src, Compare comp)
 {
     return std::minmax_element(std::begin(src), std::end(src), comp);
 }
 
 template <class Range0, class Range1>
-bool lexicographical_compare(const Range0& lhs, const Range1& rhs)
+bool lexicographical_compare(Range0 const& lhs, Range1 const& rhs)
 {
     return std::lexicographical_compare(
         std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
 }
 
 template <class Range0, class Range1, class Compare>
-bool lexicographical_compare(const Range0& lhs, const Range1& rhs, Compare comp)
+bool lexicographical_compare(Range0 const& lhs, Range1 const& rhs, Compare comp)
 {
     return std::lexicographical_compare(
         std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), comp);

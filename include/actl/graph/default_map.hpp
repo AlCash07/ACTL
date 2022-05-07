@@ -15,7 +15,7 @@
 namespace ac {
 
 template <class T, class Graph>
-auto make_default_vertex_map(const Graph& graph)
+auto make_default_vertex_map(Graph const& graph)
 {
     if constexpr (is_random_access_range_v<typename Graph::vertex_container>)
     {
@@ -28,7 +28,7 @@ auto make_default_vertex_map(const Graph& graph)
 }
 
 template <class T, class Graph>
-auto make_default_edge_map(const Graph& graph)
+auto make_default_edge_map(Graph const& graph)
 {
     if constexpr (is_random_access_range_v<typename Graph::edge_container>)
     {

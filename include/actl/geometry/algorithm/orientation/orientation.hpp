@@ -39,31 +39,31 @@ template <
     class U,
     enable_int_if_policy<Policy> = 0,
     geometry::enable_int_if_swap<T, U> = 0>
-auto orientation(const Policy& policy, const T& lhs, const U& rhs)
+auto orientation(Policy const& policy, T const& lhs, U const& rhs)
 {
     return -orientation(policy, rhs, lhs);
 }
 
 template <class T, class... Ts, disable_int_if_policy<T> = 0>
-auto orientation(const T& x, const Ts&... xs)
+auto orientation(T const& x, Ts const&... xs)
 {
     return orientation(geometry_policy, x, xs...);
 }
 
 template <class... Ts>
-bool left_turn(const Ts&... xs)
+bool left_turn(Ts const&... xs)
 {
     return orientation(xs...) == orientation2d::left;
 }
 
 template <class... Ts>
-bool right_turn(const Ts&... xs)
+bool right_turn(Ts const&... xs)
 {
     return orientation(xs...) == orientation2d::right;
 }
 
 template <class... Ts>
-bool collinear(const Ts&... xs)
+bool collinear(Ts const&... xs)
 {
     return static_cast<int>(orientation(xs...)) == 0;
 }

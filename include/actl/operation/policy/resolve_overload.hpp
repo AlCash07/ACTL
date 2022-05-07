@@ -14,7 +14,7 @@ namespace ac {
 template <class Base, class Policy>
 struct policy_context : Base
 {
-    const Policy& policy;
+    Policy const& policy;
 };
 
 template <class Base, class Policy, class Op, class... Ts>
@@ -37,7 +37,7 @@ template <class Context, class Op, class Policy, class... Ts>
 struct overload_resolver<void, Context, tuned_operation<Op, Policy>, Ts...>
 {
     static constexpr decltype(auto) resolve(
-        Context context, const tuned_operation<Op, Policy>& op)
+        Context context, tuned_operation<Op, Policy> const& op)
     {
         return resolve_overload<Ts...>(
             policy_context<Context, Policy>{context, op.policy}, op.operation);

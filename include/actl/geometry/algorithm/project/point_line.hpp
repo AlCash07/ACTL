@@ -14,8 +14,8 @@ namespace ac {
 template <class Policy, index N, class T0, class T1, class K>
 auto project(
     line_scalar_policy<Policy> lsp,
-    const point<T0, N>& p,
-    const line<T1, N, K>& l)
+    point<T0, N> const& p,
+    line<T1, N, K> const& l)
 {
     auto& policy = lsp.policy;
     return ratio(
@@ -24,7 +24,7 @@ auto project(
 
 template <class Policy, index N, class T0, class T1, class K>
 auto project(
-    const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l)
+    Policy const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
 {
     return l(project(line_scalar_policy{policy}, p, l));
 }

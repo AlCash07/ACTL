@@ -12,7 +12,7 @@ namespace ac::detail {
 
 template <class Policy, index N, class T0, class T1, class K>
 bool between_endpoints(
-    const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l)
+    Policy const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
 {
     if (end(l.kind()) == endpoint::free)
         return endpoint_test(

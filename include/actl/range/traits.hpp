@@ -25,7 +25,7 @@ struct range_traits : default_range_traits
 {};
 
 template <class T>
-struct range_traits<const T> : range_traits<T>
+struct range_traits<T const> : range_traits<T>
 {};
 
 template <class T, size_t N>

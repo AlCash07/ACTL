@@ -20,7 +20,7 @@ template <
     class T,
     enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
         0>
-void sort_by_angle(const Policy& policy, U& points, const point<T>& origin)
+void sort_by_angle(Policy const& policy, U& points, point<T> const& origin)
 {
     using ref = reference_t<U>;
     auto to_point = get_to_point(points);
@@ -49,7 +49,7 @@ template <
     class U,
     enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
         0>
-void sort_by_angle(const Policy& policy, U& points)
+void sort_by_angle(Policy const& policy, U& points)
 {
     using ref = reference_t<U>;
     auto to_point = get_to_point(points);

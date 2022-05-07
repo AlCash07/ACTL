@@ -20,9 +20,9 @@ class array_as_vector
 public:
     using value_type = value_type_t<Array>;
     using reference = reference_t<Array>;
-    using const_reference = reference_t<const Array>;
+    using const_reference = reference_t<Array const>;
     using iterator = iterator_t<Array>;
-    using const_iterator = iterator_t<const Array>;
+    using const_iterator = iterator_t<Array const>;
     using size_type = size_type_t<Array>;
 
     array_as_vector() : end_{array_.begin()} {}
@@ -92,12 +92,12 @@ public:
         return array_.data();
     }
 
-    const value_type* data() const noexcept
+    value_type const* data() const noexcept
     {
         return array_.data();
     }
 
-    void push_back(const T& v)
+    void push_back(T const& v)
     {
         emplace(v);
     }

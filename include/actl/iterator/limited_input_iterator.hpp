@@ -21,7 +21,7 @@ class limited_input_iterator
 public:
     explicit limited_input_iterator() : base_t{Iterator{}}, limit_{0} {}
 
-    explicit limited_input_iterator(const Iterator& iter, int limit)
+    explicit limited_input_iterator(Iterator const& iter, int limit)
         : base_t{iter}, limit_{limit}
     {}
 

@@ -27,7 +27,7 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    const flag_output_iterator& dereference() const
+    flag_output_iterator const& dereference() const
     {
         return *this;
     }
@@ -42,9 +42,9 @@ private:
 
 template <class Policy, class T0, class K0, class T1, class K1>
 bool crosses(
-    const Policy& policy,
-    const line<T0, 2, K0>& lhs,
-    const line<T1, 2, K1>& rhs)
+    Policy const& policy,
+    line<T0, 2, K0> const& lhs,
+    line<T1, 2, K1> const& rhs)
 {
     return intersect(policy, lhs, rhs, detail::flag_output_iterator{}).flag;
 }
@@ -52,8 +52,8 @@ bool crosses(
 template <class Policy, class T0, class K0, class T1, class K1>
 bool crosses(
     general_position_policy<Policy> gpp,
-    const line<T0, 2, K0>& lhs,
-    const line<T1, 2, K1>& rhs)
+    line<T0, 2, K0> const& lhs,
+    line<T1, 2, K1> const& rhs)
 {
     return crosses(line_scalar_policy{gpp.policy}, lhs, rhs);
 }

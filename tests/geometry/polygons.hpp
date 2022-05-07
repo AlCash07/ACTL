@@ -70,7 +70,7 @@ convex_polygon<point<int>> get_max_convex_polygon(int max_coordinate)
     }
     for (index i : irange(n))
     {
-        const auto& p = poly[size_t(n - i - 1)];
+        auto const& p = poly[size_t(n - i - 1)];
         poly.emplace_back(p[0], -p[1]);
     }
     index m = 2 * n;

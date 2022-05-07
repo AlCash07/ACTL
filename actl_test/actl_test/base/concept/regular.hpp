@@ -42,7 +42,7 @@ void test_regular_default_constructor()
 }
 
 template <class T>
-void test_regular_copy(const T x, const T y)
+void test_regular_copy(T const x, T const y)
 {
     T z{x};
     CHECK(x == z);

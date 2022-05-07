@@ -51,6 +51,6 @@ TEST_CASE("pair_associative_container reference")
 
 TEST_CASE("pair_associative_container const_reference")
 {
-    const auto map = get_map();
+    auto const map = get_map();
     test_associative_map<false>(map);
 }

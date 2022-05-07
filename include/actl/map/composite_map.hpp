@@ -102,8 +102,8 @@ struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits
 {};
 
 template <class... Ms>
-struct map_traits<const composite_map<Ms...>>
-    : map_traits<composite_map<const Ms...>>
+struct map_traits<composite_map<Ms...> const>
+    : map_traits<composite_map<Ms const...>>
 {};
 
 template <class CM>
@@ -117,7 +117,7 @@ struct map_ops<CM, std::void_t<typename CM::is_composite_map>>
         return ac::get(map.second(), ac::get(map.first(), key));
     }
 
-    static constexpr void put(CM& map, K key, const V& value)
+    static constexpr void put(CM& map, K key, V const& value)
     {
         if constexpr (CM::writable2)
         {
@@ -129,7 +129,7 @@ struct map_ops<CM, std::void_t<typename CM::is_composite_map>>
         }
     }
 
-    static constexpr K invert(CM& map, const V& value)
+    static constexpr K invert(CM& map, V const& value)
     {
         return ac::invert(map.first(), ac::invert(map.second(), value));
     }

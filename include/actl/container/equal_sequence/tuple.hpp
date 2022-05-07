@@ -16,7 +16,7 @@ namespace detail {
 
 template <class T, class U, size_t... Is>
 constexpr bool equal_tuple(
-    const T& lhs, const U& rhs, std::index_sequence<Is...>) noexcept
+    T const& lhs, U const& rhs, std::index_sequence<Is...>) noexcept
 {
     using std::get;
     static_assert(noexcept((... && (get<Is>(lhs) == get<Is>(rhs)))));
@@ -26,7 +26,7 @@ constexpr bool equal_tuple(
 } // namespace detail
 
 template <class T, class U, enable_int_if<is_tuple_v<T> && is_tuple_v<U>> = 0>
-constexpr auto equal_sequence(const T& lhs, const U& rhs) noexcept
+constexpr auto equal_sequence(T const& lhs, U const& rhs) noexcept
 {
     if constexpr (std::tuple_size_v<T> != std::tuple_size_v<U>)
         return std::false_type{};

@@ -16,15 +16,15 @@ template <class Line, class Iter>
 class scalar_to_point_adaptor : public output_iterator_types
 {
 public:
-    explicit scalar_to_point_adaptor(const Line& line, Iter iter)
+    explicit scalar_to_point_adaptor(Line const& line, Iter iter)
         : line_{&line}, iter_{iter}
     {}
 
-    scalar_to_point_adaptor& operator=(const scalar_to_point_adaptor&) =
+    scalar_to_point_adaptor& operator=(scalar_to_point_adaptor const&) =
         default;
 
     template <class T>
-    void operator=(const T& x)
+    void operator=(T const& x)
     {
         *iter_ = (*line_)(x);
     }
@@ -50,7 +50,7 @@ public:
     }
 
 private:
-    const Line* line_;
+    Line const* line_;
     Iter iter_;
 };
 

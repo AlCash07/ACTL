@@ -37,7 +37,7 @@ std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args)
 }
 
 template <class C, class T>
-void erase(C& cont, const T& value)
+void erase(C& cont, T const& value)
 {
     if constexpr (is_associative_range_v<C>)
         cont.erase(value);
@@ -46,7 +46,7 @@ void erase(C& cont, const T& value)
 }
 
 template <class C, class T>
-iterator_t<C> find(C& cont, const T& value)
+iterator_t<C> find(C& cont, T const& value)
 {
     if constexpr (is_associative_range_v<C> && is_sorted_range_v<C>)
     {

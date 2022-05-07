@@ -16,7 +16,7 @@ namespace detail {
 
 // TODO: remove when std::array operator== is constexpr.
 template <class Array>
-constexpr bool equal_array(const Array& lhs, const Array& rhs) noexcept
+constexpr bool equal_array(Array const& lhs, Array const& rhs) noexcept
 {
     for (size_t i = 0; i != lhs.size(); ++i)
         if (lhs[i] != rhs[i])
@@ -95,7 +95,7 @@ public:
     }
 
     template <size_t I>
-    friend constexpr auto get(const semi_static_array& src) noexcept
+    friend constexpr auto get(semi_static_array const& src) noexcept
     {
         return src[size_constant<I>{}];
     }
@@ -107,13 +107,13 @@ public:
     }
 
     friend constexpr auto operator==(
-        const semi_static_array& lhs, const semi_static_array& rhs) noexcept
+        semi_static_array const& lhs, semi_static_array const& rhs) noexcept
     {
         return detail::equal_array(lhs.dynamic_values, rhs.dynamic_values);
     }
 
     friend constexpr auto operator!=(
-        const semi_static_array& lhs, const semi_static_array& rhs) noexcept
+        semi_static_array const& lhs, semi_static_array const& rhs) noexcept
     {
         return !(lhs == rhs);
     }

@@ -20,7 +20,7 @@ struct is_const_pointer : std::false_type
 {};
 
 template <class T>
-struct is_const_pointer<const T*> : std::true_type
+struct is_const_pointer<T const*> : std::true_type
 {};
 
 template <class T, bool = is_iterator_v<T>>

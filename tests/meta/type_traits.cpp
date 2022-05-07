@@ -8,13 +8,13 @@
 #include "test.hpp"
 
 static_assert(std::is_same_v<int, add_const_if_t<false, int>>);
-static_assert(std::is_same_v<const int, add_const_if_t<true, int>>);
+static_assert(std::is_same_v<int const, add_const_if_t<true, int>>);
 
-static_assert(std::is_same_v<int, remove_cvref_t<volatile const int&>>);
+static_assert(std::is_same_v<int, remove_cvref_t<int const volatile&>>);
 
 static_assert(is_one_of_v<int, int>);
 static_assert(is_one_of_v<int, double, int, float>);
-static_assert(!is_one_of_v<int, const int, int&, int*>);
+static_assert(!is_one_of_v<int, int const, int&, int*>);
 
 static_assert(are_same_v<int>);
 static_assert(are_same_v<int, int>);

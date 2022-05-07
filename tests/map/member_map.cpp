@@ -18,7 +18,7 @@ void test_member_map(Map&& map)
     A x{0};
     get(map, x) = 1;
     CHECK(1 == x.a);
-    CHECK(1 == get((const Map&)map, x));
+    CHECK(1 == get((Map const&)map, x));
 }
 
 TEST_CASE("static")

@@ -12,14 +12,14 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 auto bisector(
-    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs)
+    Policy const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs)
 {
     return product(policy, lhs, norm(policy, rhs)) +
            product(policy, rhs, norm(policy, lhs));
 }
 
 template <index N, class T0, class T1>
-auto bisector(const point<T0, N>& lhs, const point<T1, N>& rhs)
+auto bisector(point<T0, N> const& lhs, point<T1, N> const& rhs)
 {
     return bisector(geometry_policy, lhs, rhs);
 }

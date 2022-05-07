@@ -24,14 +24,14 @@ struct Promotion
 
     template <class T, class U>
     static constexpr auto evaluate(
-        select_f op, bool condition, const T& lhs, const U& rhs)
+        select_f op, bool condition, T const& lhs, U const& rhs)
     {
         using CT = std::common_type_t<T, U>;
         return op.evaluate(condition, cast<CT>(lhs), cast<CT>(rhs));
     }
 
     template <class Op, class... Ts>
-    static constexpr auto evaluate(const Op& op, const Ts&... xs)
+    static constexpr auto evaluate(Op const& op, Ts const&... xs)
     {
         using CT = std::common_type_t<decltype(eval(xs))...>;
         return op.evaluate(cast<CT>(xs)...);
@@ -43,7 +43,7 @@ template <
     enable_int_if<
         is_scalar_operation_v<Op> &&
         is_subcategory_of_v<typename Op::argument_category, scalar_tag>> = 0>
-constexpr auto apply_policy(const Op& op, allow_promotion)
+constexpr auto apply_policy(Op const& op, allow_promotion)
 {
     return operation_composer<Promotion>{}(op);
 }

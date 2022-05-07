@@ -11,7 +11,7 @@
 
 TEST_CASE("const_set&")
 {
-    const std::set<int> s{1, 5};
+    std::set<int> const s{1, 5};
     auto i0 = iterator_to_id(s, s.begin());
     auto i1 = iterator_to_id(s, --s.end());
     CHECK(5 == get(s, i1));

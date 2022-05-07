@@ -15,7 +15,7 @@ TEST_CASE("all cases")
     {
         any_line<int> l{points[1], points[3], kind};
         std::vector<bool> w;
-        for (const auto& p : points)
+        for (auto const& p : points)
             w.push_back(within(p, l) == within::border);
         return w;
     };

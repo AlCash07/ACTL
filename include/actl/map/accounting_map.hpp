@@ -21,7 +21,7 @@ class accounting_map
 {
     using AC = AssociativeContainer;
     using K = typename AC::key_type;
-    using Key = const K&;
+    using Key = K const&;
     using V = typename AC::mapped_type;
 
 public:
@@ -33,15 +33,15 @@ public:
     template <bool Const>
     using traits = map_traits_base<
         Key,
-        const V&,
+        V const&,
         V,
         !Const,
         false,
         Invertible,
         true,
-        const AC&>;
+        AC const&>;
 
-    const V& get(Key key)
+    V const& get(Key key)
     {
         auto& ac = data_.first();
         auto pair = ac.insert({key, static_cast<V>(ac.size())});
@@ -53,12 +53,12 @@ public:
         return pair.first->second;
     }
 
-    Key invert(const V& value) const
+    Key invert(V const& value) const
     {
         return *data_.second()[static_cast<size_t>(value)];
     }
 
-    const AC& map_range() const
+    AC const& map_range() const
     {
         return data_.first();
     }
@@ -66,7 +66,7 @@ public:
 private:
     compressed_pair<
         AC,
-        std::conditional_t<Invertible, std::vector<const K*>, none>>
+        std::conditional_t<Invertible, std::vector<K const*>, none>>
         data_;
 };
 

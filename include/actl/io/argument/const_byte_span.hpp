@@ -19,9 +19,9 @@ template <
     class B,
     size_t N,
     enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, span<const B, N>& s)
+bool read_final(Device& id, Format&, span<B const, N>& s)
 {
-    span sc{reinterpret_cast<const char*>(s.data()), s.size()};
+    span sc{reinterpret_cast<char const*>(s.data()), s.size()};
     return parser_executor{const_data_parser{sc}}(id);
 }
 

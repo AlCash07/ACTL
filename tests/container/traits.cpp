@@ -23,6 +23,6 @@ static_assert(std::is_same_v<
 
 static_assert(ac::is_smart_pointer<std::unique_ptr<float>>::value);
 static_assert(
-    ac::is_smart_pointer<const std::unique_ptr<std::vector<int>>>::value);
+    ac::is_smart_pointer<std::unique_ptr<std::vector<int>> const>::value);
 static_assert(ac::is_smart_pointer<std::shared_ptr<float>>::value);
 static_assert(!ac::is_smart_pointer<std::vector<float>>::value);

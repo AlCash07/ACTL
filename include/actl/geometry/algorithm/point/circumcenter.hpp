@@ -13,10 +13,10 @@ namespace ac {
 
 template <class Policy, class T0, class T1, class T2>
 auto circumcenter(
-    const Policy& policy,
-    const point<T0>& a,
-    const point<T1>& b,
-    const point<T2>& c)
+    Policy const& policy,
+    point<T0> const& a,
+    point<T1> const& b,
+    point<T2> const& c)
 {
     ACTL_ASSERT(!collinear(policy, a, b, c));
     using T = geometry::scalar_t<T0, T1, T2>;
@@ -31,7 +31,7 @@ auto circumcenter(
 }
 
 template <class T0, class T1, class T2>
-auto circumcenter(const point<T0>& a, const point<T1>& b, const point<T2>& c)
+auto circumcenter(point<T0> const& a, point<T1> const& b, point<T2> const& c)
 {
     return circumcenter(geometry_policy, a, b, c);
 }

@@ -16,9 +16,9 @@ class contiguous_range_interface
           contiguous_range_interface<Range, Types>,
           Types>
 {
-    constexpr const Range& derived() const noexcept
+    constexpr Range const& derived() const noexcept
     {
-        return static_cast<const Range&>(*this);
+        return static_cast<Range const&>(*this);
     }
 
 public:

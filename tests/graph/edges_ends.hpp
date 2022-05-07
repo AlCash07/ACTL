@@ -11,7 +11,7 @@
 #include <actl/std/vector.hpp>
 
 template <bool Directed, class Edges>
-auto get_ends(const Edges& es)
+auto get_ends(Edges const& es)
 {
     using V = ac::vertex_t<ac::value_type_t<Edges>>;
     std::vector<std::pair<V, V>> res;
@@ -30,7 +30,7 @@ auto get_ends(const Edges& es)
 }
 
 template <class Edges>
-auto get_sources(const Edges& es)
+auto get_sources(Edges const& es)
 {
     std::vector<ac::vertex_t<ac::value_type_t<Edges>>> res;
     for (auto e : es)
@@ -39,7 +39,7 @@ auto get_sources(const Edges& es)
 }
 
 template <class Edges>
-auto get_targets(const Edges& es)
+auto get_targets(Edges const& es)
 {
     std::vector<ac::vertex_t<ac::value_type_t<Edges>>> res;
     for (auto e : es)

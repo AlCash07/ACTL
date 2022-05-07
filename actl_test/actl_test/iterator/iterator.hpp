@@ -91,13 +91,13 @@ void test_random_access_iterator(Iterator i, Iterator j)
     test_relational_operators_for_different_values(i, j);
     static_assert(std::is_same_v<difference_type_t<Iterator>, decltype(j - i)>);
     difference_type_t<Iterator> n = j - i;
-    const Iterator const_i = i;
+    Iterator const i_const = i;
     static_assert(std::is_same_v<Iterator&, decltype(i += n)>);
-    static_assert(std::is_same_v<Iterator, decltype(const_i + n)>);
-    static_assert(std::is_same_v<Iterator, decltype(n + const_i)>);
+    static_assert(std::is_same_v<Iterator, decltype(i_const + n)>);
+    static_assert(std::is_same_v<Iterator, decltype(n + i_const)>);
     static_assert(std::is_same_v<Iterator&, decltype(i -= n)>);
-    static_assert(std::is_same_v<Iterator, decltype(const_i - n)>);
-    static_assert(std::is_same_v<reference_t<Iterator>, decltype(const_i[n])>);
+    static_assert(std::is_same_v<Iterator, decltype(i_const - n)>);
+    static_assert(std::is_same_v<reference_t<Iterator>, decltype(i_const[n])>);
     Iterator init_i = i;
     CHECK((i += n) == j);
     i = init_i;

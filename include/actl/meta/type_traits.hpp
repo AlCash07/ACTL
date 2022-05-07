@@ -23,7 +23,7 @@ template <class... Ts>
 using void_t = typename make_void<Ts...>::type;
 
 template <bool B, class T>
-struct add_const_if : std::conditional<B, const T, T>
+struct add_const_if : std::conditional<B, T const, T>
 {};
 
 template <bool B, class T>

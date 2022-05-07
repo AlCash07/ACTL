@@ -25,7 +25,7 @@ public:
         data_[Size] = static_cast<char>(size);
     }
 
-    void set_start(const char* x)
+    void set_start(char const* x)
     {
         set_size(static_cast<size_t>(data_ + Size - x));
     }
@@ -37,7 +37,7 @@ public:
 
     explicit operator cspan<char>() const
     {
-        const size_t size = static_cast<size_t>(data_[Size]);
+        size_t const size = static_cast<size_t>(data_[Size]);
         return {std::end(data_) - 1 - size, size};
     }
 
@@ -46,7 +46,7 @@ private:
 };
 
 template <class D, class F, uint8_t Size>
-bool write_final(D& od, F& fmt, const int_string<Size>& x)
+bool write_final(D& od, F& fmt, int_string<Size> const& x)
 {
     return write_final(od, fmt, cspan<char>{x});
 }

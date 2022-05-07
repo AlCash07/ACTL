@@ -19,7 +19,7 @@ template <
     class K,
     enable_int_if_policy<Policy> = 0>
 constexpr auto orientation(
-    const Policy& policy, const point<T0, N>& p, const line<T1, N, K>& l)
+    Policy const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
 {
     return orientation(policy, p - l.begin, l.vector);
 }

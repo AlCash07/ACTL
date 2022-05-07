@@ -36,7 +36,7 @@ public:
         return get(this->vertices_, u);
     }
 
-    const T& operator[](vertex u) const
+    T const& operator[](vertex u) const
     {
         return get(this->vertices_, u);
     }

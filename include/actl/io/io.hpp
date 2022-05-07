@@ -35,7 +35,7 @@ struct device : device_base
    lvalue references, because I/O doesn't operate with rvalues. */
 
 template <class Device, class Format, class... Ts>
-bool write(Device&& od, Format&& fmt, const Ts&... args)
+bool write(Device&& od, Format&& fmt, Ts const&... args)
 {
     if constexpr (is_format_v<Format>)
         return (... && detail::write_impl(od, fmt, fmt, args));

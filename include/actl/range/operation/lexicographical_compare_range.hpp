@@ -19,7 +19,7 @@ struct lexicographical_compare_range_f
     static constexpr index inner_count = 1;
 
     template <class Cmp3WayOp, class T, class U>
-    static int evaluate(const Cmp3WayOp& op, const T& lhs, const U& rhs)
+    static int evaluate(Cmp3WayOp const& op, T const& lhs, U const& rhs)
     {
         // Can't use std::lexicographical_compare because it doesn't compare
         // 3-way.
@@ -29,7 +29,7 @@ struct lexicographical_compare_range_f
         auto rlast = std::end(rhs);
         for (; (lfirst != llast) && (rfirst != rlast); ++lfirst, ++rfirst)
         {
-            const int v = op(*lfirst, *rfirst);
+            int const v = op(*lfirst, *rfirst);
             if (v != 0)
                 return v;
         }

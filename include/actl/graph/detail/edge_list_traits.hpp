@@ -73,12 +73,12 @@ struct edge_vertices<Dir, V, two_vertices>
         return std::pair{get_id_key(u), get_id_key(v)};
     }
 
-    bool operator<(const edge_vertices& rhs) const
+    bool operator<(edge_vertices const& rhs) const
     {
         return key() < rhs.key();
     }
 
-    bool operator==(const edge_vertices& rhs) const
+    bool operator==(edge_vertices const& rhs) const
     {
         return u == rhs.u && v == rhs.v;
     }

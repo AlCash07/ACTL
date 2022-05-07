@@ -9,7 +9,7 @@
 #include "test.hpp"
 
 template <bool Result, class T, class U>
-void test_equal_sequence(const T& lhs, const U& rhs)
+void test_equal_sequence(T const& lhs, U const& rhs)
 {
     CHECK(Result == ac::equal_sequence(lhs, rhs));
     CHECK(Result == ac::equal_sequence(rhs, lhs));

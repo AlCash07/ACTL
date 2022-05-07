@@ -15,13 +15,13 @@ template <
     class T,
     class U,
     geometry::enable_int_if_swap<T, U> = 0>
-bool crosses(const Policy& policy, const T& lhs, const U& rhs)
+bool crosses(Policy const& policy, T const& lhs, U const& rhs)
 {
     return crosses(policy, rhs, lhs);
 }
 
 template <class T, class U>
-bool crosses(const T& lhs, const U& rhs)
+bool crosses(T const& lhs, U const& rhs)
 {
     return crosses(geometry_policy, rhs, lhs);
 }

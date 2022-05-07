@@ -37,7 +37,7 @@ public:
         return get((*this)[vertex_property{}], v);
     }
 
-    const T& operator[](vertex v) const
+    T const& operator[](vertex v) const
     {
         return get((*this)[vertex_property{}], v);
     }

@@ -69,7 +69,7 @@ struct vertex_printer
 };
 
 template <class Graph, class VertexOutIter>
-void inorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst)
+void inorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst)
 {
     auto state = make_default_vertex_map<char>(graph);
     depth_first_search{inorder_printer<VertexOutIter, decltype(state)>{
@@ -77,7 +77,7 @@ void inorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst)
 }
 
 template <class Graph, class VertexOutIter>
-void postorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst)
+void postorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst)
 {
     depth_first_search{
         vertex_printer<on_vertex_finish, VertexOutIter>{dst},
@@ -85,7 +85,7 @@ void postorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst)
 }
 
 template <class Graph, class VertexOutIter>
-void preorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst)
+void preorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst)
 {
     depth_first_search{
         vertex_printer<on_vertex_start, VertexOutIter>{dst},
@@ -94,7 +94,7 @@ void preorder(const Graph& graph, vertex_t<Graph> s, VertexOutIter dst)
 
 /// Outputs topological sort of the DAG in reverse order.
 template <class Graph, class VertexOutIter>
-void topological_sort(const Graph& graph, VertexOutIter dst)
+void topological_sort(Graph const& graph, VertexOutIter dst)
 {
     depth_first_search{
         vertex_printer<on_vertex_finish, VertexOutIter>{dst},

@@ -17,7 +17,7 @@ struct expression_base<expression<Ts...>, scalar_tag>
     {
         constexpr operator resolved_result_type_t<Ts...>() const
         {
-            return eval(static_cast<const expression<Ts...>&>(*this));
+            return eval(static_cast<expression<Ts...> const&>(*this));
         }
     };
 };
@@ -29,13 +29,13 @@ constexpr T eval(T x)
 }
 
 template <class Expr, size_t... Is>
-constexpr decltype(auto) eval_impl(const Expr& e, std::index_sequence<Is...>)
+constexpr decltype(auto) eval_impl(Expr const& e, std::index_sequence<Is...>)
 {
     return e.operation().evaluate(std::get<Is + 1>(e.args)...);
 }
 
 template <class Expr, enable_int_if<is_expression_v<Expr>> = 0>
-constexpr decltype(auto) eval(const Expr& e)
+constexpr decltype(auto) eval(Expr const& e)
 {
     using helper = expression_helper<Expr>;
     if constexpr (helper::is_resolved)

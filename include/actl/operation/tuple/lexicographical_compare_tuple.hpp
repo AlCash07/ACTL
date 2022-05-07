@@ -20,7 +20,7 @@ struct lexicographical_compare_tuple_f
     static constexpr index inner_count = -1;
 
     template <size_t I = 0, class Cmp3WayOps, class T, class U>
-    static int evaluate(const Cmp3WayOps& ops, const T& lhs, const U& rhs)
+    static int evaluate(Cmp3WayOps const& ops, T const& lhs, U const& rhs)
     {
         using std::get;
         int v = get<I>(ops)(get<I>(lhs), get<I>(rhs));

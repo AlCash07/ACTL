@@ -18,9 +18,9 @@ struct equal_tuple_f
 
     template <class EqualOps, class T, class U, size_t... Is>
     static bool eval(
-        const EqualOps& ops,
-        const T& lhs,
-        const U& rhs,
+        EqualOps const& ops,
+        T const& lhs,
+        U const& rhs,
         std::index_sequence<Is...>)
     {
         using std::get;
@@ -28,7 +28,7 @@ struct equal_tuple_f
     }
 
     template <class EqualOps, class T, class U>
-    static bool evaluate(const EqualOps& ops, const T& lhs, const U& rhs)
+    static bool evaluate(EqualOps const& ops, T const& lhs, U const& rhs)
     {
         return eval(ops, lhs, rhs, tuple_indices_t<T>{});
     }

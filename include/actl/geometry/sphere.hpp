@@ -23,12 +23,12 @@ public:
     constexpr sphere() = default;
 
     template <class T1 = T, class T2 = T>
-    explicit constexpr sphere(const point<T1, N>& center, const T2& radius)
+    explicit constexpr sphere(point<T1, N> const& center, T2 const& radius)
         : center{center}, radius{static_cast<T>(radius)}
     {}
 
     template <class T1>
-    explicit constexpr sphere(const sphere<T1, N>& rhs)
+    explicit constexpr sphere(sphere<T1, N> const& rhs)
         : sphere{rhs.center, rhs.radius}
     {}
 
@@ -44,7 +44,7 @@ private:
 };
 
 template <index N, class T0, class T1>
-sphere(const point<T0, N>&, const T1&) -> sphere<geometry::scalar_t<T0, T1>, N>;
+sphere(point<T0, N> const&, T1 const&) -> sphere<geometry::scalar_t<T0, T1>, N>;
 
 template <index N, class T>
 struct geometry_traits<sphere<T, N>>
@@ -52,7 +52,7 @@ struct geometry_traits<sphere<T, N>>
 {};
 
 template <class Policy, index N, class T>
-constexpr bool degenerate(const Policy& policy, const sphere<T, N>& s)
+constexpr bool degenerate(Policy const& policy, sphere<T, N> const& s)
 {
     return !less(policy, 0, s.radius);
 }
@@ -63,7 +63,7 @@ template <class T>
 using circle = sphere<T, 2>;
 
 template <class T0, class T1>
-constexpr auto make_circle(const point<T0>& center, const T1& radius)
+constexpr auto make_circle(point<T0> const& center, T1 const& radius)
 {
     return circle<geometry::scalar_t<T0, T1>>{center, radius};
 }
@@ -72,9 +72,9 @@ constexpr auto make_circle(const point<T0>& center, const T1& radius)
 template <class Policy>
 struct polar_angle_policy : virtual policy
 {
-    explicit polar_angle_policy(const Policy& x) : policy{x} {}
+    explicit polar_angle_policy(Policy const& x) : policy{x} {}
 
-    const Policy& policy;
+    Policy const& policy;
 };
 
 } // namespace ac

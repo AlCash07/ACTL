@@ -29,7 +29,7 @@ public:
     }
 
 private:
-    const Key offset_;
+    Key const offset_;
 };
 
 template <class Value = use_default, class Key>

@@ -18,7 +18,7 @@ namespace ac {
 /// C (2nd Edition), p. 270.
 template <class Policy, class T, class Function>
 auto extreme_vertex(
-    const Policy& policy, const convex_polygon<T>& poly, Function direction)
+    Policy const& policy, convex_polygon<T> const& poly, Function direction)
 {
     auto vertex_cmp = [&](auto i, auto j)
     {
@@ -58,7 +58,7 @@ auto extreme_vertex(
 }
 
 template <class T, class Function>
-auto extreme_vertex(const convex_polygon<T>& poly, Function direction)
+auto extreme_vertex(convex_polygon<T> const& poly, Function direction)
 {
     return extreme_vertex(geometry_policy, poly, direction);
 }

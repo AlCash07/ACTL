@@ -15,7 +15,7 @@ namespace ac::io {
 namespace detail {
 
 template <class D, class F, class T, size_t... Is>
-bool write_tuple(D& od, F& fmt, const T& x, std::index_sequence<Is...>)
+bool write_tuple(D& od, F& fmt, T const& x, std::index_sequence<Is...>)
 {
     using std::get;
     return write(od, fmt, get<Is>(x)...);
@@ -31,7 +31,7 @@ bool read_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>)
 } // namespace detail
 
 template <class Device, class Format, class T, enable_int_if<is_tuple_v<T>> = 0>
-bool write_final(Device& od, Format& fmt, const T& x)
+bool write_final(Device& od, Format& fmt, T const& x)
 {
     nested_scope_guard g{fmt};
     return detail::write_tuple(

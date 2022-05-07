@@ -55,7 +55,7 @@ public:
         return get((*this)[edge_property{}], e);
     }
 
-    const T& operator[](edge e) const
+    T const& operator[](edge e) const
     {
         return get((*this)[edge_property{}], e);
     }
@@ -83,7 +83,7 @@ protected:
         return outs(u).end();
     }
 
-    edge get_edge(vertex u, const typename traits::out_edge_data& oed) const
+    edge get_edge(vertex u, typename traits::out_edge_data const& oed) const
     {
         auto e = oed.second();
         vertex v;
@@ -190,7 +190,7 @@ public:
         return {this->vertices_};
     }
 
-    edge_map<const AVC, edge, const Ref> operator[](edge_property) const
+    edge_map<AVC const, edge, Ref const> operator[](edge_property) const
     {
         return {this->vertices_};
     }
@@ -200,7 +200,7 @@ public:
         return get((*this)[edge_property{}], e);
     }
 
-    const T& operator[](edge e) const
+    T const& operator[](edge e) const
     {
         return get((*this)[edge_property{}], e);
     }
@@ -234,7 +234,7 @@ protected:
         return edge{u, vertex{id_at(outs(u), oe).first()}, oe};
     }
 
-    edge get_edge(vertex u, const typename traits::in_edge_data& ied) const
+    edge get_edge(vertex u, typename traits::in_edge_data const& ied) const
     {
         return edge{vertex{ied.first()}, u, ied.second()};
     }
@@ -388,7 +388,7 @@ public:
         bool Unique = is_unique_range_v<VC>,
         class T = value_type_t<VC>,
         enable_int_if<Unique> = 0>
-    edge add_edge(const T& u, const T& v, Ts&&... args)
+    edge add_edge(T const& u, T const& v, Ts&&... args)
     {
         return add_edge(
             add_vertex(u), add_vertex(v), std::forward<Ts>(args)...);

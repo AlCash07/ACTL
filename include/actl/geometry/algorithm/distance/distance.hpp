@@ -15,13 +15,13 @@ template <
     class T,
     class U,
     geometry::enable_int_if_swap<T, U> = 0>
-auto distance(const Policy& policy, const T& lhs, const U& rhs)
+auto distance(Policy const& policy, T const& lhs, U const& rhs)
 {
     return distance(policy, rhs, lhs);
 }
 
 template <class T, class U>
-auto distance(const T& lhs, const U& rhs)
+auto distance(T const& lhs, U const& rhs)
 {
     return distance(geometry_policy, rhs, lhs);
 }

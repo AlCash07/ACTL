@@ -22,7 +22,7 @@ struct pair
 };
 
 template <class D, class F, class T>
-bool write_final(D& od, F& fmt, const pair<T>& x)
+bool write_final(D& od, F& fmt, pair<T> const& x)
 {
     return od.write('(') && write(od, fmt, x.x, x.y) && od.write(')');
 }

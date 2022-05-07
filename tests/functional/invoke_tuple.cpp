@@ -13,7 +13,7 @@ namespace {
 
 struct int_cref_op
 {
-    constexpr int operator()(const int& x) const
+    constexpr int operator()(int const& x) const
     {
         if (x < 0)
             throw;

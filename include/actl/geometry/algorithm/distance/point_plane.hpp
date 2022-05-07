@@ -14,7 +14,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 auto distance(
-    const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl)
+    Policy const& policy, point<T0, N> const& p, plane<T1, N> const& pl)
 {
     ACTL_ASSERT(!degenerate(pl));
     return ratio(policy, abs(pl(policy, p)), norm(policy, pl.normal));

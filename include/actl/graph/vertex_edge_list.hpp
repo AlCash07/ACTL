@@ -52,7 +52,7 @@ public:
         bool Unique = is_unique_range_v<VertexContainer>,
         class T = value_type_t<VertexContainer>,
         enable_int_if<Unique> = 0>
-    edge add_edge(const T& u, const T& v, Ts&&... args)
+    edge add_edge(T const& u, T const& v, Ts&&... args)
     {
         return add_edge(
             this->add_vertex(u),

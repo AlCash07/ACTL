@@ -13,7 +13,7 @@
 namespace ac {
 
 template <class T1, class T2>
-constexpr size_t hash_value(const std::pair<T1, T2>& x)
+constexpr size_t hash_value(std::pair<T1, T2> const& x)
 {
     return hash_value(x.first, x.second);
 }

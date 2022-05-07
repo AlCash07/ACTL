@@ -30,7 +30,7 @@ public:
         return u_;
     }
 
-    auto get(const G& g) const
+    auto get(G const& g) const
     {
         return std::tuple{u_, OEI{&g, u_, oe_}, g.out_edges(u_).end()};
     }
@@ -50,7 +50,7 @@ class depth_first_search : std::tuple<Components...>
     // Returns true immediately if terminator vertex was found.
     template <class Graph, class VertexPredicate>
     bool recurse(
-        const Graph& graph, vertex_t<Graph> u, VertexPredicate is_terminator)
+        Graph const& graph, vertex_t<Graph> u, VertexPredicate is_terminator)
     {
         invoke_all_matching(base(), on_vertex_discover{}, u);
         invoke_all_matching(base(), on_vertex_start{}, u);
@@ -85,7 +85,7 @@ public:
         class VertexPredicate = always_false,
         class V = vertex_t<Graph>>
     void visit(
-        const Graph& graph,
+        Graph const& graph,
         V u,
         Stack&& stack = {},
         VertexPredicate is_terminator = {})
@@ -141,7 +141,7 @@ public:
         class Stack = std::stack<dfs_context<Graph>>,
         class VertexPredicate = always_false>
     void operator()(
-        const Graph& graph,
+        Graph const& graph,
         vertex_t<Graph> s,
         Stack&& stack = {},
         VertexPredicate is_terminator = {})
@@ -158,7 +158,7 @@ public:
         enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> =
             0>
     void operator()(
-        const Graph& graph,
+        Graph const& graph,
         Stack&& stack = {},
         VertexPredicate is_terminator = {})
     {

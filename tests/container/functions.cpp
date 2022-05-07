@@ -19,7 +19,7 @@ static std::vector<int> xs2 = {5, 4, 1, 4};
 static std::vector<int> sorted_xs2 = {1, 4, 4, 5};
 static std::vector<int> unique_xs2 = {1, 4, 5};
 
-void compare_sorted(const std::vector<int>& expected, std::vector<int> actual)
+void compare_sorted(std::vector<int> const& expected, std::vector<int> actual)
 {
     sort(actual);
     CHECK(expected == actual);

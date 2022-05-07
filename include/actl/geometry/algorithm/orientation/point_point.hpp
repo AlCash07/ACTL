@@ -13,7 +13,7 @@ namespace ac {
 
 template <class Policy, class T0, class T1, enable_int_if_policy<Policy> = 0>
 constexpr orientation2d orientation(
-    const Policy& policy, const point<T0>& lhs, const point<T1>& rhs)
+    Policy const& policy, point<T0> const& lhs, point<T1> const& rhs)
 {
     return static_cast<orientation2d>(sgn(policy, area(policy, rhs, lhs)));
 }
@@ -25,10 +25,10 @@ template <
     class T2,
     enable_int_if_policy<Policy> = 0>
 constexpr orientation2d orientation(
-    const Policy& policy,
-    const point<T0>& lhs,
-    const point<T1>& rhs,
-    const point<T2>& origin)
+    Policy const& policy,
+    point<T0> const& lhs,
+    point<T1> const& rhs,
+    point<T2> const& origin)
 {
     return orientation(policy, lhs - origin, rhs - origin);
 }
@@ -40,7 +40,7 @@ template <
     class T1,
     enable_int_if_policy<Policy> = 0>
 enum orientation orientation(
-    const Policy& policy, const point<T0, N>& lhs, const point<T1, N>& rhs)
+    Policy const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs)
 {
     index i = 0;
     for (; i < N && equal(policy, lhs[i], 0); ++i)

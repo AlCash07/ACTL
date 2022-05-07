@@ -23,5 +23,5 @@ static_assert(ac::is_contiguous_range_v<std::vector<int>>);
 
 using CArray = int[2];
 static_assert(ac::is_range_v<CArray>);
-static_assert(ac::is_range_v<const CArray>);
+static_assert(ac::is_range_v<CArray const>);
 static_assert(ac::is_contiguous_range_v<CArray>);

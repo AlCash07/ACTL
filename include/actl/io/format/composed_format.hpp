@@ -38,7 +38,7 @@ template <class D, class FF, class First, class Second, class T>
 struct format_resolver<D, FF, composed_format<First, Second>, T>
 {
     static bool write(
-        D& od, FF& full_fmt, composed_format<First, Second>& fmt, const T& x)
+        D& od, FF& full_fmt, composed_format<First, Second>& fmt, T const& x)
     {
         return write_impl(
             od, full_fmt, fmt.second, apply_format_write(fmt.first, x));
@@ -55,7 +55,7 @@ struct format_resolver<D, FF, composed_format<First, Second>, T>
 } // namespace detail
 
 template <class First, class Second, class Manipulator>
-void manipulate(composed_format<First, Second>& fmt, const Manipulator& m)
+void manipulate(composed_format<First, Second>& fmt, Manipulator const& m)
 {
     manipulate(fmt.first, m);
     manipulate(fmt.second, m);

@@ -15,21 +15,21 @@ template <class T>
 class square_root
 {
 public:
-    constexpr explicit square_root(const T& value = {}) : sqr_{value} {}
+    constexpr explicit square_root(T const& value = {}) : sqr_{value} {}
 
     operator decltype(eval(sqrt(std::declval<T>())))() const
     {
         return eval(sqrt(sqr_));
     }
 
-    friend constexpr const T& perform(Sqr, const square_root& x)
+    friend constexpr T const& perform(Sqr, square_root const& x)
     {
         return x.sqr_;
     }
 
     template <class Op, enable_int_if<is_comparison_operation_v<Op>> = 0>
     friend constexpr auto perform(
-        Op op, const square_root& lhs, const square_root& rhs)
+        Op op, square_root const& lhs, square_root const& rhs)
     {
         return op(lhs.sqr_, rhs.sqr_);
     }
@@ -44,7 +44,7 @@ struct defer_sqrt
 };
 
 template <class T>
-auto perform(Sqrt, defer_sqrt, const T& x)
+auto perform(Sqrt, defer_sqrt, T const& x)
 {
     return square_root{x};
 }

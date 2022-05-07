@@ -17,12 +17,12 @@ struct conversion_sfinae<
     To,
     From>
 {
-    using from_iter = iterator_t<std::remove_reference_t<const From&>>;
+    using from_iter = iterator_t<std::remove_reference_t<From const&>>;
 
     static constexpr bool value =
         std::is_constructible_v<To, from_iter, from_iter>;
 
-    static constexpr To convert(const From& x)
+    static constexpr To convert(From const& x)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(To{std::begin(x), std::end(x)})
 };
 

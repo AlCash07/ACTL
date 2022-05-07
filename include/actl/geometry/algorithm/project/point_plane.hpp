@@ -13,7 +13,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 auto project(
-    const Policy& policy, const point<T0, N>& p, const plane<T1, N>& pl)
+    Policy const& policy, point<T0, N> const& p, plane<T1, N> const& pl)
 {
     auto t = ratio(policy, pl(policy, p), dot(policy, pl.normal));
     return p - product(policy, t, pl.normal);

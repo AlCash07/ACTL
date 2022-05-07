@@ -15,7 +15,7 @@ namespace ac {
 
 template <class Policy, index N, class T0, class T1>
 bool crosses(
-    const Policy& policy, const plane<T0, N>& pl, const sphere<T1, N>& s)
+    Policy const& policy, plane<T0, N> const& pl, sphere<T1, N> const& s)
 {
     auto dist = abs(pl(policy, s.center));
     return !less(

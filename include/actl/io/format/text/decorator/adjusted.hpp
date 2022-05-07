@@ -36,7 +36,7 @@ struct adjusted
 };
 
 template <class Format>
-constexpr std::pair<size_t, size_t> adjustment(const Format& fmt, size_t size)
+constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size)
 {
     if (fmt.width <= size)
         return {0, 0};
@@ -55,14 +55,14 @@ template <
     class Char,
     class T,
     enable_int_if<std::is_constructible_v<cspan<Char>, T>> = 0>
-auto encode(const adjusted<Char>& fmt, T&& x)
+auto encode(adjusted<Char> const& fmt, T&& x)
 {
     auto [l, r] = adjustment(fmt, cspan<Char>{x}.size());
     return batch{repeat{fmt.fill, l}, std::forward<T>(x), repeat{fmt.fill, r}};
 }
 
 template <class Char>
-auto encode(const adjusted<Char>& fmt, Char x)
+auto encode(adjusted<Char> const& fmt, Char x)
 {
     auto [l, r] = adjustment(fmt, 1);
     return batch{repeat{fmt.fill, l}, std::move(x), repeat{fmt.fill, r}};

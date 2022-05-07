@@ -20,7 +20,7 @@ template <
 bool write_final(Device& od, Format&, span<B, N> s)
 {
     return od.write(
-               {reinterpret_cast<const char_t<Device>*>(s.data()), s.size()}) ==
+               {reinterpret_cast<char_t<Device> const*>(s.data()), s.size()}) ==
            s.size();
 }
 

@@ -18,7 +18,7 @@ struct equal_range_f
     static constexpr index inner_count = 1;
 
     template <class EqualOp, class T, class U>
-    static bool evaluate(const EqualOp& op, const T& lhs, const U& rhs)
+    static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs)
     {
         return std::equal(
             std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);

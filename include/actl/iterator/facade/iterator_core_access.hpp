@@ -14,7 +14,7 @@ namespace ac {
 struct iterator_core_access
 {
     template <class Iter>
-    static constexpr reference_t<Iter> dereference(const Iter& iter)
+    static constexpr reference_t<Iter> dereference(Iter const& iter)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.dereference())
 
     template <class Iter>
@@ -26,7 +26,7 @@ struct iterator_core_access
         AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.decrement())
 
     template <class Iter1, class Iter2>
-    static constexpr bool equal(const Iter1& lhs, const Iter2& rhs)
+    static constexpr bool equal(Iter1 const& lhs, Iter2 const& rhs)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.equals(rhs))
 
     template <class Iter>
@@ -35,7 +35,7 @@ struct iterator_core_access
 
     template <class Iter1, class Iter2>
     static constexpr difference_type_t<Iter1> distance_to(
-        const Iter1& from, const Iter2& to)
+        Iter1 const& from, Iter2 const& to)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(from.distance_to(to))
 };
 

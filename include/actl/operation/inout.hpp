@@ -40,13 +40,13 @@ struct raw<inout<T>> : raw<T>
 {};
 
 template <class T>
-constexpr const T& remove_inout(const inout<T>& x)
+constexpr T const& remove_inout(inout<T> const& x)
 {
     return x.x;
 }
 
 template <class T>
-constexpr const T& remove_inout(const T& x)
+constexpr T const& remove_inout(T const& x)
 {
     return x;
 }

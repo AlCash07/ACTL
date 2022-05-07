@@ -16,8 +16,8 @@ namespace ac {
 template <class Policy, index N, class T0, class K, class T1, class OutIter>
 OutIter intersect(
     line_scalar_policy<Policy> lsp,
-    const line<T0, N, K>& l,
-    const sphere<T1, N>& s,
+    line<T0, N, K> const& l,
+    sphere<T1, N> const& s,
     OutIter dst)
 {
     auto& policy = lsp.policy;
@@ -28,7 +28,7 @@ OutIter intersect(
     if (delta_sgn < 0)
         return dst;
     auto projection = dot(policy, s.center - l.begin, l.vector);
-    auto output = [&](const auto& x)
+    auto output = [&](auto const& x)
     {
         if (detail::line_test(policy, l.kind(), x, vdot))
         {

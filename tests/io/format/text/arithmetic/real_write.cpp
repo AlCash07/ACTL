@@ -12,8 +12,8 @@ using namespace ac::io;
 
 TEST_CASE("write double")
 {
-    const auto inf = std::numeric_limits<double>::infinity();
-    const auto nan = std::numeric_limits<double>::quiet_NaN();
+    auto const inf = std::numeric_limits<double>::infinity();
+    auto const nan = std::numeric_limits<double>::quiet_NaN();
     text f;
     test_write("inf", f, inf);
     test_write("-inf", f, -inf);

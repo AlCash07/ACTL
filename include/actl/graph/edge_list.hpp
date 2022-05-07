@@ -40,7 +40,7 @@ public:
         return get((*this)[edge_property{}], e);
     }
 
-    const T& operator[](edge e) const
+    T const& operator[](edge e) const
     {
         return get((*this)[edge_property{}], e);
     }
@@ -156,7 +156,7 @@ public:
 
         using ec_id = container_id<typename base_t::edge_container>;
 
-        edge_iterator(const edge_list_impl& el, ec_id id) : el_{el}, id_{id} {}
+        edge_iterator(edge_list_impl const& el, ec_id id) : el_{el}, id_{id} {}
 
         E dereference() const
         {
@@ -170,12 +170,12 @@ public:
             ++id_;
         }
 
-        bool equals(const edge_iterator& rhs) const
+        bool equals(edge_iterator const& rhs) const
         {
             return id_ == rhs.id_;
         }
 
-        const edge_list_impl& el_;
+        edge_list_impl const& el_;
         ec_id id_;
     };
 

@@ -17,7 +17,7 @@ namespace detail {
 template <class T>
 struct sa_types
 {
-    using iterator = const T*;
+    using iterator = T const*;
     using size_type = size_t;
 };
 
@@ -50,7 +50,7 @@ public:
         return constant<array.size()>{};
     }
 
-    static constexpr const T* data() noexcept
+    static constexpr T const* data() noexcept
     {
         return array.data();
     }

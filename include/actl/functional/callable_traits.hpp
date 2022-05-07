@@ -106,12 +106,12 @@ struct callable_traits<Return (Class::*)(Params...) noexcept>
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const>
-    : detail::member_function_traits<Return(const Class&, Params...)>
+    : detail::member_function_traits<Return(Class const&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const noexcept>
-    : detail::member_function_traits<Return(const Class&, Params...) noexcept>
+    : detail::member_function_traits<Return(Class const&, Params...) noexcept>
 {};
 
 template <class Class, class Return, class... Params>
@@ -126,12 +126,12 @@ struct callable_traits<Return (Class::*)(Params...)& noexcept>
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const&>
-    : detail::member_function_traits<Return(const Class&, Params...)>
+    : detail::member_function_traits<Return(Class const&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const& noexcept>
-    : detail::member_function_traits<Return(const Class&, Params...) noexcept>
+    : detail::member_function_traits<Return(Class const&, Params...) noexcept>
 {};
 
 template <class Class, class Return, class... Params>
@@ -146,12 +146,12 @@ struct callable_traits<Return (Class::*)(Params...)&& noexcept>
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const&&>
-    : detail::member_function_traits<Return(const Class&&, Params...)>
+    : detail::member_function_traits<Return(Class const&&, Params...)>
 {};
 
 template <class Class, class Return, class... Params>
 struct callable_traits<Return (Class::*)(Params...) const&& noexcept>
-    : detail::member_function_traits<Return(const Class&&, Params...) noexcept>
+    : detail::member_function_traits<Return(Class const&&, Params...) noexcept>
 {};
 
 /* function object */

@@ -18,18 +18,18 @@ namespace ac {
 template <class Policy>
 struct general_position_policy
 {
-    explicit general_position_policy(const Policy& x) : policy{x} {}
+    explicit general_position_policy(Policy const& x) : policy{x} {}
 
-    const Policy& policy;
+    Policy const& policy;
 };
 
 namespace detail {
 
 template <class Policy, class T0, class K0, class T1, class K1, class T2>
 bool cross_test(
-    const Policy& policy,
-    const line<T0, 2, K0>& lhs,
-    const line<T1, 2, K1>& rhs,
+    Policy const& policy,
+    line<T0, 2, K0> const& lhs,
+    line<T1, 2, K1> const& rhs,
     T2 tarea,
     T2 larea,
     T2 rarea)
@@ -49,8 +49,8 @@ bool cross_test(
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
 OutIter intersect(
     line_scalar_policy<Policy> lsp,
-    const line<T0, 2, K0>& lhs,
-    const line<T1, 2, K1>& rhs,
+    line<T0, 2, K0> const& lhs,
+    line<T1, 2, K1> const& rhs,
     OutIter dst)
 {
     auto& policy = lsp.policy;
@@ -69,8 +69,8 @@ OutIter intersect(
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
 OutIter intersect(
     general_position_policy<Policy> gpp,
-    const line<T0, 2, K0>& lhs,
-    const line<T1, 2, K1>& rhs,
+    line<T0, 2, K0> const& lhs,
+    line<T1, 2, K1> const& rhs,
     OutIter dst)
 {
     return intersect(
@@ -82,9 +82,9 @@ OutIter intersect(
 
 template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
 OutIter intersect(
-    const Policy& policy,
-    const line<T0, 2, K0>& lhs,
-    const line<T1, 2, K1>& rhs,
+    Policy const& policy,
+    line<T0, 2, K0> const& lhs,
+    line<T1, 2, K1> const& rhs,
     OutIter dst)
 {
     auto tarea = area(policy, rhs.vector, lhs.vector);

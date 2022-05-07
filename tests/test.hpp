@@ -46,7 +46,7 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2>
 };
 
 template <class T>
-auto apply_policy(scalar::equal_f, const abs_rel_error<T>& policy)
+auto apply_policy(scalar::equal_f, abs_rel_error<T> const& policy)
 {
     return policy;
 }
@@ -62,19 +62,19 @@ void check_sets(std::vector<T> expected, std::vector<T> actual)
 }
 
 template <class T, class U, class E>
-void check_near(const T& expected, const U& actual, E eps)
+void check_near(T const& expected, U const& actual, E eps)
 {
     CHECK((ac::equal | ac::abs_rel_error<E>{eps})(expected, actual));
 }
 
 template <class T, class U>
-void check_equal(const T& expected, const U& actual)
+void check_equal(T const& expected, U const& actual)
 {
     CHECK(ac::equal(expected, actual));
 }
 
 template <class T, class U>
-void check_not_equal(const T& not_expected, const U& actual)
+void check_not_equal(T const& not_expected, U const& actual)
 {
     CHECK_FALSE(ac::equal(not_expected, actual));
 }

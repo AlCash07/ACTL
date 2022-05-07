@@ -45,7 +45,7 @@ private:
 };
 
 template <class D, class F>
-bool write_final(D& od, F& fmt, const float_string& x)
+bool write_final(D& od, F& fmt, float_string const& x)
 {
     return write_final(od, fmt, cspan<char>{x});
 }

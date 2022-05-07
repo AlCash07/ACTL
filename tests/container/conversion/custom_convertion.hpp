@@ -35,12 +35,12 @@ struct conversion<converted<To>, converted<From>>
 };
 
 template <class To, class From>
-struct conversion<converted<To>, const converted<From>&>
+struct conversion<converted<To>, converted<From> const&>
     : conversion<converted<To>, converted<From>>
 {};
 
 static_assert(!std::is_constructible_v<converted<int>, converted<char>>);
 static_assert(can_convert_to_v<converted<int>, converted<char>>);
-static_assert(can_convert_to_v<converted<int>, const converted<char>&>);
+static_assert(can_convert_to_v<converted<int>, converted<char> const&>);
 
 } // namespace ac

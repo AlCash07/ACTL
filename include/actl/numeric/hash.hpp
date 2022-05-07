@@ -22,7 +22,7 @@ struct randomized_hash
     static_assert(
         sizeof(size_t) <= sizeof(uint64_t), "TODO: remove this restriction");
 
-    static const size_t seed;
+    static size_t const seed;
 
     static size_t compute(size_t x)
     {
@@ -30,11 +30,11 @@ struct randomized_hash
     }
 };
 
-inline const size_t randomized_hash::seed = static_cast<size_t>(
+inline size_t const randomized_hash::seed = static_cast<size_t>(
     std::chrono::steady_clock::now().time_since_epoch().count());
 
 template <class T, enable_int_if<std::is_arithmetic_v<T>> = 0>
-constexpr size_t hash_value(const T& x)
+constexpr size_t hash_value(T const& x)
 {
     static_assert(sizeof(T) <= sizeof(size_t), "TODO: remove this restriction");
     size_t t{};
@@ -58,13 +58,13 @@ constexpr size_t hash_value(T* x)
 }
 
 template <class T>
-constexpr void hash_combine(size_t& seed, const T& x)
+constexpr void hash_combine(size_t& seed, T const& x)
 {
     seed ^= (seed << 6) + (seed >> 2) + 0x9e3779b9 + hash_value(x);
 }
 
 template <class T, class... Ts, enable_int_if<0 < sizeof...(Ts)> = 0>
-constexpr size_t hash_value(const T& x, const Ts&... xs)
+constexpr size_t hash_value(T const& x, Ts const&... xs)
 {
     size_t res = hash_value(x);
     (..., hash_combine(res, xs));
@@ -72,10 +72,10 @@ constexpr size_t hash_value(const T& x, const Ts&... xs)
 }
 
 template <class R, enable_int_if<is_range_v<R>> = 0>
-constexpr size_t hash_value(const R& x)
+constexpr size_t hash_value(R const& x)
 {
     size_t res{};
-    for (const auto& value : x)
+    for (auto const& value : x)
         hash_combine(res, value);
     return res;
 }
@@ -83,7 +83,7 @@ constexpr size_t hash_value(const R& x)
 template <class T = void>
 struct hash_function
 {
-    constexpr size_t operator()(const T& x) const
+    constexpr size_t operator()(T const& x) const
     {
         return hash_value(x);
     }
@@ -95,7 +95,7 @@ struct hash_function<void>
     using transparent_key_equal = std::equal_to<>;
 
     template <class T>
-    constexpr size_t operator()(const T& x) const
+    constexpr size_t operator()(T const& x) const
     {
         return hash_value(x);
     }

@@ -15,7 +15,7 @@ struct int_iterator_types
 {
     using iterator_category = Category;
     using value_type = int;
-    using reference = const int&;
+    using reference = int const&;
     using difference_type = int;
 };
 
@@ -32,7 +32,7 @@ public:
 private:
     friend struct ac::iterator_core_access;
 
-    constexpr const int& dereference() const noexcept
+    constexpr int const& dereference() const noexcept
     {
         return value_;
     }
@@ -52,12 +52,12 @@ private:
         value_ += n;
     }
 
-    constexpr bool equals(const int_iterator& rhs) const noexcept
+    constexpr bool equals(int_iterator const& rhs) const noexcept
     {
         return value_ == rhs.value_;
     }
 
-    constexpr int distance_to(const int_iterator& rhs) const noexcept
+    constexpr int distance_to(int_iterator const& rhs) const noexcept
     {
         return rhs.value_ - value_;
     }

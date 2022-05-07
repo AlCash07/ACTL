@@ -27,7 +27,7 @@ template <class Device, class P, size_t N>
 size_t read_till(Device& id, till<span<char, N>, P> x)
 {
     size_t i = 0;
-    const size_t size = x.value.size();
+    size_t const size = x.value.size();
     if constexpr (has_input_buffer<Device>::value)
     {
         while (true)

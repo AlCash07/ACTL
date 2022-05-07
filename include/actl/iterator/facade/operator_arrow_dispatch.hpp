@@ -20,7 +20,7 @@ struct operator_arrow_dispatch
 {
     struct proxy
     {
-        explicit proxy(const Ref& ref) noexcept(noexcept(Ref{ref})) : ref_{ref}
+        explicit proxy(Ref const& ref) noexcept(noexcept(Ref{ref})) : ref_{ref}
         {}
 
         Ref* operator->() noexcept
@@ -33,7 +33,7 @@ struct operator_arrow_dispatch
 
     using type = proxy;
 
-    static type apply(const Ref& x) AC_DEDUCE_NOEXCEPT_AND_RETURN(type{x})
+    static type apply(Ref const& x) AC_DEDUCE_NOEXCEPT_AND_RETURN(type{x})
 };
 
 template <class T>
