@@ -54,7 +54,7 @@ struct scalar_operation : operation<Op>
                        is_subcategory_of_v<category_t<Ts>, arithmetic_tag>))
         {
             using T = strict_common_type_t<decltype(eval(xs))...>;
-            if constexpr (!is_integral_constant_v<T>)
+            if constexpr (!is_constant_v<T>)
                 return this->derived().eval_scalar(convert<T>(eval(xs))...);
         }
         else

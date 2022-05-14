@@ -1,4 +1,4 @@
-// User-defined literal _c that creates std::integral_constant values.
+// User-defined literal _c that creates ac::constant values.
 // Reference:
 // https://blog.mattbierner.com/stupid-template-tricks-stdintegral_constant-user-defined-literal/
 //
@@ -85,13 +85,13 @@ template <
     bool Signed = X <= std::numeric_limits<std::make_signed_t<U>>::max()>
 struct constant_impl
 {
-    using type = std::integral_constant<U, X>;
+    using type = constant<X>;
 };
 
 template <class U, U X>
 struct constant_impl<U, X, true>
 {
-    using type = std::integral_constant<std::make_signed_t<U>, X>;
+    using type = constant<std::make_signed_t<U>{X}>;
 };
 
 template <class U, char... Cs>
@@ -112,8 +112,7 @@ struct constant_from_str
         return x;
     }
 
-    using unsigned_type =
-        std::integral_constant<U, fold(U{0}, typename number::digits{})>;
+    using unsigned_type = constant<fold(U{0}, typename number::digits{})>;
 
     using type = typename constant_impl<U, unsigned_type::value>::type;
 };

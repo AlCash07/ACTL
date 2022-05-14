@@ -4,14 +4,14 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/container/conversion/to_integral_constant.hpp>
+#include <actl/container/conversion/to_constant.hpp>
 #include <actl_test/base/equal_same_type.hpp>
 #include "test.hpp"
 
 TEST_CASE("integral_constant conversion")
 {
-    using int_2_t = std::integral_constant<int, 2>;
-    using ll_2_t = std::integral_constant<long long, 2>;
+    using int_2_t = ac::constant<2>;
+    using ll_2_t = ac::constant<static_cast<long long>(2)>;
 
     static_assert(ac::can_convert_to_v<int, ll_2_t>);
     static_assert(ac::equal_same_type(2, ac::convert_to<int>(ll_2_t{})));
@@ -23,6 +23,5 @@ TEST_CASE("integral_constant conversion")
     static_assert(ac::can_convert_to_v<int_2_t, ll_2_t>);
     static_assert(
         ac::equal_same_type(int_2_t{}, ac::convert_to<int_2_t>(ll_2_t{})));
-    static_assert(
-        !ac::can_convert_to_v<int_2_t, std::integral_constant<int, 3>>);
+    static_assert(!ac::can_convert_to_v<int_2_t, ac::constant<3>>);
 }

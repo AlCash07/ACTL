@@ -31,9 +31,9 @@ struct strict_common_type<T, U>
 {
     static auto f()
     {
-        if constexpr (is_integral_constant_v<U>)
+        if constexpr (is_constant_v<U>)
             return T{};
-        else if constexpr (is_integral_constant_v<T>)
+        else if constexpr (is_constant_v<T>)
             return U{};
         else
         {

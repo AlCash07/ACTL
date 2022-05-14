@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/meta/constant.hpp>
 #include <cstddef>
-#include <type_traits>
 
 namespace ac {
 
@@ -15,6 +15,6 @@ namespace ac {
 using index = std::ptrdiff_t;
 
 template <index N>
-using index_constant = std::integral_constant<index, N>;
+using index_constant = constant<N>;
 
 } // namespace ac

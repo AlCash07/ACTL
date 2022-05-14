@@ -12,7 +12,14 @@
 namespace ac {
 
 template <auto X>
-using constant = std::integral_constant<decltype(X), X>;
+struct constant : std::integral_constant<decltype(X), X>
+{};
+
+template <bool B>
+using bool_constant = constant<B>;
+
+template <bool B>
+inline constexpr auto bool_c = bool_constant<B>{};
 
 template <int N>
 using int_constant = constant<N>;
@@ -27,14 +34,14 @@ template <size_t N>
 inline constexpr auto size_c = size_constant<N>{};
 
 template <class T>
-struct is_integral_constant : std::false_type
+struct is_constant : std::false_type
 {};
 
-template <class T, T N>
-struct is_integral_constant<constant<N>> : std::true_type
+template <auto X>
+struct is_constant<constant<X>> : std::true_type
 {};
 
 template <class T>
-inline constexpr bool is_integral_constant_v = is_integral_constant<T>::value;
+inline constexpr bool is_constant_v = is_constant<T>::value;
 
 } // namespace ac

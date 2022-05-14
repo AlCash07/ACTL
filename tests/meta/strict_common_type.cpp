@@ -10,8 +10,8 @@
 static_assert(std::is_same_v<int, ac::strict_common_type_t<int>>);
 static_assert(std::is_same_v<int, ac::strict_common_type_t<int, int, int>>);
 
-using Zero = std::integral_constant<int, 0>;
-using One = std::integral_constant<int, 1>;
+using Zero = ac::constant<0>;
+using One = ac::constant<1>;
 static_assert(std::is_same_v<Zero, ac::strict_common_type_t<Zero>>);
 static_assert(std::is_same_v<Zero, ac::strict_common_type_t<Zero, One>>);
 static_assert(std::is_same_v<One, ac::strict_common_type_t<One, Zero, Zero>>);
