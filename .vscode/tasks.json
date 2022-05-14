@@ -17,13 +17,13 @@
         {
             "label": "run doxygen",
             "type": "shell",
-            "command": "./scripts/doc/run_doxygen.sh",
+            "command": "./scripts/doc/doxygen.sh",
             "problemMatcher": [],
         },
         {
             "label": "generate documentation",
             "type": "shell",
-            "command": "./scripts/doc/run_sphinx.sh",
+            "command": "./scripts/doc/sphinx.sh",
             "dependsOn": "run doxygen",
             "problemMatcher": [],
         },

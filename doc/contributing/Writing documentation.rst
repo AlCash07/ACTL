@@ -36,7 +36,7 @@ The goal is to have self-documenting code whenever possible:
 Treat every comment as a failure to express yourself in code.
 Write a comment only when it provides useful information that can't be written in the code itself.
 
-Doxygen can be run using the `scripts/doc/run_doxygen.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/run_doxygen.sh>`_ script
+Doxygen can be run using the `scripts/doc/doxygen.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/doxygen.sh>`_ script
 or ``run doxygen`` VS Code task.
 
 Doxygen configuration file can be found `here <https://github.com/AlCash07/ACTL/blob/master/doc/Doxyfile.in>`_.
@@ -65,7 +65,7 @@ Existing sources can be used as a reference, other useful links for writing them
 - `Breathe directives <https://breathe.readthedocs.io/en/latest/directives.html>`_.
   Breathe is an extension for Sphinx that allows to use Doxygen xml output.
 
-Sphinx can be run using the `scripts/doc/run_sphinx.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/run_sphinx.sh>`_ script
+Sphinx can be run using the `scripts/doc/sphinx.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/sphinx.sh>`_ script
 or ``generate documentation`` VS Code task (together with Doxygen),
 and its output can be examined by opening *build/doc/sphinx/index.html*
 
