@@ -3,8 +3,8 @@ invoke_tuple
 
 Utilities for tuples of callables.
 
-Synopsis
---------
+Reference
+---------
 
 .. doxygenfile:: functional/invoke_tuple.hpp
 

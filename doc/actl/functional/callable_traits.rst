@@ -1,7 +1,8 @@
 callable_traits
 ================================
 
-:struct:`ac::callable_traits` provide information about a callable, such as return and parameter types.
+:struct:`ac::callable_traits` provides information about a callable,
+such as return and parameter types.
 The following callables are supported:
 
 * free functions;
@@ -10,11 +11,12 @@ The following callables are supported:
 * function objects with a single function call operator;
 * references and rvalue references to all of the above.
 
-This is a lightweight analog of `Boost.CallableTraits <https://www.boost.org/doc/libs/1_78_0/libs/callable_traits/doc/html/index.html>`_
+This is a lightweight analog of `Boost.CallableTraits
+<https://www.boost.org/doc/libs/1_78_0/libs/callable_traits/doc/html/index.html>`_
 with limited functionality.
 
-Outline
--------
+Reference
+---------
 
 The most convenient way to use the traits is through the following interface:
 

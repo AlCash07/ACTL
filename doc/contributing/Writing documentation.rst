@@ -61,7 +61,7 @@ Existing sources can be used as a reference, other useful links for writing them
 
 - `reStructuredText quick reference <https://docutils.sourceforge.io/docs/user/rst/quickref.html>`_
 - `Sphinx directives <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html>`_
-- `Sphinx C++ support <https://www.sphinx-doc.org/en/1.5.1/domains.html#id2>`_
+- `Sphinx C++ support <https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cpp-domain>`_
 - `Breathe directives <https://breathe.readthedocs.io/en/latest/directives.html>`_.
   Breathe is an extension for Sphinx that allows to use Doxygen xml output.
 
