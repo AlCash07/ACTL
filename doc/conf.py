@@ -14,6 +14,10 @@ extensions.append("sphinxjp.themes.basicstrap")
 html_theme = "basicstrap"
 html_copy_source = False
 
+extensions.append("sphinx.ext.autosectionlabel")
+# make sure all the targets are unique
+autosectionlabel_prefix_document = True
+
 extensions.append("sphinx.ext.extlinks")
 extlinks = {
     "source": ("https://github.com/AlCash07/ACTL/tree/master/include/actl/%s.hpp", "Source code"),

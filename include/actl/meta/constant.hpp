@@ -11,6 +11,15 @@
 
 namespace ac {
 
+/// ac::constant is an analog of `std::integral_constant` that provides a member
+/// constant value equal to @p X. The difference is:
+/// - Value type doesn't have to be specified explicitly. Instead of
+/// `std::integral_constant<color, color::yellow>` one can write
+/// `ac::constant<color::yellow>` to avoid repretition.
+/// - As a result, compilation errors are shorter and easier to read.
+/// - TODO:
+/// - All constexpr operations applied to ac::constant also produce a constant.
+/// For example, `-ac::constant<1>{}` results in `ac::constant<-1>{}`.
 template <auto X>
 struct constant : std::integral_constant<decltype(X), X>
 {};
@@ -33,6 +42,8 @@ using size_constant = constant<N>;
 template <size_t N>
 inline constexpr auto size_c = size_constant<N>{};
 
+/// Provides a member constant bool value indicating
+/// whether @p T is a specialization of ac::constant.
 template <class T>
 struct is_constant : std::false_type
 {};
