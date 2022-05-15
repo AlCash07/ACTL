@@ -1,7 +1,3 @@
-// User-defined literal _c that creates ac::constant values.
-// Reference:
-// https://blog.mattbierner.com/stupid-template-tricks-stdintegral_constant-user-defined-literal/
-//
 // Copyright 2021 Oleksandr Bacherikov.
 //
 // Distributed under the Boost Software License, Version 1.0.
@@ -79,72 +75,61 @@ template <char... Cs>
 struct to_number<'0', 'B', Cs...> : base_and_digits<2, Cs...>
 {};
 
-template <
-    class U,
-    U X,
-    bool Signed = X <= std::numeric_limits<std::make_signed_t<U>>::max()>
-struct constant_impl
+template <class T, char... Cs>
+struct str_to_constant
 {
-    using type = constant<X>;
-};
-
-template <class U, U X>
-struct constant_impl<U, X, true>
-{
-    using type = constant<std::make_signed_t<U>{X}>;
-};
-
-template <class U, char... Cs>
-struct constant_from_str
-{
+    using U = std::make_unsigned_t<T>;
     using number = to_number<Cs...>;
 
-    template <unsigned D, unsigned... Ds>
-    static constexpr U fold(U x, std::integer_sequence<unsigned, D, Ds...>)
+    template <U X, unsigned D, unsigned... Ds>
+    static constexpr U fold(std::integer_sequence<unsigned, D, Ds...>)
     {
         static_assert(0 <= D && D < number::base);
-        return fold(
-            D + number::base * x, std::integer_sequence<unsigned, Ds...>{});
+        static_assert(X <= (std::numeric_limits<U>::max() - D) / number::base);
+        return fold<D + number::base * X>(
+            std::integer_sequence<unsigned, Ds...>{});
     }
 
-    static constexpr U fold(U x, std::integer_sequence<unsigned>)
+    template <U X>
+    static constexpr U fold(std::integer_sequence<unsigned>)
     {
-        return x;
+        return X;
     }
 
-    using unsigned_type = constant<fold(U{0}, typename number::digits{})>;
-
-    using type = typename constant_impl<U, unsigned_type::value>::type;
+    static constexpr auto value =
+        constant<T{fold<0>(typename number::digits{})}>{};
 };
 
 } // namespace detail
 
 inline namespace constant_literals {
 
-template <char... Cs>
+/// Literal that produces ac::constant of type `int`.
+template <char... Chars>
 constexpr auto operator""_c()
 {
-    return typename detail::constant_from_str<unsigned, Cs...>::type{};
+    return detail::str_to_constant<int, Chars...>::value;
 }
 
-template <char... Cs>
-constexpr auto operator""_uc()
+/// Literal that produces ac::constant of type `unsigned`.
+template <char... Chars>
+constexpr auto operator""_cu()
 {
-    return typename detail::constant_from_str<unsigned, Cs...>::unsigned_type{};
+    return detail::str_to_constant<unsigned, Chars...>::value;
 }
 
-template <char... Cs>
+/// Literal that produces ac::constant of type `long long`.
+template <char... Chars>
 constexpr auto operator""_cll()
 {
-    return
-        typename detail::constant_from_str<unsigned long long, Cs...>::type{};
+    return detail::str_to_constant<long long, Chars...>::value;
 }
 
-template <char... Cs>
-constexpr auto operator""_ucll()
+/// Literal that produces ac::constant of type `unsigned long long`.
+template <char... Chars>
+constexpr auto operator""_cull()
 {
-    return typename detail::constant_from_str<unsigned long long, Cs...>::
-        unsigned_type{};
+    return detail::str_to_constant<unsigned long long, Chars...>::value;
 }
 
 } // namespace constant_literals
