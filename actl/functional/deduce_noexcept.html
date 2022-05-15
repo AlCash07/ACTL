@@ -76,8 +76,7 @@
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
 <li><a class="reference internal" href="#">deduce_noexcept</a><ul>
-<li><a class="reference internal" href="#outline">Outline</a></li>
-<li><a class="reference internal" href="#detailed-outline">Detailed outline</a></li>
+<li><a class="reference internal" href="#reference">Reference</a></li>
 <li><a class="reference internal" href="#design">Design</a></li>
 </ul>
 </li>
@@ -127,8 +126,7 @@
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">deduce_noexcept</a><ul>
-<li><a class="reference internal" href="#outline">Outline</a></li>
-<li><a class="reference internal" href="#detailed-outline">Detailed outline</a></li>
+<li><a class="reference internal" href="#reference">Reference</a></li>
 <li><a class="reference internal" href="#design">Design</a></li>
 </ul>
 </li>
@@ -175,19 +173,14 @@
 <h1>deduce_noexcept<a class="headerlink" href="#deduce-noexcept" title="Permalink to this headline">¶</a></h1>
 <p>C++ has automatic return type deduction since C++11.
 However, in C++20 there’s still no support for automatic noexcept specification.
-The following utilities make is easier to write noexcept-correct code until we get <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">auto</span></span><span class="p"><span class="pre">)</span></span></code> in the language.</p>
+The following utilities make is easier to write noexcept-correct code
+until we get <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">auto</span></span><span class="p"><span class="pre">)</span></span></code> in the language.</p>
 <p>One caveat worth noting when using these utilities is that operator <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">{})</span></span></code>
 checks not only that the constructor is non-throwing, but also the destructor.
 Unfortunately, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/is_constructible">std::is_nothrow_constructible</a>
 doesn’t help either (see Notes).</p>
-<section id="outline">
-<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
-<p>#define <a class="reference internal" href="#c.AC_DEDUCE_NOEXCEPT_AND_RETURN" title="AC_DEDUCE_NOEXCEPT_AND_RETURN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">AC_DEDUCE_NOEXCEPT_AND_RETURN</span></code></a></p>
-<p>#define <a class="reference internal" href="#c.AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN" title="AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN</span></code></a></p>
-<p>#define <a class="reference internal" href="#c.AC_DEDUCE_NOEXCEPT_AND_INITIALIZE" title="AC_DEDUCE_NOEXCEPT_AND_INITIALIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">AC_DEDUCE_NOEXCEPT_AND_INITIALIZE</span></code></a></p>
-</section>
-<section id="detailed-outline">
-<h2>Detailed outline<a class="headerlink" href="#detailed-outline" title="Permalink to this headline">¶</a></h2>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
 <dl class="cpp macro">

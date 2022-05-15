@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>constant_literals &mdash; ACTL  documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  false
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="ACTL  documentation" href="../../index.html" />
+    <link rel="up" title="meta" href="../meta.html" />
+    <link rel="next" title="Running tests" href="../../contributing/Running%20tests.html" />
+    <link rel="prev" title="meta" href="../meta.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">ACTL  documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">constant_literals</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="../meta.html" title="meta" accesskey="P">previous </a></li>
+              <li><a href="../../contributing/Running%20tests.html" title="Running tests" accesskey="N">next </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../meta.html" accesskey="U">meta</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">constant_literals</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../meta.html"
+                          title="previous chapter">meta</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../contributing/Running%20tests.html"
+                          title="next chapter">Running tests</a></p>
+  </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="constant-literals">
+<h1>constant_literals<a class="headerlink" href="#constant-literals" title="Permalink to this headline">¶</a></h1>
+<p>constant_literals provide the most convenient way possible in the current C++
+to create objects of <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">ac</span></span><span class="o"><span class="pre">::</span></span><span class="n"><span class="pre">constant</span></span></code>, for example, <code class="code highlight cpp docutils literal notranslate"><span class="mi"><span class="pre">42</span></span><span class="n"><span class="pre">_c</span></span></code>.</p>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<p>Similarly to the standard namespaces with literals, <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="nn"><span class="pre">constant_literals</span></span></code>
+is an inline namespace within <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="nn"><span class="pre">ac</span></span></code>.
+Access to its content can be gained with <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="nn"><span class="pre">ac</span></span><span class="o"><span class="pre">::</span></span><span class="nn"><span class="pre">constant_literals</span></span></code>.</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N2ac17constant_literalsE">
+<span id="_CPPv3N2ac17constant_literalsE"></span><span id="_CPPv2N2ac17constant_literalsE"></span><span id="ac::constant_literals"></span><span class="target" id="namespaceac_1_1constant__literals"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/invoke_tuple.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">constant_literals</span></span></span><a class="headerlink" href="#_CPPv4N2ac17constant_literalsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_DpcEN2ac17constant_literalsli2_cEDav">
+<span id="_CPPv3I_DpcEN2ac17constant_literalsli2_cEv"></span><span id="_CPPv2I_DpcEN2ac17constant_literalsli2_cEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">char</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Chars</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1_1constant__literals_1a0b8eaade2e7a78ca635ffdafa7fa98fe"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="n"><span class="pre">_c</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_DpcEN2ac17constant_literalsli2_cEDav" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Literal that produces <a class="reference internal" href="constant.html#structac_1_1constant"><span class="std std-ref">ac::constant</span></a> of type <code class="docutils literal notranslate"><span class="pre">int</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_DpcEN2ac17constant_literalsli3_cuEDav">
+<span id="_CPPv3I_DpcEN2ac17constant_literalsli3_cuEv"></span><span id="_CPPv2I_DpcEN2ac17constant_literalsli3_cuEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">char</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Chars</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1_1constant__literals_1ad8a23a61ef2e6960fab522c42cad2b7e"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="n"><span class="pre">_cu</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_DpcEN2ac17constant_literalsli3_cuEDav" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Literal that produces <a class="reference internal" href="constant.html#structac_1_1constant"><span class="std std-ref">ac::constant</span></a> of type <code class="docutils literal notranslate"><span class="pre">unsigned</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_DpcEN2ac17constant_literalsli4_cllEDav">
+<span id="_CPPv3I_DpcEN2ac17constant_literalsli4_cllEv"></span><span id="_CPPv2I_DpcEN2ac17constant_literalsli4_cllEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">char</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Chars</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1_1constant__literals_1a282f4315014fd21d92c98c3fbb88c5a8"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="n"><span class="pre">_cll</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_DpcEN2ac17constant_literalsli4_cllEDav" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Literal that produces <a class="reference internal" href="constant.html#structac_1_1constant"><span class="std std-ref">ac::constant</span></a> of type <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav">
+<span id="_CPPv3I_DpcEN2ac17constant_literalsli5_cullEv"></span><span id="_CPPv2I_DpcEN2ac17constant_literalsli5_cullEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">char</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Chars</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1_1constant__literals_1a714d20fa412792a98aae6ad2d14b9bed"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="n"><span class="pre">_cull</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Literal that produces <a class="reference internal" href="constant.html#structac_1_1constant"><span class="std std-ref">ac::constant</span></a> of type <code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">long</span></code>. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/constant_literals.hpp">Source code</a></p>
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/constant_literals.cpp">Tests</a></p>
+</section>
+<section id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>See the following
+<a class="reference external" href="https://blog.mattbierner.com/stupid-template-tricks-stdintegral_constant-user-defined-literal/">article</a>
+for the approach explanation, in particular why it has to be so complicated.</p>
+</section>
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">ACTL  documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../meta.html" title="meta" >previous</a></li>
+        <li><a href="../../contributing/Running%20tests.html" title="Running tests" >next</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../meta.html" >meta</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2022, Oleksandr Bacherikov.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>
