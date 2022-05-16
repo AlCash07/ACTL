@@ -166,40 +166,45 @@
 <h1>Writing documentation<a class="headerlink" href="#writing-documentation" title="Permalink to this headline">¶</a></h1>
 <p>One of the biggest problems of C++ is a lack of good and easy to use tools for writing documentation.
 Here we describe the documentation tools chosen as the best fit for ACTL at this time.
-They are based on the article <a class="reference external" href="https://devblogs.microsoft.com/cppblog/clear-functional-c-documentation-with-sphinx-breathe-doxygen-cmake/">Clear, Functional C++ Documentation with Sphinx + Breathe + Doxygen + CMake</a> which you can read for more details.
-The main difference is that shell scripts are used insted of CMake commands for simplicity, but this may be revisited to make scripts portable.</p>
-<p>All the requirements can be installed using the <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/setup.sh">scripts/doc/setup.sh</a> script.</p>
+They are based on the article <a class="reference external" href="https://devblogs.microsoft.com/cppblog/clear-functional-c-documentation-with-sphinx-breathe-doxygen-cmake/">Clear, Functional C++ Documentation with Sphinx + Breathe + Doxygen + CMake</a>
+which you can read for more details.
+The main difference is that shell scripts are used insted of CMake commands for simplicity,
+but this may be revisited to make scripts portable.</p>
+<p>All the requirements can be installed using the
+<a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/setup.sh">scripts/doc/setup.sh</a> script.</p>
 <section id="doxygen">
 <h2>Doxygen<a class="headerlink" href="#doxygen" title="Permalink to this headline">¶</a></h2>
 <p>The most complicated task, the C++ code parsing, is done by Doxygen.
-Documentation comments that follow the <a class="reference external" href="https://www.doxygen.nl/manual/docblocks.html">Doxygen manual</a> are automatically extracted at this step,
+Documentation comments that follow the <a class="reference external" href="https://www.doxygen.nl/manual/docblocks.html">Doxygen manual</a>
+are automatically extracted at this step,
 but they don’t automatically appear in any web pages.
 The following style of comments is preferred in ACTL:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">/// Description.</span>
 </pre></div>
 </div>
 <p>Only comments that explain what classes and functions do should be written in Doxygen.
-For other things such as examples and design rationale, and also how to use Doxygen output, see <a class="reference internal" href="#sphinx">Sphinx</a> section.</p>
+For other things such as examples and design rationale, and also how to use the Doxygen output, see <a class="reference internal" href="#sphinx">Sphinx</a> section.</p>
 <p>Documentatition comments are actually strongly discouraged.
 The goal is to have self-documenting code whenever possible:</p>
 <ul class="simple">
 <li><p>Use descriptive names for types, functions, parameters etc.</p></li>
 <li><p>Introduce more high level types.
-For example, if a class <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">Line</span></span></code> is used instead of two points, there’s no need for a comment explaining that these two points represent a line.</p></li>
-<li><p>Use special utilities to improve clarity, such as <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">out</span></span></code> and <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">inout</span></span></code> wrappers.</p></li>
+For example, if a class <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">Line</span></span></code> is used instead of two points, there’s no need
+for a comment explaining that these two points represent a line.</p></li>
+<li><p>Use special annotations to improve clarity, such as <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">out</span></span></code> and <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">inout</span></span></code> wrappers.</p></li>
 </ul>
 <p>Treat every comment as a failure to express yourself in code.
 Write a comment only when it provides useful information that can’t be written in the code itself.</p>
 <p>Doxygen can be run using the <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/doxygen.sh">scripts/doc/doxygen.sh</a> script
-or <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">doxygen</span></code> VS Code task.</p>
-<p>Doxygen configuration file can be found <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/doc/Doxyfile.in">here</a>.
+or the <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">doxygen</span></code> VS Code task.</p>
+<p>The Doxygen configuration file can be found <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/doc/Doxyfile.in">here</a>.
 The options of interest are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">GENERATE_XML</span></code> is set to <code class="docutils literal notranslate"><span class="pre">YES</span></code>, because xml output is used for the following steps.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">GENERATE_HTML</span></code> is set to <code class="docutils literal notranslate"><span class="pre">NO</span></code>, but can be set to YES to check the output locally in the <em>build/doc/doxygen/html</em> folder.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">EXTRACT_ALL</span></code> is set to <code class="docutils literal notranslate"><span class="pre">YES</span></code>, because most of the library content is put into free functions instead of classes by design.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">EXCLUDE_SYMBOLS</span></code> is set to <code class="docutils literal notranslate"><span class="pre">detail</span></code>, as this is the canonical namespace for implementation details.
-Don’t put public code such as base classes with public interface into detail, because they won’t be documented.</p></li>
+Don’t put public code such as base classes with public interface into <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="nn"><span class="pre">detail</span></span></code>, because they won’t be documented.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">INLINE_INHERITED_MEMB</span></code> is set to <code class="docutils literal notranslate"><span class="pre">YES</span></code> to make it easier to see the full class interface.
 Utilities such as iterators and ranges rely on base classes to define the full interface without writing repetitive boilerplate code.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PREDEFINED</span></code> contains macros that affect the structure of the code.
@@ -219,14 +224,14 @@ Existing sources can be used as a reference, other useful links for writing them
 Breathe is an extension for Sphinx that allows to use Doxygen xml output.</p></li>
 </ul>
 <p>Sphinx can be run using the <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/sphinx.sh">scripts/doc/sphinx.sh</a> script
-or <code class="docutils literal notranslate"><span class="pre">generate</span> <span class="pre">documentation</span></code> VS Code task (together with Doxygen),
+or the <code class="docutils literal notranslate"><span class="pre">generate</span> <span class="pre">documentation</span></code> VS Code task (together with Doxygen),
 and its output can be examined by opening <em>build/doc/sphinx/index.html</em></p>
 </section>
 <section id="publishing-documentation">
 <h2>Publishing documentation<a class="headerlink" href="#publishing-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Currently, the documentation is published manually only by the project maintainers using the
 <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/publish.sh">scripts/doc/publish.sh</a> script
-or <code class="docutils literal notranslate"><span class="pre">publish</span> <span class="pre">documentation</span></code> VS Code task (together with documentation generation).</p>
+or the <code class="docutils literal notranslate"><span class="pre">publish</span> <span class="pre">documentation</span></code> VS Code task (together with documentation generation).</p>
 <p>Generated documentation is committed to a special <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/doc">doc branch</a>
 and then automatically published to <a class="reference external" href="https://pages.github.com/">GitHub pages</a> at <a class="reference external" href="https://alcash07.github.io/ACTL/">https://alcash07.github.io/ACTL/</a>.</p>
 <p>Note that <em>.nojekyll</em> file had to be created in that branch to support the <em>_static</em> folder used by Sphinx.</p>

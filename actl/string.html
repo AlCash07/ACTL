@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Running tests &mdash; ACTL  documentation</title>
+    <title>string &mdash; ACTL  documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -53,8 +53,8 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="ACTL  documentation" href="../index.html" />
-    <link rel="next" title="Writing code" href="Writing%20code.html" />
-    <link rel="prev" title="char_classes" href="../actl/string/char_classes.html" /> 
+    <link rel="next" title="char_classes" href="string/char_classes.html" />
+    <link rel="prev" title="constant_literals" href="meta/constant_literals.html" /> 
   </head>
   <body role="document">
     <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
@@ -72,8 +72,8 @@
           <ul class="nav navbar-nav navbar-right">
 
             
-              <li><a href="../actl/string/char_classes.html" title="char_classes" accesskey="P">previous </a></li>
-              <li><a href="Writing%20code.html" title="Writing code" accesskey="N">next </a></li>
+              <li><a href="meta/constant_literals.html" title="constant_literals" accesskey="P">previous </a></li>
+              <li><a href="string/char_classes.html" title="char_classes" accesskey="N">next </a></li>
               <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
             
 
@@ -109,13 +109,13 @@
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="../actl/string/char_classes.html"
-                          title="previous chapter">char_classes</a></p>
+    <p class="topless"><a href="meta/constant_literals.html"
+                          title="previous chapter">constant_literals</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="Writing%20code.html"
-                          title="next chapter">Writing code</a></p>
+    <p class="topless"><a href="string/char_classes.html"
+                          title="next chapter">char_classes</a></p>
   </div>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
@@ -143,20 +143,14 @@
               <div class="bodywrapper">
                 <div class="body">
                   
-  <section id="running-tests">
-<h1>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h1>
-<p>Project is fully configured for Visual Studio Code with
-<a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools">cmake-tools</a>.</p>
-<p>Other IDEs are supported via CMake, please see <em>.vscode/settings.json</em> for the configuration.
-Preferred CMake generator can be set there for VSCode as well.</p>
-<p>On Windows, <code class="code highlight cpp docutils literal notranslate"><span class="s"><span class="pre">&quot;cmake.generator&quot;</span></span></code> can be changed to <code class="code highlight cpp docutils literal notranslate"><span class="s"><span class="pre">&quot;Visual</span> <span class="pre">Studio</span> <span class="pre">16</span> <span class="pre">2019&quot;</span></span></code> in <em>.vscode/settings.json</em>.
-Version 16.10.2 or higher is required because of the numerous bugs in the older versions.</p>
-<p>Tests are written in Catch2 and are run using <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">actl_unit_tests</span></span></code> target.</p>
-<p>Arguments to filter test cases can be specified in:</p>
-<ul class="simple">
-<li><p><em>.vscode/tasks.json</em> for release.</p></li>
-<li><p><em>.vscode/launch.json</em> for debug.</p></li>
+  <section id="string">
+<h1>string<a class="headerlink" href="#string" title="Permalink to this headline">¶</a></h1>
+<p>String algorithms and utilities:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="string/char_classes.html">char_classes</a></li>
 </ul>
+</div>
 </section>
 
 
@@ -178,8 +172,8 @@ Version 16.10.2 or higher is required because of the numerous bugs in the older 
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="../actl/string/char_classes.html" title="char_classes" >previous</a></li>
-        <li><a href="Writing%20code.html" title="Writing code" >next</a></li>
+        <li><a href="meta/constant_literals.html" title="constant_literals" >previous</a></li>
+        <li><a href="string/char_classes.html" title="char_classes" >next</a></li>
         <li><a href="../genindex.html" title="General Index" >index</a></li>
         <li><a href="#">top</a></li> 
       
