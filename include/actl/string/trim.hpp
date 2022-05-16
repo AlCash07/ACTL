@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/std/string.hpp>
-#include <actl/string/ctype.hpp>
+#include <actl/string/char_classes.hpp>
 
 namespace ac {
 

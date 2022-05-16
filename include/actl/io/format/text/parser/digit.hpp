@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/string/ctype.hpp>
+#include <actl/string/char_classes.hpp>
 #include <limits>
 
 namespace ac::io {
@@ -27,7 +27,7 @@ UInt to_digit(char c)
     }
     else
     {
-        if (ac::is_digit(c))
+        if (is_digit(c))
             return static_cast<UInt>(c - '0');
         else if (is_upper(c))
             return static_cast<UInt>(c - 'A' + 10);
@@ -39,7 +39,7 @@ UInt to_digit(char c)
 }
 
 template <class UInt>
-bool is_digit(UInt digit, UInt base)
+bool is_digit_in_base(UInt digit, UInt base)
 {
     return digit < base;
 }

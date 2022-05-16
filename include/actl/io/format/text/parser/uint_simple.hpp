@@ -34,7 +34,7 @@ public:
         if (state == states::empty)
         {
             x = to_digit<UInt, Kind>(s[i]);
-            if (is_digit(x, base))
+            if (is_digit_in_base(x, base))
             {
                 ++i;
                 state = states::ok;
@@ -49,7 +49,7 @@ public:
         for (; i != s.size(); ++i)
         {
             UInt d = to_digit<UInt, Kind>(s[i]);
-            if (!is_digit(d, base))
+            if (!is_digit_in_base(d, base))
                 break;
             if (max_quotient < x || (max_quotient == x && max_remainder < d))
             {

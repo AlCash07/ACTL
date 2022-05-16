@@ -8,7 +8,7 @@
 
 #include <actl/io/format/text/text.hpp>
 #include <actl/io/utility/till.hpp>
-#include <actl/string/ctype.hpp>
+#include <actl/string/char_classes.hpp>
 
 namespace ac::io {
 

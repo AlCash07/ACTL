@@ -27,7 +27,7 @@ public:
         for (; i != s.size(); ++i)
         {
             UInt d = to_digit<UInt, Kind>(s[i]);
-            if (!is_digit(d, base))
+            if (!is_digit_in_base(d, base))
                 break;
             x = x * base + d;
         }

@@ -41,7 +41,7 @@ inline constexpr bool is_alphanumeric(char c) noexcept
 /// Checks if @p c is a whitespace character, that is one of:
 /// - space (0x20, ' ')
 /// - form feed (0x0c, '\f')
-/// - line feed (0x0a, '\n')
+/// - line feed (0x0a, '\\n')
 /// - carriage return (0x0d, '\r')
 /// - horizontal tab (0x09, '\t')
 /// - vertical tab (0x0b, '\v')
