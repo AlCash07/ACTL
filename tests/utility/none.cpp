@@ -5,11 +5,16 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/utility/none.hpp>
-#include <type_traits>
-#include "test.hpp"
 
+/* properties */
 static_assert(std::is_empty_v<ac::none>);
-
-static_assert(std::is_same_v<int, ac::replace_void_t<int>>);
-static_assert(std::is_same_v<ac::none, ac::replace_void_t<void>>);
-static_assert(std::is_same_v<ac::none const, ac::replace_void_t<void const>>);
+static_assert(std::is_standard_layout_v<ac::none>);
+static_assert(std::is_trivial_v<ac::none>);
+/* is_none */
+static_assert(ac::is_none_v<ac::none>);
+static_assert(!ac::is_none_v<ac::none const>);
+static_assert(!ac::is_none_v<void>);
+/* void_to_none */
+static_assert(std::is_same_v<int, ac::void_to_none_t<int>>);
+static_assert(std::is_same_v<ac::none, ac::void_to_none_t<void>>);
+static_assert(std::is_same_v<ac::none const, ac::void_to_none_t<void const>>);

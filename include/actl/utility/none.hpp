@@ -6,28 +6,34 @@
 
 #pragma once
 
+#include <type_traits>
+
 namespace ac {
 
 /// Empty class to enable void instantiation and take advantage of empty-base
 /// optimization.
 struct none
 {
-    none() noexcept = default;
+    none() = default;
 
-    template <class... Ts>
-    explicit constexpr none(Ts...) noexcept
+    // The first parameter is needed because of the bug in std::is_trivial impl.
+    template <class T, class... Ts>
+    explicit constexpr none(T, Ts...) noexcept
     {}
 
     using value_type = none;
 };
 
+template <class T>
+inline constexpr bool is_none_v = std::is_same_v<T, none>;
+
 // clang-format off
-template <class T> struct replace_void             { using type = T;          };
-template <>        struct replace_void<void>       { using type = none;       };
-template <>        struct replace_void<void const> { using type = none const; };
+template <class T> struct void_to_none             { using type = T;          };
+template <>        struct void_to_none<void>       { using type = none;       };
+template <>        struct void_to_none<void const> { using type = none const; };
 // clang-format on
 
 template <class T>
-using replace_void_t = typename replace_void<T>::type;
+using void_to_none_t = typename void_to_none<T>::type;
 
 } // namespace ac
