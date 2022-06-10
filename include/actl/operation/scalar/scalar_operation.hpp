@@ -32,7 +32,7 @@ struct ordering_operation_tag   { using base = comparison_operation_tag; };
 struct logical_operation_tag { using base = scalar_operation_tag; };
 // clang-format on
 
-template <class Op, index Arity>
+template <class Op, size_t Arity>
 struct scalar_operation : operation<Op>
 {
     template <class T>

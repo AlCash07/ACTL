@@ -15,7 +15,7 @@ namespace ac {
 
 struct equal_range_f
 {
-    static constexpr index inner_count = 1;
+    static constexpr size_t inner_count = 1;
 
     template <class EqualOp, class T, class U>
     static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs)

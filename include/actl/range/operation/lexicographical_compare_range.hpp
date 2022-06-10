@@ -16,7 +16,7 @@ namespace ac {
 
 struct lexicographical_compare_range_f
 {
-    static constexpr index inner_count = 1;
+    static constexpr size_t inner_count = 1;
 
     template <class Cmp3WayOp, class T, class U>
     static int evaluate(Cmp3WayOp const& op, T const& lhs, U const& rhs)

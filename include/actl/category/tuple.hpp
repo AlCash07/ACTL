@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/category/range.hpp>
-#include <actl/category/utility/nesting_depth.hpp>
+#include <actl/meta/nesting_depth.hpp>
 #include <tuple>
 #include <utility>
 
@@ -46,7 +46,7 @@ struct tuple_depth;
 
 template <class T, size_t... Is>
 struct tuple_depth<T, std::index_sequence<Is...>>
-    : index_constant<1 + max_nesting_depth_v<std::tuple_element_t<Is, T>...>>
+    : size_constant<1 + max_nesting_depth_v<std::tuple_element_t<Is, T>...>>
 {};
 
 } // namespace detail

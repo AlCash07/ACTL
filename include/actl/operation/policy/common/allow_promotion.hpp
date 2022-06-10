@@ -20,7 +20,7 @@ struct allow_promotion
 
 struct Promotion
 {
-    static constexpr index inner_count = 1;
+    static constexpr size_t inner_count = 1;
 
     template <class T, class U>
     static constexpr auto evaluate(

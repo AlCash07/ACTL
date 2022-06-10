@@ -6,39 +6,38 @@
 
 #pragma once
 
+#include <actl/meta/constant.hpp>
 #include <actl/meta/type_traits.hpp>
-#include <actl/utility/index.hpp>
 
 namespace ac {
 
 namespace detail {
 
-template <index N>
-struct max_v : index_constant<N>
+template <size_t N>
+struct max_v : constant<N>
 {};
 
-template <index N, index M>
+template <size_t N, size_t M>
 constexpr auto operator||(max_v<N>, max_v<M>)
 {
-    return max_v < N < M ? M : N > {};
+    return max_v < (N < M) ? M : N > {};
 }
 
 } // namespace detail
 
 template <class T, class = void>
-struct nesting_depth : index_constant<0>
+struct nesting_depth : size_constant<0>
 {};
 
 template <class T>
-inline constexpr index nesting_depth_v =
-    nesting_depth<remove_cvref_t<T>>::value;
+inline constexpr size_t nesting_depth_v = nesting_depth<T>::value;
 
 template <class... Ts>
 struct max_nesting_depth
-    : index_constant<(... || detail::max_v<nesting_depth_v<Ts>>{})>
+    : size_constant<(... || detail::max_v<nesting_depth_v<Ts>>{})>
 {};
 
 template <class... Ts>
-inline constexpr index max_nesting_depth_v = max_nesting_depth<Ts...>::value;
+inline constexpr size_t max_nesting_depth_v = max_nesting_depth<Ts...>::value;
 
 } // namespace ac

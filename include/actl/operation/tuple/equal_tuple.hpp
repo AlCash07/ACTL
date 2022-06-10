@@ -14,7 +14,7 @@ namespace ac {
 
 struct equal_tuple_f
 {
-    static constexpr index inner_count = -1;
+    static constexpr size_t inner_count = 0;
 
     template <class EqualOps, class T, class U, size_t... Is>
     static bool eval(

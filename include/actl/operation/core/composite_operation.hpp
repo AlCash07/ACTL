@@ -41,8 +41,8 @@ struct operation_composer
     template <class... InnerOps>
     constexpr auto operator()(InnerOps&&... ops) const
     {
-        constexpr index N = OuterOp::inner_count;
-        static_assert(N == -1 || N == index{sizeof...(InnerOps)});
+        constexpr size_t N = OuterOp::inner_count;
+        static_assert(N == 0 || N == size_t{sizeof...(InnerOps)});
         return composite_operation<OuterOp, value_if_small<InnerOps>...>{
             std::forward<InnerOps>(ops)...};
     }

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <index I, index N>
+template <size_t I, size_t N>
 struct arg_f
 {
     using category = operation_tag;
@@ -30,7 +30,7 @@ struct arg_f
                 std::forward<Ts>(xs)...);
     }
 };
-template <index I, index N>
+template <size_t I, size_t N>
 inline constexpr arg_f<I, N> arg;
 
 inline constexpr arg_f<0, 1> x_;

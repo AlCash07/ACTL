@@ -15,6 +15,7 @@
 #include <actl/range/operation/comparison.hpp>
 #include <actl/range/span.hpp>
 #include <actl/std/utility.hpp>
+#include <actl/utility/index.hpp>
 #include <memory>
 
 namespace ac {

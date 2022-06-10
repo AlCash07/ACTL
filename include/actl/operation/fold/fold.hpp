@@ -12,7 +12,7 @@ namespace ac {
 
 struct fold_f
 {
-    static constexpr index inner_count = 1;
+    static constexpr size_t inner_count = 1;
 };
 
 inline constexpr operation_composer<fold_t> fold;

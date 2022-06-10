@@ -7,9 +7,9 @@
 #pragma once
 
 #include <actl/category/scalar.hpp>
-#include <actl/category/utility/nesting_depth.hpp>
 #include <actl/meta/dependent.hpp>
 #include <actl/meta/is_range.hpp>
+#include <actl/meta/nesting_depth.hpp>
 
 namespace ac {
 
@@ -85,7 +85,7 @@ inline constexpr bool is_random_access_range_v =
 
 template <class T>
 struct nesting_depth<T, std::enable_if_t<is_range_v<T>>>
-    : index_constant<1 + nesting_depth_v<value_type_t<T>>>
+    : size_constant<1 + nesting_depth_v<value_type_t<T>>>
 {};
 
 } // namespace ac

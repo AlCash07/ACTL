@@ -8,7 +8,7 @@
 
 #include <actl/category/category.hpp>
 #include <actl/category/utility/is_subcategory_of.hpp>
-#include <actl/category/utility/nesting_depth.hpp>
+#include <actl/meta/nesting_depth.hpp>
 #include <limits>
 
 namespace ac {
@@ -27,7 +27,7 @@ struct identity_element;
 
 template <class T>
 struct nesting_depth<T, std::enable_if_t<is_operation_v<T>>>
-    : index_constant<std::numeric_limits<index>::max()>
+    : constant<std::numeric_limits<size_t>::max()>
 {};
 
 } // namespace ac

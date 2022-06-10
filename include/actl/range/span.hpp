@@ -111,7 +111,7 @@ template <class S, class T>
 struct is_span : std::false_type
 {};
 
-template <class T, index N>
+template <class T, size_t N>
 struct is_span<span<T, N>, T> : std::true_type
 {};
 

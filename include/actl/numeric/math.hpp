@@ -38,7 +38,7 @@ struct abs_t : scalar_operation<abs_t, 1>
 };
 inline constexpr abs_t abs;
 
-template <class Op, index Arity>
+template <class Op, size_t Arity>
 struct math_operation : scalar_operation<Op, Arity>
 {
     using category = math_operation_tag;
