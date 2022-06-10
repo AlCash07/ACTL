@@ -17,7 +17,6 @@ struct range_ts
 {
     using value_type = value_type_t<Iter>;
     using reference = reference_t<Iter>;
-    using pointer = pointer_t<Iter>;
     using difference_type = difference_type_t<Iter>;
     using iterator = Iter;
 };
@@ -32,7 +31,6 @@ template <class CIter, bool HasReverse = is_bidirectional_iterator_v<CIter>>
 struct crange_ts
 {
     using const_reference = reference_t<CIter>;
-    using const_pointer = pointer_t<CIter>;
     using const_iterator = CIter;
 };
 

@@ -52,18 +52,6 @@ struct reference<T const, std::void_t<typename traits_t<T>::const_reference>>
 };
 
 template <class T, class = void>
-struct pointer
-{
-    using type = typename traits_t<T>::pointer;
-};
-
-template <class T>
-struct pointer<T const, std::void_t<typename traits_t<T>::const_pointer>>
-{
-    using type = typename traits_t<T>::const_pointer;
-};
-
-template <class T, class = void>
 struct iterator
 {
     using type = typename traits_t<T>::iterator;
@@ -82,9 +70,6 @@ using value_type_t = typename detail::traits_t<T>::value_type;
 
 template <class T>
 using reference_t = typename detail::reference<T>::type;
-
-template <class T>
-using pointer_t = typename detail::pointer<T>::type;
 
 template <class T>
 using difference_type_t = typename detail::traits_t<T>::difference_type;
