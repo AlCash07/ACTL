@@ -35,27 +35,23 @@ template <class Derived>
 struct operation;
 
 template <class Derived>
-struct expression_base<Derived, operation_tag>
+struct operation_expression<Derived, true> : operation<Derived>
 {
-    struct type : operation<Derived>
+    template <class... Ts>
+    using result_type = typename expression_result_type<decltype(
+        pass_arguments(std::declval<Derived>(), std::declval<Ts>()...))>::type;
+
+    template <class... Ts>
+    constexpr auto evaluate(Ts const&... xs) const
     {
-        template <class... Ts>
-        using result_type =
-            typename expression_result_type<decltype(pass_arguments(
-                std::declval<Derived>(), std::declval<Ts>()...))>::type;
+        return eval(pass_arguments(this->derived(), xs...));
+    }
 
-        template <class... Ts>
-        constexpr auto evaluate(Ts const&... xs) const
-        {
-            return eval(pass_arguments(this->derived(), xs...));
-        }
-
-        template <class T, class... Ts>
-        constexpr void evaluate_to(T& dst, Ts const&... xs) const
-        {
-            assign(out{dst}, pass_arguments(this->derived(), xs...));
-        }
-    };
+    template <class T, class... Ts>
+    constexpr void evaluate_to(T& dst, Ts const&... xs) const
+    {
+        assign(out{dst}, pass_arguments(this->derived(), xs...));
+    }
 };
 
 } // namespace ac

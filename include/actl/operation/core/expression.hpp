@@ -14,17 +14,6 @@
 
 namespace ac {
 
-template <class Derived, class Tag>
-struct expression_base : expression_base<Derived, typename Tag::base>
-{};
-
-template <class Derived>
-struct expression_base<Derived, unclassified_tag>
-{
-    struct type
-    {};
-};
-
 template <class Result, class = void>
 struct can_convert_expression_implicitly : std::false_type
 {};
@@ -33,15 +22,19 @@ template <class Derived, bool HasConversion = false>
 struct expression_conversion
 {};
 
+template <class Derived, bool IsOperation = false>
+struct operation_expression
+{};
+
 template <class Op, class... Ts>
 struct expression
     : expression_conversion<
           expression<Op, Ts...>,
           can_convert_expression_implicitly<
               resolved_result_type_t<Op, Ts...>>::value>
-    , expression_base<
+    , operation_expression<
           expression<Op, Ts...>,
-          resolved_result_category_t<Op, Ts...>>::type
+          std::is_same_v<operation_tag, resolved_result_type_t<Op, Ts...>>>
 {
     using category = resolved_result_category_t<Op, Ts...>;
     struct enable_operators;
