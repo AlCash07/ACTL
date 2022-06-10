@@ -10,17 +10,10 @@
 
 namespace ac {
 
-template <class... Ts>
-struct expression_base<expression<Ts...>, scalar_tag>
-{
-    struct type
-    {
-        constexpr operator resolved_result_type_t<Ts...>() const
-        {
-            return eval(static_cast<expression<Ts...> const&>(*this));
-        }
-    };
-};
+template <class T>
+struct can_convert_expression_implicitly<T, std::enable_if_t<is_scalar_v<T>>>
+    : std::true_type
+{};
 
 template <class T, enable_int_if<!is_expression_v<T>> = 0>
 constexpr T eval(T x)

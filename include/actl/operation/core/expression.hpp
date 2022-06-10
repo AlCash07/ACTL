@@ -25,9 +25,21 @@ struct expression_base<Derived, unclassified_tag>
     {};
 };
 
+template <class Result, class = void>
+struct can_convert_expression_implicitly : std::false_type
+{};
+
+template <class Derived, bool HasConversion = false>
+struct expression_conversion
+{};
+
 template <class Op, class... Ts>
 struct expression
-    : expression_base<
+    : expression_conversion<
+          expression<Op, Ts...>,
+          can_convert_expression_implicitly<
+              resolved_result_type_t<Op, Ts...>>::value>
+    , expression_base<
           expression<Op, Ts...>,
           resolved_result_category_t<Op, Ts...>>::type
 {
@@ -75,6 +87,15 @@ template <class... Ts>
 struct expression_result_type<expression<Ts...>>
 {
     using type = resolved_result_type_t<Ts...>;
+};
+
+template <class Expr>
+struct expression_conversion<Expr, true>
+{
+    constexpr operator typename expression_result_type<Expr>::type() const
+    {
+        return eval(static_cast<Expr const&>(*this));
+    }
 };
 
 template <class Expr, class S = argument_indices<Expr>>
