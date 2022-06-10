@@ -40,14 +40,18 @@ inline constexpr operation_composer<lexicographical_compare_range_f>
     lexicographical_compare_range;
 
 template <class T, class U>
-struct overload<cmp3way_f, range_tag, T, U>
+struct overload<
+    std::enable_if_t<is_range_v<T> && is_range_v<U>>,
+    cmp3way_f,
+    T,
+    U>
 {
     static constexpr auto formula =
         lexicographical_compare_range(resolve_nested<T, U>(cmp3way));
 };
 
 template <class T, class U>
-struct overload<less_f, range_tag, T, U>
+struct overload<std::enable_if_t<is_range_v<T> && is_range_v<U>>, less_f, T, U>
 {
     static constexpr auto formula = cmp3way < 0_c;
 };

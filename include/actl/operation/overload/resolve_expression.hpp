@@ -41,10 +41,9 @@ struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...>
 
 template <class Context, class Op, class... Us, class... Ts>
 struct overload_resolver<
-    std::enable_if_t<
-        is_operation_v<expression<Op, Us...>> &&
-        !(is_overload_resolved_v<Context, Op, Us...> &&
-          (... && is_overload_resolved_v<Context, Us, Ts...>))>,
+    std::enable_if_t<!(
+        is_overload_resolved_v<Context, Op, Us...> &&
+        (... && is_overload_resolved_v<Context, Us, Ts...>))>,
     Context,
     expression<Op, Us...>,
     Ts...>

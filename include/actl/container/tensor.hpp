@@ -624,6 +624,10 @@ struct category<ac::detail::tensor_base<Ts...>>
     using type = tensor_tag;
 };
 
+template <class T>
+inline constexpr bool is_tensor_v =
+    is_subcategory_of_v<category_t<T>, tensor_tag>;
+
 struct tensor_equal_f
 {
     static constexpr size_t inner_count = 1;
@@ -643,7 +647,11 @@ struct tensor_equal_f
 };
 
 template <class T, class U>
-struct overload<equal_f, tensor_tag, T, U>
+struct overload<
+    std::enable_if_t<is_tensor_v<T> && is_tensor_v<U>>,
+    equal_f,
+    T,
+    U>
 {
     static constexpr auto formula =
         operation_composer<tensor_equal_f>(resolve_nested<T, U>(equal));

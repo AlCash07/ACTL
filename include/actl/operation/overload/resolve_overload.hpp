@@ -6,7 +6,9 @@
 
 #pragma once
 
+#include <actl/category/utility/nesting_depth.hpp>
 #include <actl/operation/overload/overload.hpp>
+#include <algorithm>
 
 namespace ac {
 
@@ -44,7 +46,7 @@ constexpr decltype(auto) resolve_overload(Context context, Op&& op)
 template <class... Ts, class Op>
 constexpr decltype(auto) resolve_nested(Op const& op)
 {
-    constexpr auto major_depth = major_category<Ts...>::depth;
+    constexpr auto major_depth = std::max({nesting_depth_v<Ts>...});
     return resolve_overload<
         detail::value_type_if_t<nesting_depth_v<Ts> == major_depth, Ts>...>(
         default_context{}, op);
@@ -70,8 +72,7 @@ inline constexpr bool is_overload_resolved_v =
 
 template <class Context, class Op, class... Ts>
 struct overload_resolver<
-    std::void_t<decltype(
-        primary_overload<Op, Ts...>::resolve(std::declval<Op>()))>,
+    std::void_t<decltype(overload<void, Op, Ts...>::formula)>,
     Context,
     Op,
     Ts...>
@@ -81,7 +82,8 @@ struct overload_resolver<
     {
         return resolve_overload<Ts...>(
             context,
-            primary_overload<Op, Ts...>::resolve(std::forward<Op1>(op)));
+            std::remove_const_t<decltype(
+                overload<void, Op, Ts...>::formula)>{});
     }
 };
 
