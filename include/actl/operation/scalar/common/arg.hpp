@@ -22,12 +22,11 @@ struct arg_f
     constexpr decltype(auto) operator()(
         [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs) const
     {
-        static_assert(1 + sizeof...(Ts) == N || N == -1);
+        static_assert(1 + sizeof...(Ts) == N);
         if constexpr (I == 0)
             return std::forward<T>(x);
         else
-            return arg_f<I - 1, (N == -1 ? -1 : N - 1)>{}(
-                std::forward<Ts>(xs)...);
+            return arg_f<I - 1, N - 1>{}(std::forward<Ts>(xs)...);
     }
 };
 template <size_t I, size_t N>
