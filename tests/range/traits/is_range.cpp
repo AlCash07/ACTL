@@ -4,10 +4,9 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/meta/is_range.hpp>
+#include <actl/range/traits/is_range.hpp>
 #include <deque>
 #include <vector>
-#include "test.hpp"
 
 static_assert(!ac::is_range_v<void>);
 static_assert(!ac::is_contiguous_range_v<void>);

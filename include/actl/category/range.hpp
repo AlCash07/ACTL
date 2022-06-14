@@ -7,9 +7,9 @@
 #pragma once
 
 #include <actl/category/scalar.hpp>
-#include <actl/meta/is_range.hpp>
 #include <actl/meta/nesting_depth.hpp>
 #include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/is_range.hpp>
 
 namespace ac {
 

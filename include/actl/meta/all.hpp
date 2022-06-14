@@ -10,7 +10,6 @@
 #include <actl/meta/constant.hpp>
 #include <actl/meta/constant_literals.hpp>
 #include <actl/meta/dynamic_size.hpp>
-#include <actl/meta/is_range.hpp>
 #include <actl/meta/is_template_base_of.hpp>
 #include <actl/meta/nesting_depth.hpp>
 #include <actl/meta/rebind.hpp>
@@ -19,4 +18,3 @@
 #include <actl/meta/template_type.hpp>
 #include <actl/meta/type_at.hpp>
 #include <actl/meta/type_traits.hpp>
-#include <actl/range/traits/dependent.hpp>
