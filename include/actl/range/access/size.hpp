@@ -8,18 +8,13 @@
 
 #include <actl/functional/deduce_noexcept.hpp>
 #include <actl/meta/constant.hpp>
+#include <actl/meta/has_member.hpp>
 #include <actl/meta/type_traits.hpp>
 
 namespace ac::ranges {
 
-template <class T, class = void>
-struct has_member_size : std::false_type
-{};
-
-template <class T>
-struct has_member_size<T, void_t<decltype(std::declval<T>().size())>>
-    : std::true_type
-{};
+AC_DEFINE_HAS_MEMBER_F(size)
+AC_DEFINE_HAS_NON_MEMBER_F(size)
 
 struct size_f
 {
@@ -29,11 +24,14 @@ struct size_f
         return {};
     }
 
-    template <class Range, enable_int_if<has_member_size<Range>::value> = 0>
+    template <class Range, enable_int_if<has_member_f_size_v<Range>> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.size())
 
-    template <class Range, enable_int_if<!has_member_size<Range>::value> = 0>
+    template <
+        class Range,
+        enable_int_if<
+            !has_member_f_size_v<Range> && has_non_member_f_size_v<Range&>> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(size(range))
 };

@@ -7,18 +7,13 @@
 #pragma once
 
 #include <actl/functional/deduce_noexcept.hpp>
+#include <actl/meta/has_member.hpp>
 #include <actl/meta/type_traits.hpp>
 
 namespace ac::ranges {
 
-template <class T, class = void>
-struct has_member_data : std::false_type
-{};
-
-template <class T>
-struct has_member_data<T, void_t<decltype(std::declval<T>().data())>>
-    : std::true_type
-{};
+AC_DEFINE_HAS_MEMBER_F(data)
+AC_DEFINE_HAS_NON_MEMBER_F(data)
 
 struct data_f
 {
@@ -28,11 +23,14 @@ struct data_f
         return array;
     }
 
-    template <class Range, enable_int_if<has_member_data<Range>::value> = 0>
+    template <class Range, enable_int_if<has_member_f_data_v<Range>> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.data())
 
-    template <class Range, enable_int_if<!has_member_data<Range>::value> = 0>
+    template <
+        class Range,
+        enable_int_if<
+            !has_member_f_data_v<Range> && has_non_member_f_data_v<Range&>> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(data(range))
 };
