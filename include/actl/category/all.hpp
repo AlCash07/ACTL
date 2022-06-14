@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/category/iterator.hpp>
 #include <actl/category/range.hpp>
 #include <actl/category/scalar.hpp>
 #include <actl/category/tuple.hpp>

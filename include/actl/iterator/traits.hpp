@@ -10,9 +10,6 @@
 
 namespace ac {
 
-template <class T>
-using iterator_category_t = typename std::iterator_traits<T>::iterator_category;
-
 namespace detail {
 
 template <class T>

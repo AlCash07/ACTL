@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/category/iterator.hpp>
+#include <actl/iterator/traits/category.hpp>
 #include <actl/iterator/traits/dependent.hpp>
 #include <actl/utility/use_default.hpp>
 
