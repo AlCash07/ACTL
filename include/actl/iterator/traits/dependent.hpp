@@ -30,12 +30,23 @@ struct iter_value<T, std::void_t<typename std::iterator_traits<T>::value_type>>
 };
 
 template <class T, class = void>
-struct iter_difference
+struct deduced_difference
+{};
+
+template <class T>
+struct deduced_difference<
+    T,
+    std::enable_if_t<
+        std::is_integral_v<decltype(std::declval<T>() - std::declval<T>())>>>
 {
     // https://en.cppreference.com/w/cpp/iterator/incrementable_traits
     using type =
         std::make_signed_t<decltype(std::declval<T>() - std::declval<T>())>;
 };
+
+template <class T, class = void>
+struct iter_difference : deduced_difference<T>
+{};
 
 template <class T>
 struct iter_difference<
@@ -44,6 +55,16 @@ struct iter_difference<
 {
     using type = typename std::iterator_traits<T>::difference_type;
 };
+
+// std::iterator_traits<void*> produces an error
+// "cannot form a reference to void".
+template <>
+struct iter_difference<void*>
+{};
+
+template <>
+struct iter_difference<void const*>
+{};
 
 } // namespace detail
 

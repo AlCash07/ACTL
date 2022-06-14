@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/is_iterator.hpp>
+#include <actl/iterator/traits/is_iterator.hpp>
 
 namespace ac {
 
@@ -40,5 +40,7 @@ constexpr bool is_bidirectional_iterator_v =
 template <class T>
 constexpr bool is_random_access_iterator_v =
     detail::has_iterator_category<T, std::random_access_iterator_tag>::value;
+
+// TODO: implement is_output_iterator trait.
 
 } // namespace ac

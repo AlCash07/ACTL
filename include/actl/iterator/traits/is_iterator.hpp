@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/iterator/traits/dependent.hpp>
 #include <actl/meta/type_traits.hpp>
-#include <iterator>
 
 namespace ac {
 
@@ -18,7 +18,7 @@ struct is_iter : std::false_type
 {};
 
 template <class T>
-struct is_iter<T, void_t<typename std::iterator_traits<T>::iterator_category>>
+struct is_iter<T, void_t<iter_difference_t<T>, decltype(++std::declval<T&>())>>
     : std::true_type
 {};
 
@@ -28,13 +28,8 @@ template <class T, class = void>
 struct is_iterator : detail::is_iter<T>
 {};
 
-template <class T>
-struct is_iterator<T*, std::enable_if_t<!std::is_object_v<T>>> : std::false_type
-{};
-
+// https://en.cppreference.com/w/cpp/iterator/input_or_output_iterator
 template <class T>
 inline constexpr bool is_iterator_v = is_iterator<T>::value;
-
-// TODO: implement is_output_iterator trait.
 
 } // namespace ac

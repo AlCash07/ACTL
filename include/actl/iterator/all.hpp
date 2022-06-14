@@ -12,3 +12,4 @@
 #include <actl/iterator/limited_input_iterator.hpp>
 #include <actl/iterator/output_type.hpp>
 #include <actl/iterator/traits.hpp>
+#include <actl/iterator/traits/all.hpp>

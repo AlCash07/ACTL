@@ -4,9 +4,8 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/meta/is_iterator.hpp>
+#include <actl/iterator/traits/is_iterator.hpp>
 #include <vector>
-#include "test.hpp"
 
 static_assert(!ac::is_iterator_v<void>);
 static_assert(!ac::is_iterator_v<int[4]>);
