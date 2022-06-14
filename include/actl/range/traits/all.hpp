@@ -8,4 +8,5 @@
 
 #include <actl/range/traits/category.hpp>
 #include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/is_dynamic_range.hpp>
 #include <actl/range/traits/properties.hpp>
