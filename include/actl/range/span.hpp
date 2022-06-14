@@ -9,7 +9,7 @@
 #include <actl/category/range.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/interface/contiguous_range_interface.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include <actl/range/utility/size_holder.hpp>
 
 namespace ac {
@@ -101,7 +101,7 @@ span(Range&&) -> span<
     static_size_v<std::remove_reference_t<Range>>>;
 
 template <class T, size_t N>
-struct range_traits<span<T, N>> : default_range_traits
+struct range_properties<span<T, N>> : default_range_properties
 {};
 
 template <class T, size_t N = dynamic_size>

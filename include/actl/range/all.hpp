@@ -13,5 +13,5 @@
 #include <actl/range/limited_input_range.hpp>
 #include <actl/range/operation/all.hpp>
 #include <actl/range/span.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include <actl/range/utility/all.hpp>

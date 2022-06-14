@@ -8,7 +8,7 @@
 
 #include <actl/iterator/integer_iterator.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/utility/index.hpp>
 #include <actl/utility/none.hpp>
@@ -89,7 +89,7 @@ private:
 };
 
 template <>
-struct range_traits<dummy_container> : default_range_traits
+struct range_properties<dummy_container> : default_range_properties
 {
     static constexpr bool is_container = true;
 };

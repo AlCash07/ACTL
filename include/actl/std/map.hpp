@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include <actl/std/utility.hpp>
 #include <map>
 
 namespace ac {
 
 template <class K, class T, class C, class A>
-struct range_traits<std::map<K, T, C, A>> : default_range_traits
+struct range_properties<std::map<K, T, C, A>> : default_range_properties
 {
     static constexpr bool is_pair_associative = true;
     static constexpr bool is_container = true;
@@ -22,7 +22,7 @@ struct range_traits<std::map<K, T, C, A>> : default_range_traits
 };
 
 template <class K, class T, class C, class A>
-struct range_traits<std::multimap<K, T, C, A>> : default_range_traits
+struct range_properties<std::multimap<K, T, C, A>> : default_range_properties
 {
     static constexpr bool is_pair_associative = true;
     static constexpr bool is_container = true;

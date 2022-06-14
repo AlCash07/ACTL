@@ -112,7 +112,7 @@ struct geometry_traits<point<T, N>>
 };
 
 template <class T, index N>
-struct range_traits<point<T, N>> : default_range_traits
+struct range_properties<point<T, N>> : default_range_properties
 {};
 
 namespace detail {

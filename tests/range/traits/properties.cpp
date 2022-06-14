@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include "test.hpp"
 
 static_assert(!ac::is_container_v<int>);

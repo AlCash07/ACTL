@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include <string>
 
 namespace ac {
 
 template <class C, class T, class A>
-struct range_traits<std::basic_string<C, T, A>> : default_range_traits
+struct range_properties<std::basic_string<C, T, A>> : default_range_properties
 {
     static constexpr bool is_container = true;
 };

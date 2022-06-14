@@ -12,7 +12,7 @@
 #include <actl/io/argument/size.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/meta/static_size.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 
 namespace ac::io {
 

@@ -10,7 +10,7 @@
 #include <actl/iterator/transform_iterator.hpp>
 #include <actl/map/traits.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 
 namespace ac {
 

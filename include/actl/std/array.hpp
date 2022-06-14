@@ -7,13 +7,13 @@
 #pragma once
 
 #include <actl/meta/rebind.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include <array>
 
 namespace ac {
 
 template <class T, size_t N>
-struct range_traits<std::array<T, N>> : default_range_traits
+struct range_properties<std::array<T, N>> : default_range_properties
 {
     static constexpr bool is_container = true;
 };

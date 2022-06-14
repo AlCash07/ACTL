@@ -11,7 +11,7 @@
 
 namespace ac {
 
-struct default_range_traits
+struct default_range_properties
 {
     static constexpr bool is_container = false;
     static constexpr bool is_simple_associative = false;
@@ -21,29 +21,29 @@ struct default_range_traits
 };
 
 template <class T>
-struct range_traits : default_range_traits
+struct range_properties : default_range_properties
 {};
 
 template <class T>
-struct range_traits<T const> : range_traits<T>
+struct range_properties<T const> : range_properties<T>
 {};
 
 template <class T, size_t N>
-struct range_traits<T[N]> : default_range_traits
+struct range_properties<T[N]> : default_range_properties
 {
     static constexpr bool is_container = true;
 };
 
 template <class T>
-inline constexpr bool is_container_v = range_traits<T>::is_container;
+inline constexpr bool is_container_v = range_properties<T>::is_container;
 
 template <class T>
 inline constexpr bool is_simple_associative_range_v =
-    range_traits<T>::is_simple_associative;
+    range_properties<T>::is_simple_associative;
 
 template <class T>
 inline constexpr bool is_pair_associative_range_v =
-    range_traits<T>::is_pair_associative;
+    range_properties<T>::is_pair_associative;
 
 template <class T>
 inline constexpr bool is_associative_range_v =
@@ -54,9 +54,9 @@ inline constexpr bool is_sequence_range_v =
     is_range_v<C> && !is_associative_range_v<C>;
 
 template <class T>
-inline constexpr bool is_sorted_range_v = range_traits<T>::is_sorted;
+inline constexpr bool is_sorted_range_v = range_properties<T>::is_sorted;
 
 template <class T>
-inline constexpr bool is_unique_range_v = range_traits<T>::is_unique;
+inline constexpr bool is_unique_range_v = range_properties<T>::is_unique;
 
 } // namespace ac

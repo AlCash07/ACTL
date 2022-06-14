@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 #include <forward_list>
 
 namespace ac {
 
 template <class T, class A>
-struct range_traits<std::forward_list<T, A>> : default_range_traits
+struct range_properties<std::forward_list<T, A>> : default_range_properties
 {
     static constexpr bool is_container = true;
 };

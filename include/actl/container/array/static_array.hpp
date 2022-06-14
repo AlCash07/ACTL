@@ -100,7 +100,7 @@ template <class T, T... Values>
 static_array(constant<Values>...) -> static_array<T, Values...>;
 
 template <class T, T... Values>
-struct range_traits<static_array<T, Values...>> : default_range_traits
+struct range_properties<static_array<T, Values...>> : default_range_properties
 {};
 
 } // namespace ac

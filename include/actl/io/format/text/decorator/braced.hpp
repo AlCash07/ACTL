@@ -8,7 +8,7 @@
 
 #include <actl/io/argument/range.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/range/traits.hpp>
+#include <actl/range/traits/properties.hpp>
 
 namespace ac::io {
 

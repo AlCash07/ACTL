@@ -12,7 +12,7 @@
 namespace ac {
 
 template <class T, class A>
-struct range_traits<std::vector<T, A>> : default_range_traits
+struct range_properties<std::vector<T, A>> : default_range_properties
 {
     static constexpr bool is_container = true;
 };
