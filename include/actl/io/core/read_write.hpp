@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/category/range.hpp>
 #include <actl/category/tuple.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/format/apply_format.hpp>
 #include <actl/range/span.hpp>
+#include <actl/range/traits/category.hpp>
 
 namespace ac::io {
 

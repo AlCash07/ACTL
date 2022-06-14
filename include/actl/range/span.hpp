@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <actl/category/range.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/interface/contiguous_range_interface.hpp>
+#include <actl/range/traits/category.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/range/utility/size_holder.hpp>
 

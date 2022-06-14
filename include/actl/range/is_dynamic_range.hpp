@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/category/range.hpp>
 #include <actl/meta/static_size.hpp>
+#include <actl/range/traits/category.hpp>
 
 namespace ac {
 

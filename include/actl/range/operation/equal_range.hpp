@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <actl/category/range.hpp>
 #include <actl/operation/core/composite_operation.hpp>
 #include <actl/operation/scalar/comparison/equal.hpp>
+#include <actl/range/traits/category.hpp>
 #include <algorithm>
 
 namespace ac {

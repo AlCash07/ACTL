@@ -6,8 +6,9 @@
 
 #pragma once
 
-#include <actl/category/range.hpp>
+#include <actl/category/scalar.hpp>
 #include <actl/meta/nesting_depth.hpp>
+#include <actl/range/traits/category.hpp>
 #include <tuple>
 #include <utility>
 

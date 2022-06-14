@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <actl/category/range.hpp>
+#include <actl/range/traits/category.hpp>
 #include <actl/range/traits/dependent.hpp>
 #include <algorithm>
 

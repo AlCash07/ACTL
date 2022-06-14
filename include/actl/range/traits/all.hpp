@@ -6,6 +6,6 @@
 
 #pragma once
 
+#include <actl/range/traits/category.hpp>
 #include <actl/range/traits/dependent.hpp>
-#include <actl/range/traits/is_range.hpp>
 #include <actl/range/traits/properties.hpp>

@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <actl/category/range.hpp>
 #include <actl/meta/rebind.hpp>
 #include <actl/numeric/bit/bit_cast.hpp>
 #include <actl/numeric/random/splitmix64.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
+#include <actl/range/traits/category.hpp>
 #include <chrono>
 #include <functional>
 
