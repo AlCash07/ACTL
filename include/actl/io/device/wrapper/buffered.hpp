@@ -23,7 +23,7 @@ public:
 
 protected:
     Buffer buf_;
-    char_t<Device>* ptr_ = std::data(buf_);
+    char_t<Device>* ptr_ = ranges::data(buf_);
 };
 
 template <class Device, class Buffer>
@@ -39,7 +39,7 @@ protected:
 
     void underflow()
     {
-        ptr_ = std::data(this->buf_);
+        ptr_ = ranges::data(this->buf_);
         end_ = ptr_ + Device::read(this->buf_);
     }
 
@@ -77,7 +77,7 @@ public:
         size_t res = available;
         dstPtr = std::copy_n(ptr_, available, dstPtr);
         count -= available;
-        size_t remainder = count % std::size(base_t::buf_);
+        size_t remainder = count % ranges::size(base_t::buf_);
         if (remainder < count)
         {
             res += Device::read({dstPtr, count - remainder});
@@ -99,7 +99,7 @@ public:
         // TODO: support move fully along the underlying device, not just along
         // the buffer.
         ptr_ += offset;
-        ACTL_ASSERT(std::data(this->buf_) <= ptr_);
+        ACTL_ASSERT(ranges::data(this->buf_) <= ptr_);
         if (ptr_ == end_)
             underflow();
     }
@@ -131,8 +131,8 @@ protected:
 
     void overflow()
     {
-        Device::write({std::data(buf_), ptr_});
-        ptr_ = std::data(buf_);
+        Device::write({ranges::data(buf_), ptr_});
+        ptr_ = ranges::data(buf_);
     }
 
 public:
@@ -140,7 +140,7 @@ public:
 
     span<Char> output_data() const
     {
-        return {ptr_, std::end(buf_)};
+        return {ptr_, ranges::end(buf_)};
     }
 
     size_t write(Char c)
@@ -154,7 +154,7 @@ public:
     {
         Char const* srcPtr = src.data();
         size_t count = src.size();
-        size_t available = static_cast<size_t>(std::end(buf_) - ptr_);
+        size_t available = static_cast<size_t>(ranges::end(buf_) - ptr_);
         if (count < available)
         {
             if (count == 1)
@@ -168,14 +168,14 @@ public:
             Device::write(buf_);
             srcPtr += available;
             count -= available;
-            size_t remainder = count % std::size(buf_);
+            size_t remainder = count % ranges::size(buf_);
             if (remainder < count)
             {
                 Device::write({srcPtr, count - remainder});
                 srcPtr += count - remainder;
             }
             if (0 < remainder)
-                ptr_ = std::copy_n(srcPtr, remainder, std::data(buf_));
+                ptr_ = std::copy_n(srcPtr, remainder, ranges::data(buf_));
         }
         return src.size();
     }
@@ -183,8 +183,8 @@ public:
     void move(index offset)
     {
         ptr_ += offset;
-        ACTL_ASSERT(std::data(buf_) <= ptr_);
-        if (ptr_ == std::end(buf_))
+        ACTL_ASSERT(ranges::data(buf_) <= ptr_);
+        if (ptr_ == ranges::end(buf_))
             overflow();
     }
 

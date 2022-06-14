@@ -21,7 +21,11 @@ struct equal_range_f
     static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs)
     {
         return std::equal(
-            std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), op);
+            ranges::begin(lhs),
+            ranges::end(lhs),
+            ranges::begin(rhs),
+            ranges::end(rhs),
+            op);
     }
 };
 inline constexpr operation_composer<equal_range_f> equal_range;

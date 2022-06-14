@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/range/access/all.hpp>
 #include <iterator>
 
 namespace ac {
@@ -18,7 +19,7 @@ template <class T> // & is needed for C arrays
 struct is_range<
     T,
     std::void_t<decltype(
-        std::begin(std::declval<T&>()), std::end(std::declval<T&>()))>>
+        ranges::begin(std::declval<T&>()), ranges::end(std::declval<T&>()))>>
     : std::true_type
 {};
 
@@ -33,7 +34,7 @@ template <class T> // & is needed for C arrays
 struct is_contiguous_range<
     T,
     std::void_t<decltype(
-        std::data(std::declval<T&>()), std::size(std::declval<T&>()))>>
+        ranges::data(std::declval<T&>()), ranges::size(std::declval<T&>()))>>
     : std::true_type
 {};
 

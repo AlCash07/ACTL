@@ -45,7 +45,7 @@ public:
     {}
 
     template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-    constexpr span(Range&& r) : span{std::data(r), std::size(r)}
+    constexpr span(Range&& r) : span{ranges::data(r), ranges::size(r)}
     {}
 
     constexpr T* data() const
@@ -97,7 +97,7 @@ private:
 
 template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
 span(Range&&) -> span<
-    std::remove_pointer_t<decltype(std::data(std::declval<Range>()))>,
+    std::remove_pointer_t<decltype(ranges::data(std::declval<Range>()))>,
     static_size_v<std::remove_reference_t<Range>>>;
 
 template <class T, size_t N>

@@ -56,7 +56,7 @@ range_iterator_t<C> find(C& cont, T const& value)
     }
     else
     {
-        return std::find(std::begin(cont), std::end(cont), value);
+        return std::find(ranges::begin(cont), ranges::end(cont), value);
     }
 }
 

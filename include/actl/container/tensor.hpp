@@ -136,8 +136,8 @@ public:
     template <class InRange>
     tensor_data(size_t size, InRange data) : base_t{size}
     {
-        ACTL_ASSERT(size == std::size(data));
-        std::copy_n(std::begin(data), size, this->data());
+        ACTL_ASSERT(size == ranges::size(data));
+        std::copy_n(ranges::begin(data), size, this->data());
     }
 
     tensor_data(size_t size, T const& value) : base_t{size}
@@ -274,12 +274,13 @@ public:
 
     explicit tensor_shape(nd_initializer_list_t<T, N> il)
         : base_dims{}
-        , base_data{(compute_dimensions<0>(il), size()), il, std::data(dims_)}
+        , base_data{
+              (compute_dimensions<0>(il), size()), il, ranges::data(dims_)}
     {}
 
     constexpr size_t rank() const
     {
-        return std::size(dims_);
+        return ranges::size(dims_);
     }
 
     size_t size() const
@@ -357,7 +358,7 @@ struct tensor_reference
     template <class TensorPtr>
     static type get(TensorPtr ptr, size_t i)
     {
-        span<Int, N - 1> dims{std::data(ptr->dimensions()) + 1, N - 1};
+        span<Int, N - 1> dims{ranges::data(ptr->dimensions()) + 1, N - 1};
         return type{dims, ptr->data() + i * compute_product(dims)};
     }
 };

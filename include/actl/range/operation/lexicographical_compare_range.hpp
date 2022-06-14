@@ -23,10 +23,10 @@ struct lexicographical_compare_range_f
     {
         // Can't use std::lexicographical_compare because it doesn't compare
         // 3-way.
-        auto lfirst = std::begin(lhs);
-        auto llast = std::end(lhs);
-        auto rfirst = std::begin(rhs);
-        auto rlast = std::end(rhs);
+        auto lfirst = ranges::begin(lhs);
+        auto llast = ranges::end(lhs);
+        auto rfirst = ranges::begin(rhs);
+        auto rlast = ranges::end(rhs);
         for (; (lfirst != llast) && (rfirst != rlast); ++lfirst, ++rfirst)
         {
             int const v = op(*lfirst, *rfirst);

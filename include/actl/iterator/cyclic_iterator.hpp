@@ -38,12 +38,12 @@ private:
 
     Iter begin() const
     {
-        return std::begin(*range_);
+        return ranges::begin(*range_);
     }
 
     Iter end() const
     {
-        return std::end(*range_);
+        return ranges::end(*range_);
     }
 
     void increment()
@@ -62,7 +62,8 @@ private:
 
     void advance(iter_difference_t<Iter> n)
     {
-        auto cycle = static_cast<iter_difference_t<Iter>>(std::size(*range_));
+        auto cycle =
+            static_cast<iter_difference_t<Iter>>(ranges::size(*range_));
         ACTL_ASSERT(abs(n) < cycle);
         if (n > 0)
         {
@@ -79,7 +80,7 @@ private:
         auto dist = rhs.base() - this->base();
         return dist >= 0 ? dist
                          : dist + static_cast<iter_difference_t<Iter>>(
-                                      std::size(*range_));
+                                      ranges::size(*range_));
     }
 
     Range* range_;
@@ -88,7 +89,7 @@ private:
 template <class Range>
 auto cyclic_begin(Range& range)
 {
-    return cyclic_iterator{range, std::begin(range)};
+    return cyclic_iterator{range, ranges::begin(range)};
 }
 
 } // namespace ac

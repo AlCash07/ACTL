@@ -132,7 +132,7 @@ template <class C>
 container_id<C> id_end(C const& cont)
 {
     if constexpr (is_random_access_range_v<C>)
-        return static_cast<container_id<C>>(std::size(cont));
+        return static_cast<container_id<C>>(ranges::size(cont));
     else
         return container_id<C>{cont.end()};
 }
@@ -158,7 +158,7 @@ template <class C>
 container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter)
 {
     if constexpr (is_random_access_range_v<C>)
-        return static_cast<container_id<C>>(iter - std::begin(cont));
+        return static_cast<container_id<C>>(iter - ranges::begin(cont));
     else
         return container_id<C>{iter};
 }
@@ -169,7 +169,7 @@ range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
     if constexpr (is_random_access_range_v<C>)
     {
         ACTL_ASSERT(0 <= id && id <= id_end(cont));
-        return std::begin(cont) + id;
+        return ranges::begin(cont) + id;
     }
     else
     {

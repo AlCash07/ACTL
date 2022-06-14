@@ -16,22 +16,22 @@ struct custom_array
 
 constexpr auto begin(custom_array const& a) noexcept
 {
-    return std::begin(a.arr);
+    return ac::ranges::begin(a.arr);
 }
 
 constexpr auto end(custom_array const& a) noexcept
 {
-    return std::end(a.arr);
+    return ac::ranges::end(a.arr);
 }
 
 constexpr auto data(custom_array const& a) noexcept
 {
-    return std::data(a.arr);
+    return ac::ranges::data(a.arr);
 }
 
 constexpr auto size(custom_array const& a) noexcept
 {
-    return std::size(a.arr);
+    return ac::ranges::size(a.arr);
 }
 
 } // namespace test

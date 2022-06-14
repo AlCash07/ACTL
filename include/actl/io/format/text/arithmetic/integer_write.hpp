@@ -38,7 +38,7 @@ public:
     explicit operator cspan<char>() const
     {
         size_t const size = static_cast<size_t>(data_[Size]);
-        return {std::end(data_) - 1 - size, size};
+        return {ranges::end(data_) - 1 - size, size};
     }
 
 private:

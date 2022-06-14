@@ -73,7 +73,7 @@ template <class Container>
 auto make_range(Container&& cont)
 {
     return make_range<range_properties<std::remove_reference_t<Container>>>(
-        std::begin(cont), std::end(cont));
+        ranges::begin(cont), ranges::end(cont));
 }
 
 template <class Container>

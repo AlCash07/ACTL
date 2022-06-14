@@ -23,7 +23,7 @@ struct conversion_sfinae<
         std::is_constructible_v<To, from_iter, from_iter>;
 
     static constexpr To convert(From const& x)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(To{std::begin(x), std::end(x)})
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(To{ranges::begin(x), ranges::end(x)})
 };
 
 } // namespace ac
