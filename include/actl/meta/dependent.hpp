@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/is_iterator.hpp>
+#include <iterator>
 #include <type_traits>
 
 namespace ac {
@@ -17,12 +17,6 @@ template <class T, class = void>
 struct traits
 {
     using type = T;
-};
-
-template <class T>
-struct traits<T, std::enable_if_t<is_iterator_v<std::remove_cv_t<T>>>>
-{
-    using type = std::iterator_traits<std::remove_cv_t<T>>;
 };
 
 template <class T, size_t N>

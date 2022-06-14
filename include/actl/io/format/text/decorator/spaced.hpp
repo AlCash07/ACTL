@@ -8,6 +8,7 @@
 
 #include <actl/io/core/batch.hpp>
 #include <actl/range/span.hpp>
+#include <string_view>
 
 namespace ac::io {
 
@@ -19,7 +20,11 @@ struct spaced
     Colon colon;
     bool separate = false;
 
-    explicit constexpr spaced(Space space, Colon colon)
+    explicit constexpr spaced(Space space, Colon const& colon)
+        : space{std::move(space)}, colon{colon}
+    {}
+
+    explicit constexpr spaced(Space space, Colon&& colon)
         : space{std::move(space)}, colon{std::move(colon)}
     {}
 
@@ -35,6 +40,9 @@ struct spaced
 };
 
 spaced()->spaced<char>;
+
+template <class Space, class Char, size_t N>
+spaced(Space, Char const (&)[N]) -> spaced<Space, std::basic_string_view<Char>>;
 
 template <class T>
 auto as_cspan(T const& x)

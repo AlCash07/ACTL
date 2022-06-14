@@ -105,7 +105,7 @@ public:
         return data_.first();
     }
 
-    bool evaluate(reference_t<iterator> x) const
+    bool evaluate(iter_reference_t<iterator> x) const
     {
         return data_.second()(x);
     }

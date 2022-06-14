@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/functional/deduce_noexcept.hpp>
+#include <actl/iterator/traits/dependent.hpp>
 #include <actl/meta/dependent.hpp>
 
 namespace ac {
@@ -14,7 +15,7 @@ namespace ac {
 struct iterator_core_access
 {
     template <class Iter>
-    static constexpr reference_t<Iter> dereference(Iter const& iter)
+    static constexpr decltype(auto) dereference(Iter const& iter)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.dereference())
 
     template <class Iter>
@@ -30,11 +31,11 @@ struct iterator_core_access
         AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.equals(rhs))
 
     template <class Iter>
-    static constexpr void advance(Iter& iter, difference_type_t<Iter> n)
+    static constexpr void advance(Iter& iter, iter_difference_t<Iter> n)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.advance(n))
 
     template <class Iter1, class Iter2>
-    static constexpr difference_type_t<Iter1> distance_to(
+    static constexpr iter_difference_t<Iter1> distance_to(
         Iter1 const& from, Iter2 const& to)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(from.distance_to(to))
 };

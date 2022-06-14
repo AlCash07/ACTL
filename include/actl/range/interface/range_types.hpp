@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/category/iterator.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/iterator/traits/dependent.hpp>
 #include <actl/utility/use_default.hpp>
 
 namespace ac::detail {
@@ -15,9 +15,9 @@ namespace ac::detail {
 template <class Iter, bool HasReverse = is_bidirectional_iterator_v<Iter>>
 struct range_ts
 {
-    using value_type = value_type_t<Iter>;
-    using reference = reference_t<Iter>;
-    using difference_type = difference_type_t<Iter>;
+    using value_type = iter_value_t<Iter>;
+    using reference = iter_reference_t<Iter>;
+    using difference_type = iter_difference_t<Iter>;
     using iterator = Iter;
 };
 
@@ -30,7 +30,7 @@ struct range_ts<Iter, true> : range_ts<Iter, false>
 template <class CIter, bool HasReverse = is_bidirectional_iterator_v<CIter>>
 struct crange_ts
 {
-    using const_reference = reference_t<CIter>;
+    using const_reference = iter_reference_t<CIter>;
     using const_iterator = CIter;
 };
 
