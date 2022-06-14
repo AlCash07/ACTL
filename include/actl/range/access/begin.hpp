@@ -13,7 +13,6 @@
 namespace ac::ranges {
 
 AC_DEFINE_HAS_MEMBER_F(begin)
-AC_DEFINE_HAS_NON_MEMBER_F(begin)
 
 struct begin_f
 {
@@ -23,15 +22,11 @@ struct begin_f
         return array;
     }
 
-    template <class Range, enable_int_if<has_member_f_begin_v<Range>> = 0>
+    template <class Range>
     constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.begin())
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(range.begin())
 
-    template <
-        class Range,
-        enable_int_if<
-            !has_member_f_begin_v<Range> && has_non_member_f_begin_v<Range&>> =
-            0>
+    template <class Range, enable_int_if<!has_member_f_begin_v<Range>> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(begin(range))
 };

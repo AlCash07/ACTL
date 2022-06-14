@@ -14,7 +14,6 @@
 namespace ac::ranges {
 
 AC_DEFINE_HAS_MEMBER_F(size)
-AC_DEFINE_HAS_NON_MEMBER_F(size)
 
 struct size_f
 {
@@ -24,14 +23,11 @@ struct size_f
         return {};
     }
 
-    template <class Range, enable_int_if<has_member_f_size_v<Range>> = 0>
+    template <class Range>
     constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.size())
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(range.size())
 
-    template <
-        class Range,
-        enable_int_if<
-            !has_member_f_size_v<Range> && has_non_member_f_size_v<Range&>> = 0>
+    template <class Range, enable_int_if<!has_member_f_size_v<Range>> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(size(range))
 };
