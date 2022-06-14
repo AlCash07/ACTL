@@ -49,7 +49,7 @@ auto as_cspan(T const& x)
 {
     if constexpr (is_contiguous_range_v<T>)
     {
-        return span<value_type_t<T> const>{x};
+        return span<range_value_t<T> const>{x};
     }
     else
     {

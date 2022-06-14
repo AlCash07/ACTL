@@ -11,7 +11,9 @@
 
 namespace ac {
 
-template <class VertexContainer = none, class T = value_type_t<VertexContainer>>
+template <
+    class VertexContainer = none,
+    class T = range_value_t<VertexContainer>>
 class vertex_list : public vertex_list<VertexContainer, none>
 {
     using base_t = vertex_list<VertexContainer, none>;
@@ -47,7 +49,7 @@ class vertex_list<VC, none>
 {
 public:
     using vertex_container =
-        rebind_container_t<VC, value_type_t<VC>>; // to handle none
+        rebind_container_t<VC, range_value_t<VC>>; // to handle none
     using vertex = container_id<vertex_container>;
     using vertex_iterator = container_id_iterator<vertex_container>;
 
@@ -71,7 +73,7 @@ public:
     template <bool B = RA, enable_int_if<B> = 0>
     void resize(index n)
     {
-        vertices_.resize(static_cast<size_type_t<vertex_container>>(n));
+        vertices_.resize(static_cast<range_size_t<vertex_container>>(n));
     }
 
     iterator_range<vertex_iterator> vertices() const
@@ -85,7 +87,7 @@ public:
     }
 
     vertex nth_vertex(
-        difference_type_t<container_id_iterator<vertex_container>> n) const
+        iter_difference_t<container_id_iterator<vertex_container>> n) const
     {
         ACTL_ASSERT(0 <= n && n < vertex_count());
         return *std::next(id_range(vertices_).begin(), n);

@@ -22,7 +22,7 @@ namespace detail {
 template <class R, class P>
 struct filtered_range_types
 {
-    using Iter = iterator_t<std::remove_reference_t<R>>;
+    using Iter = range_iterator_t<R>;
 
     struct iter_types : default_iterator_adaptor_types
     {
@@ -36,8 +36,7 @@ struct filtered_range_types
     {
     public:
         explicit iterator(
-            iterator_t<std::remove_reference_t<R>> iter,
-            filtered_range<R, P> const& range)
+            range_iterator_t<R> iter, filtered_range<R, P> const& range)
             : iterator_adaptor<iterator, Iter, iter_types>{iter}, range_{range}
         {
             find_next();
@@ -71,7 +70,7 @@ struct filtered_range_types
         filtered_range<R, P> const& range_;
     };
 
-    using size_type = size_type_t<remove_cvref_t<R>>;
+    using size_type = range_size_t<R>;
 };
 
 } // namespace detail

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <actl/std/stack.hpp>
 
 namespace ac {
@@ -32,9 +32,9 @@ protected:
     }
 
 public:
-    using value_type = value_type_t<Stack>;
-    using reference = reference_t<Stack>;
-    using size_type = size_type_t<Stack>;
+    using value_type = range_value_t<Stack>;
+    using reference = range_reference_t<Stack>;
+    using size_type = range_size_t<Stack>;
 
     static_assert(std::is_same_v<T, value_type>);
 

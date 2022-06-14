@@ -8,7 +8,7 @@
 
 #include <actl/geometry/point.hpp>
 #include <actl/geometry/traits.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 
 namespace ac {
 
@@ -25,7 +25,7 @@ struct is_polygon<T, std::void_t<typename T::is_polygon>> : std::true_type
 template <class T, bool = !is_polygon<T>::value && is_range_v<T>>
 struct is_multi_point
     : std::bool_constant<
-          std::is_same_v<point_tag, geometry::tag_t<value_type_t<T>>>>
+          std::is_same_v<point_tag, geometry::tag_t<range_value_t<T>>>>
 {};
 
 template <class T>
@@ -36,7 +36,7 @@ struct is_multi_point<T, false> : std::false_type
 
 template <class T>
 struct geometry_traits<T, std::enable_if_t<detail::is_multi_point<T>::value>>
-    : geometry_traits_base<multi_point_tag, value_type_t<T>>
+    : geometry_traits_base<multi_point_tag, range_value_t<T>>
 {};
 
 template <class T>
@@ -53,7 +53,7 @@ struct identity_functor
 };
 
 template <class T>
-identity_functor<reference_t<T>> get_to_point(T&)
+identity_functor<range_reference_t<T>> get_to_point(T&)
 {
     return {};
 }
@@ -62,11 +62,11 @@ template <class Indices, class Points>
 struct indexed_multi_point
 {
     static_assert(
-        is_range_v<Indices> && std::is_integral_v<value_type_t<Indices>> &&
-        std::is_same_v<geometry::tag_t<value_type_t<Points>>, point_tag>);
+        is_range_v<Indices> && std::is_integral_v<range_value_t<Indices>> &&
+        std::is_same_v<geometry::tag_t<range_value_t<Points>>, point_tag>);
 
-    using value_type = value_type_t<Points>;
-    using reference = reference_t<Indices>;
+    using value_type = range_value_t<Points>;
+    using reference = range_reference_t<Indices>;
 
     Indices indices;
     Points points;
@@ -95,7 +95,7 @@ struct indexed_multi_point
     {
         return [&p = imp.points](index x)
         {
-            return p[static_cast<size_type_t<Points>>(x)];
+            return p[static_cast<range_size_t<Points>>(x)];
         };
     }
 };

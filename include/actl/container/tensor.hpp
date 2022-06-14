@@ -128,7 +128,7 @@ template <size_t N, class Data>
 class tensor_data : public tensor_container<Data>
 {
     using base_t = tensor_container<Data>;
-    using T = value_type_t<base_t>;
+    using T = typename base_t::value_type;
 
 public:
     tensor_data(size_t size) : base_t{size} {}
@@ -249,8 +249,8 @@ class tensor_shape
 {
     using base_dims = tensor_dims<Dims>;
     using base_data = tensor_data<N, Data>;
-    using Int = value_type_t<Dims>;
-    using T = value_type_t<base_data>;
+    using Int = range_value_t<Dims>;
+    using T = typename base_data::value_type;
 
     using base_dims::dims_;
 
@@ -325,7 +325,8 @@ public:
     {}
 
     template <bool B = 0 < N, enable_int_if<B> = 0>
-    explicit tensor_shape(nd_initializer_list_t<value_type_t<base_t>, N> il)
+    explicit tensor_shape(
+        nd_initializer_list_t<typename base_t::value_type, N> il)
         : base_t{size(), il, dimensions()}
     {}
 
@@ -350,7 +351,7 @@ public:
 template <class T, size_t N, class Dims, bool = 1 < N>
 struct tensor_reference
 {
-    using Int = value_type_t<Dims>;
+    using Int = range_value_t<Dims>;
     using type = tensor_base<T*, span<Int, N - 1>>;
 
     template <class TensorPtr>
@@ -392,7 +393,7 @@ template <size_t N, class Data, class Dims>
 class tensor_subscript : public tensor_shape<N, Data, Dims>
 {
     using base_t = tensor_shape<N, Data, Dims>;
-    using T = value_type_t<base_t>;
+    using T = typename base_t::value_type;
 
 public:
     using reference = tensor_reference_t<T, N, Dims>;
@@ -403,7 +404,7 @@ public:
     constexpr auto dimension(size_t i) const
     {
         ACTL_ASSERT(0 <= i && i < this->rank());
-        return this->dimensions()[static_cast<size_type_t<Dims>>(i)];
+        return this->dimensions()[static_cast<range_size_t<Dims>>(i)];
     }
 
     reference operator[](size_t i)
@@ -424,7 +425,7 @@ class tensor_subscript<0, Data, Dims>
     : public tensor_shape<0, Data, static_array<size_t>>
 {
     using base_t = tensor_shape<0, Data, static_array<size_t>>;
-    using T = value_type_t<base_t>;
+    using T = typename base_t::value_type;
 
 public:
     using base_t::base_t;
@@ -446,7 +447,7 @@ template <class Data, class Dims>
 class tensor_base : public tensor_subscript<static_size_v<Dims>, Data, Dims>
 {
     using base_t = tensor_subscript<static_size_v<Dims>, Data, Dims>;
-    using T = value_type_t<base_t>;
+    using T = typename base_t::value_type;
 
 public:
     using size_type = size_t;

@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <actl/std/array.hpp>
 
 namespace ac {
@@ -18,12 +18,12 @@ template <class T, size_t N, class Array = std::array<T, N>>
 class array_as_vector
 {
 public:
-    using value_type = value_type_t<Array>;
-    using reference = reference_t<Array>;
-    using const_reference = reference_t<Array const>;
-    using iterator = iterator_t<Array>;
-    using const_iterator = iterator_t<Array const>;
-    using size_type = size_type_t<Array>;
+    using value_type = range_value_t<Array>;
+    using reference = range_reference_t<Array>;
+    using const_reference = range_reference_t<Array const>;
+    using iterator = range_iterator_t<Array>;
+    using const_iterator = range_iterator_t<Array const>;
+    using size_type = range_size_t<Array>;
 
     array_as_vector() : end_{array_.begin()} {}
 

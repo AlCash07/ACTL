@@ -15,7 +15,7 @@ namespace ac {
 
 namespace detail {
 
-template <class Dir, class V, class EC, class S, class T = value_type_t<EC>>
+template <class Dir, class V, class EC, class S, class T = range_value_t<EC>>
 class edge_list_edges : public edge_list_edges<Dir, V, EC, S, none>
 {
     using base_t = edge_list_edges<Dir, V, EC, S, none>;

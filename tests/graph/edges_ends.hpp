@@ -7,13 +7,13 @@
 #pragma once
 
 #include <actl/graph/traits.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <actl/std/vector.hpp>
 
 template <bool Directed, class Edges>
 auto get_ends(Edges const& es)
 {
-    using V = ac::vertex_t<ac::value_type_t<Edges>>;
+    using V = ac::vertex_t<ac::range_value_t<Edges>>;
     std::vector<std::pair<V, V>> res;
     for (auto e : es)
     {
@@ -32,7 +32,7 @@ auto get_ends(Edges const& es)
 template <class Edges>
 auto get_sources(Edges const& es)
 {
-    std::vector<ac::vertex_t<ac::value_type_t<Edges>>> res;
+    std::vector<ac::vertex_t<ac::range_value_t<Edges>>> res;
     for (auto e : es)
         res.emplace_back(e.source());
     return res;
@@ -41,7 +41,7 @@ auto get_sources(Edges const& es)
 template <class Edges>
 auto get_targets(Edges const& es)
 {
-    std::vector<ac::vertex_t<ac::value_type_t<Edges>>> res;
+    std::vector<ac::vertex_t<ac::range_value_t<Edges>>> res;
     for (auto e : es)
         res.emplace_back(e.target());
     return res;

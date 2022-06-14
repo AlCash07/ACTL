@@ -22,7 +22,7 @@ template <
         0>
 void sort_by_angle(Policy const& policy, U& points, point<T> const& origin)
 {
-    using ref = reference_t<U>;
+    using ref = range_reference_t<U>;
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
     first = std::partition(
@@ -51,7 +51,7 @@ template <
         0>
 void sort_by_angle(Policy const& policy, U& points)
 {
-    using ref = reference_t<U>;
+    using ref = range_reference_t<U>;
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
     first = std::partition(
@@ -62,7 +62,7 @@ void sort_by_angle(Policy const& policy, U& points)
         first,
         last,
         [to_point, &policy](ref x)
-        { return y_compare(policy, value_type_t<U>{}, to_point(x)); });
+        { return y_compare(policy, range_value_t<U>{}, to_point(x)); });
     auto comp = [to_point, &policy](ref lhs, ref rhs)
     {
         return left_turn(policy, to_point(lhs), to_point(rhs));

@@ -70,7 +70,7 @@ bool read_container(D& id, F& fmt, C& x)
     {
         for (; size > 0; --size)
         {
-            value_type_t<C> value;
+            range_value_t<C> value;
             if (!read(id, fmt, element_representation<C>(value)))
                 return false;
             emplace(x, std::move(value));
@@ -88,7 +88,7 @@ template <
     class Device,
     class Format,
     class R,
-    enable_int_if<is_range_v<R> && !std::is_const_v<value_type_t<R>>> = 0>
+    enable_int_if<is_range_v<R> && !std::is_const_v<range_value_t<R>>> = 0>
 bool read_final(Device& id, Format& fmt, R& x)
 {
     nested_scope_guard g{fmt};

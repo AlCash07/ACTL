@@ -8,7 +8,7 @@
 
 #include <actl/functional/deduce_noexcept.hpp>
 #include <actl/iterator/traits/dependent.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 
 namespace ac {
 

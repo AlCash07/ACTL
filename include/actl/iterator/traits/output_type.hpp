@@ -10,7 +10,7 @@
 #pragma once
 
 #include <actl/iterator/traits/dependent.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <iterator>
 
 namespace ac {
@@ -30,19 +30,19 @@ struct output_type<std::ostream_iterator<T, CharT, Traits>>
 template <class Container>
 struct output_type<std::back_insert_iterator<Container>>
 {
-    using type = value_type_t<Container>;
+    using type = range_value_t<Container>;
 };
 
 template <class Container>
 struct output_type<std::front_insert_iterator<Container>>
 {
-    using type = value_type_t<Container>;
+    using type = range_value_t<Container>;
 };
 
 template <class Container>
 struct output_type<std::insert_iterator<Container>>
 {
-    using type = value_type_t<Container>;
+    using type = range_value_t<Container>;
 };
 
 template <class OutIter>

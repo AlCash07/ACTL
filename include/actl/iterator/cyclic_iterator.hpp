@@ -15,9 +15,9 @@ namespace ac {
 /// Iterator that moves from the last element to the first and vice versa.
 template <class Range>
 class cyclic_iterator
-    : public iterator_adaptor<cyclic_iterator<Range>, iterator_t<Range>>
+    : public iterator_adaptor<cyclic_iterator<Range>, range_iterator_t<Range>>
 {
-    using Iter = iterator_t<Range>;
+    using Iter = range_iterator_t<Range>;
 
     Iter& iter()
     {
@@ -60,9 +60,9 @@ private:
         --iter();
     }
 
-    void advance(difference_type_t<Iter> n)
+    void advance(iter_difference_t<Iter> n)
     {
-        auto cycle = static_cast<difference_type_t<Iter>>(std::size(*range_));
+        auto cycle = static_cast<iter_difference_t<Iter>>(std::size(*range_));
         ACTL_ASSERT(abs(n) < cycle);
         if (n > 0)
         {
@@ -74,11 +74,11 @@ private:
         }
     }
 
-    difference_type_t<Iter> distance_to(cyclic_iterator const& rhs) const
+    iter_difference_t<Iter> distance_to(cyclic_iterator const& rhs) const
     {
         auto dist = rhs.base() - this->base();
         return dist >= 0 ? dist
-                         : dist + static_cast<difference_type_t<Iter>>(
+                         : dist + static_cast<iter_difference_t<Iter>>(
                                       std::size(*range_));
     }
 

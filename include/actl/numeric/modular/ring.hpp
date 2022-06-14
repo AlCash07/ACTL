@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/meta/dependent.hpp>
 #include <cstdint>
 #include <iostream>
 
@@ -136,7 +135,7 @@ constexpr Z mod_div(Z const& x, Z const& y, R const& ring)
 template <class Ring>
 struct ring_element : Ring
 {
-    using value_type = value_type_t<Ring>;
+    using value_type = typename Ring::value_type;
 
     value_type value;
 

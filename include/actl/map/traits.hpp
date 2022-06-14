@@ -80,7 +80,7 @@ template <class T>
 using map_range_t = typename map_traits<T>::range_type;
 
 template <class T>
-using map_iterator_t = iterator_t<map_range_t<T>>;
+using map_iterator_t = range_iterator_t<map_range_t<T>>;
 
 // This struct guarantees that function declaration is found during unqualified
 // name lookup.

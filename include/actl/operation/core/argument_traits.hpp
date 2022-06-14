@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/meta/dependent.hpp>
 #include <actl/meta/type_traits.hpp>
+#include <actl/range/traits/dependent.hpp>
 
 namespace ac {
 
@@ -25,7 +25,7 @@ namespace detail {
 template <bool B, class T>
 struct value_if
 {
-    using type = value_type_t<raw_t<T>>;
+    using type = range_value_t<raw_t<T>>;
 };
 
 template <class T>

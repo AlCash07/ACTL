@@ -17,7 +17,7 @@ struct conversion_sfinae<
     To,
     From>
 {
-    using from_iter = iterator_t<std::remove_reference_t<From const&>>;
+    using from_iter = range_iterator_t<From const>;
 
     static constexpr bool value =
         std::is_constructible_v<To, from_iter, from_iter>;

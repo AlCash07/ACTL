@@ -6,7 +6,6 @@
 
 #include <actl/iterator/traits/dependent.hpp>
 
-// Containers preserve const for value_type but pointers don't.
 static_assert(std::is_same_v<int, ac::iter_value_t<int const* const>>);
 
 // Outer const affects reference for containers but not for pointers.

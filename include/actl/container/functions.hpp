@@ -15,7 +15,7 @@
 namespace ac {
 
 template <class C, class... Ts>
-std::pair<iterator_t<C>, bool> emplace(C& cont, Ts&&... args)
+std::pair<range_iterator_t<C>, bool> emplace(C& cont, Ts&&... args)
 {
     if constexpr (is_associative_range_v<C>)
     {
@@ -46,7 +46,7 @@ void erase(C& cont, T const& value)
 }
 
 template <class C, class T>
-iterator_t<C> find(C& cont, T const& value)
+range_iterator_t<C> find(C& cont, T const& value)
 {
     if constexpr (is_associative_range_v<C> && is_sorted_range_v<C>)
     {

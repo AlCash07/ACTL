@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/range/access/all.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/filtered_range.hpp>
 #include <actl/range/irange.hpp>
@@ -13,5 +14,5 @@
 #include <actl/range/limited_input_range.hpp>
 #include <actl/range/operation/all.hpp>
 #include <actl/range/span.hpp>
-#include <actl/range/traits/properties.hpp>
+#include <actl/range/traits/all.hpp>
 #include <actl/range/utility/all.hpp>

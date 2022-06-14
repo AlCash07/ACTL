@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/iterator/traits/category.hpp>
-#include <actl/meta/dependent.hpp>
 #include <actl/meta/type_traits.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <actl/utility/none.hpp>
 #include <actl_test/base/concept/regular.hpp>
 #include <actl_test/operation/relational_operators.hpp>

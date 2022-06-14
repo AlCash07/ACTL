@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <actl/std/vector.hpp>
 
 namespace ac {
@@ -18,10 +18,10 @@ template <class T, class Vector = std::vector<T>>
 class vector_as_queue
 {
 public:
-    using value_type = value_type_t<Vector>;
-    using reference = reference_t<Vector>;
-    using const_reference = reference_t<Vector const>;
-    using size_type = size_type_t<Vector>;
+    using value_type = range_value_t<Vector>;
+    using reference = range_reference_t<Vector>;
+    using const_reference = range_reference_t<Vector const>;
+    using size_type = range_size_t<Vector>;
 
     static_assert(std::is_same_v<T, value_type>);
 

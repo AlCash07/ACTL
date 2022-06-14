@@ -97,7 +97,7 @@ template <
     enable_int_if<is_string_v<S>> = 0>
 auto encode(Format&, S const& s)
 {
-    return span{std::basic_string_view<value_type_t<S>>{s}};
+    return span{std::basic_string_view<range_value_t<S>>{s}};
 }
 
 template <class Device, class... Ts>

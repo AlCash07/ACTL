@@ -20,7 +20,7 @@ struct range_to_tuple_impl;
 template <size_t... Is, class To, class From>
 struct range_to_tuple_impl<std::index_sequence<Is...>, To, From>
 {
-    using from_ref = reference_t<std::remove_reference_t<From>>;
+    using from_ref = range_reference_t<From>;
 
     static constexpr bool value =
         (... && can_convert_to_v<std::tuple_element_t<Is, To>, from_ref>);

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 
 namespace ac {
 
@@ -64,7 +64,7 @@ void test_iterator_noexcept_traversal(
     test_iterator_noexcept_traversal(iter, std::bidirectional_iterator_tag{});
     test_relational_operators_noexcept(iter);
     static_assert(noexcept(iter - iter));
-    difference_type_t<Iterator> n;
+    iter_difference_t<Iterator> n;
     static_assert(noexcept(iter += n));
     static_assert(noexcept(iter -= n));
     static_assert(noexcept(iter[n]));
@@ -76,7 +76,7 @@ void test_iterator_noexcept_construction(
 {
     test_iterator_noexcept_construction(
         iter, std::bidirectional_iterator_tag{});
-    difference_type_t<Iterator> n;
+    iter_difference_t<Iterator> n;
     static_assert(noexcept(iter + n));
     static_assert(noexcept(n + iter));
     static_assert(noexcept(iter - n));

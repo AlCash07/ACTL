@@ -4,10 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/range/access/begin.hpp>
-#include <actl/range/access/data.hpp>
-#include <actl/range/access/end.hpp>
-#include <actl/range/access/size.hpp>
+#include <actl/range/access/all.hpp>
 #include <iterator>
 
 namespace test {

@@ -32,12 +32,12 @@ struct adj_list_traits
 {
     using vertex = std::conditional_t<is_random_access_range_v<VC>, int, void*>;
 
-    using edge_selector = value_type_t<EC>;
+    using edge_selector = range_value_t<EC>;
 
     using edges = edge_list_impl<
         Dir,
         vertex,
-        rebind_t<EC, value_type_t<OEC>>,
+        rebind_t<EC, range_value_t<OEC>>,
         edge_selector>;
 
     // Out edge must contain target vertex as key in associative container.
@@ -51,7 +51,7 @@ struct adj_list_traits
     using out_edge_bundle = std::conditional_t<
         !std::is_same_v<edge_selector, none>,
         typename edges::edge_id,
-        value_type_t<OEC>>;
+        range_value_t<OEC>>;
 
     using out_edge_data = mimic_pair<out_edge_vertex, out_edge_bundle, 1>;
 
@@ -71,7 +71,7 @@ struct adj_list_traits
 
     using vertex_edges =
         vertex_edges<Dir, out_edge_container, in_edge_container>;
-    using vertex_data = mimic_pair<vertex_edges, value_type_t<VC>, 2>;
+    using vertex_data = mimic_pair<vertex_edges, range_value_t<VC>, 2>;
 
     using vertices = vertex_list<
         rebind_container_t<VC, adj_list_vertex_data<Dir, OEC, EC, VC>>>;

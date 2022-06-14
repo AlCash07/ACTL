@@ -9,7 +9,7 @@
 #pragma once
 
 #include <actl/category/range.hpp>
-#include <actl/meta/dependent.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <algorithm>
 
 namespace ac {
@@ -21,13 +21,13 @@ Function for_each(Range& dst, Function f)
 }
 
 template <class Range, class T>
-difference_type_t<Range> count(Range const& src, T const& value)
+range_difference_t<Range> count(Range const& src, T const& value)
 {
     return std::count(std::begin(src), std::end(src), value);
 }
 
 template <class Range0, class Range1>
-std::pair<iterator_t<Range0>, iterator_t<Range1>> mismatch(
+std::pair<range_iterator_t<Range0>, range_iterator_t<Range1>> mismatch(
     Range0 const& lhs, Range1 const& rhs)
 {
     return std::mismatch(
@@ -53,13 +53,13 @@ void generate(Range& dst, Generator gen)
 }
 
 template <class Range>
-iterator_t<Range> unique(Range& dst)
+range_iterator_t<Range> unique(Range& dst)
 {
     return std::unique(std::begin(dst), std::end(dst));
 }
 
 template <class Range, class BinaryPredicate>
-iterator_t<Range> unique(Range& dst, BinaryPredicate pred)
+range_iterator_t<Range> unique(Range& dst, BinaryPredicate pred)
 {
     return std::unique(std::begin(dst), std::end(dst), pred);
 }
@@ -77,7 +77,7 @@ void shuffle(Range& dst, UniformRandomNumberGenerator&& g)
 }
 
 template <class Range, class Predicate>
-iterator_t<Range> partition(Range& dst, Predicate pred)
+range_iterator_t<Range> partition(Range& dst, Predicate pred)
 {
     return std::partition(std::begin(dst), std::end(dst), pred);
 }
@@ -95,26 +95,26 @@ void sort(Range&& dst, Compare comp)
 }
 
 template <class Range, class T>
-iterator_t<Range const> lower_bound(Range const& src, T const& value)
+range_iterator_t<Range const> lower_bound(Range const& src, T const& value)
 {
     return std::lower_bound(std::begin(src), std::end(src), value);
 }
 
 template <class Range, class T, class Compare>
-iterator_t<Range const> lower_bound(
+range_iterator_t<Range const> lower_bound(
     Range const& src, T const& value, Compare comp)
 {
     return std::lower_bound(std::begin(src), std::end(src), value, comp);
 }
 
 template <class Range, class T>
-iterator_t<Range const> upper_bound(Range const& src, T const& value)
+range_iterator_t<Range const> upper_bound(Range const& src, T const& value)
 {
     return std::upper_bound(std::begin(src), std::end(src), value);
 }
 
 template <class Range, class T, class Compare>
-iterator_t<Range const> upper_bound(
+range_iterator_t<Range const> upper_bound(
     Range const& src, T const& value, Compare comp)
 {
     return std::upper_bound(std::begin(src), std::end(src), value, comp);
@@ -140,36 +140,39 @@ bool merge(Range0 const& lhs, Range1 const& rhs, OutIter dst, Compare comp)
 }
 
 template <class Range>
-iterator_t<Range const> min_element(Range const& src)
+range_iterator_t<Range const> min_element(Range const& src)
 {
     return std::min_element(std::begin(src), std::end(src));
 }
 
 template <class Range, class Compare>
-iterator_t<Range const> min_element(Range const& src, Compare comp)
+range_iterator_t<Range const> min_element(Range const& src, Compare comp)
 {
     return std::min_element(std::begin(src), std::end(src), comp);
 }
 
 template <class Range>
-iterator_t<Range const> max_element(Range const& src)
+range_iterator_t<Range const> max_element(Range const& src)
 {
     return std::max_element(std::begin(src), std::end(src));
 }
 
 template <class Range, class Compare>
-iterator_t<Range const> max_element(Range const& src, Compare comp)
+range_iterator_t<Range const> max_element(Range const& src, Compare comp)
 {
     return std::max_element(std::begin(src), std::end(src), comp);
 }
 
-template <class Range, class Iterator = iterator_t<Range const>>
+template <class Range, class Iterator = range_iterator_t<Range const>>
 std::pair<Iterator, Iterator> minmax_element(Range const& src)
 {
     return std::minmax_element(std::begin(src), std::end(src));
 }
 
-template <class Range, class Compare, class Iterator = iterator_t<Range const>>
+template <
+    class Range,
+    class Compare,
+    class Iterator = range_iterator_t<Range const>>
 std::pair<Iterator, Iterator> minmax_element(Range const& src, Compare comp)
 {
     return std::minmax_element(std::begin(src), std::end(src), comp);

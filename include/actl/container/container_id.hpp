@@ -10,10 +10,10 @@
 #include <actl/container/functions.hpp>
 #include <actl/iterator/facade/iterator_adaptor.hpp>
 #include <actl/iterator/integer_iterator.hpp>
-#include <actl/meta/dependent.hpp>
 #include <actl/numeric/bit/bit_cast.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
 #include <actl/range/iterator_range.hpp>
+#include <actl/range/traits/dependent.hpp>
 #include <cstdint>
 
 namespace ac {
@@ -79,7 +79,7 @@ struct category<iterator_id<Iter>> : category<Iter>
 template <class C>
 struct container_id_traits<C, true, false>
 {
-    using id = iterator_id<iterator_t<C const>>;
+    using id = iterator_id<range_iterator_t<C const>>;
     using iterator = id;
 };
 
@@ -155,7 +155,7 @@ auto id_range(C const& cont)
 }
 
 template <class C>
-container_id<C> iterator_to_id(C const& cont, iterator_t<C const> iter)
+container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter)
 {
     if constexpr (is_random_access_range_v<C>)
         return static_cast<container_id<C>>(iter - std::begin(cont));
@@ -164,7 +164,7 @@ container_id<C> iterator_to_id(C const& cont, iterator_t<C const> iter)
 }
 
 template <class C>
-iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
+range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
 {
     if constexpr (is_random_access_range_v<C>)
     {
@@ -191,24 +191,24 @@ void id_check(C& cont, container_id<C> id)
 }
 
 template <class C>
-reference_t<C> id_at(C& cont, container_id<C> id)
+range_reference_t<C> id_at(C& cont, container_id<C> id)
 {
     id_check(cont, id);
     if constexpr (is_random_access_range_v<C>)
-        return cont[static_cast<size_type_t<C>>(id)];
+        return cont[static_cast<range_size_t<C>>(id)];
     else
         // const_cast is required because id contains a const_iterator.
         // TODO: this cast allows modification of set key, which may lead to
         // bugs.
-        return const_cast<reference_t<C>>(*id.base());
+        return const_cast<range_reference_t<C>>(*id.base());
 }
 
 template <class C>
-reference_t<C const> id_at(C const& cont, container_id<C> id)
+range_reference_t<C const> id_at(C const& cont, container_id<C> id)
 {
     id_check(cont, id);
     if constexpr (is_random_access_range_v<C>)
-        return cont[static_cast<size_type_t<C>>(id)];
+        return cont[static_cast<range_size_t<C>>(id)];
     else
         return *id.base();
 }

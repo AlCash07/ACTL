@@ -28,8 +28,8 @@ template <
     class OEC,
     class EC,
     class VC,
-    class S = value_type_t<EC>,
-    class T = value_type_t<OEC>>
+    class S = range_value_t<EC>,
+    class T = range_value_t<OEC>>
 class adj_list_edges : public adj_list_edges<Dir, OEC, EC, VC, S, none>
 {
     using base_t = adj_list_edges<Dir, OEC, EC, VC, S, none>;
@@ -296,7 +296,7 @@ public:
     using typename base_t::edge;
     using typename base_t::vertex;
 
-    using edge_selector = value_type_t<EC>;
+    using edge_selector = range_value_t<EC>;
     using edge_iterator = typename detail::edge_iter<adjacency_list>::type;
     using out_edge = typename base_t::out_iter;
     using out_edge_iterator =
@@ -386,7 +386,7 @@ public:
     template <
         class... Ts,
         bool Unique = is_unique_range_v<VC>,
-        class T = value_type_t<VC>,
+        class T = range_value_t<VC>,
         enable_int_if<Unique> = 0>
     edge add_edge(T const& u, T const& v, Ts&&... args)
     {
