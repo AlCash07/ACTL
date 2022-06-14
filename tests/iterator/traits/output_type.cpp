@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/iterator/output_type.hpp>
+#include <actl/iterator/traits/output_type.hpp>
 #include <actl/std/deque.hpp>
 #include "test.hpp"
 

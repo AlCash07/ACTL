@@ -11,7 +11,7 @@
 
 #include <actl/assert.hpp>
 #include <actl/functional/deduce_noexcept.hpp>
-#include <actl/iterator/traits.hpp>
+#include <actl/iterator/traits/is_const_iterator.hpp>
 #include <actl/range/interface/range_types.hpp>
 #include <iterator>
 
