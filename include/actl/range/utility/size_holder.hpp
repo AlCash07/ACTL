@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/meta/dynamic_size.hpp>
+#include <actl/meta/static_size.hpp>
 
 namespace ac {
 

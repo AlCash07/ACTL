@@ -9,7 +9,6 @@
 #include <actl/meta/can_list_initialize.hpp>
 #include <actl/meta/constant.hpp>
 #include <actl/meta/constant_literals.hpp>
-#include <actl/meta/dynamic_size.hpp>
 #include <actl/meta/is_template_base_of.hpp>
 #include <actl/meta/nesting_depth.hpp>
 #include <actl/meta/rebind.hpp>
