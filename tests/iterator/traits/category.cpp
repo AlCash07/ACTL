@@ -10,6 +10,13 @@
 #include <vector>
 #include "test.hpp"
 
+static_assert(!ac::is_iterator_v<void>);
+static_assert(!ac::is_iterator_v<int[4]>);
+static_assert(!ac::is_iterator_v<void*>);
+static_assert(!ac::is_iterator_v<int (*)()>);
+static_assert(ac::is_iterator_v<int*>);
+static_assert(ac::is_iterator_v<std::vector<int>::iterator>);
+
 using InputIter = std::istream_iterator<int>;
 static_assert(ac::is_input_iterator_v<InputIter>);
 static_assert(!ac::is_forward_iterator_v<InputIter>);
@@ -31,3 +38,8 @@ using RandAccessIter = std::vector<int>::iterator;
 static_assert(ac::is_forward_iterator_v<RandAccessIter>);
 static_assert(ac::is_bidirectional_iterator_v<RandAccessIter>);
 static_assert(ac::is_random_access_iterator_v<RandAccessIter>);
+
+// static_assert(!ac::is_output_iterator_v<std::istream_iterator<int>>);
+// static_assert(ac::is_output_iterator_v<std::ostream_iterator<int>>);
+// static_assert(ac::is_output_iterator_v<std::vector<int>::iterator>);
+// static_assert(!ac::is_output_iterator_v<std::vector<int>::const_iterator>);

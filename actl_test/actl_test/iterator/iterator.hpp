@@ -30,9 +30,8 @@ template <class Iterator>
 void test_iterator(Iterator iter, std::input_iterator_tag)
 {
     test_iterator(iter, none{});
-    static_assert(std::is_base_of_v<
-                  std::input_iterator_tag,
-                  iterator_category_t<Iterator>>);
+    static_assert(
+        std::is_base_of_v<std::input_iterator_tag, iter_category_t<Iterator>>);
     static_assert(std::is_same_v<iter_reference_t<Iterator>, decltype(*iter)>);
 }
 
@@ -41,9 +40,9 @@ template <class Iterator>
 void test_iterator(Iterator iter, std::forward_iterator_tag)
 {
     test_iterator(iter, std::input_iterator_tag{});
-    static_assert(std::is_base_of_v<
-                  std::forward_iterator_tag,
-                  iterator_category_t<Iterator>>);
+    static_assert(
+        std::
+            is_base_of_v<std::forward_iterator_tag, iter_category_t<Iterator>>);
     if constexpr (is_equality_comparable_v<iter_reference_t<Iterator>>)
         CHECK(*iter == *iter);
     Iterator prev = iter;
@@ -63,7 +62,7 @@ void test_iterator(Iterator iter, std::bidirectional_iterator_tag)
     test_iterator(iter, std::forward_iterator_tag{});
     static_assert(std::is_base_of_v<
                   std::bidirectional_iterator_tag,
-                  iterator_category_t<Iterator>>);
+                  iter_category_t<Iterator>>);
     static_assert(std::is_same_v<Iterator&, decltype(--iter)>);
     static_assert(std::is_same_v<Iterator, decltype(iter--)>);
     Iterator prev = iter;
@@ -86,7 +85,7 @@ void test_random_access_iterator(Iterator i, Iterator j)
     test_iterator(i, std::bidirectional_iterator_tag{});
     static_assert(std::is_base_of_v<
                   std::random_access_iterator_tag,
-                  iterator_category_t<Iterator>>);
+                  iter_category_t<Iterator>>);
     test_relational_operators_for_equal_values(i, i);
     test_relational_operators_for_different_values(i, j);
     static_assert(std::is_same_v<iter_difference_t<Iterator>, decltype(j - i)>);

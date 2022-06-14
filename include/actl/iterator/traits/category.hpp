@@ -6,17 +6,41 @@
 
 #pragma once
 
-#include <actl/iterator/traits/is_iterator.hpp>
+#include <actl/iterator/traits/dependent.hpp>
+#include <actl/meta/type_traits.hpp>
 
 namespace ac {
 
+namespace detail {
+
+template <class T, class = void>
+struct is_iter : std::false_type
+{};
+
 template <class T>
-using iterator_category_t = typename std::iterator_traits<T>::iterator_category;
+struct is_iter<
+    T,
+    std::void_t<iter_difference_t<T>, decltype(++std::declval<T&>())>>
+    : std::true_type
+{};
+
+} // namespace detail
+
+template <class T, class = void>
+struct is_iterator : detail::is_iter<T>
+{};
+
+// https://en.cppreference.com/w/cpp/iterator/input_or_output_iterator
+template <class T>
+inline constexpr bool is_iterator_v = is_iterator<T>::value;
+
+template <class T>
+using iter_category_t = typename std::iterator_traits<T>::iterator_category;
 
 namespace detail {
 
 template <class T, class Category, bool = is_iterator_v<T>>
-struct has_iterator_category : std::is_base_of<Category, iterator_category_t<T>>
+struct has_iterator_category : std::is_base_of<Category, iter_category_t<T>>
 {};
 
 template <class T, class Category>

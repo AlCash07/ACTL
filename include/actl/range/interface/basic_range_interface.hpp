@@ -50,7 +50,7 @@ struct range_interface_selector
 template <
     class Range,
     class Types,
-    class Category = iterator_category_t<typename Types::iterator>>
+    class Category = iter_category_t<typename Types::iterator>>
 using range_interface_selector_t =
     typename range_interface_selector<Range, Types, Category>::type;
 

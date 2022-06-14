@@ -21,7 +21,7 @@ template <class Iter, class T>
 struct deduced_iter_types
 {
     using iterator_category =
-        deduce_t<typename T::iterator_category, iterator_category_t<Iter>>;
+        deduce_t<typename T::iterator_category, iter_category_t<Iter>>;
     using value_type = deduce_t<typename T::value_type, iter_value_t<Iter>>;
     using reference = deduce_t<typename T::reference, iter_reference_t<Iter>>;
     using difference_type =

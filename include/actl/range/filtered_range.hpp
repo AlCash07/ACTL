@@ -29,7 +29,7 @@ struct filtered_range_types
         using iterator_category = std::conditional_t<
             is_random_access_iterator_v<Iter>,
             std::bidirectional_iterator_tag,
-            iterator_category_t<Iter>>;
+            iter_category_t<Iter>>;
     };
 
     class iterator : public iterator_adaptor<iterator, Iter, iter_types>
