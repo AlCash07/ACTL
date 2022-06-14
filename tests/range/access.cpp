@@ -5,7 +5,9 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/range/access/begin.hpp>
+#include <actl/range/access/data.hpp>
 #include <actl/range/access/end.hpp>
+#include <actl/range/access/size.hpp>
 #include <iterator>
 
 namespace test {
@@ -25,8 +27,22 @@ constexpr auto end(custom_array const& a) noexcept
     return std::end(a.arr);
 }
 
+constexpr auto data(custom_array const& a) noexcept
+{
+    return std::data(a.arr);
+}
+
+constexpr auto size(custom_array const& a) noexcept
+{
+    return std::size(a.arr);
+}
+
 } // namespace test
 
 constexpr test::custom_array arr{1, 2, 3, 4};
 static_assert(1 == *ac::ranges::begin(arr));
 static_assert(4 == *(ac::ranges::end(arr) - 1));
+
+static_assert(1 == *ac::ranges::data(arr));
+
+static_assert(4 == ac::ranges::size(arr));
