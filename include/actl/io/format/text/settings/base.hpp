@@ -22,7 +22,7 @@ public:
     template <class T>
     explicit constexpr base_t(T x) : value{static_cast<uint8_t>(x)}
     {
-        ACTL_ASSERT(x == 0 || 1 < x && x <= 36);
+        AC_ASSERT(x == 0 || 1 < x && x <= 36);
     }
 
     base_t& operator=(size_t x)

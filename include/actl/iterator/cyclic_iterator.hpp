@@ -28,7 +28,7 @@ public:
     explicit cyclic_iterator(Range& range, Iter iter)
         : iterator_adaptor<cyclic_iterator<Range>, Iter>{iter}, range_{&range}
     {
-        ACTL_ASSERT(!std::empty(range));
+        AC_ASSERT(!std::empty(range));
         if (iter == end())
             this->base_ref() = begin();
     }
@@ -64,7 +64,7 @@ private:
     {
         auto cycle =
             static_cast<iter_difference_t<Iter>>(ranges::size(*range_));
-        ACTL_ASSERT(abs(n) < cycle);
+        AC_ASSERT(abs(n) < cycle);
         if (n > 0)
         {
             iter() += n - (n >= (end() - iter()) ? cycle : 0);

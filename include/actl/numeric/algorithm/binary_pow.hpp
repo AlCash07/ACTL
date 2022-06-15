@@ -13,7 +13,7 @@ namespace ac {
 template <class T, class Int>
 T binary_pow(T value, Int power)
 {
-    ACTL_ASSERT(power >= 0);
+    AC_ASSERT(power >= 0);
     T res{1};
     if (power == 0)
         return res;

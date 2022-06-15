@@ -28,7 +28,7 @@ public:
     void move(index offset)
     {
         ptr_ += offset;
-        ACTL_ASSERT(data_.begin() <= ptr_ && ptr_ <= end());
+        AC_ASSERT(data_.begin() <= ptr_ && ptr_ <= end());
     }
 
     bool eof() const

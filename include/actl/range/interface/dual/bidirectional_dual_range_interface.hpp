@@ -17,10 +17,9 @@ class bidirectional_non_const_range_interface
 {
 public:
     constexpr decltype(auto) back() //
-        noexcept(
-            ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end()))
+        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end()))
     {
-        ACTL_ASSERT(!this->empty());
+        AC_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
     }

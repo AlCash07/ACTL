@@ -16,7 +16,7 @@ template <class Policy, index N, class T0, class T1>
 auto distance(
     Policy const& policy, point<T0, N> const& p, plane<T1, N> const& pl)
 {
-    ACTL_ASSERT(!degenerate(pl));
+    AC_ASSERT(!degenerate(pl));
     return ratio(policy, abs(pl(policy, p)), norm(policy, pl.normal));
 }
 

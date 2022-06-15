@@ -19,7 +19,7 @@ template <class Policy, class T, class U>
 enum within within(
     Policy const& policy, point<T> const& p, polygon<U> const& triangle)
 {
-    ACTL_ASSERT(triangle.size() == 3);
+    AC_ASSERT(triangle.size() == 3);
     orientation2d signs[3] = {};
     auto it = cyclic_begin(triangle);
     for (index i = 0; i < 3; ++i, ++it)

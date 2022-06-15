@@ -114,8 +114,8 @@ private:
     // division.
     constexpr Int distance_to(integer_iterator_with_step const& rhs) const
     {
-        ACTL_ASSERT(rhs.step_ == step_);
-        ACTL_ASSERT((rhs.value_ - value_) % step_ == 0);
+        AC_ASSERT(rhs.step_ == step_);
+        AC_ASSERT((rhs.value_ - value_) % step_ == 0);
         return (rhs.value_ - value_) / step_;
     }
 

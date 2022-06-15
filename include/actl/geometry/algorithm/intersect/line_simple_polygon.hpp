@@ -26,7 +26,7 @@ OutIter intersect(
 {
     auto& policy = lsp.policy;
     // TODO: fix the case when polygon touches the line.
-    ACTL_ASSERT(!degenerate(policy, l));
+    AC_ASSERT(!degenerate(policy, l));
     auto vertex_sgn = [&](auto iter)
     {
         return static_cast<int>(orientation(policy, *iter, l));

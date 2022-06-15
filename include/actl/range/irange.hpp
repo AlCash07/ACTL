@@ -54,7 +54,7 @@ auto drange(Int first)
 template <class Int, class StepType>
 auto irange(Int first, Int last, StepType step)
 {
-    ACTL_ASSERT(step != 0);
+    AC_ASSERT(step != 0);
     auto begin = integer_iterator_with_step<Int>{first, step};
     if (step > 0 ? (first >= last) : (first < last))
         return make_range(begin, begin);

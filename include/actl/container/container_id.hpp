@@ -168,7 +168,7 @@ range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
 {
     if constexpr (is_random_access_range_v<C>)
     {
-        ACTL_ASSERT(0 <= id && id <= id_end(cont));
+        AC_ASSERT(0 <= id && id <= id_end(cont));
         return ranges::begin(cont) + id;
     }
     else
@@ -182,11 +182,11 @@ void id_check(C& cont, container_id<C> id)
 {
     if constexpr (is_random_access_range_v<C>)
     {
-        ACTL_ASSERT(0 <= id && id < id_end(cont));
+        AC_ASSERT(0 <= id && id < id_end(cont));
     }
     else
     {
-        ACTL_ASSERT(id != id_end(cont));
+        AC_ASSERT(id != id_end(cont));
     }
 }
 

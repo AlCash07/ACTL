@@ -49,7 +49,7 @@ private:
 
     void increment()
     {
-        ACTL_ASSERT(device_);
+        AC_ASSERT(device_);
         if (!io::read(*device_, value_))
             device_ = nullptr;
     }

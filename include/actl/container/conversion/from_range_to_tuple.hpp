@@ -26,10 +26,10 @@ struct range_to_tuple_impl<std::index_sequence<Is...>, To, From>
         (... && can_convert_to_v<std::tuple_element_t<Is, To>, from_ref>);
 
     static constexpr To convert(From&& x) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT() && noexcept(To{
+        AC_ASSERT_IS_NOEXCEPT() && noexcept(To{
             convert_to<std::tuple_element_t<Is, To>>(x[Is])...}))
     {
-        ACTL_ASSERT(std::tuple_size_v<To> == x.size());
+        AC_ASSERT(std::tuple_size_v<To> == x.size());
         return To{convert_to<std::tuple_element_t<Is, To>>(x[Is])...};
     }
 };

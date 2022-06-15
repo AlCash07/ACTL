@@ -23,7 +23,7 @@ OutIter intersect(
     OutIter dst)
 {
     auto& policy = lsp.policy;
-    ACTL_ASSERT(!degenerate(policy, l));
+    AC_ASSERT(!degenerate(policy, l));
     auto right = cyclic_iterator{
         poly,
         extreme_vertex(policy, poly, [&l](auto const&) { return l.vector; })};

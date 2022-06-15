@@ -17,9 +17,9 @@ struct conversion<constant<To>, From>
     static constexpr bool value = std::is_constructible_v<decltype(To), From>;
 
     static constexpr constant<To> convert(From&& x) noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT())
+        AC_ASSERT_IS_NOEXCEPT())
     {
-        ACTL_ASSERT(x == To);
+        AC_ASSERT(x == To);
         return {};
     }
 };

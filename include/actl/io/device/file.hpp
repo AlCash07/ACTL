@@ -35,7 +35,7 @@ class in_file : public device<Mode, Char>
 public:
     explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own}
     {
-        ACTL_ASSERT(file);
+        AC_ASSERT(file);
     }
 
     explicit in_file(char const* filename)
@@ -91,7 +91,7 @@ public:
     {
         int res = std::fseek(
             this->file_, offset * static_cast<index>(sizeof(Char)), SEEK_CUR);
-        ACTL_ASSERT(res == 0);
+        AC_ASSERT(res == 0);
     }
 };
 

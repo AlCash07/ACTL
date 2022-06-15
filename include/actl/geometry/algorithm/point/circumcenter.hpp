@@ -18,7 +18,7 @@ auto circumcenter(
     point<T1> const& b,
     point<T2> const& c)
 {
-    ACTL_ASSERT(!collinear(policy, a, b, c));
+    AC_ASSERT(!collinear(policy, a, b, c));
     using T = geometry::scalar_t<T0, T1, T2>;
     // TODO: use actual return type of intersect.
     point<decltype(ratio(policy, T{}, T{}))> res;

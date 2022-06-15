@@ -19,7 +19,7 @@ public:
 
     constexpr size_holder(size_t n [[maybe_unused]])
     {
-        ACTL_ASSERT(n == N);
+        AC_ASSERT(n == N);
     }
 
     static constexpr size_t size()

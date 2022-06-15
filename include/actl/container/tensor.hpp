@@ -73,7 +73,7 @@ public:
 
     tensor_container(size_t size)
     {
-        ACTL_ASSERT(size == Size);
+        AC_ASSERT(size == Size);
     }
 
     T* data()
@@ -136,7 +136,7 @@ public:
     template <class InRange>
     tensor_data(size_t size, InRange data) : base_t{size}
     {
-        ACTL_ASSERT(size == ranges::size(data));
+        AC_ASSERT(size == ranges::size(data));
         std::copy_n(ranges::begin(data), size, this->data());
     }
 
@@ -174,7 +174,7 @@ private:
         Dims dims,
         size_t const* strides)
     {
-        ACTL_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
+        AC_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N)
         {
             for (auto const& x : il)
@@ -404,19 +404,19 @@ public:
 
     constexpr auto dimension(size_t i) const
     {
-        ACTL_ASSERT(0 <= i && i < this->rank());
+        AC_ASSERT(0 <= i && i < this->rank());
         return this->dimensions()[static_cast<range_size_t<Dims>>(i)];
     }
 
     reference operator[](size_t i)
     {
-        ACTL_ASSERT(0 <= i && i < dimension(0));
+        AC_ASSERT(0 <= i && i < dimension(0));
         return tensor_reference<T, N, Dims>::get(this, i);
     }
 
     const_reference operator[](size_t i) const
     {
-        ACTL_ASSERT(0 <= i && i < dimension(0));
+        AC_ASSERT(0 <= i && i < dimension(0));
         return tensor_reference<T const, N, Dims>::get(this, i);
     }
 };
@@ -545,14 +545,14 @@ private:
     template <size_t I>
     size_t get_index(size_t res) const
     {
-        ACTL_ASSERT(I == this->rank());
+        AC_ASSERT(I == this->rank());
         return res;
     }
 
     template <size_t I, class... Ints>
     size_t get_index(size_t res, size_t i, Ints... is) const
     {
-        ACTL_ASSERT(0 <= i && i < this->dimension(I));
+        AC_ASSERT(0 <= i && i < this->dimension(I));
         if constexpr (I > 0)
             res *= this->dimension(I);
         return get_index<I + 1>(res + i, is...);

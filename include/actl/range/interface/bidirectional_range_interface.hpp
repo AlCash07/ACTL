@@ -15,10 +15,10 @@ class bidirectional_range_interface
     : public basic_range_interface<Derived, Types>
 {
 public:
-    constexpr decltype(auto) back() const noexcept(
-        ACTL_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end()))
+    constexpr decltype(auto) back() const
+        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end()))
     {
-        ACTL_ASSERT(!this->empty());
+        AC_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
     }

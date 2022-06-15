@@ -99,7 +99,7 @@ public:
         // TODO: support move fully along the underlying device, not just along
         // the buffer.
         ptr_ += offset;
-        ACTL_ASSERT(ranges::data(this->buf_) <= ptr_);
+        AC_ASSERT(ranges::data(this->buf_) <= ptr_);
         if (ptr_ == end_)
             underflow();
     }
@@ -183,7 +183,7 @@ public:
     void move(index offset)
     {
         ptr_ += offset;
-        ACTL_ASSERT(ranges::data(buf_) <= ptr_);
+        AC_ASSERT(ranges::data(buf_) <= ptr_);
         if (ptr_ == ranges::end(buf_))
             overflow();
     }

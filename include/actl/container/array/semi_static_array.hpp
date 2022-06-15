@@ -69,9 +69,9 @@ public:
         : dynamic_values{static_cast<T>(x0), static_cast<T>(xs)...}
     {}
 
-    constexpr T operator[](size_t i) const noexcept(ACTL_ASSERT_IS_NOEXCEPT())
+    constexpr T operator[](size_t i) const noexcept(AC_ASSERT_IS_NOEXCEPT())
     {
-        ACTL_ASSERT(i < size());
+        AC_ASSERT(i < size());
         if (static_values[i] != dynamic_extent<T>)
             return static_values[i];
         else

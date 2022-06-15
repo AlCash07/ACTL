@@ -73,7 +73,7 @@ public:
 
     void pop()
     {
-        ACTL_ASSERT(begin_ < vector_.size());
+        AC_ASSERT(begin_ < vector_.size());
         ++begin_;
     }
 

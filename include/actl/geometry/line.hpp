@@ -70,7 +70,7 @@ struct static_kind
 
     void operator=(line_kind kind)
     {
-        ACTL_ASSERT(Kind == kind);
+        AC_ASSERT(Kind == kind);
     }
 };
 
@@ -84,7 +84,7 @@ public:
 
     void operator=(line_kind kind)
     {
-        ACTL_ASSERT(is_valid(kind));
+        AC_ASSERT(is_valid(kind));
         kind_ = kind;
     }
 

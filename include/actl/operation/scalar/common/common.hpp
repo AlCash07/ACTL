@@ -35,7 +35,7 @@ struct common_f : scalar_operation<common_f, 2>
     template <class T>
     static T eval_scalar(T x, T y)
     {
-        ACTL_ASSERT(x == y);
+        AC_ASSERT(x == y);
         return x;
     }
 
@@ -65,7 +65,7 @@ struct common_f : scalar_operation<common_f, 2>
     template <auto X, class U, enable_int_if<std::is_integral_v<U>> = 0>
     static auto eval_scalar(constant<X> x, [[maybe_unused]] U y)
     {
-        ACTL_ASSERT(X == y);
+        AC_ASSERT(X == y);
         return x;
     }
 

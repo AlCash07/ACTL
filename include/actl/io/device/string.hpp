@@ -102,7 +102,7 @@ public:
     void move(index offset)
     {
         pos_ = static_cast<size_t>(static_cast<index>(pos_) + offset);
-        ACTL_ASSERT(pos_ <= s_.size());
+        AC_ASSERT(pos_ <= s_.size());
     }
 
     bool eof() const

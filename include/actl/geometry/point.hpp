@@ -222,7 +222,7 @@ template <class Policy, index N, class T0, class T1>
 constexpr auto perform(
     Div, Policy const& policy, point<T0, N> const& lhs, T1 const& factor)
 {
-    ACTL_ASSERT(!equal(policy, factor, 0));
+    AC_ASSERT(!equal(policy, factor, 0));
     return detail::apply<N>(
         [&policy, &factor](T0 const& x) { return div(policy, x, factor); },
         lhs);

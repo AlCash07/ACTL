@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifndef ACTL_ASSERT
+#ifndef AC_ASSERT
 #ifdef ACTL_DEBUG
 
 #include <stdexcept>
@@ -18,7 +18,7 @@
 #define FUNCTION_NAME __PRETTY_FUNCTION__
 #endif
 
-#define ACTL_ASSERT(condition)                                  \
+#define AC_ASSERT(condition)                                    \
     if (!(condition))                                           \
     {                                                           \
         throw std::runtime_error(                               \
@@ -28,13 +28,13 @@
 
 #else
 
-#define ACTL_ASSERT(condition) ((void)0)
+#define AC_ASSERT(condition) ((void)0)
 
 #endif
 #endif
 
 #ifdef ACTL_DEBUG
-#define ACTL_ASSERT_IS_NOEXCEPT() 0
+#define AC_ASSERT_IS_NOEXCEPT() 0
 #else
-#define ACTL_ASSERT_IS_NOEXCEPT() 1
+#define AC_ASSERT_IS_NOEXCEPT() 1
 #endif

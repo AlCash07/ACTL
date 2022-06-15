@@ -131,28 +131,28 @@ class iterator_facade
           iter_facade<Derived, Types, typename Types::iterator_category>
 {};
 
-#define ACTL_ITERATOR_OPERATOR(type, op, expr) \
-    template <class Iter, class T>             \
-    constexpr type operator op(                \
-        iterator_facade<Iter, T> const& lhs,   \
-        iterator_facade<Iter, T> const& rhs)   \
+#define AC_ITERATOR_OPERATOR(type, op, expr) \
+    template <class Iter, class T>           \
+    constexpr type operator op(              \
+        iterator_facade<Iter, T> const& lhs, \
+        iterator_facade<Iter, T> const& rhs) \
         AC_DEDUCE_NOEXCEPT_AND_RETURN(expr)
 
-ACTL_ITERATOR_OPERATOR(
+AC_ITERATOR_OPERATOR(
     bool,
     ==,
     iterator_core_access::equal(
         static_cast<Iter const&>(lhs), static_cast<Iter const&>(rhs)))
 
-ACTL_ITERATOR_OPERATOR(
+AC_ITERATOR_OPERATOR(
     auto,
     -,
     iterator_core_access::distance_to(
         static_cast<Iter const&>(rhs), static_cast<Iter const&>(lhs)))
 
-ACTL_ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
+AC_ITERATOR_OPERATOR(bool, <, lhs - rhs < 0)
 
-#undef ACTL_ITERATOR_OPERATOR
+#undef AC_ITERATOR_OPERATOR
 
 template <class Iter, class T>
 constexpr Iter operator+(

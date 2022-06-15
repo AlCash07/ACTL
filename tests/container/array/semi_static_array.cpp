@@ -74,7 +74,7 @@ void test_semi_static_array_interface_impl(
     /* element access */
     static_assert(((StaticValues == array.static_values[Is]) && ...));
     // TODO: fix this on MSVC
-    // static_assert(ACTL_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
+    // static_assert(AC_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
     static_assert(((values[Is] == array[Is]) && ...));
     static_assert(((noexcept(array[constant<Is>{}])) && ...));
     static_assert(

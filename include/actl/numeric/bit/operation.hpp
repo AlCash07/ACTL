@@ -15,14 +15,14 @@ namespace ac {
 template <class T = use_default, class I>
 constexpr auto bit(I const& i)
 {
-    ACTL_ASSERT(i >= 0);
+    AC_ASSERT(i >= 0);
     return deduce_t<T, I>{1} << i;
 }
 
 template <class T, class I>
 constexpr bool has_bit(T const& x, I const& i)
 {
-    ACTL_ASSERT(i >= 0);
+    AC_ASSERT(i >= 0);
     return (x >> i & T{1}) != 0;
 }
 

@@ -60,19 +60,19 @@ public:
 
     constexpr span<T> first(size_t n) const
     {
-        ACTL_ASSERT(n <= size());
+        AC_ASSERT(n <= size());
         return {data(), n};
     }
 
     constexpr span<T> last(size_t n) const
     {
-        ACTL_ASSERT(n <= size());
+        AC_ASSERT(n <= size());
         return {this->end() - n, n};
     }
 
     constexpr span<T> subspan(size_t offset, size_t count) const
     {
-        ACTL_ASSERT(offset + count <= size());
+        AC_ASSERT(offset + count <= size());
         return {data() + offset, count};
     }
 
@@ -88,7 +88,7 @@ private:
         constexpr storage_t(T* ptr, size_t count)
             : size_holder<N>{count}, data{ptr}
         {
-            ACTL_ASSERT(ptr || count == 0);
+            AC_ASSERT(ptr || count == 0);
         }
     };
 

@@ -14,7 +14,7 @@ namespace ac {
 template <class Policy, index N, class T0, class T1>
 auto invert(Policy const& policy, point<T0, N> const& p, T1 const& radius)
 {
-    ACTL_ASSERT(!degenerate(policy, p));
+    AC_ASSERT(!degenerate(policy, p));
     auto t = ratio(policy, sqr(policy, radius), dot(policy, p));
     return product(policy, p, t);
 }

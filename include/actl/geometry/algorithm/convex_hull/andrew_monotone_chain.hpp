@@ -40,7 +40,7 @@ span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, span<T> points)
         return !right_turn(policy, p, l);
     };
     index pivot = partition(points, comp) - points.begin();
-    ACTL_ASSERT(2 <= pivot);
+    AC_ASSERT(2 <= pivot);
     sort(points.first(pivot), less(policy));
     index last = 1;
     auto pop = [&](auto const& p)

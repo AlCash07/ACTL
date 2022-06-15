@@ -16,7 +16,7 @@ template <class Policy, index N, class T0, class T1>
 bool crosses(
     Policy const& policy, plane<T0, N> const& lhs, plane<T1, N> const& rhs)
 {
-    ACTL_ASSERT(!degenerate(policy, lhs) && !degenerate(policy, rhs));
+    AC_ASSERT(!degenerate(policy, lhs) && !degenerate(policy, rhs));
     if (!collinear(policy, lhs.normal, rhs.normal))
         return true;
     index i = 0;

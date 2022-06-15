@@ -51,7 +51,7 @@ void test_static_array_interface_impl(std::index_sequence<Is...>)
     static_assert(((Values == Array::data()[Is]) && ...));
     /* element access */
     // TODO: fix this on MSVC
-    // static_assert(ACTL_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
+    // static_assert(AC_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
     static_assert(((Values == array[Is]) && ...));
     static_assert(((noexcept(array[constant<Is>{}])) && ...));
     static_assert((

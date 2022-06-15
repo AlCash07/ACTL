@@ -78,7 +78,7 @@ template <
         0>
 auto nearest(Policy const& policy, T& points)
 {
-    ACTL_ASSERT(points.size() > 1);
+    AC_ASSERT(points.size() > 1);
     sort(points, less(policy));
     for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j)
     {

@@ -110,13 +110,13 @@ public:
     template <class... Ts>
     void emplace(Ts&&... args)
     {
-        ACTL_ASSERT(end_ < N);
+        AC_ASSERT(end_ < N);
         *end_++ = T{std::forward<Ts>(args)...};
     }
 
     void pop_back()
     {
-        ACTL_ASSERT(end_ != array_.begin());
+        AC_ASSERT(end_ != array_.begin());
         --end_;
     }
 

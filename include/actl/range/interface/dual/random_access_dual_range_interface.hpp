@@ -22,10 +22,10 @@ public:
     using typename base_t::size_type;
 
     constexpr decltype(auto) operator[](size_type n) //
-        noexcept(ACTL_ASSERT_IS_NOEXCEPT() && noexcept(
+        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(
             this->derived().begin()[static_cast<difference_type>(n)]))
     {
-        ACTL_ASSERT(0 <= n && n < size());
+        AC_ASSERT(0 <= n && n < size());
         return this->derived().begin()[static_cast<difference_type>(n)];
     }
 
