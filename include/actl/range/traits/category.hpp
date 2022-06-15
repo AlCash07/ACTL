@@ -56,15 +56,33 @@ struct range_category_impl
     : iter_to_range_category<iter_category_t<range_iterator_t<T>>>
 {};
 
-template <class T>
-struct range_category_impl<
-    T,
-    std::void_t<decltype( // & is needed for C arrays
-        ranges::data(std::declval<T&>()),
-        ranges::size(std::declval<T&>()))>>
+// Not all ranges with data() are contiguous.
+// For example, multi-dimensional arrays of rank > 1 are not.
+// Instead of using std::add_pointer like in the standard
+// https://en.cppreference.com/w/cpp/ranges/contiguous_range
+// we just compare references.
+// This is done to support custom pointers instead of just raw pointers.
+template <
+    class T,
+    bool = std::is_same_v<
+        range_reference_t<T>,
+        decltype(*ranges::data(std::declval<T&>()))>>
+struct contiguous_impl
 {
     using type = contiguous_range_tag;
 };
+
+template <class T>
+struct contiguous_impl<T, false>
+{};
+
+template <class T>
+struct range_category_impl<
+    T, // & is needed for C arrays
+    std::void_t<decltype(
+        ranges::data(std::declval<T&>()), ranges::size(std::declval<T&>()))>>
+    : contiguous_impl<T>
+{};
 
 } // namespace detail
 
@@ -74,10 +92,10 @@ struct range_category
 
 template <class T>
 struct range_category<
-    T,
-    std::void_t<decltype( // & is needed for C arrays
-        ranges::begin(std::declval<T&>()),
-        ranges::end(std::declval<T&>()))>> : detail::range_category_impl<T>
+    T, // & is needed for C arrays
+    std::void_t<decltype(
+        ranges::begin(std::declval<T&>()), ranges::end(std::declval<T&>()))>>
+    : detail::range_category_impl<T>
 {};
 
 template <class T>

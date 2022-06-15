@@ -40,3 +40,26 @@ static_assert(ac::is_range_v<CArray>);
 static_assert(ac::is_range_v<CArray const>);
 static_assert(ac::is_random_access_range_v<CArray>);
 static_assert(ac::is_contiguous_range_v<CArray>);
+
+/* Test for non-contiguous range with data() method */
+struct array2x2
+{
+    int arr[2][2];
+
+    auto begin()
+    {
+        return ac::ranges::begin(arr);
+    }
+    auto end()
+    {
+        return ac::ranges::end(arr);
+    }
+
+    auto data()
+    {
+        return &arr[0][0];
+    }
+};
+
+static_assert(ac::is_random_access_range_v<array2x2>);
+static_assert(!ac::is_contiguous_range_v<array2x2>);
