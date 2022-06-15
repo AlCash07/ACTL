@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/functional/deduce_noexcept.hpp>
-#include <actl/meta/constant.hpp>
 #include <actl/meta/has_member.hpp>
+#include <actl/meta/static_size.hpp>
 #include <actl/meta/type_traits.hpp>
 
 namespace ac::ranges {
@@ -17,17 +17,25 @@ AC_DEFINE_HAS_MEMBER_F(size)
 
 struct size_f
 {
-    template <class T, size_t N>
-    constexpr ac::constant<N> operator()(T (&)[N]) const noexcept
+    template <
+        class Range,
+        enable_int_if<static_size_v<Range> != dynamic_size> = 0>
+    constexpr static_size_t<Range> operator()(Range&&) const noexcept
     {
         return {};
     }
 
-    template <class Range>
+    template <
+        class Range,
+        enable_int_if<static_size_v<Range> == dynamic_size> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(range.size())
 
-    template <class Range, enable_int_if<!has_member_f_size_v<Range>> = 0>
+    template <
+        class Range,
+        enable_int_if<
+            static_size_v<Range> == dynamic_size &&
+            !has_member_f_size_v<Range>> = 0>
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(size(range))
 };

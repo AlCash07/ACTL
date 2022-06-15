@@ -20,7 +20,8 @@ template <class Range>
 using range_sentinel_t = decltype(ranges::end(std::declval<Range&>()));
 
 template <class Range>
-using range_size_t = decltype(ranges::size(std::declval<Range&>()));
+using range_size_t =
+    unwrap_constant_t<decltype(ranges::size(std::declval<Range&>()))>;
 
 template <class Range>
 using range_difference_t = iter_difference_t<range_iterator_t<Range>>;

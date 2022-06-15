@@ -9,6 +9,8 @@
 
 static_assert(3 == ac::static_size_v<int[3]>);
 static_assert(2 == ac::static_size_v<std::pair<int, float>>);
+/* reference */
+static_assert(3 == ac::static_size_v<int (&)[3]>);
 /* const type */
 static_assert(2 == ac::static_size_v<std::pair<int, float> const>);
 

@@ -55,4 +55,21 @@ struct is_constant<constant<X>> : std::true_type
 template <class T>
 inline constexpr bool is_constant_v = is_constant<T>::value;
 
+template <class T>
+struct unwrap_constant
+{
+    using type = T;
+};
+
+template <auto X>
+struct unwrap_constant<constant<X>>
+{
+    using type = decltype(X);
+};
+
+/// Provides the type of the underlying constant value.
+/// Types other than ac::constant are unchanged.
+template <class T>
+using unwrap_constant_t = typename unwrap_constant<T>::type;
+
 } // namespace ac

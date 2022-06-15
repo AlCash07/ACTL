@@ -5,7 +5,8 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/range/access/all.hpp>
-#include <iterator>
+#include <actl_test/base/equal_same_type.hpp>
+#include <array>
 
 namespace test {
 
@@ -42,4 +43,6 @@ static_assert(4 == *(ac::ranges::end(arr) - 1));
 
 static_assert(1 == *ac::ranges::data(arr));
 
-static_assert(4 == ac::ranges::size(arr));
+static_assert(equal_same_type(ac::size_constant<4>{}, ac::ranges::size(arr)));
+static_assert(equal_same_type(
+    ac::size_constant<3>{}, ac::ranges::size(std::array<int, 3>{})));
