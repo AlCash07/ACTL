@@ -43,7 +43,8 @@ struct from_tuple<To, From, std::index_sequence<Is...>>
 template <class To, class From>
 struct conversion_sfinae<
     std::enable_if_t<
-        !can_convert_as_ranges<To, From>() && is_tuple_v<remove_cvref_t<From>>>,
+        !can_convert_as_ranges<To, From>() &&
+        is_tuple_v<remove_cvref_t<From>> && !is_strict_range_v<From>>,
     To,
     From> : detail::from_tuple<To, From>
 {};

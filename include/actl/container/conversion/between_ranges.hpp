@@ -9,6 +9,7 @@
 #include <actl/container/conversion/convert_to.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/operation/copy.hpp>
+#include <actl/range/traits/is_strict_range.hpp>
 
 namespace ac {
 
@@ -34,7 +35,9 @@ struct range_construct_and_copy
                                       range_reference_t<To>,
                                       range_reference_t<From const>>;
 
-    static constexpr To convert(From const& x)
+    static constexpr To convert(From const& x) noexcept(
+        std::is_nothrow_default_constructible_v<To>&& noexcept(
+            ranges::copy(std::declval<To>(), x)))
     {
         To result{};
         ranges::copy(result, x);
@@ -53,7 +56,9 @@ struct ranges_conversion
 template <class To, class From>
 constexpr bool can_convert_as_ranges() noexcept
 {
-    if constexpr (is_range_v<To> && is_range_v<From>)
+    // We check for is_strict_range_v, because we don't want to
+    // miss additional type checking enabled by the tuple.
+    if constexpr (is_strict_range_v<To> && is_strict_range_v<From>)
         return ranges_conversion<To, From>::value;
     else
         return false;
