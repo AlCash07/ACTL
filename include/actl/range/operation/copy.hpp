@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/assert.hpp>
 #include <actl/iterator/traits/category.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/access/all.hpp>

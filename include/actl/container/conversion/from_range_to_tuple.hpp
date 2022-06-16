@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/container/conversion/between_ranges.hpp>
 #include <actl/container/conversion/to_tuple.hpp>
-#include <actl/range/traits/is_dynamic_range.hpp>
 
 namespace ac {
 
@@ -43,7 +43,7 @@ using range_to_tuple = range_to_tuple_impl<
 template <class To, class From>
 static constexpr bool range_to_tuple_test()
 {
-    if constexpr (is_tuple_v<To> && is_dynamic_range_v<From>)
+    if constexpr (is_tuple_v<To> && is_random_access_range_v<From>)
         return range_to_tuple<To, From>::value;
     return false;
 }
@@ -52,7 +52,9 @@ static constexpr bool range_to_tuple_test()
 
 template <class To, class From>
 struct conversion_sfinae<
-    std::enable_if_t<detail::range_to_tuple_test<To, From>()>,
+    std::enable_if_t<
+        !can_convert_as_ranges<To, From>() &&
+        detail::range_to_tuple_test<To, From>()>,
     To,
     From> : detail::range_to_tuple<To, From>
 {};

@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/category/tuple.hpp>
+#include <actl/container/conversion/between_ranges.hpp>
 #include <actl/container/conversion/convert_to.hpp>
 
 namespace ac {
@@ -41,7 +42,8 @@ struct from_tuple<To, From, std::index_sequence<Is...>>
 
 template <class To, class From>
 struct conversion_sfinae<
-    std::enable_if_t<is_tuple_v<remove_cvref_t<From>>>,
+    std::enable_if_t<
+        !can_convert_as_ranges<To, From>() && is_tuple_v<remove_cvref_t<From>>>,
     To,
     From> : detail::from_tuple<To, From>
 {};
