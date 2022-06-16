@@ -15,6 +15,11 @@ namespace ac::ranges {
 
 AC_DEFINE_HAS_MEMBER_F(size)
 
+namespace impl {
+
+template <class T>
+void size(T&&) = delete;
+
 struct size_f
 {
     template <
@@ -39,9 +44,12 @@ struct size_f
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(size(range))
 };
+
+} // namespace impl
+
 /// Replacement for std::size with the following benefits:
 /// - support for user-specified size function that can be found by ADL;
 /// - correct noexcept propagation in case range.size() is available.
-inline constexpr size_f size;
+inline constexpr impl::size_f size;
 
 } // namespace ac::ranges

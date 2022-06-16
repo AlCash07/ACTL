@@ -14,6 +14,11 @@ namespace ac::ranges {
 
 AC_DEFINE_HAS_MEMBER_F(end)
 
+namespace impl {
+
+template <class T>
+void end(T&&) = delete;
+
 struct end_f
 {
     template <class T, size_t N>
@@ -30,9 +35,12 @@ struct end_f
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(end(range))
 };
+
+} // namespace impl
+
 /// Replacement for std::end with the following benefits:
 /// - support for user-specified end function that can be found by ADL;
 /// - correct noexcept propagation in case range.end() is available.
-inline constexpr end_f end;
+inline constexpr impl::end_f end;
 
 } // namespace ac::ranges

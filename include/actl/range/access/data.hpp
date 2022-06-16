@@ -14,6 +14,11 @@ namespace ac::ranges {
 
 AC_DEFINE_HAS_MEMBER_F(data)
 
+namespace impl {
+
+template <class T>
+void data(T&&) = delete;
+
 struct data_f
 {
     template <class T, size_t N>
@@ -30,9 +35,12 @@ struct data_f
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(data(range))
 };
+
+} // namespace impl
+
 /// Replacement for std::data with the following benefits:
 /// - support for user-specified data function that can be found by ADL;
 /// - correct noexcept propagation in case range.data() is available.
-inline constexpr data_f data;
+inline constexpr impl::data_f data;
 
 } // namespace ac::ranges

@@ -14,6 +14,11 @@ namespace ac::ranges {
 
 AC_DEFINE_HAS_MEMBER_F(begin)
 
+namespace impl {
+
+template <class T>
+void begin(T&&) = delete;
+
 struct begin_f
 {
     template <class T, size_t N>
@@ -30,9 +35,12 @@ struct begin_f
     constexpr auto operator()(Range&& range) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(begin(range))
 };
+
+} // namespace impl
+
 /// Replacement for std::begin with the following benefits:
 /// - support for user-specified begin function that can be found by ADL;
 /// - correct noexcept propagation in case range.begin() is available.
-inline constexpr begin_f begin;
+inline constexpr impl::begin_f begin;
 
 } // namespace ac::ranges
