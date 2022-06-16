@@ -9,7 +9,7 @@
 #include <actl/geometry/algorithm/distance/point_point.hpp>
 #include <actl/geometry/algorithm/nearest/nearest.hpp>
 #include <actl/geometry/multi_point.hpp>
-#include <actl/range/algorithm.hpp>
+#include <actl/range/operation/copy.hpp>
 #include <actl/std/vector.hpp>
 
 namespace ac {
@@ -48,7 +48,7 @@ auto nearest(Policy const& policy, span<Point> points, span<Point> tmp)
         rres.first < res.first)
         res = rres;
     merge(points.first(middle), points.last(n - middle), tmp.begin(), y_comp);
-    range_copy(tmp.first(n), points.begin());
+    ranges::copy(points.begin(), tmp.first(n));
     index count = 0;
     for (auto const& p : points)
     {

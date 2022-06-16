@@ -10,7 +10,7 @@
 #include <actl/io/io.hpp>
 #include <actl/macros.hpp>
 #include <actl/operation/scalar/basic_math/all.hpp>
-#include <actl/range/algorithm.hpp>
+#include <actl/range/operation/copy.hpp>
 
 namespace ac::io {
 
@@ -160,7 +160,7 @@ public:
             if (count == 1)
                 *ptr_++ = *srcPtr;
             else
-                ptr_ = range_copy(src, ptr_);
+                ptr_ = ranges::copy(ptr_, src);
         }
         else
         {

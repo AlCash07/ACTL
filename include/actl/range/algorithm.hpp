@@ -37,12 +37,6 @@ std::pair<range_iterator_t<Range0>, range_iterator_t<Range1>> mismatch(
         ranges::end(rhs));
 }
 
-template <class Range, class OutIter>
-OutIter range_copy(Range const& src, OutIter dst)
-{
-    return std::copy(ranges::begin(src), ranges::end(src), dst);
-}
-
 template <class Range, class T>
 void fill(Range& dst, T const& value)
 {
