@@ -22,7 +22,12 @@ namespace ac {
 /// For example, `-ac::constant<1>{}` results in `ac::constant<-1>{}`.
 template <auto X>
 struct constant : std::integral_constant<decltype(X), X>
-{};
+{
+    friend constexpr constant<true> operator==(constant, constant) noexcept
+    {
+        return {};
+    }
+};
 
 template <bool B>
 using bool_constant = constant<B>;
