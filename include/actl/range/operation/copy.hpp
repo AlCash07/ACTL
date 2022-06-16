@@ -10,11 +10,14 @@
 #include <actl/iterator/traits/category.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/access/all.hpp>
+#include <actl/range/traits/nothrow.hpp>
 
 namespace ac::ranges {
 
 template <class OutIter, class Range, enable_int_if<is_iterator_v<OutIter>> = 0>
-constexpr OutIter copy(OutIter dst, Range const& src)
+constexpr OutIter copy(OutIter dst, Range const& src) noexcept(
+    is_nothrow_iterable_v<Range const>&& noexcept(
+        ++dst, *dst = *ranges::begin(src)))
 {
     auto first = ranges::begin(src);
     auto last = ranges::end(src);
@@ -29,7 +32,8 @@ template <
     enable_int_if<
         is_range_v<DstRange> &&
         have_matching_static_sizes_v<DstRange, SrcRange>> = 0>
-constexpr void copy(DstRange&& dst, SrcRange const& src)
+constexpr void copy(DstRange&& dst, SrcRange const& src) noexcept(
+    AC_ASSERT_IS_NOEXCEPT() && noexcept(copy(ranges::begin(dst), src)))
 {
     // TODO: refactor this for the case when size computation isn't cheap.
     AC_ASSERT(ranges::size(dst) == ranges::size(src));
