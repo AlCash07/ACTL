@@ -43,4 +43,14 @@ using static_size_t = typename static_size<T>::type;
 template <class T>
 inline constexpr size_t static_size_v = static_size_t<T>::value;
 
+/// Static sizes match if they are equal, or one of them is a dynamic_size.
+inline constexpr bool static_sizes_match(size_t lhs, size_t rhs) noexcept
+{
+    return lhs == dynamic_size || rhs == dynamic_size || lhs == rhs;
+}
+
+template <class Lhs, class Rhs>
+inline constexpr bool have_matching_static_sizes_v =
+    static_sizes_match(static_size_v<Lhs>, static_size_v<Rhs>);
+
 } // namespace ac
