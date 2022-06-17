@@ -14,10 +14,12 @@ namespace ac {
 inline constexpr size_t dynamic_size = size_t(-1);
 
 template <class T, class = void>
-struct static_size
-{
-    using type = size_constant<dynamic_size>;
-};
+struct static_size : size_constant<dynamic_size>
+{};
+
+template <class T>
+struct static_size<T const> : static_size<T>
+{};
 
 template <class T>
 struct static_size<T&> : static_size<T>
@@ -27,21 +29,19 @@ template <class T>
 struct static_size<
     T,
     std::void_t<decltype(std::tuple_size<std::remove_cv_t<T>>{})>>
-{
-    using type = constant<std::tuple_size<std::remove_cv_t<T>>::value>;
-};
+    : constant<std::tuple_size<std::remove_cv_t<T>>::value>
+{};
 
 template <class T, size_t N>
-struct static_size<T[N]>
-{
-    using type = size_constant<N>;
-};
+struct static_size<T[N]> : size_constant<N>
+{};
+
+template <class T, size_t N>
+struct static_size<T const[N]> : static_size<T[N]>
+{};
 
 template <class T>
-using static_size_t = typename static_size<T>::type;
-
-template <class T>
-inline constexpr size_t static_size_v = static_size_t<T>::value;
+inline constexpr size_t static_size_v = static_size<T>::value;
 
 /// Static sizes match if they are equal, or one of them is a dynamic_size.
 inline constexpr bool static_sizes_match(size_t lhs, size_t rhs) noexcept

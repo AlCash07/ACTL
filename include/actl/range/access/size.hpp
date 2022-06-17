@@ -25,7 +25,7 @@ struct size_f
     template <
         class Range,
         enable_int_if<static_size_v<Range> != dynamic_size> = 0>
-    constexpr static_size_t<Range> operator()(Range&&) const noexcept
+    constexpr constant<static_size_v<Range>> operator()(Range&&) const noexcept
     {
         return {};
     }
