@@ -23,7 +23,9 @@ struct range_to_tuple_impl<std::index_sequence<Is...>, To, From>
     using from_ref = range_reference_t<From>;
 
     static constexpr bool value =
-        (... && can_convert_to_v<std::tuple_element_t<Is, To>, from_ref>);
+        (static_size_v<From> == dynamic_size ||
+         static_size_v<From> == std::tuple_size_v<To>) //
+        &&(... && can_convert_to_v<std::tuple_element_t<Is, To>, from_ref>);
 
     static constexpr To convert(From&& x) noexcept(
         AC_ASSERT_IS_NOEXCEPT() && noexcept(To{
