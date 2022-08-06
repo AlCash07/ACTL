@@ -23,6 +23,7 @@ struct sa_types
 
 } // namespace detail
 
+/// @class static_array is an array with all the elements known at compile-time.
 template <class T, T... Values>
 class static_array
     : public contiguous_range_interface<
@@ -68,6 +69,7 @@ public:
 
     using base_t::operator[];
 
+    /// Indexing by a compile-time constant results in a compile-time constant.
     template <auto I>
     constexpr auto operator[](constant<I>) const noexcept
     {
@@ -75,6 +77,7 @@ public:
         return constant<array[I]>{};
     }
 
+    // Structured binding support.
     template <size_t I>
     friend constexpr auto get(static_array src) noexcept
     {
