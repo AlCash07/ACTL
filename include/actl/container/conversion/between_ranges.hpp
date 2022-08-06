@@ -30,7 +30,6 @@ struct range_construct_and_copy
 {
     static constexpr bool value = static_size_v<To> != dynamic_size &&
                                   std::is_default_constructible_v<To> &&
-                                  have_matching_static_sizes_v<To, From> &&
                                   std::is_assignable_v<
                                       range_reference_t<To>,
                                       range_reference_t<From const>>;
@@ -58,7 +57,9 @@ constexpr bool can_convert_as_ranges() noexcept
 {
     // We check for is_strict_range_v, because we don't want to
     // miss additional type checking enabled by the tuple.
-    if constexpr (is_strict_range_v<To> && is_strict_range_v<From>)
+    if constexpr (
+        is_strict_range_v<To> && is_strict_range_v<From> &&
+        have_matching_static_sizes_v<To, From>)
         return ranges_conversion<To, From>::value;
     else
         return false;

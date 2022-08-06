@@ -26,6 +26,10 @@ struct static_size<T&> : static_size<T>
 {};
 
 template <class T>
+struct static_size<T&&> : static_size<T>
+{};
+
+template <class T>
 struct static_size<
     T,
     std::void_t<decltype(std::tuple_size<std::remove_cv_t<T>>{})>>
