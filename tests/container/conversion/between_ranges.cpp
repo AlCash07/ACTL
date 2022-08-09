@@ -26,5 +26,7 @@ TEST_CASE("conversion between ranges")
         static_assert(!std::is_constructible_v<vec_i, array2i>);
         static_assert(ac::can_convert_to_v<array2i, vec_i>);
         CHECK(array2i{4, 2} == ac::convert_to<array2i>(vec_i{4, 2}));
+        /* different static sizes */
+        static_assert(!ac::can_convert_to_v<array2i, std::array<int, 3>>);
     }
 }

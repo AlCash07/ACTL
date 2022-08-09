@@ -11,6 +11,7 @@
 
 #include <actl/range/interface/range_interface.hpp>
 #include <actl/range/traits/properties.hpp>
+#include <actl/range/traits/super_range.hpp>
 
 namespace ac {
 
@@ -25,10 +26,10 @@ struct iter_range_types
 
 } // namespace detail
 
-template <class Iter, class Traits = default_range_properties>
+template <class Iter, class Super = none>
 class iterator_range
     : public range_interface_selector_t<
-          iterator_range<Iter, Traits>,
+          iterator_range<Iter, Super>,
           detail::iter_range_types<Iter>>
 {
 public:
@@ -51,28 +52,34 @@ private:
     Iter end_;
 };
 
-template <class Iter, class Traits>
-struct range_properties<iterator_range<Iter, Traits>> : Traits
+template <class Iter, class Super>
+struct super_range<iterator_range<Iter, Super>>
+{
+    using type = Super;
+};
+
+template <class Iter, class Super>
+struct range_properties<iterator_range<Iter, Super>> : range_properties<Super>
 {
     static constexpr bool is_container = false;
 };
 
-template <class Traits = default_range_properties, class Iterator>
+template <class SuperRange = none, class Iterator>
 auto make_range(Iterator first, Iterator last)
 {
-    return iterator_range<Iterator, Traits>{first, last};
+    return iterator_range<Iterator, SuperRange>{first, last};
 }
 
-template <class Traits = default_range_properties, class Iterator, class Int>
+template <class SuperRange = none, class Iterator, class Int>
 auto make_range(Iterator first, Int n)
 {
-    return iterator_range<Iterator, Traits>{first, std::next(first, n)};
+    return iterator_range<Iterator, SuperRange>{first, std::next(first, n)};
 }
 
 template <class Container>
 auto make_range(Container&& cont)
 {
-    return make_range<range_properties<std::remove_reference_t<Container>>>(
+    return make_range<std::remove_reference_t<Container>>(
         ranges::begin(cont), ranges::end(cont));
 }
 

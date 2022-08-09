@@ -26,6 +26,11 @@ constexpr bool equal_array(Array const& lhs, Array const& rhs) noexcept
 
 } // namespace detail
 
+/// @class semi_static_array is an array with some of the elements known at
+/// compile-time. Specifically, for each element of @p Values:
+/// - if it's equal to `dynamic_extent<T>`, then the actual value is specified
+/// at runtime;
+/// - otherwise, the value is fixed at compile-time.
 template <class T, T... Values>
 class semi_static_array
 {
@@ -55,7 +60,7 @@ public:
     constexpr semi_static_array() noexcept = default;
 
     constexpr semi_static_array(extent_holder_t<T, Values>... xs) noexcept
-        : semi_static_array{indexes, xs...}
+        : semi_static_array{indices, xs...}
     {}
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
@@ -78,6 +83,8 @@ public:
             return dynamic_values[dynamic_index_f(i)];
     }
 
+    /// Indexing by a compile-time constant results in a compile-time constant
+    /// whenever possible.
     template <auto I>
     constexpr auto operator[](constant<I> i) const noexcept
     {
@@ -94,6 +101,7 @@ public:
         return dynamic_values[dynamic_index<I>];
     }
 
+    // Structured binding support.
     template <size_t I>
     friend constexpr auto get(semi_static_array const& src) noexcept
     {
@@ -119,7 +127,7 @@ public:
     }
 
 private:
-    static constexpr auto indexes = std::make_index_sequence<size()>{};
+    static constexpr auto indices = std::make_index_sequence<size()>{};
 
     template <size_t... Is>
     static constexpr size_t dymanic_index_impl(

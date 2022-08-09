@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/meta/constant.hpp>
 #include <actl/meta/type_traits.hpp>
 #include <actl/utility/use_default.hpp>
 #include <limits>

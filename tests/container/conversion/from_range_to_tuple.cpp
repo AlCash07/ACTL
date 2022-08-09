@@ -5,6 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/conversion/from_range_to_tuple.hpp>
+#include <array>
 #include "test.hpp"
 
 TEST_CASE("conversion from vector to tuple")
@@ -18,3 +19,6 @@ TEST_CASE("conversion from vector to tuple")
     static_assert(ac::can_convert_to_v<tuple_ii, vec_i>);
     CHECK_THROWS(ac::convert_to<tuple_ii>(vec_i{5, 4, 2}));
 }
+
+// Conversion to tuple takes into account the static size of the range.
+static_assert(!ac::can_convert_to_v<std::array<int, 2>, std::array<int, 1>>);

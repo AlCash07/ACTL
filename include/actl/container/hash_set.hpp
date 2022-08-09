@@ -29,7 +29,6 @@ using hash_multiset = std::unordered_multiset<T, H, E, A>;
 template <class T, class H, class E, class A>
 struct range_properties<hash_set<T, H, E, A>> : default_range_properties
 {
-    static constexpr bool is_simple_associative = true;
     static constexpr bool is_container = true;
     static constexpr bool is_unique = true;
 };
@@ -37,7 +36,6 @@ struct range_properties<hash_set<T, H, E, A>> : default_range_properties
 template <class T, class H, class E, class A>
 struct range_properties<hash_multiset<T, H, E, A>> : default_range_properties
 {
-    static constexpr bool is_simple_associative = true;
     static constexpr bool is_container = true;
 };
 
