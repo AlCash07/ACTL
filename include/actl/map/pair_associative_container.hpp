@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
+#include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 
 namespace ac {

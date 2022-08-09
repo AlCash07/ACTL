@@ -4,6 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
+#include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/set.hpp>
 

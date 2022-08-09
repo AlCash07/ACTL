@@ -12,6 +12,7 @@
 #include <actl/io/core/batch.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/traits/category.hpp>
+#include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 
 namespace ac::io {

@@ -9,6 +9,7 @@
 #pragma once
 
 #include <actl/container/traits.hpp>
+#include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <algorithm>
 

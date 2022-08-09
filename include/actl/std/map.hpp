@@ -15,7 +15,6 @@ namespace ac {
 template <class K, class T, class C, class A>
 struct range_properties<std::map<K, T, C, A>> : default_range_properties
 {
-    static constexpr bool is_pair_associative = true;
     static constexpr bool is_container = true;
     static constexpr bool is_sorted = true;
     static constexpr bool is_unique = true;
@@ -24,7 +23,6 @@ struct range_properties<std::map<K, T, C, A>> : default_range_properties
 template <class K, class T, class C, class A>
 struct range_properties<std::multimap<K, T, C, A>> : default_range_properties
 {
-    static constexpr bool is_pair_associative = true;
     static constexpr bool is_container = true;
     static constexpr bool is_sorted = true;
 };

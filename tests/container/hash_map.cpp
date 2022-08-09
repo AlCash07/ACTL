@@ -5,6 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/hash_map.hpp>
+#include <actl/range/traits/is_associative_range.hpp>
 #include "test.hpp"
 
 using HashMap = hash_map<int, int>;
