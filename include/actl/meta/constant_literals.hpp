@@ -15,7 +15,7 @@ namespace ac {
 namespace detail {
 
 template <char C>
-constexpr unsigned digit_to_value()
+constexpr unsigned digit_to_value() noexcept
 {
     if constexpr ('a' <= C && C <= 'f')
         return unsigned{C - 'a' + 10};
@@ -82,7 +82,7 @@ struct str_to_constant
     using number = to_number<Cs...>;
 
     template <U X, unsigned D, unsigned... Ds>
-    static constexpr U fold(std::integer_sequence<unsigned, D, Ds...>)
+    static constexpr U fold(std::integer_sequence<unsigned, D, Ds...>) noexcept
     {
         static_assert(0 <= D && D < number::base);
         static_assert(X <= (std::numeric_limits<U>::max() - D) / number::base);
@@ -91,7 +91,7 @@ struct str_to_constant
     }
 
     template <U X>
-    static constexpr U fold(std::integer_sequence<unsigned>)
+    static constexpr U fold(std::integer_sequence<unsigned>) noexcept
     {
         return X;
     }
@@ -106,28 +106,28 @@ inline namespace constant_literals {
 
 /// Literal that produces ac::constant of type `int`.
 template <char... Chars>
-constexpr auto operator""_c()
+constexpr auto operator""_c() noexcept
 {
     return detail::str_to_constant<int, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `unsigned`.
 template <char... Chars>
-constexpr auto operator""_cu()
+constexpr auto operator""_cu() noexcept
 {
     return detail::str_to_constant<unsigned, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `long long`.
 template <char... Chars>
-constexpr auto operator""_cll()
+constexpr auto operator""_cll() noexcept
 {
     return detail::str_to_constant<long long, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `unsigned long long`.
 template <char... Chars>
-constexpr auto operator""_cull()
+constexpr auto operator""_cull() noexcept
 {
     return detail::str_to_constant<unsigned long long, Chars...>::value;
 }
