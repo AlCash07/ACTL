@@ -6,6 +6,7 @@
 
 #include <actl/container/conversion/convert_to.hpp>
 #include <actl_test/base/equal_same_type.hpp>
+#include <tuple>
 
 /* arithmetic conversions are supported */
 static_assert(ac::can_convert_to_v<int, long long>);
@@ -24,3 +25,11 @@ struct P3
 /* multiple arguments and aggregate initialization are supported */
 static_assert(ac::can_convert_to_v<P3, int, int, int>);
 static_assert(ac::equal_same_type(P3{5, 4, 2}, ac::convert_to<P3>(5, 4, 2)));
+
+/* empty parameters result in a default constructor */
+static_assert(ac::can_convert_to_v<int>);
+static_assert(ac::equal_same_type(0, ac::convert_to<int>()));
+using tii = std::tuple<int, int>;
+static_assert(ac::can_convert_to_v<tii>);
+static_assert(ac::equal_same_type(tii{}, ac::convert_to<tii>()));
+static_assert(!ac::can_convert_to_v<tii, int>);

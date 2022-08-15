@@ -36,11 +36,16 @@ struct conversion_sfinae<
 
 // List initialization is intentionally used here instead of construction
 // to avoid accidental calls to constructors such as std::vector(size_t n).
+// Conversion to a tuple can't rely on its constructors (except for a default
+// one), because they commonly accept any number of arguments not greater than
+// the tuple size. We constrain conversion to exactly the tuple size to avoid
+// unexpected behavior when some of the arguments are not specified by mistake.
 // To convert to a tuple (including an array), include to_tuple.hpp.
 template <class To, class... Args>
 struct conversion
     : std::conditional_t<
-          !is_tuple_v<To> && can_list_initialize_v<To, Args...>,
+          (sizeof...(Args) == 0 || !is_tuple_v<To>)&& //
+          can_list_initialize_v<To, Args...>,
           conversion_default<To, Args...>,
           conversion_sfinae<void, To, Args...>>
 {};
