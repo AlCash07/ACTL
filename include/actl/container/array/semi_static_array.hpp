@@ -9,24 +9,11 @@
 #include <actl/assert.hpp>
 #include <actl/container/array/static_array.hpp>
 #include <actl/container/conversion/convert_to.hpp>
+#include <actl/container/equal_sequences/arrays.hpp>
 #include <actl/container/extent.hpp>
 #include <actl/functional/deduce_noexcept.hpp>
 
 namespace ac {
-
-namespace detail {
-
-// TODO: remove when std::array operator== is constexpr.
-template <class Array>
-constexpr bool equal_array(Array const& lhs, Array const& rhs) noexcept
-{
-    for (size_t i = 0; i != lhs.size(); ++i)
-        if (lhs[i] != rhs[i])
-            return false;
-    return true;
-}
-
-} // namespace detail
 
 /// @class semi_static_array is an array with some of the elements known at
 /// compile-time. Specifically, for each element of @p Values:
@@ -119,7 +106,7 @@ public:
     friend constexpr auto operator==(
         semi_static_array const& lhs, semi_static_array const& rhs) noexcept
     {
-        return detail::equal_array(lhs.dynamic_values, rhs.dynamic_values);
+        return equal_arrays(lhs.dynamic_values, rhs.dynamic_values);
     }
 
     friend constexpr auto operator!=(
