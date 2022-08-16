@@ -8,7 +8,9 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/array/static_array.hpp>
+#include <actl/container/conversion/convert_to.hpp>
 #include <actl/container/extent.hpp>
+#include <actl/functional/deduce_noexcept.hpp>
 
 namespace ac {
 
@@ -170,6 +172,19 @@ template <
 semi_static_array(Ts...) -> semi_static_array<
     std::common_type_t<decltype(static_extent_v<Ts>)...>,
     static_extent_v<Ts>...>;
+
+template <class T, T... Values, class... Args>
+struct conversion_sfinae<
+    std::enable_if_t<
+        sizeof...(Args) == semi_static_array<T, Values...>::size_dynamic() &&
+        (... && can_convert_to_v<T, Args>)>,
+    semi_static_array<T, Values...>,
+    Args...> : std::true_type
+{
+    static constexpr auto convert(Args&&... args)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(semi_static_array<T, Values...>{
+            convert_to<T>(std::forward<Args>(args))...})
+};
 
 } // namespace ac
 

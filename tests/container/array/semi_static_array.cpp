@@ -134,4 +134,9 @@ TEST_CASE("semi_static_array")
         static_assert(!(ssaX3X2{5, 0} == ssaX3X2{}));
         static_assert(!(ssaX3X2{5, 0} == ssaX3X2{5, 1}));
     }
+    /* conversion */ {
+        static_assert(ac::can_convert_to_v<ssaX3X2, int, uint32_t>);
+        static_assert(
+            ssaX3X2{4, 5} == ac::convert_to<ssaX3X2>(int{4}, uint32_t{5}));
+    }
 }
