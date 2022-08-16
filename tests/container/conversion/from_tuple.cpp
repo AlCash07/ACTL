@@ -25,14 +25,11 @@ static_assert(tuple_ic{4, 2} == ac::convert_to<tuple_ic>(tuple_ci{4, 2}));
 static_assert(!ac::can_convert_to_v<tuple_ic, std::tuple<my_int, S>>);
 static_assert(!ac::can_convert_to_v<tuple_ic, std::tuple<S, my_char>>);
 
-/* interoperability with the first element */
-static_assert(ac::can_convert_to_v<my_int, std::tuple<my_char>>);
-static_assert(ac::can_convert_to_v<my_int, std::tuple<my_char>&>);
-static_assert(noexcept(ac::convert_to<my_int>(std::tuple<my_char>{4})));
-static_assert(my_int{4} == ac::convert_to<my_int>(std::tuple<my_char>{4}));
-
-static_assert(!ac::can_convert_to_v<my_int, tuple_ic>);
+// tuple with one element isn't convertible to that element
+static_assert(!ac::can_convert_to_v<int, std::tuple<int>>);
+// different number of elements
 static_assert(!ac::can_convert_to_v<std::tuple<my_int>, tuple_ic>);
+// incompatible src type
 static_assert(!ac::can_convert_to_v<tuple_ic, S>);
 
 TEST_CASE("tuple to vector")
