@@ -10,4 +10,5 @@
 #include <actl/container/conversion/from_range_to_tuple.hpp>
 #include <actl/container/conversion/from_tuple.hpp>
 #include <actl/container/conversion/to_constant.hpp>
+#include <actl/container/conversion/to_range.hpp>
 #include <actl/container/conversion/to_tuple.hpp>

@@ -8,6 +8,7 @@
 
 #include <actl/category/tuple.hpp>
 #include <actl/container/conversion/convert_to.hpp>
+#include <actl/range/traits/is_strict_range.hpp>
 
 namespace ac {
 
@@ -39,7 +40,7 @@ static constexpr bool can_initialize_tuple()
         return false;
     // Arrays and tuples may allow to initialize not all their elements but only
     // some of the first ones. Our conversions intentionnally forbid this.
-    if constexpr (is_tuple_v<To>)
+    if constexpr (is_tuple_v<To> && !is_strict_range_v<To>)
         if constexpr (std::tuple_size_v<To> == sizeof...(Args))
             return to_tuple<To, Args...>::value;
     return false;
