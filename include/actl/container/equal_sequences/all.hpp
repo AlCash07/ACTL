@@ -6,4 +6,5 @@
 
 #pragma once
 
-#include <actl/container/equal_sequence/range_tuple.hpp>
+#include <actl/container/equal_sequences/equal_arrays.hpp>
+#include <actl/container/equal_sequences/range_tuple.hpp>

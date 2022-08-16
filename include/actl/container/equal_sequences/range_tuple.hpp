@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/container/equal_sequence/range.hpp>
-#include <actl/container/equal_sequence/tuple.hpp>
+#include <actl/container/equal_sequences/ranges.hpp>
+#include <actl/container/equal_sequences/tuples.hpp>
 
 namespace ac {
 
@@ -28,7 +28,7 @@ template <
     class T,
     class U,
     enable_int_if<is_tuple_v<T> && is_dynamic_range_v<U>> = 0>
-constexpr bool equal_sequence(T const& lhs, U const& rhs) noexcept
+constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 {
     static_assert(is_random_access_range_v<U>);
     constexpr size_t n = std::tuple_size_v<T>;
@@ -42,9 +42,9 @@ template <
     class T,
     class U,
     enable_int_if<is_dynamic_range_v<T> && is_tuple_v<U>> = 0>
-constexpr bool equal_sequence(T const& lhs, U const& rhs) noexcept
+constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 {
-    return equal_sequence(rhs, lhs);
+    return equal_sequences(rhs, lhs);
 }
 
 } // namespace ac
