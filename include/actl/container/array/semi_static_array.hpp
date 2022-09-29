@@ -153,11 +153,9 @@ private:
     }
 };
 
-template <
-    class... Ts,
-    enable_int_if<are_same_v<decltype(static_extent_v<Ts>)...>> = 0>
+template <class... Ts, enable_int_if<are_same_v<unwrap_constant_t<Ts>...>> = 0>
 semi_static_array(Ts...) -> semi_static_array<
-    std::common_type_t<decltype(static_extent_v<Ts>)...>,
+    std::common_type_t<unwrap_constant_t<Ts>...>,
     static_extent_v<Ts>...>;
 
 template <class T, T... Values, class... Args>
