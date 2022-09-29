@@ -17,9 +17,6 @@ AC_DEFINE_HAS_MEMBER_F(end)
 
 namespace impl {
 
-template <class T>
-void end(T&&) = delete;
-
 struct end_f
 {
     template <class T, size_t N>

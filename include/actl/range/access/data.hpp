@@ -17,9 +17,6 @@ AC_DEFINE_HAS_MEMBER_F(data)
 
 namespace impl {
 
-template <class T>
-void data(T&&) = delete;
-
 struct data_f
 {
     template <class T, size_t N>

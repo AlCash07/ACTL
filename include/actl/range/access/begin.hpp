@@ -17,9 +17,6 @@ AC_DEFINE_HAS_MEMBER_F(begin)
 
 namespace impl {
 
-template <class T>
-void begin(T&&) = delete;
-
 struct begin_f
 {
     template <class T, size_t N>

@@ -17,9 +17,6 @@ AC_DEFINE_HAS_MEMBER_F(size)
 
 namespace impl {
 
-template <class T>
-void size(T&&) = delete;
-
 struct size_f
 {
     template <
