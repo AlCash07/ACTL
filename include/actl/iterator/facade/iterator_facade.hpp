@@ -10,9 +10,9 @@
 
 #pragma once
 
+#include <actl/iterator/facade/arrow_operator.hpp>
 #include <actl/iterator/facade/iterator_core_access.hpp>
 #include <actl/iterator/facade/iterator_types.hpp>
-#include <actl/iterator/facade/operator_arrow_dispatch.hpp>
 #include <actl/utility/operators.hpp>
 
 namespace ac {
@@ -26,7 +26,7 @@ public:
     using iterator_category = typename T::iterator_category;
     using value_type = std::remove_cv_t<typename T::value_type>;
     using reference = deduce_t<typename T::reference, value_type&>;
-    using pointer = typename operator_arrow_dispatch<reference>::type;
+    // using pointer = decltype(arrow_operator(std::declval<reference>()));
     using difference_type =
         deduce_t<typename T::difference_type, std::ptrdiff_t>;
 
@@ -66,9 +66,8 @@ protected:
 public:
     using typename base_t::reference;
 
-    constexpr typename base_t::pointer operator->() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(
-            operator_arrow_dispatch<reference>::apply(*this->derived()))
+    constexpr auto operator->() const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(arrow_operator(*this->derived()))
 };
 
 template <class Iter, class T>
