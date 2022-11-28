@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(actl)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 option(ACTL_BUILD_BENCHMARK "Build benchmark target" OFF)
 option(ACTL_CREATE_INCLUDE_TARGET "Required to show includes in some IDEs" OFF)

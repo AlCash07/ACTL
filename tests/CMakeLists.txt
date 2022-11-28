@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(actl_unit_tests)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 set(actl_root_dir ${CMAKE_CURRENT_LIST_DIR}/..)
 file(GLOB_RECURSE actl_test_files *.hpp *.cpp)
