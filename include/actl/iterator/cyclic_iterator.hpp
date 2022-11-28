@@ -60,10 +60,10 @@ private:
         --iter();
     }
 
-    void advance(iter_difference_t<Iter> n)
+    void advance(std::iter_difference_t<Iter> n)
     {
         auto cycle =
-            static_cast<iter_difference_t<Iter>>(ranges::size(*range_));
+            static_cast<std::iter_difference_t<Iter>>(ranges::size(*range_));
         AC_ASSERT(abs(n) < cycle);
         if (n > 0)
         {
@@ -75,11 +75,11 @@ private:
         }
     }
 
-    iter_difference_t<Iter> distance_to(cyclic_iterator const& rhs) const
+    std::iter_difference_t<Iter> distance_to(cyclic_iterator const& rhs) const
     {
         auto dist = rhs.base() - this->base();
         return dist >= 0 ? dist
-                         : dist + static_cast<iter_difference_t<Iter>>(
+                         : dist + static_cast<std::iter_difference_t<Iter>>(
                                       ranges::size(*range_));
     }
 

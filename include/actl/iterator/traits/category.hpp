@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/iterator/traits/dependent.hpp>
 #include <actl/meta/type_traits.hpp>
+#include <iterator>
 
 namespace ac {
 
@@ -20,7 +20,7 @@ struct is_iter : std::false_type
 template <class T>
 struct is_iter<
     T,
-    std::void_t<iter_difference_t<T>, decltype(++std::declval<T&>())>>
+    std::void_t<std::iter_difference_t<T>, decltype(++std::declval<T&>())>>
     : std::true_type
 {};
 

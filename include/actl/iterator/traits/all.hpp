@@ -7,6 +7,5 @@
 #pragma once
 
 #include <actl/iterator/traits/category.hpp>
-#include <actl/iterator/traits/dependent.hpp>
 #include <actl/iterator/traits/is_const_iterator.hpp>
 #include <actl/iterator/traits/output_type.hpp>

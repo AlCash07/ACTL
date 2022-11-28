@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <actl/iterator/traits/dependent.hpp>
 #include <actl/range/access/all.hpp>
+#include <iterator>
 
 namespace ac {
 
@@ -24,12 +24,12 @@ using range_size_t =
     unwrap_constant_t<decltype(ranges::size(std::declval<Range&>()))>;
 
 template <class Range>
-using range_difference_t = iter_difference_t<range_iterator_t<Range>>;
+using range_difference_t = std::iter_difference_t<range_iterator_t<Range>>;
 
 template <class Range>
-using range_value_t = iter_value_t<range_iterator_t<Range>>;
+using range_value_t = std::iter_value_t<range_iterator_t<Range>>;
 
 template <class Range>
-using range_reference_t = iter_reference_t<range_iterator_t<Range>>;
+using range_reference_t = std::iter_reference_t<range_iterator_t<Range>>;
 
 } // namespace ac

@@ -87,7 +87,7 @@ public:
     }
 
     vertex nth_vertex(
-        iter_difference_t<container_id_iterator<vertex_container>> n) const
+        std::iter_difference_t<container_id_iterator<vertex_container>> n) const
     {
         AC_ASSERT(0 <= n && n < vertex_count());
         return *std::next(id_range(vertices_).begin(), n);

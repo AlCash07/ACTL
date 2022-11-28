@@ -20,7 +20,7 @@ namespace ac {
 template <class Iterator, class Category>
 void test_iterator(Iterator iter, Category)
 {
-    static_assert(!std::is_const_v<iter_value_t<Iterator>>);
+    static_assert(!std::is_const_v<std::iter_value_t<Iterator>>);
     static_assert(std::is_same_v<Iterator&, decltype(++iter)>);
     CHECK(std::addressof(++iter) == std::addressof(iter));
 }
@@ -32,7 +32,8 @@ void test_iterator(Iterator iter, std::input_iterator_tag)
     test_iterator(iter, none{});
     static_assert(
         std::is_base_of_v<std::input_iterator_tag, iter_category_t<Iterator>>);
-    static_assert(std::is_same_v<iter_reference_t<Iterator>, decltype(*iter)>);
+    static_assert(
+        std::is_same_v<std::iter_reference_t<Iterator>, decltype(*iter)>);
 }
 
 // https://en.cppreference.com/w/cpp/iterator/forward_iterator
@@ -43,7 +44,7 @@ void test_iterator(Iterator iter, std::forward_iterator_tag)
     static_assert(
         std::
             is_base_of_v<std::forward_iterator_tag, iter_category_t<Iterator>>);
-    if constexpr (is_equality_comparable_v<iter_reference_t<Iterator>>)
+    if constexpr (is_equality_comparable_v<std::iter_reference_t<Iterator>>)
         CHECK(*iter == *iter);
     Iterator prev = iter;
     ++iter;
@@ -88,8 +89,9 @@ void test_random_access_iterator(Iterator i, Iterator j)
                   iter_category_t<Iterator>>);
     test_relational_operators_for_equal_values(i, i);
     test_relational_operators_for_different_values(i, j);
-    static_assert(std::is_same_v<iter_difference_t<Iterator>, decltype(j - i)>);
-    iter_difference_t<Iterator> n = j - i;
+    static_assert(
+        std::is_same_v<std::iter_difference_t<Iterator>, decltype(j - i)>);
+    std::iter_difference_t<Iterator> n = j - i;
     Iterator const i_const = i;
     static_assert(std::is_same_v<Iterator&, decltype(i += n)>);
     static_assert(std::is_same_v<Iterator, decltype(i_const + n)>);
@@ -97,7 +99,7 @@ void test_random_access_iterator(Iterator i, Iterator j)
     static_assert(std::is_same_v<Iterator&, decltype(i -= n)>);
     static_assert(std::is_same_v<Iterator, decltype(i_const - n)>);
     static_assert(
-        std::is_same_v<iter_reference_t<Iterator>, decltype(i_const[n])>);
+        std::is_same_v<std::iter_reference_t<Iterator>, decltype(i_const[n])>);
     Iterator init_i = i;
     CHECK((i += n) == j);
     i = init_i;
@@ -106,7 +108,7 @@ void test_random_access_iterator(Iterator i, Iterator j)
     CHECK((init_i + n) == (i += n));
     i = init_i;
     CHECK((i + n) == (n + i));
-    for (iter_difference_t<Iterator> x = 0; x <= n && x < 8; ++x)
+    for (std::iter_difference_t<Iterator> x = 0; x <= n && x < 8; ++x)
         CHECK((i + n) == ((i + x) + (n - x)));
     CHECK(i + 0 == i);
     Iterator init_j = j;

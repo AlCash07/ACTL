@@ -21,7 +21,7 @@ template <class Iter>
 struct iter_range_types
 {
     using iterator = Iter;
-    using size_type = iter_difference_t<Iter>;
+    using size_type = std::iter_difference_t<Iter>;
 };
 
 } // namespace detail

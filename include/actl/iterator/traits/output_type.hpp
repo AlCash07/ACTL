@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <actl/iterator/traits/dependent.hpp>
 #include <actl/range/traits/dependent.hpp>
 #include <iterator>
 
@@ -18,7 +17,7 @@ namespace ac {
 template <class OutIter>
 struct output_type
 {
-    using type = iter_value_t<OutIter>;
+    using type = std::iter_value_t<OutIter>;
 };
 
 template <class T, class CharT, class Traits>

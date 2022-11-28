@@ -22,10 +22,12 @@ struct deduced_iter_types
 {
     using iterator_category =
         deduce_t<typename T::iterator_category, iter_category_t<Iter>>;
-    using value_type = deduce_t<typename T::value_type, iter_value_t<Iter>>;
-    using reference = deduce_t<typename T::reference, iter_reference_t<Iter>>;
+    using value_type =
+        deduce_t<typename T::value_type, std::iter_value_t<Iter>>;
+    using reference =
+        deduce_t<typename T::reference, std::iter_reference_t<Iter>>;
     using difference_type =
-        deduce_t<typename T::difference_type, iter_difference_t<Iter>>;
+        deduce_t<typename T::difference_type, std::iter_difference_t<Iter>>;
 };
 
 } // namespace detail
@@ -66,18 +68,18 @@ private:
     constexpr void decrement()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), void())
 
-    template <class D = iter_difference_t<base_t>>
-    constexpr void advance(D n)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n, void())
+    template <class Difference>
+    constexpr auto advance(Difference n)
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base_ref() += n, void())
 
     template <class Derived1, class Iter1, class Types1>
     constexpr bool equals(iterator_adaptor<Derived1, Iter1, Types1> const& rhs)
         const AC_DEDUCE_NOEXCEPT_AND_RETURN(base() == rhs.base())
 
     template <class Derived1, class Iter1, class Types1>
-    constexpr decltype(auto) distance_to(
+    constexpr auto distance_to(
         iterator_adaptor<Derived1, Iter1, Types1> const& rhs) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs.base() - base())
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(rhs.base() - base())
 
     Iter base_;
 };
