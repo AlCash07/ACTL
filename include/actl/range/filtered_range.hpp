@@ -27,7 +27,7 @@ struct filtered_range_types
     struct iter_types : default_iterator_adaptor_types
     {
         using iterator_category = std::conditional_t<
-            is_random_access_iterator_v<Iter>,
+            std::random_access_iterator<Iter>,
             std::bidirectional_iterator_tag,
             iter_category_t<Iter>>;
     };

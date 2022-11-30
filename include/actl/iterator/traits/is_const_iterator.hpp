@@ -20,7 +20,7 @@ template <class T>
 struct is_const_pointer<T const*> : std::true_type
 {};
 
-template <class T, bool = is_iterator_v<T>>
+template <class T, bool = std::input_or_output_iterator<T>>
 struct is_const_iterator
     : is_const_pointer<typename std::iterator_traits<T>::pointer>
 {};
@@ -36,6 +36,6 @@ inline constexpr bool is_const_iterator_v = detail::is_const_iterator<T>::value;
 
 template <class T>
 inline constexpr bool is_non_const_iterator_v =
-    is_iterator_v<T> && !is_const_iterator_v<T>;
+    std::input_or_output_iterator<T> && !is_const_iterator_v<T>;
 
 } // namespace ac

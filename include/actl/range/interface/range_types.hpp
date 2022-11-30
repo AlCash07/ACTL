@@ -11,7 +11,7 @@
 
 namespace ac::detail {
 
-template <class Iter, bool HasReverse = is_bidirectional_iterator_v<Iter>>
+template <class Iter, bool HasReverse = std::bidirectional_iterator<Iter>>
 struct range_ts
 {
     using value_type = std::iter_value_t<Iter>;
@@ -26,7 +26,7 @@ struct range_ts<Iter, true> : range_ts<Iter, false>
     using reverse_iterator = std::reverse_iterator<Iter>;
 };
 
-template <class CIter, bool HasReverse = is_bidirectional_iterator_v<CIter>>
+template <class CIter, bool HasReverse = std::bidirectional_iterator<CIter>>
 struct crange_ts
 {
     using const_reference = std::iter_reference_t<CIter>;

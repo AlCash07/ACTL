@@ -14,7 +14,10 @@
 
 namespace ac::ranges {
 
-template <class OutIter, class Range, enable_int_if<is_iterator_v<OutIter>> = 0>
+template <
+    class OutIter,
+    class Range,
+    enable_int_if<std::input_or_output_iterator<OutIter>> = 0>
 constexpr OutIter copy(OutIter dst, Range const& src) noexcept(
     is_nothrow_iterable_v<Range const>&& noexcept(
         ++dst, *dst = *ranges::begin(src)))
