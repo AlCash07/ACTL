@@ -41,6 +41,14 @@ public:
         return *this;
     }
 
+    cyclic_iterator& operator--()
+    {
+        if (iter() == begin())
+            iter() = end();
+        --iter();
+        return *this;
+    }
+
 private:
     friend struct ac::iterator_core_access;
 
@@ -52,13 +60,6 @@ private:
     Iter end() const
     {
         return ranges::end(*range_);
-    }
-
-    void decrement()
-    {
-        if (iter() == begin())
-            iter() = end();
-        --iter();
     }
 
     void advance(std::iter_difference_t<Iter> n)

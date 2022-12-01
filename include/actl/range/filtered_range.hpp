@@ -47,23 +47,22 @@ struct filtered_range_types
             return *this;
         }
 
-    private:
-        friend struct ac::iterator_core_access;
-
-        void find_next()
-        {
-            while (this->base() != range_->original().end() &&
-                   !range_->evaluate(*this->base()))
-                ++this->base_ref();
-        }
-
-        void decrement()
+        iterator& operator--()
         {
             do
             {
                 --this->base_ref();
             }
             while (!range_->evaluate(*this->base()));
+            return *this;
+        }
+
+    private:
+        void find_next()
+        {
+            while (this->base() != range_->original().end() &&
+                   !range_->evaluate(*this->base()))
+                ++this->base_ref();
         }
 
         // Pointer is used instead of a reference to support copy assignment

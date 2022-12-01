@@ -71,14 +71,11 @@ class iterator_facade<Iter, std::bidirectional_iterator_tag>
 public:
     using iterator_category = std::bidirectional_iterator_tag;
 
-    constexpr Iter& operator--() AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        iterator_core_access::decrement(this->derived()), this->derived())
-
-    constexpr Iter operator--(int) noexcept(
-        noexcept(Iter{this->derived()}, --std::declval<Iter&>()))
+    friend constexpr Iter operator--(Iter& iter, int) noexcept(
+        noexcept(Iter{iter}, --iter))
     {
-        Iter iter_copy = this->derived();
-        --*this;
+        Iter iter_copy = iter;
+        --iter;
         return iter_copy;
     }
 };

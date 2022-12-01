@@ -42,6 +42,11 @@ public:
     constexpr Derived& operator++()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), base_t::derived())
 
+    template <class C = Category>
+    requires std::is_base_of_v<std::bidirectional_iterator_tag, C>
+    constexpr Derived& operator--()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
+
 protected:
     constexpr Iter& base_ref() noexcept
     {
@@ -50,9 +55,6 @@ protected:
 
 private:
     friend struct ac::iterator_core_access;
-
-    constexpr void decrement()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), void())
 
     template <class Difference>
     constexpr auto advance(Difference n)

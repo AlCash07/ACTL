@@ -36,13 +36,14 @@ public:
         return *this;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr void decrement()
+    constexpr integer_iterator& operator--() noexcept
     {
         Increment ? --value_ : ++value_;
+        return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void advance(Int n)
     {
@@ -89,13 +90,14 @@ public:
         return *this;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr void decrement()
+    constexpr integer_iterator_with_step& operator--()
     {
         value_ -= step_;
+        return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void advance(Int n)
     {

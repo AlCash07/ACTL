@@ -32,13 +32,14 @@ public:
         return *this;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr void decrement() noexcept
+    constexpr int_iterator& operator--() noexcept
     {
         --value_;
+        return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void advance(int n) noexcept
     {
