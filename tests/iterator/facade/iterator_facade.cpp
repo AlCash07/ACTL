@@ -11,20 +11,12 @@
 namespace {
 
 template <class Category>
-struct int_iterator_types
-{
-    using iterator_category = Category;
-    using value_type = int;
-    using reference = int const&;
-    using difference_type = int;
-};
-
-template <class Category>
 class int_iterator
-    : public ac::
-          iterator_facade<int_iterator<Category>, int_iterator_types<Category>>
+    : public ac::iterator_facade<int_iterator<Category>, Category>
 {
 public:
+    using value_type = int;
+
     explicit constexpr int_iterator() = default;
 
     explicit constexpr int_iterator(int value) noexcept : value_{value} {}

@@ -22,20 +22,11 @@ struct edge_inverter
     }
 };
 
-template <class G>
-struct edge_iter_types
-{
-    using iterator_category = std::input_iterator_tag;
-    using value_type = edge_t<G>;
-    using reference = edge_t<G>;
-    using difference_type = use_default;
-};
-
 template <class G, class Iter>
 class adj_list_out_edge_iter
     : public iterator_facade<
           adj_list_out_edge_iter<G, Iter>,
-          edge_iter_types<G>>
+          std::input_iterator_tag>
 {
     friend struct ac::iterator_core_access;
 
@@ -59,6 +50,8 @@ class adj_list_out_edge_iter
     Iter iter_;
 
 public:
+    using value_type = edge_t<G>;
+
     explicit adj_list_out_edge_iter() = default;
 
     explicit adj_list_out_edge_iter(G const* g, vertex_t<G> u, Iter iter)
@@ -73,7 +66,7 @@ public:
 
 template <class G>
 class adj_list_edge_iter
-    : public iterator_facade<adj_list_edge_iter<G>, edge_iter_types<G>>
+    : public iterator_facade<adj_list_edge_iter<G>, std::input_iterator_tag>
 {
     friend struct ac::iterator_core_access;
 
@@ -133,6 +126,8 @@ class adj_list_edge_iter
     typename G::out_iter iter_;
 
 public:
+    using value_type = edge_t<G>;
+
     explicit adj_list_edge_iter() = default;
 
     explicit adj_list_edge_iter(G const* g, bool begin) : g_{g}

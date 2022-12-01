@@ -12,25 +12,17 @@
 
 #include <actl/iterator/facade/arrow_operator.hpp>
 #include <actl/iterator/facade/iterator_core_access.hpp>
-#include <actl/iterator/facade/iterator_types.hpp>
 #include <actl/utility/operators.hpp>
 
 namespace ac {
 
-namespace detail {
-
-template <class Iter, class T, class C>
-class iter_facade : public operators::base<>
+template <class Iter, class Category>
+class iterator_facade : public operators::base<>
 {
 public:
-    using iterator_category = typename T::iterator_category;
-    using value_type = std::remove_cv_t<typename T::value_type>;
-    using reference = deduce_t<typename T::reference, value_type&>;
-    // using pointer = decltype(arrow_operator(std::declval<reference>()));
-    using difference_type =
-        deduce_t<typename T::difference_type, std::ptrdiff_t>;
+    using iterator_category = Category;
 
-    constexpr reference operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
+    constexpr decltype(auto) operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
         iterator_core_access::dereference(derived()))
 
     constexpr Iter& operator++() AC_DEDUCE_NOEXCEPT_AND_RETURN(
@@ -39,9 +31,9 @@ public:
     constexpr Iter operator++(int) noexcept(
         noexcept(Iter{derived()}, ++std::declval<Iter&>()))
     {
-        Iter copy = derived();
+        Iter iter_copy = derived();
         ++*this;
-        return copy;
+        return iter_copy;
     }
 
 protected:
@@ -56,85 +48,93 @@ protected:
     }
 };
 
-template <class Iter, class T>
-class iter_facade<Iter, T, std::input_iterator_tag>
-    : public iter_facade<Iter, T, std::output_iterator_tag>
+template <class Iter>
+class iterator_facade<Iter, std::input_iterator_tag>
+    : public iterator_facade<Iter, std::output_iterator_tag>
 {
 protected:
-    using base_t = iter_facade<Iter, T, std::output_iterator_tag>;
+    using base_t = iterator_facade<Iter, std::output_iterator_tag>;
 
 public:
-    using typename base_t::reference;
+    using iterator_category = std::input_iterator_tag;
 
     constexpr auto operator->() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(arrow_operator(*this->derived()))
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(detail::arrow_operator(*this->derived()))
 };
 
-template <class Iter, class T>
-class iter_facade<Iter, T, std::forward_iterator_tag>
-    : public iter_facade<Iter, T, std::input_iterator_tag>
-{};
-
-template <class Iter, class T>
-class iter_facade<Iter, T, std::bidirectional_iterator_tag>
-    : public iter_facade<Iter, T, std::forward_iterator_tag>
+template <class Iter>
+class iterator_facade<Iter, std::forward_iterator_tag>
+    : public iterator_facade<Iter, std::input_iterator_tag>
 {
 public:
+    using iterator_category = std::forward_iterator_tag;
+};
+
+template <class Iter>
+class iterator_facade<Iter, std::bidirectional_iterator_tag>
+    : public iterator_facade<Iter, std::forward_iterator_tag>
+{
+public:
+    using iterator_category = std::bidirectional_iterator_tag;
+
     constexpr Iter& operator--() AC_DEDUCE_NOEXCEPT_AND_RETURN(
         iterator_core_access::decrement(this->derived()), this->derived())
 
     constexpr Iter operator--(int) noexcept(
         noexcept(Iter{this->derived()}, --std::declval<Iter&>()))
     {
-        Iter copy = this->derived();
+        Iter iter_copy = this->derived();
         --*this;
-        return copy;
+        return iter_copy;
     }
 };
 
-template <class Iter, class T>
-class iter_facade<Iter, T, std::random_access_iterator_tag>
-    : public iter_facade<Iter, T, std::bidirectional_iterator_tag>
+template <class Iter>
+class iterator_facade<Iter, std::random_access_iterator_tag>
+    : public iterator_facade<Iter, std::bidirectional_iterator_tag>
 {
 protected:
-    using base_t = iter_facade<Iter, T, std::bidirectional_iterator_tag>;
+    using base_t = iterator_facade<Iter, std::bidirectional_iterator_tag>;
 
 public:
-    using typename base_t::difference_type;
+    using iterator_category = std::random_access_iterator_tag;
 
-    constexpr typename base_t::reference operator[](difference_type n) const
+    template <class Difference>
+    constexpr decltype(auto) operator[](Difference n) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*(this->derived() + n))
 
-    constexpr Iter& operator+=(difference_type n) AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        iterator_core_access::advance(this->derived(), n), this->derived())
+    template <class Difference>
+    constexpr auto operator+=(Difference n)
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(
+            iterator_core_access::advance(this->derived(), n), this->derived())
 
-    constexpr Iter& operator-=(difference_type n)
+    template <class Difference>
+    constexpr Iter& operator-=(Difference n)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*this += -n)
 
-    constexpr Iter operator+(difference_type n) const
+    template <class Difference>
+    constexpr Iter operator+(Difference n) const
         noexcept(noexcept(Iter{this->derived()}, std::declval<Iter&>() += n))
     {
-        Iter copy = this->derived();
-        return copy += n;
+        Iter iter_copy = this->derived();
+        return iter_copy += n;
     }
 
-    constexpr Iter operator-(difference_type n) const
+    template <
+        class Difference,
+        enable_int_if<std::is_same_v<
+            Iter&,
+            decltype(std::declval<Iter&>() += -std::declval<Difference>())>> =
+            0>
+    constexpr Iter operator-(Difference n) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*this + -n)
 };
 
-} // namespace detail
-
-template <class Derived, class Types>
-class iterator_facade
-    : public detail::
-          iter_facade<Derived, Types, typename Types::iterator_category>
-{};
-
-#define AC_ITERATOR_OPERATOR(op, expr)       \
-    template <class Iter, class T>           \
-    constexpr auto operator op(              \
-        iterator_facade<Iter, T> const& lhs, \
-        iterator_facade<Iter, T> const& rhs) \
+#define AC_ITERATOR_OPERATOR(op, expr)              \
+    template <class Iter, class Category>           \
+    constexpr auto operator op(                     \
+        iterator_facade<Iter, Category> const& lhs, \
+        iterator_facade<Iter, Category> const& rhs) \
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(expr)
 
 AC_ITERATOR_OPERATOR(
@@ -151,9 +151,9 @@ AC_ITERATOR_OPERATOR(<, lhs - rhs < 0)
 
 #undef AC_ITERATOR_OPERATOR
 
-template <class Iter, class T>
+template <class Iter, class Category, class Difference>
 constexpr Iter operator+(
-    typename T::difference_type n, iterator_facade<Iter, T> const& rhs)
+    Difference n, iterator_facade<Iter, Category> const& rhs)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs + n)
 
 } // namespace ac

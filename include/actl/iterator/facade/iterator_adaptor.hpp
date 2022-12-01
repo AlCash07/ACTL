@@ -11,32 +11,25 @@
 #pragma once
 
 #include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/facade/iterator_types.hpp>
 #include <actl/iterator/traits/category.hpp>
 
 namespace ac {
 
-namespace detail {
-
-template <class Iter, class T>
-struct deduced_iter_types
-{
-    using iterator_category =
-        deduce_t<typename T::iterator_category, iter_category_t<Iter>>;
-    using value_type =
-        deduce_t<typename T::value_type, std::iter_value_t<Iter>>;
-    using reference =
-        deduce_t<typename T::reference, std::iter_reference_t<Iter>>;
-    using difference_type =
-        deduce_t<typename T::difference_type, std::iter_difference_t<Iter>>;
-};
-
-} // namespace detail
-
 template <class Derived, class Iter, class Types = void>
 class iterator_adaptor
-    : public iterator_facade<Derived, detail::deduced_iter_types<Iter, Types>>
+    : public iterator_facade<
+          Derived,
+          deduce_t<typename Types::iterator_category, iter_category_t<Iter>>>
 {
 public:
+    using value_type =
+        deduce_t<typename Types::value_type, std::iter_value_t<Iter>>;
+    using reference =
+        deduce_t<typename Types::reference, std::iter_reference_t<Iter>>;
+    using difference_type =
+        deduce_t<typename Types::difference_type, std::iter_difference_t<Iter>>;
+
     explicit constexpr iterator_adaptor(Iter const& iter) noexcept(
         noexcept(Iter{iter}))
         : base_{iter}
@@ -55,9 +48,6 @@ protected:
 
 private:
     friend struct ac::iterator_core_access;
-
-    using base_t =
-        iterator_facade<Derived, detail::deduced_iter_types<Iter, Types>>;
 
     constexpr decltype(auto) dereference() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*base())

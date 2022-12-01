@@ -12,22 +12,15 @@
 
 namespace ac {
 
-template <class Int>
-struct integer_iterator_types
-{
-    using iterator_category = std::random_access_iterator_tag;
-    using value_type = Int;
-    using reference = Int const&;
-    using difference_type = Int;
-};
-
 template <class Int, bool Increment = true>
 class integer_iterator
     : public iterator_facade<
           integer_iterator<Int, Increment>,
-          integer_iterator_types<Int>>
+          std::random_access_iterator_tag>
 {
 public:
+    using value_type = Int;
+
     explicit constexpr integer_iterator() = default;
 
     explicit constexpr integer_iterator(Int value) : value_{value} {}
@@ -73,9 +66,11 @@ template <class Int>
 class integer_iterator_with_step
     : public iterator_facade<
           integer_iterator_with_step<Int>,
-          integer_iterator_types<Int>>
+          std::random_access_iterator_tag>
 {
 public:
+    using value_type = Int;
+
     explicit constexpr integer_iterator_with_step() = default;
 
     explicit constexpr integer_iterator_with_step(Int value, Int step)

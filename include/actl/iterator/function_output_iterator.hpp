@@ -16,7 +16,7 @@ template <class Function>
 class function_output_iterator
     : public iterator_facade<
           function_output_iterator<Function>,
-          output_iterator_types>
+          std::output_iterator_tag>
 {
 public:
     explicit function_output_iterator(Function const& f = {}) : f_{f} {}

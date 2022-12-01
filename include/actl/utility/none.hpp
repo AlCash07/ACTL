@@ -20,8 +20,6 @@ struct none
     template <class T, class... Ts>
     explicit constexpr none(T, Ts...) noexcept
     {}
-
-    using value_type = none;
 };
 
 template <class T>
