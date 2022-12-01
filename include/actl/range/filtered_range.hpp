@@ -37,7 +37,7 @@ struct filtered_range_types
     public:
         explicit iterator(
             range_iterator_t<R> iter, filtered_range<R, P> const& range)
-            : iterator_adaptor<iterator, Iter, iter_types>{iter}, range_{range}
+            : iterator_adaptor<iterator, Iter, iter_types>{iter}, range_{&range}
         {
             find_next();
         }
@@ -47,8 +47,8 @@ struct filtered_range_types
 
         void find_next()
         {
-            while (this->base() != range_.original().end() &&
-                   !range_.evaluate(*this->base()))
+            while (this->base() != range_->original().end() &&
+                   !range_->evaluate(*this->base()))
                 ++this->base_ref();
         }
 
@@ -64,10 +64,12 @@ struct filtered_range_types
             {
                 --this->base_ref();
             }
-            while (!range_.evaluate(*this->base()));
+            while (!range_->evaluate(*this->base()));
         }
 
-        filtered_range<R, P> const& range_;
+        // Pointer is used instead of a reference to support copy assignment
+        // required for std::copyable.
+        filtered_range<R, P> const* range_;
     };
 
     using size_type = range_size_t<R>;

@@ -23,11 +23,13 @@ using enable_if_gc_t =
 template <class C>
 struct get_id_ref
 {
-    C& cont;
+    // Pointer is used instead of a reference to support copy assignment
+    // required for std::copyable.
+    C* cont;
 
     map_pair_t<C> operator()(container_id<C> id) const
     {
-        return {id, id_at(cont, id)};
+        return {id, id_at(*cont, id)};
     }
 };
 
@@ -59,7 +61,7 @@ struct map_ops<C, detail::enable_if_gc_t<C>> : map_put<C>
     static map_range_t<C> map_range(C& map)
     {
         auto r = id_range(map);
-        return {{r.begin(), map}, {r.end(), map}};
+        return {{r.begin(), &map}, {r.end(), &map}};
     }
 };
 

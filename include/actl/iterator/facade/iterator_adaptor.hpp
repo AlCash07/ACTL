@@ -25,8 +25,6 @@ class iterator_adaptor
 public:
     using value_type =
         deduce_t<typename Types::value_type, std::iter_value_t<Iter>>;
-    using reference =
-        deduce_t<typename Types::reference, std::iter_reference_t<Iter>>;
     using difference_type =
         deduce_t<typename Types::difference_type, std::iter_difference_t<Iter>>;
 
