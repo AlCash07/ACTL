@@ -12,12 +12,11 @@
 
 #include <actl/iterator/facade/arrow_operator.hpp>
 #include <actl/iterator/facade/iterator_core_access.hpp>
-#include <actl/utility/operators.hpp>
 
 namespace ac {
 
 template <class Iter, class Category>
-class iterator_facade : public operators::base<>
+class iterator_facade
 {
 public:
     using iterator_category = Category;
@@ -119,6 +118,10 @@ public:
             0>
     constexpr Iter operator-(Difference n) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*this + -n)
+
+    friend auto operator<=>(
+        iterator_facade const& lhs, iterator_facade const& rhs)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs - rhs <=> 0)
 };
 
 #define AC_ITERATOR_OPERATOR(op, expr)              \
@@ -132,8 +135,6 @@ AC_ITERATOR_OPERATOR(
     -,
     iterator_core_access::distance_to(
         static_cast<Iter const&>(rhs), static_cast<Iter const&>(lhs)))
-
-AC_ITERATOR_OPERATOR(<, lhs - rhs < 0)
 
 #undef AC_ITERATOR_OPERATOR
 
