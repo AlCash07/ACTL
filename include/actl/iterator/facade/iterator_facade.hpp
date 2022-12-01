@@ -129,11 +129,6 @@ public:
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(expr)
 
 AC_ITERATOR_OPERATOR(
-    ==,
-    iterator_core_access::equal(
-        static_cast<Iter const&>(lhs), static_cast<Iter const&>(rhs)))
-
-AC_ITERATOR_OPERATOR(
     -,
     iterator_core_access::distance_to(
         static_cast<Iter const&>(rhs), static_cast<Iter const&>(lhs)))

@@ -26,15 +26,8 @@ template <class G, class Iter>
 class adj_list_out_edge_iter
     : public iterator_facade<
           adj_list_out_edge_iter<G, Iter>,
-          std::input_iterator_tag>
+          std::forward_iterator_tag>
 {
-    friend struct ac::iterator_core_access;
-
-    bool equals(adj_list_out_edge_iter const& rhs) const
-    {
-        return iter_ == rhs.iter_;
-    }
-
     G const* g_;
     vertex_t<G> u_;
     Iter iter_;
@@ -63,11 +56,15 @@ public:
         ++iter_;
         return *this;
     }
+
+    friend bool operator==(
+        adj_list_out_edge_iter const& lhs, adj_list_out_edge_iter const& rhs)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.iter_ == rhs.iter_)
 };
 
 template <class G>
 class adj_list_edge_iter
-    : public iterator_facade<adj_list_edge_iter<G>, std::input_iterator_tag>
+    : public iterator_facade<adj_list_edge_iter<G>, std::forward_iterator_tag>
 {
     friend struct ac::iterator_core_access;
 
@@ -102,11 +99,6 @@ class adj_list_edge_iter
                     break;
             }
         }
-    }
-
-    bool equals(adj_list_edge_iter const& rhs) const
-    {
-        return u_ == rhs.u_ && (is_end() || iter_ == rhs.iter_);
     }
 
     G const* g_;
@@ -145,6 +137,11 @@ public:
         skip_empty();
         return *this;
     }
+
+    friend bool operator==(
+        adj_list_edge_iter const& lhs, adj_list_edge_iter const& rhs)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(
+            lhs.u_ == rhs.u_ && (is_end() || lhs.iter_ == rhs.iter_))
 };
 
 template <class G, class = typename G::edge_selector>

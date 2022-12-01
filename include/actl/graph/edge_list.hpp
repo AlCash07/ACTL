@@ -140,7 +140,7 @@ public:
 
     template <class E>
     class edge_iterator
-        : public iterator_facade<edge_iterator<E>, std::input_iterator_tag>
+        : public iterator_facade<edge_iterator<E>, std::forward_iterator_tag>
     {
     public:
         using value_type = E;
@@ -158,6 +158,10 @@ public:
             return *this;
         }
 
+        friend bool operator==(
+            edge_iterator const& lhs, edge_iterator const& rhs)
+            AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.id_ == rhs.id_)
+
     private:
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
@@ -165,11 +169,6 @@ public:
         using ec_id = container_id<typename base_t::edge_container>;
 
         edge_iterator(edge_list_impl const& el, ec_id id) : el_{el}, id_{id} {}
-
-        bool equals(edge_iterator const& rhs) const
-        {
-            return id_ == rhs.id_;
-        }
 
         edge_list_impl const& el_;
         ec_id id_;

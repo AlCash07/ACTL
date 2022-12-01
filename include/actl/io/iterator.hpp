@@ -46,13 +46,6 @@ public:
     }
 
 private:
-    friend struct ac::iterator_core_access;
-
-    bool equals(input_device_iterator const& rhs) const
-    {
-        return device_ == rhs.device_;
-    }
-
     Device* device_;
     T value_;
 };

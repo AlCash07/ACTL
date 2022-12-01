@@ -42,17 +42,18 @@ public:
         return *this;
     }
 
+    constexpr friend bool operator==(
+        integer_iterator const& lhs, integer_iterator const& rhs) noexcept
+    {
+        return lhs.value_ == rhs.value_;
+    }
+
 private:
     friend struct ac::iterator_core_access;
 
     constexpr void advance(Int n)
     {
         Increment ? value_ += n : value_ -= n;
-    }
-
-    constexpr bool equals(integer_iterator const& rhs) const
-    {
-        return value_ == rhs.value_;
     }
 
     constexpr Int distance_to(integer_iterator const& rhs) const
@@ -96,17 +97,19 @@ public:
         return *this;
     }
 
+    constexpr friend bool operator==(
+        integer_iterator_with_step const& lhs,
+        integer_iterator_with_step const& rhs) noexcept
+    {
+        return lhs.value_ == rhs.value_;
+    }
+
 private:
     friend struct ac::iterator_core_access;
 
     constexpr void advance(Int n)
     {
         value_ += n * step_;
-    }
-
-    constexpr bool equals(integer_iterator_with_step const& rhs) const
-    {
-        return value_ == rhs.value_;
     }
 
     // TODO: if this operation is called often then it's better to avoid

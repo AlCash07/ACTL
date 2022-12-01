@@ -47,6 +47,12 @@ public:
     constexpr Derived& operator--()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
 
+    // TODO: make this a hidden friend.
+    template <class Derived1, class Iter1, class Category1>
+    constexpr auto operator==(
+        iterator_adaptor<Derived1, Iter1, Category1> const& rhs) const
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() == rhs.base())
+
 protected:
     constexpr Iter& base_ref() noexcept
     {
@@ -59,10 +65,6 @@ private:
     template <class Difference>
     constexpr auto advance(Difference n)
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base_ref() += n, void())
-
-    template <class Derived1, class Iter1, class Types1>
-    constexpr bool equals(iterator_adaptor<Derived1, Iter1, Types1> const& rhs)
-        const AC_DEDUCE_NOEXCEPT_AND_RETURN(base() == rhs.base())
 
     template <class Derived1, class Iter1, class Types1>
     constexpr auto distance_to(

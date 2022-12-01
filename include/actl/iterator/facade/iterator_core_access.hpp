@@ -13,10 +13,6 @@ namespace ac {
 
 struct iterator_core_access
 {
-    template <class Iter1, class Iter2>
-    static constexpr bool equal(Iter1 const& lhs, Iter2 const& rhs)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.equals(rhs))
-
     template <class Iter>
     static constexpr void advance(Iter& iter, std::iter_difference_t<Iter> n)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.advance(n))
