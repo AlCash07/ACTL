@@ -14,10 +14,6 @@ namespace ac {
 struct iterator_core_access
 {
     template <class Iter>
-    static constexpr decltype(auto) dereference(Iter const& iter)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.dereference())
-
-    template <class Iter>
     static constexpr void increment(Iter& iter)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(iter.increment())
 

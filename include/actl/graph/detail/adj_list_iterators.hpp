@@ -30,11 +30,6 @@ class adj_list_out_edge_iter
 {
     friend struct ac::iterator_core_access;
 
-    edge_t<G> dereference() const
-    {
-        return g_->get_edge(u_, *iter_);
-    }
-
     void increment()
     {
         ++iter_;
@@ -62,6 +57,11 @@ public:
     {
         return iter_;
     }
+
+    edge_t<G> operator*() const
+    {
+        return g_->get_edge(u_, *iter_);
+    }
 };
 
 template <class G>
@@ -69,11 +69,6 @@ class adj_list_edge_iter
     : public iterator_facade<adj_list_edge_iter<G>, std::input_iterator_tag>
 {
     friend struct ac::iterator_core_access;
-
-    edge_t<G> dereference() const
-    {
-        return g_->get_edge(u_, *iter_);
-    }
 
     bool is_end() const
     {
@@ -83,7 +78,7 @@ class adj_list_edge_iter
     bool is_reverse_edge() const
     {
         if constexpr (G::is_undirected)
-            return dereference().target() < u_;
+            return **this.target() < u_;
         else
             return false;
     }
@@ -142,6 +137,11 @@ public:
         {
             u_ = id_end(g_->vertices_);
         }
+    }
+
+    edge_t<G> operator*() const
+    {
+        return g_->get_edge(u_, *iter_);
     }
 };
 

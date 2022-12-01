@@ -27,13 +27,13 @@ public:
         f_(std::forward<T>(x));
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    function_output_iterator const& dereference() const
+    function_output_iterator const& operator*() const noexcept
     {
         return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     void increment() {}
 

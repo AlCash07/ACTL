@@ -25,13 +25,13 @@ public:
 
     explicit constexpr integer_iterator(Int value) : value_{value} {}
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr Int const& dereference() const
+    constexpr Int const& operator*() const noexcept
     {
         return value_;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void increment()
     {
@@ -77,13 +77,13 @@ public:
         : value_{value}, step_{step}
     {}
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr Int const& dereference() const
+    constexpr Int const& operator*() const
     {
         return value_;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void increment()
     {

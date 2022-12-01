@@ -24,13 +24,13 @@ public:
     void operator=(T) const
     {}
 
-private:
-    friend struct ac::iterator_core_access;
-
-    flag_output_iterator const& dereference() const
+    flag_output_iterator const& operator*() const noexcept
     {
         return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     void increment()
     {

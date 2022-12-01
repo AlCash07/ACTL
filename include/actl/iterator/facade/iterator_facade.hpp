@@ -22,9 +22,6 @@ class iterator_facade : public operators::base<>
 public:
     using iterator_category = Category;
 
-    constexpr decltype(auto) operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        iterator_core_access::dereference(derived()))
-
     constexpr Iter& operator++() AC_DEDUCE_NOEXCEPT_AND_RETURN(
         iterator_core_access::increment(derived()), derived())
 

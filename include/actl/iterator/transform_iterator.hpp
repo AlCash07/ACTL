@@ -19,15 +19,6 @@ class transform_iterator
 {
     using base_t = iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>;
 
-    friend struct ac::iterator_core_access;
-
-    auto dereference() const
-    {
-        return fn_(*this->base());
-    }
-
-    Fn fn_;
-
 public:
     using value_type = deduce_t<Value, remove_cvref_t<return_type_t<Fn>>>;
 
@@ -35,6 +26,11 @@ public:
     transform_iterator(Iter const& iter, Ts&&... args)
         : base_t{iter}, fn_{std::forward<Ts>(args)...}
     {}
+
+    auto operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(fn_(*this->base()))
+
+private:
+    Fn fn_;
 };
 
 } // namespace ac

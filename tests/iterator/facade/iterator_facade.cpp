@@ -21,13 +21,13 @@ public:
 
     explicit constexpr int_iterator(int value) noexcept : value_{value} {}
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr int const& dereference() const noexcept
+    constexpr int const& operator*() const noexcept
     {
         return value_;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void increment() noexcept
     {

@@ -32,13 +32,13 @@ public:
 
     input_device_iterator(input_device_iterator const&) = default;
 
-private:
-    friend struct ac::iterator_core_access;
-
-    T const& dereference() const
+    T const& operator*() const noexcept
     {
         return value_;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     void increment()
     {
@@ -80,13 +80,13 @@ public:
         io::write(*device_, value);
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    output_device_iterator const& dereference() const
+    output_device_iterator const& operator*() const noexcept
     {
         return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     void increment() {}
 

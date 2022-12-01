@@ -145,6 +145,13 @@ public:
     public:
         using value_type = E;
 
+        E operator*() const
+        {
+            auto& vertices = id_at(el_.edges_, id_).first();
+            using V1 = typename E::vertex;
+            return E{V1{vertices.u}, V1{vertices.v}, id_};
+        }
+
     private:
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
@@ -152,13 +159,6 @@ public:
         using ec_id = container_id<typename base_t::edge_container>;
 
         edge_iterator(edge_list_impl const& el, ec_id id) : el_{el}, id_{id} {}
-
-        E dereference() const
-        {
-            auto& vertices = id_at(el_.edges_, id_).first();
-            using V1 = typename E::vertex;
-            return E{V1{vertices.u}, V1{vertices.v}, id_};
-        }
 
         void increment()
         {

@@ -34,6 +34,9 @@ public:
         return base_;
     }
 
+    constexpr decltype(auto) operator*() const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(*base())
+
 protected:
     constexpr Iter& base_ref() noexcept
     {
@@ -42,9 +45,6 @@ protected:
 
 private:
     friend struct ac::iterator_core_access;
-
-    constexpr decltype(auto) dereference() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(*base())
 
     constexpr void increment()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), void())

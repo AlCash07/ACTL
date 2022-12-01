@@ -18,9 +18,6 @@
 
 namespace ac {
 
-template <class Iter>
-class iterator_id;
-
 template <class C, bool = is_container_v<C>, bool = is_random_access_range_v<C>>
 struct container_id_traits;
 
@@ -32,7 +29,10 @@ class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter>
 public:
     using value_type = iterator_id<Iter>;
 
-    explicit iterator_id(Iter iter = {}) : base_t{iter} {}
+    explicit iterator_id(Iter iter = {}) noexcept(
+        std::is_nothrow_copy_constructible_v<Iter>)
+        : base_t{iter}
+    {}
 
     explicit iterator_id(void* raw) : base_t{bit_cast<Iter>(raw)}
     {
@@ -50,14 +50,15 @@ public:
         return get_id_key(*this) < get_id_key(rhs);
     }
 
-private:
-    friend struct ac::iterator_core_access;
-    friend struct ac::hash_access;
-
-    iterator_id dereference() const
+    iterator_id operator*() const
+        noexcept(std::is_nothrow_copy_constructible_v<Iter>)
     {
         return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
+    friend struct ac::hash_access;
 
     size_t hash() const
     {
