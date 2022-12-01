@@ -11,22 +11,18 @@
 #pragma once
 
 #include <actl/iterator/facade/iterator_facade.hpp>
-#include <actl/iterator/facade/iterator_types.hpp>
 #include <actl/iterator/traits/category.hpp>
 
 namespace ac {
 
-template <class Derived, class Iter, class Types = void>
-class iterator_adaptor
-    : public iterator_facade<
-          Derived,
-          deduce_t<typename Types::iterator_category, iter_category_t<Iter>>>
+template <class Derived, class Iter, class Category = iter_category_t<Iter>>
+class iterator_adaptor : public iterator_facade<Derived, Category>
 {
 public:
-    using value_type =
-        deduce_t<typename Types::value_type, std::iter_value_t<Iter>>;
-    using difference_type =
-        deduce_t<typename Types::difference_type, std::iter_difference_t<Iter>>;
+    // These are the default aliases that can be overwritten in the Derived
+    // iterator when needed.
+    using value_type = std::iter_value_t<Iter>;
+    using difference_type = std::iter_difference_t<Iter>;
 
     explicit constexpr iterator_adaptor(Iter const& iter) noexcept(
         noexcept(Iter{iter}))

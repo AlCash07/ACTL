@@ -24,20 +24,18 @@ struct filtered_range_types
 {
     using Iter = range_iterator_t<R>;
 
-    struct iter_types : default_iterator_adaptor_types
-    {
-        using iterator_category = std::conditional_t<
-            std::random_access_iterator<Iter>,
-            std::bidirectional_iterator_tag,
-            iter_category_t<Iter>>;
-    };
+    using iterator_category = std::conditional_t<
+        std::random_access_iterator<Iter>,
+        std::bidirectional_iterator_tag,
+        iter_category_t<Iter>>;
 
-    class iterator : public iterator_adaptor<iterator, Iter, iter_types>
+    class iterator : public iterator_adaptor<iterator, Iter, iterator_category>
     {
     public:
         explicit iterator(
             range_iterator_t<R> iter, filtered_range<R, P> const& range)
-            : iterator_adaptor<iterator, Iter, iter_types>{iter}, range_{&range}
+            : iterator_adaptor<iterator, Iter, iterator_category>{iter}
+            , range_{&range}
         {
             find_next();
         }

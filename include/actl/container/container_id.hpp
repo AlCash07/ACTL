@@ -25,20 +25,13 @@ template <class C, bool = is_container_v<C>, bool = is_random_access_range_v<C>>
 struct container_id_traits;
 
 template <class Iter>
-struct iterator_id_types : default_iterator_adaptor_types
+class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter>
 {
-    using value_type = iterator_id<Iter>;
-    using reference = iterator_id<Iter>;
-};
-
-template <class Iter>
-class iterator_id
-    : public iterator_adaptor<iterator_id<Iter>, Iter, iterator_id_types<Iter>>
-{
-    using base_t =
-        iterator_adaptor<iterator_id<Iter>, Iter, iterator_id_types<Iter>>;
+    using base_t = iterator_adaptor<iterator_id<Iter>, Iter>;
 
 public:
+    using value_type = iterator_id<Iter>;
+
     explicit iterator_id(Iter iter = {}) : base_t{iter} {}
 
     explicit iterator_id(void* raw) : base_t{bit_cast<Iter>(raw)}

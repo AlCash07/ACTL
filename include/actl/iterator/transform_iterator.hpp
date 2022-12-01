@@ -12,44 +12,28 @@
 
 namespace ac {
 
-/// Iterator that applies given function after dereferencing base iterator.
-template <class Iterator, class Function, class Value = use_default>
-class transform_iterator;
-
-namespace detail {
-
-template <class F, class V>
-struct transform_iter_types : default_iterator_adaptor_types
+/// Iterator that applies given function after dereferencing the base iterator.
+template <class Iter, class Fn, class Value = use_default>
+class transform_iterator
+    : public iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>
 {
-    using value_type = return_type_t<F>;
-    using reference = deduce_t<V, remove_cvref_t<return_type_t<F>>>;
-};
+    using base_t = iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>;
 
-template <class Iter, class F, class V>
-using transform_iter_base = iterator_adaptor<
-    transform_iterator<Iter, F, V>,
-    Iter,
-    transform_iter_types<F, V>>;
-
-} // namespace detail
-
-template <class Iter, class F, class V>
-class transform_iterator : public detail::transform_iter_base<Iter, F, V>
-{
     friend struct ac::iterator_core_access;
 
     auto dereference() const
     {
-        return f_(*this->base());
+        return fn_(*this->base());
     }
 
-    F f_;
+    Fn fn_;
 
 public:
+    using value_type = deduce_t<Value, remove_cvref_t<return_type_t<Fn>>>;
+
     template <class... Ts>
     transform_iterator(Iter const& iter, Ts&&... args)
-        : detail::transform_iter_base<Iter, F, V>{iter}
-        , f_{std::forward<Ts>(args)...}
+        : base_t{iter}, fn_{std::forward<Ts>(args)...}
     {}
 };
 
