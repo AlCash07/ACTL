@@ -25,18 +25,17 @@ public:
         : base_t{iter}, limit_{limit}
     {}
 
-private:
-    friend struct ac::iterator_core_access;
-
-    void increment()
+    limited_input_iterator& operator++()
     {
         AC_ASSERT(limit_ > 0);
         if (--limit_ > 0)
             ++this->base_ref();
         else
             this->base_ref() = Iterator{};
+        return *this;
     }
 
+private:
     int limit_;
 };
 

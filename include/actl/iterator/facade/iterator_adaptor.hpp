@@ -18,6 +18,8 @@ namespace ac {
 template <class Derived, class Iter, class Category = iter_category_t<Iter>>
 class iterator_adaptor : public iterator_facade<Derived, Category>
 {
+    using base_t = iterator_facade<Derived, Category>;
+
 public:
     // These are the default aliases that can be overwritten in the Derived
     // iterator when needed.
@@ -37,6 +39,9 @@ public:
     constexpr decltype(auto) operator*() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*base())
 
+    constexpr Derived& operator++()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), base_t::derived())
+
 protected:
     constexpr Iter& base_ref() noexcept
     {
@@ -45,9 +50,6 @@ protected:
 
 private:
     friend struct ac::iterator_core_access;
-
-    constexpr void increment()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), void())
 
     constexpr void decrement()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), void())

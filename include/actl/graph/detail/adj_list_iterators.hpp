@@ -30,11 +30,6 @@ class adj_list_out_edge_iter
 {
     friend struct ac::iterator_core_access;
 
-    void increment()
-    {
-        ++iter_;
-    }
-
     bool equals(adj_list_out_edge_iter const& rhs) const
     {
         return iter_ == rhs.iter_;
@@ -61,6 +56,12 @@ public:
     edge_t<G> operator*() const
     {
         return g_->get_edge(u_, *iter_);
+    }
+
+    adj_list_out_edge_iter& operator++()
+    {
+        ++iter_;
+        return *this;
     }
 };
 
@@ -103,14 +104,6 @@ class adj_list_edge_iter
         }
     }
 
-    void increment()
-    {
-        if (is_end())
-            return;
-        ++iter_;
-        skip_empty();
-    }
-
     bool equals(adj_list_edge_iter const& rhs) const
     {
         return u_ == rhs.u_ && (is_end() || iter_ == rhs.iter_);
@@ -142,6 +135,15 @@ public:
     edge_t<G> operator*() const
     {
         return g_->get_edge(u_, *iter_);
+    }
+
+    adj_list_edge_iter& operator++()
+    {
+        if (is_end())
+            return;
+        ++iter_;
+        skip_empty();
+        return *this;
     }
 };
 

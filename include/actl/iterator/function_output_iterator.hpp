@@ -32,11 +32,12 @@ public:
         return *this;
     }
 
+    function_output_iterator& operator++() noexcept
+    {
+        return *this;
+    }
+
 private:
-    friend struct ac::iterator_core_access;
-
-    void increment() {}
-
     Function f_;
 };
 

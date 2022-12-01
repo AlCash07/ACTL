@@ -152,6 +152,12 @@ public:
             return E{V1{vertices.u}, V1{vertices.v}, id_};
         }
 
+        edge_iterator& operator++()
+        {
+            ++id_;
+            return *this;
+        }
+
     private:
         friend struct ac::iterator_core_access;
         friend class edge_list_impl;
@@ -159,11 +165,6 @@ public:
         using ec_id = container_id<typename base_t::edge_container>;
 
         edge_iterator(edge_list_impl const& el, ec_id id) : el_{el}, id_{id} {}
-
-        void increment()
-        {
-            ++id_;
-        }
 
         bool equals(edge_iterator const& rhs) const
         {

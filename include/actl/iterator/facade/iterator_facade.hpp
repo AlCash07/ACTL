@@ -22,14 +22,11 @@ class iterator_facade : public operators::base<>
 public:
     using iterator_category = Category;
 
-    constexpr Iter& operator++() AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        iterator_core_access::increment(derived()), derived())
-
-    constexpr Iter operator++(int) noexcept(
-        noexcept(Iter{derived()}, ++std::declval<Iter&>()))
+    friend constexpr Iter operator++(Iter& iter, int) noexcept(
+        noexcept(Iter{iter}, ++iter))
     {
-        Iter iter_copy = derived();
-        ++*this;
+        Iter iter_copy = iter;
+        ++iter;
         return iter_copy;
     }
 

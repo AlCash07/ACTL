@@ -29,12 +29,10 @@ public:
         return *this;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    void increment()
+    flag_output_iterator& operator++() noexcept
     {
         flag = true;
+        return *this;
     }
 };
 

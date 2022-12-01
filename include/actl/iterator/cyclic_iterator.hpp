@@ -33,6 +33,14 @@ public:
             this->base_ref() = begin();
     }
 
+    cyclic_iterator& operator++()
+    {
+        ++iter();
+        if (iter() == end())
+            iter() = begin();
+        return *this;
+    }
+
 private:
     friend struct ac::iterator_core_access;
 
@@ -44,13 +52,6 @@ private:
     Iter end() const
     {
         return ranges::end(*range_);
-    }
-
-    void increment()
-    {
-        ++iter();
-        if (iter() == end())
-            iter() = begin();
     }
 
     void decrement()

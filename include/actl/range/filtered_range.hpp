@@ -40,6 +40,13 @@ struct filtered_range_types
             find_next();
         }
 
+        iterator& operator++()
+        {
+            ++this->base_ref();
+            find_next();
+            return *this;
+        }
+
     private:
         friend struct ac::iterator_core_access;
 
@@ -48,12 +55,6 @@ struct filtered_range_types
             while (this->base() != range_->original().end() &&
                    !range_->evaluate(*this->base()))
                 ++this->base_ref();
-        }
-
-        void increment()
-        {
-            ++this->base_ref();
-            find_next();
         }
 
         void decrement()

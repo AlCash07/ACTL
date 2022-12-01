@@ -27,7 +27,7 @@ public:
 
     explicit input_device_iterator(Device& device) : device_{&device}
     {
-        increment();
+        ++*this;
     }
 
     input_device_iterator(input_device_iterator const&) = default;
@@ -37,15 +37,16 @@ public:
         return value_;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    void increment()
+    input_device_iterator& operator++()
     {
         AC_ASSERT(device_);
         if (!io::read(*device_, value_))
             device_ = nullptr;
+        return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     bool equals(input_device_iterator const& rhs) const
     {
@@ -85,11 +86,12 @@ public:
         return *this;
     }
 
+    output_device_iterator& operator++()
+    {
+        return *this;
+    }
+
 private:
-    friend struct ac::iterator_core_access;
-
-    void increment() {}
-
     Device* device_;
 };
 

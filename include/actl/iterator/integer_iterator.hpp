@@ -30,13 +30,14 @@ public:
         return value_;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr void increment()
+    constexpr integer_iterator& operator++() noexcept
     {
         Increment ? ++value_ : --value_;
+        return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void decrement()
     {
@@ -82,13 +83,14 @@ public:
         return value_;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr void increment()
+    constexpr integer_iterator_with_step& operator++() noexcept
     {
         value_ += step_;
+        return *this;
     }
+
+private:
+    friend struct ac::iterator_core_access;
 
     constexpr void decrement()
     {
