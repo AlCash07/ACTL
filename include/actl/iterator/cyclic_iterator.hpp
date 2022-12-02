@@ -49,20 +49,7 @@ public:
         return *this;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    Iter begin() const
-    {
-        return ranges::begin(*range_);
-    }
-
-    Iter end() const
-    {
-        return ranges::end(*range_);
-    }
-
-    void advance(std::iter_difference_t<Iter> n)
+    cyclic_iterator& operator+=(std::iter_difference_t<Iter> n)
     {
         auto cycle =
             static_cast<std::iter_difference_t<Iter>>(ranges::size(*range_));
@@ -75,6 +62,20 @@ private:
         {
             iter() += n + (-n > (iter() - begin()) ? cycle : 0);
         }
+        return *this;
+    }
+
+private:
+    friend struct ac::iterator_core_access;
+
+    Iter begin() const
+    {
+        return ranges::begin(*range_);
+    }
+
+    Iter end() const
+    {
+        return ranges::end(*range_);
     }
 
     std::iter_difference_t<Iter> distance_to(cyclic_iterator const& rhs) const

@@ -38,6 +38,12 @@ public:
         return *this;
     }
 
+    constexpr int_iterator& operator+=(int n) noexcept
+    {
+        value_ += n;
+        return *this;
+    }
+
     constexpr friend bool operator==(
         int_iterator lhs, int_iterator rhs) noexcept
     {
@@ -46,11 +52,6 @@ public:
 
 private:
     friend struct ac::iterator_core_access;
-
-    constexpr void advance(int n) noexcept
-    {
-        value_ += n;
-    }
 
     constexpr int distance_to(int_iterator const& rhs) const noexcept
     {

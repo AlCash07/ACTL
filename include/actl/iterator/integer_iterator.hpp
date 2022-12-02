@@ -42,6 +42,12 @@ public:
         return *this;
     }
 
+    constexpr integer_iterator& operator+=(Int n)
+    {
+        Increment ? value_ += n : value_ -= n;
+        return *this;
+    }
+
     constexpr friend bool operator==(
         integer_iterator const& lhs, integer_iterator const& rhs) noexcept
     {
@@ -50,11 +56,6 @@ public:
 
 private:
     friend struct ac::iterator_core_access;
-
-    constexpr void advance(Int n)
-    {
-        Increment ? value_ += n : value_ -= n;
-    }
 
     constexpr Int distance_to(integer_iterator const& rhs) const
     {
@@ -91,9 +92,15 @@ public:
         return *this;
     }
 
-    constexpr integer_iterator_with_step& operator--()
+    constexpr integer_iterator_with_step& operator--() noexcept
     {
         value_ -= step_;
+        return *this;
+    }
+
+    constexpr integer_iterator_with_step& operator+=(Int n) noexcept
+    {
+        value_ += n * step_;
         return *this;
     }
 
@@ -106,11 +113,6 @@ public:
 
 private:
     friend struct ac::iterator_core_access;
-
-    constexpr void advance(Int n)
-    {
-        value_ += n * step_;
-    }
 
     // TODO: if this operation is called often then it's better to avoid
     // division.

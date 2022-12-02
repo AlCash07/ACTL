@@ -47,6 +47,10 @@ public:
     constexpr Derived& operator--()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
 
+    template <class Difference>
+    constexpr Derived& operator+=(Difference n)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n)
+
     // TODO: make this a hidden friend.
     template <class Derived1, class Iter1, class Category1>
     constexpr auto operator==(
@@ -61,10 +65,6 @@ protected:
 
 private:
     friend struct ac::iterator_core_access;
-
-    template <class Difference>
-    constexpr auto advance(Difference n)
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base_ref() += n, void())
 
     template <class Derived1, class Iter1, class Types1>
     constexpr auto distance_to(

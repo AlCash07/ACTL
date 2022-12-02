@@ -90,37 +90,26 @@ public:
     using iterator_category = std::random_access_iterator_tag;
 
     template <class Difference>
-    constexpr decltype(auto) operator[](Difference n) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(*(this->derived() + n))
+    constexpr auto operator[](Difference n) const
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(*(this->derived() + n))
 
     template <class Difference>
-    constexpr auto operator+=(Difference n)
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(
-            iterator_core_access::advance(this->derived(), n), this->derived())
+    friend constexpr Iter operator+(Iter iter, Difference n)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter += n})
 
     template <class Difference>
-    constexpr Iter& operator-=(Difference n)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(*this += -n)
+    friend constexpr Iter operator+(Difference n, Iter iter)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(iter + n)
 
     template <class Difference>
-    constexpr Iter operator+(Difference n) const
-        noexcept(noexcept(Iter{this->derived()}, std::declval<Iter&>() += n))
-    {
-        Iter iter_copy = this->derived();
-        return iter_copy += n;
-    }
+    friend constexpr Iter& operator-=(Iter& iter, Difference n)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(iter += -n)
 
-    template <
-        class Difference,
-        enable_int_if<std::is_same_v<
-            Iter&,
-            decltype(std::declval<Iter&>() += -std::declval<Difference>())>> =
-            0>
-    constexpr Iter operator-(Difference n) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(*this + -n)
+    template <class Difference>
+    friend constexpr Iter operator-(Iter iter, Difference n)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter -= n})
 
-    friend auto operator<=>(
-        iterator_facade const& lhs, iterator_facade const& rhs)
+    friend auto operator<=>(Iter const& lhs, Iter const& rhs)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs - rhs <=> 0)
 };
 
@@ -137,10 +126,5 @@ AC_ITERATOR_OPERATOR(
         static_cast<Iter const&>(rhs), static_cast<Iter const&>(lhs)))
 
 #undef AC_ITERATOR_OPERATOR
-
-template <class Iter, class Category, class Difference>
-constexpr Iter operator+(
-    Difference n, iterator_facade<Iter, Category> const& rhs)
-    AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs + n)
 
 } // namespace ac
