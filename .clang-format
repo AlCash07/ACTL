@@ -48,5 +48,8 @@ IndentWidth:          4
 ObjCBlockIndentWidth: 4
 TabWidth:             4
 SpacesBeforeTrailingComments: 1
-StatementMacros: [AC_DEDUCE_NOEXCEPT_AND_RETURN, AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN]
+StatementMacros: [
+  AC_DEDUCE_NOEXCEPT_AND_RETURN,
+  AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN,
+  AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN]
 ...

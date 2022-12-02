@@ -40,19 +40,38 @@ static_assert(is_int_wrapped2(0));
 static_assert(!noexcept(is_int_wrapped2(-1.0)));
 static_assert(!is_int_wrapped2(0.0));
 
-template <class T, class = void>
-struct has_is_int_wrapped : std::false_type
-{};
+template <class T>
+concept has_is_int_wrapped2 = requires(T x)
+{
+    is_int_wrapped2(x);
+};
+
+static_assert(has_is_int_wrapped2<int>);
+// This would be a compilation error with AC_DEDUCE_NOEXCEPT_AND_RETURN.
+static_assert(!has_is_int_wrapped2<int[2]>);
+
+/* AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN */
+
+// Note that we can specify return type different from the wrapped function.
+template <class T>
+constexpr int is_int_wrapped3(T x)
+    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(is_int(x))
+
+static_assert(noexcept(is_int_wrapped3(0)));
+static_assert(std::is_same_v<int, decltype(is_int_wrapped3(0))>);
+static_assert(0 != is_int_wrapped3(0));
+static_assert(!noexcept(is_int_wrapped3(-1.0)));
+static_assert(0 == is_int_wrapped3(0.0));
 
 template <class T>
-struct has_is_int_wrapped<
-    T,
-    std::void_t<decltype(is_int_wrapped2(std::declval<T>()))>> : std::true_type
-{};
+concept has_is_int_wrapped3 = requires(T x)
+{
+    is_int_wrapped3(x);
+};
 
-static_assert(has_is_int_wrapped<int>::value);
+static_assert(has_is_int_wrapped3<int>);
 // This would be a compilation error with AC_DEDUCE_NOEXCEPT_AND_RETURN.
-static_assert(!has_is_int_wrapped<int[2]>::value);
+static_assert(!has_is_int_wrapped3<int[2]>);
 
 /* AC_DEDUCE_NOEXCEPT_AND_INITIALIZE */
 
