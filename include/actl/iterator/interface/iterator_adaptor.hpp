@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <actl/iterator/interface/iterator_interface.hpp>
+#include <actl/iterator/interface/iterator_interface_selector.hpp>
 #include <actl/iterator/traits/category.hpp>
 
 namespace ac {

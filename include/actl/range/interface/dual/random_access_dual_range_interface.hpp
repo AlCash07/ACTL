@@ -39,13 +39,4 @@ class random_access_dual_range_interface
     , public random_access_non_const_range_interface<Derived, Types>
 {};
 
-template <class Range, class Types>
-struct dual_range_interface_selector<
-    Range,
-    Types,
-    std::random_access_iterator_tag>
-{
-    using type = random_access_range_interface<Range, Types>;
-};
-
 } // namespace ac

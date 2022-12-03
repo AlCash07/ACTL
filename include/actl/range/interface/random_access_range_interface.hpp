@@ -32,10 +32,4 @@ public:
         static_cast<size_type>(this->derived().end() - this->derived().begin()))
 };
 
-template <class Range, class Types>
-struct range_interface_selector<Range, Types, std::random_access_iterator_tag>
-{
-    using type = random_access_range_interface<Range, Types>;
-};
-
 } // namespace ac

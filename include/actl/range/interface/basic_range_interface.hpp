@@ -41,17 +41,4 @@ protected:
     }
 };
 
-template <class Range, class Types, class Category>
-struct range_interface_selector
-{
-    using type = basic_range_interface<Range, Types>;
-};
-
-template <
-    class Range,
-    class Types,
-    class Category = iter_category_t<typename Types::iterator>>
-using range_interface_selector_t =
-    typename range_interface_selector<Range, Types, Category>::type;
-
 } // namespace ac

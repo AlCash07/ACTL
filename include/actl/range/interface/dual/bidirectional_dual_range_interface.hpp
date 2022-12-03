@@ -31,13 +31,4 @@ class bidirectional_dual_range_interface
     , public bidirectional_non_const_range_interface<Derived, Types>
 {};
 
-template <class Range, class Types>
-struct dual_range_interface_selector<
-    Range,
-    Types,
-    std::bidirectional_iterator_tag>
-{
-    using type = bidirectional_range_interface<Range, Types>;
-};
-
 } // namespace ac

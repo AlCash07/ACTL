@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/range/interface/range_interface.hpp>
+#include <actl/range/interface/basic_range_interface.hpp>
 
 namespace ac {
 
@@ -46,20 +46,7 @@ protected:
 template <class Derived, class Types>
 class basic_dual_range_interface
     : public range_interface<Derived, Types>
-    , public non_const_range_interface<Derived, Types>
+    , public basic_non_const_range_interface<Derived, Types>
 {};
-
-template <class Range, class Types, class Category>
-struct dual_range_interface_selector
-{
-    using type = basic_dual_range_interface<Range, Types>;
-};
-
-template <
-    class Range,
-    class Types,
-    class Category = iter_category_t<typename Types::iterator>>
-using dual_range_interface_selector_t =
-    typename dual_range_interface_selector<Range, Types, Category>::type;
 
 } // namespace ac

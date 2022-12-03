@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <actl/range/interface/range_interface.hpp>
+#include <actl/range/interface/range_interface_selector.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/range/traits/super_range.hpp>
 
