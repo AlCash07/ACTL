@@ -57,7 +57,6 @@ public:
     }
 
 private:
-    friend struct ac::iterator_core_access;
     friend struct ac::hash_access;
 
     size_t hash() const

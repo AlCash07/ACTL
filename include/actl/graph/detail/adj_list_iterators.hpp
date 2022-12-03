@@ -66,8 +66,6 @@ template <class G>
 class adj_list_edge_iter
     : public iterator_facade<adj_list_edge_iter<G>, std::forward_iterator_tag>
 {
-    friend struct ac::iterator_core_access;
-
     bool is_end() const
     {
         return u_ == id_end(g_->vertices_);

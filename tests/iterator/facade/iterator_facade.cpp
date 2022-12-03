@@ -44,20 +44,18 @@ public:
         return *this;
     }
 
-    constexpr friend bool operator==(
+    friend constexpr bool operator==(
         int_iterator lhs, int_iterator rhs) noexcept
     {
         return lhs.value_ == rhs.value_;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr int distance_to(int_iterator const& rhs) const noexcept
+    friend constexpr int operator-(int_iterator lhs, int_iterator rhs) noexcept
     {
-        return rhs.value_ - value_;
+        return lhs.value_ - rhs.value_;
     }
 
+private:
     int value_ = 0;
 };
 

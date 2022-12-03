@@ -10,8 +10,8 @@
 
 #pragma once
 
+#include <actl/functional/deduce_noexcept.hpp>
 #include <actl/iterator/facade/arrow_operator.hpp>
-#include <actl/iterator/facade/iterator_core_access.hpp>
 
 namespace ac {
 
@@ -112,19 +112,5 @@ public:
     friend auto operator<=>(Iter const& lhs, Iter const& rhs)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs - rhs <=> 0)
 };
-
-#define AC_ITERATOR_OPERATOR(op, expr)              \
-    template <class Iter, class Category>           \
-    constexpr auto operator op(                     \
-        iterator_facade<Iter, Category> const& lhs, \
-        iterator_facade<Iter, Category> const& rhs) \
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(expr)
-
-AC_ITERATOR_OPERATOR(
-    -,
-    iterator_core_access::distance_to(
-        static_cast<Iter const&>(rhs), static_cast<Iter const&>(lhs)))
-
-#undef AC_ITERATOR_OPERATOR
 
 } // namespace ac

@@ -54,15 +54,14 @@ public:
         return lhs.value_ == rhs.value_;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
-    constexpr Int distance_to(integer_iterator const& rhs) const
+    friend constexpr Int operator-(
+        integer_iterator const& lhs, integer_iterator const& rhs) noexcept
     {
-        Int diff = rhs.value_ - value_;
+        Int diff = lhs.value_ - rhs.value_;
         return Increment ? diff : -diff;
     }
 
+private:
     Int value_ = 0;
 };
 
@@ -111,18 +110,18 @@ public:
         return lhs.value_ == rhs.value_;
     }
 
-private:
-    friend struct ac::iterator_core_access;
-
     // TODO: if this operation is called often then it's better to avoid
     // division.
-    constexpr Int distance_to(integer_iterator_with_step const& rhs) const
+    friend constexpr Int operator-(
+        integer_iterator_with_step const& lhs,
+        integer_iterator_with_step const& rhs) noexcept(AC_ASSERT_IS_NOEXCEPT())
     {
-        AC_ASSERT(rhs.step_ == step_);
-        AC_ASSERT((rhs.value_ - value_) % step_ == 0);
-        return (rhs.value_ - value_) / step_;
+        AC_ASSERT(lhs.step_ == rhs.step_);
+        AC_ASSERT((lhs.value_ - rhs.value_) % lhs.step_ == 0);
+        return (lhs.value_ - rhs.value_) / lhs.step_;
     }
 
+private:
     Int value_ = 0;
     Int step_ = 1;
 };

@@ -57,6 +57,11 @@ public:
         iterator_adaptor<Derived1, Iter1, Category1> const& rhs) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() == rhs.base())
 
+    template <class Derived1, class Iter1, class Types1>
+    constexpr auto operator-(
+        iterator_adaptor<Derived1, Iter1, Types1> const& rhs) const
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() - rhs.base())
+
 protected:
     constexpr Iter& base_ref() noexcept
     {
@@ -64,13 +69,6 @@ protected:
     }
 
 private:
-    friend struct ac::iterator_core_access;
-
-    template <class Derived1, class Iter1, class Types1>
-    constexpr auto distance_to(
-        iterator_adaptor<Derived1, Iter1, Types1> const& rhs) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(rhs.base() - base())
-
     Iter base_;
 };
 

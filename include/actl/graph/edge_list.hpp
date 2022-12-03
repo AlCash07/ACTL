@@ -163,7 +163,6 @@ public:
             AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.id_ == rhs.id_)
 
     private:
-        friend struct ac::iterator_core_access;
         friend class edge_list_impl;
 
         using ec_id = container_id<typename base_t::edge_container>;

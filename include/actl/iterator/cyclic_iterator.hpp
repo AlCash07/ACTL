@@ -65,9 +65,16 @@ public:
         return *this;
     }
 
-private:
-    friend struct ac::iterator_core_access;
+    friend std::iter_difference_t<Iter> operator-(
+        cyclic_iterator const& lhs, cyclic_iterator const& rhs)
+    {
+        auto dist = lhs.base() - rhs.base();
+        return dist >= 0 ? dist
+                         : dist + static_cast<std::iter_difference_t<Iter>>(
+                                      ranges::size(*lhs.range_));
+    }
 
+private:
     Iter begin() const
     {
         return ranges::begin(*range_);
@@ -76,14 +83,6 @@ private:
     Iter end() const
     {
         return ranges::end(*range_);
-    }
-
-    std::iter_difference_t<Iter> distance_to(cyclic_iterator const& rhs) const
-    {
-        auto dist = rhs.base() - this->base();
-        return dist >= 0 ? dist
-                         : dist + static_cast<std::iter_difference_t<Iter>>(
-                                      ranges::size(*range_));
     }
 
     Range* range_;
