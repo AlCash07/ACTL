@@ -109,8 +109,13 @@ public:
     friend constexpr Iter operator-(Iter iter, Difference n)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter -= n})
 
-    friend auto operator<=>(Iter const& lhs, Iter const& rhs)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs - rhs <=> 0)
+    friend bool operator==(
+        iterator_facade const& lhs, iterator_facade const& rhs)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs <=> rhs == 0)
+
+    friend auto operator<=>(
+        iterator_facade const& lhs, iterator_facade const& rhs)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.derived() - rhs.derived() <=> 0)
 };
 
 } // namespace ac

@@ -48,12 +48,6 @@ public:
         return *this;
     }
 
-    constexpr friend bool operator==(
-        integer_iterator const& lhs, integer_iterator const& rhs) noexcept
-    {
-        return lhs.value_ == rhs.value_;
-    }
-
     friend constexpr Int operator-(
         integer_iterator const& lhs, integer_iterator const& rhs) noexcept
     {

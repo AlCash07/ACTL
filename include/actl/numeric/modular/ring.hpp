@@ -214,11 +214,6 @@ struct ring_element : Ring
         return value == rhs.value;
     }
 
-    constexpr bool operator!=(ring_element const& rhs) const
-    {
-        return value != rhs.value;
-    }
-
     friend std::istream& operator>>(std::istream& in, ring_element& x)
     {
         return in >> x.value;

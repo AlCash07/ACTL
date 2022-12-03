@@ -65,11 +65,6 @@ public:
         return id() == rhs.id();
     }
 
-    bool operator!=(edge const& rhs) const
-    {
-        return id() != rhs.id();
-    }
-
 private:
     friend struct ac::hash_access;
 

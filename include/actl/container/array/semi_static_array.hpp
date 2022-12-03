@@ -109,12 +109,6 @@ public:
         return equal_arrays(lhs.dynamic_values, rhs.dynamic_values);
     }
 
-    friend constexpr auto operator!=(
-        semi_static_array const& lhs, semi_static_array const& rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
-
 private:
     static constexpr auto indices = std::make_index_sequence<size()>{};
 
