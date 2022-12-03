@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/interface/iterator_interface.hpp>
 #include <actl_test/iterator/iterator.hpp>
 #include <actl_test/iterator/iterator_noexcept.hpp>
 
@@ -12,7 +12,7 @@ namespace {
 
 template <class Category>
 class int_iterator
-    : public ac::iterator_facade<int_iterator<Category>, Category>
+    : public ac::iterator_interface_selector_t<int_iterator<Category>, Category>
 {
 public:
     using value_type = int;
@@ -61,10 +61,11 @@ private:
 
 } // namespace
 
-TEST_CASE("iterator_facade")
+TEST_CASE("iterator_interface")
 {
     SECTION(
-        "iterator_facade provides full standard-compliant interface for each "
+        "iterator_interface provides full standard-compliant interface for "
+        "each "
         "iterator category")
     {
         test_iterator(
@@ -82,6 +83,6 @@ TEST_CASE("iterator_facade")
     }
 
     constexpr int_iterator<std::random_access_iterator_tag> iter{2};
-    // iterator_facade propagates noexcept
+    // iterator_interface propagates noexcept
     test_iterator_noexcept(iter, std::random_access_iterator_tag{});
 }

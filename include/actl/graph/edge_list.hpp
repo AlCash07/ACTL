@@ -8,6 +8,7 @@
 
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
+#include <actl/iterator/interface/forward_iterator_interface.hpp>
 #include <actl/map/generic_container.hpp>
 #include <actl/std/vector.hpp>
 
@@ -139,8 +140,7 @@ public:
     using base_t::base_t;
 
     template <class E>
-    class edge_iterator
-        : public iterator_facade<edge_iterator<E>, std::forward_iterator_tag>
+    class edge_iterator : public forward_iterator_interface<edge_iterator<E>>
     {
     public:
         using value_type = E;

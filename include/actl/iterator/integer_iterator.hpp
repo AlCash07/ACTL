@@ -7,16 +7,14 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/interface/random_access_iterator_interface.hpp>
 #include <type_traits>
 
 namespace ac {
 
 template <class Int, bool Increment = true>
 class integer_iterator
-    : public iterator_facade<
-          integer_iterator<Int, Increment>,
-          std::random_access_iterator_tag>
+    : public random_access_iterator_interface<integer_iterator<Int, Increment>>
 {
 public:
     using value_type = Int;
@@ -50,9 +48,7 @@ private:
 
 template <class Int>
 class integer_iterator_with_step
-    : public iterator_facade<
-          integer_iterator_with_step<Int>,
-          std::random_access_iterator_tag>
+    : public random_access_iterator_interface<integer_iterator_with_step<Int>>
 {
 public:
     using value_type = Int;

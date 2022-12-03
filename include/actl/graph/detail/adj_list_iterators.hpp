@@ -9,7 +9,7 @@
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/interface/forward_iterator_interface.hpp>
 
 namespace ac::detail {
 
@@ -24,9 +24,7 @@ struct edge_inverter
 
 template <class G, class Iter>
 class adj_list_out_edge_iter
-    : public iterator_facade<
-          adj_list_out_edge_iter<G, Iter>,
-          std::forward_iterator_tag>
+    : public forward_iterator_interface<adj_list_out_edge_iter<G, Iter>>
 {
     G const* g_;
     vertex_t<G> u_;
@@ -64,7 +62,7 @@ public:
 
 template <class G>
 class adj_list_edge_iter
-    : public iterator_facade<adj_list_edge_iter<G>, std::forward_iterator_tag>
+    : public forward_iterator_interface<adj_list_edge_iter<G>>
 {
     bool is_end() const
     {

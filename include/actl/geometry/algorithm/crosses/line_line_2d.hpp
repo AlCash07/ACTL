@@ -8,14 +8,14 @@
 
 #include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
-#include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/interface/output_iterator_interface.hpp>
 
 namespace ac {
 
 namespace detail {
 
 class flag_output_iterator
-    : public iterator_facade<flag_output_iterator, std::output_iterator_tag>
+    : public output_iterator_interface<flag_output_iterator>
 {
 public:
     bool flag = false;

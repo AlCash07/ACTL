@@ -7,16 +7,14 @@
 #pragma once
 
 #include <actl/functional/callable_traits.hpp>
-#include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/interface/output_iterator_interface.hpp>
 
 namespace ac {
 
 /// Iterator that applies a function to each assigned value.
 template <class Function>
 class function_output_iterator
-    : public iterator_facade<
-          function_output_iterator<Function>,
-          std::output_iterator_tag>
+    : public output_iterator_interface<function_output_iterator<Function>>
 {
 public:
     explicit function_output_iterator(Function const& f = {}) : f_{f} {}

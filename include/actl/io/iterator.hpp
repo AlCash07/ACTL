@@ -8,7 +8,8 @@
 
 #include <actl/assert.hpp>
 #include <actl/io/io.hpp>
-#include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/interface/input_iterator_interface.hpp>
+#include <actl/iterator/interface/output_iterator_interface.hpp>
 
 namespace ac {
 
@@ -16,9 +17,7 @@ namespace ac {
 /// http://en.cppreference.com/w/cpp/iterator/istream_iterator
 template <class T, class Device>
 class input_device_iterator
-    : public iterator_facade<
-          input_device_iterator<T, Device>,
-          std::input_iterator_tag>
+    : public input_iterator_interface<input_device_iterator<T, Device>>
 {
 public:
     using value_type = T;
@@ -60,9 +59,7 @@ auto make_input_device_iterator(Device& device)
 /// http://en.cppreference.com/w/cpp/iterator/ostream_iterator
 template <class T, class Device>
 class output_device_iterator
-    : public iterator_facade<
-          output_device_iterator<T, Device>,
-          std::output_iterator_tag>
+    : public output_iterator_interface<output_device_iterator<T, Device>>
 {
 public:
     explicit output_device_iterator(Device& device) : device_{&device} {}

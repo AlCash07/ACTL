@@ -10,15 +10,15 @@
 
 #pragma once
 
-#include <actl/iterator/facade/iterator_facade.hpp>
+#include <actl/iterator/interface/iterator_interface.hpp>
 #include <actl/iterator/traits/category.hpp>
 
 namespace ac {
 
 template <class Derived, class Iter, class Category = iter_category_t<Iter>>
-class iterator_adaptor : public iterator_facade<Derived, Category>
+class iterator_adaptor : public iterator_interface_selector_t<Derived, Category>
 {
-    using base_t = iterator_facade<Derived, Category>;
+    using base_t = iterator_interface_selector_t<Derived, Category>;
 
 public:
     // These are the default aliases that can be overwritten in the Derived
