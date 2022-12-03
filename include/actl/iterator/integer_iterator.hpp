@@ -30,19 +30,8 @@ public:
         return value_;
     }
 
-    constexpr integer_iterator& operator++() noexcept
-    {
-        Increment ? ++value_ : --value_;
-        return *this;
-    }
-
-    constexpr integer_iterator& operator--() noexcept
-    {
-        Increment ? --value_ : ++value_;
-        return *this;
-    }
-
-    constexpr integer_iterator& operator+=(Int n)
+    template <class Difference>
+    constexpr integer_iterator& operator+=(Difference n) noexcept
     {
         Increment ? value_ += n : value_ -= n;
         return *this;
@@ -79,19 +68,8 @@ public:
         return value_;
     }
 
-    constexpr integer_iterator_with_step& operator++() noexcept
-    {
-        value_ += step_;
-        return *this;
-    }
-
-    constexpr integer_iterator_with_step& operator--() noexcept
-    {
-        value_ -= step_;
-        return *this;
-    }
-
-    constexpr integer_iterator_with_step& operator+=(Int n) noexcept
+    template <class Difference>
+    constexpr integer_iterator_with_step& operator+=(Difference n) noexcept
     {
         value_ += n * step_;
         return *this;

@@ -12,23 +12,13 @@
 
 #include <actl/functional/deduce_noexcept.hpp>
 #include <actl/iterator/facade/arrow_operator.hpp>
+#include <actl/meta/constant.hpp>
 
 namespace ac {
 
 template <class Iter, class Category>
 class iterator_facade
 {
-public:
-    using iterator_category = Category;
-
-    friend constexpr Iter operator++(Iter& iter, int) noexcept(
-        noexcept(Iter{iter}, ++iter))
-    {
-        Iter iter_copy = iter;
-        ++iter;
-        return iter_copy;
-    }
-
 protected:
     constexpr Iter& derived() noexcept
     {
@@ -38,6 +28,19 @@ protected:
     constexpr Iter const& derived() const noexcept
     {
         return static_cast<Iter const&>(*this);
+    }
+
+public:
+    using iterator_category = Category;
+
+    // This is a free function so that it's not hidden in the derived iterator
+    // which defines operator++().
+    friend constexpr Iter operator++(Iter& iter, int) noexcept(
+        noexcept(Iter{iter}, ++iter))
+    {
+        Iter iter_copy = iter;
+        ++iter;
+        return iter_copy;
     }
 };
 
@@ -70,6 +73,8 @@ class iterator_facade<Iter, std::bidirectional_iterator_tag>
 public:
     using iterator_category = std::bidirectional_iterator_tag;
 
+    // This is a free function so that it's not hidden in the derived iterator
+    // which defines operator--().
     friend constexpr Iter operator--(Iter& iter, int) noexcept(
         noexcept(Iter{iter}, --iter))
     {
@@ -93,6 +98,10 @@ public:
     constexpr auto operator[](Difference n) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(*(this->derived() + n))
 
+    // This is a method to allow overwriting it in the derived iterator.
+    constexpr Iter& operator++()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<1>{})
+
     template <class Difference>
     friend constexpr Iter operator+(Iter iter, Difference n)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter += n})
@@ -100,6 +109,10 @@ public:
     template <class Difference>
     friend constexpr Iter operator+(Difference n, Iter iter)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(iter + n)
+
+    // This is a method to allow overwriting it in the derived iterator.
+    constexpr Iter& operator--()
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<-1>{})
 
     template <class Difference>
     friend constexpr Iter& operator-=(Iter& iter, Difference n)
