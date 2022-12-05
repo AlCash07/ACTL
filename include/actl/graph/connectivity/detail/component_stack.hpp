@@ -21,7 +21,7 @@ class component_stack
     map_value_t<Map> n_ = 0;
 
 public:
-    static_assert(std::is_same_v<T, range_value_t<Stack>>);
+    static_assert(std::is_same_v<T, typename Stack::value_type>);
 
     explicit component_stack(Map map) : map_{map} {}
 

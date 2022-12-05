@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/graph/detail/list_value.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/map/generic_container.hpp>
 
@@ -13,7 +14,7 @@ namespace ac {
 
 template <
     class VertexContainer = none,
-    class T = range_value_t<VertexContainer>>
+    class T = graph::list_value_t<VertexContainer>>
 class vertex_list : public vertex_list<VertexContainer, none>
 {
     using base_t = vertex_list<VertexContainer, none>;
@@ -49,7 +50,7 @@ class vertex_list<VC, none>
 {
 public:
     using vertex_container =
-        rebind_container_t<VC, range_value_t<VC>>; // to handle none
+        rebind_container_t<VC, graph::list_value_t<VC>>; // to handle none
     using vertex = container_id<vertex_container>;
     using vertex_iterator = container_id_iterator<vertex_container>;
 

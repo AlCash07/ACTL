@@ -28,7 +28,7 @@ template <
     class OEC,
     class EC,
     class VC,
-    class S = range_value_t<EC>,
+    class S = graph::list_value_t<EC>,
     class T = range_value_t<OEC>>
 class adj_list_edges : public adj_list_edges<Dir, OEC, EC, VC, S, none>
 {
@@ -296,7 +296,7 @@ public:
     using typename base_t::edge;
     using typename base_t::vertex;
 
-    using edge_selector = range_value_t<EC>;
+    using edge_selector = graph::list_value_t<EC>;
     using edge_iterator = typename detail::edge_iter<adjacency_list>::type;
     using out_edge = typename base_t::out_iter;
     using out_edge_iterator =

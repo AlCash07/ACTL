@@ -16,7 +16,12 @@ namespace ac {
 
 namespace detail {
 
-template <class Dir, class V, class EC, class S, class T = range_value_t<EC>>
+template <
+    class Dir,
+    class V,
+    class EC,
+    class S,
+    class T = graph::list_value_t<EC>>
 class edge_list_edges : public edge_list_edges<Dir, V, EC, S, none>
 {
     using base_t = edge_list_edges<Dir, V, EC, S, none>;
@@ -144,10 +149,11 @@ public:
     {
     public:
         using value_type = E;
+        using difference_type = std::ptrdiff_t;
 
         E operator*() const
         {
-            auto& vertices = id_at(el_.edges_, id_).first();
+            auto& vertices = id_at(el_->edges_, id_).first();
             using V1 = typename E::vertex;
             return E{V1{vertices.u}, V1{vertices.v}, id_};
         }
@@ -167,9 +173,9 @@ public:
 
         using ec_id = container_id<typename base_t::edge_container>;
 
-        edge_iterator(edge_list_impl const& el, ec_id id) : el_{el}, id_{id} {}
+        edge_iterator(edge_list_impl const& el, ec_id id) : el_{&el}, id_{id} {}
 
-        edge_list_impl const& el_;
+        edge_list_impl const* el_;
         ec_id id_;
     };
 

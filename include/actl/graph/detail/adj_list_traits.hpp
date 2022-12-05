@@ -32,7 +32,7 @@ struct adj_list_traits
 {
     using vertex = std::conditional_t<is_random_access_range_v<VC>, int, void*>;
 
-    using edge_selector = range_value_t<EC>;
+    using edge_selector = graph::list_value_t<EC>;
 
     using edges = edge_list_impl<
         Dir,

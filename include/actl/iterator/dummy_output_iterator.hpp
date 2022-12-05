@@ -6,13 +6,15 @@
 
 #pragma once
 
-#include <actl/iterator/facade/iterator_types.hpp>
-
 namespace ac {
 
-struct dummy_output_iterator : output_iterator_types
+struct dummy_output_iterator
 {
+    using interator_category = std::output_iterator_tag;
+    using value_type = void;
+    using reference = void;
     using pointer = void;
+    using difference_type = void;
 
     using R = dummy_output_iterator&;
 

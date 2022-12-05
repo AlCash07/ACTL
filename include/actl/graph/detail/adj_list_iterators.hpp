@@ -32,6 +32,7 @@ class adj_list_out_edge_iter
 
 public:
     using value_type = edge_t<G>;
+    using difference_type = std::ptrdiff_t;
 
     explicit adj_list_out_edge_iter() = default;
 
@@ -72,7 +73,7 @@ class adj_list_edge_iter
     bool is_reverse_edge() const
     {
         if constexpr (G::is_undirected)
-            return **this.target() < u_;
+            return (*(*this)).target() < u_;
         else
             return false;
     }
@@ -103,6 +104,7 @@ class adj_list_edge_iter
 
 public:
     using value_type = edge_t<G>;
+    using difference_type = std::ptrdiff_t;
 
     explicit adj_list_edge_iter() = default;
 
@@ -128,7 +130,7 @@ public:
     adj_list_edge_iter& operator++()
     {
         if (is_end())
-            return;
+            return *this;
         ++iter_;
         skip_empty();
         return *this;
@@ -137,7 +139,7 @@ public:
     friend bool operator==(
         adj_list_edge_iter const& lhs, adj_list_edge_iter const& rhs)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(
-            lhs.u_ == rhs.u_ && (is_end() || lhs.iter_ == rhs.iter_))
+            lhs.u_ == rhs.u_ && (lhs.is_end() || lhs.iter_ == rhs.iter_))
 };
 
 template <class G, class = typename G::edge_selector>

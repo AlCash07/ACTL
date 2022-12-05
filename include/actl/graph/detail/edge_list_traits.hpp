@@ -8,6 +8,7 @@
 
 #include <actl/container/container_id.hpp>
 #include <actl/container/dummy_container.hpp>
+#include <actl/graph/detail/list_value.hpp>
 #include <actl/graph/detail/mimic_pair.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
@@ -95,7 +96,7 @@ private:
 template <class Dir, class V, class EC, class Selector>
 struct edge_list_traits
 {
-    using bundle = range_value_t<EC>;
+    using bundle = graph::list_value_t<EC>;
     using vertices = edge_vertices<Dir, V, Selector>;
     using edge_data = mimic_pair<vertices, bundle, 1>;
     using container = rebind_container_t<EC, edge_data>;
@@ -104,7 +105,7 @@ struct edge_list_traits
 template <class Dir, class V, class EC>
 struct edge_list_traits<Dir, V, EC, none>
 {
-    using bundle = range_value_t<EC>;
+    using bundle = graph::list_value_t<EC>;
     using vertices = none;
     using container = dummy_container;
 };

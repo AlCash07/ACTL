@@ -184,7 +184,7 @@ void id_check(C& cont, container_id<C> id)
 }
 
 template <class C>
-range_reference_t<C> id_at(C& cont, container_id<C> id)
+reference_t<C> id_at(C& cont, container_id<C> id)
 {
     id_check(cont, id);
     if constexpr (is_random_access_range_v<C>)
@@ -193,11 +193,11 @@ range_reference_t<C> id_at(C& cont, container_id<C> id)
         // const_cast is required because id contains a const_iterator.
         // TODO: this cast allows modification of set key, which may lead to
         // bugs.
-        return const_cast<range_reference_t<C>>(*id.base());
+        return const_cast<reference_t<C>>(*id.base());
 }
 
 template <class C>
-range_reference_t<C const> id_at(C const& cont, container_id<C> id)
+reference_t<C const> id_at(C const& cont, container_id<C> id)
 {
     id_check(cont, id);
     if constexpr (is_random_access_range_v<C>)

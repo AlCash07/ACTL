@@ -39,7 +39,7 @@ template <class C>
 struct map_traits<C, detail::enable_if_gc_t<C>>
     : map_traits_base<
           container_id<C>,
-          range_reference_t<C>,
+          reference_t<C>,
           range_value_t<C>,
           true,
           !std::is_const_v<C>,
