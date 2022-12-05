@@ -9,7 +9,6 @@
 #include <actl/iterator/traits/category.hpp>
 #include <actl/meta/nesting_depth.hpp>
 #include <actl/range/access/all.hpp>
-#include <actl/range/traits/associated_types.hpp>
 
 namespace ac {
 
@@ -51,9 +50,12 @@ struct iter_to_range_category<std::random_access_iterator_tag>
     using type = random_access_range_tag;
 };
 
+template <class Range>
+using iterator_t = decltype(ranges::begin(std::declval<Range&>()));
+
 template <class T, class = void>
 struct range_category_impl
-    : iter_to_range_category<iter_category_t<range_iterator_t<T>>>
+    : iter_to_range_category<iter_category_t<iterator_t<T>>>
 {};
 
 // Not all ranges with data() are contiguous.
@@ -65,7 +67,7 @@ struct range_category_impl
 template <
     class T,
     bool = std::is_same_v<
-        range_reference_t<T>,
+        std::iter_reference_t<iterator_t<T>>,
         decltype(*ranges::data(std::declval<T&>()))>>
 struct contiguous_impl
 {
@@ -140,7 +142,8 @@ inline constexpr bool is_contiguous_range_v =
 
 template <class T>
 struct nesting_depth<T, std::enable_if_t<is_range_v<T>>>
-    : size_constant<1 + nesting_depth_v<range_value_t<T>>>
+    : size_constant<
+          1 + nesting_depth_v<std::iter_value_t<detail::iterator_t<T>>>>
 {};
 
 } // namespace ac

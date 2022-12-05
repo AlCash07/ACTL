@@ -8,7 +8,9 @@
 
 #pragma once
 
+#include <actl/meta/associated_types.hpp>
 #include <actl/range/access/all.hpp>
+#include <actl/range/traits/category.hpp>
 #include <iterator>
 
 namespace ac {
@@ -31,5 +33,13 @@ using range_value_t = std::iter_value_t<range_iterator_t<Range>>;
 
 template <class Range>
 using range_reference_t = std::iter_reference_t<range_iterator_t<Range>>;
+
+template <class Range>
+requires is_range_v<Range>
+struct associated_types<Range>
+{
+    using value_type = range_value_t<Range>;
+    using reference = range_reference_t<Range>;
+};
 
 } // namespace ac
