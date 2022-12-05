@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/associated_types.hpp>
 #include <actl/std/vector.hpp>
 
 static_assert(std::is_same_v<int, ac::range_value_t<int const[8]>>);

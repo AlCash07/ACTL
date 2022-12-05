@@ -9,7 +9,7 @@
 #include <actl/iterator/traits/category.hpp>
 #include <actl/meta/nesting_depth.hpp>
 #include <actl/range/access/all.hpp>
-#include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/associated_types.hpp>
 
 namespace ac {
 
@@ -79,8 +79,8 @@ struct contiguous_impl<T, false>
 template <class T>
 struct range_category_impl<
     T, // & is needed for C arrays
-    std::void_t<decltype(
-        ranges::data(std::declval<T&>()), ranges::size(std::declval<T&>()))>>
+    std::void_t<
+        decltype(ranges::data(std::declval<T&>()), ranges::size(std::declval<T&>()))>>
     : contiguous_impl<T>
 {};
 
@@ -93,8 +93,8 @@ struct range_category
 template <class T>
 struct range_category<
     T, // & is needed for C arrays
-    std::void_t<decltype(
-        ranges::begin(std::declval<T&>()), ranges::end(std::declval<T&>()))>>
+    std::void_t<
+        decltype(ranges::begin(std::declval<T&>()), ranges::end(std::declval<T&>()))>>
     : detail::range_category_impl<T>
 {};
 

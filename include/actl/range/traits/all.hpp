@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/range/traits/associated_types.hpp>
 #include <actl/range/traits/category.hpp>
-#include <actl/range/traits/dependent.hpp>
 #include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/is_strict_range.hpp>
 #include <actl/range/traits/properties.hpp>

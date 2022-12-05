@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/graph/traits.hpp>
-#include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/associated_types.hpp>
 #include <actl/std/vector.hpp>
 
 template <bool Directed, class Edges>

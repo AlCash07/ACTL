@@ -13,7 +13,7 @@
 #include <actl/numeric/bit/bit_cast.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/associated_types.hpp>
 #include <cstdint>
 
 namespace ac {

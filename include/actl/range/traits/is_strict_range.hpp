@@ -8,7 +8,7 @@
 
 #include <actl/category/tuple.hpp>
 #include <actl/meta/type_traits.hpp>
-#include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/associated_types.hpp>
 
 namespace ac {
 

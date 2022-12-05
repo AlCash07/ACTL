@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include <actl/range/traits/associated_types.hpp>
 #include <actl/range/traits/category.hpp>
-#include <actl/range/traits/dependent.hpp>
 #include <algorithm>
 
 namespace ac {

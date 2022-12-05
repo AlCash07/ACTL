@@ -8,7 +8,7 @@
 
 #include <actl/geometry/point.hpp>
 #include <actl/geometry/traits.hpp>
-#include <actl/range/traits/dependent.hpp>
+#include <actl/range/traits/associated_types.hpp>
 
 namespace ac {
 
