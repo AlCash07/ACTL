@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/functional/callable_traits.hpp>
+#include <actl/functional/traits/callable_traits.hpp>
 #include <functional>
 #include "test.hpp"
 
@@ -29,8 +29,10 @@ TEST_CASE("void 0 arity free function: value, pointer, references")
     test_void_free_function_traits<void (*)() noexcept, true>();
     test_void_free_function_traits<void (&)(), false>();
     test_void_free_function_traits<void (&)() noexcept, true>();
-    test_void_free_function_traits<void(&&)(), false>();
-    test_void_free_function_traits<void(&&)() noexcept, true>();
+    test_void_free_function_traits<void (*const&)(), false>();
+    test_void_free_function_traits<void (*const&)() noexcept, true>();
+    test_void_free_function_traits<void (&&)(), false>();
+    test_void_free_function_traits<void (&&)() noexcept, true>();
 }
 
 using free_function_params =
@@ -58,7 +60,6 @@ static_assert(6ul == FnTraits::arity);
 static_assert(std::is_same_v<int&&, typename FnTraits::return_type>);
 static_assert(
     std::is_same_v<int const*, typename FnTraits::template parameter_type<5>>);
-static_assert(!FnTraits::is_member_function);
 static_assert(FnTraits::is_noexcept);
 
 namespace {
@@ -90,7 +91,7 @@ void test_member_function_traits()
     static_assert(std::is_same_v<int, ac::return_type_t<MemberFn>>);
     static_assert(
         std::is_same_v<ClassParam, ac::parameter_type_t<0, MemberFn>>);
-    static_assert(ac::is_member_function_v<MemberFn>);
+    static_assert(ac::is_member_function_v<std::remove_cvref_t<MemberFn>>);
     static_assert(IsNoexcept == ac::is_noexcept_v<MemberFn>);
 }
 
@@ -142,6 +143,15 @@ TEST_CASE("member function pointers")
     test_member_function_traits<
         decltype(&S::const_rvalue_reference_member_function_noexcept),
         S const&&,
+        true>();
+    /* qualifying a member function pointer doesn't change its traits */
+    test_member_function_traits<
+        decltype(&S::member_function_noexcept) const&,
+        S&,
+        true>();
+    test_member_function_traits<
+        decltype(&S::member_function_noexcept)&&,
+        S&,
         true>();
 }
 
@@ -220,7 +230,6 @@ static_assert(ac::is_noexcept_v<fn_object_params>);
 using FnObjTraits = ac::function_object_traits<fn_object_noexcept>;
 static_assert(0ul == FnObjTraits::arity);
 static_assert(std::is_same_v<S, typename FnObjTraits::return_type>);
-static_assert(!FnObjTraits::is_member_function);
 static_assert(FnObjTraits::is_noexcept);
 
 } // namespace

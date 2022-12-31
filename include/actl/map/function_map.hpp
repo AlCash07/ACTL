@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/callable_traits.hpp>
+#include <actl/functional/traits/callable_traits.hpp>
 #include <actl/map/traits.hpp>
 
 namespace ac {
