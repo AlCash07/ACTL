@@ -31,7 +31,7 @@ struct free_function_traits<Return(Params...)>
     static constexpr size_t arity = sizeof...(Params);
 
     template <size_t Index>
-    using parameter_type = type_at_t<Index, Params...>;
+    using parameter_at = type_at_t<Index, Params...>;
 
     static constexpr bool is_noexcept = false;
 

@@ -30,14 +30,14 @@ struct callable_traits<Fn> : function_object_traits<std::remove_reference_t<Fn>>
 /* convenience aliases */
 
 template <class Fn>
-using return_type_t = typename callable_traits<Fn>::return_type;
+using return_t = typename callable_traits<Fn>::return_type;
 
 template <class Fn>
 inline constexpr size_t arity_v = callable_traits<Fn>::arity;
 
 template <size_t Index, class Fn>
-using parameter_type_t =
-    typename callable_traits<Fn>::template parameter_type<Index>;
+using parameter_at_t =
+    typename callable_traits<Fn>::template parameter_at<Index>;
 
 template <class Fn>
 inline constexpr bool is_noexcept_v = callable_traits<Fn>::is_noexcept;

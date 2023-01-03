@@ -40,7 +40,7 @@ public:
     static constexpr size_t arity = Traits::arity - 1;
 
     template <size_t Index>
-    using parameter_type = typename Traits::template parameter_type<Index + 1>;
+    using parameter_at = typename Traits::template parameter_at<Index + 1>;
 
     static constexpr bool is_noexcept = Traits::is_noexcept;
 

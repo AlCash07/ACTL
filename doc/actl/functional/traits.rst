@@ -20,9 +20,9 @@ Reference
 
 The most convenient way to use the traits is through the following interface:
 
-.. doxygentypedef:: ac::return_type_t
+.. doxygentypedef:: ac::return_t
 .. doxygenvariable:: ac::arity_v
-.. doxygentypedef:: ac::parameter_type_t
+.. doxygentypedef:: ac::parameter_at_t
 .. doxygenvariable:: ac::is_noexcept_v
 
 The same information is available as members of
