@@ -1,4 +1,4 @@
-callable_traits
+Callable traits
 ================================
 
 :struct:`ac::callable_traits` provides information about a callable,
@@ -6,10 +6,10 @@ such as return and parameter types.
 The following callables are supported:
 
 * free functions;
-* pointers to free functions;
-* pointers to member functions (in this case the first parameter is the enclosing class);
+* free function pointers;
+* member function pointers (in this case the first parameter is the enclosing class);
 * function objects with a single function call operator;
-* references and rvalue references to all of the above.
+* const and reference-qualified versions of the above types.
 
 This is a lightweight analog of `Boost.CallableTraits
 <https://www.boost.org/doc/libs/1_78_0/libs/callable_traits/doc/html/index.html>`_
@@ -23,22 +23,24 @@ The most convenient way to use the traits is through the following interface:
 .. doxygentypedef:: ac::return_type_t
 .. doxygenvariable:: ac::arity_v
 .. doxygentypedef:: ac::parameter_type_t
-.. doxygenvariable:: ac::is_member_function_v
 .. doxygenvariable:: ac::is_noexcept_v
 
 The same information is available as members of
 
-.. struct:: template<class Function> \
-            ac::callable_traits
+.. doxygenstruct:: ac::callable_traits
+.. doxygenstruct:: ac::free_function_traits
+.. doxygenstruct:: ac::member_function_traits
+.. doxygenstruct:: ac::function_object_traits
 
-or, only for function objects, as members of
+The following concepts are provided:
 
-.. struct:: template<class Function> \
-            ac::function_object_traits
+.. doxygenconcept:: ac::FreeFunction
+.. doxygenconcept:: ac::MemberFunction
+.. doxygenconcept:: ac::FunctionObject
 
-:source:`Source code <functional/callable_traits>`
+:source:`Source code <functional/traits/callable_traits>`
 
-:test:`Tests <functional/callable_traits>`
+:test:`Tests <functional/traits/callable_traits>`
 
 Design
 ------

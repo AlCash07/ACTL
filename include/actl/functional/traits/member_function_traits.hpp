@@ -10,7 +10,7 @@
 
 namespace ac {
 
-/// Callable traits specialized only for member functions.
+/// Callable traits specialized only for member function pointers.
 template <class T>
 struct member_function_traits
 {
@@ -18,8 +18,7 @@ struct member_function_traits
 };
 
 template <class T>
-inline constexpr bool is_member_function_v =
-    member_function_traits<T>::is_member_function;
+concept MemberFunction = member_function_traits<T>::is_member_function;
 
 namespace detail {
 
@@ -57,7 +56,7 @@ struct member_function_traits<Return (Class::*)(Params...)&>
 {};
 
 template <class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...)& noexcept>
+struct member_function_traits<Return (Class::*)(Params...) & noexcept>
     : detail::member_as_free_fn<Return(Class&, Params...) noexcept>
 {};
 
@@ -67,7 +66,7 @@ struct member_function_traits<Return (Class::*)(Params...) const&>
 {};
 
 template <class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const& noexcept>
+struct member_function_traits<Return (Class::*)(Params...) const & noexcept>
     : detail::member_as_free_fn<Return(Class const&, Params...) noexcept>
 {};
 
@@ -77,7 +76,7 @@ struct member_function_traits<Return (Class::*)(Params...) &&>
 {};
 
 template <class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...)&& noexcept>
+struct member_function_traits<Return (Class::*)(Params...) && noexcept>
     : detail::member_as_free_fn<Return(Class&&, Params...) noexcept>
 {};
 
@@ -87,7 +86,7 @@ struct member_function_traits<Return (Class::*)(Params...) const&&>
 {};
 
 template <class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const&& noexcept>
+struct member_function_traits<Return (Class::*)(Params...) const && noexcept>
     : detail::member_as_free_fn<Return(Class const&&, Params...) noexcept>
 {};
 

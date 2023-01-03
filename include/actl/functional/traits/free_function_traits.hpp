@@ -17,11 +17,9 @@ struct free_function_traits
     static constexpr bool is_free_function = false;
 };
 
-/// Indicates whether a type is a free function, or a pointer to one
-/// (which are equivalent in C++).
+/// Concept of a free function, or a pointer to one (which are synonyms in C++).
 template <class T>
-inline constexpr bool is_free_function_v =
-    free_function_traits<T>::is_free_function;
+concept FreeFunction = free_function_traits<T>::is_free_function;
 
 /* free function */
 

@@ -18,12 +18,12 @@ struct callable_traits
 
 // Type qualifiers don't matter for regular functions.
 template <class Fn>
-requires is_function_v<std::remove_cvref_t<Fn>>
+    requires Function<std::remove_cvref_t<Fn>>
 struct callable_traits<Fn> : function_traits<std::remove_cvref_t<Fn>>
 {};
 
 template <class Fn>
-requires is_function_object_v<std::remove_reference_t<Fn>>
+    requires FunctionObject<std::remove_reference_t<Fn>>
 struct callable_traits<Fn> : function_object_traits<std::remove_reference_t<Fn>>
 {};
 

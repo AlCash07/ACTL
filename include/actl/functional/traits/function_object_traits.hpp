@@ -17,18 +17,18 @@ struct function_object_traits
     static constexpr bool is_function_object = false;
 };
 
-/// Indicates whether a type is a function function object,
-/// that is has a non-overloaded `operator()`.
-/// Type qualifiers are taken into account.
+/// Concept of a function object, that is a type with
+/// a non-overloaded `operator()`.
 template <class T>
-inline constexpr bool is_function_object_v =
-    function_object_traits<T>::is_function_object;
+concept FunctionObject = function_object_traits<T>::is_function_object;
 
 template <class Fn>
-requires requires(Fn)
-{
-    &Fn::operator();
-}
+    requires requires(Fn) {
+                 &Fn::operator();
+                 // TODO: investigate whether type qualifiers on Fn can make it
+                 // impossible to call `operator()`, and, on the other hand, may
+                 // disambiguate it.
+             }
 struct function_object_traits<Fn>
 {
 private:

@@ -16,20 +16,16 @@ template <class T>
 struct function_traits
 {};
 
-/// Indicates whether a type is a function, including a member function,
-/// or a function pointer (which in C++ is the same).
+/// Concept of a function, including a member function.
 template <class T>
-inline constexpr bool is_function_v =
-    is_free_function_v<T> || is_member_function_v<T>;
+concept Function = FreeFunction<T> || MemberFunction<T>;
 
-template <class T>
-requires is_free_function_v<T>
-struct function_traits<T> : free_function_traits<T>
+template <FreeFunction Fn>
+struct function_traits<Fn> : free_function_traits<Fn>
 {};
 
-template <class T>
-requires is_member_function_v<T>
-struct function_traits<T> : member_function_traits<T>
+template <MemberFunction Fn>
+struct function_traits<Fn> : member_function_traits<Fn>
 {};
 
 } // namespace ac

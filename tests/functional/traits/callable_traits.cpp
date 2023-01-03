@@ -15,8 +15,11 @@ void test_void_free_function_traits()
 {
     static_assert(0ul == ac::arity_v<Fn>);
     static_assert(std::is_same_v<void, ac::return_type_t<Fn>>);
-    static_assert(!ac::is_member_function_v<Fn>);
     static_assert(IsNoexcept == ac::is_noexcept_v<Fn>);
+
+    using RawFn = std::remove_cvref_t<Fn>;
+    static_assert(ac::FreeFunction<RawFn>);
+    static_assert(!ac::MemberFunction<RawFn>);
 }
 
 } // namespace
@@ -51,8 +54,10 @@ static_assert(
     std::is_same_v<int*, ac::parameter_type_t<4, free_function_params>>);
 static_assert(
     std::is_same_v<int const*, ac::parameter_type_t<5, free_function_params>>);
-static_assert(!ac::is_member_function_v<free_function_params>);
 static_assert(ac::is_noexcept_v<free_function_params>);
+
+static_assert(ac::FreeFunction<free_function_params>);
+static_assert(!ac::MemberFunction<free_function_params>);
 
 /* Direct access to ac::callable_traits */
 using FnTraits = ac::callable_traits<free_function_params>;
@@ -91,8 +96,11 @@ void test_member_function_traits()
     static_assert(std::is_same_v<int, ac::return_type_t<MemberFn>>);
     static_assert(
         std::is_same_v<ClassParam, ac::parameter_type_t<0, MemberFn>>);
-    static_assert(ac::is_member_function_v<std::remove_cvref_t<MemberFn>>);
     static_assert(IsNoexcept == ac::is_noexcept_v<MemberFn>);
+
+    using RawMemberFn = std::remove_cvref_t<MemberFn>;
+    static_assert(!ac::FreeFunction<RawMemberFn>);
+    static_assert(ac::MemberFunction<RawMemberFn>);
 }
 
 } // namespace
@@ -161,8 +169,10 @@ static_assert(std::is_same_v<int const&, ac::return_type_t<mem_fn_params>>);
 static_assert(std::is_same_v<S const&, ac::parameter_type_t<0, mem_fn_params>>);
 static_assert(std::is_same_v<int, ac::parameter_type_t<1, mem_fn_params>>);
 static_assert(std::is_same_v<int&&, ac::parameter_type_t<2, mem_fn_params>>);
-static_assert(ac::is_member_function_v<mem_fn_params>);
 static_assert(ac::is_noexcept_v<mem_fn_params>);
+
+static_assert(!ac::FreeFunction<mem_fn_params>);
+static_assert(ac::MemberFunction<mem_fn_params>);
 
 namespace {
 
@@ -175,8 +185,10 @@ static_assert(0ul == ac::arity_v<fn_object>);
 static_assert(0ul == ac::arity_v<fn_object&>);
 static_assert(0ul == ac::arity_v<fn_object&&>);
 static_assert(std::is_same_v<S, ac::return_type_t<fn_object>>);
-static_assert(!ac::is_member_function_v<fn_object>);
 static_assert(!ac::is_noexcept_v<fn_object>);
+
+static_assert(!ac::FreeFunction<fn_object>);
+static_assert(!ac::MemberFunction<fn_object>);
 
 struct fn_object_noexcept
 {
@@ -185,7 +197,6 @@ struct fn_object_noexcept
 
 static_assert(0ul == ac::arity_v<fn_object_noexcept>);
 static_assert(std::is_same_v<S, ac::return_type_t<fn_object_noexcept>>);
-static_assert(!ac::is_member_function_v<fn_object_noexcept>);
 static_assert(ac::is_noexcept_v<fn_object_noexcept>);
 
 struct const_fn_object
@@ -197,7 +208,6 @@ static_assert(0ul == ac::arity_v<const_fn_object>);
 static_assert(0ul == ac::arity_v<const_fn_object const>);
 static_assert(0ul == ac::arity_v<const_fn_object const&>);
 static_assert(std::is_same_v<S, ac::return_type_t<const_fn_object const>>);
-static_assert(!ac::is_member_function_v<const_fn_object>);
 static_assert(!ac::is_noexcept_v<const_fn_object>);
 
 struct const_fn_object_noexcept
@@ -207,7 +217,6 @@ struct const_fn_object_noexcept
 
 static_assert(0ul == ac::arity_v<const_fn_object_noexcept>);
 static_assert(std::is_same_v<S, ac::return_type_t<const_fn_object_noexcept>>);
-static_assert(!ac::is_member_function_v<const_fn_object_noexcept>);
 static_assert(ac::is_noexcept_v<const_fn_object_noexcept>);
 
 struct fn_object_params
@@ -223,8 +232,10 @@ static_assert(
     std::is_same_v<S const*, ac::parameter_type_t<0, fn_object_params>>);
 static_assert(std::is_same_v<int&&, ac::parameter_type_t<1, fn_object_params>>);
 static_assert(std::is_same_v<S, ac::parameter_type_t<2, fn_object_params>>);
-static_assert(!ac::is_member_function_v<fn_object_params>);
 static_assert(ac::is_noexcept_v<fn_object_params>);
+
+static_assert(!ac::FreeFunction<fn_object_params>);
+static_assert(!ac::MemberFunction<fn_object_params>);
 
 /* Direct access to ac::function_object_traits */
 using FnObjTraits = ac::function_object_traits<fn_object_noexcept>;
@@ -238,4 +249,6 @@ using std_function = std::function<int*(int&)>;
 static_assert(1ul == ac::arity_v<std_function>);
 static_assert(std::is_same_v<int*, ac::return_type_t<std_function>>);
 static_assert(std::is_same_v<int&, ac::parameter_type_t<0, std_function>>);
-static_assert(!ac::is_member_function_v<std_function>);
+
+static_assert(!ac::FreeFunction<std_function>);
+static_assert(!ac::MemberFunction<std_function>);
