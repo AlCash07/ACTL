@@ -43,7 +43,9 @@
     <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/js/jquery.min.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
 <script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="_static/js/basicstrap.js"></script>
@@ -140,13 +142,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="actl/functional/invoke_tuple.html#_CPPv42ac">ac (C++ type)</a>, <a href="actl/string/char_classes.html#_CPPv42ac">[1]</a>
 </li>
-      <li><a href="actl/functional/callable_traits.html#_CPPv4I0EN2ac7arity_vE">ac::arity_v (C++ member)</a>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac7arity_vE">ac::arity_v (C++ member)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_bEN2ac6bool_cE">ac::bool_c (C++ member)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_bEN2ac13bool_constantE">ac::bool_constant (C++ type)</a>
 </li>
-      <li><a href="actl/functional/callable_traits.html#_CPPv4I0EN2ac15callable_traitsE">ac::callable_traits (C++ struct)</a>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac15callable_traitsE">ac::callable_traits (C++ struct)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_DaEN2ac8constantE">ac::constant (C++ struct)</a>
 </li>
@@ -160,7 +162,13 @@
 </li>
       <li><a href="actl/meta/constant_literals.html#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav">ac::constant_literals::operator&#34;&#34;_cull (C++ function)</a>
 </li>
-      <li><a href="actl/functional/callable_traits.html#_CPPv4I0EN2ac22function_object_traitsE">ac::function_object_traits (C++ struct)</a>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac20free_function_traitsE">ac::free_function_traits (C++ struct)</a>
+</li>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac12FreeFunctionE">ac::FreeFunction (C++ concept)</a>
+</li>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac22function_object_traitsE">ac::function_object_traits (C++ struct)</a>
+</li>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac14FunctionObjectE">ac::FunctionObject (C++ concept)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_iEN2ac5int_cE">ac::int_c (C++ member)</a>
 </li>
@@ -184,17 +192,19 @@
 </li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac8is_lowerEc">ac::is_lower (C++ function)</a>
 </li>
-      <li><a href="actl/functional/callable_traits.html#_CPPv4I0EN2ac20is_member_function_vE">ac::is_member_function_v (C++ member)</a>
-</li>
-      <li><a href="actl/functional/callable_traits.html#_CPPv4I0EN2ac13is_noexcept_vE">ac::is_noexcept_v (C++ member)</a>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac13is_noexcept_vE">ac::is_noexcept_v (C++ member)</a>
 </li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac8is_spaceEc">ac::is_space (C++ function)</a>
 </li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac8is_upperEc">ac::is_upper (C++ function)</a>
 </li>
-      <li><a href="actl/functional/callable_traits.html#_CPPv4I_6size_t0EN2ac16parameter_type_tE">ac::parameter_type_t (C++ type)</a>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac22member_function_traitsE">ac::member_function_traits (C++ struct)</a>
 </li>
-      <li><a href="actl/functional/callable_traits.html#_CPPv4I0EN2ac13return_type_tE">ac::return_type_t (C++ type)</a>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac14MemberFunctionE">ac::MemberFunction (C++ concept)</a>
+</li>
+      <li><a href="actl/functional/traits.html#_CPPv4I_6size_t0EN2ac14parameter_at_tE">ac::parameter_at_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac8return_tE">ac::return_t (C++ type)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_6size_tEN2ac6size_cE">ac::size_c (C++ member)</a>
 </li>
@@ -205,6 +215,8 @@
       <li><a href="actl/functional/deduce_noexcept.html#c.AC_DEDUCE_NOEXCEPT_AND_RETURN">AC_DEDUCE_NOEXCEPT_AND_RETURN (C macro)</a>
 </li>
       <li><a href="actl/functional/deduce_noexcept.html#c.AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN">AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN (C macro)</a>
+</li>
+      <li><a href="actl/functional/deduce_noexcept.html#c.AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN">AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN (C macro)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -240,7 +252,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2022, Oleksandr Bacherikov.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.3.0.
       </footer>
       <!-- /footer -->
 

@@ -6,7 +6,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>constant &mdash; ACTL  documentation</title>
     <meta name="description" content="">
@@ -44,7 +44,9 @@
     <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
 <script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
@@ -166,26 +168,26 @@
                 <div class="body">
                   
   <section id="constant">
-<h1>constant<a class="headerlink" href="#constant" title="Permalink to this headline">¶</a></h1>
+<h1>constant<a class="headerlink" href="#constant" title="Permalink to this heading">¶</a></h1>
 <p>Many C++ libraries including the standard one have inconsistent interfaces
 for values known at runtime or compilation time. For example:</p>
 <ul class="simple">
-<li><p>Element access at the given position: <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">[</span></span><span class="mi"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></code> and <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">::</span></span><span class="n"><span class="pre">get</span></span><span class="o"><span class="pre">&lt;</span></span><span class="mi"><span class="pre">2</span></span><span class="o"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">)</span></span></code>.</p></li>
-<li><p>First elements of a span: <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">(</span></span><span class="mi"><span class="pre">2</span></span><span class="p"><span class="pre">)</span></span></code> and <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">&lt;</span></span><span class="mi"><span class="pre">2</span></span><span class="o"><span class="pre">&gt;</span></span><span class="p"><span class="pre">()</span></span></code>.</p></li>
+<li><p>Element access at the given position: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"></span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">)</span><span class="w"></span></code>.</p></li>
+<li><p>First elements of a span: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">span</span><span class="p">.</span><span class="n">first</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">span</span><span class="p">.</span><span class="n">first</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">()</span><span class="w"></span></code>.</p></li>
 </ul>
-<p>Unfortunately, it’s impossible to support syntax <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">[</span></span><span class="mi"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></code>,
-because 2 has type <code class="code highlight cpp docutils literal notranslate"><span class="kt"><span class="pre">int</span></span></code>, not <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">::</span></span><span class="n"><span class="pre">integral_constant</span></span><span class="o"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="mi"><span class="pre">2</span></span><span class="o"><span class="pre">&gt;</span></span></code>,
+<p>Unfortunately, it’s impossible to support syntax <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"></span></code>,
+because 2 has type <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"></span></code>, not <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">integral_constant</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"></span></code>,
 and the result type can be different for different indices.
-The best thing we can do is to support syntax <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">[</span></span><span class="mi"><span class="pre">2</span></span><span class="n"><span class="pre">_c</span></span><span class="p"><span class="pre">]</span></span></code> with the help of
+The best thing we can do is to support syntax <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">tuple</span><span class="p">[</span><span class="mi">2</span><span class="n">_c</span><span class="p">]</span><span class="w"></span></code> with the help of
 <a class="reference internal" href="constant_literals.html"><span class="doc">constant_literals</span></a>.</p>
 <p>Throughout the library, <a class="reference internal" href="#_CPPv4I_DaEN2ac8constantE" title="ac::constant"><code class="xref cpp cpp-struct docutils literal notranslate"><span class="pre">ac::constant</span></code></a> is used for return and parameter
 types when they are known at compilation time to achieve consistent interfaces.
-Labeling a function as <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">constexpr</span></span></code> isn’t enough, because it doesn’t guarantee
+Labeling a function as <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">constexpr</span><span class="w"></span></code> isn’t enough, because it doesn’t guarantee
 that the function result can always be computed at compilation time,
 and detecting that isn’t trivial.
-Standard facilities such as <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">::</span></span><span class="n"><span class="pre">true_type</span></span></code> still can be used for type traits.</p>
+Standard facilities such as <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="w"></span></code> still can be used for type traits.</p>
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">¶</a></h2>
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4I_DaEN2ac8constantE">
 <span id="_CPPv3I_DaEN2ac8constantE"></span><span id="_CPPv2I_DaEN2ac8constantE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">X</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structac_1_1constant"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">constant</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral_constant</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I_DaEN2ac8constantE" title="ac::constant::X"><span class="n"><span class="pre">X</span></span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_DaEN2ac8constantE" title="ac::constant::X"><span class="n"><span class="pre">X</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_DaEN2ac8constantE" title="Permalink to this definition">¶</a><br /></dt>
@@ -277,7 +279,7 @@ Standard facilities such as <code class="code highlight cpp docutils literal not
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2022, Oleksandr Bacherikov.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.3.0.
       </footer>
       <!-- /footer -->
 

@@ -6,7 +6,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Writing documentation &mdash; ACTL  documentation</title>
     <meta name="description" content="">
@@ -44,7 +44,9 @@
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="../_static/js/bootstrap3.min.js"></script>
 <script type="text/javascript" src="../_static/js/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="../_static/js/basicstrap.js"></script>
@@ -163,7 +165,7 @@
                 <div class="body">
                   
   <section id="writing-documentation">
-<h1>Writing documentation<a class="headerlink" href="#writing-documentation" title="Permalink to this headline">¶</a></h1>
+<h1>Writing documentation<a class="headerlink" href="#writing-documentation" title="Permalink to this heading">¶</a></h1>
 <p>One of the biggest problems of C++ is a lack of good and easy to use tools for writing documentation.
 Here we describe the documentation tools chosen as the best fit for ACTL at this time.
 They are based on the article <a class="reference external" href="https://devblogs.microsoft.com/cppblog/clear-functional-c-documentation-with-sphinx-breathe-doxygen-cmake/">Clear, Functional C++ Documentation with Sphinx + Breathe + Doxygen + CMake</a>
@@ -173,7 +175,7 @@ but this may be revisited to make scripts portable.</p>
 <p>All the requirements can be installed using the
 <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/setup.sh">scripts/doc/setup.sh</a> script.</p>
 <section id="doxygen">
-<h2>Doxygen<a class="headerlink" href="#doxygen" title="Permalink to this headline">¶</a></h2>
+<h2>Doxygen<a class="headerlink" href="#doxygen" title="Permalink to this heading">¶</a></h2>
 <p>The most complicated task, the C++ code parsing, is done by Doxygen.
 Documentation comments that follow the <a class="reference external" href="https://www.doxygen.nl/manual/docblocks.html">Doxygen manual</a>
 are automatically extracted at this step,
@@ -189,9 +191,9 @@ The goal is to have self-documenting code whenever possible:</p>
 <ul class="simple">
 <li><p>Use descriptive names for types, functions, parameters etc.</p></li>
 <li><p>Introduce more high level types.
-For example, if a class <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">Line</span></span></code> is used instead of two points, there’s no need
+For example, if a class <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Line</span><span class="w"></span></code> is used instead of two points, there’s no need
 for a comment explaining that these two points represent a line.</p></li>
-<li><p>Use special annotations to improve clarity, such as <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">out</span></span></code> and <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">inout</span></span></code> wrappers.</p></li>
+<li><p>Use special annotations to improve clarity, such as <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span><span class="w"></span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span><span class="w"></span></code> wrappers.</p></li>
 </ul>
 <p>Treat every comment as a failure to express yourself in code.
 Write a comment only when it provides useful information that can’t be written in the code itself.</p>
@@ -204,7 +206,7 @@ The options of interest are:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">GENERATE_HTML</span></code> is set to <code class="docutils literal notranslate"><span class="pre">NO</span></code>, but can be set to YES to check the output locally in the <em>build/doc/doxygen/html</em> folder.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">EXTRACT_ALL</span></code> is set to <code class="docutils literal notranslate"><span class="pre">YES</span></code>, because most of the library content is put into free functions instead of classes by design.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">EXCLUDE_SYMBOLS</span></code> is set to <code class="docutils literal notranslate"><span class="pre">detail</span></code>, as this is the canonical namespace for implementation details.
-Don’t put public code such as base classes with public interface into <code class="code highlight cpp docutils literal notranslate"><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="nn"><span class="pre">detail</span></span></code>, because they won’t be documented.</p></li>
+Don’t put public code such as base classes with public interface into <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span></code>, because they won’t be documented.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">INLINE_INHERITED_MEMB</span></code> is set to <code class="docutils literal notranslate"><span class="pre">YES</span></code> to make it easier to see the full class interface.
 Utilities such as iterators and ranges rely on base classes to define the full interface without writing repetitive boilerplate code.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PREDEFINED</span></code> contains macros that affect the structure of the code.
@@ -212,7 +214,7 @@ They would be parsed incorrectly otherwise.</p></li>
 </ul>
 </section>
 <section id="sphinx">
-<h2>Sphinx<a class="headerlink" href="#sphinx" title="Permalink to this headline">¶</a></h2>
+<h2>Sphinx<a class="headerlink" href="#sphinx" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx generator</a> is used to generate the final documentation web pages.
 The sources in rst format are located in the <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/doc">doc</a> folder.
 Existing sources can be used as a reference, other useful links for writing them are:</p>
@@ -228,7 +230,7 @@ or the <code class="docutils literal notranslate"><span class="pre">generate</sp
 and its output can be examined by opening <em>build/doc/sphinx/index.html</em></p>
 </section>
 <section id="publishing-documentation">
-<h2>Publishing documentation<a class="headerlink" href="#publishing-documentation" title="Permalink to this headline">¶</a></h2>
+<h2>Publishing documentation<a class="headerlink" href="#publishing-documentation" title="Permalink to this heading">¶</a></h2>
 <p>Currently, the documentation is published manually only by the project maintainers using the
 <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/publish.sh">scripts/doc/publish.sh</a> script
 or the <code class="docutils literal notranslate"><span class="pre">publish</span> <span class="pre">documentation</span></code> VS Code task (together with documentation generation).</p>
@@ -269,7 +271,7 @@ and then automatically published to <a class="reference external" href="https://
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2022, Oleksandr Bacherikov.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.3.0.
       </footer>
       <!-- /footer -->
 

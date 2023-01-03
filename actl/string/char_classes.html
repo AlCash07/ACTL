@@ -6,7 +6,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>char_classes &mdash; ACTL  documentation</title>
     <meta name="description" content="">
@@ -44,7 +44,9 @@
     <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
 <script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
@@ -168,7 +170,7 @@
                 <div class="body">
                   
   <section id="char-classes">
-<h1>char_classes<a class="headerlink" href="#char-classes" title="Permalink to this headline">¶</a></h1>
+<h1>char_classes<a class="headerlink" href="#char-classes" title="Permalink to this heading">¶</a></h1>
 <p>Character classification similar to the one provided in
 &lt;<a class="reference external" href="https://en.cppreference.com/w/cpp/header/cctype">cctype</a>&gt;.
 The difference is that functions here:</p>
@@ -176,11 +178,11 @@ The difference is that functions here:</p>
 <li><p>Don’t implicitly account for the locale.</p></li>
 <li><p>Are a few times faster than the standard ones,
 because they don’t account for the locale and can be efficiently inlined.</p></li>
-<li><p>Return <code class="code highlight cpp docutils literal notranslate"><span class="kt"><span class="pre">bool</span></span></code> as expected.</p></li>
-<li><p>Don’t try to handle the <code class="code highlight cpp docutils literal notranslate"><span class="n"><span class="pre">EOF</span></span></code> character.</p></li>
+<li><p>Return <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">bool</span><span class="w"></span></code> as expected.</p></li>
+<li><p>Don’t try to handle the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">EOF</span><span class="w"></span></code> character.</p></li>
 </ul>
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">¶</a></h2>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv42ac">
 <span id="_CPPv32ac"></span><span id="_CPPv22ac"></span><span id="ac"></span><span class="target" id="namespaceac"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ac</span></span></span><br /></dt>
@@ -271,7 +273,7 @@ because they don’t account for the locale and can be efficiently inlined.</p><
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2022, Oleksandr Bacherikov.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.3.0.
       </footer>
       <!-- /footer -->
 
