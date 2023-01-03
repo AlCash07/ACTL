@@ -7,4 +7,4 @@ sphinx-build -b html \
     -Dbreathe_projects.ACTL=../build/doc/doxygen/xml \
     $sphinx_source $sphinx_build
 
-python scripts/doc/postprocess.py $sphinx_build
+python3 scripts/doc/postprocess.py $sphinx_build
