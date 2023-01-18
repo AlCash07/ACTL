@@ -32,6 +32,10 @@ public:
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter += n})
 
     template <class Difference>
+    // This constraint is needed to disambiguate this overload from
+    // `iter + n` when Difference == Iter.
+    // However, only gcc seems to complain currently.
+        requires(!std::same_as<Difference, Iter>)
     friend constexpr Iter operator+(Difference n, Iter iter)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(iter + n)
 
