@@ -8,9 +8,9 @@
 
 #include <actl/iterator/interface/iterator_adaptor.hpp>
 #include <actl/iterator/traits/is_const_iterator.hpp>
+#include <actl/memory/no_unique_address.hpp>
 #include <actl/meta/type_traits.hpp>
 #include <actl/range/interface/range_interface_selector.hpp>
-#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -86,7 +86,7 @@ public:
         typename detail::filtered_range_types<Range, Predicate>::iterator;
 
     explicit filtered_range(Range&& range, Predicate pred)
-        : data_{std::forward<Range>(range), std::move(pred)}
+        : range_{std::forward<Range>(range)}, pred_{std::move(pred)}
     {}
 
     auto begin() const
@@ -101,16 +101,17 @@ public:
 
     Range const& original() const
     {
-        return data_.first();
+        return range_;
     }
 
     bool evaluate(std::iter_reference_t<iterator> x) const
     {
-        return data_.second()(x);
+        return pred_(x);
     }
 
 private:
-    compressed_pair<Range, Predicate> data_;
+    AC_NO_UNIQUE_ADDRESS Range range_;
+    AC_NO_UNIQUE_ADDRESS Predicate pred_;
 };
 
 template <class Range, class Predicate>

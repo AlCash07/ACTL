@@ -10,8 +10,8 @@
 
 #include <actl/iterator/transform_iterator.hpp>
 #include <actl/map/traits.hpp>
+#include <actl/memory/no_unique_address.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -67,12 +67,15 @@ class composite_map : public composite_map<composite_map<Map1, Map2>, Maps...>
 {};
 
 template <class M1, class M2>
-class composite_map<M1, M2> : public compressed_pair<M1, M2>
+class composite_map<M1, M2>
 {
     using K = map_key_t<M1>;
     using R = map_reference_t<M2>;
 
 public:
+    M1 map1;
+    M2 map2;
+
     static_assert(
         std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>,
         "incompatible property maps");
@@ -97,8 +100,6 @@ public:
         map_traits<M1>::invertible && map_traits<M2>::invertible,
         iterable1 || iterable2,
         range_t>;
-
-    using compressed_pair<M1, M2>::compressed_pair;
 };
 
 template <class... Ms>
@@ -118,37 +119,37 @@ struct map_ops<CM, std::void_t<typename CM::is_composite_map>>
 
     static constexpr map_reference_t<CM> get(CM& map, K key)
     {
-        return ac::get(map.second(), ac::get(map.first(), key));
+        return ac::get(map.map2, ac::get(map.map1, key));
     }
 
     static constexpr void put(CM& map, K key, V const& value)
     {
         if constexpr (CM::writable2)
         {
-            ac::put(map.second(), ac::get(map.first(), key), value);
+            ac::put(map.map2, ac::get(map.map1, key), value);
         }
         else
         {
-            ac::put(map.first(), key, ac::invert(map.second(), value));
+            ac::put(map.map1, key, ac::invert(map.map2, value));
         }
     }
 
     static constexpr K invert(CM& map, V const& value)
     {
-        return ac::invert(map.first(), ac::invert(map.second(), value));
+        return ac::invert(map.map1, ac::invert(map.map2, value));
     }
 
     static constexpr map_range_t<CM> map_range(CM& map)
     {
         if constexpr (CM::iterable1)
         {
-            map_range_t<decltype(map.first())> r = ac::map_range(map.first());
-            return {{r.begin(), &map.second()}, {r.end(), &map.second()}};
+            map_range_t<decltype(map.map1)> r = ac::map_range(map.map1);
+            return {{r.begin(), &map.map2}, {r.end(), &map.map2}};
         }
         else if constexpr (CM::iterable2)
         {
-            map_range_t<decltype(map.second())> r = ac::map_range(map.second());
-            return {{r.begin(), &map.first()}, {r.end(), &map.first()}};
+            map_range_t<decltype(map.map2)> r = ac::map_range(map.map2);
+            return {{r.begin(), &map.map1}, {r.end(), &map.map1}};
         }
     }
 };

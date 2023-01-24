@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/map/generic_container.hpp>
+#include <actl/memory/no_unique_address.hpp>
 #include <actl/range/filtered_range.hpp>
-#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -22,49 +22,51 @@ struct to_bool
 };
 
 template <class Pred>
-struct test_second : public ebo<Pred>
+struct test_second
 {
-    using ebo<Pred>::ebo;
+    AC_NO_UNIQUE_ADDRESS Pred predicate;
 
     template <class Pair>
     constexpr bool operator()(Pair const& x) const
     {
-        return this->get()(x.second);
+        return predicate(x.second);
     }
 };
 
 /// Container property map with traversal interface that skips values not
 /// satisfying predicate.
 template <class Map, class Predicate = to_bool>
-class filtered_map : private compressed_pair<Map, test_second<Predicate>>
+class filtered_map
 {
-    using base_t = compressed_pair<Map, test_second<Predicate>>;
-
-    using base_t::first;
-    using base_t::second;
-
 public:
-    using base_t::base_t;
+    template <class MapT, class... PredArgs>
+    explicit constexpr filtered_map(MapT&& map, PredArgs&&... xs)
+        : map_{std::forward<MapT>(map)}, pred_{std::forward<PredArgs>(xs)...}
+    {}
 
     operator Map&()
     {
-        return first();
+        return map_;
     }
 
-    operator Map const &() const
+    operator Map const&() const
     {
-        return first();
+        return map_;
     }
 
     auto map_range()
     {
-        return filter_range(ac::map_range(first()), second());
+        return filter_range(ac::map_range(map_), pred_);
     }
 
     auto map_range() const
     {
-        return filter_range(ac::map_range(first()), second());
+        return filter_range(ac::map_range(map_), pred_);
     }
+
+private:
+    AC_NO_UNIQUE_ADDRESS Map map_;
+    AC_NO_UNIQUE_ADDRESS test_second<Predicate> pred_;
 };
 
 template <class M, class P = to_bool>

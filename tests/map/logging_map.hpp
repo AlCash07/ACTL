@@ -7,21 +7,21 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
-#include <actl/utility/compressed_pair.hpp>
+#include <actl/memory/no_unique_address.hpp>
 
 namespace ac {
 
 /// Map that writes all key-value pairs from put operations into output
 /// iterator.
 template <class Map, class OutIter>
-class logging_map : public compressed_pair<Map, OutIter>
+struct logging_map
 {
-public:
-    using compressed_pair<Map, OutIter>::compressed_pair;
+    AC_NO_UNIQUE_ADDRESS Map map;
+    AC_NO_UNIQUE_ADDRESS OutIter iter;
 
     operator Map&()
     {
-        return this->first();
+        return map;
     }
 };
 
@@ -38,8 +38,8 @@ struct map_ops<logging_map<M, OI>> : map_ops<M>
     static void put(
         logging_map<M, OI>& map, map_key_t<M> key, map_value_t<M> value)
     {
-        *map.second()++ = std::pair{key, value};
-        ac::put(map.first(), key, value);
+        *map.iter++ = std::pair{key, value};
+        ac::put(map.map, key, value);
     }
 };
 

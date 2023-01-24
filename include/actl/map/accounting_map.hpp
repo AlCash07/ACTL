@@ -7,10 +7,10 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
+#include <actl/memory/no_unique_address.hpp>
 #include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/vector.hpp>
-#include <actl/utility/compressed_pair.hpp>
 
 namespace ac {
 
@@ -44,31 +44,30 @@ public:
 
     V const& get(Key key)
     {
-        auto& ac = data_.first();
-        auto pair = ac.insert({key, static_cast<V>(ac.size())});
+        auto pair = range_.insert({key, static_cast<V>(range_.size())});
         if constexpr (Invertible)
         {
             if (pair.second)
-                data_.second().push_back(&pair.first->first);
+                inverse_.push_back(&pair.first->first);
         }
         return pair.first->second;
     }
 
     Key invert(V const& value) const
     {
-        return *data_.second()[static_cast<size_t>(value)];
+        return *inverse_[static_cast<size_t>(value)];
     }
 
     AC const& map_range() const
     {
-        return data_.first();
+        return range_;
     }
 
 private:
-    compressed_pair<
-        AC,
-        std::conditional_t<Invertible, std::vector<K const*>, none>>
-        data_;
+    AC_NO_UNIQUE_ADDRESS AC range_;
+    AC_NO_UNIQUE_ADDRESS
+        std::conditional_t<Invertible, std::vector<K const*>, none>
+            inverse_;
 };
 
 template <class AM>
