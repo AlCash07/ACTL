@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/utility/compressed_pair.hpp>
 #include <actl/utility/index.hpp>
 #include <actl/utility/introspection.hpp>
 #include <actl/utility/none.hpp>
