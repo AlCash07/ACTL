@@ -15,7 +15,6 @@ namespace scalar {
 struct logical_not_f : scalar_operation<logical_not_f, 1>
 {
     using category = logical_operation_tag;
-    using argument_category = boolean_tag;
 
     static constexpr bool eval_scalar(bool x)
     {

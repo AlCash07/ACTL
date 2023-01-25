@@ -14,7 +14,6 @@ template <size_t I, size_t N>
 struct arg_f
 {
     using category = operation_tag;
-    using argument_category = unclassified_tag;
 
     struct enable_operators;
 

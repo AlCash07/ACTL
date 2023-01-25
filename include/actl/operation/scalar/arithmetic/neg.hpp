@@ -15,7 +15,6 @@ namespace scalar {
 struct neg_f : scalar_operation<neg_f, 1>
 {
     using category = additive_operation_tag;
-    using argument_category = arithmetic_tag;
 
     template <class T>
     static constexpr auto eval_scalar(T x)

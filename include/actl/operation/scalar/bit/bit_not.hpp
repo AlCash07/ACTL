@@ -15,7 +15,6 @@ namespace scalar {
 struct bit_not_f : scalar_operation<bit_not_f, 1>
 {
     using category = bitwise_operation_tag;
-    using argument_category = integral_tag;
 
     template <class T>
     static constexpr auto eval_scalar(T x)

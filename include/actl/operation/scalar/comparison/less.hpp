@@ -15,7 +15,6 @@ namespace scalar {
 struct less_f : scalar_operation<less_f, 2>
 {
     using category = ordering_operation_tag;
-    using argument_category = scalar_tag;
 
     template <class T, class U>
     static constexpr bool eval_scalar(T lhs, U rhs)

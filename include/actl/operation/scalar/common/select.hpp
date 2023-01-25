@@ -13,7 +13,6 @@ namespace ac {
 struct select_f : scalar_operation<select_f, 3>
 {
     using category = scalar_operation_tag;
-    using argument_category = arithmetic_tag;
 
     template <class T, class U>
     constexpr auto evaluate(bool condition, T const& lhs, U const& rhs) const

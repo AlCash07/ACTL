@@ -29,7 +29,6 @@ template <class T>
 struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2>
 {
     using category = scalar_operation_tag;
-    using argument_category = scalar_tag;
 
     struct is_policy;
 

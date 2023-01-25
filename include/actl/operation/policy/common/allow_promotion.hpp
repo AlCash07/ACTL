@@ -38,11 +38,8 @@ struct Promotion
     }
 };
 
-template <
-    class Op,
-    enable_int_if<
-        is_scalar_operation_v<Op> &&
-        is_subcategory_of_v<typename Op::argument_category, scalar_tag>> = 0>
+template <class Op>
+    requires is_scalar_operation_v<Op>
 constexpr auto apply_policy(Op const& op, allow_promotion)
 {
     return operation_composer<Promotion>{}(op);

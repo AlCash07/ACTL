@@ -15,7 +15,6 @@ namespace scalar {
 struct equal_f : scalar_operation<equal_f, 2>
 {
     using category = equality_operation_tag;
-    using argument_category = scalar_tag;
 
     template <class T, class U>
     static constexpr bool eval_scalar(T lhs, U rhs)

@@ -15,7 +15,6 @@ namespace scalar {
 struct logical_and_f : scalar_operation<logical_and_f, 2>
 {
     using category = logical_operation_tag;
-    using argument_category = boolean_tag;
 
     static constexpr bool eval_scalar(bool lhs, bool rhs)
     {

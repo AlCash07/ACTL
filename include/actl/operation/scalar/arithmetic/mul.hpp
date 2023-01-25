@@ -15,7 +15,6 @@ namespace scalar {
 struct mul_f : scalar_operation<mul_f, 2>
 {
     using category = multiplicative_operation_tag;
-    using argument_category = arithmetic_tag;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs)

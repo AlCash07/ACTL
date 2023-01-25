@@ -15,7 +15,6 @@ namespace ac {
 struct sgn_f : scalar_operation<sgn_f, 1>
 {
     using category = comparison_operation_tag;
-    using argument_category = arithmetic_tag;
 
     static constexpr auto formula = cmp3way(x_, 0_c);
 };

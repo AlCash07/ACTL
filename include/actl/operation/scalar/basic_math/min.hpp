@@ -15,7 +15,6 @@ namespace ac {
 struct min_f : scalar_operation<min_f, 2>
 {
     using category = scalar_operation_tag;
-    using argument_category = scalar_tag;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;

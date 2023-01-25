@@ -15,7 +15,6 @@ namespace scalar {
 struct bit_xor_f : scalar_operation<bit_xor_f, 2>
 {
     using category = bitwise_operation_tag;
-    using argument_category = integral_tag;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs)

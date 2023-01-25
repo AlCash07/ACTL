@@ -14,7 +14,6 @@ template <class To>
 struct cast_f : scalar_operation<cast_f<To>, 1>
 {
     using category = scalar_operation_tag;
-    using argument_category = arithmetic_tag;
 
     template <class T>
     static constexpr To eval_scalar(T x)
