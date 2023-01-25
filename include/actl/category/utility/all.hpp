@@ -7,5 +7,4 @@
 #pragma once
 
 #include <actl/category/utility/category_level.hpp>
-#include <actl/category/utility/common_category.hpp>
 #include <actl/category/utility/is_subcategory_of.hpp>
