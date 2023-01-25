@@ -6,14 +6,10 @@
 
 #pragma once
 
+#include <actl/meta/constant.hpp>
 #include <actl/operation/core/expression.hpp>
 
 namespace ac {
-
-template <class T>
-struct can_convert_expression_implicitly<T, std::enable_if_t<is_scalar_v<T>>>
-    : std::true_type
-{};
 
 template <class T, enable_int_if<!is_expression_v<T>> = 0>
 constexpr T eval(T x)
@@ -36,5 +32,15 @@ constexpr decltype(auto) eval(Expr const& e)
     else
         return eval(helper::resolve_expr(e));
 }
+
+template <class T>
+inline constexpr bool is_scalar_expression_v =
+    std::is_scalar_v<unwrap_constant_t<decltype(eval(std::declval<T>()))>>;
+
+template <class T>
+struct can_convert_expression_implicitly<
+    T,
+    std::enable_if_t<is_scalar_expression_v<T>>> : std::true_type
+{};
 
 } // namespace ac

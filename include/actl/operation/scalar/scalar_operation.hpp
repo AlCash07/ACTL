@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/category/scalar.hpp>
+#include <actl/category/category.hpp>
 #include <actl/category/utility/is_subcategory_of.hpp>
 #include <actl/meta/strict_common_type.hpp>
 #include <actl/operation/operation.hpp>
@@ -50,8 +50,8 @@ struct scalar_operation : operation<Op>
     template <class... Ts>
     constexpr auto evaluate(Ts const&... xs) const
     {
-        if constexpr ((... &&
-                       is_subcategory_of_v<category_t<Ts>, arithmetic_tag>))
+        if constexpr ((... && std::is_arithmetic_v<
+                                  unwrap_constant_t<decltype(eval(xs))>>))
         {
             using T = strict_common_type_t<decltype(eval(xs))...>;
             if constexpr (!is_constant_v<T>)
