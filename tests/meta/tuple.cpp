@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/category/tuple.hpp>
+#include <actl/meta/tuple.hpp>
 #include <actl/std/array.hpp>
 #include <actl/std/tuple.hpp>
 #include <actl/std/utility.hpp>

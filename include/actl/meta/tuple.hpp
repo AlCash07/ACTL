@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include <actl/category/category.hpp>
 #include <actl/meta/nesting_depth.hpp>
-#include <actl/range/traits/category.hpp>
+#include <actl/meta/tuple.hpp>
 #include <tuple>
 #include <utility>
 
@@ -29,17 +28,6 @@ struct is_tuple<T, std::void_t<decltype(std::tuple_size<T>::value)>>
 template <class T>
 inline constexpr bool is_tuple_v = is_tuple<T>::value;
 
-struct tuple_tag
-{
-    using base = unclassified_tag;
-};
-
-template <class T>
-struct category_sfinae<T, std::enable_if_t<is_tuple_v<T> && !is_range_v<T>>>
-{
-    using type = tuple_tag;
-};
-
 namespace detail {
 
 template <class T, class Seq>
@@ -53,7 +41,7 @@ struct tuple_depth<T, std::index_sequence<Is...>>
 } // namespace detail
 
 template <class T>
-struct nesting_depth<T, std::enable_if_t<is_tuple_v<T> && !is_range_v<T>>>
+struct nesting_depth<T, std::enable_if_t<is_tuple_v<T>>>
     : detail::tuple_depth<T, tuple_indices_t<T>>
 {};
 

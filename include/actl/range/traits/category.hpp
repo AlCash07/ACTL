@@ -8,6 +8,7 @@
 
 #include <actl/iterator/traits/category.hpp>
 #include <actl/meta/nesting_depth.hpp>
+#include <actl/meta/tuple.hpp>
 #include <actl/range/access/all.hpp>
 
 namespace ac {
@@ -141,7 +142,7 @@ inline constexpr bool is_contiguous_range_v =
     detail::has_range_category<T, contiguous_range_tag>::value;
 
 template <class T>
-struct nesting_depth<T, std::enable_if_t<is_range_v<T>>>
+struct nesting_depth<T, std::enable_if_t<is_range_v<T> && !is_tuple_v<T>>>
     : size_constant<
           1 + nesting_depth_v<std::iter_value_t<detail::iterator_t<T>>>>
 {};

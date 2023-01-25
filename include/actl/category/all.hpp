@@ -6,5 +6,4 @@
 
 #pragma once
 
-#include <actl/category/tuple.hpp>
 #include <actl/category/utility/all.hpp>
