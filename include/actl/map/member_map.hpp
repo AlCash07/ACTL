@@ -55,8 +55,11 @@ struct map_traits<MM, std::void_t<typename MM::class_t, typename MM::member_t>>
 };
 
 template <class MM>
-struct map_ops<MM, std::void_t<typename MM::class_t, typename MM::member_t>>
-    : map_put<MM>
+    requires requires {
+                 typename MM::class_t;
+                 typename MM::member_t;
+             }
+struct map_ops<MM> : map_put<MM>
 {
     static map_reference_t<MM> get(MM& map, map_key_t<MM> key)
     {

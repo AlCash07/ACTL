@@ -112,7 +112,8 @@ struct map_traits<composite_map<Ms...> const>
 {};
 
 template <class CM>
-struct map_ops<CM, std::void_t<typename CM::is_composite_map>>
+    requires requires { typename CM::is_composite_map; }
+struct map_ops<CM>
 {
     using K = map_key_t<CM>;
     using V = map_value_t<CM>;

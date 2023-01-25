@@ -85,7 +85,7 @@ protected:
 
     edge get_edge(vertex u, typename traits::out_edge_data const& oed) const
     {
-        auto e = oed.second();
+        auto e = oed.second;
         vertex v;
         if constexpr (std::is_same_v<
                           typename traits::out_edge_data::first_type,
@@ -95,7 +95,7 @@ protected:
         }
         else
         {
-            v = vertex{oed.first()};
+            v = vertex{oed.first};
         }
         return edge{u, v, e};
     }
@@ -118,7 +118,7 @@ protected:
         }
         e = edge_list_.add_edge(
             id_to_raw(u), id_to_raw(v), std::forward<Ts>(args)...);
-        id_at(u_edges, out_edge).second() = e;
+        id_at(u_edges, out_edge).second = e;
         if constexpr (base_t::is_undirected)
         {
             if (u != v)
@@ -161,8 +161,8 @@ public:
 
     Ref get(E e) const
     {
-        return id_at(id_at(vertices_, e.source()).first().out_edges, e.bundle())
-            .second();
+        return id_at(id_at(vertices_, e.source()).first.out_edges, e.bundle())
+            .second;
     }
 
     void put(E e, map_value_t<edge_map> value) const
@@ -231,12 +231,12 @@ protected:
 
     edge get_edge(vertex u, out_id oe) const
     {
-        return edge{u, vertex{id_at(outs(u), oe).first()}, oe};
+        return edge{u, vertex{id_at(outs(u), oe).first}, oe};
     }
 
     edge get_edge(vertex u, typename traits::in_edge_data const& ied) const
     {
-        return edge{vertex{ied.first()}, u, ied.second()};
+        return edge{vertex{ied.first}, u, ied.second};
     }
 
     template <class... Ts>

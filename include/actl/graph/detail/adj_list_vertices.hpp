@@ -64,12 +64,12 @@ public:
 protected:
     auto& data(vertex u)
     {
-        return id_at(this->vertices_, u).first();
+        return id_at(this->vertices_, u).first;
     }
 
     auto& data(vertex u) const
     {
-        return id_at(this->vertices_, u).first();
+        return id_at(this->vertices_, u).first;
     }
 
     auto& outs(vertex u)

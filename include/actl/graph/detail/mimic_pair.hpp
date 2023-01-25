@@ -7,42 +7,40 @@
 #pragma once
 
 #include <actl/map/composite_map.hpp>
+#include <actl/map/member_map.hpp>
+#include <actl/memory/no_unique_address.hpp>
 #include <actl/meta/type_traits.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
-#include <actl/utility/compressed_pair.hpp>
 
 namespace ac::detail {
 
 // Special compressed_pair that mimics either T1 or T2 (defined by index I) for
 // the operations required by set and hash set.
 template <class T1, class T2, index I>
-class mimic_pair : private compressed_pair<T1, T2>
+struct mimic_pair
 {
-    using base_t = compressed_pair<T1, T2>;
+    T1 first;
+    T2 second;
 
-public:
     struct is_mimic_pair;
     using value_type = std::conditional_t<I == 1, T1, T2>;
-    using typename base_t::first_type;
-    using typename base_t::second_type;
+    using first_type = T1;
+    using second_type = T2;
 
     static_assert(I == 1 || I == 2);
 
-    using base_t::base_t;
-
-    using base_t::first;
-    using base_t::second;
+    template <class FirstT, class... SecondTs>
+    explicit constexpr mimic_pair(FirstT&& first, SecondTs&&... xs)
+        : first{std::forward<FirstT>(first)}
+        , second{std::forward<SecondTs>(xs)...}
+    {}
 
     constexpr decltype(auto) key() const
     {
         if constexpr (I == 1)
-        {
-            return this->first();
-        }
+            return first;
         else
-        {
-            return this->second();
-        }
+            return second;
     }
 
 private:
@@ -93,43 +91,13 @@ auto operator<(T const& lhs, U const& rhs)
     return less(get_key(lhs), get_key(rhs));
 }
 
-template <class Key>
-class second_map
-{
-    using R = decltype(std::declval<Key>().second());
-
-public:
-    using traits = map_traits_base<
-        Key,
-        R,
-        use_default,
-        true,
-        !std::is_const_v<std::remove_reference_t<R>>>;
-
-    R get(Key key)
-    {
-        return key.second();
-    }
-
-    void put(Key key, remove_cvref_t<R> value)
-    {
-        get(key) = value;
-    }
-};
-
 template <class Map>
 auto get_second(Map&& map)
 {
+    using Pair = std::remove_reference_t<map_reference_t<Map>>;
+
     return composite_map{
-        std::forward<Map>(map), second_map<map_reference_t<Map>>{}};
+        std::forward<Map>(map), static_member_map<&Pair::second>{}};
 }
 
 } // namespace ac::detail
-
-namespace ac {
-
-template <class K>
-struct map_traits<detail::second_map<K>> : detail::second_map<K>::traits
-{};
-
-} // namespace ac

@@ -103,7 +103,7 @@ public:
 
     vertex get_target(vertex u, edge_id e) const
     {
-        return id_at(edges_, e).first().other(u);
+        return id_at(edges_, e).first.other(u);
     }
 
     void swap(edge_list_edges& rhs)
@@ -153,7 +153,7 @@ public:
 
         E operator*() const
         {
-            auto& vertices = id_at(el_->edges_, id_).first();
+            auto& vertices = id_at(el_->edges_, id_).first;
             using V1 = typename E::vertex;
             return E{V1{vertices.u}, V1{vertices.v}, id_};
         }
