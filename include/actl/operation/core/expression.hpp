@@ -70,11 +70,12 @@ struct is_expression<expression<Ts...>> : std::true_type
 {};
 
 template <class T>
-inline constexpr bool is_expression_v = is_expression<remove_cvref_t<T>>::value;
+inline constexpr bool is_expression_v =
+    is_expression<std::remove_cvref_t<T>>::value;
 
 template <class Expr>
 using argument_indices =
-    std::make_index_sequence<remove_cvref_t<Expr>::argument_count>;
+    std::make_index_sequence<std::remove_cvref_t<Expr>::argument_count>;
 
 template <class... Ts>
 struct expression_result_type<expression<Ts...>>

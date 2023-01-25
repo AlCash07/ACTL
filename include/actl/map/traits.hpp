@@ -35,7 +35,7 @@ struct map_traits_base
 {
     using key_type = Key;
     using reference = Ref;
-    using value_type = deduce_t<Value, remove_cvref_t<Ref>>;
+    using value_type = deduce_t<Value, std::remove_cvref_t<Ref>>;
     using range_type = Range;
 
     static constexpr bool readable = Readable;

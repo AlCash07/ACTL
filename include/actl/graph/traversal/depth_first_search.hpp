@@ -155,8 +155,8 @@ public:
         class Graph,
         class Stack = std::stack<dfs_context<Graph>>,
         class VertexPredicate = always_false,
-        enable_int_if<!std::is_same_v<remove_cvref_t<Stack>, vertex_t<Graph>>> =
-            0>
+        enable_int_if<
+            !std::is_same_v<std::remove_cvref_t<Stack>, vertex_t<Graph>>> = 0>
     void operator()(
         Graph const& graph,
         Stack&& stack = {},

@@ -20,7 +20,7 @@ class transform_iterator
     using base_t = iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>;
 
 public:
-    using value_type = deduce_t<Value, remove_cvref_t<return_t<Fn>>>;
+    using value_type = deduce_t<Value, std::remove_cvref_t<return_t<Fn>>>;
 
     template <class... Ts>
     transform_iterator(Iter const& iter, Ts&&... args)

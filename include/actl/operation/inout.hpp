@@ -30,7 +30,7 @@ struct is_inout<inout<T>> : std::true_type
 {};
 
 template <class T>
-inline constexpr bool is_inout_v = is_inout<remove_cvref_t<T>>::value;
+inline constexpr bool is_inout_v = is_inout<std::remove_cvref_t<T>>::value;
 
 template <class... Ts>
 inline constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);

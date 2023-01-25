@@ -25,7 +25,8 @@ constexpr decltype(auto) adl_get(Tuple const& x) noexcept
 template <
     class To,
     class From,
-    class S = std::make_index_sequence<std::tuple_size_v<remove_cvref_t<From>>>>
+    class S =
+        std::make_index_sequence<std::tuple_size_v<std::remove_cvref_t<From>>>>
 struct from_tuple;
 
 template <class To, class From, size_t... Is>
@@ -44,7 +45,7 @@ template <class To, class From>
 struct conversion_sfinae<
     std::enable_if_t<
         !can_convert_as_ranges<To, From>() &&
-        is_tuple_v<remove_cvref_t<From>> && !is_strict_range_v<From> &&
+        is_tuple_v<std::remove_cvref_t<From>> && !is_strict_range_v<From> &&
         (is_tuple_v<To> || is_range_v<To>)>,
     To,
     From> : detail::from_tuple<To, From>

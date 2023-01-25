@@ -36,7 +36,7 @@ static constexpr bool can_initialize_tuple()
 {
     // Avoid conflicts with from_tuple specialization.
     if constexpr (
-        sizeof...(Args) == 1 && (... && is_tuple_v<remove_cvref_t<Args>>))
+        sizeof...(Args) == 1 && (... && is_tuple_v<std::remove_cvref_t<Args>>))
         return false;
     // Arrays and tuples may allow to initialize not all their elements but only
     // some of the first ones. Our conversions intentionnally forbid this.

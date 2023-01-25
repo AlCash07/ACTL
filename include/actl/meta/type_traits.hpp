@@ -29,10 +29,6 @@ struct add_const_if : std::conditional<B, T const, T>
 template <bool B, class T>
 using add_const_if_t = typename add_const_if<B, T>::type;
 
-// TODO: use std::remove_cvref_t when C++20 is out.
-template <class T>
-using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
 template <bool B>
 using enable_int_if = std::enable_if_t<B, int>;
 
@@ -66,9 +62,9 @@ struct is_equality_comparable : std::false_type
 template <class T>
 struct is_equality_comparable<
     T,
-    std::void_t<decltype(
-        std::declval<T>() == std::declval<T>(),
-        std::declval<T>() != std::declval<T>())>> : std::true_type
+    std::void_t<
+        decltype(std::declval<T>() == std::declval<T>(), std::declval<T>() != std::declval<T>())>>
+    : std::true_type
 {};
 
 template <class T>

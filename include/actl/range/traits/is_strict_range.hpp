@@ -44,6 +44,6 @@ struct is_strict_range<T, true, true>
 /// elements of this tuple are the same as range_value_t<T>.
 template <class T>
 inline constexpr bool is_strict_range_v =
-    is_strict_range<remove_cvref_t<T>>::value;
+    is_strict_range<std::remove_cvref_t<T>>::value;
 
 } // namespace ac

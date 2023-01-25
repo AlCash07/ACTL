@@ -51,7 +51,7 @@ bool write_pre_final(D& od, F& fmt, T const& x)
 template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x)
 {
-    using U = remove_cvref_t<T>;
+    using U = std::remove_cvref_t<T>;
     if constexpr (!is_tuple_v<T> && is_io_tuple_v<U>)
     {
         nested_scope_guard g{fmt};

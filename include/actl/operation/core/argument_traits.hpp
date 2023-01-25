@@ -18,7 +18,7 @@ struct raw
 };
 
 template <class T>
-using raw_t = typename raw<remove_cvref_t<T>>::type;
+using raw_t = typename raw<std::remove_cvref_t<T>>::type;
 
 namespace detail {
 
@@ -39,7 +39,7 @@ using value_type_if_t = typename value_if<B, T>::type;
 
 } // namespace detail
 
-template <class T, class U = remove_cvref_t<T>>
+template <class T, class U = std::remove_cvref_t<T>>
 using value_if_small =
     std::conditional_t<std::is_empty_v<U> || std::is_arithmetic_v<U>, U, T>;
 
