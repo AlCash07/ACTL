@@ -23,40 +23,42 @@ struct till
 template <class T, class P>
 till(T&&, P) -> till<T, P>;
 
-template <class Device, class P, size_t N>
-size_t read_till(Device& id, till<span<char, N>, P> x)
+template <class P, size_t N>
+size_t read_till(Device auto& id, till<span<char, N>, P> x)
 {
     size_t i = 0;
     size_t const size = x.value.size();
-    if constexpr (has_input_buffer<Device>::value)
+    for (; i < size; ++i)
     {
-        while (true)
-        {
-            auto s = id.input_data();
-            auto end = std::min(s.end(), s.begin() + (size - i));
-            auto ptr = s.begin();
-            while (ptr != end && !x.terminator(*ptr))
-                x.value[i++] = *ptr++;
-            id.move(ptr - s.begin());
-            if (i == size || s.empty() || ptr != end)
-                break;
-        };
-    }
-    else
-    {
-        for (; i < size; ++i)
-        {
-            auto c = id.get();
-            if (id.eof() || x.terminator(c))
-                break;
-            x.value[i] = c;
-        }
+        auto c = id.get();
+        if (id.eof() || x.terminator(c))
+            break;
+        x.value[i] = c;
     }
     return i;
 }
 
-template <class Device, class Format, class T, class P>
-bool read_final(Device& id, Format&, till<T, P> x)
+template <class P, size_t N>
+size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x)
+{
+    size_t i = 0;
+    size_t const size = x.value.size();
+    while (true)
+    {
+        auto s = id.input_buffer();
+        auto end = std::min(s.end(), s.begin() + (size - i));
+        auto ptr = s.begin();
+        while (ptr != end && !x.terminator(*ptr))
+            x.value[i++] = *ptr++;
+        id.move(ptr - s.begin());
+        if (i == size || s.empty() || ptr != end)
+            break;
+    }
+    return i;
+}
+
+template <class T, class P>
+bool read_final(Device auto& id, Format auto&, till<T, P> x)
 {
     read_till(id, x);
     return true;

@@ -6,28 +6,29 @@
 
 #pragma once
 
+#include <actl/io/concepts.hpp>
 #include <actl/meta/type_traits.hpp>
 
 namespace ac::io {
 
 template <
-    class Device,
-    class Format,
+    Device Dev,
+
     class T,
     enable_int_if<
-        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
-bool write_final(Device&, Format&, T&)
+        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Dev&>> = 0>
+bool write_final(Dev&, Format auto&, T&)
 {
     return true;
 }
 
 template <
-    class Device,
-    class Format,
+    Device Dev,
+
     class T,
     enable_int_if<
-        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Device&>> = 0>
-bool read_final(Device&, Format&, T&)
+        std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Dev&>> = 0>
+bool read_final(Dev&, Format auto&, T&)
 {
     return true;
 }

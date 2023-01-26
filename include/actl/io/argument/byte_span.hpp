@@ -12,27 +12,27 @@
 namespace ac::io {
 
 template <
-    class Device,
-    class Format,
+    Device Dev,
+
     class B,
     size_t N,
     enable_int_if_byte<B> = 0>
-bool write_final(Device& od, Format&, span<B, N> s)
+bool write_final(Dev& od, Format auto&, span<B, N> s)
 {
     return od.write(
-               {reinterpret_cast<char_t<Device> const*>(s.data()), s.size()}) ==
+               {reinterpret_cast<char_t<Dev> const*>(s.data()), s.size()}) ==
            s.size();
 }
 
 template <
-    class Device,
-    class Format,
+    Device Dev,
+
     class B,
     size_t N,
     enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, span<B, N>& s)
+bool read_final(Dev& id, Format auto&, span<B, N>& s)
 {
-    return id.read({reinterpret_cast<char_t<Device>*>(s.data()), s.size()}) ==
+    return id.read({reinterpret_cast<char_t<Dev>*>(s.data()), s.size()}) ==
            s.size();
 }
 

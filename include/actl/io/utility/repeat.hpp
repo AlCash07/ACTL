@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/io/device/traits.hpp>
+#include <actl/io/concepts.hpp>
 #include <algorithm>
 
 namespace ac::io {
@@ -21,37 +21,37 @@ struct repeat
     size_t count;
 };
 
-template <class Device, class Format, class Char>
-bool write_final(Device& od, Format&, repeat<Char> x)
+template <Device Dev, class Char>
+bool write_final(Dev& od, Format auto&, repeat<Char> x)
 {
-    if constexpr (has_output_buffer<Device>::value)
+    for (; 0 < x.count; --x.count)
+        od.write(static_cast<char_t<Dev>>(x.c));
+    return true;
+}
+
+template <BufferedOutputDevice Dev, class Char>
+bool write_final(Dev& od, Format auto&, repeat<Char> x)
+{
+    auto s = od.output_buffer();
+    if (x.count <= s.size())
     {
-        auto s = od.output_data();
-        if (x.count <= s.size())
-        {
-            std::fill_n(s.data(), x.count, x.c);
-            od.move(static_cast<index>(x.count));
-        }
-        else
-        {
-            std::fill_n(s.data(), s.size(), x.c);
-            od.move(static_cast<index>(s.size()));
-            x.count -= s.size();
-            s = od.output_data();
-            std::fill_n(s.data(), std::min(x.count, s.size()), x.c);
-            // Here we assume that s references device buffer and does not
-            // change.
-            for (size_t n = x.count / s.size(); n > 0; --n)
-            {
-                od.move(static_cast<index>(s.size()));
-            }
-            od.move(static_cast<index>(x.count % s.size()));
-        }
+        std::fill_n(s.data(), x.count, x.c);
+        od.move(static_cast<index>(x.count));
     }
     else
     {
-        for (; 0 < x.count; --x.count)
-            od.write(static_cast<char_t<Device>>(x.c));
+        std::fill_n(s.data(), s.size(), x.c);
+        od.move(static_cast<index>(s.size()));
+        x.count -= s.size();
+        s = od.output_buffer();
+        std::fill_n(s.data(), std::min(x.count, s.size()), x.c);
+        // Here we assume that s references device buffer and does not
+        // change.
+        for (size_t n = x.count / s.size(); n > 0; --n)
+        {
+            od.move(static_cast<index>(s.size()));
+        }
+        od.move(static_cast<index>(x.count % s.size()));
     }
     return true;
 }

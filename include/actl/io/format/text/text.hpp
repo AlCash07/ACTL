@@ -21,7 +21,12 @@ struct text_tag
 {};
 
 template <class T>
-using enable_int_if_text = enable_int_if<has_format_tag<T, text_tag>::value>;
+concept TextDevice = Device<T> && !
+is_bin<T::mode>;
+
+template <class T>
+concept TextFormat =
+    Format<T> && std::same_as<typename T::format_tag, text_tag>;
 
 template <flag_t Flags = 0, uint8_t Base = 10, size_t Precision = 6>
 class text_static
@@ -84,24 +89,19 @@ public:
     precision_t precision = precision_t{};
 };
 
-template <class Device, enable_int_if<!is_bin<Device::mode>> = 0>
-text_static<> deduce_format(Device&)
+text_static<> deduce_format(TextDevice auto&)
 {
     return {};
 }
 
-template <
-    class Format,
-    class S,
-    enable_int_if_text<Format> = 0,
-    enable_int_if<is_string_v<S>> = 0>
-auto encode(Format&, S const& s)
+template <class S, enable_int_if<is_string_v<S>> = 0>
+auto encode(TextFormat auto&, S const& s)
 {
     return span{std::basic_string_view<range_value_t<S>>{s}};
 }
 
-template <class Device, class... Ts>
-bool writeln(Device&& od, Ts&&... args)
+template <class... Ts>
+bool writeln(Device auto&& od, Ts&&... args)
 {
     return write(od, args..., raw{'\n'});
 }
@@ -146,8 +146,8 @@ inline constexpr setg<groups::floatfield, flag::hexfloat> hexfloat{};
 inline constexpr setf<flag::showpoint, true> showpoint{};
 inline constexpr setf<flag::showpoint, false> noshowpoint{};
 
-template <class Format, flag_t Flag, bool Value>
-void manipulate(Format& fmt, setf<Flag, Value>)
+template <flag_t Flag, bool Value>
+void manipulate(Format auto& fmt, setf<Flag, Value>)
 {
     if constexpr (Value)
         fmt.setf(Flag);
@@ -155,8 +155,8 @@ void manipulate(Format& fmt, setf<Flag, Value>)
         fmt.unsetf(Flag);
 }
 
-template <class Format, flag_t Group, flag_t Flag>
-void manipulate(Format& fmt, setg<Group, Flag>)
+template <flag_t Group, flag_t Flag>
+void manipulate(Format auto& fmt, setg<Group, Flag>)
 {
     fmt.setf(Flag, Group);
 }

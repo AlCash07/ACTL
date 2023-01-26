@@ -44,20 +44,15 @@ private:
     cspan<char> data_;
 };
 
-template <class D, class F>
-bool write_final(D& od, F& fmt, float_string const& x)
+bool write_final(Device auto& od, Format auto& fmt, float_string const& x)
 {
     return write_final(od, fmt, cspan<char>{x});
 }
 
 } // namespace detail
 
-template <
-    class Format,
-    class Float,
-    enable_int_if_text<Format> = 0,
-    enable_int_if<std::is_floating_point_v<Float>> = 0>
-auto encode(Format& fmt, Float x)
+template <class Float, enable_int_if<std::is_floating_point_v<Float>> = 0>
+auto encode(TextFormat auto& fmt, Float x)
 {
     detail::float_string res;
     span<char> s;

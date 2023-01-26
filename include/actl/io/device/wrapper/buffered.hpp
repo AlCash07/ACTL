@@ -46,7 +46,7 @@ protected:
 public:
     using base_t::base_t;
 
-    cspan<Char> input_data() const
+    cspan<Char> input_buffer() const
     {
         return {ptr_, end_};
     }
@@ -138,7 +138,7 @@ protected:
 public:
     using base_t::base_t;
 
-    span<Char> output_data() const
+    span<Char> output_buffer() const
     {
         return {ptr_, ranges::end(buf_)};
     }

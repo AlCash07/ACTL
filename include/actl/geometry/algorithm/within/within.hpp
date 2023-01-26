@@ -17,8 +17,7 @@ enum class within
     outside
 };
 
-template <class Device, class Format>
-bool write(Device& od, Format& fmt, enum within x)
+bool write(Device auto& od, Format auto& fmt, enum within x)
 {
     constexpr char const* within_name[] = {"inside", "border", "outside"};
     return write(od, fmt, within_name[static_cast<index>(x)]);

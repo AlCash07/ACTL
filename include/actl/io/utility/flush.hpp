@@ -13,8 +13,7 @@ namespace ac::io {
 
 struct flush_t
 {
-    template <class Device>
-    bool operator()(Device& od) const
+    bool operator()(Device auto& od) const
     {
         od.flush();
         return true;

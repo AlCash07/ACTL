@@ -19,8 +19,8 @@ struct raw
 template <class T>
 raw(T) -> raw<T>;
 
-template <class Device, class Format, class T>
-bool write_final(Device& od, Format& fmt, raw<T> const& x)
+template <class T>
+bool write_final(Device auto& od, Format auto& fmt, raw<T> const& x)
 {
     return write_final(od, fmt, x.value);
 }

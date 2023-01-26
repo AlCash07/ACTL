@@ -7,11 +7,11 @@
 #pragma once
 
 #include <actl/io/argument/byte.hpp>
+#include <actl/io/concepts.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/serialization_access.hpp>
 #include <actl/io/device/mode.hpp>
-#include <actl/io/device/traits.hpp>
 #include <actl/io/format/binary/binary.hpp>
 #include <actl/io/format/composed_format.hpp>
 #include <actl/meta/type_traits.hpp>
@@ -34,22 +34,28 @@ struct device : device_base
    references into
    lvalue references, because I/O doesn't operate with rvalues. */
 
-template <class Device, class Format, class... Ts>
-bool write(Device&& od, Format&& fmt, Ts const&... args)
+template <class... Ts>
+bool write(Device auto&& od, Format auto&& fmt, Ts const&... args)
 {
-    if constexpr (is_format_v<Format>)
-        return (... && detail::write_impl(od, fmt, fmt, args));
-    else
-        return write(od, deduce_format(od), fmt, args...);
+    return (... && detail::write_impl(od, fmt, fmt, args));
 }
 
-template <class Device, class Format, class... Ts>
-bool read(Device&& id, Format&& fmt, Ts&&... args)
+template <class... Ts>
+bool write(Device auto&& od, Ts const&... args)
 {
-    if constexpr (is_format_v<Format>)
-        return (... && detail::read_impl(id, fmt, fmt, args));
-    else
-        return read(id, deduce_format(id), fmt, args...);
+    return write(od, deduce_format(od), args...);
+}
+
+template <class... Ts>
+bool read(Device auto&& id, Format auto&& fmt, Ts&&... args)
+{
+    return (... && detail::read_impl(id, fmt, fmt, args));
+}
+
+template <class... Ts>
+bool read(Device auto&& id, Ts&&... args)
+{
+    return read(id, deduce_format(id), args...);
 }
 
 } // namespace ac::io

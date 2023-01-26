@@ -77,7 +77,7 @@ struct format_resolver
     }
 };
 
-template <class D, class FF, class F, class T, bool = is_manipulator<T>::value>
+template <class D, class FF, class F, class T, bool = Manipulator<T>>
 struct arg_resolver : format_resolver<D, FF, F, T>
 {};
 

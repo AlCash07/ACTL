@@ -11,18 +11,10 @@
 
 namespace ac::io {
 
-template <class T, class = void>
-struct is_manipulator : std::false_type
-{};
-
 template <class T>
-struct is_manipulator<T, std::void_t<typename T::is_manipulator>>
-    : std::true_type
-{};
+concept Manipulator = requires { typename T::is_manipulator; };
 
-template <class Format, class Manipulator>
-void manipulate(Format&, Manipulator const&)
-{}
+void manipulate(Format auto&, Manipulator auto const&) {}
 
 template <bool Deeper>
 struct change_level

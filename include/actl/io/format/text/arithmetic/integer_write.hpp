@@ -45,8 +45,8 @@ private:
     char data_[Size + 1];
 };
 
-template <class D, class F, uint8_t Size>
-bool write_final(D& od, F& fmt, int_string<Size> const& x)
+template <uint8_t Size>
+bool write_final(Device auto& od, Format auto& fmt, int_string<Size> const& x)
 {
     return write_final(od, fmt, cspan<char>{x});
 }
@@ -54,13 +54,11 @@ bool write_final(D& od, F& fmt, int_string<Size> const& x)
 } // namespace detail
 
 template <
-    class Format,
     class Int,
-    enable_int_if_text<Format> = 0,
     enable_int_if<
         std::is_integral_v<Int> && !std::is_same_v<Int, char> &&
         !std::is_same_v<Int, bool>> = 0>
-auto encode(Format& fmt, Int x)
+auto encode(TextFormat auto& fmt, Int x)
 {
     using UInt = std::make_unsigned_t<Int>;
     UInt base = fmt.base;

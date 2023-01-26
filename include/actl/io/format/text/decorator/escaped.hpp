@@ -45,12 +45,12 @@ struct escaped_string
     std::basic_string_view<Char> value;
 };
 
-template <class Device, class Format, class Char>
-bool write_final(Device& od, Format&, escaped_string<Char> const& s)
+template <Device Dev, class Char>
+bool write_final(Dev& od, Format auto&, escaped_string<Char> const& s)
 {
     for (auto c : s.value)
     {
-        using C = char_t<Device>;
+        using C = char_t<Dev>;
         auto e = escape(c);
         bool ok =
             e ? od.write(static_cast<C>('\\')) && od.write(static_cast<C>(e))

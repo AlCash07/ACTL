@@ -19,15 +19,15 @@ struct size
 template <class T>
 size(T&&) -> size<T>;
 
-template <class Device, class Format, class T>
-bool write_final(Device& od, Format& fmt, size<T> size)
+template <class T>
+bool write_final(Device auto& od, Format auto& fmt, size<T> size)
 {
     nested_scope_guard g{fmt};
     return write(od, fmt, size.value);
 }
 
-template <class Device, class Format, class T>
-bool read_final(Device& id, Format& fmt, size<T&> size)
+template <class T>
+bool read_final(Device auto& id, Format auto& fmt, size<T&> size)
 {
     nested_scope_guard g{fmt};
     return read(id, fmt, size.value);

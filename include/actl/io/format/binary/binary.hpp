@@ -18,8 +18,10 @@ struct binary
     struct format_tag;
 };
 
-template <class Device, enable_int_if<is_bin<Device::mode>> = 0>
-binary deduce_format(Device&)
+template <class T>
+concept BinaryDevice = Device<T> && is_bin<T::mode>;
+
+binary deduce_format(BinaryDevice auto&)
 {
     return {};
 }

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/io/device/traits.hpp>
+#include <actl/io/concepts.hpp>
 #include <actl/meta/type_traits.hpp>
 #include <cstddef>
 
@@ -17,14 +17,14 @@ using enable_int_if_byte = enable_int_if<
     std::is_same_v<std::remove_cv_t<T>, std::byte> ||
     (std::is_arithmetic_v<T> && sizeof(T) == 1)>;
 
-template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
-bool write_final(Device& od, Format&, B byte)
+template <Device Dev, class B, enable_int_if_byte<B> = 0>
+bool write_final(Dev& od, Format auto&, B byte)
 {
-    return od.write(static_cast<char_t<Device>>(byte)) == 1;
+    return od.write(static_cast<char_t<Dev>>(byte)) == 1;
 }
 
-template <class Device, class Format, class B, enable_int_if_byte<B> = 0>
-bool read_final(Device& id, Format&, B& byte)
+template <class B, enable_int_if_byte<B> = 0>
+bool read_final(Device auto& id, Format auto&, B& byte)
 {
     byte = static_cast<B>(id.get());
     return !id.eof();

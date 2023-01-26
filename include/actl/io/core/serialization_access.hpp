@@ -23,8 +23,8 @@ struct serialization_access
     template <
         class T,
         class... Ts,
-        class = decltype(
-            std::declval<T const>().write_final(std::declval<Ts>()...))>
+        class = decltype(std::declval<T const>().write_final(
+            std::declval<Ts>()...))>
     std::true_type has_write(int);
 
     template <class... Ts>
@@ -53,23 +53,23 @@ struct serialization_access
 };
 
 template <
-    class Device,
-    class Format,
+    Device Dev,
+    Format Fmt,
     class T,
-    enable_int_if<decltype(
-        serialization_access{}.has_write<T, Device&, Format&>(0))::value> = 0>
-bool write_final(Device& od, Format& fmt, T const& x)
+    enable_int_if<decltype(serialization_access{}.has_write<T, Dev&, Fmt&>(
+        0))::value> = 0>
+bool write_final(Dev& od, Fmt& fmt, T const& x)
 {
     return serialization_access::write_final(x, od, fmt);
 }
 
 template <
-    class Device,
-    class Format,
+    Device Dev,
+    Format Fmt,
     class T,
-    enable_int_if<decltype(
-        serialization_access{}.has_read<T, Device&, Format&>(0))::value> = 0>
-bool read_final(Device& id, Format& fmt, T& x)
+    enable_int_if<
+        decltype(serialization_access{}.has_read<T, Dev&, Fmt&>(0))::value> = 0>
+bool read_final(Dev& id, Fmt& fmt, T& x)
 {
     return serialization_access::read(x, id, fmt);
 }

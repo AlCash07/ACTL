@@ -37,8 +37,8 @@ decltype(auto) element_representation(T& x)
         return x;
 }
 
-template <class Device, class Format, class R, enable_int_if<is_range_v<R>> = 0>
-bool write_final(Device& od, Format& fmt, R const& x)
+template <class R, enable_int_if<is_range_v<R>> = 0>
+bool write_final(Device auto& od, Format auto& fmt, R const& x)
 {
     nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
@@ -86,11 +86,10 @@ bool read_container(D& id, F& fmt, C& x)
 }
 
 template <
-    class Device,
-    class Format,
+
     class R,
     enable_int_if<is_range_v<R> && !std::is_const_v<range_value_t<R>>> = 0>
-bool read_final(Device& id, Format& fmt, R& x)
+bool read_final(Device auto& id, Format auto& fmt, R& x)
 {
     nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)

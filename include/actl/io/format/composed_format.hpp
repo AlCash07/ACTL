@@ -6,10 +6,10 @@
 
 #pragma once
 
+#include <actl/io/concepts.hpp>
 #include <actl/io/core/manipulator.hpp>
 #include <actl/io/core/read_write.hpp>
 #include <actl/io/format/apply_format.hpp>
-#include <actl/io/format/traits.hpp>
 
 namespace ac::io {
 
@@ -22,10 +22,7 @@ struct composed_format
     struct format_tag;
 };
 
-template <
-    class First,
-    class Second,
-    enable_int_if<is_format_v<First> && is_format_v<Second>> = 0>
+template <Format First, Format Second>
 auto operator>>=(First&& first, Second&& second)
 {
     return composed_format<First, Second>{

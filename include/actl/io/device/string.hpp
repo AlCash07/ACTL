@@ -73,7 +73,7 @@ protected:
 public:
     using base_t::base_t;
 
-    cspan<Char> input_data() const
+    cspan<Char> input_buffer() const
     {
         return {s_.data() + pos_, s_.data() + s_.size()};
     }
