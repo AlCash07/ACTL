@@ -14,7 +14,7 @@ namespace scalar {
 
 struct bit_not_f : scalar_operation<bit_not_f, 1>
 {
-    using category = bitwise_operation_tag;
+    using operation_category = bitwise_operation_tag;
 
     template <class T>
     static constexpr auto eval_scalar(T x)
@@ -28,7 +28,7 @@ inline constexpr bit_not_f bit_not;
 
 struct bit_not_f : operation<bit_not_f>
 {
-    using category = bitwise_operation_tag;
+    using operation_category = bitwise_operation_tag;
 
     static constexpr auto formula = scalar::bit_not;
 };

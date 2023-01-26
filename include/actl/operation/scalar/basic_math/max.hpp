@@ -14,7 +14,7 @@ namespace ac {
 
 struct max_f : scalar_operation<max_f, 2>
 {
-    using category = scalar_operation_tag;
+    using operation_category = scalar_operation_tag;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;

@@ -16,7 +16,7 @@ namespace ac {
 template <class Derived>
 struct operation
 {
-    using category = operation_tag;
+    using operation_category = operation_tag;
     struct enable_operators;
 
     static constexpr bool is_associative = false;

@@ -13,7 +13,7 @@ namespace ac {
 
 struct not_equal_f : operation<not_equal_f>
 {
-    using category = equality_operation_tag;
+    using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;
 

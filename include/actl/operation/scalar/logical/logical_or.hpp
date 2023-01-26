@@ -14,7 +14,7 @@ namespace scalar {
 
 struct logical_or_f : scalar_operation<logical_or_f, 2>
 {
-    using category = logical_operation_tag;
+    using operation_category = logical_operation_tag;
 
     static constexpr bool eval_scalar(bool lhs, bool rhs)
     {
@@ -27,7 +27,7 @@ inline constexpr logical_or_f logical_or;
 
 struct logical_or_f : operation<logical_or_f>
 {
-    using category = logical_operation_tag;
+    using operation_category = logical_operation_tag;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;

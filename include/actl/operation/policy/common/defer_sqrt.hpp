@@ -27,9 +27,10 @@ public:
         return x.sqr_;
     }
 
-    template <class Op, enable_int_if<is_comparison_operation_v<Op>> = 0>
     friend constexpr auto perform(
-        Op op, square_root const& lhs, square_root const& rhs)
+        ComparisonOperation auto op,
+        square_root const& lhs,
+        square_root const& rhs)
     {
         return op(lhs.sqr_, rhs.sqr_);
     }

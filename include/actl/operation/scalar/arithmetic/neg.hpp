@@ -14,7 +14,7 @@ namespace scalar {
 
 struct neg_f : scalar_operation<neg_f, 1>
 {
-    using category = additive_operation_tag;
+    using operation_category = additive_operation_tag;
 
     template <class T>
     static constexpr auto eval_scalar(T x)
@@ -28,7 +28,7 @@ inline constexpr neg_f neg;
 
 struct neg_f : operation<neg_f>
 {
-    using category = additive_operation_tag;
+    using operation_category = additive_operation_tag;
 
     static constexpr auto formula = scalar::neg;
 };

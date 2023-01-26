@@ -14,7 +14,7 @@ template <class Op, class... Ts>
 constexpr decltype(auto) pass_arguments(
     Op const& op, [[maybe_unused]] Ts const&... xs)
 {
-    if constexpr (is_operation_v<Op>)
+    if constexpr (Operation<Op>)
         if constexpr (is_expression_v<Op>)
             return pass_arguments_impl(argument_indices<Op>{}, op, xs...);
         else
@@ -38,8 +38,11 @@ template <class Derived>
 struct operation_expression<Derived, true> : operation<Derived>
 {
     template <class... Ts>
-    using result_type = typename expression_result_type<decltype(
-        pass_arguments(std::declval<Derived>(), std::declval<Ts>()...))>::type;
+    using result_type = typename expression_result_type<decltype(pass_arguments(
+        std::declval<Derived>(), std::declval<Ts>()...))>::type;
+
+    // TODO: deduce exact category here.
+    using operation_category = operation_tag;
 
     template <class... Ts>
     constexpr auto evaluate(Ts const&... xs) const

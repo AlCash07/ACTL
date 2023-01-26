@@ -14,7 +14,7 @@ namespace scalar {
 
 struct equal_f : scalar_operation<equal_f, 2>
 {
-    using category = equality_operation_tag;
+    using operation_category = equality_operation_tag;
 
     template <class T, class U>
     static constexpr bool eval_scalar(T lhs, U rhs)
@@ -28,7 +28,7 @@ inline constexpr equal_f equal;
 
 struct equal_f : operation<equal_f>
 {
-    using category = equality_operation_tag;
+    using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;
 

@@ -38,9 +38,7 @@ struct Promotion
     }
 };
 
-template <class Op>
-    requires is_scalar_operation_v<Op>
-constexpr auto apply_policy(Op const& op, allow_promotion)
+constexpr auto apply_policy(ScalarOperation auto const& op, allow_promotion)
 {
     return operation_composer<Promotion>{}(op);
 }

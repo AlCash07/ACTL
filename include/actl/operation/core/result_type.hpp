@@ -57,7 +57,7 @@ struct resolved_result_type0<true, Ts...>
 
 template <class... Ts>
 inline constexpr bool has_operation_arg_v =
-    1 < (... + int{is_operation_v<std::remove_cvref_t<Ts>>});
+    1 < (... + int{Operation<std::remove_cvref_t<Ts>>});
 
 template <class... Ts>
 using resolved_result_type =
@@ -65,16 +65,5 @@ using resolved_result_type =
 
 template <class... Ts>
 using resolved_result_type_t = typename resolved_result_type<Ts...>::type;
-
-template <class T>
-inline constexpr bool is_category_v = is_subcategory_of_v<T, unclassified_tag>;
-
-template <class T>
-using category_or_self_t =
-    std::conditional_t<is_category_v<T>, T, category_t<std::remove_cvref_t<T>>>;
-
-template <class... Ts>
-using resolved_result_category_t =
-    category_or_self_t<resolved_result_type_t<Ts...>>;
 
 } // namespace ac

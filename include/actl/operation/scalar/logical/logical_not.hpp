@@ -14,7 +14,7 @@ namespace scalar {
 
 struct logical_not_f : scalar_operation<logical_not_f, 1>
 {
-    using category = logical_operation_tag;
+    using operation_category = logical_operation_tag;
 
     static constexpr bool eval_scalar(bool x)
     {
@@ -27,7 +27,7 @@ inline constexpr logical_not_f logical_not;
 
 struct logical_not_f : operation<logical_not_f>
 {
-    using category = logical_operation_tag;
+    using operation_category = logical_operation_tag;
 
     static constexpr auto formula = scalar::logical_not;
 };

@@ -36,7 +36,6 @@ struct expression
           expression<Op, Ts...>,
           std::is_same_v<operation_tag, resolved_result_type_t<Op, Ts...>>>
 {
-    using category = resolved_result_category_t<Op, Ts...>;
     struct enable_operators;
 
     static constexpr size_t argument_count = sizeof...(Ts);

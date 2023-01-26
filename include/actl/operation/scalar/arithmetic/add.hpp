@@ -14,7 +14,7 @@ namespace scalar {
 
 struct add_f : scalar_operation<add_f, 2>
 {
-    using category = additive_operation_tag;
+    using operation_category = additive_operation_tag;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs)
@@ -28,7 +28,7 @@ inline constexpr add_f add;
 
 struct add_f : operation<add_f>
 {
-    using category = additive_operation_tag;
+    using operation_category = additive_operation_tag;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;

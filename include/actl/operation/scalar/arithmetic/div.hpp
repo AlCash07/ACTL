@@ -14,7 +14,7 @@ namespace scalar {
 
 struct div_f : scalar_operation<div_f, 2>
 {
-    using category = multiplicative_operation_tag;
+    using operation_category = multiplicative_operation_tag;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs)
@@ -28,7 +28,7 @@ inline constexpr div_f div;
 
 struct div_f : operation<div_f>
 {
-    using category = multiplicative_operation_tag;
+    using operation_category = multiplicative_operation_tag;
 
     static constexpr auto formula = scalar::div;
 };

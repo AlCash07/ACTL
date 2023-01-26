@@ -13,7 +13,7 @@ namespace ac {
 
 struct sqr_f : scalar_operation<sqr_f, 1>
 {
-    using category = multiplicative_operation_tag;
+    using operation_category = multiplicative_operation_tag;
 
     static constexpr auto formula = x_ * x_;
 };

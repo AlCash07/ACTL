@@ -14,7 +14,7 @@ namespace scalar {
 
 struct bit_and_f : scalar_operation<bit_and_f, 2>
 {
-    using category = bitwise_operation_tag;
+    using operation_category = bitwise_operation_tag;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs)
@@ -28,7 +28,7 @@ inline constexpr bit_and_f bit_and;
 
 struct bit_and_f : operation<bit_and_f>
 {
-    using category = bitwise_operation_tag;
+    using operation_category = bitwise_operation_tag;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;

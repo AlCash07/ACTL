@@ -16,20 +16,20 @@
 namespace ac {
 
 // clang-format off
-struct scalar_operation_tag { using base = operation_tag; };
+struct scalar_operation_tag : operation_tag {};
 
-struct arithmetic_operation_tag     { using base = scalar_operation_tag; };
-struct additive_operation_tag       { using base = arithmetic_operation_tag; };
-struct multiplicative_operation_tag { using base = arithmetic_operation_tag; };
+struct arithmetic_operation_tag     : scalar_operation_tag {};
+struct additive_operation_tag       : arithmetic_operation_tag {};
+struct multiplicative_operation_tag : arithmetic_operation_tag {};
 
-struct bit_operation_tag     { using base = scalar_operation_tag; };
-struct bitwise_operation_tag { using base = bit_operation_tag; };
+struct bit_operation_tag     : scalar_operation_tag {};
+struct bitwise_operation_tag : bit_operation_tag {};
 
-struct comparison_operation_tag { using base = scalar_operation_tag; };
-struct equality_operation_tag   { using base = comparison_operation_tag; };
-struct ordering_operation_tag   { using base = comparison_operation_tag; };
+struct comparison_operation_tag : scalar_operation_tag {};
+struct equality_operation_tag   : comparison_operation_tag {};
+struct ordering_operation_tag   : comparison_operation_tag {};
 
-struct logical_operation_tag { using base = scalar_operation_tag; };
+struct logical_operation_tag : scalar_operation_tag {};
 // clang-format on
 
 template <class Op, size_t Arity>
@@ -71,11 +71,13 @@ struct scalar_operation : operation<Op>
 };
 
 template <class T>
-constexpr bool is_scalar_operation_v =
-    is_subcategory_of_v<category_t<T>, scalar_operation_tag>;
+concept ScalarOperation =
+    Operation<T> &&
+    std::derived_from<typename T::operation_category, scalar_operation_tag>;
 
 template <class T>
-constexpr bool is_comparison_operation_v =
-    is_subcategory_of_v<category_t<T>, comparison_operation_tag>;
+concept ComparisonOperation =
+    ScalarOperation<T> &&
+    std::derived_from<typename T::operation_category, comparison_operation_tag>;
 
 } // namespace ac

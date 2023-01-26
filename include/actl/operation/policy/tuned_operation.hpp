@@ -22,7 +22,7 @@ template <
     class Op,
     class Policy,
     enable_int_if<
-        is_operation_v<std::remove_cvref_t<Op>> &&
+        Operation<std::remove_cvref_t<Op>> &&
         is_policy_v<std::remove_cvref_t<Policy>>> = 0>
 constexpr auto operator|(Op&& op, Policy&& policy)
 {

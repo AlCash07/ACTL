@@ -19,7 +19,7 @@ struct math_operation_tag
 
 struct abs_t : scalar_operation<abs_t, 1>
 {
-    using category = math_operation_tag;
+    using operation_category = math_operation_tag;
 
     template <class T>
     static constexpr T eval_scalar(T x)
@@ -40,7 +40,7 @@ inline constexpr abs_t abs;
 template <class Op, size_t Arity>
 struct math_operation : scalar_operation<Op, Arity>
 {
-    using category = math_operation_tag;
+    using operation_category = math_operation_tag;
 };
 
 #define MATH_OP1(name, op)                     \

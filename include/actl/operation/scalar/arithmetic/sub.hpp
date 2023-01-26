@@ -14,7 +14,7 @@ namespace scalar {
 
 struct sub_f : scalar_operation<sub_f, 2>
 {
-    using category = additive_operation_tag;
+    using operation_category = additive_operation_tag;
 
     template <class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs)
@@ -28,7 +28,7 @@ inline constexpr sub_f sub;
 
 struct sub_f : operation<sub_f>
 {
-    using category = additive_operation_tag;
+    using operation_category = additive_operation_tag;
 
     static constexpr auto formula = scalar::sub;
 };

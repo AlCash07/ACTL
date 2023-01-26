@@ -13,7 +13,7 @@ namespace ac {
 template <size_t I, size_t N>
 struct arg_f
 {
-    using category = operation_tag;
+    using operation_category = operation_tag;
 
     struct enable_operators;
 

@@ -13,7 +13,7 @@ namespace ac {
 
 struct greater_equal_f : operation<greater_equal_f>
 {
-    using category = ordering_operation_tag;
+    using operation_category = ordering_operation_tag;
 
     static constexpr auto formula = !less;
 };
