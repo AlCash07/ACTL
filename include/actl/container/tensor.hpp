@@ -436,7 +436,7 @@ public:
         return *this->data();
     }
 
-    constexpr operator T const &() const
+    constexpr operator T const&() const
     {
         return *this->data();
     }
@@ -614,22 +614,18 @@ template <class T>
 struct tensor<T, 0> : tensor_fixed<T, 0>
 {};
 
-} // namespace detail
-
-struct tensor_tag
-{
-    using base = unclassified_tag;
-};
+template <class T>
+struct is_tensor : std::false_type
+{};
 
 template <class... Ts>
-struct category<ac::detail::tensor_base<Ts...>>
-{
-    using type = tensor_tag;
-};
+struct is_tensor<ac::detail::tensor_base<Ts...>> : std::true_type
+{};
+
+} // namespace detail
 
 template <class T>
-inline constexpr bool is_tensor_v =
-    is_subcategory_of_v<category_t<T>, tensor_tag>;
+concept Tensor = detail::is_tensor<T>::value;
 
 struct tensor_equal_f
 {
@@ -650,11 +646,7 @@ struct tensor_equal_f
 };
 
 template <class T, class U>
-struct overload<
-    std::enable_if_t<is_tensor_v<T> && is_tensor_v<U>>,
-    equal_f,
-    T,
-    U>
+struct overload<std::enable_if_t<Tensor<T> && Tensor<U>>, equal_f, T, U>
 {
     static constexpr auto formula =
         operation_composer<tensor_equal_f>(resolve_nested<T, U>(equal));

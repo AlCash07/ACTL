@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <actl/category/category.hpp>
-#include <actl/category/utility/is_subcategory_of.hpp>
 #include <actl/meta/strict_common_type.hpp>
 #include <actl/operation/operation.hpp>
 #include <actl/operation/scalar/enable_operators.hpp>
