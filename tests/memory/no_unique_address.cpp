@@ -49,21 +49,30 @@ static_assert(sizeof(with_same_empty) >= sizeof(int) + 1);
 struct empty2
 {};
 
-struct diff_empty
+struct with_diff_empty
 {
+    int i;
     AC_NO_UNIQUE_ADDRESS empty e1;
     AC_NO_UNIQUE_ADDRESS empty2 e2;
 };
 
-struct with_diff_empty
+// Different empty class object can share address.
+static_assert(sizeof(with_diff_empty) == sizeof(int));
+
+struct with_empty
 {
-    int i;
-    AC_NO_UNIQUE_ADDRESS diff_empty e;
+    // It's useful to apply AC_NO_UNIQUE_ADDRESS even to a single class field.
+    AC_NO_UNIQUE_ADDRESS empty e;
 };
 
-// Class with two different empty fields is also empty, but has non-zero size.
-static_assert(std::is_empty_v<diff_empty>);
-static_assert(sizeof(diff_empty) >= 1);
-// But it's optimized out when used as a field in another class with
-// AC_NO_UNIQUE_ADDRESS.
-static_assert(sizeof(with_diff_empty) == sizeof(int));
+struct with_nested_empty
+{
+    int i;
+    AC_NO_UNIQUE_ADDRESS with_empty e;
+};
+
+// Nested empty class objects should be able to share address,
+// but on MSVC they don't.
+#ifndef _MSC_VER
+static_assert(sizeof(with_nested_empty) == sizeof(int));
+#endif
