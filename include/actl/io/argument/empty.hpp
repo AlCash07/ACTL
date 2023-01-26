@@ -13,7 +13,6 @@ namespace ac::io {
 
 template <
     Device Dev,
-
     class T,
     enable_int_if<
         std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Dev&>> = 0>
@@ -24,7 +23,6 @@ bool write_final(Dev&, Format auto&, T&)
 
 template <
     Device Dev,
-
     class T,
     enable_int_if<
         std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Dev&>> = 0>

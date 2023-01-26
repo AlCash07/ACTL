@@ -86,7 +86,6 @@ bool read_container(D& id, F& fmt, C& x)
 }
 
 template <
-
     class R,
     enable_int_if<is_range_v<R> && !std::is_const_v<range_value_t<R>>> = 0>
 bool read_final(Device auto& id, Format auto& fmt, R& x)

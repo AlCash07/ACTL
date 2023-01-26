@@ -11,12 +11,7 @@
 
 namespace ac::io {
 
-template <
-    Device Dev,
-
-    class B,
-    size_t N,
-    enable_int_if_byte<B> = 0>
+template <Device Dev, class B, size_t N, enable_int_if_byte<B> = 0>
 bool write_final(Dev& od, Format auto&, span<B, N> s)
 {
     return od.write(
@@ -24,12 +19,7 @@ bool write_final(Dev& od, Format auto&, span<B, N> s)
            s.size();
 }
 
-template <
-    Device Dev,
-
-    class B,
-    size_t N,
-    enable_int_if_byte<B> = 0>
+template <Device Dev, class B, size_t N, enable_int_if_byte<B> = 0>
 bool read_final(Dev& id, Format auto&, span<B, N>& s)
 {
     return id.read({reinterpret_cast<char_t<Dev>*>(s.data()), s.size()}) ==
