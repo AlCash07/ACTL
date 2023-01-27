@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/container/array/is_array.hpp>
+#include <actl/container/array/array_like.hpp>
 #include <actl/container/array/semi_static_array_selector.hpp>
