@@ -30,7 +30,7 @@ template <
     enable_int_if<is_tuple_v<T> && is_dynamic_range_v<U>> = 0>
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 {
-    static_assert(is_random_access_range_v<U>);
+    static_assert(RandomAccessRange<U>);
     constexpr size_t n = std::tuple_size_v<T>;
     static_assert(noexcept(rhs.size()));
     if (rhs.size() != n)

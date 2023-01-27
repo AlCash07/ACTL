@@ -9,6 +9,6 @@
 
 using Vector = std::vector<int>;
 static_assert(ac::is_sequence_range_v<Vector>);
-static_assert(ac::is_random_access_range_v<Vector>);
-static_assert(ac::is_contiguous_range_v<Vector>);
+static_assert(ac::RandomAccessRange<Vector>);
+static_assert(ac::ContiguousRange<Vector>);
 static_assert(!ac::is_associative_range_v<Vector>);

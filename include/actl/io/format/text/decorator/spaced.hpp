@@ -47,7 +47,7 @@ spaced(Space, Char const (&)[N]) -> spaced<Space, std::basic_string_view<Char>>;
 template <class T>
 auto as_cspan(T const& x)
 {
-    if constexpr (is_contiguous_range_v<T>)
+    if constexpr (ContiguousRange<T>)
     {
         return span<range_value_t<T> const>{x};
     }

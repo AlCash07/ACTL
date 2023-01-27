@@ -8,7 +8,7 @@
 
 #include <actl/operation/core/composite_operation.hpp>
 #include <actl/operation/scalar/comparison/equal.hpp>
-#include <actl/range/traits/category.hpp>
+#include <actl/range/traits/concepts.hpp>
 #include <algorithm>
 
 namespace ac {
@@ -31,7 +31,7 @@ struct equal_range_f
 inline constexpr operation_composer<equal_range_f> equal_range;
 
 template <class T, class U>
-struct overload<std::enable_if_t<is_range_v<T> && is_range_v<U>>, equal_f, T, U>
+struct overload<std::enable_if_t<Range<T> && Range<U>>, equal_f, T, U>
 {
     static constexpr auto formula = equal_range(resolve_nested<T, U>(equal));
 };

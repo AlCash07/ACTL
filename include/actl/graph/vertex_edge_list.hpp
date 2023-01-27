@@ -32,7 +32,7 @@ public:
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args)
     {
-        if constexpr (is_random_access_range_v<VertexContainer>)
+        if constexpr (RandomAccessRange<VertexContainer>)
         {
             vertex n = std::max(u, v);
             if (n >= this->vertex_count())

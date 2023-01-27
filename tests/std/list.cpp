@@ -11,5 +11,5 @@
 using List = std::list<int>;
 static_assert(ac::is_container_v<List>);
 static_assert(ac::is_sequence_range_v<List>);
-static_assert(!ac::is_random_access_range_v<List>);
+static_assert(!ac::RandomAccessRange<List>);
 static_assert(!ac::is_associative_range_v<List>);

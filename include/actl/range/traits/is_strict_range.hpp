@@ -26,7 +26,7 @@ struct is_strict<T, std::index_sequence<Is...>>
 
 } // namespace detail
 
-template <class T, bool = is_range_v<T>, bool = is_tuple_v<T>>
+template <class T, bool = Range<T>, bool = is_tuple_v<T>>
 struct is_strict_range : std::false_type
 {};
 

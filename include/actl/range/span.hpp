@@ -8,7 +8,7 @@
 
 #include <actl/meta/static_size.hpp>
 #include <actl/range/interface/contiguous_range_interface.hpp>
-#include <actl/range/traits/category.hpp>
+#include <actl/range/traits/concepts.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/range/utility/size_holder.hpp>
 
@@ -44,8 +44,8 @@ public:
         : span{first, static_cast<size_t>(last - first)}
     {}
 
-    template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-    constexpr span(Range&& r) : span{ranges::data(r), ranges::size(r)}
+    constexpr span(ContiguousRange auto&& r)
+        : span{ranges::data(r), ranges::size(r)}
     {}
 
     constexpr T* data() const
@@ -95,10 +95,10 @@ private:
     storage_t storage_;
 };
 
-template <class Range, enable_int_if<is_contiguous_range_v<Range>> = 0>
-span(Range&&) -> span<
-    std::remove_pointer_t<decltype(ranges::data(std::declval<Range>()))>,
-    static_size_v<Range>>;
+template <ContiguousRange R>
+span(R&&) -> span<
+    std::remove_pointer_t<decltype(ranges::data(std::declval<R>()))>,
+    static_size_v<R>>;
 
 template <class T, size_t N>
 struct range_properties<span<T, N>> : default_range_properties

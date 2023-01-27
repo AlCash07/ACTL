@@ -17,8 +17,8 @@ template <
     enable_int_if<is_dynamic_range_v<T> && is_dynamic_range_v<U>> = 0>
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 {
-    static_assert(is_random_access_range_v<T>);
-    static_assert(is_random_access_range_v<U>);
+    static_assert(RandomAccessRange<T>);
+    static_assert(RandomAccessRange<U>);
     static_assert(noexcept(lhs.size(), lhs[0], rhs.size(), rhs[0]));
     auto n = lhs.size();
     if (rhs.size() != n)

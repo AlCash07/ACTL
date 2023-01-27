@@ -30,7 +30,7 @@ class adj_list_vertex_data;
 template <class Dir, class OEC, class EC, class VC>
 struct adj_list_traits
 {
-    using vertex = std::conditional_t<is_random_access_range_v<VC>, int, void*>;
+    using vertex = std::conditional_t<RandomAccessRange<VC>, int, void*>;
 
     using edge_selector = graph::list_value_t<EC>;
 

@@ -29,12 +29,8 @@ constexpr OutIter copy(OutIter dst, Range const& src) noexcept(
     return dst;
 }
 
-template <
-    class DstRange,
-    class SrcRange,
-    enable_int_if<
-        is_range_v<DstRange> &&
-        have_matching_static_sizes_v<DstRange, SrcRange>> = 0>
+template <Range DstRange, Range SrcRange>
+    requires have_matching_static_sizes_v<DstRange, SrcRange>
 constexpr void copy(DstRange&& dst, SrcRange const& src) noexcept(
     AC_ASSERT_IS_NOEXCEPT() && noexcept(copy(ranges::begin(dst), src)))
 {

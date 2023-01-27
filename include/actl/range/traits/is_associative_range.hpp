@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/range/traits/category.hpp>
+#include <actl/range/traits/concepts.hpp>
 #include <actl/range/traits/super_range.hpp>
 #include <type_traits>
 
@@ -44,10 +44,11 @@ struct has_mapped_type<T, std::enable_if_t<has_super_range_v<T>>>
 
 template <class T>
 inline constexpr bool is_associative_range_v =
-    is_range_v<T>&& detail::has_key_type<std::remove_reference_t<T>>::value;
+    Range<T> && detail::has_key_type<std::remove_reference_t<T>>::value;
 
 template <class T>
-inline constexpr bool is_pair_associative_range_v = is_associative_range_v<T>&&
+inline constexpr bool is_pair_associative_range_v =
+    is_associative_range_v<T> &&
     detail::has_mapped_type<std::remove_reference_t<T>>::value;
 
 template <class T>
@@ -56,6 +57,6 @@ inline constexpr bool is_simple_associative_range_v =
 
 template <class C>
 inline constexpr bool is_sequence_range_v =
-    is_range_v<C> && !is_associative_range_v<C>;
+    Range<C> && !is_associative_range_v<C>;
 
 } // namespace ac

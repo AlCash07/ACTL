@@ -10,36 +10,36 @@
 
 #include <actl/meta/associated_types.hpp>
 #include <actl/range/access/all.hpp>
-#include <actl/range/traits/category.hpp>
+#include <actl/range/traits/concepts.hpp>
 #include <iterator>
 
 namespace ac {
 
-template <class Range>
-using range_iterator_t = decltype(ranges::begin(std::declval<Range&>()));
+// range_iterator_t is defined together with range concepts.
+// template <class Range>
+// using range_iterator_t = decltype(ranges::begin(std::declval<Range&>()));
 
-template <class Range>
-using range_sentinel_t = decltype(ranges::end(std::declval<Range&>()));
+template <Range R>
+using range_sentinel_t = decltype(ranges::end(std::declval<R&>()));
 
-template <class Range>
+template <Range R>
 using range_size_t =
-    unwrap_constant_t<decltype(ranges::size(std::declval<Range&>()))>;
+    unwrap_constant_t<decltype(ranges::size(std::declval<R&>()))>;
 
-template <class Range>
-using range_difference_t = std::iter_difference_t<range_iterator_t<Range>>;
+template <Range R>
+using range_difference_t = std::iter_difference_t<range_iterator_t<R>>;
 
-template <class Range>
-using range_value_t = std::iter_value_t<range_iterator_t<Range>>;
+template <Range R>
+using range_value_t = std::iter_value_t<range_iterator_t<R>>;
 
-template <class Range>
-using range_reference_t = std::iter_reference_t<range_iterator_t<Range>>;
+template <Range R>
+using range_reference_t = std::iter_reference_t<range_iterator_t<R>>;
 
-template <class Range>
-requires is_range_v<Range>
-struct associated_types<Range>
+template <Range R>
+struct associated_types<R>
 {
-    using value_type = range_value_t<Range>;
-    using reference = range_reference_t<Range>;
+    using value_type = range_value_t<R>;
+    using reference = range_reference_t<R>;
 };
 
 } // namespace ac

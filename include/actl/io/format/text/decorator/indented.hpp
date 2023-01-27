@@ -23,7 +23,8 @@ struct indented
     bool indent = false;
 };
 
-template <class C, class T, enable_int_if<!is_range_v<T>> = 0>
+template <class C, class T>
+    requires(!Range<T>)
 batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x)
 {
     if (!fmt.indent)

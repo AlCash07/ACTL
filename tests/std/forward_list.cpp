@@ -11,5 +11,5 @@
 using ForwardList = std::forward_list<int>;
 static_assert(ac::is_container_v<ForwardList>);
 static_assert(ac::is_sequence_range_v<ForwardList>);
-static_assert(!ac::is_random_access_range_v<ForwardList>);
+static_assert(!ac::RandomAccessRange<ForwardList>);
 static_assert(!ac::is_associative_range_v<ForwardList>);

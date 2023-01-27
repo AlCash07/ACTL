@@ -14,15 +14,10 @@ namespace ac {
 
 namespace detail {
 
-template <class T, class = void>
-struct is_polygon : std::false_type
-{};
-
 template <class T>
-struct is_polygon<T, std::void_t<typename T::is_polygon>> : std::true_type
-{};
+concept Polygon = requires { typename T::is_polygon; };
 
-template <class T, bool = !is_polygon<T>::value && is_range_v<T>>
+template <class T, bool = !Polygon<T> && Range<T>>
 struct is_multi_point
     : std::bool_constant<
           std::is_same_v<point_tag, geometry::tag_t<range_value_t<T>>>>
@@ -62,7 +57,7 @@ template <class Indices, class Points>
 struct indexed_multi_point
 {
     static_assert(
-        is_range_v<Indices> && std::is_integral_v<range_value_t<Indices>> &&
+        Range<Indices> && std::is_integral_v<range_value_t<Indices>> &&
         std::is_same_v<geometry::tag_t<range_value_t<Points>>, point_tag>);
 
     using value_type = range_value_t<Points>;

@@ -368,7 +368,7 @@ public:
     template <class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args)
     {
-        if constexpr (is_random_access_range_v<VC>)
+        if constexpr (RandomAccessRange<VC>)
         {
             vertex n = std::max(u, v);
             if (n >= this->vertex_count())

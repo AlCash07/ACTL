@@ -7,12 +7,12 @@
 #pragma once
 
 #include <actl/meta/static_size.hpp>
-#include <actl/range/traits/category.hpp>
+#include <actl/range/traits/concepts.hpp>
 
 namespace ac {
 
 template <class T>
 inline constexpr bool is_dynamic_range_v =
-    is_range_v<T>&& static_size_v<T> == dynamic_size;
+    Range<T> && static_size_v<T> == dynamic_size;
 
 } // namespace ac

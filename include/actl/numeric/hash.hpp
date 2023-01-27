@@ -10,7 +10,7 @@
 #include <actl/numeric/bit/bit_cast.hpp>
 #include <actl/numeric/random/splitmix64.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
-#include <actl/range/traits/category.hpp>
+#include <actl/range/traits/concepts.hpp>
 #include <chrono>
 #include <functional>
 
@@ -71,8 +71,7 @@ constexpr size_t hash_value(T const& x, Ts const&... xs)
     return res;
 }
 
-template <class R, enable_int_if<is_range_v<R>> = 0>
-constexpr size_t hash_value(R const& x)
+constexpr size_t hash_value(Range auto const& x)
 {
     size_t res{};
     for (auto const& value : x)

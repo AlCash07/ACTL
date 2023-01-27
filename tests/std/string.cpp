@@ -10,6 +10,6 @@
 
 static_assert(ac::is_container_v<std::string>);
 static_assert(ac::is_sequence_range_v<std::string>);
-static_assert(ac::is_random_access_range_v<std::string>);
-static_assert(ac::is_contiguous_range_v<std::string>);
+static_assert(ac::RandomAccessRange<std::string>);
+static_assert(ac::ContiguousRange<std::string>);
 static_assert(!ac::is_associative_range_v<std::string>);

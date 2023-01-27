@@ -11,7 +11,7 @@
 #include <actl/io/argument/size.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/meta/static_size.hpp>
-#include <actl/range/traits/category.hpp>
+#include <actl/range/traits/concepts.hpp>
 #include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 
@@ -37,7 +37,7 @@ decltype(auto) element_representation(T& x)
         return x;
 }
 
-template <class R, enable_int_if<is_range_v<R>> = 0>
+template <Range R>
 bool write_final(Device auto& od, Format auto& fmt, R const& x)
 {
     nested_scope_guard g{fmt};
@@ -50,8 +50,7 @@ bool write_final(Device auto& od, Format auto& fmt, R const& x)
     return true;
 }
 
-template <class D, class F, class R>
-bool read_range(D& id, F& fmt, R& x)
+bool read_range(Device auto& id, Format auto& fmt, Range auto& x)
 {
     for (auto& value : x)
     {
@@ -61,13 +60,13 @@ bool read_range(D& id, F& fmt, R& x)
     return true;
 }
 
-template <class D, class F, class C>
-bool read_container(D& id, F& fmt, C& x)
+template <class C>
+bool read_container(Device auto& id, Format auto& fmt, C& x)
 {
     decltype(x.size()) size{};
     if (!read(id, fmt, io::size{size}))
         return false;
-    if constexpr (!is_random_access_range_v<C>)
+    if constexpr (!RandomAccessRange<C>)
     {
         for (; size > 0; --size)
         {
@@ -85,10 +84,9 @@ bool read_container(D& id, F& fmt, C& x)
     }
 }
 
-template <
-    class R,
-    enable_int_if<is_range_v<R> && !std::is_const_v<range_value_t<R>>> = 0>
-bool read_final(Device auto& id, Format auto& fmt, R& x)
+template <Range R>
+    requires(!std::is_const_v<range_value_t<R>>) bool
+read_final(Device auto& id, Format auto& fmt, R& x)
 {
     nested_scope_guard g{fmt};
     if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)

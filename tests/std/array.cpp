@@ -11,6 +11,6 @@
 using Array = std::array<int, 2>;
 static_assert(ac::is_container_v<Array>);
 static_assert(ac::is_sequence_range_v<Array>);
-static_assert(ac::is_random_access_range_v<Array>);
-static_assert(ac::is_contiguous_range_v<Array>);
+static_assert(ac::RandomAccessRange<Array>);
+static_assert(ac::ContiguousRange<Array>);
 static_assert(!ac::is_associative_range_v<Array>);

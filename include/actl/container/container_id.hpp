@@ -18,7 +18,7 @@
 
 namespace ac {
 
-template <class C, bool = is_container_v<C>, bool = is_random_access_range_v<C>>
+template <class C, bool = is_container_v<C>, bool = RandomAccessRange<C>>
 struct container_id_traits;
 
 template <class Iter>
@@ -111,7 +111,7 @@ using id_key_t = decltype(get_id_key(std::declval<Id>()));
 template <class C>
 container_id<C> id_begin(C const& cont)
 {
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
         return 0;
     else
         return container_id<C>{cont.begin()};
@@ -120,7 +120,7 @@ container_id<C> id_begin(C const& cont)
 template <class C>
 container_id<C> id_end(C const& cont)
 {
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
         return static_cast<container_id<C>>(ranges::size(cont));
     else
         return container_id<C>{cont.end()};
@@ -130,7 +130,7 @@ container_id<C> id_end(C const& cont)
 template <class C>
 container_id<C> id_null(C const& cont)
 {
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
         return -1;
     else
         return id_end(cont);
@@ -146,7 +146,7 @@ auto id_range(C const& cont)
 template <class C>
 container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter)
 {
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
         return static_cast<container_id<C>>(iter - ranges::begin(cont));
     else
         return container_id<C>{iter};
@@ -155,7 +155,7 @@ container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter)
 template <class C>
 range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
 {
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
     {
         AC_ASSERT(0 <= id && id <= id_end(cont));
         return ranges::begin(cont) + id;
@@ -169,7 +169,7 @@ range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
 template <class C>
 void id_check(C& cont, container_id<C> id)
 {
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
     {
         AC_ASSERT(0 <= id && id < id_end(cont));
     }
@@ -183,7 +183,7 @@ template <class C>
 reference_t<C> id_at(C& cont, container_id<C> id)
 {
     id_check(cont, id);
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
         return cont[static_cast<range_size_t<C>>(id)];
     else
         // const_cast is required because id contains a const_iterator.
@@ -196,7 +196,7 @@ template <class C>
 reference_t<C const> id_at(C const& cont, container_id<C> id)
 {
     id_check(cont, id);
-    if constexpr (is_random_access_range_v<C>)
+    if constexpr (RandomAccessRange<C>)
         return cont[static_cast<range_size_t<C>>(id)];
     else
         return *id.base();
