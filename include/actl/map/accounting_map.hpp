@@ -8,7 +8,7 @@
 
 #include <actl/map/traits.hpp>
 #include <actl/memory/no_unique_address.hpp>
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/vector.hpp>
 
@@ -26,7 +26,7 @@ class accounting_map
     using V = typename AC::mapped_type;
 
 public:
-    static_assert(is_unique_range_v<AC> && is_pair_associative_range_v<AC>);
+    static_assert(UniqueRange<AC> && PairAssociativeRange<AC>);
     static_assert(std::is_integral_v<V>, "value type must be integral");
 
     struct is_accounting_map;
@@ -66,8 +66,7 @@ public:
 private:
     AC_NO_UNIQUE_ADDRESS AC range_;
     AC_NO_UNIQUE_ADDRESS
-        std::conditional_t<Invertible, std::vector<K const*>, none>
-            inverse_;
+    std::conditional_t<Invertible, std::vector<K const*>, none> inverse_;
 };
 
 template <class AM>

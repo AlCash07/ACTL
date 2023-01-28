@@ -5,23 +5,23 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/hash_set.hpp>
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include "test.hpp"
 
 using HashSet = hash_set<int>;
-static_assert(ac::is_container_v<HashSet>);
-static_assert(!ac::is_sequence_range_v<HashSet>);
-static_assert(ac::is_associative_range_v<HashSet>);
-static_assert(!ac::is_sorted_range_v<HashSet>);
-static_assert(ac::is_unique_range_v<HashSet>);
-static_assert(ac::is_simple_associative_range_v<HashSet>);
-static_assert(!ac::is_pair_associative_range_v<HashSet>);
+static_assert(ac::Container<HashSet>);
+static_assert(!ac::SequenceRange<HashSet>);
+static_assert(ac::AssociativeRange<HashSet>);
+static_assert(!ac::SortedRange<HashSet>);
+static_assert(ac::UniqueRange<HashSet>);
+static_assert(ac::SimpleAssociativeRange<HashSet>);
+static_assert(!ac::PairAssociativeRange<HashSet>);
 
 using HashMultiset = hash_multiset<int>;
-static_assert(ac::is_container_v<HashMultiset>);
-static_assert(!ac::is_sequence_range_v<HashMultiset>);
-static_assert(ac::is_associative_range_v<HashMultiset>);
-static_assert(!ac::is_sorted_range_v<HashMultiset>);
-static_assert(!ac::is_unique_range_v<HashMultiset>);
-static_assert(ac::is_simple_associative_range_v<HashMultiset>);
-static_assert(!ac::is_pair_associative_range_v<HashMultiset>);
+static_assert(ac::Container<HashMultiset>);
+static_assert(!ac::SequenceRange<HashMultiset>);
+static_assert(ac::AssociativeRange<HashMultiset>);
+static_assert(!ac::SortedRange<HashMultiset>);
+static_assert(!ac::UniqueRange<HashMultiset>);
+static_assert(ac::SimpleAssociativeRange<HashMultiset>);
+static_assert(!ac::PairAssociativeRange<HashMultiset>);

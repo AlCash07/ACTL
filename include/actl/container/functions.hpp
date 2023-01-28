@@ -9,7 +9,7 @@
 #pragma once
 
 #include <actl/container/traits.hpp>
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <algorithm>
 
@@ -18,10 +18,10 @@ namespace ac {
 template <class C, class... Ts>
 std::pair<range_iterator_t<C>, bool> emplace(C& cont, Ts&&... args)
 {
-    if constexpr (is_associative_range_v<C>)
+    if constexpr (AssociativeRange<C>)
     {
         auto res = cont.emplace(std::forward<Ts>(args)...);
-        if constexpr (is_unique_range_v<C>)
+        if constexpr (UniqueRange<C>)
             return res;
         else
             return {res, true};
@@ -40,7 +40,7 @@ std::pair<range_iterator_t<C>, bool> emplace(C& cont, Ts&&... args)
 template <class C, class T>
 void erase(C& cont, T const& value)
 {
-    if constexpr (is_associative_range_v<C>)
+    if constexpr (AssociativeRange<C>)
         cont.erase(value);
     else
         cont.erase(std::remove(cont.begin(), cont.end(), value), cont.end());
@@ -49,7 +49,7 @@ void erase(C& cont, T const& value)
 template <class C, class T>
 range_iterator_t<C> find(C& cont, T const& value)
 {
-    if constexpr (is_associative_range_v<C> && is_sorted_range_v<C>)
+    if constexpr (AssociativeRange<C> && SortedRange<C>)
     {
         // TODO: make this case work for hash containers.
         // This requires C++20 with find for transparently comparable key.

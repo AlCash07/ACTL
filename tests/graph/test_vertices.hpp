@@ -21,7 +21,7 @@ std::vector<V> test_vertices(Graph& graph)
     vs.push_back(graph.add_vertex(2, "v2"));
     CHECK(3l == graph.vertex_count());
     auto [v3, ok] = graph.try_add_vertex(1, "v3");
-    CHECK_FALSE(is_unique_range_v<typename Graph::vertex_container> == ok);
+    CHECK_FALSE(UniqueRange<typename Graph::vertex_container> == ok);
     if (ok)
         vs.push_back(v3);
     auto map = graph[vertex_property{}];

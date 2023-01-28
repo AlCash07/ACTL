@@ -16,10 +16,6 @@ namespace ac {
 
 namespace detail {
 
-template <class T>
-using enable_if_gc_t =
-    std::enable_if_t<is_container_v<T> && !is_pair_associative_range_v<T>>;
-
 template <class C>
 struct get_id_ref
 {
@@ -35,8 +31,9 @@ struct get_id_ref
 
 } // namespace detail
 
-template <class C>
-struct map_traits<C, detail::enable_if_gc_t<C>>
+template <Container C>
+    requires(!PairAssociativeRange<C>)
+struct map_traits<C>
     : map_traits_base<
           container_id<C>,
           reference_t<C>,
@@ -50,8 +47,9 @@ struct map_traits<C, detail::enable_if_gc_t<C>>
               detail::get_id_ref<C>>>>
 {};
 
-template <class C>
-struct map_ops<C, detail::enable_if_gc_t<C>> : map_put<C>
+template <Container C>
+    requires(!PairAssociativeRange<C>)
+struct map_ops<C> : map_put<C>
 {
     static map_reference_t<C> get(C& map, map_key_t<C> key)
     {

@@ -8,7 +8,7 @@
 
 #include <actl/io/argument/range.hpp>
 #include <actl/range/iterator_range.hpp>
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 
 namespace ac::io {
 
@@ -17,17 +17,15 @@ struct braced
     struct format_tag;
 };
 
-template <
-    class AC,
-    enable_int_if<is_container_v<AC> && is_associative_range_v<AC>> = 0>
+template <Container AC>
+    requires AssociativeRange<AC>
 auto encode(braced, AC const& cont)
 {
     return batch{'{', make_range(cont), '}'};
 }
 
-template <
-    class SC,
-    enable_int_if<is_container_v<SC> && is_sequence_range_v<SC>> = 0>
+template <Container SC>
+    requires SequenceRange<SC>
 auto encode(braced, SC const& cont)
 {
     return batch{'[', make_range(cont), ']'};

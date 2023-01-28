@@ -7,21 +7,14 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 
 namespace ac {
 
-namespace detail {
-
-template <class T>
-using enable_if_upac_t =
-    std::enable_if_t<is_unique_range_v<T> && is_pair_associative_range_v<T>>;
-
-} // namespace detail
-
 template <class AC>
-struct map_traits<AC, detail::enable_if_upac_t<AC>>
+    requires UniqueRange<AC> && PairAssociativeRange<AC>
+struct map_traits<AC>
     : map_traits_base<
           typename AC::key_type const,
           typename AC::mapped_type,
@@ -34,7 +27,8 @@ struct map_traits<AC, detail::enable_if_upac_t<AC>>
 {};
 
 template <class AC>
-struct map_ops<AC, detail::enable_if_upac_t<AC>>
+    requires UniqueRange<AC> && PairAssociativeRange<AC>
+struct map_ops<AC>
 {
     // If key isn't present in container, default value is returned.
     static map_reference_t<AC> get(AC const& map, map_key_t<AC> key)

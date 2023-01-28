@@ -4,24 +4,24 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/set.hpp>
 
 using Set = std::set<int>;
-static_assert(ac::is_container_v<Set>);
-static_assert(!ac::is_sequence_range_v<Set>);
-static_assert(ac::is_associative_range_v<Set>);
-static_assert(ac::is_sorted_range_v<Set>);
-static_assert(ac::is_unique_range_v<Set>);
-static_assert(ac::is_simple_associative_range_v<Set>);
-static_assert(!ac::is_pair_associative_range_v<Set>);
+static_assert(ac::Container<Set>);
+static_assert(!ac::SequenceRange<Set>);
+static_assert(ac::AssociativeRange<Set>);
+static_assert(ac::SortedRange<Set>);
+static_assert(ac::UniqueRange<Set>);
+static_assert(ac::SimpleAssociativeRange<Set>);
+static_assert(!ac::PairAssociativeRange<Set>);
 
 using Multiset = std::multiset<int>;
-static_assert(ac::is_container_v<Multiset>);
-static_assert(!ac::is_sequence_range_v<Multiset>);
-static_assert(ac::is_associative_range_v<Multiset>);
-static_assert(ac::is_sorted_range_v<Multiset>);
-static_assert(!ac::is_unique_range_v<Multiset>);
-static_assert(ac::is_simple_associative_range_v<Multiset>);
-static_assert(!ac::is_pair_associative_range_v<Multiset>);
+static_assert(ac::Container<Multiset>);
+static_assert(!ac::SequenceRange<Multiset>);
+static_assert(ac::AssociativeRange<Multiset>);
+static_assert(ac::SortedRange<Multiset>);
+static_assert(!ac::UniqueRange<Multiset>);
+static_assert(ac::SimpleAssociativeRange<Multiset>);
+static_assert(!ac::PairAssociativeRange<Multiset>);

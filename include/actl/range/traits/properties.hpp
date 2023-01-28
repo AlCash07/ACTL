@@ -33,12 +33,12 @@ struct range_properties<T[N]> : default_range_properties
 };
 
 template <class T>
-inline constexpr bool is_container_v = range_properties<T>::is_container;
+concept Container = range_properties<T>::is_container;
 
 template <class T>
-inline constexpr bool is_sorted_range_v = range_properties<T>::is_sorted;
+concept SortedRange = range_properties<T>::is_sorted;
 
 template <class T>
-inline constexpr bool is_unique_range_v = range_properties<T>::is_unique;
+concept UniqueRange = range_properties<T>::is_unique;
 
 } // namespace ac

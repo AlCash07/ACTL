@@ -42,8 +42,7 @@ struct adj_list_traits
 
     // Out edge must contain target vertex as key in associative container.
     static constexpr bool has_out_vertex =
-        is_associative_range_v<OEC> ||
-        std::is_same_v<edge_selector, edge_property> ||
+        AssociativeRange<OEC> || std::is_same_v<edge_selector, edge_property> ||
         std::is_same_v<edge_selector, none>;
 
     using out_edge_vertex = std::conditional_t<has_out_vertex, vertex, none>;

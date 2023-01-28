@@ -135,7 +135,7 @@ protected:
 
 public:
     static_assert(
-        !is_associative_range_v<EC>,
+        !AssociativeRange<EC>,
         "use std::list instead of associative container for adjacency list");
 
     using edge_container = typename traits::edges::edge_container;
@@ -385,7 +385,7 @@ public:
 
     template <
         class... Ts,
-        bool Unique = is_unique_range_v<VC>,
+        bool Unique = UniqueRange<VC>,
         class T = range_value_t<VC>,
         enable_int_if<Unique> = 0>
     edge add_edge(T const& u, T const& v, Ts&&... args)

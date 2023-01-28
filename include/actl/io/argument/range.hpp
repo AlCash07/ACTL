@@ -11,8 +11,8 @@
 #include <actl/io/argument/size.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/meta/static_size.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/concepts.hpp>
-#include <actl/range/traits/is_associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 
 namespace ac::io {
@@ -31,7 +31,7 @@ decltype(auto) key_representation(Pair& x)
 template <class Range, class T>
 decltype(auto) element_representation(T& x)
 {
-    if constexpr (is_pair_associative_range_v<Range>)
+    if constexpr (PairAssociativeRange<Range>)
         return batch{key_representation(x), colon{}, x.second};
     else
         return x;
@@ -41,7 +41,7 @@ template <Range R>
 bool write_final(Device auto& od, Format auto& fmt, R const& x)
 {
     nested_scope_guard g{fmt};
-    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
+    if constexpr (Container<R> && static_size_v<R> == dynamic_size)
         if (!write(od, fmt, size{x.size()}))
             return false;
     for (auto const& value : x)
@@ -89,7 +89,7 @@ template <Range R>
 read_final(Device auto& id, Format auto& fmt, R& x)
 {
     nested_scope_guard g{fmt};
-    if constexpr (is_container_v<R> && static_size_v<R> == dynamic_size)
+    if constexpr (Container<R> && static_size_v<R> == dynamic_size)
         return read_container(id, fmt, x);
     else
         return read_range(id, fmt, x);

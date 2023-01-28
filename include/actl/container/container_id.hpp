@@ -18,7 +18,7 @@
 
 namespace ac {
 
-template <class C, bool = is_container_v<C>, bool = RandomAccessRange<C>>
+template <class C, bool = Container<C>, bool = RandomAccessRange<C>>
 struct container_id_traits;
 
 template <class Iter>

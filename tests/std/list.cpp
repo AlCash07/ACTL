@@ -4,12 +4,12 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/list.hpp>
 
 using List = std::list<int>;
-static_assert(ac::is_container_v<List>);
-static_assert(ac::is_sequence_range_v<List>);
+static_assert(ac::Container<List>);
+static_assert(ac::SequenceRange<List>);
 static_assert(!ac::RandomAccessRange<List>);
-static_assert(!ac::is_associative_range_v<List>);
+static_assert(!ac::AssociativeRange<List>);

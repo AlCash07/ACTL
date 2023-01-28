@@ -4,24 +4,24 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/map.hpp>
 
 using Map = std::map<int, int>;
-static_assert(ac::is_container_v<Map>);
-static_assert(!ac::is_sequence_range_v<Map>);
-static_assert(ac::is_associative_range_v<Map>);
-static_assert(!ac::is_simple_associative_range_v<Map>);
-static_assert(ac::is_pair_associative_range_v<Map>);
-static_assert(ac::is_sorted_range_v<Map>);
-static_assert(ac::is_unique_range_v<Map>);
+static_assert(ac::Container<Map>);
+static_assert(!ac::SequenceRange<Map>);
+static_assert(ac::AssociativeRange<Map>);
+static_assert(!ac::SimpleAssociativeRange<Map>);
+static_assert(ac::PairAssociativeRange<Map>);
+static_assert(ac::SortedRange<Map>);
+static_assert(ac::UniqueRange<Map>);
 
 using Multimap = std::multimap<int, int>;
-static_assert(ac::is_container_v<Multimap>);
-static_assert(!ac::is_sequence_range_v<Multimap>);
-static_assert(ac::is_associative_range_v<Multimap>);
-static_assert(!ac::is_simple_associative_range_v<Multimap>);
-static_assert(ac::is_pair_associative_range_v<Multimap>);
-static_assert(ac::is_sorted_range_v<Multimap>);
-static_assert(!ac::is_unique_range_v<Multimap>);
+static_assert(ac::Container<Multimap>);
+static_assert(!ac::SequenceRange<Multimap>);
+static_assert(ac::AssociativeRange<Multimap>);
+static_assert(!ac::SimpleAssociativeRange<Multimap>);
+static_assert(ac::PairAssociativeRange<Multimap>);
+static_assert(ac::SortedRange<Multimap>);
+static_assert(!ac::UniqueRange<Multimap>);

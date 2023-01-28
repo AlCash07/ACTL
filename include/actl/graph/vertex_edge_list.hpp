@@ -49,7 +49,7 @@ public:
 
     template <
         class... Ts,
-        bool Unique = is_unique_range_v<VertexContainer>,
+        bool Unique = UniqueRange<VertexContainer>,
         class T = range_value_t<VertexContainer>,
         enable_int_if<Unique> = 0>
     edge add_edge(T const& u, T const& v, Ts&&... args)

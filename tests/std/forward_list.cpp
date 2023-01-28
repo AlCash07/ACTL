@@ -4,12 +4,12 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/range/traits/is_associative_range.hpp>
+#include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/forward_list.hpp>
 
 using ForwardList = std::forward_list<int>;
-static_assert(ac::is_container_v<ForwardList>);
-static_assert(ac::is_sequence_range_v<ForwardList>);
+static_assert(ac::Container<ForwardList>);
+static_assert(ac::SequenceRange<ForwardList>);
 static_assert(!ac::RandomAccessRange<ForwardList>);
-static_assert(!ac::is_associative_range_v<ForwardList>);
+static_assert(!ac::AssociativeRange<ForwardList>);

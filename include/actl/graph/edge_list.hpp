@@ -61,7 +61,7 @@ protected:
 
 public:
     static_assert(
-        std::is_same_v<S, two_vertices> || !is_associative_range_v<EC>,
+        std::is_same_v<S, two_vertices> || !AssociativeRange<EC>,
         "associative edge list requires two vertices");
 
     using edge_container = typename traits::container;
@@ -73,7 +73,7 @@ public:
 
     static constexpr bool is_undirected = std::is_same_v<Dir, undirected>;
     static constexpr bool is_directed = !is_undirected;
-    static constexpr bool allows_parallel_edges = !is_unique_range_v<EC>;
+    static constexpr bool allows_parallel_edges = !UniqueRange<EC>;
 
     edge_list_edges() = default;
 
