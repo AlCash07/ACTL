@@ -24,10 +24,7 @@ constexpr bool equal_tuple_range(
 
 } // namespace detail
 
-template <
-    class T,
-    class U,
-    enable_int_if<is_tuple_v<T> && is_dynamic_range_v<U>> = 0>
+template <Tuple T, class U, enable_int_if<is_dynamic_range_v<U>> = 0>
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 {
     static_assert(RandomAccessRange<U>);
@@ -41,7 +38,7 @@ constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 template <
     class T,
     class U,
-    enable_int_if<is_dynamic_range_v<T> && is_tuple_v<U>> = 0>
+    enable_int_if<is_dynamic_range_v<T> && Tuple<U>> = 0>
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 {
     return equal_sequences(rhs, lhs);

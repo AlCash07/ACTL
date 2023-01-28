@@ -8,8 +8,7 @@
 #include <actl/std/array.hpp>
 #include <actl/std/tuple.hpp>
 #include <actl/std/utility.hpp>
-#include "test.hpp"
 
-static_assert(ac::is_tuple_v<std::pair<int, int>>);
-static_assert(ac::is_tuple_v<std::tuple<int, int, int>>);
-static_assert(ac::is_tuple_v<std::array<int, 2>>);
+static_assert(ac::Tuple<std::pair<int, int>>);
+static_assert(ac::Tuple<std::tuple<int, int, int>>);
+static_assert(ac::Tuple<std::array<int, 2>>);

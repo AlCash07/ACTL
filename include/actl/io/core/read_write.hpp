@@ -18,7 +18,7 @@ namespace ac::io {
 
 /* Argument traits */
 
-template <class T, bool = is_tuple_v<T>>
+template <class T, bool = Tuple<T>>
 struct is_io_tuple : std::true_type
 {};
 
@@ -37,7 +37,7 @@ namespace ac::io::detail {
 template <class D, class F, class T>
 bool write_pre_final(D& od, F& fmt, T const& x)
 {
-    if constexpr (!is_tuple_v<T> && is_io_tuple_v<T>)
+    if constexpr (!Tuple<T> && is_io_tuple_v<T>)
     {
         nested_scope_guard g{fmt};
         return write_final(od, fmt, x);
@@ -52,7 +52,7 @@ template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x)
 {
     using U = std::remove_cvref_t<T>;
-    if constexpr (!is_tuple_v<T> && is_io_tuple_v<U>)
+    if constexpr (!Tuple<T> && is_io_tuple_v<U>)
     {
         nested_scope_guard g{fmt};
         return read_final(id, fmt, x);

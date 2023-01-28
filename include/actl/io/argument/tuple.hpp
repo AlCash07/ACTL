@@ -30,7 +30,7 @@ bool read_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>)
 
 } // namespace detail
 
-template <class T, enable_int_if<is_tuple_v<T>> = 0>
+template <Tuple T>
 bool write_final(Device auto& od, Format auto& fmt, T const& x)
 {
     nested_scope_guard g{fmt};
@@ -38,7 +38,7 @@ bool write_final(Device auto& od, Format auto& fmt, T const& x)
         od, fmt, x, std::make_index_sequence<std::tuple_size_v<T>>{});
 }
 
-template <class T, enable_int_if<is_tuple_v<T>> = 0>
+template <Tuple T>
 bool read_final(Device auto& id, Format auto& fmt, T& x)
 {
     nested_scope_guard g{fmt};

@@ -44,7 +44,7 @@ struct conversion_sfinae<
 template <class To, class... Args>
 struct conversion
     : std::conditional_t<
-          (sizeof...(Args) == 0 || !is_tuple_v<To>)&& //
+          (sizeof...(Args) == 0 || !Tuple<To>)&& //
           can_list_initialize_v<To, Args...>,
           conversion_default<To, Args...>,
           conversion_sfinae<void, To, Args...>>

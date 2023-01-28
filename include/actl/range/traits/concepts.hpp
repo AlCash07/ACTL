@@ -58,7 +58,7 @@ concept ContiguousRange =
     };
 
 template <class T>
-struct nesting_depth<T, std::enable_if_t<Range<T> && !is_tuple_v<T>>>
+struct nesting_depth<T, std::enable_if_t<Range<T> && !Tuple<T>>>
     : size_constant<1 + nesting_depth_v<std::iter_value_t<range_iterator_t<T>>>>
 {};
 

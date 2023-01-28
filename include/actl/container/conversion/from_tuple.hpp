@@ -14,8 +14,8 @@ namespace ac {
 
 namespace detail {
 
-template <size_t I, class Tuple>
-constexpr decltype(auto) adl_get(Tuple const& x) noexcept
+template <size_t I>
+constexpr decltype(auto) adl_get(Tuple auto const& x) noexcept
 {
     using std::get;
     static_assert(noexcept(get<I>(x)));
@@ -45,8 +45,8 @@ template <class To, class From>
 struct conversion_sfinae<
     std::enable_if_t<
         !can_convert_as_ranges<To, From>() &&
-        is_tuple_v<std::remove_cvref_t<From>> && !is_strict_range_v<From> &&
-        (is_tuple_v<To> || Range<To>)>,
+        Tuple<std::remove_cvref_t<From>> && !is_strict_range_v<From> &&
+        (Tuple<To> || Range<To>)>,
     To,
     From> : detail::from_tuple<To, From>
 {};

@@ -14,9 +14,11 @@ namespace ac {
 
 namespace detail {
 
-template <class T, class U, size_t... Is>
+template <size_t... Is>
 constexpr bool equal_tuples(
-    T const& lhs, U const& rhs, std::index_sequence<Is...>) noexcept
+    Tuple auto const& lhs,
+    Tuple auto const& rhs,
+    std::index_sequence<Is...>) noexcept
 {
     using std::get;
     static_assert(noexcept((... && (get<Is>(lhs) == get<Is>(rhs)))));
@@ -25,7 +27,7 @@ constexpr bool equal_tuples(
 
 } // namespace detail
 
-template <class T, class U, enable_int_if<is_tuple_v<T> && is_tuple_v<U>> = 0>
+template <Tuple T, Tuple U>
 constexpr auto equal_sequences(T const& lhs, U const& rhs) noexcept
 {
     if constexpr (std::tuple_size_v<T> != std::tuple_size_v<U>)

@@ -16,17 +16,8 @@ namespace ac {
 template <class T>
 using tuple_indices_t = std::make_index_sequence<std::tuple_size_v<T>>;
 
-template <class T, class = void>
-struct is_tuple : std::false_type
-{};
-
 template <class T>
-struct is_tuple<T, std::void_t<decltype(std::tuple_size<T>::value)>>
-    : std::true_type
-{};
-
-template <class T>
-inline constexpr bool is_tuple_v = is_tuple<T>::value;
+concept Tuple = requires { std::tuple_size<T>::value; };
 
 namespace detail {
 
@@ -41,7 +32,7 @@ struct tuple_depth<T, std::index_sequence<Is...>>
 } // namespace detail
 
 template <class T>
-struct nesting_depth<T, std::enable_if_t<is_tuple_v<T>>>
+struct nesting_depth<T, std::enable_if_t<Tuple<T>>>
     : detail::tuple_depth<T, tuple_indices_t<T>>
 {};
 
