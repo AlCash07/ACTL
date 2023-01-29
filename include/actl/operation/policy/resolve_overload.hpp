@@ -18,11 +18,8 @@ struct policy_context : Base
 };
 
 template <class Base, class Policy, class Op, class... Ts>
-struct context_overload<
-    std::enable_if_t<can_apply_policy_v<Op, Policy>>,
-    policy_context<Base, Policy>,
-    Op,
-    Ts...>
+    requires can_apply_policy_v<Op, Policy>
+struct context_overload<policy_context<Base, Policy>, Op, Ts...>
 {
     template <class Op1>
     static constexpr auto resolve(
@@ -34,7 +31,7 @@ struct context_overload<
 };
 
 template <class Context, class Op, class Policy, class... Ts>
-struct overload_resolver<void, Context, tuned_operation<Op, Policy>, Ts...>
+struct overload_resolver<Context, tuned_operation<Op, Policy>, Ts...>
 {
     static constexpr decltype(auto) resolve(
         Context context, tuned_operation<Op, Policy> const& op)
