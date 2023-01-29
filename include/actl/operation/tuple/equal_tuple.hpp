@@ -35,8 +35,8 @@ struct equal_tuple_f
 };
 inline constexpr operation_composer<equal_tuple_f> equal_tuple;
 
-template <class T, class U>
-struct overload<std::enable_if_t<Tuple<T> && Tuple<U>>, equal_f, T, U>
+template <Tuple T, Tuple U>
+struct overload<equal_f, T, U>
 {
     static constexpr auto formula =
         tuple_op_resolver<T, U>::resolve_tuple(equal_tuple, equal);

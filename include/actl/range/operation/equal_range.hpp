@@ -30,8 +30,8 @@ struct equal_range_f
 };
 inline constexpr operation_composer<equal_range_f> equal_range;
 
-template <class T, class U>
-struct overload<std::enable_if_t<Range<T> && Range<U>>, equal_f, T, U>
+template <Range T, Range U>
+struct overload<equal_f, T, U>
 {
     static constexpr auto formula = equal_range(resolve_nested<T, U>(equal));
 };

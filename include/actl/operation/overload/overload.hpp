@@ -21,7 +21,7 @@ struct default_overload<Op>
     static constexpr auto formula = Op::formula;
 };
 
-template <class Void, class Op, class... Ts>
+template <class Op, class... Ts>
 struct overload : default_overload<Op>
 {};
 

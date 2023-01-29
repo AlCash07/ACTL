@@ -57,7 +57,7 @@ inline constexpr bool is_overload_resolved_v =
     requires { typename overload_resolver<raw_t<Ts>...>::is_resolved; };
 
 template <class Context, class Op, class... Ts>
-    requires requires { overload<void, Op, Ts...>::formula; }
+    requires requires { overload<Op, Ts...>::formula; }
 struct overload_resolver<Context, Op, Ts...>
 {
     template <class Op1>
@@ -65,8 +65,7 @@ struct overload_resolver<Context, Op, Ts...>
     {
         return resolve_overload<Ts...>(
             context,
-            std::remove_const_t<
-                decltype(overload<void, Op, Ts...>::formula)>{});
+            std::remove_const_t<decltype(overload<Op, Ts...>::formula)>{});
     }
 };
 

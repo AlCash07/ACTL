@@ -33,15 +33,15 @@ struct lexicographical_compare_tuple_f
 inline constexpr operation_composer<lexicographical_compare_tuple_f>
     lexicographical_compare_tuple;
 
-template <class T, class U>
-struct overload<std::enable_if_t<Tuple<T> && Tuple<U>>, cmp3way_f, T, U>
+template <Tuple T, Tuple U>
+struct overload<cmp3way_f, T, U>
 {
     static constexpr auto formula = tuple_op_resolver<T, U>::resolve_tuple(
         lexicographical_compare_tuple, cmp3way);
 };
 
-template <class T, class U>
-struct overload<std::enable_if_t<Tuple<T> && Tuple<U>>, less_f, T, U>
+template <Tuple T, Tuple U>
+struct overload<less_f, T, U>
 {
     static constexpr auto formula = cmp3way < 0_c;
 };

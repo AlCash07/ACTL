@@ -645,8 +645,8 @@ struct tensor_equal_f
     }
 };
 
-template <class T, class U>
-struct overload<std::enable_if_t<Tensor<T> && Tensor<U>>, equal_f, T, U>
+template <Tensor T, Tensor U>
+struct overload<equal_f, T, U>
 {
     static constexpr auto formula =
         operation_composer<tensor_equal_f>(resolve_nested<T, U>(equal));
