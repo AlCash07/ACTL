@@ -11,8 +11,8 @@
 
 namespace ac {
 
-template <class Policy, index N, class T>
-auto norm(Policy const& policy, point<T, N> const& p)
+template <index N, class T>
+auto norm(Policy auto const& policy, point<T, N> const& p)
 {
     return sqrt(policy, dot(policy, p));
 }

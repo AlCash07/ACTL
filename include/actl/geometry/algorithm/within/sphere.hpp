@@ -12,9 +12,9 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 enum within within(
-    Policy const& policy, point<T0, N> const& p, sphere<T1, N> const& s)
+    Policy auto const& policy, point<T0, N> const& p, sphere<T1, N> const& s)
 {
     return static_cast<enum within>(
         1 + cmp3way(policy, distance(policy, p, s.center), s.radius));

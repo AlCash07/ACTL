@@ -51,8 +51,8 @@ struct geometry_traits<sphere<T, N>>
     : geometry_traits_base<sphere_tag, point<T, N>>
 {};
 
-template <class Policy, index N, class T>
-constexpr bool degenerate(Policy const& policy, sphere<T, N> const& s)
+template <index N, class T>
+constexpr bool degenerate(Policy auto const& policy, sphere<T, N> const& s)
 {
     return !less(policy, 0, s.radius);
 }
@@ -69,12 +69,12 @@ constexpr auto make_circle(point<T0> const& center, T1 const& radius)
 }
 
 // Policy to indicate that polar angle is expected instead of a point.
-template <class Policy>
+template <class P>
 struct polar_angle_policy : virtual policy
 {
-    explicit polar_angle_policy(Policy const& x) : policy{x} {}
+    explicit polar_angle_policy(P const& x) : policy{x} {}
 
-    Policy const& policy;
+    P const& policy;
 };
 
 } // namespace ac

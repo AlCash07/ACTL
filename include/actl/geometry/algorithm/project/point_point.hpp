@@ -11,9 +11,9 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 auto& project(
-    Policy const& policy, point<T0, N> const&, point<T1, N> const& dst)
+    Policy auto const& policy, point<T0, N> const&, point<T1, N> const& dst)
 {
     return dst;
 }

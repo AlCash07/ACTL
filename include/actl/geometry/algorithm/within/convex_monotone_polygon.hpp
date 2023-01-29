@@ -14,9 +14,9 @@
 namespace ac {
 
 /// O(log N).
-template <class Policy, class T, class U>
+template <class T, class U>
 enum within within(
-    Policy const& policy,
+    Policy auto const& policy,
     point<T> const& p,
     convex_monotone_polygon<U> const& poly)
 {

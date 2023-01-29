@@ -11,20 +11,18 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1, class K>
+template <class P, index N, class T0, class T1, class K>
 auto project(
-    line_scalar_policy<Policy> lsp,
-    point<T0, N> const& p,
-    line<T1, N, K> const& l)
+    line_scalar_policy<P> lsp, point<T0, N> const& p, line<T1, N, K> const& l)
 {
     auto& policy = lsp.policy;
     return ratio(
         policy, dot(policy, p - l.begin, l.vector), dot(policy, l.vector));
 }
 
-template <class Policy, index N, class T0, class T1, class K>
+template <index N, class T0, class T1, class K>
 auto project(
-    Policy const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
+    Policy auto const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
 {
     return l(project(line_scalar_policy{policy}, p, l));
 }

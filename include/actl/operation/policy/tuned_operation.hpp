@@ -18,16 +18,12 @@ struct tuned_operation : operation<tuned_operation<Op, Policy>>
     Policy policy;
 };
 
-template <
-    class Op,
-    class Policy,
-    enable_int_if<
-        Operation<std::remove_cvref_t<Op>> &&
-        is_policy_v<std::remove_cvref_t<Policy>>> = 0>
-constexpr auto operator|(Op&& op, Policy&& policy)
+template <class Op, Policy P>
+    requires Operation<std::remove_cvref_t<Op>>
+constexpr auto operator|(Op&& op, P&& policy)
 {
-    return tuned_operation<value_if_small<Op>, value_if_small<Policy>>{
-        {}, std::forward<Op>(op), std::forward<Policy>(policy)};
+    return tuned_operation<value_if_small<Op>, value_if_small<P>>{
+        {}, std::forward<Op>(op), std::forward<P>(policy)};
 }
 
 } // namespace ac

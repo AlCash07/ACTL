@@ -10,9 +10,9 @@
 
 namespace ac::detail {
 
-template <class Policy, class T, class U>
+template <class T, class U>
 bool endpoint_test(
-    Policy const& policy, endpoint kind, T const& lhs, U const& rhs)
+    Policy auto const& policy, endpoint kind, T const& lhs, U const& rhs)
 {
     switch (kind)
     {
@@ -25,8 +25,9 @@ bool endpoint_test(
     }
 }
 
-template <class Policy, class T, class U>
-bool line_test(Policy const& policy, line_kind kind, T const& num, U const& den)
+template <class T, class U>
+bool line_test(
+    Policy auto const& policy, line_kind kind, T const& num, U const& den)
 {
     return endpoint_test(policy, begin(kind), 0, num) &&
            endpoint_test(policy, end(kind), num, den);

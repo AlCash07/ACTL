@@ -14,9 +14,11 @@
 namespace ac {
 
 /// O(log N).
-template <class Policy, class T, class U>
+template <class T, class U>
 enum within within(
-    Policy const& policy, point<T> const& p, monotone_polygon<U> const& poly)
+    Policy auto const& policy,
+    point<T> const& p,
+    monotone_polygon<U> const& poly)
 {
     if (poly.empty())
         return within::outside;

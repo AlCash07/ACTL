@@ -15,9 +15,9 @@ namespace ac {
 
 /// Point vs non-degenerate triangle : O(1).
 /// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
-template <class Policy, class T, class U>
+template <class T, class U>
 enum within within(
-    Policy const& policy, point<T> const& p, polygon<U> const& triangle)
+    Policy auto const& policy, point<T> const& p, polygon<U> const& triangle)
 {
     AC_ASSERT(triangle.size() == 3);
     orientation2d signs[3] = {};

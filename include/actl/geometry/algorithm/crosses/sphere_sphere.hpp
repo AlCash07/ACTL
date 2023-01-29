@@ -12,9 +12,11 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 bool crosses(
-    Policy const& policy, sphere<T0, N> const& lhs, sphere<T1, N> const& rhs)
+    Policy auto const& policy,
+    sphere<T0, N> const& lhs,
+    sphere<T1, N> const& rhs)
 {
     auto centers_dist = distance(policy, lhs.center, rhs.center);
     return !less(policy, centers_dist, abs(lhs.radius - rhs.radius)) &&

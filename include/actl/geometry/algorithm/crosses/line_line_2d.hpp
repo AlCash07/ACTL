@@ -38,18 +38,18 @@ public:
 
 } // namespace detail
 
-template <class Policy, class T0, class K0, class T1, class K1>
+template <class T0, class K0, class T1, class K1>
 bool crosses(
-    Policy const& policy,
+    Policy auto const& policy,
     line<T0, 2, K0> const& lhs,
     line<T1, 2, K1> const& rhs)
 {
     return intersect(policy, lhs, rhs, detail::flag_output_iterator{}).flag;
 }
 
-template <class Policy, class T0, class K0, class T1, class K1>
+template <class P class T0, class K0, class T1, class K1>
 bool crosses(
-    general_position_policy<Policy> gpp,
+    general_position_policy<P> gpp,
     line<T0, 2, K0> const& lhs,
     line<T1, 2, K1> const& rhs)
 {

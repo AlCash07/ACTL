@@ -11,9 +11,9 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 auto distance(
-    Policy const& policy, point<T0, N> const& p0, point<T1, N> const& p1)
+    Policy auto const& policy, point<T0, N> const& p0, point<T1, N> const& p1)
 {
     return norm(policy, p0 - p1);
 }

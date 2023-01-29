@@ -12,9 +12,9 @@
 
 namespace ac::detail {
 
-template <class Policy, class T>
+template <class T>
 auto const& max_endpoint(
-    Policy const& policy,
+    Policy auto const& policy,
     std::pair<T, endpoint> const& lhs,
     std::pair<T, endpoint> const& rhs,
     bool start)
@@ -46,16 +46,9 @@ auto const& max_endpoint(
     }
 }
 
-template <
-    class Policy,
-    index N,
-    class T0,
-    class K0,
-    class T1,
-    class K1,
-    class OutIter>
+template <index N, class T0, class K0, class T1, class K1, class OutIter>
 OutIter common_line(
-    Policy const& policy,
+    Policy auto const& policy,
     line<T0, N, K0> const& lhs,
     line<T1, N, K1> const& rhs,
     OutIter dst)

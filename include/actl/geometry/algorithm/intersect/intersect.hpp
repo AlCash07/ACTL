@@ -13,19 +13,19 @@
 namespace ac {
 
 template <
-    class Policy,
     class T,
     class U,
     class OutIter,
     geometry::enable_int_if_swap<T, U> = 0>
-OutIter intersect(Policy const& policy, T const& lhs, U const& rhs, OutIter dst)
+OutIter intersect(
+    Policy auto const& policy, T const& lhs, U const& rhs, OutIter dst)
 {
     return intersect(policy, rhs, lhs, dst);
 }
 
-template <class Policy, index N, class T, class K, class U, class OutIter>
+template <index N, class T, class K, class U, class OutIter>
 OutIter intersect(
-    Policy const& policy, line<T, N, K> const& l, U const& x, OutIter dst)
+    Policy auto const& policy, line<T, N, K> const& l, U const& x, OutIter dst)
 {
     return intersect(
         line_scalar_policy{policy},

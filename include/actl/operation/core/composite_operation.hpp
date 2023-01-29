@@ -48,10 +48,10 @@ struct operation_composer
     }
 };
 
-template <class Outer, class... Inner, class Policy, size_t... Is>
+template <class Outer, class... Inner, size_t... Is>
 constexpr auto apply_policy_to_composite(
     composite_operation<Outer, Inner...> const& op,
-    Policy const& policy,
+    Policy auto const& policy,
     std::index_sequence<Is...>)
 {
     return operation_composer<Outer>{}(
@@ -61,10 +61,10 @@ constexpr auto apply_policy_to_composite(
 template <
     class Outer,
     class... Inner,
-    class Policy,
-    enable_int_if<(... || can_apply_policy<Inner, Policy>::value)> = 0>
+    Policy P,
+    enable_int_if<(... || can_apply_policy<Inner, P>::value)> = 0>
 constexpr auto apply_policy(
-    composite_operation<Outer, Inner...> const& op, Policy const& policy)
+    composite_operation<Outer, Inner...> const& op, P const& policy)
 {
     return apply_policy_to_composite(
         op, policy, std::make_index_sequence<sizeof...(Inner)>{});

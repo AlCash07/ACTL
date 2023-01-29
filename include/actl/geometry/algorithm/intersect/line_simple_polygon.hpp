@@ -17,9 +17,9 @@
 namespace ac {
 
 /// Line with simple polygon intersection : O(N).
-template <class Policy, class T, class K, class U, class OutIter>
+template <class T, class K, class U, class OutIter>
 OutIter intersect(
-    line_scalar_policy<Policy> lsp,
+    line_scalar_policy<P> lsp,
     line<T, 2, K> const& l,
     simple_polygon<U> const& poly,
     OutIter dst)

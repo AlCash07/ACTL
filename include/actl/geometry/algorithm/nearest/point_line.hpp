@@ -11,9 +11,9 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1, class K>
+template <index N, class T0, class T1, class K>
 auto nearest(
-    Policy const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
+    Policy auto const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
 {
     using Pair =
         std::pair<point<T0, N> const&, decltype(project(policy, p, l))>;

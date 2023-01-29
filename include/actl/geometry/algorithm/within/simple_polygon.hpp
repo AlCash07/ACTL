@@ -12,9 +12,9 @@
 namespace ac {
 
 /// O(N).
-template <class Policy, class T, class U>
+template <class T, class U>
 enum within within(
-    Policy const& policy, point<T> const& p, simple_polygon<U> const& poly)
+    Policy auto const& policy, point<T> const& p, simple_polygon<U> const& poly)
 {
     switch (winding_number(policy, p, poly))
     {

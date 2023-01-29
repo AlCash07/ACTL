@@ -10,8 +10,8 @@
 
 namespace ac {
 
-template <class Policy, index N, class T, class U>
-auto reflect(Policy const& policy, point<T, N> const& src, U const& dst)
+template <index N, class T, class U>
+auto reflect(Policy auto const& policy, point<T, N> const& src, U const& dst)
 {
     return product(policy, 2, project(policy, src, dst)) - src;
 }

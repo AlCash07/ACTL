@@ -27,7 +27,7 @@ struct enable_operators_impl<T, std::void_t<typename T::enable_operators>>
 template <class... Ts>
 using enable_operators = std::enable_if_t<
     (... || detail::enable_operators_impl<std::remove_cvref_t<Ts>>::value) &&
-        !(... || is_policy_v<std::remove_cvref_t<Ts>>),
+        !(... || Policy<Ts>),
     int>;
 
 } // namespace ac

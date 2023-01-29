@@ -11,12 +11,12 @@
 namespace ac {
 
 template <
-    class Policy,
     class T,
     class U,
     class OutIter,
     geometry::enable_int_if_swap<T, U> = 0>
-OutIter tangents(Policy const& policy, T const& lhs, U const& rhs, OutIter dst)
+OutIter tangents(
+    Policy auto const& policy, T const& lhs, U const& rhs, OutIter dst)
 {
     return tangents(policy, rhs, lhs, dst);
 }

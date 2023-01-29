@@ -180,47 +180,47 @@ constexpr auto operator-(point<T0, N> const& lhs, point<T1, N> const& rhs)
     return detail::apply<N>(std::minus{}, lhs, rhs);
 }
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 constexpr bool perform(
     equal_t,
-    Policy const& policy,
+    Policy auto const& policy,
     point<T0, N> const& lhs,
     point<T1, N> const& rhs)
 {
     return equal(policy, span{lhs}, span{rhs});
 }
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 constexpr bool perform(
     less_t,
-    Policy const& policy,
+    Policy auto const& policy,
     point<T0, N> const& lhs,
     point<T1, N> const& rhs)
 {
     return less(policy, span{lhs}, span{rhs});
 }
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 constexpr auto perform(
-    Mul, Policy const& policy, point<T0, N> const& lhs, T1 const& factor)
+    Mul, Policy auto const& policy, point<T0, N> const& lhs, T1 const& factor)
 {
     return detail::apply<N>(
         [&policy, &factor](T0 const& x) { return mul(policy, x, factor); },
         lhs);
 }
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 constexpr auto perform(
-    Mul, Policy const& policy, T0 const& factor, point<T1, N> const& rhs)
+    Mul, Policy auto const& policy, T0 const& factor, point<T1, N> const& rhs)
 {
     return detail::apply<N>(
         [&policy, &factor](T1 const& x) { return mul(policy, factor, x); },
         rhs);
 }
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 constexpr auto perform(
-    Div, Policy const& policy, point<T0, N> const& lhs, T1 const& factor)
+    Div, Policy auto const& policy, point<T0, N> const& lhs, T1 const& factor)
 {
     AC_ASSERT(!equal(policy, factor, 0));
     return detail::apply<N>(
@@ -228,9 +228,9 @@ constexpr auto perform(
         lhs);
 }
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 constexpr auto dot(
-    Policy const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs)
+    Policy auto const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs)
 {
     result_t<Mul, Policy, T0, T1> res = 0;
     for (index i = 0; i < N; ++i)
@@ -244,12 +244,8 @@ constexpr auto dot(point<T0, N> const& lhs, point<T1, N> const& rhs)
     return dot(default_policy, lhs, rhs);
 }
 
-template <
-    class Policy,
-    index N,
-    class T,
-    enable_int_if<is_policy_v<Policy>> = 0>
-constexpr auto dot(Policy const& policy, point<T, N> const& p)
+template <index N, class T>
+constexpr auto dot(Policy auto const& policy, point<T, N> const& p)
 {
     return dot(policy, p, p);
 }
@@ -260,8 +256,8 @@ constexpr auto dot(point<T, N> const& p)
     return dot(default_policy, p);
 }
 
-template <class Policy, index N, class T>
-constexpr bool degenerate(Policy const& policy, point<T, N> const& p)
+template <index N, class T>
+constexpr bool degenerate(Policy auto const& policy, point<T, N> const& p)
 {
     for (index i = 0; i < N; ++i)
     {
@@ -336,9 +332,9 @@ public:
 template <class T>
 using point2d = point<T, 2>;
 
-template <class Policy, class T0, class T1>
+template <class T0, class T1>
 constexpr bool y_compare(
-    Policy const& policy, point<T0> const& lhs, point<T1> const& rhs)
+    Policy auto const& policy, point<T0> const& lhs, point<T1> const& rhs)
 {
     int v = cmp3way(policy, lhs[1], rhs[1]);
     return v < 0 || (v == 0 && less(policy, lhs[0], rhs[0]));
@@ -362,9 +358,9 @@ public:
 template <class T>
 using point3d = point<T, 3>;
 
-template <class Policy, class T0, class T1>
+template <class T0, class T1>
 constexpr auto cross(
-    Policy const& policy, point3d<T0> const& lhs, point3d<T1> const& rhs)
+    Policy auto const& policy, point3d<T0> const& lhs, point3d<T1> const& rhs)
 {
     return point{
         product(policy, lhs[1], rhs[2]) - product(policy, lhs[2], rhs[1]),

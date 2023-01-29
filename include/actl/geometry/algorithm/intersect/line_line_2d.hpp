@@ -15,19 +15,19 @@ namespace ac {
 
 /// This policy implies that lines are in general position (don't coincide but
 /// can be parallel).
-template <class Policy>
+template <class P>
 struct general_position_policy
 {
-    explicit general_position_policy(Policy const& x) : policy{x} {}
+    explicit general_position_policy(P const& x) : policy{x} {}
 
-    Policy const& policy;
+    P const& policy;
 };
 
 namespace detail {
 
-template <class Policy, class T0, class K0, class T1, class K1, class T2>
+template <class T0, class K0, class T1, class K1, class T2>
 bool cross_test(
-    Policy const& policy,
+    Policy auto const& policy,
     line<T0, 2, K0> const& lhs,
     line<T1, 2, K1> const& rhs,
     T2 tarea,
@@ -46,9 +46,9 @@ bool cross_test(
 
 } // namespace detail
 
-template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
+template <class T0, class K0, class T1, class K1, class OutIter>
 OutIter intersect(
-    line_scalar_policy<Policy> lsp,
+    line_scalar_policy<P> lsp,
     line<T0, 2, K0> const& lhs,
     line<T1, 2, K1> const& rhs,
     OutIter dst)
@@ -66,9 +66,9 @@ OutIter intersect(
     return dst;
 }
 
-template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
+template <class T0, class K0, class T1, class K1, class OutIter>
 OutIter intersect(
-    general_position_policy<Policy> gpp,
+    general_position_policy<P> gpp,
     line<T0, 2, K0> const& lhs,
     line<T1, 2, K1> const& rhs,
     OutIter dst)
@@ -80,9 +80,9 @@ OutIter intersect(
         detail::scalar_to_point_adaptor{lhs, dst});
 }
 
-template <class Policy, class T0, class K0, class T1, class K1, class OutIter>
+template <class T0, class K0, class T1, class K1, class OutIter>
 OutIter intersect(
-    Policy const& policy,
+    Policy auto const& policy,
     line<T0, 2, K0> const& lhs,
     line<T1, 2, K1> const& rhs,
     OutIter dst)

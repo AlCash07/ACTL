@@ -14,9 +14,12 @@
 
 namespace ac {
 
-template <class Policy, class T0, class T1, class OutIter>
+template <class T0, class T1, class OutIter>
 OutIter tangents(
-    Policy const& policy, point<T0> const& p, circle<T1> const& c, OutIter dst)
+    Policy auto const& policy,
+    point<T0> const& p,
+    circle<T1> const& c,
+    OutIter dst)
 {
     switch (within(policy, p, c))
     {
@@ -36,9 +39,9 @@ OutIter tangents(
     return dst;
 }
 
-template <class Policy, class T0, class T1, class OutIter>
+template <class P, class T0, class T1, class OutIter>
 OutIter tangents(
-    polar_angle_policy<Policy> pap,
+    polar_angle_policy<P> pap,
     point<T0> const& p,
     circle<T1> const& c,
     OutIter dst)

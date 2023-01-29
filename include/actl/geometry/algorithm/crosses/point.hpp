@@ -12,8 +12,8 @@
 
 namespace ac {
 
-template <class Policy, index N, class T, class U>
-bool crosses(Policy const& policy, point<T, N> const& lhs, U const& rhs)
+template <index N, class T, class U>
+bool crosses(Policy auto const& policy, point<T, N> const& lhs, U const& rhs)
 {
     return within(policy, lhs, rhs) == within::border;
 }

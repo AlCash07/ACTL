@@ -13,12 +13,12 @@
 
 namespace ac {
 
-template <class Policy>
+template <class P>
 struct andrew_monotone_chain_policy
 {
-    andrew_monotone_chain_policy(Policy const& x) : policy{x} {}
+    andrew_monotone_chain_policy(P const& x) : policy{x} {}
 
-    Policy const& policy;
+    P const& policy;
 };
 
 /// Convex hull of a set of 2d points : O(N log N).
@@ -26,10 +26,10 @@ struct andrew_monotone_chain_policy
 /// Implementation reference:
 /// https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
 template <
-    class Policy,
+    class P,
     class T,
     enable_int_if<geometry_traits<T>::dimension == 2> = 0>
-span<T> convex_hull(andrew_monotone_chain_policy<Policy> amcp, span<T> points)
+span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points)
 {
     if (points.size() < 2)
         return points;

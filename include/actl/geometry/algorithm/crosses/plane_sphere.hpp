@@ -13,9 +13,9 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 bool crosses(
-    Policy const& policy, plane<T0, N> const& pl, sphere<T1, N> const& s)
+    Policy auto const& policy, plane<T0, N> const& pl, sphere<T1, N> const& s)
 {
     auto dist = abs(pl(policy, s.center));
     return !less(

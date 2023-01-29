@@ -11,16 +11,8 @@
 
 namespace ac {
 
-template <class T, class = void>
-struct is_policy : std::false_type
-{};
-
 template <class T>
-struct is_policy<T, std::void_t<typename T::is_policy>> : std::true_type
-{};
-
-template <class T>
-inline constexpr bool is_policy_v = is_policy<T>::value;
+concept Policy = requires { typename std::remove_reference_t<T>::is_policy; };
 
 template <class Op, class Policy, class = void>
 struct can_apply_policy : std::false_type
@@ -37,10 +29,10 @@ struct can_apply_policy<
 template <class Op, class Policy>
 inline constexpr bool can_apply_policy_v = can_apply_policy<Op, Policy>::value;
 
-template <class Op, class Policy>
-constexpr decltype(auto) apply_policy_if_can(Op&& op, Policy const& policy)
+template <class Op, Policy P>
+constexpr decltype(auto) apply_policy_if_can(Op&& op, P const& policy)
 {
-    if constexpr (can_apply_policy<Op, Policy>::value)
+    if constexpr (can_apply_policy<Op, P>::value)
         return apply_policy(std::forward<Op>(op), policy);
     else
         return std::forward<Op>(op);

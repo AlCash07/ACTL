@@ -11,9 +11,9 @@
 
 namespace ac {
 
-template <class Policy, class T0, class T1, class T2>
+template <class T0, class T1, class T2>
 auto circumcenter(
-    Policy const& policy,
+    Policy auto const& policy,
     point<T0> const& a,
     point<T1> const& b,
     point<T2> const& c)

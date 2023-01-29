@@ -13,9 +13,9 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class K, class T1, class OutIter>
+template <class P, index N, class T0, class K, class T1, class OutIter>
 OutIter intersect(
-    line_scalar_policy<Policy> lsp,
+    line_scalar_policy<P> lsp,
     line<T0, N, K> const& l,
     sphere<T1, N> const& s,
     OutIter dst)

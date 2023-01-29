@@ -12,9 +12,9 @@
 
 namespace ac {
 
-template <class Policy, index N, class T0, class T1>
+template <index N, class T0, class T1>
 auto distance(
-    Policy const& policy, point<T0, N> const& p, plane<T1, N> const& pl)
+    Policy auto const& policy, point<T0, N> const& p, plane<T1, N> const& pl)
 {
     AC_ASSERT(!degenerate(pl));
     return ratio(policy, abs(pl(policy, p)), norm(policy, pl.normal));

@@ -11,10 +11,10 @@
 
 namespace ac {
 
-template <class Base, class Policy>
+template <class Base, class P>
 struct policy_context : Base
 {
-    Policy const& policy;
+    P const& policy;
 };
 
 template <class Base, class Policy, class Op, class... Ts>

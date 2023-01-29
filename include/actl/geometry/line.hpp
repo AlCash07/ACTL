@@ -169,8 +169,8 @@ public:
         return begin + vector;
     }
 
-    template <class Policy, class T1>
-    constexpr auto operator()(Policy const& policy, T1 const& t) const
+    template <class T1>
+    constexpr auto operator()(Policy auto const& policy, T1 const& t) const
     {
         return begin + product(policy, t, vector);
     }
@@ -256,20 +256,20 @@ constexpr Line make_any_line(
     return Line{a, b, static_cast<line_kind>(combine(akind, bkind))};
 }
 
-template <class Policy, index N, class T, class K>
-constexpr bool degenerate(Policy const& policy, line<T, N, K> const& l)
+template <index N, class T, class K>
+constexpr bool degenerate(Policy auto const& policy, line<T, N, K> const& l)
 {
     return degenerate(policy, l.vector);
 }
 
 // Policy to indicate that scalar is expected instead of a point. This scalar
 // can be passed to line operator () to get the point.
-template <class Policy>
+template <class P>
 struct line_scalar_policy : virtual policy
 {
-    explicit line_scalar_policy(Policy const& x) : policy{x} {}
+    explicit line_scalar_policy(P const& x) : policy{x} {}
 
-    Policy const& policy;
+    P const& policy;
 };
 
 } // namespace ac
