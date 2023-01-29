@@ -40,7 +40,11 @@ public:
 };
 
 template <class MM>
-struct map_traits<MM, std::void_t<typename MM::class_t, typename MM::member_t>>
+    requires requires {
+                 typename MM::class_t;
+                 typename MM::member_t;
+             }
+struct map_traits<MM>
 {
     static constexpr bool C = std::is_const_v<MM>;
 

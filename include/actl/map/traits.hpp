@@ -44,7 +44,7 @@ struct map_traits_base
     static constexpr bool iterable = Iterable;
 };
 
-template <class T, class = void>
+template <class T>
 struct const_map_traits
 {};
 
@@ -52,7 +52,7 @@ template <class T>
 struct const_map_traits<T const> : const_map_traits<T>
 {};
 
-template <class T, class = void>
+template <class T>
 struct map_traits : const_map_traits<T>
 {};
 
@@ -84,7 +84,7 @@ using map_iterator_t = range_iterator_t<map_range_t<T>>;
 
 // This struct guarantees that function declaration is found during unqualified
 // name lookup.
-template <class T, class = void>
+template <class T>
 struct map_ops
 {
     using K = map_key_t<T>;
