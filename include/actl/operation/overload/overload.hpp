@@ -10,12 +10,13 @@
 
 namespace ac {
 
-template <class Op, class = void>
+template <class Op>
 struct default_overload
 {};
 
 template <class Op>
-struct default_overload<Op, std::void_t<decltype(Op::formula)>>
+    requires requires { Op::formula; }
+struct default_overload<Op>
 {
     static constexpr auto formula = Op::formula;
 };
