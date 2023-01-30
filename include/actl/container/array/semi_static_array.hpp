@@ -152,12 +152,10 @@ semi_static_array(Ts...) -> semi_static_array<
     static_extent_v<Ts>...>;
 
 template <class T, T... Values, class... Args>
-struct conversion_sfinae<
-    std::enable_if_t<
+    requires(
         sizeof...(Args) == semi_static_array<T, Values...>::size_dynamic() &&
-        (... && can_convert_to_v<T, Args>)>,
-    semi_static_array<T, Values...>,
-    Args...> : std::true_type
+        (... && can_convert_to_v<T, Args>))
+struct conversion<semi_static_array<T, Values...>, Args...> : std::true_type
 {
     static constexpr auto convert(Args&&... args)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(semi_static_array<T, Values...>{

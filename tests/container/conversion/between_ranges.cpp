@@ -5,6 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/conversion/between_ranges.hpp>
+#include <actl/meta/can_list_initialize.hpp>
 #include <array>
 #include <vector>
 #include "test.hpp"

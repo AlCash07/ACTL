@@ -53,12 +53,10 @@ static constexpr bool range_to_tuple_test()
 } // namespace detail
 
 template <class To, class From>
-struct conversion_sfinae<
-    std::enable_if_t<
+    requires(
         !can_convert_as_ranges<To, From>() &&
-        detail::range_to_tuple_test<To, From>()>,
-    To,
-    From> : detail::range_to_tuple<To, From>
+        detail::range_to_tuple_test<To, From>())
+struct conversion<To, From> : detail::range_to_tuple<To, From>
 {};
 
 } // namespace ac

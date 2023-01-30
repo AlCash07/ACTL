@@ -42,13 +42,11 @@ struct from_tuple<To, From, std::index_sequence<Is...>>
 } // namespace detail
 
 template <class To, class From>
-struct conversion_sfinae<
-    std::enable_if_t<
+    requires(
         !can_convert_as_ranges<To, From>() &&
         Tuple<std::remove_cvref_t<From>> && !is_strict_range_v<From> &&
-        (Tuple<To> || Range<To>)>,
-    To,
-    From> : detail::from_tuple<To, From>
+        (Tuple<To> || Range<To>))
+struct conversion<To, From> : detail::from_tuple<To, From>
 {};
 
 } // namespace ac

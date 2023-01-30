@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/container/conversion/convert_to.hpp>
+#include <actl/meta/can_list_initialize.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <actl/range/traits/is_strict_range.hpp>
@@ -16,6 +17,8 @@ namespace ac {
 template <class To, class... From>
 struct range_initialization : std::true_type
 {
+    // List initialization is intentionally used here instead of construction
+    // to avoid accidental calls to constructors such as std::vector(size_t n).
     static constexpr To convert(From&&... xs) AC_DEDUCE_NOEXCEPT_AND_RETURN(To{
         ac::convert_to<range_value_t<To>>(std::forward<From>(xs))...})
 };
@@ -37,10 +40,8 @@ constexpr bool can_initialize_range() noexcept
 }
 
 template <class To, class... From>
-struct conversion_sfinae<
-    std::enable_if_t<can_initialize_range<To, From...>()>,
-    To,
-    From...> : range_initialization<To, From...>
+    requires(can_initialize_range<To, From...>())
+struct conversion<To, From...> : range_initialization<To, From...>
 {};
 
 } // namespace ac

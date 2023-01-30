@@ -66,10 +66,8 @@ constexpr bool can_convert_as_ranges() noexcept
 }
 
 template <class To, class From>
-struct conversion_sfinae<
-    std::enable_if_t<can_convert_as_ranges<To, From>()>,
-    To,
-    From> : ranges_conversion<To, From>
+    requires(can_convert_as_ranges<To, From>())
+struct conversion<To, From> : ranges_conversion<To, From>
 {};
 
 } // namespace ac

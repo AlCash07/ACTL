@@ -38,8 +38,9 @@ static constexpr bool can_initialize_tuple()
     if constexpr (
         sizeof...(Args) == 1 && (... && Tuple<std::remove_cvref_t<Args>>))
         return false;
-    // Arrays and tuples may allow to initialize not all their elements but only
-    // some of the first ones. Our conversions intentionnally forbid this.
+    // Arrays and tuples may allow to specify not all their elements but only
+    // some of the first ones.
+    // Our conversions intentionnally forbid this to prevent mistakes.
     if constexpr (Tuple<To> && !is_strict_range_v<To>)
         if constexpr (std::tuple_size_v<To> == sizeof...(Args))
             return to_tuple<To, Args...>::value;
@@ -49,10 +50,8 @@ static constexpr bool can_initialize_tuple()
 } // namespace detail
 
 template <class To, class... Args>
-struct conversion_sfinae<
-    std::enable_if_t<detail::can_initialize_tuple<To, Args...>()>,
-    To,
-    Args...> : detail::to_tuple<To, Args...>
+    requires(detail::can_initialize_tuple<To, Args...>())
+struct conversion<To, Args...> : detail::to_tuple<To, Args...>
 {};
 
 } // namespace ac
