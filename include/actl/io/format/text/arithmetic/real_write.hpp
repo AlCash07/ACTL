@@ -51,7 +51,7 @@ bool write_final(Device auto& od, Format auto& fmt, float_string const& x)
 
 } // namespace detail
 
-template <class Float, enable_int_if<std::is_floating_point_v<Float>> = 0>
+template <std::floating_point Float>
 auto encode(TextFormat auto& fmt, Float x)
 {
     detail::float_string res;

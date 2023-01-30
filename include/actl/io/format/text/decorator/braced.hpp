@@ -31,7 +31,8 @@ auto encode(braced, SC const& cont)
     return batch{'[', make_range(cont), ']'};
 }
 
-template <class T, enable_int_if<is_io_tuple_v<T>> = 0>
+template <class T>
+    requires is_io_tuple_v<T>
 auto encode(braced, T const& x)
 {
     return batch{'(', x, ')'};

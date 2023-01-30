@@ -63,13 +63,13 @@ bool write_final(Dev& od, Format auto&, escaped_string<Char> const& s)
 
 } // namespace detail
 
-template <class C, enable_int_if<std::is_same_v<C, char>> = 0>
-auto encode(escaped, C const& c)
+auto encode(escaped, std::same_as<char> auto const& c)
 {
     return batch{'\'', detail::escaped_string<char>{{&c, 1}}, '\''};
 }
 
-template <class S, enable_int_if<is_string_v<S>> = 0>
+template <class S>
+    requires is_string_v<S>
 auto encode(escaped, S const& s)
 {
     return batch{'\"', detail::escaped_string<char>{s}, '\"'};

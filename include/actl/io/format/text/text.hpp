@@ -94,7 +94,8 @@ text_static<> deduce_format(TextDevice auto&)
     return {};
 }
 
-template <class S, enable_int_if<is_string_v<S>> = 0>
+template <class S>
+    requires is_string_v<S>
 auto encode(TextFormat auto&, S const& s)
 {
     return span{std::basic_string_view<range_value_t<S>>{s}};

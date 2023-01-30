@@ -51,10 +51,8 @@ constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size)
                : p;
 }
 
-template <
-    class Char,
-    class T,
-    enable_int_if<std::is_constructible_v<cspan<Char>, T>> = 0>
+template <class Char, class T>
+    requires std::is_constructible_v<cspan<Char>, T>
 auto encode(adjusted<Char> const& fmt, T&& x)
 {
     auto [l, r] = adjustment(fmt, cspan<Char>{x}.size());

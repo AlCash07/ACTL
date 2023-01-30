@@ -16,8 +16,8 @@ inline constexpr char false_s[5] = {'f', 'a', 'l', 's', 'e'};
 inline constexpr char zero_c = '0';
 inline constexpr char one_c = '1';
 
-template <class Bool, enable_int_if<std::is_same_v<Bool, bool>> = 0>
-cspan<char> encode(TextFormat auto& fmt, Bool x)
+// We don't simply write bool, because that would allow implicit conversions.
+cspan<char> encode(TextFormat auto& fmt, std::same_as<bool> auto x)
 {
     if (fmt.getf(flag::boolalpha))
         if (x)

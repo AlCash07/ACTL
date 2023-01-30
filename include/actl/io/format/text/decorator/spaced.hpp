@@ -28,11 +28,13 @@ struct spaced
         : space{std::move(space)}, colon{std::move(colon)}
     {}
 
-    template <class S = Space, enable_int_if<are_same_v<S, Colon>> = 0>
+    template <class S = Space>
+        requires are_same_v<S, Colon>
     explicit constexpr spaced(Space const& space) : spaced{space, space}
     {}
 
-    template <class S = Space, enable_int_if<are_same_v<char, S, Colon>> = 0>
+    template <class S = Space>
+        requires are_same_v<char, S, Colon>
     explicit constexpr spaced() : spaced{' '}
     {}
 
