@@ -151,6 +151,8 @@ public:
         using value_type = E;
         using difference_type = std::ptrdiff_t;
 
+        edge_iterator() = default;
+
         E operator*() const
         {
             auto& vertices = id_at(el_->edges_, id_).first;
