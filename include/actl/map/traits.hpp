@@ -119,25 +119,29 @@ template <class T>
 struct map_ops<std::reference_wrapper<T>> : map_ops<T>
 {};
 
-template <class T, enable_int_if<map_traits<T>::readable> = 0>
+template <class T>
+    requires map_traits<T>::readable
 map_reference_t<T> get(T&& map, map_key_t<T> key)
 {
     return map_ops<T>::get(map, key);
 }
 
-template <class T, enable_int_if<map_traits<T>::writable> = 0>
+template <class T>
+    requires map_traits<T>::writable
 void put(T&& map, map_key_t<T> key, map_value_t<T> value)
 {
     return map_ops<T>::put(map, key, value);
 }
 
-template <class T, enable_int_if<map_traits<T>::invertible> = 0>
+template <class T>
+    requires map_traits<T>::invertible
 map_key_t<T> invert(T&& map, map_value_t<T> value)
 {
     return map_ops<T>::invert(map, value);
 }
 
-template <class T, enable_int_if<map_traits<T>::iterable> = 0>
+template <class T>
+    requires map_traits<T>::iterable
 map_range_t<T> map_range(T&& map)
 {
     return map_ops<T>::map_range(map);

@@ -338,7 +338,8 @@ public:
             out_edge_iterator{this, u, this->out_end(u)}};
     }
 
-    template <bool D = std::is_same_v<Dir, directed>, enable_int_if<!D> = 0>
+    template <bool D = std::is_same_v<Dir, directed>>
+        requires(!D)
     iterator_range<in_edge_iterator> in_edges(vertex u) const
     {
         if constexpr (base_t::is_undirected)
@@ -386,8 +387,8 @@ public:
     template <
         class... Ts,
         bool Unique = UniqueRange<VC>,
-        class T = range_value_t<VC>,
-        enable_int_if<Unique> = 0>
+        class T = range_value_t<VC>>
+        requires Unique
     edge add_edge(T const& u, T const& v, Ts&&... args)
     {
         return add_edge(

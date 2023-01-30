@@ -325,7 +325,8 @@ public:
     explicit tensor_shape(Ts... args) : base_t{size(), args...}
     {}
 
-    template <bool B = 0 < N, enable_int_if<B> = 0>
+    template <bool B = 0 < N>
+        requires B
     explicit tensor_shape(
         nd_initializer_list_t<typename base_t::value_type, N> il)
         : base_t{size(), il, dimensions()}

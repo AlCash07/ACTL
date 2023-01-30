@@ -25,9 +25,8 @@ struct hash_access
     }
 };
 
-template <
-    class T,
-    enable_int_if<decltype(hash_access{}.has_hash<T>(0))::value> = 0>
+template <class T>
+    requires(decltype(hash_access{}.has_hash<T>(0))::value)
 constexpr size_t hash_value(T const& x)
 {
     return hash_access::hash(x);

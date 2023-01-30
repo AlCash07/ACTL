@@ -53,12 +53,10 @@ public:
     {}
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
-    template <
-        class T0,
-        class... Ts,
-        enable_int_if<
+    template <class T0, class... Ts>
+        requires(
             1 + sizeof...(Ts) == size_dyn_v && std::is_convertible_v<T0, T> &&
-            (... && std::is_convertible_v<Ts, T>)> = 0>
+            (... && std::is_convertible_v<Ts, T>))
     constexpr semi_static_array(T0 x0, Ts... xs) noexcept
         : dynamic_values{static_cast<T>(x0), static_cast<T>(xs)...}
     {}
@@ -147,7 +145,8 @@ private:
     }
 };
 
-template <class... Ts, enable_int_if<are_same_v<unwrap_constant_t<Ts>...>> = 0>
+template <class... Ts>
+    requires are_same_v<unwrap_constant_t<Ts>...>
 semi_static_array(Ts...) -> semi_static_array<
     std::common_type_t<unwrap_constant_t<Ts>...>,
     static_extent_v<Ts>...>;

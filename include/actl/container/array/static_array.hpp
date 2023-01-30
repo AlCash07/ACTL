@@ -60,10 +60,8 @@ public:
 
     // TODO: when std::is_trivial implementation is fixes in clang,
     // this can be simplified to static_array(t_constant<Values>...)
-    template <
-        class T0,
-        class... Ts,
-        enable_int_if<can_construct_from<T0, Ts...>()> = 0>
+    template <class T0, class... Ts>
+        requires(can_construct_from<T0, Ts...>())
     constexpr static_array(T0, Ts...) noexcept
     {}
 

@@ -26,10 +26,8 @@ constexpr size_t find_first_matching() noexcept
         return find_first_matching<I + 1, Tuple, Args...>();
 }
 
-template <
-    class T,
-    class... Args,
-    enable_int_if<!std::is_invocable_v<T, Args...>> = 0>
+template <class T, class... Args>
+    requires(!std::is_invocable_v<T, Args...>)
 constexpr void invoke_if_can(T&&, Args&...) noexcept
 {}
 

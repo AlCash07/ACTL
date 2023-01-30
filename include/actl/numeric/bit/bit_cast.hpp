@@ -12,13 +12,10 @@
 namespace ac {
 
 // C++20 version requires std::is_trivially_constructible_v<To>.
-template <
-    class To,
-    class From,
-    enable_int_if<
+template <class To, class From>
+    requires(
         sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> &&
-        std::is_trivially_copyable_v<To> &&
-        std::is_trivially_copyable_v<From>> = 0>
+        std::is_trivially_copyable_v<To> && std::is_trivially_copyable_v<From>)
 To bit_cast(From const& src) noexcept
 {
     To dst;

@@ -34,7 +34,8 @@ public:
 
     static constexpr size_t extent = N;
 
-    template <size_t M = N, enable_int_if<M == 0 || M == dynamic_size> = 0>
+    template <size_t M = N>
+        requires(M == 0 || M == dynamic_size)
     constexpr span() : storage_{nullptr, 0}
     {}
 

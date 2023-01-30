@@ -33,7 +33,8 @@ struct randomized_hash
 inline size_t const randomized_hash::seed = static_cast<size_t>(
     std::chrono::steady_clock::now().time_since_epoch().count());
 
-template <class T, enable_int_if<std::is_arithmetic_v<T>> = 0>
+template <class T>
+    requires std::is_arithmetic_v<T>
 constexpr size_t hash_value(T const& x)
 {
     static_assert(sizeof(T) <= sizeof(size_t), "TODO: remove this restriction");
@@ -45,7 +46,8 @@ constexpr size_t hash_value(T const& x)
     return randomized_hash::compute(t);
 }
 
-template <class T, enable_int_if<std::is_empty_v<T>> = 0>
+template <class T>
+    requires std::is_empty_v<T>
 constexpr size_t hash_value(T)
 {
     return 0;
@@ -63,7 +65,8 @@ constexpr void hash_combine(size_t& seed, T const& x)
     seed ^= (seed << 6) + (seed >> 2) + 0x9e3779b9 + hash_value(x);
 }
 
-template <class T, class... Ts, enable_int_if<0 < sizeof...(Ts)> = 0>
+template <class T, class... Ts>
+    requires(0 < sizeof...(Ts))
 constexpr size_t hash_value(T const& x, Ts const&... xs)
 {
     size_t res = hash_value(x);

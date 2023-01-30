@@ -30,9 +30,8 @@ public:
     using pointer = T*;
     using const_pointer = T const*;
 
-    template <
-        class... Ts,
-        enable_int_if<(... && std::is_convertible_v<Ts, T>)> = 0>
+    template <class... Ts>
+        requires(... && std::is_convertible_v<Ts, T>)
     constexpr point_base(Ts&&... xs) : coordinates_{T{std::forward<Ts>(xs)}...}
     {}
 

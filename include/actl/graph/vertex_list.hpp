@@ -60,7 +60,8 @@ private:
 public:
     vertex_list() = default;
 
-    template <bool B = RA, enable_int_if<B> = 0>
+    template <bool B = RA>
+        requires B
     explicit vertex_list(index n)
     {
         resize(n);
@@ -71,7 +72,8 @@ public:
         return static_cast<index>(vertices_.size());
     }
 
-    template <bool B = RA, enable_int_if<B> = 0>
+    template <bool B = RA>
+        requires B
     void resize(index n)
     {
         vertices_.resize(static_cast<range_size_t<vertex_container>>(n));

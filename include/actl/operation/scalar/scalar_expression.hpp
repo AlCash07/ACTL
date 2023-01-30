@@ -11,7 +11,8 @@
 
 namespace ac {
 
-template <class T, enable_int_if<!is_expression_v<T>> = 0>
+template <class T>
+    requires(!is_expression_v<T>)
 constexpr T eval(T x)
 {
     return x;
@@ -23,7 +24,8 @@ constexpr decltype(auto) eval_impl(Expr const& e, std::index_sequence<Is...>)
     return e.operation().evaluate(std::get<Is + 1>(e.args)...);
 }
 
-template <class Expr, enable_int_if<is_expression_v<Expr>> = 0>
+template <class Expr>
+    requires is_expression_v<Expr>
 constexpr decltype(auto) eval(Expr const& e)
 {
     using helper = expression_helper<Expr>;

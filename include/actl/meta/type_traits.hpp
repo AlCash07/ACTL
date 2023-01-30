@@ -19,9 +19,6 @@ struct add_const_if : std::conditional<B, T const, T>
 template <bool B, class T>
 using add_const_if_t = typename add_const_if<B, T>::type;
 
-template <bool B>
-using enable_int_if = std::enable_if_t<B, int>;
-
 template <class T, class... Ts>
 inline constexpr bool is_one_of_v = (... || std::is_same_v<T, Ts>);
 

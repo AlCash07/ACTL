@@ -16,8 +16,7 @@ namespace ac {
 /// Points at the origin go first.
 template <
     class U,
-    class T,
-    enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
+    class T> requires (is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
         0>
 void sort_by_angle(Policy auto const& policy, U& points, point<T> const& origin)
 {
@@ -44,8 +43,7 @@ void sort_by_angle(Policy auto const& policy, U& points, point<T> const& origin)
 
 /// Sort by angle around (0, 0).
 template <
-    class U,
-    enable_int_if<is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
+    class U> requires (is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
         0>
 void sort_by_angle(Policy auto const& policy, U& points)
 {

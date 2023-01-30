@@ -25,10 +25,8 @@ struct andrew_monotone_chain_policy
 /// https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
 /// Implementation reference:
 /// https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
-template <
-    class P,
-    class T,
-    enable_int_if<geometry_traits<T>::dimension == 2> = 0>
+template <class P, class T>
+    requires(geometry_traits<T>::dimension == 2)
 span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points)
 {
     if (points.size() < 2)

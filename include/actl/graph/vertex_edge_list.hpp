@@ -50,8 +50,8 @@ public:
     template <
         class... Ts,
         bool Unique = UniqueRange<VertexContainer>,
-        class T = range_value_t<VertexContainer>,
-        enable_int_if<Unique> = 0>
+        class T = range_value_t<VertexContainer>>
+        requires Unique
     edge add_edge(T const& u, T const& v, Ts&&... args)
     {
         return add_edge(

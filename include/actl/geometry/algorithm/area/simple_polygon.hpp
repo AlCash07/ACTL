@@ -13,11 +13,10 @@ namespace ac {
 
 /// Doubled oriented area of a polygon : O(N).
 /// http://geomalgorithms.com/a01-_area.html area2D_Polygon().
-template <
-    class T,
-    enable_int_if<
+template <class T>
+    requires(
         std::is_base_of_v<simple_polygon_tag, geometry::tag_t<T>> &&
-        geometry_traits<T>::dimension == 2> = 0>
+        geometry_traits<T>::dimension == 2)
 auto area(Policy auto const& policy, T const& poly)
 {
     auto it = cyclic_begin(poly);

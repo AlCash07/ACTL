@@ -11,10 +11,8 @@
 
 namespace ac {
 
-template <
-    class T,
-    class U,
-    enable_int_if<is_dynamic_range_v<T> && is_dynamic_range_v<U>> = 0>
+template <class T, class U>
+    requires(is_dynamic_range_v<T> && is_dynamic_range_v<U>)
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 {
     static_assert(RandomAccessRange<T>);

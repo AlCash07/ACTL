@@ -27,7 +27,8 @@ struct operation
         return static_cast<Derived const&>(*this);
     }
 
-    template <class... Ts, enable_int_if<is_any_inout_v<Ts...>> = 0>
+    template <class... Ts>
+        requires is_any_inout_v<Ts...>
     constexpr decltype(auto) operator()(Ts&&... xs) const&
     {
         static_assert(
@@ -38,13 +39,15 @@ struct operation
         return dst;
     }
 
-    template <class... Ts, enable_int_if<!is_any_inout_v<Ts...>> = 0>
+    template <class... Ts>
+        requires(!is_any_inout_v<Ts...>)
     constexpr auto operator()(Ts&&... xs) const&
     {
         return expression{derived(), std::forward<Ts>(xs)...};
     }
 
-    template <class... Ts, enable_int_if<!is_any_inout_v<Ts...>> = 0>
+    template <class... Ts>
+        requires(!is_any_inout_v<Ts...>)
     constexpr auto operator()(Ts&&... xs) &&
     {
         return expression{
