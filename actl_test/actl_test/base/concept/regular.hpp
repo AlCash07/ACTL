@@ -17,7 +17,7 @@ template <class T>
 void test_regular_type_traits()
 {
     test_semiregular_type_traits<T>();
-    static_assert(ac::is_equality_comparable_v<T>);
+    static_assert(std::equality_comparable<T>);
 }
 
 template <class T>

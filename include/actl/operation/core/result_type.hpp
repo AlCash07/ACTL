@@ -11,17 +11,15 @@
 
 namespace ac {
 
-template <class Void, class Op, class... Ts>
+template <class Op, class... Ts>
 struct result_type
 {
     using type = typename Op::template result_type<Ts...>;
 };
 
 template <class Op, class... Ts>
-struct result_type<
-    std::void_t<decltype(std::declval<Op>().evaluate(std::declval<Ts>()...))>,
-    Op,
-    Ts...>
+    requires requires(Op op, Ts... xs) { op.evaluate(xs...); }
+struct result_type<Op, Ts...>
 {
     using type = decltype(std::declval<Op>().evaluate(std::declval<Ts>()...));
 };
@@ -33,7 +31,7 @@ struct expression_result_type
 };
 
 template <bool, class Op, class... Ts>
-struct resolved_result_type1 : result_type<void, std::remove_cvref_t<Op>, Ts...>
+struct resolved_result_type1 : result_type<std::remove_cvref_t<Op>, Ts...>
 {};
 
 template <class Op, class... Ts>

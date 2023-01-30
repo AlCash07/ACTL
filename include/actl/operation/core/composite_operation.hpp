@@ -58,11 +58,8 @@ constexpr auto apply_policy_to_composite(
         apply_policy_if_can(std::get<Is>(op.inner()), policy)...);
 }
 
-template <
-    class Outer,
-    class... Inner,
-    Policy P,
-    enable_int_if<(... || can_apply_policy<Inner, P>::value)> = 0>
+template <class Outer, class... Inner, Policy P>
+    requires(... || can_apply_policy_v<Inner, P>)
 constexpr auto apply_policy(
     composite_operation<Outer, Inner...> const& op, P const& policy)
 {

@@ -14,28 +14,21 @@ namespace ac {
 template <class T>
 concept Policy = requires { typename std::remove_reference_t<T>::is_policy; };
 
-template <class Op, class Policy, class = void>
-struct can_apply_policy : std::false_type
-{};
-
 template <class Op, class Policy>
-struct can_apply_policy<
-    Op,
-    Policy,
-    std::void_t<decltype(apply_policy(
-        std::declval<Op>(), std::declval<Policy>()))>> : std::true_type
-{};
+inline constexpr bool can_apply_policy_v =
+    requires(Op op, Policy policy) { apply_policy(op, policy); };
 
-template <class Op, class Policy>
-inline constexpr bool can_apply_policy_v = can_apply_policy<Op, Policy>::value;
+template <class Op>
+constexpr decltype(auto) apply_policy_if_can(Op&& op, Policy auto const&)
+{
+    return std::forward<Op>(op);
+}
 
 template <class Op, Policy P>
+    requires can_apply_policy_v<Op, P>
 constexpr decltype(auto) apply_policy_if_can(Op&& op, P const& policy)
 {
-    if constexpr (can_apply_policy<Op, P>::value)
-        return apply_policy(std::forward<Op>(op), policy);
-    else
-        return std::forward<Op>(op);
+    return apply_policy(std::forward<Op>(op), policy);
 }
 
 } // namespace ac

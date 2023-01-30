@@ -52,18 +52,13 @@ private:
     }
 };
 
-template <class T, class = void>
-struct is_mimic_pair : std::false_type
-{};
-
 template <class T>
-struct is_mimic_pair<T, std::void_t<typename T::is_mimic_pair>> : std::true_type
-{};
+concept MimicPair = requires { typename T::is_mimic_pair; };
 
 template <class T>
 decltype(auto) get_key(T const& x)
 {
-    if constexpr (is_mimic_pair<T>::value)
+    if constexpr (MimicPair<T>)
     {
         return x.key();
     }
@@ -73,19 +68,15 @@ decltype(auto) get_key(T const& x)
     }
 }
 
-template <
-    class T,
-    class U,
-    enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
+template <class T, class U>
+    requires MimicPair<T> || MimicPair<U>
 auto operator==(T const& lhs, U const& rhs)
 {
     return equal(get_key(lhs), get_key(rhs));
 }
 
-template <
-    class T,
-    class U,
-    enable_int_if<is_mimic_pair<T>::value || is_mimic_pair<U>::value> = 0>
+template <class T, class U>
+    requires MimicPair<T> || MimicPair<U>
 auto operator<(T const& lhs, U const& rhs)
 {
     return less(get_key(lhs), get_key(rhs));

@@ -11,23 +11,11 @@
 
 namespace ac {
 
-namespace detail {
-
-template <class T, class = void>
-struct enable_operators_impl : std::false_type
-{};
-
-template <class T>
-struct enable_operators_impl<T, std::void_t<typename T::enable_operators>>
-    : std::true_type
-{};
-
-} // namespace detail
-
 template <class... Ts>
-using enable_operators = std::enable_if_t<
-    (... || detail::enable_operators_impl<std::remove_cvref_t<Ts>>::value) &&
-        !(... || Policy<Ts>),
-    int>;
+using enable_operators =
+    std::enable_if_t<(... || (requires {
+                                  typename std::remove_cvref_t<
+                                      Ts>::enable_operators;
+                              })) && !(... || Policy<Ts>), int>;
 
 } // namespace ac

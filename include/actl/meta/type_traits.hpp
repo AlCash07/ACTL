@@ -12,16 +12,6 @@
 
 namespace ac {
 
-// Workaround for CWG 1558: https://en.cppreference.com/w/cpp/types/void_t
-template <class... Ts>
-struct make_void
-{
-    using type = void;
-};
-
-template <class... Ts>
-using void_t = typename make_void<Ts...>::type;
-
 template <bool B, class T>
 struct add_const_if : std::conditional<B, T const, T>
 {};
@@ -53,22 +43,5 @@ struct are_same<T, T, Ts...> : are_same<T, Ts...>
 
 template <class... Ts>
 inline constexpr bool are_same_v = are_same<Ts...>::value;
-
-// TODO: replace with std::equality_comparable when C++20 is available.
-template <class T, class = void>
-struct is_equality_comparable : std::false_type
-{};
-
-template <class T>
-struct is_equality_comparable<
-    T,
-    std::void_t<
-        decltype(std::declval<T>() == std::declval<T>(), std::declval<T>() != std::declval<T>())>>
-    : std::true_type
-{};
-
-template <class T>
-inline constexpr bool is_equality_comparable_v =
-    is_equality_comparable<T>::value;
 
 } // namespace ac

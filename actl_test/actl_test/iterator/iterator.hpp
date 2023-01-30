@@ -44,7 +44,7 @@ void test_iterator(Iterator iter, std::forward_iterator_tag)
     static_assert(
         std::
             is_base_of_v<std::forward_iterator_tag, iter_category_t<Iterator>>);
-    if constexpr (is_equality_comparable_v<std::iter_reference_t<Iterator>>)
+    if constexpr (std::equality_comparable<std::iter_reference_t<Iterator>>)
         CHECK(*iter == *iter);
     Iterator prev = iter;
     ++iter;
