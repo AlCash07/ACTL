@@ -99,7 +99,7 @@ template <> struct id<convex_polygon_tag>          : index_constant<convex_polyg
 template <> struct id<convex_monotone_polygon_tag> : index_constant<convex_monotone_polygon_id> {};
 
 template <class T0, class T1>
-using enable_int_if_swap = enable_int_if<id<T1>::value < id<T0>::value>;
+concept reverse_order = id<T1>::value < id<T0>;
 // clang-format on
 
 } // namespace geometry

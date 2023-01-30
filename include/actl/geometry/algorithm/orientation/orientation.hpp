@@ -33,7 +33,8 @@ enum orientation operator-(enum orientation x)
     return x;
 }
 
-template <class T, class U, geometry::enable_int_if_swap<T, U> = 0>
+template <class T, class U>
+    requires geometry::reverse_order<T, U>
 auto orientation(Policy auto const& policy, T const& lhs, U const& rhs)
 {
     return -orientation(policy, rhs, lhs);

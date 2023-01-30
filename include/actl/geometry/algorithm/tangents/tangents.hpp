@@ -10,11 +10,8 @@
 
 namespace ac {
 
-template <
-    class T,
-    class U,
-    class OutIter,
-    geometry::enable_int_if_swap<T, U> = 0>
+template <class T, class U, class OutIter>
+    requires geometry::reverse_order<T, U>
 OutIter tangents(
     Policy auto const& policy, T const& lhs, U const& rhs, OutIter dst)
 {

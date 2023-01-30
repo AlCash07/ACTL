@@ -10,7 +10,8 @@
 
 namespace ac {
 
-template <class T, class U, geometry::enable_int_if_swap<T, U> = 0>
+template <class T, class U>
+    requires geometry::reverse_order<T, U>
 auto distance(Policy auto const& policy, T const& lhs, U const& rhs)
 {
     return distance(policy, rhs, lhs);
