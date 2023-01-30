@@ -16,19 +16,8 @@
 
 namespace ac::io {
 
-/* Argument traits */
-
-template <class T, bool = Tuple<T>>
-struct is_io_tuple : std::true_type
-{};
-
 template <class T>
-struct is_io_tuple<T, false>
-    : decltype(serialization_access{}.is_io_tuple<T>(0))
-{};
-
-template <class T>
-inline constexpr bool is_io_tuple_v = is_io_tuple<T>::value;
+concept IO_Tuple = serialization_access::is_io_tuple_v<T>;
 
 } // namespace ac::io
 
@@ -37,7 +26,7 @@ namespace ac::io::detail {
 template <class D, class F, class T>
 bool write_pre_final(D& od, F& fmt, T const& x)
 {
-    if constexpr (!Tuple<T> && is_io_tuple_v<T>)
+    if constexpr (!Tuple<T> && IO_Tuple<T>)
     {
         nested_scope_guard g{fmt};
         return write_final(od, fmt, x);
@@ -52,7 +41,7 @@ template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x)
 {
     using U = std::remove_cvref_t<T>;
-    if constexpr (!Tuple<T> && is_io_tuple_v<U>)
+    if constexpr (!Tuple<T> && IO_Tuple<U>)
     {
         nested_scope_guard g{fmt};
         return read_final(id, fmt, x);

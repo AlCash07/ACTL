@@ -32,7 +32,7 @@ auto encode(braced, SC const& cont)
 }
 
 template <class T>
-    requires is_io_tuple_v<T>
+    requires(Tuple<T> || IO_Tuple<T>)
 auto encode(braced, T const& x)
 {
     return batch{'(', x, ')'};

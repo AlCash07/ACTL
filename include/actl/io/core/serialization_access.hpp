@@ -14,11 +14,8 @@ struct serialization_access
 {
     // This is the simplest portable way I found to check for optional private
     // members in T.
-    template <class T, class = typename T::is_io_tuple>
-    std::true_type is_io_tuple(int);
-
     template <class T>
-    std::false_type is_io_tuple(...);
+    static constexpr bool is_io_tuple_v = requires { typename T::is_io_tuple; };
 
     template <
         class T,
