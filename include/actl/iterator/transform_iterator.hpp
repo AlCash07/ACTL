@@ -22,6 +22,8 @@ class transform_iterator
 public:
     using value_type = deduce_t<Value, std::remove_cvref_t<return_t<Fn>>>;
 
+    transform_iterator() = default;
+
     template <class... Ts>
     transform_iterator(Iter const& iter, Ts&&... args)
         : base_t{iter}, fn_{std::forward<Ts>(args)...}

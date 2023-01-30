@@ -7,15 +7,26 @@
 #pragma once
 
 #include <actl/functional/deduce_noexcept.hpp>
-#include <actl/meta/has_member.hpp>
-#include <actl/meta/type_traits.hpp>
-#include <cstddef>
+#include <cstddef> // for size_t
+#include <iterator>
 
 namespace ac::ranges {
 
-AC_DEFINE_HAS_MEMBER_F(begin)
-
 namespace impl {
+
+template <class T>
+concept has_member_begin = requires(T& t) {
+                               {
+                                   t.begin()
+                                   } -> std::input_or_output_iterator;
+                           };
+
+template <class T>
+concept has_non_member_begin = requires(T& t) {
+                                   {
+                                       begin(t)
+                                       } -> std::input_or_output_iterator;
+                               };
 
 struct begin_f
 {
@@ -25,13 +36,13 @@ struct begin_f
         return array;
     }
 
-    template <class Range>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(range.begin())
+    constexpr auto operator()(has_member_begin auto&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.begin())
 
-    template <class Range, enable_int_if<!has_member_f_begin_v<Range>> = 0>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(begin(range))
+    template <class R>
+        requires(!has_member_begin<R> && has_non_member_begin<R>)
+    constexpr auto operator()(R&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(begin(range))
 };
 
 } // namespace impl
@@ -42,3 +53,11 @@ struct begin_f
 inline constexpr impl::begin_f begin;
 
 } // namespace ac::ranges
+
+namespace ac {
+
+// This declaration is here because it's needed for ranges::end.
+template <class R>
+using range_iterator_t = decltype(ranges::begin(std::declval<R&>()));
+
+} // namespace ac

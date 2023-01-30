@@ -6,16 +6,26 @@
 
 #pragma once
 
-#include <actl/functional/deduce_noexcept.hpp>
-#include <actl/meta/has_member.hpp>
-#include <actl/meta/type_traits.hpp>
-#include <cstddef>
+#include <actl/range/access/begin.hpp>
 
 namespace ac::ranges {
 
-AC_DEFINE_HAS_MEMBER_F(end)
-
 namespace impl {
+
+template <class T>
+concept has_member_end = requires(T& t) {
+                             {
+                                 t.end()
+                                 } -> std::sentinel_for<range_iterator_t<T>>;
+                         };
+
+template <class T>
+concept has_non_member_end =
+    requires(T& t) {
+        {
+            end(t)
+            } -> std::sentinel_for<range_iterator_t<T>>;
+    };
 
 struct end_f
 {
@@ -25,13 +35,13 @@ struct end_f
         return array + N;
     }
 
-    template <class Range>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(range.end())
+    constexpr auto operator()(has_member_end auto&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.end())
 
-    template <class Range, enable_int_if<!has_member_f_end_v<Range>> = 0>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(end(range))
+    template <class R>
+        requires(!has_member_end<R> && has_non_member_end<R>)
+    constexpr auto operator()(R&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(end(range))
 };
 
 } // namespace impl

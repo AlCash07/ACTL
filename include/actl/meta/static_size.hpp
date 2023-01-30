@@ -47,6 +47,14 @@ struct static_size<T const[N]> : static_size<T[N]>
 template <class T>
 inline constexpr size_t static_size_v = static_size<T>::value;
 
+template <class T>
+concept HasDynamicSize = static_size_v<T> ==
+dynamic_size;
+
+template <class T>
+concept HasStaticSize = !
+HasDynamicSize<T>;
+
 /// Static sizes match if they are equal, or one of them is a dynamic_size.
 inline constexpr bool static_sizes_match(size_t lhs, size_t rhs) noexcept
 {

@@ -7,39 +7,46 @@
 #pragma once
 
 #include <actl/functional/deduce_noexcept.hpp>
-#include <actl/meta/has_member.hpp>
 #include <actl/meta/static_size.hpp>
-#include <actl/meta/type_traits.hpp>
 
 namespace ac::ranges {
 
-AC_DEFINE_HAS_MEMBER_F(size)
-
 namespace impl {
+
+// TODO: check that size is integer-like.
+template <class T>
+concept has_member_size = requires(T& t) {
+                              {
+                                  t.size()
+                              };
+                          };
+
+template <class T>
+concept has_non_member_size = requires(T& t) {
+                                  {
+                                      size(t)
+                                  };
+                              };
 
 struct size_f
 {
-    template <
-        class Range,
-        enable_int_if<static_size_v<Range> != dynamic_size> = 0>
-    constexpr constant<static_size_v<Range>> operator()(Range&&) const noexcept
+    // We always return `ac::constant` when the size is a static constant,
+    // even for types like `std::array` where size() returns a regular integer.
+    template <HasStaticSize R>
+    constexpr constant<static_size_v<R>> operator()(R&&) const noexcept
     {
         return {};
     }
 
-    template <
-        class Range,
-        enable_int_if<static_size_v<Range> == dynamic_size> = 0>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(range.size())
+    template <HasDynamicSize R>
+        requires has_member_size<R>
+    constexpr decltype(auto) operator()(R&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.size())
 
-    template <
-        class Range,
-        enable_int_if<
-            static_size_v<Range> == dynamic_size &&
-            !has_member_f_size_v<Range>> = 0>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(size(range))
+    template <HasDynamicSize R>
+        requires(!has_member_size<R> && has_non_member_size<R>)
+    constexpr decltype(auto) operator()(R&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(size(range))
 };
 
 } // namespace impl

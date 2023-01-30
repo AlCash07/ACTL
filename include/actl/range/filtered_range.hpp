@@ -32,6 +32,9 @@ struct filtered_range_types
     class iterator : public iterator_adaptor<iterator, Iter, iterator_category>
     {
     public:
+        // Required because std::sentinel_for requires std::semiregular.
+        iterator() = default;
+
         explicit iterator(
             range_iterator_t<R> iter, filtered_range<R, P> const& range)
             : iterator_adaptor<iterator, Iter, iterator_category>{iter}

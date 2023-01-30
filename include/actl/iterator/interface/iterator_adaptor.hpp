@@ -26,6 +26,15 @@ public:
     using value_type = std::iter_value_t<Iter>;
     using difference_type = std::iter_difference_t<Iter>;
 
+    // Default constructor is useful because
+    // std::sentinel_for requires std::semiregular.
+    template <class I = Iter>
+        requires std::is_default_constructible_v<I>
+    constexpr iterator_adaptor() noexcept(
+        std::is_nothrow_default_constructible_v<Iter>)
+        : base_{Iter{}}
+    {}
+
     explicit constexpr iterator_adaptor(Iter const& iter) noexcept(
         noexcept(Iter{iter}))
         : base_{iter}
@@ -43,13 +52,14 @@ public:
         AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), base_t::derived())
 
     template <class C = Category>
-    requires std::is_base_of_v<std::bidirectional_iterator_tag, C>
+        requires std::is_base_of_v<std::bidirectional_iterator_tag, C>
     constexpr Derived& operator--()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
 
     template <class Difference>
     constexpr Derived& operator+=(Difference n)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n)
+        // `this` is explicitly specified for the `requires` clause.
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(this->base_ref() += n)
 
     // TODO: make this a hidden friend.
     template <class Derived1, class Iter1, class Category1>

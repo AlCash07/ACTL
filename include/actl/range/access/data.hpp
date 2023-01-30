@@ -7,15 +7,26 @@
 #pragma once
 
 #include <actl/functional/deduce_noexcept.hpp>
-#include <actl/meta/has_member.hpp>
-#include <actl/meta/type_traits.hpp>
-#include <cstddef>
+#include <cstddef> // for size_t
 
 namespace ac::ranges {
 
-AC_DEFINE_HAS_MEMBER_F(data)
-
 namespace impl {
+
+// TODO: check that data returns a pointer.
+template <class T>
+concept has_member_data = requires(T& t) {
+                              {
+                                  t.data()
+                              };
+                          };
+
+template <class T>
+concept has_non_member_data = requires(T& t) {
+                                  {
+                                      data(t)
+                                  };
+                              };
 
 struct data_f
 {
@@ -25,13 +36,13 @@ struct data_f
         return array;
     }
 
-    template <class Range>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(range.data())
+    constexpr auto operator()(has_member_data auto&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.data())
 
-    template <class Range, enable_int_if<!has_member_f_data_v<Range>> = 0>
-    constexpr auto operator()(Range&& range) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(data(range))
+    template <class R>
+        requires(!has_member_data<R> && has_non_member_data<R>)
+    constexpr auto operator()(R&& range) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(data(range))
 };
 
 } // namespace impl

@@ -13,9 +13,6 @@
 
 namespace ac {
 
-template <class Range>
-using range_iterator_t = decltype(ranges::begin(std::declval<Range&>()));
-
 // https://en.cppreference.com/w/cpp/ranges/range
 template <class T>
 concept Range = requires(T& t) {
