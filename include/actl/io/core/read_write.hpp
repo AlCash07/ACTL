@@ -14,19 +14,12 @@
 #include <actl/range/span.hpp>
 #include <actl/range/traits/concepts.hpp>
 
-namespace ac::io {
-
-template <class T>
-concept IO_Tuple = serialization_access::is_io_tuple_v<T>;
-
-} // namespace ac::io
-
 namespace ac::io::detail {
 
 template <class D, class F, class T>
 bool write_pre_final(D& od, F& fmt, T const& x)
 {
-    if constexpr (!Tuple<T> && IO_Tuple<T>)
+    if constexpr (IO_Tuple<T>)
     {
         nested_scope_guard g{fmt};
         return write_final(od, fmt, x);
@@ -41,7 +34,7 @@ template <class D, class F, class T>
 bool read_pre_final(D& id, F& fmt, T&& x)
 {
     using U = std::remove_cvref_t<T>;
-    if constexpr (!Tuple<T> && IO_Tuple<U>)
+    if constexpr (IO_Tuple<U>)
     {
         nested_scope_guard g{fmt};
         return read_final(id, fmt, x);
@@ -52,6 +45,7 @@ bool read_pre_final(D& id, F& fmt, T&& x)
     }
 }
 
+// specialized for composed_format
 template <class D, class FF, class F, class T>
 struct format_resolver
 {
