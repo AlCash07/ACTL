@@ -10,7 +10,7 @@
 #include <actl/operation/core/composite_operation.hpp>
 #include <actl/operation/scalar/comparison/cmp3way.hpp>
 #include <actl/operation/scalar/comparison/less.hpp>
-#include <actl/range/traits/concepts.hpp>
+#include <actl/range/traits/nesting_depth.hpp>
 
 namespace ac {
 

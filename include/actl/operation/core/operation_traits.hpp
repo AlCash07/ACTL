@@ -20,9 +20,9 @@ concept Operation = requires { typename T::operation_category; };
 template <class Operation, class T>
 struct identity_element;
 
-template <class T>
-struct nesting_depth<T, std::enable_if_t<Operation<T>>>
-    : constant<std::numeric_limits<size_t>::max()>
+// TODO: we shouldn't need this.
+template <Operation T>
+struct nesting_depth<T> : constant<std::numeric_limits<size_t>::max()>
 {};
 
 } // namespace ac

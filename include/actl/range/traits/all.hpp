@@ -9,6 +9,7 @@
 #include <actl/range/traits/associated_types.hpp>
 #include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/concepts.hpp>
+#include <actl/range/traits/nesting_depth.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/range/traits/strict_range.hpp>
 #include <actl/range/traits/super_range.hpp>

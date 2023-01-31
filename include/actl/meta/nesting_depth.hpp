@@ -7,9 +7,18 @@
 #pragma once
 
 #include <actl/meta/constant.hpp>
-#include <actl/meta/type_traits.hpp>
 
 namespace ac {
+
+/// Nesting depth specifies the maximum number of nested composite types
+/// (such as tuples and ranges) in the given type @p T.
+/// For example, nesting depth of `std::tuple<int, std::vector<int>>` is 2.
+template <class T>
+struct nesting_depth : size_constant<0>
+{};
+
+template <class T>
+inline constexpr size_t nesting_depth_v = nesting_depth<T>::value;
 
 namespace detail {
 
@@ -17,6 +26,8 @@ template <size_t N>
 struct max_v : constant<N>
 {};
 
+// Operator overloading is used, because it's the only way to use standard
+// fold expressions.
 template <size_t N, size_t M>
 constexpr auto operator||(max_v<N>, max_v<M>)
 {
@@ -24,13 +35,6 @@ constexpr auto operator||(max_v<N>, max_v<M>)
 }
 
 } // namespace detail
-
-template <class T, class = void>
-struct nesting_depth : size_constant<0>
-{};
-
-template <class T>
-inline constexpr size_t nesting_depth_v = nesting_depth<T>::value;
 
 template <class... Ts>
 struct max_nesting_depth

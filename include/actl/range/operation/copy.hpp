@@ -7,9 +7,8 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/iterator/traits/category.hpp>
 #include <actl/meta/static_size.hpp>
-#include <actl/range/access/all.hpp>
+#include <actl/range/traits/nesting_depth.hpp>
 #include <actl/range/traits/nothrow.hpp>
 
 namespace ac::ranges {

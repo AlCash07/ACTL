@@ -7,8 +7,6 @@
 #pragma once
 
 #include <actl/iterator/traits/category.hpp>
-#include <actl/meta/nesting_depth.hpp>
-#include <actl/meta/tuple.hpp>
 #include <actl/range/access/all.hpp>
 
 namespace ac {
@@ -53,10 +51,5 @@ concept ContiguousRange =
             *ranges::data(t)
             } -> std::same_as<std::iter_reference_t<range_iterator_t<T>>>;
     };
-
-template <class T>
-struct nesting_depth<T, std::enable_if_t<Range<T> && !Tuple<T>>>
-    : size_constant<1 + nesting_depth_v<std::iter_value_t<range_iterator_t<T>>>>
-{};
 
 } // namespace ac
