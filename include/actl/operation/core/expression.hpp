@@ -14,7 +14,7 @@
 
 namespace ac {
 
-template <class Result, class = void>
+template <class Result>
 struct can_convert_expression_implicitly : std::false_type
 {};
 

@@ -82,8 +82,8 @@ public:
     }
 
     template <auto I>
-    constexpr auto operator[](constant<I>) noexcept
-        -> std::enable_if_t<static_values[I] == dynamic_extent<T>, T&>
+        requires(static_values[I] == dynamic_extent<T>)
+    constexpr T& operator[](constant<I>) noexcept
     {
         return dynamic_values[dynamic_index<I>];
     }

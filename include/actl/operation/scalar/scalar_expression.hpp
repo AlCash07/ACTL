@@ -40,9 +40,8 @@ inline constexpr bool is_scalar_expression_v =
     std::is_scalar_v<unwrap_constant_t<decltype(eval(std::declval<T>()))>>;
 
 template <class T>
-struct can_convert_expression_implicitly<
-    T,
-    std::enable_if_t<is_scalar_expression_v<T>>> : std::true_type
+    requires is_scalar_expression_v<T>
+struct can_convert_expression_implicitly<T> : std::true_type
 {};
 
 } // namespace ac

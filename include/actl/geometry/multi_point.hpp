@@ -30,7 +30,8 @@ struct is_multi_point<T, false> : std::false_type
 } // namespace detail
 
 template <class T>
-struct geometry_traits<T, std::enable_if_t<detail::is_multi_point<T>::value>>
+    requires detail::is_multi_point<T>::value
+struct geometry_traits<T>
     : geometry_traits_base<multi_point_tag, range_value_t<T>>
 {};
 

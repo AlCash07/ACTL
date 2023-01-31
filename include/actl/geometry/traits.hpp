@@ -29,7 +29,7 @@ struct convex_polygon_tag : star_polygon_tag {};
 struct convex_monotone_polygon_tag : monotone_polygon_tag {};
 // clang-format on
 
-template <class T, class = void>
+template <class T>
 struct geometry_traits
 {
     using tag = scalar_tag;
