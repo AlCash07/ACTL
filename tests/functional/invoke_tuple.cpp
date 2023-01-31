@@ -5,6 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/functional/invoke_tuple.hpp>
+#include <actl/meta/type_traits.hpp>
 #include "test.hpp"
 
 namespace {

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/io/core/batch.hpp>
-#include <actl/meta/type_traits.hpp>
 #include <string_view>
 
 namespace ac::io {

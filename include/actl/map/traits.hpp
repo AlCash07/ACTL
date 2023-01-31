@@ -15,7 +15,6 @@
 
 #pragma once
 
-#include <actl/meta/type_traits.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/utility/use_default.hpp>
 #include <functional>

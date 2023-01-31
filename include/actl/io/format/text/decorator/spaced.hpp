@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/io/core/batch.hpp>
+#include <actl/meta/type_traits.hpp>
 #include <actl/range/span.hpp>
 #include <string_view>
 

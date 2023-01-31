@@ -9,6 +9,7 @@
 #include <actl/graph/detail/adj_list_iterators.hpp>
 #include <actl/graph/detail/adj_list_vertices.hpp>
 #include <actl/iterator/transform_iterator.hpp>
+#include <actl/meta/type_traits.hpp>
 
 namespace ac {
 

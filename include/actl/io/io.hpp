@@ -14,7 +14,6 @@
 #include <actl/io/device/mode.hpp>
 #include <actl/io/format/binary/binary.hpp>
 #include <actl/io/format/composed_format.hpp>
-#include <actl/meta/type_traits.hpp>
 
 namespace ac::io {
 

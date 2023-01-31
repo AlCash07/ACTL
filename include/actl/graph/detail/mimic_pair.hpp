@@ -9,7 +9,6 @@
 #include <actl/map/composite_map.hpp>
 #include <actl/map/member_map.hpp>
 #include <actl/memory/no_unique_address.hpp>
-#include <actl/meta/type_traits.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
 
 namespace ac::detail {

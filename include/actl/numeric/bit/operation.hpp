@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/assert.hpp>
-#include <actl/meta/type_traits.hpp>
 #include <actl/utility/use_default.hpp>
 
 namespace ac {

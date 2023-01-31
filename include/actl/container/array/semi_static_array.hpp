@@ -12,6 +12,7 @@
 #include <actl/container/equal_sequences/arrays.hpp>
 #include <actl/container/extent.hpp>
 #include <actl/functional/deduce_noexcept.hpp>
+#include <actl/meta/type_traits.hpp>
 
 namespace ac {
 

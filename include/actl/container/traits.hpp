@@ -10,7 +10,6 @@
 
 #include <actl/container/dummy_container.hpp>
 #include <actl/meta/rebind.hpp>
-#include <actl/meta/type_traits.hpp>
 
 namespace ac {
 

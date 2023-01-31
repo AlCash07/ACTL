@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <actl/meta/type_traits.hpp>
-
 namespace ac {
 
 struct hash_access

@@ -10,7 +10,6 @@
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/meta/type_traits.hpp>
 #include <actl/std/stack.hpp>
 #include <actl/std/tuple.hpp>
 

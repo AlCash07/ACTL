@@ -9,7 +9,6 @@
 #include <actl/iterator/interface/iterator_adaptor.hpp>
 #include <actl/iterator/traits/is_const_iterator.hpp>
 #include <actl/memory/no_unique_address.hpp>
-#include <actl/meta/type_traits.hpp>
 #include <actl/range/interface/range_interface_selector.hpp>
 
 namespace ac {

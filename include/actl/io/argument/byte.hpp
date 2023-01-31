@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/io/concepts.hpp>
-#include <actl/meta/type_traits.hpp>
 #include <cstddef>
 
 namespace ac::io {
