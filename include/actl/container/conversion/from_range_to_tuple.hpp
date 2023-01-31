@@ -37,10 +37,7 @@ struct range_to_tuple_impl<std::index_sequence<Is...>, To, From>
 };
 
 template <class To, class From>
-using range_to_tuple = range_to_tuple_impl<
-    std::make_index_sequence<std::tuple_size_v<To>>,
-    To,
-    From>;
+using range_to_tuple = range_to_tuple_impl<tuple_indices_t<To>, To, From>;
 
 template <class To, class From>
 static constexpr bool range_to_tuple_test()

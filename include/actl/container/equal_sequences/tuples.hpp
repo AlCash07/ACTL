@@ -32,8 +32,7 @@ constexpr auto equal_sequences(T const& lhs, U const& rhs) noexcept
     if constexpr (std::tuple_size_v<T> != std::tuple_size_v<U>)
         return std::false_type{};
     else
-        return detail::equal_tuples(
-            lhs, rhs, std::make_index_sequence<std::tuple_size_v<T>>{});
+        return detail::equal_tuples(lhs, rhs, tuple_indices_t<T>{});
 }
 
 } // namespace ac

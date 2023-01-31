@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/functional/deduce_noexcept.hpp>
+#include <actl/meta/tuple.hpp>
 #include <cstddef>
-#include <tuple>
 
 namespace ac {
 
@@ -63,8 +63,7 @@ constexpr decltype(auto) invoke_first_matching(
 template <class Tuple, class... Args>
 constexpr void invoke_all_matching(Tuple&& tuple_to_invoke, Args&&... args)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(detail::invoke_all_matching_impl(
-        std::make_index_sequence<
-            std::tuple_size_v<std::remove_cvref_t<Tuple>>>{},
+        tuple_indices_t<Tuple>{},
         std::forward<Tuple>(tuple_to_invoke),
         args...))
 

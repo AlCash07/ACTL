@@ -28,8 +28,7 @@ struct to_tuple_impl<std::index_sequence<Is...>, To, Args...>
 };
 
 template <class To, class... Args>
-using to_tuple =
-    to_tuple_impl<std::make_index_sequence<std::tuple_size_v<To>>, To, Args...>;
+using to_tuple = to_tuple_impl<tuple_indices_t<To>, To, Args...>;
 
 template <class To, class... Args>
 static constexpr bool can_initialize_tuple()

@@ -20,7 +20,7 @@ constexpr size_t hash_tuple(T const& x, std::index_sequence<Is...>)
 template <class... Ts>
 constexpr size_t hash_value(std::tuple<Ts...> const& x)
 {
-    return hash_tuple(x, std::make_index_sequence<sizeof...(Ts)>{});
+    return hash_tuple(x, std::index_sequence_for<Ts...>{});
 }
 
 } // namespace ac

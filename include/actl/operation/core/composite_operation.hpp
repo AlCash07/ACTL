@@ -64,7 +64,7 @@ constexpr auto apply_policy(
     composite_operation<Outer, Inner...> const& op, P const& policy)
 {
     return apply_policy_to_composite(
-        op, policy, std::make_index_sequence<sizeof...(Inner)>{});
+        op, policy, std::index_sequence_for<Inner...>{});
 }
 
 } // namespace ac

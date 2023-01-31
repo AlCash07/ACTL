@@ -34,16 +34,14 @@ template <Tuple T>
 bool write_final(Device auto& od, Format auto& fmt, T const& x)
 {
     nested_scope_guard g{fmt};
-    return detail::write_tuple(
-        od, fmt, x, std::make_index_sequence<std::tuple_size_v<T>>{});
+    return detail::write_tuple(od, fmt, x, tuple_indices_t<T>{});
 }
 
 template <Tuple T>
 bool read_final(Device auto& id, Format auto& fmt, T& x)
 {
     nested_scope_guard g{fmt};
-    return detail::read_tuple(
-        id, fmt, x, std::make_index_sequence<std::tuple_size_v<T>>{});
+    return detail::read_tuple(id, fmt, x, tuple_indices_t<T>{});
 }
 
 } // namespace ac::io

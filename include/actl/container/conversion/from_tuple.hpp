@@ -22,11 +22,7 @@ constexpr decltype(auto) adl_get(Tuple auto const& x) noexcept
     return get<I>(x);
 }
 
-template <
-    class To,
-    class From,
-    class S =
-        std::make_index_sequence<std::tuple_size_v<std::remove_cvref_t<From>>>>
+template <class To, class From, class S = tuple_indices_t<From>>
 struct from_tuple;
 
 template <class To, class From, size_t... Is>
