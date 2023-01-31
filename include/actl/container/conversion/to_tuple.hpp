@@ -35,8 +35,7 @@ template <class To, class... Args>
 static constexpr bool can_initialize_tuple()
 {
     // Avoid conflicts with from_tuple specialization.
-    if constexpr (
-        sizeof...(Args) == 1 && (... && Tuple<std::remove_cvref_t<Args>>))
+    if constexpr (sizeof...(Args) == 1 && (... && Tuple<Args>))
         return false;
     // Arrays and tuples may allow to specify not all their elements but only
     // some of the first ones.

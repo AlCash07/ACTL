@@ -43,9 +43,8 @@ struct from_tuple<To, From, std::index_sequence<Is...>>
 
 template <class To, class From>
     requires(
-        !can_convert_as_ranges<To, From>() &&
-        Tuple<std::remove_cvref_t<From>> && !is_strict_range_v<From> &&
-        (Tuple<To> || Range<To>))
+        !can_convert_as_ranges<To, From>() && Tuple<From> &&
+        !is_strict_range_v<From> && (Tuple<To> || Range<To>))
 struct conversion<To, From> : detail::from_tuple<To, From>
 {};
 

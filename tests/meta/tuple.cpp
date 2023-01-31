@@ -9,6 +9,11 @@
 #include <actl/std/tuple.hpp>
 #include <actl/std/utility.hpp>
 
-static_assert(ac::Tuple<std::pair<int, int>>);
-static_assert(ac::Tuple<std::tuple<int, int, int>>);
+static_assert(ac::Tuple<std::pair<int, float>>);
+static_assert(ac::Tuple<std::tuple<int, float, int>>);
 static_assert(ac::Tuple<std::array<int, 2>>);
+static_assert(!ac::Tuple<void>);
+
+/* Tuple includes qualified types */
+static_assert(ac::Tuple<const std::pair<int, int>>);
+static_assert(ac::Tuple<std::pair<int, int>&>);

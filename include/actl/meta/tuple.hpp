@@ -7,21 +7,25 @@
 #pragma once
 
 #include <actl/meta/nesting_depth.hpp>
-#include <actl/meta/tuple.hpp>
 #include <tuple>
 #include <utility>
 
 namespace ac {
 
+/// Concept of a tuple, that is a fixed size indexed sequence of potentially
+/// heterogeneous types.
+/// Similarly to `std::ranges::range`, types with qualifiers and supported.
+// TODO: implement a full concept https://stackoverflow.com/a/68444475
+template <class T>
+concept Tuple =
+    requires { std::tuple_size<std::remove_reference_t<T>>::value; };
+
 template <class T>
 using tuple_indices_t = std::make_index_sequence<std::tuple_size_v<T>>;
 
-template <class T>
-concept Tuple = requires { std::tuple_size<T>::value; };
-
 namespace detail {
 
-template <class T, class Seq>
+template <class T, class Seq = tuple_indices_t<T>>
 struct tuple_depth;
 
 template <class T, size_t... Is>
@@ -32,8 +36,7 @@ struct tuple_depth<T, std::index_sequence<Is...>>
 } // namespace detail
 
 template <class T>
-struct nesting_depth<T, std::enable_if_t<Tuple<T>>>
-    : detail::tuple_depth<T, tuple_indices_t<T>>
+struct nesting_depth<T, std::enable_if_t<Tuple<T>>> : detail::tuple_depth<T>
 {};
 
 } // namespace ac
