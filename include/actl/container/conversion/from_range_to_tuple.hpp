@@ -45,7 +45,7 @@ using range_to_tuple = range_to_tuple_impl<
 template <class To, class From>
 static constexpr bool range_to_tuple_test()
 {
-    if constexpr (Tuple<To> && is_strict_range_v<From>)
+    if constexpr (Tuple<To> && StrictRange<From>)
         return range_to_tuple<To, From>::value;
     return false;
 }
