@@ -34,7 +34,8 @@ struct less_f : operation<less_f>
 };
 inline constexpr less_f less;
 
-template <class T, class U, enable_operators<T, U> = 0>
+template <class T, class U>
+    requires EnableOperators<T, U>
 constexpr auto operator<(T&& lhs, U&& rhs)
 {
     return less(pass<T>(lhs), pass<U>(rhs));

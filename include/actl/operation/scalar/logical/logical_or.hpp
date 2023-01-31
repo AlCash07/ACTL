@@ -45,7 +45,8 @@ struct identity_element<logical_or_f, T>
     }
 };
 
-template <class T, class U, enable_operators<T, U> = 0>
+template <class T, class U>
+    requires EnableOperators<T, U>
 constexpr auto operator||(T&& lhs, U&& rhs)
 {
     return logical_or(pass<T>(lhs), pass<U>(rhs));

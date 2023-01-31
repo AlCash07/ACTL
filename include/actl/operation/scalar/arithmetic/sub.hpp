@@ -34,13 +34,15 @@ struct sub_f : operation<sub_f>
 };
 inline constexpr sub_f sub;
 
-template <class T, class U, enable_operators<T, U> = 0>
+template <class T, class U>
+    requires EnableOperators<T, U>
 constexpr auto operator-(T&& lhs, U&& rhs)
 {
     return sub(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, enable_operators<T, U> = 0>
+template <class T, class U>
+    requires EnableOperators<T, U>
 constexpr decltype(auto) operator-=(T&& lhs, U&& rhs)
 {
     return sub(inout{std::forward<T>(lhs)}, pass<U>(rhs));

@@ -34,7 +34,8 @@ struct neg_f : operation<neg_f>
 };
 inline constexpr neg_f neg;
 
-template <class T, enable_operators<T> = 0>
+template <class T>
+    requires EnableOperators<T>
 constexpr auto operator-(T&& x)
 {
     return neg(pass<T>(x));

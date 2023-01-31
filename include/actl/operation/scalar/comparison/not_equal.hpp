@@ -21,7 +21,8 @@ struct not_equal_f : operation<not_equal_f>
 };
 inline constexpr not_equal_f not_equal;
 
-template <class T, class U, enable_operators<T, U> = 0>
+template <class T, class U>
+    requires EnableOperators<T, U>
 constexpr auto operator!=(T&& lhs, U&& rhs)
 {
     return not_equal(pass<T>(lhs), pass<U>(rhs));

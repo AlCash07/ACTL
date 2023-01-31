@@ -46,13 +46,15 @@ struct identity_element<bit_and_f, T>
     }
 };
 
-template <class T, class U, enable_operators<T, U> = 0>
+template <class T, class U>
+    requires EnableOperators<T, U>
 constexpr auto operator&(T&& lhs, U&& rhs)
 {
     return bit_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U, enable_operators<T, U> = 0>
+template <class T, class U>
+    requires EnableOperators<T, U>
 constexpr decltype(auto) operator&=(T&& lhs, U&& rhs)
 {
     return bit_and(inout{std::forward<T>(lhs)}, pass<U>(rhs));

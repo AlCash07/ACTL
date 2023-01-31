@@ -34,7 +34,8 @@ struct bit_not_f : operation<bit_not_f>
 };
 inline constexpr bit_not_f bit_not;
 
-template <class T, enable_operators<T> = 0>
+template <class T>
+    requires EnableOperators<T>
 constexpr auto operator~(T&& x)
 {
     return bit_not(pass<T>(x));

@@ -33,7 +33,8 @@ struct logical_not_f : operation<logical_not_f>
 };
 inline constexpr logical_not_f logical_not;
 
-template <class T, enable_operators<T> = 0>
+template <class T>
+    requires EnableOperators<T>
 constexpr auto operator!(T&& x)
 {
     return logical_not(pass<T>(x));

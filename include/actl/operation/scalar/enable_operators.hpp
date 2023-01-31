@@ -6,16 +6,14 @@
 
 #pragma once
 
-#include <actl/meta/type_traits.hpp>
 #include <actl/operation/policy/policy.hpp>
 
 namespace ac {
 
 template <class... Ts>
-using enable_operators =
-    std::enable_if_t<(... || (requires {
-                                  typename std::remove_cvref_t<
-                                      Ts>::enable_operators;
-                              })) && !(... || Policy<Ts>), int>;
+concept EnableOperators =
+    (... || (requires {
+                 typename std::remove_cvref_t<Ts>::enable_operators;
+             })) && !(... || Policy<Ts>);
 
 } // namespace ac
