@@ -36,7 +36,8 @@ struct data_f
         return array;
     }
 
-    constexpr auto operator()(has_member_data auto&& range) const
+    template <has_member_data R>
+    constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.data())
 
     template <class R>

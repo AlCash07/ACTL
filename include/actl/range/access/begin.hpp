@@ -36,7 +36,8 @@ struct begin_f
         return array;
     }
 
-    constexpr auto operator()(has_member_begin auto&& range) const
+    template <has_member_begin R>
+    constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.begin())
 
     template <class R>

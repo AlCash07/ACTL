@@ -35,7 +35,8 @@ struct end_f
         return array + N;
     }
 
-    constexpr auto operator()(has_member_end auto&& range) const
+    template <has_member_end R>
+    constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.end())
 
     template <class R>

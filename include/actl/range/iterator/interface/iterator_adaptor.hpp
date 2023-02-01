@@ -58,8 +58,9 @@ public:
 
     template <class Difference>
     constexpr Derived& operator+=(Difference n)
-        // `this` is explicitly specified for the `requires` clause.
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(this->base_ref() += n)
+        // `this` is needed for the `requires` clause.
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
+            this->base_ref() += n, base_t::derived())
 
     // TODO: make this a hidden friend.
     template <class Derived1, class Iter1, class Category1>
