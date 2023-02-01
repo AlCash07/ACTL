@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Concepts &mdash; ACTL  documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     '',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  false
+  };
+</script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="ACTL  documentation" href="../../index.html" />
+    <link rel="up" title="meta" href="../meta.html" />
+    <link rel="next" title="constant_literals" href="constant_literals.html" />
+    <link rel="prev" title="meta" href="../meta.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">ACTL  documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">Concepts</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#core-language-concepts">Core language concepts</a></li>
+<li><a class="reference internal" href="#comparison-concepts">Comparison concepts</a></li>
+<li><a class="reference internal" href="#object-concepts">Object concepts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="../meta.html" title="meta" accesskey="P">previous </a></li>
+              <li><a href="constant_literals.html" title="constant_literals" accesskey="N">next </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../meta.html" accesskey="U">meta</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Concepts</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#core-language-concepts">Core language concepts</a></li>
+<li><a class="reference internal" href="#comparison-concepts">Comparison concepts</a></li>
+<li><a class="reference internal" href="#object-concepts">Object concepts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../meta.html"
+                          title="previous chapter">meta</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="constant_literals.html"
+                          title="next chapter">constant_literals</a></p>
+  </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <section id="concepts">
+<h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h1>
+<p>For all the standard concepts that are involved in the definition of
+<a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/regular">std::regular</a>
+we provide supplementary concepts that check whether all the required operations
+are trivial or nothrow.
+There are standard type traits for all these requirements,
+but they weren’t grouped into concepts.</p>
+<p>These concepts are especially useful in unit tests.</p>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">¶</a></h2>
+<section id="core-language-concepts">
+<h3>Core language concepts<a class="headerlink" href="#core-language-concepts" title="Permalink to this heading">¶</a></h3>
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/convertible_to">std::convertible_to</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac30NothrowExplicitlyConvertibleToE">
+<span id="_CPPv3I00EN2ac30NothrowExplicitlyConvertibleToE"></span><span id="_CPPv2I00EN2ac30NothrowExplicitlyConvertibleToE"></span><span class="target" id="conceptac_1_1_nothrow_explicitly_convertible_to"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">From</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">To</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowExplicitlyConvertibleTo</span></span></span><a class="headerlink" href="#_CPPv4I00EN2ac30NothrowExplicitlyConvertibleToE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;convertible_to.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac20NothrowConvertibleToE">
+<span id="_CPPv3I00EN2ac20NothrowConvertibleToE"></span><span id="_CPPv2I00EN2ac20NothrowConvertibleToE"></span><span class="target" id="conceptac_1_1_nothrow_convertible_to"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">From</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">To</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowConvertibleTo</span></span></span><a class="headerlink" href="#_CPPv4I00EN2ac20NothrowConvertibleToE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;convertible_to.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac21MayThrowConvertibleToE">
+<span id="_CPPv3I00EN2ac21MayThrowConvertibleToE"></span><span id="_CPPv2I00EN2ac21MayThrowConvertibleToE"></span><span class="target" id="conceptac_1_1_may_throw_convertible_to"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">From</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">To</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MayThrowConvertibleTo</span></span></span><a class="headerlink" href="#_CPPv4I00EN2ac21MayThrowConvertibleToE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;convertible_to.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/assignable_from">std::assignable_from</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac23TriviallyAssignableFromE">
+<span id="_CPPv3I00EN2ac23TriviallyAssignableFromE"></span><span id="_CPPv2I00EN2ac23TriviallyAssignableFromE"></span><span class="target" id="conceptac_1_1_trivially_assignable_from"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Lhs</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rhs</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyAssignableFrom</span></span></span><a class="headerlink" href="#_CPPv4I00EN2ac23TriviallyAssignableFromE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;assignable_from.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac21NothrowAssignableFromE">
+<span id="_CPPv3I00EN2ac21NothrowAssignableFromE"></span><span id="_CPPv2I00EN2ac21NothrowAssignableFromE"></span><span class="target" id="conceptac_1_1_nothrow_assignable_from"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Lhs</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rhs</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowAssignableFrom</span></span></span><a class="headerlink" href="#_CPPv4I00EN2ac21NothrowAssignableFromE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;assignable_from.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/swappable">std::swappable, std::swappable_with</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac16NothrowSwappableE">
+<span id="_CPPv3I0EN2ac16NothrowSwappableE"></span><span id="_CPPv2I0EN2ac16NothrowSwappableE"></span><span class="target" id="conceptac_1_1_nothrow_swappable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowSwappable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac16NothrowSwappableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;swappable.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac20NothrowSwappableWithE">
+<span id="_CPPv3I00EN2ac20NothrowSwappableWithE"></span><span id="_CPPv2I00EN2ac20NothrowSwappableWithE"></span><span class="target" id="conceptac_1_1_nothrow_swappable_with"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowSwappableWith</span></span></span><a class="headerlink" href="#_CPPv4I00EN2ac20NothrowSwappableWithE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;swappable.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/constructible_from">std::constructible_from</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN2ac26TriviallyConstructibleFromE">
+<span id="_CPPv3I0DpEN2ac26TriviallyConstructibleFromE"></span><span id="_CPPv2I0DpEN2ac26TriviallyConstructibleFromE"></span><span class="target" id="conceptac_1_1_trivially_constructible_from"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyConstructibleFrom</span></span></span><a class="headerlink" href="#_CPPv4I0DpEN2ac26TriviallyConstructibleFromE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;constructible_from.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN2ac24NothrowConstructibleFromE">
+<span id="_CPPv3I0DpEN2ac24NothrowConstructibleFromE"></span><span id="_CPPv2I0DpEN2ac24NothrowConstructibleFromE"></span><span class="target" id="conceptac_1_1_nothrow_constructible_from"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowConstructibleFrom</span></span></span><a class="headerlink" href="#_CPPv4I0DpEN2ac24NothrowConstructibleFromE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;constructible_from.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/default_initializable">std::default_initializable</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac29TriviallyDefaultInitializableE">
+<span id="_CPPv3I0EN2ac29TriviallyDefaultInitializableE"></span><span id="_CPPv2I0EN2ac29TriviallyDefaultInitializableE"></span><span class="target" id="conceptac_1_1_trivially_default_initializable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyDefaultInitializable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac29TriviallyDefaultInitializableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;default_initializable.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac27NothrowDefaultInitializableE">
+<span id="_CPPv3I0EN2ac27NothrowDefaultInitializableE"></span><span id="_CPPv2I0EN2ac27NothrowDefaultInitializableE"></span><span class="target" id="conceptac_1_1_nothrow_default_initializable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowDefaultInitializable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac27NothrowDefaultInitializableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;default_initializable.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/move_constructible">std::move_constructible</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac26TriviallyMoveConstructibleE">
+<span id="_CPPv3I0EN2ac26TriviallyMoveConstructibleE"></span><span id="_CPPv2I0EN2ac26TriviallyMoveConstructibleE"></span><span class="target" id="conceptac_1_1_trivially_move_constructible"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyMoveConstructible</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac26TriviallyMoveConstructibleE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;move_constructible.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac24NothrowMoveConstructibleE">
+<span id="_CPPv3I0EN2ac24NothrowMoveConstructibleE"></span><span id="_CPPv2I0EN2ac24NothrowMoveConstructibleE"></span><span class="target" id="conceptac_1_1_nothrow_move_constructible"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowMoveConstructible</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac24NothrowMoveConstructibleE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;move_constructible.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/copy_constructible">std::copy_constructible</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac26TriviallyCopyConstructibleE">
+<span id="_CPPv3I0EN2ac26TriviallyCopyConstructibleE"></span><span id="_CPPv2I0EN2ac26TriviallyCopyConstructibleE"></span><span class="target" id="conceptac_1_1_trivially_copy_constructible"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyCopyConstructible</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac26TriviallyCopyConstructibleE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;copy_constructible.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac24NothrowCopyConstructibleE">
+<span id="_CPPv3I0EN2ac24NothrowCopyConstructibleE"></span><span id="_CPPv2I0EN2ac24NothrowCopyConstructibleE"></span><span class="target" id="conceptac_1_1_nothrow_copy_constructible"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowCopyConstructible</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac24NothrowCopyConstructibleE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;copy_constructible.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac25MayThrowCopyConstructibleE">
+<span id="_CPPv3I0EN2ac25MayThrowCopyConstructibleE"></span><span id="_CPPv2I0EN2ac25MayThrowCopyConstructibleE"></span><span class="target" id="conceptac_1_1_may_throw_copy_constructible"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MayThrowCopyConstructible</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac25MayThrowCopyConstructibleE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;copy_constructible.hpp&gt;</em></div>
+</dd></dl>
+
+</section>
+<section id="comparison-concepts">
+<h3>Comparison concepts<a class="headerlink" href="#comparison-concepts" title="Permalink to this heading">¶</a></h3>
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/equality_comparable">std::equality_comparable</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac25NothrowEqualityComparableE">
+<span id="_CPPv3I0EN2ac25NothrowEqualityComparableE"></span><span id="_CPPv2I0EN2ac25NothrowEqualityComparableE"></span><span class="target" id="conceptac_1_1_nothrow_equality_comparable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowEqualityComparable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac25NothrowEqualityComparableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;equality_comparable.hpp&gt;</em></div>
+</dd></dl>
+
+</section>
+<section id="object-concepts">
+<h3>Object concepts<a class="headerlink" href="#object-concepts" title="Permalink to this heading">¶</a></h3>
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/movable">std::movable</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac16TriviallyMovableE">
+<span id="_CPPv3I0EN2ac16TriviallyMovableE"></span><span id="_CPPv2I0EN2ac16TriviallyMovableE"></span><span class="target" id="conceptac_1_1_trivially_movable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyMovable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac16TriviallyMovableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;movable.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac14NothrowMovableE">
+<span id="_CPPv3I0EN2ac14NothrowMovableE"></span><span id="_CPPv2I0EN2ac14NothrowMovableE"></span><span class="target" id="conceptac_1_1_nothrow_movable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowMovable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac14NothrowMovableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;movable.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/copyable">std::copyable</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac17TriviallyCopyableE">
+<span id="_CPPv3I0EN2ac17TriviallyCopyableE"></span><span id="_CPPv2I0EN2ac17TriviallyCopyableE"></span><span class="target" id="conceptac_1_1_trivially_copyable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyCopyable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac17TriviallyCopyableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;copyable.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac15NothrowCopyableE">
+<span id="_CPPv3I0EN2ac15NothrowCopyableE"></span><span id="_CPPv2I0EN2ac15NothrowCopyableE"></span><span class="target" id="conceptac_1_1_nothrow_copyable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowCopyable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac15NothrowCopyableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;copyable.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac16MayThrowCopyableE">
+<span id="_CPPv3I0EN2ac16MayThrowCopyableE"></span><span id="_CPPv2I0EN2ac16MayThrowCopyableE"></span><span class="target" id="conceptac_1_1_may_throw_copyable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MayThrowCopyable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac16MayThrowCopyableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;copyable.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/semiregular">std::semiregular</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac20TriviallySemiregularE">
+<span id="_CPPv3I0EN2ac20TriviallySemiregularE"></span><span id="_CPPv2I0EN2ac20TriviallySemiregularE"></span><span class="target" id="conceptac_1_1_trivially_semiregular"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallySemiregular</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac20TriviallySemiregularE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;semiregular.hpp&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac18NothrowSemiregularE">
+<span id="_CPPv3I0EN2ac18NothrowSemiregularE"></span><span id="_CPPv2I0EN2ac18NothrowSemiregularE"></span><span class="target" id="conceptac_1_1_nothrow_semiregular"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowSemiregular</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac18NothrowSemiregularE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;semiregular.hpp&gt;</em></div>
+</dd></dl>
+
+<p>For <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/regular">std::regular</a>:</p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac14NothrowRegularE">
+<span id="_CPPv3I0EN2ac14NothrowRegularE"></span><span id="_CPPv2I0EN2ac14NothrowRegularE"></span><span class="target" id="conceptac_1_1_nothrow_regular"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowRegular</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac14NothrowRegularE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;regular.hpp&gt;</em></div>
+</dd></dl>
+
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/concepts">Source code</a></p>
+</section>
+</section>
+</section>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">ACTL  documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../meta.html" title="meta" >previous</a></li>
+        <li><a href="constant_literals.html" title="constant_literals" >next</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../meta.html" >meta</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2022, Oleksandr Bacherikov.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.3.0.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>
