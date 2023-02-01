@@ -5,9 +5,10 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/array/static_array.hpp>
+#include <actl/meta/concepts/object/regular.hpp>
 #include <actl/meta/constant_literals.hpp>
-#include <actl_test/base/concept/regular.hpp>
 #include <actl_test/base/equal_same_type.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 using namespace ac::constant_literals;
 
@@ -16,8 +17,8 @@ namespace {
 template <class StaticArray>
 void test_static_array_type_traits()
 {
-    ac::test_trivially_semiregular_type_traits<StaticArray>();
-    ac::test_nothrow_regular_type_traits<StaticArray>();
+    static_assert(ac::TriviallySemiregular<StaticArray>);
+    static_assert(ac::NothrowRegular<StaticArray>);
     static_assert(std::is_standard_layout_v<StaticArray>);
     static_assert(std::is_empty_v<StaticArray>);
 }
