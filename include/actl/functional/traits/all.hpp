@@ -1,4 +1,4 @@
-// Copyright 2022 Oleksandr Bacherikov.
+// Copyright 2023 Oleksandr Bacherikov.
 //
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE.txt or copy at
@@ -6,6 +6,4 @@
 
 #pragma once
 
-#include <actl/functional/invoke_tuple.hpp>
-#include <actl/functional/noexcept/all.hpp>
-#include <actl/functional/traits/all.hpp>
+#include <actl/functional/traits/callable_traits.hpp>

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/deduce_noexcept.hpp>
+#include <actl/functional/noexcept/deduce_noexcept_and_return.hpp>
 #include <type_traits>
 #include <utility> // for std::forward
 

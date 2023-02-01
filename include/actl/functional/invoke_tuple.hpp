@@ -6,7 +6,8 @@
 
 #pragma once
 
-#include <actl/functional/deduce_noexcept.hpp>
+#include <actl/functional/noexcept/deduce_noexcept_and_return.hpp>
+#include <actl/functional/noexcept/deduce_noexcept_decltype_and_return.hpp>
 #include <actl/meta/tuple.hpp>
 #include <cstddef>
 

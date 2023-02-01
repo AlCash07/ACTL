@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/deduce_noexcept.hpp>
+#include <actl/functional/noexcept/deduce_noexcept_requires_and_return.hpp>
 
 namespace ac::io {
 

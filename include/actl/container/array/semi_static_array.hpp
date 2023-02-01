@@ -11,7 +11,7 @@
 #include <actl/container/conversion/convert_to.hpp>
 #include <actl/container/equal_sequences/arrays.hpp>
 #include <actl/container/extent.hpp>
-#include <actl/functional/deduce_noexcept.hpp>
+#include <actl/functional/noexcept/deduce_noexcept_and_return.hpp>
 #include <actl/meta/type_traits.hpp>
 
 namespace ac {
