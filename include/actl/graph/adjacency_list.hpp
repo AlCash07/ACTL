@@ -8,8 +8,8 @@
 
 #include <actl/graph/detail/adj_list_iterators.hpp>
 #include <actl/graph/detail/adj_list_vertices.hpp>
-#include <actl/iterator/transform_iterator.hpp>
 #include <actl/meta/type_traits.hpp>
+#include <actl/range/iterator/transform_iterator.hpp>
 
 namespace ac {
 

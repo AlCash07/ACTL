@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/iterator/limited_input_iterator.hpp>
+#include <actl/range/iterator/limited_input_iterator.hpp>
 #include <actl/range/iterator_range.hpp>
 
 namespace ac {

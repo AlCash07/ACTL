@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/iterator/traits/category.hpp>
+#include <actl/range/iterator/traits/category.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <actl/utility/none.hpp>
 #include <actl_test/base/regular.hpp>

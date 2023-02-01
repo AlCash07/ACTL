@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/geometry/point.hpp>
-#include <actl/iterator/cyclic_iterator.hpp>
 #include <actl/range/algorithm.hpp>
+#include <actl/range/iterator/cyclic_iterator.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <actl/std/vector.hpp>
 

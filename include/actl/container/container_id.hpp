@@ -8,10 +8,10 @@
 
 #include <actl/assert.hpp>
 #include <actl/container/functions.hpp>
-#include <actl/iterator/integer_iterator.hpp>
-#include <actl/iterator/interface/iterator_adaptor.hpp>
 #include <actl/numeric/bit/bit_cast.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
+#include <actl/range/iterator/integer_iterator.hpp>
+#include <actl/range/iterator/interface/iterator_adaptor.hpp>
 #include <actl/range/iterator_range.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <cstdint>

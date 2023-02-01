@@ -9,7 +9,7 @@
 #include <actl/container/container_id.hpp>
 #include <actl/graph/selectors.hpp>
 #include <actl/graph/traits.hpp>
-#include <actl/iterator/interface/forward_iterator_interface.hpp>
+#include <actl/range/iterator/interface/forward_iterator_interface.hpp>
 
 namespace ac::detail {
 

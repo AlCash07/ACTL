@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <actl/iterator/integer_iterator.hpp>
+#include <actl/range/iterator/integer_iterator.hpp>
 #include <actl/range/iterator_range.hpp>
 
 namespace ac {

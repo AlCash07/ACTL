@@ -8,7 +8,7 @@
 
 #include <actl/geometry/algorithm/crosses/crosses.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
-#include <actl/iterator/interface/output_iterator_interface.hpp>
+#include <actl/range/iterator/interface/output_iterator_interface.hpp>
 
 namespace ac {
 

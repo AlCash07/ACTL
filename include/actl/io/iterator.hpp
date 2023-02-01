@@ -8,8 +8,8 @@
 
 #include <actl/assert.hpp>
 #include <actl/io/io.hpp>
-#include <actl/iterator/interface/input_iterator_interface.hpp>
-#include <actl/iterator/interface/output_iterator_interface.hpp>
+#include <actl/range/iterator/interface/input_iterator_interface.hpp>
+#include <actl/range/iterator/interface/output_iterator_interface.hpp>
 
 namespace ac {
 

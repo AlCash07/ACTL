@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/geometry/line.hpp>
-#include <actl/iterator/facade/iterator_types.hpp>
+#include <actl/range/iterator/facade/iterator_types.hpp>
 #include <iterator>
 
 namespace ac::detail {

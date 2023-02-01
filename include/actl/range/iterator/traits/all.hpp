@@ -6,6 +6,6 @@
 
 #pragma once
 
-#include <actl/iterator/traits/category.hpp>
-#include <actl/iterator/traits/is_const_iterator.hpp>
-#include <actl/iterator/traits/output_type.hpp>
+#include <actl/range/iterator/traits/category.hpp>
+#include <actl/range/iterator/traits/is_const_iterator.hpp>
+#include <actl/range/iterator/traits/output_type.hpp>

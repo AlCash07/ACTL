@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/callable_traits.hpp>
-#include <actl/iterator/interface/output_iterator_interface.hpp>
+#include <actl/range/iterator/interface/output_iterator_interface.hpp>
 
 namespace ac {
 

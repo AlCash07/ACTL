@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/iterator/traits/category.hpp>
+#include <actl/range/iterator/traits/category.hpp>
 #include <actl/utility/use_default.hpp>
 
 namespace ac::detail {

@@ -4,8 +4,8 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/iterator/traits/associated_types.hpp>
 #include <actl/meta/associated_types.hpp>
+#include <actl/range/iterator/traits/associated_types.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <set>
 #include <vector>

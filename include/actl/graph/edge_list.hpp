@@ -8,8 +8,8 @@
 
 #include <actl/graph/detail/edge.hpp>
 #include <actl/graph/detail/edge_list_traits.hpp>
-#include <actl/iterator/interface/forward_iterator_interface.hpp>
 #include <actl/map/generic_container.hpp>
+#include <actl/range/iterator/interface/forward_iterator_interface.hpp>
 #include <actl/std/vector.hpp>
 
 namespace ac {

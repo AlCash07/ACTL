@@ -9,8 +9,8 @@
 #include <actl/graph/connectivity/detail/component_stack.hpp>
 #include <actl/graph/default_map.hpp>
 #include <actl/graph/traversal/depth_first_search.hpp>
-#include <actl/iterator/dummy_output_iterator.hpp>
 #include <actl/map/dummy_map.hpp>
+#include <actl/range/iterator/dummy_output_iterator.hpp>
 
 namespace ac {
 

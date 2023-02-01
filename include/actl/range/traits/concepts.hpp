@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/iterator/traits/category.hpp>
 #include <actl/range/access/all.hpp>
+#include <actl/range/iterator/traits/category.hpp>
 
 namespace ac {
 

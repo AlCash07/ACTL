@@ -8,7 +8,7 @@
 
 #include <actl/graph/traversal/depth_first_search.hpp>
 #include <actl/graph/traversal/discovered_flag.hpp>
-#include <actl/iterator/traits/output_type.hpp>
+#include <actl/range/iterator/traits/output_type.hpp>
 
 namespace ac {
 
