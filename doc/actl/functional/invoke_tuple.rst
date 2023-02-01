@@ -1,10 +1,11 @@
+********************************
 invoke_tuple
-================================
+********************************
 
 Utilities for tuples of callables.
 
 Reference
----------
+=========
 
 .. doxygenfile:: functional/invoke_tuple.hpp
 

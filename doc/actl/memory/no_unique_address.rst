@@ -1,5 +1,6 @@
+********************************
 AC_NO_UNIQUE_ADDRESS
-================================
+********************************
 
 C++20 introduced
 `[[no_unique_address]] <https://en.cppreference.com/w/cpp/language/attributes/no_unique_address>`_
@@ -17,7 +18,7 @@ For portability we need a custom wrapper until that's fixed. See
 `github issue <https://github.com/microsoft/STL/issues/1364>`_.
 
 Reference
----------
+=========
 
 .. doxygenfile:: memory/no_unique_address.hpp
 

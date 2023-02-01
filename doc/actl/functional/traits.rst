@@ -1,5 +1,6 @@
+********************************
 Callable traits
-================================
+********************************
 
 :struct:`ac::callable_traits` provides information about a callable,
 such as return and parameter types.
@@ -16,7 +17,7 @@ This is a lightweight analog of `Boost.CallableTraits
 with limited functionality.
 
 Reference
----------
+=========
 
 The most convenient way to use the traits is through the following interface:
 
@@ -43,7 +44,7 @@ The following concepts are provided:
 :test:`Tests <functional/traits/callable_traits.cpp>`
 
 Design
-------
+======
 
 The following `reference <https://functionalcpp.wordpress.com/2013/08/05/function-traits/>`_
 was used at first, but it was heavily expanded.

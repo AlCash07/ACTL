@@ -1,5 +1,6 @@
+********************************
 noexcept deduction
-================================
+********************************
 
 C++ has automatic return type deduction since C++11.
 However, in C++20 there's still no support for automatic noexcept specification.
@@ -13,7 +14,7 @@ Unfortunately, `std::is_nothrow_constructible
 doesn't help either (see Notes).
 
 Reference
----------
+=========
 
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_AND_RETURN
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN
@@ -25,7 +26,7 @@ Reference
 :test:`Tests <functional/noexcept>`
 
 Design
-------
+======
 
 These utilities are inspired by `BOOST_HOF_RETURNS
 <https://www.boost.org/doc/libs/1_78_0/libs/hof/doc/html/include/boost/hof/returns.html>`_.

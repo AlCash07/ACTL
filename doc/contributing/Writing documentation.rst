@@ -14,7 +14,7 @@ All the requirements can be installed using the
 `scripts/doc/setup.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/setup.sh>`_ script.
 
 Doxygen
--------
+=======
 
 The most complicated task, the C++ code parsing, is done by Doxygen.
 Documentation comments that follow the `Doxygen manual <https://www.doxygen.nl/manual/docblocks.html>`_
@@ -58,7 +58,7 @@ The options of interest are:
   They would be parsed incorrectly otherwise.
 
 Sphinx
-------
+======
 
 `Sphinx generator <https://www.sphinx-doc.org/en/master/>`_ is used to generate the final documentation web pages.
 The sources in rst format are located in the `doc <https://github.com/AlCash07/ACTL/tree/master/doc>`_ folder.
@@ -75,7 +75,7 @@ or the ``generate documentation`` VS Code task (together with Doxygen),
 and its output can be examined by opening *build/doc/sphinx/index.html*
 
 Publishing documentation
-------------------------
+========================
 
 Currently, the documentation is published manually only by the project maintainers using the
 `scripts/doc/publish.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/publish.sh>`_ script

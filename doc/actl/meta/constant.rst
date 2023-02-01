@@ -1,5 +1,6 @@
+********************************
 constant
-================================
+********************************
 
 Many C++ libraries including the standard one have inconsistent interfaces
 for values known at runtime or compilation time. For example:
@@ -18,10 +19,10 @@ types when they are known at compilation time to achieve consistent interfaces.
 Labeling a function as `constexpr` isn't enough, because it doesn't guarantee
 that the function result can always be computed at compilation time,
 and detecting that isn't trivial.
-Standard facilities such as `std::true_type` still can be used for type traits.
+Standard facilities such as `std::true_type` can still be used for type traits.
 
 Reference
----------
+=========
 
 .. doxygenstruct:: ac::constant
 

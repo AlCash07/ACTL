@@ -1,5 +1,6 @@
+********************************
 char_classes
-================================
+********************************
 
 Character classification similar to the one provided in
 <`cctype <https://en.cppreference.com/w/cpp/header/cctype>`_>.
@@ -12,7 +13,7 @@ The difference is that functions here:
 - Don't try to handle the `EOF` character.
 
 Reference
----------
+=========
 
 .. doxygenfile:: string/char_classes.hpp
 

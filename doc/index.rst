@@ -1,13 +1,12 @@
-################################
+********************************
 ACTL documentation
-################################
+********************************
 
 ACTL started as a template library for algorithm competitions,
 but ended up providing numerous widely applicable components.
 
-################################
 Design
-################################
+================================
 
 These design decisions affect a large portion of the library,
 so it's useful to understand them:
@@ -17,9 +16,8 @@ so it's useful to understand them:
 
    actl/meta/constant
 
-################################
 Contents
-################################
+================================
 
 Sub-libraries that emerged as helper utilities and can be used in various contexts:
 
@@ -37,9 +35,8 @@ Thematic libraries focused on a specific topic:
 
    actl/string
 
-################################
 Contributing
-################################
+================================
 
 .. toctree::
    :glob:
