@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::regular` concept
-/// https://en.cppreference.com/w/cpp/concepts/regular
-
 #include <actl/meta/concepts/comparison/equality_comparable.hpp>
 #include <actl/meta/concepts/object/semiregular.hpp>
 

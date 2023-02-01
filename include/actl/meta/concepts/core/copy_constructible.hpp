@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::copy_constructible` concept
-/// https://en.cppreference.com/w/cpp/concepts/copy_constructible
-
 #include <actl/meta/concepts/core/constructible_from.hpp>
 #include <actl/meta/concepts/core/convertible_to.hpp>
 

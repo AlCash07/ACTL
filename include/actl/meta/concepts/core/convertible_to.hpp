@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::convertible_to` concept
-/// https://en.cppreference.com/w/cpp/concepts/convertible_to
-
 #include <concepts>
 
 namespace ac {

@@ -8,9 +8,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::copyable` concept
-/// https://en.cppreference.com/w/cpp/concepts/copyable
-
 #include <actl/meta/concepts/core/copy_constructible.hpp>
 #include <actl/meta/concepts/object/movable.hpp>
 

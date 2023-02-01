@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::movable` concept
-/// https://en.cppreference.com/w/cpp/concepts/movable
-
 #include <actl/meta/concepts/core/assignable_from.hpp>
 #include <actl/meta/concepts/core/move_constructible.hpp>
 #include <actl/meta/concepts/core/swappable.hpp>

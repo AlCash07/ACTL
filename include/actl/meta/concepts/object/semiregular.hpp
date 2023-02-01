@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::semiregular` concept
-/// https://en.cppreference.com/w/cpp/concepts/semiregular
-
 #include <actl/meta/concepts/core/default_initializable.hpp>
 #include <actl/meta/concepts/object/copyable.hpp>
 

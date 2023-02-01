@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::assignable_from` concept
-/// https://en.cppreference.com/w/cpp/concepts/assignable_from
-
 #include <concepts>
 
 namespace ac {

@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::default_initializable` concept
-/// https://en.cppreference.com/w/cpp/concepts/default_initializable
-
 #include <concepts>
 
 namespace ac {

@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::constructible_from` concept
-/// https://en.cppreference.com/w/cpp/concepts/constructible_from
-
 #include <concepts>
 
 namespace ac {

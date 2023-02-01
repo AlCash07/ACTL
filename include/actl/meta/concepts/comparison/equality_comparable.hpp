@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::equality_comparable` concept
-/// https://en.cppreference.com/w/cpp/concepts/equality_comparable
-
 #include <concepts>
 
 namespace ac {

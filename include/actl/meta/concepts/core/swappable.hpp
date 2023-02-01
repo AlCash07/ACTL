@@ -6,9 +6,6 @@
 
 #pragma once
 
-/// @file Extensions for the `std::swappable` and `std::swappable_with` concepts
-/// https://en.cppreference.com/w/cpp/concepts/swappable
-
 #include <concepts>
 
 namespace ac {
