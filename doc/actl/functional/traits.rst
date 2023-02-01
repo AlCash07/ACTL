@@ -38,9 +38,9 @@ The following concepts are provided:
 .. doxygenconcept:: ac::MemberFunction
 .. doxygenconcept:: ac::FunctionObject
 
-:source:`Source code <functional/traits/callable_traits>`
+:source:`Source code <functional/traits>`
 
-:test:`Tests <functional/traits/callable_traits>`
+:test:`Tests <functional/traits/callable_traits.cpp>`
 
 Design
 ------

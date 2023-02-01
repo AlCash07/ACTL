@@ -8,6 +8,6 @@ Reference
 
 .. doxygenfile:: functional/invoke_tuple.hpp
 
-:source:`Source code <functional/invoke_tuple>`
+:source:`Source code <functional/invoke_tuple.hpp>`
 
-:test:`Tests <functional/invoke_tuple>`
+:test:`Tests <functional/invoke_tuple.cpp>`

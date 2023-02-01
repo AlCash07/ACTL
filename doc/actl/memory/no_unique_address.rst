@@ -21,6 +21,6 @@ Reference
 
 .. doxygenfile:: memory/no_unique_address.hpp
 
-:source:`Source code <memory/no_unique_address>`
+:source:`Source code <memory/no_unique_address.hpp>`
 
-:test:`Tests <memory/no_unique_address>`
+:test:`Tests <memory/no_unique_address.cpp>`

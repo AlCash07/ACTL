@@ -16,28 +16,13 @@ Reference
 ---------
 
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_AND_RETURN
-
-:source:`Source code <functional/noexcept/deduce_noexcept_and_return>`
-
-:test:`Tests <functional/noexcept/deduce_noexcept_and_return>`
-
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN
-
-:source:`Source code <functional/noexcept/deduce_noexcept_decltype_and_return>`
-
-:test:`Tests <functional/noexcept/deduce_noexcept_decltype_and_return>`
-
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN
-
-:source:`Source code <functional/noexcept/deduce_noexcept_requires_and_return>`
-
-:test:`Tests <functional/noexcept/deduce_noexcept_requires_and_return>`
-
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_AND_INITIALIZE
 
-:source:`Source code <functional/noexcept/deduce_noexcept_and_initialize>`
+:source:`Source code <functional/noexcept>`
 
-:test:`Tests <functional/noexcept/deduce_noexcept_and_initialize>`
+:test:`Tests <functional/noexcept>`
 
 Design
 ------

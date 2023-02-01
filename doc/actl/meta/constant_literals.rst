@@ -13,9 +13,9 @@ Access to its content can be gained with `using namespace ac::constant_literals`
 
 .. doxygennamespace:: ac::constant_literals
 
-:source:`Source code <meta/constant_literals>`
+:source:`Source code <meta/constant_literals.hpp>`
 
-:test:`Tests <meta/constant_literals>`
+:test:`Tests <meta/constant_literals.cpp>`
 
 Design
 ------

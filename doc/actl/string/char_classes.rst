@@ -16,6 +16,6 @@ Reference
 
 .. doxygenfile:: string/char_classes.hpp
 
-:source:`Source code <string/char_classes>`
+:source:`Source code <string/char_classes.hpp>`
 
-:test:`Tests <string/char_classes>`
+:test:`Tests <string/char_classes.cpp>`

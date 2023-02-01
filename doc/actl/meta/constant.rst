@@ -39,6 +39,6 @@ Constant detection utilities
 .. doxygenstruct:: ac::is_constant
 .. doxygenvariable:: ac::is_constant_v
 
-:source:`Source code <meta/constant>`
+:source:`Source code <meta/constant.hpp>`
 
-:test:`Tests <meta/constant>`
+:test:`Tests <meta/constant.cpp>`
