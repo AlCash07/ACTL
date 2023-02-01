@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/invoke_tuple.hpp>
+#include <actl/functional/tuple/all.hpp>
 #include <actl/graph/detail/always_false.hpp>
 #include <actl/graph/events.hpp>
 #include <actl/graph/traits.hpp>

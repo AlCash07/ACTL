@@ -6,6 +6,5 @@
 
 #pragma once
 
-#include <actl/functional/noexcept/all.hpp>
-#include <actl/functional/traits/all.hpp>
-#include <actl/functional/tuple/all.hpp>
+#include <actl/functional/tuple/invoke_all_matching.hpp>
+#include <actl/functional/tuple/invoke_first_matching.hpp>

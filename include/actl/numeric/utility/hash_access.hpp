@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 namespace ac {
 
 struct hash_access
