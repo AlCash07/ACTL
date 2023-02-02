@@ -57,10 +57,10 @@ public:
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
 
     template <class Difference>
+    // AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN didn't work for some reason.
+        requires requires(Iter& iter, Difference n) { iter += n; }
     constexpr Derived& operator+=(Difference n)
-        // `this` is needed for the `requires` clause.
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-            this->base_ref() += n, base_t::derived())
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n, base_t::derived())
 
     // TODO: make this a hidden friend.
     template <class Derived1, class Iter1, class Category1>
