@@ -14,20 +14,8 @@
 
 namespace ac {
 
-namespace detail {
-
-template <class T>
-struct span_types
-{
-    using iterator = T*;
-    using size_type = size_t;
-};
-
-} // namespace detail
-
 template <class T, size_t N = dynamic_size>
-class span
-    : public contiguous_range_interface<span<T, N>, detail::span_types<T>>
+class span : public contiguous_range_interface<span<T, N>>
 {
 public:
     using element_type = T;

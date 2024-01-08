@@ -12,27 +12,12 @@
 
 namespace ac {
 
-namespace detail {
-
-template <class T>
-struct sa_types
-{
-    using iterator = T const*;
-    using size_type = size_t;
-};
-
-} // namespace detail
-
 /// @class static_array is an array with all the elements known at compile-time.
 template <class T, T... Values>
 class static_array
-    : public contiguous_range_interface<
-          static_array<T, Values...>,
-          detail::sa_types<T>>
+    : public contiguous_range_interface<static_array<T, Values...>>
 {
-    using base_t = contiguous_range_interface<
-        static_array<T, Values...>,
-        detail::sa_types<T>>;
+    using base_t = contiguous_range_interface<static_array<T, Values...>>;
 
     template <class... Ts>
     static constexpr bool can_construct_from()

@@ -71,8 +71,6 @@ struct filtered_range_types
         // required for std::copyable.
         filtered_range<R, P> const* range_;
     };
-
-    using size_type = range_size_t<R>;
 };
 
 } // namespace detail
@@ -81,7 +79,7 @@ template <class Range, class Predicate>
 class filtered_range
     : public range_interface_selector_t<
           filtered_range<Range, Predicate>,
-          detail::filtered_range_types<Range, Predicate>>
+          detail::filtered_range_types<Range, Predicate>::iterator_category>
 {
 public:
     using iterator =

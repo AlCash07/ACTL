@@ -15,22 +15,11 @@
 
 namespace ac {
 
-namespace detail {
-
-template <class Iter>
-struct iter_range_types
-{
-    using iterator = Iter;
-    using size_type = std::iter_difference_t<Iter>;
-};
-
-} // namespace detail
-
 template <class Iter, class Super = none>
 class iterator_range
     : public range_interface_selector_t<
           iterator_range<Iter, Super>,
-          detail::iter_range_types<Iter>>
+          iter_category_t<Iter>>
 {
 public:
     constexpr iterator_range() = default;
