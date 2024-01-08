@@ -6,7 +6,7 @@
 
 #include <actl/operation/policy/common/allow_promotion.hpp>
 #include <actl/operation/tuple/equal_tuple.hpp>
-#include <actl/range/operation/equal_range.hpp>
+#include <actl/range/operation/equal.hpp>
 #include "test.hpp"
 
 // simple operation
@@ -18,6 +18,9 @@ TEST_CASE("nested composite operation")
         {char{2}, 3}, {char{5}, 8}};
     std::vector<std::pair<int, uint16_t>> const rhs{
         {2, uint16_t{3}}, {5, uint16_t{8}}};
+    CHECK((ac::equal | ac::allow_promotion{})(
+        std::pair<char, long long>{char{2}, 3},
+        std::pair<int, uint16_t>{2, uint16_t{3}}));
     CHECK((ac::equal | ac::allow_promotion{})(lhs, rhs));
 }
 

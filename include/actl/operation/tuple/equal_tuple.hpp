@@ -28,9 +28,9 @@ struct equal_tuple_f
     }
 
     template <class EqualOps, class T, class U>
-    static bool evaluate(EqualOps const& ops, T const& lhs, U const& rhs)
+    static bool evaluate(const EqualOps& ops, const T& lhs, const U& rhs)
     {
-        return eval(ops, lhs, rhs, tuple_indices_t<T>{});
+        return eval(ops, lhs, rhs, tuple_indices_t<raw_t<T>>{});
     }
 };
 inline constexpr operation_composer<equal_tuple_f> equal_tuple;
