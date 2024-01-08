@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/assert.hpp>
+#include <actl/container/array/data_holder.hpp>
 #include <actl/container/array/semi_static_array.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/operation/scalar/basic_math/max.hpp>
@@ -14,8 +15,8 @@
 #include <actl/range/operation/comparison.hpp>
 #include <actl/range/span.hpp>
 #include <actl/std/utility.hpp>
-#include <actl/utility/index.hpp>
-#include <memory>
+#include <actl/util/span.hpp>
+#include <actl/util/type_traits.hpp>
 
 namespace ac {
 
@@ -59,75 +60,13 @@ size_t compute_product(cspan<Int> x)
     return res;
 }
 
-/* NDArray container class, supports array and std::unique_ptr as data. */
-
-template <class Data>
-class tensor_container;
-
-template <class T, size_t Size>
-class tensor_container<std::array<T, Size>>
-{
-public:
-    using value_type = T;
-
-    tensor_container(size_t size)
-    {
-        AC_ASSERT(size == Size);
-    }
-
-    T* data()
-    {
-        return data_.data();
-    }
-
-    T const* data() const
-    {
-        return data_.data();
-    }
-
-    void swap(tensor_container& rhs)
-    {
-        std::swap(data_, rhs.data_);
-    }
-
-private:
-    std::array<T, Size> data_;
-};
-
-template <class T>
-class tensor_container<std::unique_ptr<T[]>>
-{
-public:
-    using value_type = T;
-
-    tensor_container(size_t size) : data_{new T[size]} {}
-
-    T* data()
-    {
-        return data_.get();
-    }
-
-    T const* data() const
-    {
-        return data_.get();
-    }
-
-    void swap(tensor_container& rhs)
-    {
-        std::swap(data_, rhs.data_);
-    }
-
-private:
-    std::unique_ptr<T[]> data_;
-};
-
 /* NDArray data class, supports container or pointer as data. */
 
-template <size_t N, class Data>
-class tensor_data : public tensor_container<Data>
+template <index N, class Data>
+class tensor_data : public data_holder<Data>
 {
-    using base_t = tensor_container<Data>;
-    using T = typename base_t::value_type;
+    using base_t = data_holder<Data>;
+    using T = value_t<base_t>;
 
 public:
     tensor_data(size_t size) : base_t{size} {}
