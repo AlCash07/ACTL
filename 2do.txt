@@ -1,0 +1,21 @@
+scalars:
+int < bigint
+T < modular<T>
+T < rational<T>
+
+vectors:
+T < polinomial<T> (T is scalar)
+T < vector<T> (T can be polinomial)
+
+tensors:
+vector<T> < tensor<T>
+
+
+int + vector<rational<bigint>>
+
+polinomial<T> + vector<polinomial<T>>
+
+4  = 1 + 3
+16 = 7 + 9
+9  = 1 + 8 = 2 + 7 = 3 + 6 = 4 + 5
+45 = 4 + 16 + 25

@@ -12,15 +12,9 @@
 
 using namespace ac::constant_literals;
 
-namespace {
-
-template <class StaticArray>
-void test_static_array_type_traits()
+TEST("regular")
 {
-    static_assert(ac::TriviallySemiregular<StaticArray>);
-    static_assert(ac::NothrowRegular<StaticArray>);
-    static_assert(std::is_standard_layout_v<StaticArray>);
-    static_assert(std::is_empty_v<StaticArray>);
+    test_regular_traits<static_array<int, 1, 3>>();
 }
 
 void test_static_array_constructors()

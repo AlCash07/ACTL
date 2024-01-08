@@ -10,7 +10,6 @@
 #include <actl/geometry/line.hpp>
 #include <actl/geometry/multi_point.hpp>
 #include <actl/geometry/plane.hpp>
-#include <actl/geometry/point.hpp>
 #include <actl/geometry/polygon.hpp>
 #include <actl/geometry/sphere.hpp>
 #include <actl/geometry/traits.hpp>
