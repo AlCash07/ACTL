@@ -23,8 +23,8 @@ public:
 
     explicit constexpr operator bool() AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())
 
-    constexpr decltype(auto) front() //
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin())) {
+    constexpr decltype(auto) front(
+    ) noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin())) {
         AC_ASSERT(!empty());
         return *derived().begin();
     }
