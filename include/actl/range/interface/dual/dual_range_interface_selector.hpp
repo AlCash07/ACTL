@@ -11,20 +11,17 @@
 namespace ac {
 
 template <class Range, class Category>
-struct dual_range_interface_selector
-{
+struct dual_range_interface_selector {
     using type = basic_dual_range_interface<Range>;
 };
 
 template <class Range>
-struct dual_range_interface_selector<Range, std::bidirectional_iterator_tag>
-{
+struct dual_range_interface_selector<Range, std::bidirectional_iterator_tag> {
     using type = bidirectional_range_interface<Range>;
 };
 
 template <class Range>
-struct dual_range_interface_selector<Range, std::random_access_iterator_tag>
-{
+struct dual_range_interface_selector<Range, std::random_access_iterator_tag> {
     using type = random_access_range_interface<Range>;
 };
 

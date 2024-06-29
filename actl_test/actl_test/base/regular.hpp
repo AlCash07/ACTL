@@ -12,15 +12,13 @@
 namespace ac {
 
 template <class T>
-void test_regular_default_constructor()
-{
+void test_regular_default_constructor() {
     T x;
     CHECK(x == x);
 }
 
 template <class T>
-void test_regular_copy(T const x, T const y)
-{
+void test_regular_copy(T const x, T const y) {
     T z{x};
     CHECK(x == z);
     CHECK(y != z);
@@ -30,8 +28,7 @@ void test_regular_copy(T const x, T const y)
 }
 
 template <class T>
-void test_regular_move(T x, T y)
-{
+void test_regular_move(T x, T y) {
     T x1{x};
     T z{std::move(x1)};
     CHECK(x == z);
@@ -42,8 +39,7 @@ void test_regular_move(T x, T y)
 }
 
 template <class T>
-void test_regular_swap(T x, T y)
-{
+void test_regular_swap(T x, T y) {
     T x1{x}, y1{y};
     using std::swap;
     swap(x1, y1);
@@ -52,8 +48,7 @@ void test_regular_swap(T x, T y)
 }
 
 template <class T>
-void test_regular(T x, T y)
-{
+void test_regular(T x, T y) {
     static_assert(std::regular<T>);
     REQUIRE(x != y);
     test_regular_default_constructor<T>();

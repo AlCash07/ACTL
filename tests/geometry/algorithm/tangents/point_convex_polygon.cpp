@@ -9,13 +9,11 @@
 #include "geometry/polygons.hpp"
 #include "test.hpp"
 
-TEST_CASE("max polygon")
-{
+TEST_CASE("max polygon") {
     cast_before<Mul, long long> policy;
     constexpr int M = 100'000'000;
     auto poly = get_max_convex_polygon(M);
-    auto random_coordinate = [&]()
-    {
+    auto random_coordinate = [&]() {
         int x = random.uniform(-10 * M, 10 * M);
         if (x >= 0 && x <= M)
             x += M;
@@ -23,8 +21,7 @@ TEST_CASE("max polygon")
             x -= M;
         return x;
     };
-    for ([[maybe_unused]] int i : irange(2222))
-    {
+    for ([[maybe_unused]] int i : irange(2222)) {
         point<int> p{random_coordinate(), random_coordinate()};
         std::vector<decltype(poly.cbegin())> res;
         tangents(policy, p, poly, std::back_inserter(res));

@@ -7,8 +7,7 @@
 #include <actl/operation/scalar/common/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("common")
-{
+TEST_CASE("common") {
     using one = ac::constant<1>;
     static_assert(std::is_same_v<
                   none,

@@ -18,16 +18,13 @@ namespace ac {
 namespace detail {
 
 template <class M1, class M2, class V, bool I1, bool I2>
-struct cm_range
-{
-    struct get2
-    {
+struct cm_range {
+    struct get2 {
         // Pointer is used instead of a reference to support copy assignment
         // required for std::copyable.
         M2* map2;
 
-        V operator()(map_pair_t<M1> p1) const
-        {
+        V operator()(map_pair_t<M1> p1) const {
             return {p1.first, ac::get(*map2, p1.second)};
         }
     };
@@ -36,16 +33,13 @@ struct cm_range
 };
 
 template <class M1, class M2, class V>
-struct cm_range<M1, M2, V, false, true>
-{
-    struct invert1
-    {
+struct cm_range<M1, M2, V, false, true> {
+    struct invert1 {
         // Pointer is used instead of a reference to support copy assignment
         // required for std::copyable.
         M1* map1;
 
-        V operator()(map_pair_t<M2> p2) const
-        {
+        V operator()(map_pair_t<M2> p2) const {
             return {ac::invert(*map1, p2.first), p2.second};
         }
     };
@@ -55,20 +49,18 @@ struct cm_range<M1, M2, V, false, true>
 };
 
 template <class M1, class M2, class V>
-struct cm_range<M1, M2, V, false, false>
-{
+struct cm_range<M1, M2, V, false, false> {
     using type = void;
 };
 
 } // namespace detail
 
 template <class Map1, class Map2, class... Maps>
-class composite_map : public composite_map<composite_map<Map1, Map2>, Maps...>
-{};
+class composite_map
+    : public composite_map<composite_map<Map1, Map2>, Maps...> {};
 
 template <class M1, class M2>
-class composite_map<M1, M2>
-{
+class composite_map<M1, M2> {
     using K = map_key_t<M1>;
     using R = map_reference_t<M2>;
 
@@ -78,7 +70,8 @@ public:
 
     static_assert(
         std::is_convertible_v<map_reference_t<M1>, map_key_t<M2>>,
-        "incompatible property maps");
+        "incompatible property maps"
+    );
 
     static constexpr bool writable2 =
         map_traits<M1>::readable && map_traits<M2>::writable;
@@ -103,52 +96,39 @@ public:
 };
 
 template <class... Ms>
-struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits
-{};
+struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits {};
 
 template <class... Ms>
 struct map_traits<composite_map<Ms...> const>
-    : map_traits<composite_map<Ms const...>>
-{};
+    : map_traits<composite_map<Ms const...>> {};
 
 template <class CM>
     requires requires { typename CM::is_composite_map; }
-struct map_ops<CM>
-{
+struct map_ops<CM> {
     using K = map_key_t<CM>;
     using V = map_value_t<CM>;
 
-    static constexpr map_reference_t<CM> get(CM& map, K key)
-    {
+    static constexpr map_reference_t<CM> get(CM& map, K key) {
         return ac::get(map.map2, ac::get(map.map1, key));
     }
 
-    static constexpr void put(CM& map, K key, V const& value)
-    {
-        if constexpr (CM::writable2)
-        {
+    static constexpr void put(CM& map, K key, V const& value) {
+        if constexpr (CM::writable2) {
             ac::put(map.map2, ac::get(map.map1, key), value);
-        }
-        else
-        {
+        } else {
             ac::put(map.map1, key, ac::invert(map.map2, value));
         }
     }
 
-    static constexpr K invert(CM& map, V const& value)
-    {
+    static constexpr K invert(CM& map, V const& value) {
         return ac::invert(map.map1, ac::invert(map.map2, value));
     }
 
-    static constexpr map_range_t<CM> map_range(CM& map)
-    {
-        if constexpr (CM::iterable1)
-        {
+    static constexpr map_range_t<CM> map_range(CM& map) {
+        if constexpr (CM::iterable1) {
             map_range_t<decltype(map.map1)> r = ac::map_range(map.map1);
             return {{r.begin(), &map.map2}, {r.end(), &map.map2}};
-        }
-        else if constexpr (CM::iterable2)
-        {
+        } else if constexpr (CM::iterable2) {
             map_range_t<decltype(map.map2)> r = ac::map_range(map.map2);
             return {{r.begin(), &map.map1}, {r.end(), &map.map1}};
         }

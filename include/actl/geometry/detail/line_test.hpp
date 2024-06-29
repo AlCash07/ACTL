@@ -12,10 +12,9 @@ namespace ac::detail {
 
 template <class T, class U>
 bool endpoint_test(
-    Policy auto const& policy, endpoint kind, T const& lhs, U const& rhs)
-{
-    switch (kind)
-    {
+    Policy auto const& policy, endpoint kind, T const& lhs, U const& rhs
+) {
+    switch (kind) {
         case endpoint::free:
             return true;
         case endpoint::closed:
@@ -27,8 +26,8 @@ bool endpoint_test(
 
 template <class T, class U>
 bool line_test(
-    Policy auto const& policy, line_kind kind, T const& num, U const& den)
-{
+    Policy auto const& policy, line_kind kind, T const& num, U const& den
+) {
     return endpoint_test(policy, begin(kind), 0, num) &&
            endpoint_test(policy, end(kind), num, den);
 }

@@ -6,8 +6,9 @@
 
 #include <actl/container/array/semi_static_array_selector.hpp>
 
-static_assert(
-    std::is_same_v<ac::static_array<size_t>, ac::semi_static_array_t<size_t>>);
+static_assert(std::is_same_v<
+              ac::static_array<size_t>,
+              ac::semi_static_array_t<size_t>>);
 static_assert(std::is_same_v<
               ac::static_array<size_t, 1>,
               ac::semi_static_array_t<size_t, 1>>);

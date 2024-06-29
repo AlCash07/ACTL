@@ -11,8 +11,7 @@
 
 using namespace ac::io;
 
-TEST_CASE("whitespace skip")
-{
+TEST_CASE("whitespace skip") {
     memory<in> id{" \n\tb"};
     char a, b;
     CHECK(read(id, text{}, a, ws, b));

@@ -16,8 +16,7 @@ namespace ac {
 // https://en.cppreference.com/w/cpp/iterator/random_access_iterator
 template <class Iter>
 class random_access_iterator_interface
-    : public bidirectional_iterator_interface<Iter>
-{
+    : public bidirectional_iterator_interface<Iter> {
 public:
     using iterator_category = std::random_access_iterator_tag;
 
@@ -55,13 +54,13 @@ public:
 
     friend bool operator==(
         random_access_iterator_interface const& lhs,
-        random_access_iterator_interface const& rhs)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs <=> rhs == 0)
+        random_access_iterator_interface const& rhs
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs <=> rhs == 0)
 
     friend auto operator<=>(
         random_access_iterator_interface const& lhs,
-        random_access_iterator_interface const& rhs)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.derived() - rhs.derived() <=> 0)
+        random_access_iterator_interface const& rhs
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.derived() - rhs.derived() <=> 0)
 };
 
 } // namespace ac

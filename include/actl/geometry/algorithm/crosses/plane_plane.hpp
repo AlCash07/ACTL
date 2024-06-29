@@ -14,8 +14,8 @@ namespace ac {
 
 template <index N, class T0, class T1>
 bool crosses(
-    Policy auto const& policy, plane<T0, N> const& lhs, plane<T1, N> const& rhs)
-{
+    Policy auto const& policy, plane<T0, N> const& lhs, plane<T1, N> const& rhs
+) {
     AC_ASSERT(!degenerate(policy, lhs) && !degenerate(policy, rhs));
     if (!collinear(policy, lhs.normal, rhs.normal))
         return true;
@@ -23,7 +23,8 @@ bool crosses(
     while (equal(policy, lhs.normal[i], 0))
         ++i;
     return collinear(
-        policy, point{lhs.normal[i], lhs.d}, point{rhs.normal[i], rhs.d});
+        policy, point{lhs.normal[i], lhs.d}, point{rhs.normal[i], rhs.d}
+    );
 }
 
 } // namespace ac

@@ -16,24 +16,26 @@ template <class S, class Context, class Op, class... Ts>
 struct expression_overload;
 
 template <size_t... Is, class Context, class Op, class... Ts>
-struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...>
-{
+struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...> {
     template <class Op1, class... Us>
-    static constexpr auto make_expression(Context context, Op1&& op, Us&&... xs)
-    {
+    static constexpr auto make_expression(
+        Context context, Op1&& op, Us&&... xs
+    ) {
         return expression{
             resolve_overload<Us...>(context, std::forward<Op1>(op)),
-            std::forward<Us>(xs)...};
+            std::forward<Us>(xs)...
+        };
     }
 
     template <class OE>
-    static constexpr auto resolve(Context context, OE&& oe)
-    {
+    static constexpr auto resolve(Context context, OE&& oe) {
         return make_expression(
             context,
             static_cast<OE&&>(oe).operation(),
             resolve_overload<Ts...>(
-                context, std::get<Is + 1>(static_cast<OE&&>(oe).args))...);
+                context, std::get<Is + 1>(static_cast<OE&&>(oe).args)
+            )...
+        );
     }
 };
 
@@ -42,13 +44,13 @@ struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...>
 template <class Context, class Op, class... Us, class... Ts>
     requires(
         !(is_overload_resolved_v<Context, Op, Us...> &&
-          (... && is_overload_resolved_v<Context, Us, Ts...>)))
+          (... && is_overload_resolved_v<Context, Us, Ts...>))
+    )
 struct overload_resolver<Context, expression<Op, Us...>, Ts...>
     : detail::expression_overload<
           argument_indices<expression<Op, Us...>>,
           Context,
           expression<Op, Us...>,
-          Ts...>
-{};
+          Ts...> {};
 
 } // namespace ac

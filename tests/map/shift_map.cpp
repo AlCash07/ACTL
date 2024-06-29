@@ -8,14 +8,12 @@
 #include "test.hpp"
 
 template <class Map>
-void test_lowercase(Map map)
-{
+void test_lowercase(Map map) {
     CHECK(1 == get(map, 'b'));
     CHECK('c' == invert(map, 2));
 }
 
-TEST_CASE("lowercase")
-{
+TEST_CASE("lowercase") {
     test_lowercase(make_shift_map<int>('a'));
     test_lowercase(static_shift_map<'a', int>{});
 }

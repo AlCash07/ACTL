@@ -11,15 +11,13 @@
 
 namespace ac::io {
 
-struct escaped
-{
+struct escaped {
     struct format_tag;
 };
 
 namespace detail {
 
-inline char escape(char c)
-{
+inline char escape(char c) {
     // clang-format off
     switch (c) {
         case '\0': return '0';
@@ -39,16 +37,13 @@ inline char escape(char c)
 }
 
 template <class Char>
-struct escaped_string
-{
+struct escaped_string {
     std::basic_string_view<Char> value;
 };
 
 template <Device Dev, class Char>
-bool write_final(Dev& od, Format auto&, escaped_string<Char> const& s)
-{
-    for (auto c : s.value)
-    {
+bool write_final(Dev& od, Format auto&, escaped_string<Char> const& s) {
+    for (auto c : s.value) {
         using C = char_t<Dev>;
         auto e = escape(c);
         bool ok =
@@ -62,15 +57,13 @@ bool write_final(Dev& od, Format auto&, escaped_string<Char> const& s)
 
 } // namespace detail
 
-auto encode(escaped, std::same_as<char> auto const& c)
-{
+auto encode(escaped, std::same_as<char> auto const& c) {
     return batch{'\'', detail::escaped_string<char>{{&c, 1}}, '\''};
 }
 
 template <class S>
     requires is_string_v<S>
-auto encode(escaped, S const& s)
-{
+auto encode(escaped, S const& s) {
     return batch{'\"', detail::escaped_string<char>{s}, '\"'};
 }
 

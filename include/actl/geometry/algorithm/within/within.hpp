@@ -10,22 +10,15 @@
 
 namespace ac {
 
-enum class within
-{
-    inside,
-    border,
-    outside
-};
+enum class within { inside, border, outside };
 
-bool write(Device auto& od, Format auto& fmt, enum within x)
-{
+bool write(Device auto& od, Format auto& fmt, enum within x) {
     constexpr char const* within_name[] = {"inside", "border", "outside"};
     return write(od, fmt, within_name[static_cast<index>(x)]);
 }
 
 template <index N, class T, class U>
-enum within within(point<T, N> const& lhs, U const& rhs)
-{
+enum within within(point<T, N> const& lhs, U const& rhs) {
     return within(geometry_policy, lhs, rhs);
 }
 

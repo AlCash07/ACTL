@@ -8,8 +8,7 @@
 #include <limits>
 #include "test.hpp"
 
-TEST_CASE("abs")
-{
+TEST_CASE("abs") {
     CHECK(0 == ac::abs(0));
     constexpr auto int_max = std::numeric_limits<int>::max();
     CHECK(int_max == ac::abs(int_max));

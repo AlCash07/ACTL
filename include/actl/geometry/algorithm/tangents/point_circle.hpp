@@ -19,15 +19,13 @@ OutIter tangents(
     Policy auto const& policy,
     point<T0> const& p,
     circle<T1> const& c,
-    OutIter dst)
-{
-    switch (within(policy, p, c))
-    {
-        case within::outside:
-        {
+    OutIter dst
+) {
+    switch (within(policy, p, c)) {
+        case within::outside: {
             auto dist = sqrt(
-                policy,
-                sqr(norm(policy, c.center - p)) - sqr(policy, c.radius));
+                policy, sqr(norm(policy, c.center - p)) - sqr(policy, c.radius)
+            );
             intersect(policy, make_circle(p, dist), c, dst);
             break;
         }
@@ -44,14 +42,12 @@ OutIter tangents(
     polar_angle_policy<P> pap,
     point<T0> const& p,
     circle<T1> const& c,
-    OutIter dst)
-{
+    OutIter dst
+) {
     auto& policy = pap.policy;
     auto center_vector = c.center - p;
-    switch (within(policy, p, c))
-    {
-        case within::outside:
-        {
+    switch (within(policy, p, c)) {
+        case within::outside: {
             auto center_angle = angle(policy, center_vector);
             auto offset = atan2(c.radius, norm(policy, center_vector));
             *dst++ = center_angle - offset;

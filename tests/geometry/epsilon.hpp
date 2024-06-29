@@ -8,10 +8,8 @@
 
 #include <actl/operation/policy/common/absolute_error.hpp>
 
-struct epsilon9
-{
-    static constexpr double epsilon()
-    {
+struct epsilon9 {
+    static constexpr double epsilon() {
         return 1e-9;
     }
 };

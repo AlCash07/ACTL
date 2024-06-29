@@ -12,14 +12,12 @@
 namespace ac::graph {
 
 template <class T>
-struct list_value
-{
+struct list_value {
     using type = value_t<T>;
 };
 
 template <>
-struct list_value<none>
-{
+struct list_value<none> {
     using type = none;
 };
 

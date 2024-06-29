@@ -12,14 +12,12 @@ namespace ac {
 
 /// Empty class to enable void instantiation and take advantage of empty-base
 /// optimization.
-struct none
-{
+struct none {
     none() = default;
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
     template <class T, class... Ts>
-    explicit constexpr none(T, Ts...) noexcept
-    {}
+    explicit constexpr none(T, Ts...) noexcept {}
 
     using value_type = none;
 };

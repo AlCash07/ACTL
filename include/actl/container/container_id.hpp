@@ -22,76 +22,65 @@ template <class C, bool = Container<C>, bool = RandomAccessRange<C>>
 struct container_id_traits;
 
 template <class Iter>
-class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter>
-{
+class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter> {
     using base_t = iterator_adaptor<iterator_id<Iter>, Iter>;
 
 public:
     using value_type = iterator_id<Iter>;
 
-    explicit iterator_id(Iter iter = {}) noexcept(
-        std::is_nothrow_copy_constructible_v<Iter>)
-        : base_t{iter}
-    {}
+    explicit iterator_id(
+        Iter iter = {}
+    ) noexcept(std::is_nothrow_copy_constructible_v<Iter>)
+        : base_t{iter} {}
 
-    explicit iterator_id(void* raw) : base_t{bit_cast<Iter>(raw)}
-    {
+    explicit iterator_id(void* raw) : base_t{bit_cast<Iter>(raw)} {
         // TODO: implement more general logic in case this condition fails.
         static_assert(sizeof(Iter) == sizeof(void*));
     }
 
-    friend std::uintptr_t get_id_key(iterator_id id)
-    {
+    friend std::uintptr_t get_id_key(iterator_id id) {
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.base()));
     }
 
-    bool operator<(iterator_id rhs) const
-    {
+    bool operator<(iterator_id rhs) const {
         return get_id_key(*this) < get_id_key(rhs);
     }
 
     iterator_id operator*() const
-        noexcept(std::is_nothrow_copy_constructible_v<Iter>)
-    {
+        noexcept(std::is_nothrow_copy_constructible_v<Iter>) {
         return *this;
     }
 
 private:
     friend struct ac::hash_access;
 
-    size_t hash() const
-    {
+    size_t hash() const {
         return hash_value(get_id_key(*this));
     }
 };
 
 template <class C>
-struct container_id_traits<C, true, false>
-{
+struct container_id_traits<C, true, false> {
     using id = iterator_id<range_iterator_t<C const>>;
     using iterator = id;
 };
 
 template <class C>
-struct container_id_traits<C, true, true>
-{
+struct container_id_traits<C, true, true> {
     using id = int;
     using iterator = integer_iterator<id>;
 };
 
-inline constexpr int get_id_key(int id)
-{
+inline constexpr int get_id_key(int id) {
     return id;
 }
 
-inline constexpr int id_to_raw(int id)
-{
+inline constexpr int id_to_raw(int id) {
     return id;
 }
 
 template <class Iter>
-void* id_to_raw(iterator_id<Iter> id)
-{
+void* id_to_raw(iterator_id<Iter> id) {
     return bit_cast<void*>(id);
 }
 
@@ -109,8 +98,7 @@ template <class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
 template <class C>
-container_id<C> id_begin(C const& cont)
-{
+container_id<C> id_begin(C const& cont) {
     if constexpr (RandomAccessRange<C>)
         return 0;
     else
@@ -118,8 +106,7 @@ container_id<C> id_begin(C const& cont)
 }
 
 template <class C>
-container_id<C> id_end(C const& cont)
-{
+container_id<C> id_end(C const& cont) {
     if constexpr (RandomAccessRange<C>)
         return static_cast<container_id<C>>(ranges::size(cont));
     else
@@ -128,8 +115,7 @@ container_id<C> id_end(C const& cont)
 
 // Returns an invalid Id that is fixed for the given container.
 template <class C>
-container_id<C> id_null(C const& cont)
-{
+container_id<C> id_null(C const& cont) {
     if constexpr (RandomAccessRange<C>)
         return -1;
     else
@@ -137,15 +123,13 @@ container_id<C> id_null(C const& cont)
 }
 
 template <class C>
-auto id_range(C const& cont)
-{
+auto id_range(C const& cont) {
     using iterator = container_id_iterator<C>;
     return make_range(iterator{id_begin(cont)}, iterator{id_end(cont)});
 }
 
 template <class C>
-container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter)
-{
+container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter) {
     if constexpr (RandomAccessRange<C>)
         return static_cast<container_id<C>>(iter - ranges::begin(cont));
     else
@@ -153,35 +137,26 @@ container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter)
 }
 
 template <class C>
-range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id)
-{
-    if constexpr (RandomAccessRange<C>)
-    {
+range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id) {
+    if constexpr (RandomAccessRange<C>) {
         AC_ASSERT(0 <= id && id <= id_end(cont));
         return ranges::begin(cont) + id;
-    }
-    else
-    {
+    } else {
         return id.base();
     }
 }
 
 template <class C>
-void id_check(C& cont, container_id<C> id)
-{
-    if constexpr (RandomAccessRange<C>)
-    {
+void id_check(C& cont, container_id<C> id) {
+    if constexpr (RandomAccessRange<C>) {
         AC_ASSERT(0 <= id && id < id_end(cont));
-    }
-    else
-    {
+    } else {
         AC_ASSERT(id != id_end(cont));
     }
 }
 
 template <class C>
-reference_t<C> id_at(C& cont, container_id<C> id)
-{
+reference_t<C> id_at(C& cont, container_id<C> id) {
     id_check(cont, id);
     if constexpr (RandomAccessRange<C>)
         return cont[static_cast<range_size_t<C>>(id)];
@@ -193,8 +168,7 @@ reference_t<C> id_at(C& cont, container_id<C> id)
 }
 
 template <class C>
-reference_t<C const> id_at(C const& cont, container_id<C> id)
-{
+reference_t<C const> id_at(C const& cont, container_id<C> id) {
     id_check(cont, id);
     if constexpr (RandomAccessRange<C>)
         return cont[static_cast<range_size_t<C>>(id)];
@@ -205,21 +179,18 @@ reference_t<C const> id_at(C const& cont, container_id<C> id)
 /* Generic container functions with id */
 
 template <class C, class... Ts>
-std::pair<container_id<C>, bool> id_emplace(C& cont, Ts&&... args)
-{
+std::pair<container_id<C>, bool> id_emplace(C& cont, Ts&&... args) {
     auto res = emplace(cont, std::forward<Ts>(args)...);
     return {iterator_to_id(cont, res.first), res.second};
 }
 
 template <class C>
-void id_erase(C& cont, container_id<C> id)
-{
+void id_erase(C& cont, container_id<C> id) {
     cont.erase(id_to_iterator(cont, id));
 }
 
 template <class C, class T>
-container_id<C> id_find(C const& cont, T const& value)
-{
+container_id<C> id_find(C const& cont, T const& value) {
     return iterator_to_id(cont, find(cont, value));
 }
 

@@ -10,8 +10,7 @@
 #include <actl/std/vector.hpp>
 #include "test.hpp"
 
-TEST_CASE("first")
-{
+TEST_CASE("first") {
     std::vector<int> v{2, 3, 4};
     auto map = composite_map{v, static_shift_map<2>{}};
     CHECK(1 == get(map, 1));
@@ -22,8 +21,7 @@ TEST_CASE("first")
     CHECK(C{{0, 0}, {1, 1}, {2, 3}} == C{r.begin(), r.end()});
 }
 
-TEST_CASE("second")
-{
+TEST_CASE("second") {
     std::vector<int> v{2, 3, 4};
     auto map = composite_map{static_shift_map<2>{}, v};
     CHECK(3 == get(map, 3));
@@ -34,8 +32,7 @@ TEST_CASE("second")
     CHECK(C{{2, 2}, {3, 3}, {4, 5}} == C{r.begin(), r.end()});
 }
 
-TEST_CASE("invert")
-{
+TEST_CASE("invert") {
     auto map = composite_map{static_shift_map<2>{}, static_shift_map<3>{}};
     CHECK(0 == get(map, 5));
     CHECK(7 == invert(map, 2));

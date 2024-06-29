@@ -12,16 +12,13 @@
 namespace ac::io {
 
 template <Device Dev, Byte B, size_t N>
-bool write_final(Dev& od, Format auto&, span<B, N> s)
-{
-    return od.write(
-               {reinterpret_cast<char_t<Dev> const*>(s.data()), s.size()}) ==
-           s.size();
+bool write_final(Dev& od, Format auto&, span<B, N> s) {
+    return od.write({reinterpret_cast<char_t<Dev> const*>(s.data()), s.size()}
+           ) == s.size();
 }
 
 template <Device Dev, Byte B, size_t N>
-bool read_final(Dev& id, Format auto&, span<B, N>& s)
-{
+bool read_final(Dev& id, Format auto&, span<B, N>& s) {
     return id.read({reinterpret_cast<char_t<Dev>*>(s.data()), s.size()}) ==
            s.size();
 }

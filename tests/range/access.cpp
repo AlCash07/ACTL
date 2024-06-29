@@ -10,28 +10,23 @@
 
 namespace test {
 
-struct custom_array
-{
+struct custom_array {
     int arr[4];
 };
 
-constexpr auto begin(custom_array const& a) noexcept
-{
+constexpr auto begin(custom_array const& a) noexcept {
     return ac::ranges::begin(a.arr);
 }
 
-constexpr auto end(custom_array const& a) noexcept
-{
+constexpr auto end(custom_array const& a) noexcept {
     return ac::ranges::end(a.arr);
 }
 
-constexpr auto data(custom_array const& a) noexcept
-{
+constexpr auto data(custom_array const& a) noexcept {
     return ac::ranges::data(a.arr);
 }
 
-constexpr auto size(custom_array const& a) noexcept
-{
+constexpr auto size(custom_array const& a) noexcept {
     return ac::ranges::size(a.arr);
 }
 
@@ -45,4 +40,5 @@ static_assert(1 == *ac::ranges::data(arr));
 
 static_assert(equal_same_type(ac::size_constant<4>{}, ac::ranges::size(arr)));
 static_assert(equal_same_type(
-    ac::size_constant<3>{}, ac::ranges::size(std::array<int, 3>{})));
+    ac::size_constant<3>{}, ac::ranges::size(std::array<int, 3>{})
+));

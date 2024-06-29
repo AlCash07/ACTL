@@ -12,8 +12,7 @@
 // 1 - 0 - 7   6
 // |   |
 // 2 - 3   4 - 5
-TEST_CASE("connected components basic")
-{
+TEST_CASE("connected components basic") {
     adjacency_list<undirected> graph;
     graph.add_edge(0, 1);
     graph.add_edge(1, 2);
@@ -21,7 +20,7 @@ TEST_CASE("connected components basic")
     graph.add_edge(0, 7);
     graph.add_edge(4, 5);
     std::vector<int> components(8);
-    depth_first_search(make_connected_component_recorder(components, -1))(
-        graph);
+    depth_first_search(make_connected_component_recorder(components, -1))(graph
+    );
     test_partition({{0, 1, 2, 3, 7}, {4, 5}, {6}}, components);
 }

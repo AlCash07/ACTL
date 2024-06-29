@@ -11,18 +11,15 @@
 namespace ac {
 
 template <class Op>
-struct default_overload
-{};
+struct default_overload {};
 
 template <class Op>
     requires requires { Op::formula; }
-struct default_overload<Op>
-{
+struct default_overload<Op> {
     static constexpr auto formula = Op::formula;
 };
 
 template <class Op, class... Ts>
-struct overload : default_overload<Op>
-{};
+struct overload : default_overload<Op> {};
 
 } // namespace ac

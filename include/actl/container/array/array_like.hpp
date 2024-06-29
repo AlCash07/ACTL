@@ -15,27 +15,26 @@ namespace ac {
 namespace detail {
 
 template <class T, class Seq>
-struct has_constant_indices : std::false_type
-{};
+struct has_constant_indices : std::false_type {};
 
 template <class T, size_t... Is>
     requires(... && requires(T t) { t[ac::constant<Is>{}]; })
-struct has_constant_indices<T, std::index_sequence<Is...>> : std::true_type
-{};
+struct has_constant_indices<T, std::index_sequence<Is...>> : std::true_type {};
 
 } // namespace detail
 
 template <class T>
-concept ConstantIndexed = static_size_v<T> !=
-dynamic_size&& detail::
-    has_constant_indices<T, std::make_index_sequence<static_size_v<T>>>::value;
+concept ConstantIndexed =
+    static_size_v<T> != dynamic_size &&
+    detail::has_constant_indices<
+        T,
+        std::make_index_sequence<static_size_v<T>>>::value;
 
 template <class T>
-concept DynamicallyIndexed = static_size_v<T> ==
-dynamic_size&& requires(T t) {
-                   t.size();
-                   t[size_t{}];
-               };
+concept DynamicallyIndexed = static_size_v<T> == dynamic_size && requires(T t) {
+    t.size();
+    t[size_t{}];
+};
 
 /// We define the array-like concept as something with size and subscript
 /// operator to index the elements from 0 to size-1.

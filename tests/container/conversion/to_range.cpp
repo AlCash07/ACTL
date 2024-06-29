@@ -18,24 +18,26 @@ static_assert(ac::equal_arrays(Array2i{3, 2}, ac::convert_to<Array2i>(3, 2)));
 // compatible types
 static_assert(ac::can_convert_to_v<Array2i, uint32_t, int>);
 static_assert(
-    ac::equal_arrays(Array2i{3, 2}, ac::convert_to<Array2i>(uint32_t{3}, 2)));
+    ac::equal_arrays(Array2i{3, 2}, ac::convert_to<Array2i>(uint32_t{3}, 2))
+);
 // different size
 static_assert(!ac::can_convert_to_v<Array2i, int>);
 static_assert(!ac::can_convert_to_v<Array2i, int, int, int>);
 // incompatible types
 static_assert(!ac::can_convert_to_v<Array2i, void*, int>);
 
-TEST_CASE("conversion to a dynamic-size range")
-{
+TEST_CASE("conversion to a dynamic-size range") {
     // same types
     static_assert(ac::can_convert_to_v<std::vector<int>, int, int, int>);
     CHECK(
-        std::vector<int>{3, 2, 1} == ac::convert_to<std::vector<int>>(3, 2, 1));
+        std::vector<int>{3, 2, 1} == ac::convert_to<std::vector<int>>(3, 2, 1)
+    );
     // compatible types
     static_assert(ac::can_convert_to_v<std::vector<uint32_t>, int, int>);
     CHECK(
         std::vector<uint32_t>{3, 2} ==
-        ac::convert_to<std::vector<uint32_t>>(3, 2));
+        ac::convert_to<std::vector<uint32_t>>(3, 2)
+    );
     // incompatible types
     static_assert(!ac::can_convert_to_v<std::vector<int>, int*, int>);
 }

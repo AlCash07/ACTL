@@ -12,21 +12,16 @@ namespace ac {
 
 template <class T, class U>
     requires geometry::reverse_order<T, U>
-auto area(Policy auto const& policy, T const& lhs, U const& rhs)
-{
-    if constexpr (geometry_traits<T>::dimension == 2)
-    {
+auto area(Policy auto const& policy, T const& lhs, U const& rhs) {
+    if constexpr (geometry_traits<T>::dimension == 2) {
         return -area(policy, rhs, lhs);
-    }
-    else
-    {
+    } else {
         return area(policy, rhs, lhs);
     }
 }
 
 template <class T, class... Ts, disable_int_if_policy<T> = 0>
-auto area(T const& x, Ts const&... xs)
-{
+auto area(T const& x, Ts const&... xs) {
     return area(geometry_policy, x, xs...);
 }
 

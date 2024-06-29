@@ -12,17 +12,14 @@
 namespace ac {
 
 template <class Map>
-struct predecessor_edge_recorder
-{
+struct predecessor_edge_recorder {
     template <class E>
-    void operator()(on_tree_edge_start, E e)
-    {
+    void operator()(on_tree_edge_start, E e) {
         put(map, e.target(), e);
     }
 
     template <class E>
-    void operator()(on_edge_relaxed, E e)
-    {
+    void operator()(on_edge_relaxed, E e) {
         operator()(on_tree_edge_start{}, e);
     }
 
@@ -33,10 +30,10 @@ template <class Map>
 predecessor_edge_recorder(Map&&) -> predecessor_edge_recorder<Map>;
 
 template <class Graph>
-auto make_default_predecessor_edge_recorder(Graph const& graph)
-{
+auto make_default_predecessor_edge_recorder(Graph const& graph) {
     return predecessor_edge_recorder{
-        make_default_vertex_map<edge_t<Graph>>(graph)};
+        make_default_vertex_map<edge_t<Graph>>(graph)
+    };
 }
 
 } // namespace ac

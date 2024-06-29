@@ -12,14 +12,12 @@
 namespace ac {
 
 template <index N, class T>
-auto norm(Policy auto const& policy, point<T, N> const& p)
-{
+auto norm(Policy auto const& policy, point<T, N> const& p) {
     return sqrt(policy, dot(policy, p));
 }
 
 template <index N, class T>
-auto norm(point<T, N> const& p)
-{
+auto norm(point<T, N> const& p) {
     return norm(geometry_policy, p);
 }
 

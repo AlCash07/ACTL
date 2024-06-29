@@ -17,8 +17,7 @@ template <
     class VertexContainer = none>
 class vertex_edge_list
     : public vertex_list<VertexContainer>
-    , public edge_list<Directed, container_id<VertexContainer>, EdgeContainer>
-{
+    , public edge_list<Directed, container_id<VertexContainer>, EdgeContainer> {
     using vbase_t = vertex_list<VertexContainer>;
     using ebase_t =
         edge_list<Directed, container_id<VertexContainer>, EdgeContainer>;
@@ -30,10 +29,8 @@ public:
     using vbase_t::vbase_t;
 
     template <class... Ts>
-    std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args)
-    {
-        if constexpr (RandomAccessRange<VertexContainer>)
-        {
+    std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
+        if constexpr (RandomAccessRange<VertexContainer>) {
             vertex n = std::max(u, v);
             if (n >= this->vertex_count())
                 this->resize(n + 1);
@@ -42,8 +39,7 @@ public:
     }
 
     template <class... Ts>
-    edge add_edge(vertex u, vertex v, Ts&&... args)
-    {
+    edge add_edge(vertex u, vertex v, Ts&&... args) {
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
@@ -52,20 +48,17 @@ public:
         bool Unique = UniqueRange<VertexContainer>,
         class T = range_value_t<VertexContainer>>
         requires Unique
-    edge add_edge(T const& u, T const& v, Ts&&... args)
-    {
+    edge add_edge(T const& u, T const& v, Ts&&... args) {
         return add_edge(
-            this->add_vertex(u),
-            this->add_vertex(v),
-            std::forward<Ts>(args)...);
+            this->add_vertex(u), this->add_vertex(v), std::forward<Ts>(args)...
+        );
     }
 
     // TODO: implement using one pass over edges that will remove edges and
     // decrease int IDs.
     void remove_vertex(vertex u);
 
-    void swap(vertex_edge_list& rhs)
-    {
+    void swap(vertex_edge_list& rhs) {
         vbase_t::swap(rhs);
         ebase_t::swap(rhs);
     }

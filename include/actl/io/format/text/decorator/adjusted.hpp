@@ -12,8 +12,7 @@
 
 namespace ac::io {
 
-enum class adjust_to : uint8_t
-{
+enum class adjust_to : uint8_t {
     left = 0,
     right = 1,
     center = 2,
@@ -21,12 +20,11 @@ enum class adjust_to : uint8_t
 };
 
 template <class Char = char>
-struct adjusted
-{
+struct adjusted {
     explicit constexpr adjusted(
-        size_t width, adjust_to where = adjust_to::left, Char fill = ' ')
-        : width{width}, where{where}, fill{fill}
-    {}
+        size_t width, adjust_to where = adjust_to::left, Char fill = ' '
+    )
+        : width{width}, where{where}, fill{fill} {}
 
     size_t width;
     adjust_to where;
@@ -36,8 +34,7 @@ struct adjusted
 };
 
 template <class Format>
-constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size)
-{
+constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size) {
     if (fmt.width <= size)
         return {0, 0};
     size = static_cast<size_t>(fmt.width - size);
@@ -53,15 +50,13 @@ constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size)
 
 template <class Char, class T>
     requires std::is_constructible_v<cspan<Char>, T>
-auto encode(adjusted<Char> const& fmt, T&& x)
-{
+auto encode(adjusted<Char> const& fmt, T&& x) {
     auto [l, r] = adjustment(fmt, cspan<Char>{x}.size());
     return batch{repeat{fmt.fill, l}, std::forward<T>(x), repeat{fmt.fill, r}};
 }
 
 template <class Char>
-auto encode(adjusted<Char> const& fmt, Char x)
-{
+auto encode(adjusted<Char> const& fmt, Char x) {
     auto [l, r] = adjustment(fmt, 1);
     return batch{repeat{fmt.fill, l}, std::move(x), repeat{fmt.fill, r}};
 }

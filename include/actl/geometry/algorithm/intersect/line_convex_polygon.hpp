@@ -20,18 +20,19 @@ OutIter intersect(
     line_scalar_policy<P> lsp,
     line<T, 2, K> const& l,
     convex_polygon<U> const& poly,
-    OutIter dst)
-{
+    OutIter dst
+) {
     auto& policy = lsp.policy;
     AC_ASSERT(!degenerate(policy, l));
-    auto right = cyclic_iterator{
-        poly,
-        extreme_vertex(policy, poly, [&l](auto const&) { return l.vector; })};
-    auto left = cyclic_iterator{
-        poly,
-        extreme_vertex(policy, poly, [&l](auto const&) { return -l.vector; })};
-    auto vertex_orient = [&](auto it)
-    {
+    auto right =
+        cyclic_iterator{poly, extreme_vertex(policy, poly, [&l](auto const&) {
+                            return l.vector;
+                        })};
+    auto left =
+        cyclic_iterator{poly, extreme_vertex(policy, poly, [&l](auto const&) {
+                            return -l.vector;
+                        })};
+    auto vertex_orient = [&](auto it) {
         return orientation(policy, *it, l);
     };
     auto right_orient = vertex_orient(right);
@@ -42,23 +43,19 @@ OutIter intersect(
     // TODO: in case line passes through exactly one vertex, it's reported
     // twice. Fix this.
     auto intersect_chain =
-        [&](auto first, auto last, orientation2d first_orient, OutIter dst)
-    {
-        while (first + 1 != last)
-        {
-            auto middle = first + (last - first) / 2;
-            if (vertex_orient(middle) == first_orient)
-            {
-                first = middle;
+        [&](auto first, auto last, orientation2d first_orient, OutIter dst) {
+            while (first + 1 != last) {
+                auto middle = first + (last - first) / 2;
+                if (vertex_orient(middle) == first_orient) {
+                    first = middle;
+                } else {
+                    last = middle;
+                }
             }
-            else
-            {
-                last = middle;
-            }
-        }
-        return intersect(
-            line_scalar_policy{policy}, l, make_line(*first, *last), dst);
-    };
+            return intersect(
+                line_scalar_policy{policy}, l, make_line(*first, *last), dst
+            );
+        };
     dst = intersect_chain(left, right, left_orient, dst);
     return intersect_chain(right, left, right_orient, dst);
 }

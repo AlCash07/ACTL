@@ -17,8 +17,7 @@ template <class T, class Seq = tuple_indices_t<T>>
 struct matches_tuple;
 
 template <class T, size_t... Is>
-struct matches_tuple<T, std::index_sequence<Is...>>
-{
+struct matches_tuple<T, std::index_sequence<Is...>> {
     static constexpr bool value =
         (... && std::is_same_v<range_value_t<T>, std::tuple_element_t<Is, T>>);
 };

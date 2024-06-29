@@ -11,24 +11,20 @@
 
 namespace ac {
 
-struct default_range_properties
-{
+struct default_range_properties {
     static constexpr bool is_container = false;
     static constexpr bool is_sorted = false;
     static constexpr bool is_unique = false;
 };
 
 template <class T>
-struct range_properties : default_range_properties
-{};
+struct range_properties : default_range_properties {};
 
 template <class T>
-struct range_properties<T const> : range_properties<T>
-{};
+struct range_properties<T const> : range_properties<T> {};
 
 template <class T, size_t N>
-struct range_properties<T[N]> : default_range_properties
-{
+struct range_properties<T[N]> : default_range_properties {
     static constexpr bool is_container = true;
 };
 

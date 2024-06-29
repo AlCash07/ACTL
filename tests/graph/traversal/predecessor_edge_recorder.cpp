@@ -11,14 +11,13 @@
 #include "graph/sample_graphs.hpp"
 #include "test.hpp"
 
-TEST_CASE("predecessor_edge_recorder bfs")
-{
+TEST_CASE("predecessor_edge_recorder bfs") {
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());
     breadth_first_search{
-        predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)}(
-        graph, 0);
+        predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)
+    }(graph, 0);
     CHECK(
         std::vector<E>{
             E{},
@@ -27,17 +26,17 @@ TEST_CASE("predecessor_edge_recorder bfs")
             graph.find_edge(0, 3),
             graph.find_edge(3, 4),
             graph.find_edge(3, 5),
-        } == pred);
+        } == pred
+    );
 }
 
-TEST_CASE("predecessor_edge_recorder dfs")
-{
+TEST_CASE("predecessor_edge_recorder dfs") {
     auto graph = sample_undirected_graph();
     using E = decltype(graph)::edge;
     std::vector<E> pred((size_t)graph.vertex_count());
     depth_first_search{
-        predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)}(
-        graph, 0);
+        predecessor_edge_recorder{pred}, make_default_discovered_flag(graph)
+    }(graph, 0);
     CHECK(
         std::vector<E>{
             E{},
@@ -46,5 +45,6 @@ TEST_CASE("predecessor_edge_recorder dfs")
             graph.find_edge(2, 3),
             graph.find_edge(3, 4),
             graph.find_edge(4, 5),
-        } == pred);
+        } == pred
+    );
 }

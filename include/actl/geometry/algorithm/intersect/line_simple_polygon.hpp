@@ -22,22 +22,19 @@ OutIter intersect(
     line_scalar_policy<P> lsp,
     line<T, 2, K> const& l,
     simple_polygon<U> const& poly,
-    OutIter dst)
-{
+    OutIter dst
+) {
     auto& policy = lsp.policy;
     // TODO: fix the case when polygon touches the line.
     AC_ASSERT(!degenerate(policy, l));
-    auto vertex_sgn = [&](auto iter)
-    {
+    auto vertex_sgn = [&](auto iter) {
         return static_cast<int>(orientation(policy, *iter, l));
     };
     auto iter = cyclic_begin(poly);
     int prev_sgn = vertex_sgn(it - 1), iter_sgn = vertex_sgn(it);
-    for (auto n = poly.size(); n != 0; --n)
-    {
+    for (auto n = poly.size(); n != 0; --n) {
         int next_sgn = vertex_sgn(iter + 1);
-        if (iter_sgn == 0)
-        {
+        if (iter_sgn == 0) {
             bool ok = false;
             if (prev_sgn == 0)
                 ok = next_sgn ==
@@ -49,9 +46,7 @@ OutIter intersect(
                 ok = next_sgn != prev_sgn;
             if (ok && between_endpoints(policy, *iter, l))
                 *dst++ = project(lsp, *iter, l);
-        }
-        else if (next_sgn == -iter_sgn)
-        {
+        } else if (next_sgn == -iter_sgn) {
             dst = intersect(lsp, l, make_line(*iter, iter[1]), dst);
         }
         prev_sgn = iter_sgn;

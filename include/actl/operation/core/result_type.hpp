@@ -12,44 +12,40 @@
 namespace ac {
 
 template <class Op, class... Ts>
-struct result_type
-{
+struct result_type {
     using type = typename Op::template result_type<Ts...>;
 };
 
 template <class Op, class... Ts>
     requires requires(Op op, Ts... xs) { op.evaluate(xs...); }
-struct result_type<Op, Ts...>
-{
+struct result_type<Op, Ts...> {
     using type = decltype(std::declval<Op>().evaluate(std::declval<Ts>()...));
 };
 
 template <class T>
-struct expression_result_type
-{
+struct expression_result_type {
     using type = T;
 };
 
 template <bool, class Op, class... Ts>
-struct resolved_result_type1 : result_type<std::remove_cvref_t<Op>, Ts...>
-{};
+struct resolved_result_type1 : result_type<std::remove_cvref_t<Op>, Ts...> {};
 
 template <class Op, class... Ts>
 struct resolved_result_type1<false, Op, Ts...>
-    : expression_result_type<decltype(resolve_overload<Ts...>(
-          default_context{}, std::declval<Op>())(std::declval<Ts>()...))>
-{};
+    : expression_result_type<
+          decltype(resolve_overload<
+                   Ts...>(default_context{}, std::declval<Op>())(
+              std::declval<Ts>()...
+          ))> {};
 
 template <bool, class... Ts>
 struct resolved_result_type0
     : resolved_result_type1<
           is_overload_resolved_v<default_context, Ts...>,
-          Ts...>
-{};
+          Ts...> {};
 
 template <class... Ts>
-struct resolved_result_type0<true, Ts...>
-{
+struct resolved_result_type0<true, Ts...> {
     using type = operation_tag;
 };
 

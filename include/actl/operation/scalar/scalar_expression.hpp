@@ -13,21 +13,18 @@ namespace ac {
 
 template <class T>
     requires(!is_expression_v<T>)
-constexpr T eval(T x)
-{
+constexpr T eval(T x) {
     return x;
 }
 
 template <class Expr, size_t... Is>
-constexpr decltype(auto) eval_impl(Expr const& e, std::index_sequence<Is...>)
-{
+constexpr decltype(auto) eval_impl(Expr const& e, std::index_sequence<Is...>) {
     return e.operation().evaluate(std::get<Is + 1>(e.args)...);
 }
 
 template <class Expr>
     requires is_expression_v<Expr>
-constexpr decltype(auto) eval(Expr const& e)
-{
+constexpr decltype(auto) eval(Expr const& e) {
     using helper = expression_helper<Expr>;
     if constexpr (helper::is_resolved)
         return eval_impl(e, argument_indices<Expr>{});
@@ -41,7 +38,6 @@ inline constexpr bool is_scalar_expression_v =
 
 template <class T>
     requires is_scalar_expression_v<T>
-struct can_convert_expression_implicitly<T> : std::true_type
-{};
+struct can_convert_expression_implicitly<T> : std::true_type {};
 
 } // namespace ac

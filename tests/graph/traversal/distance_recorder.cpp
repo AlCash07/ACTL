@@ -10,16 +10,14 @@
 #include "graph/sample_graphs.hpp"
 #include "test.hpp"
 
-TEST_CASE("distance_recorder bfs")
-{
+TEST_CASE("distance_recorder bfs") {
     auto graph = sample_undirected_graph();
     std::vector<int> dist((size_t)graph.vertex_count());
     breadth_first_search{make_distance_recorder(dist, -1)}(graph, 0);
     CHECK(std::vector<int>{0, 1, 2, 1, 2, 2} == dist);
 }
 
-TEST_CASE("distance_recorder dfs")
-{
+TEST_CASE("distance_recorder dfs") {
     auto graph = sample_undirected_graph();
     std::vector<int> dist((size_t)graph.vertex_count());
     depth_first_search{make_distance_recorder(dist, -1)}(graph, 0);

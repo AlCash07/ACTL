@@ -14,10 +14,9 @@ namespace ac {
 /// O(N).
 template <class T, class U>
 enum within within(
-    Policy auto const& policy, point<T> const& p, simple_polygon<U> const& poly)
-{
-    switch (winding_number(policy, p, poly))
-    {
+    Policy auto const& policy, point<T> const& p, simple_polygon<U> const& poly
+) {
+    switch (winding_number(policy, p, poly)) {
         case 0:
             return within::outside;
         case std::numeric_limits<int>::max():

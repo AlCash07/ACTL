@@ -13,17 +13,14 @@ namespace ac {
 
 // Should be used only for undirected graphs.
 template <class Map>
-struct connected_component_recorder
-{
+struct connected_component_recorder {
     using vertex = map_key_t<Map>;
 
-    void operator()(on_vertex_discover, vertex u)
-    {
+    void operator()(on_vertex_discover, vertex u) {
         put(map, u, count);
     }
 
-    void operator()(on_search_finish, vertex)
-    {
+    void operator()(on_search_finish, vertex) {
         ++count;
     }
 
@@ -36,16 +33,15 @@ connected_component_recorder(Map&&) -> connected_component_recorder<Map>;
 
 template <class Map, class T>
 vertex_initializer<connected_component_recorder<Map>>
-make_connected_component_recorder(Map&& component, T value)
-{
+make_connected_component_recorder(Map&& component, T value) {
     return {{std::forward<Map>(component)}, value};
 }
 
 template <class Graph>
-auto make_default_connected_component_recorder(Graph const& graph)
-{
+auto make_default_connected_component_recorder(Graph const& graph) {
     return make_connected_component_recorder(
-        make_default_vertex_map<int>(graph), -1);
+        make_default_vertex_map<int>(graph), -1
+    );
 }
 
 } // namespace ac

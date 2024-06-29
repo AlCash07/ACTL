@@ -13,8 +13,7 @@ namespace ac {
 /// Type for which the @p Range is a sub-range,
 /// similarly to a superset for a set.
 template <class Range>
-struct super_range
-{
+struct super_range {
     using type = none;
 };
 

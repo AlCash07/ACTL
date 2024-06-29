@@ -13,12 +13,11 @@ namespace ac {
 
 template <class Derived>
 class bidirectional_non_const_range_interface
-    : public basic_non_const_range_interface<Derived>
-{
+    : public basic_non_const_range_interface<Derived> {
 public:
     constexpr decltype(auto) back() //
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end()))
-    {
+        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end())
+        ) {
         AC_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;
@@ -28,7 +27,6 @@ public:
 template <class Derived>
 class bidirectional_dual_range_interface
     : public bidirectional_range_interface<Derived>
-    , public bidirectional_non_const_range_interface<Derived>
-{};
+    , public bidirectional_non_const_range_interface<Derived> {};
 
 } // namespace ac

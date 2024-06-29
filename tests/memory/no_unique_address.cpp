@@ -7,25 +7,21 @@
 #include <actl/memory/no_unique_address.hpp>
 #include <type_traits>
 
-struct empty_base
-{};
+struct empty_base {};
 
 // Empty class can be final, which was an issue for empty base optimization.
-struct empty final : empty_base
-{};
+struct empty final : empty_base {};
 
 // Size of an object of empty class is at least 1.
 static_assert(std::is_empty_v<empty>);
 static_assert(sizeof(empty) >= 1);
 
-struct with_unique
-{
+struct with_unique {
     int i;
     empty e;
 };
 
-struct without_unique
-{
+struct without_unique {
     int i;
     AC_NO_UNIQUE_ADDRESS empty e;
 };
@@ -35,8 +31,7 @@ static_assert(sizeof(with_unique) >= sizeof(int) + 1);
 // But it's optimized out with AC_NO_UNIQUE_ADDRESS.
 static_assert(sizeof(without_unique) == sizeof(int));
 
-struct with_same_empty
-{
+struct with_same_empty {
     int i;
     AC_NO_UNIQUE_ADDRESS empty e1, e2;
 };
@@ -46,11 +41,9 @@ struct with_same_empty
 // However, either may share address with i.
 static_assert(sizeof(with_same_empty) >= sizeof(int) + 1);
 
-struct empty2
-{};
+struct empty2 {};
 
-struct with_diff_empty
-{
+struct with_diff_empty {
     int i;
     AC_NO_UNIQUE_ADDRESS empty e1;
     AC_NO_UNIQUE_ADDRESS empty2 e2;
@@ -59,14 +52,12 @@ struct with_diff_empty
 // Different empty class object can share address.
 static_assert(sizeof(with_diff_empty) == sizeof(int));
 
-struct with_empty
-{
+struct with_empty {
     // It's useful to apply AC_NO_UNIQUE_ADDRESS even to a single class field.
     AC_NO_UNIQUE_ADDRESS empty e;
 };
 
-struct with_nested_empty
-{
+struct with_nested_empty {
     int i;
     AC_NO_UNIQUE_ADDRESS with_empty e;
 };

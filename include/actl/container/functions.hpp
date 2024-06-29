@@ -16,30 +16,23 @@
 namespace ac {
 
 template <class C, class... Ts>
-std::pair<range_iterator_t<C>, bool> emplace(C& cont, Ts&&... args)
-{
-    if constexpr (AssociativeRange<C>)
-    {
+std::pair<range_iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
+    if constexpr (AssociativeRange<C>) {
         auto res = cont.emplace(std::forward<Ts>(args)...);
         if constexpr (UniqueRange<C>)
             return res;
         else
             return {res, true};
-    }
-    else if constexpr (RandomAccessRange<C>)
-    {
+    } else if constexpr (RandomAccessRange<C>) {
         cont.emplace_back(std::forward<Ts>(args)...);
         return {cont.end() - 1, true};
-    }
-    else
-    {
+    } else {
         return {cont.emplace(cont.end(), std::forward<Ts>(args)...), true};
     }
 }
 
 template <class C, class T>
-void erase(C& cont, T const& value)
-{
+void erase(C& cont, T const& value) {
     if constexpr (AssociativeRange<C>)
         cont.erase(value);
     else
@@ -47,16 +40,12 @@ void erase(C& cont, T const& value)
 }
 
 template <class C, class T>
-range_iterator_t<C> find(C& cont, T const& value)
-{
-    if constexpr (AssociativeRange<C> && SortedRange<C>)
-    {
+range_iterator_t<C> find(C& cont, T const& value) {
+    if constexpr (AssociativeRange<C> && SortedRange<C>) {
         // TODO: make this case work for hash containers.
         // This requires C++20 with find for transparently comparable key.
         return cont.find(value);
-    }
-    else
-    {
+    } else {
         return std::find(ranges::begin(cont), ranges::end(cont), value);
     }
 }

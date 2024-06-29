@@ -27,9 +27,9 @@ concept NothrowCopyable =
 
 template <class T>
 // A type is broken if some copy versions may throw and some not.
-concept MayThrowCopyable = std::copyable<T> && MayThrowCopyConstructible<T> && !
-std::is_nothrow_assignable_v<T&, T&> &&
-    !std::is_nothrow_assignable_v<T&, const T&> &&
-    !std::is_nothrow_assignable_v<T&, const T>;
+concept MayThrowCopyable = std::copyable<T> && MayThrowCopyConstructible<T> &&
+                           !std::is_nothrow_assignable_v<T&, T&> &&
+                           !std::is_nothrow_assignable_v<T&, const T&> &&
+                           !std::is_nothrow_assignable_v<T&, const T>;
 
 } // namespace ac

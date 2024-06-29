@@ -15,8 +15,9 @@ static_assert(std::is_same_v<int, ac::value_t<std::vector<int>>>);
 static_assert(std::is_same_v<int&, ac::reference_t<std::vector<int>>>);
 // Adding const to a container affects reference_t but not value_t.
 static_assert(std::is_same_v<int, ac::value_t<const std::vector<int>>>);
-static_assert(
-    std::is_same_v<int const&, ac::reference_t<const std::vector<int>>>);
+static_assert(std::is_same_v<
+              int const&,
+              ac::reference_t<const std::vector<int>>>);
 
 // Associated types are working for a non-const associative container.
 static_assert(std::is_same_v<int, ac::value_t<std::set<int>>>);

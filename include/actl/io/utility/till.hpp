@@ -12,8 +12,7 @@
 namespace ac::io {
 
 template <class T, class P>
-struct till
-{
+struct till {
     explicit constexpr till(T x, P pred) : value{x}, terminator{pred} {}
 
     T value;
@@ -24,12 +23,10 @@ template <class T, class P>
 till(T&&, P) -> till<T, P>;
 
 template <class P, size_t N>
-size_t read_till(Device auto& id, till<span<char, N>, P> x)
-{
+size_t read_till(Device auto& id, till<span<char, N>, P> x) {
     size_t i = 0;
     size_t const size = x.value.size();
-    for (; i < size; ++i)
-    {
+    for (; i < size; ++i) {
         auto c = id.get();
         if (id.eof() || x.terminator(c))
             break;
@@ -39,12 +36,10 @@ size_t read_till(Device auto& id, till<span<char, N>, P> x)
 }
 
 template <class P, size_t N>
-size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x)
-{
+size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x) {
     size_t i = 0;
     size_t const size = x.value.size();
-    while (true)
-    {
+    while (true) {
         auto s = id.input_buffer();
         auto end = std::min(s.end(), s.begin() + (size - i));
         auto ptr = s.begin();
@@ -58,8 +53,7 @@ size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x)
 }
 
 template <class T, class P>
-bool read_final(Device auto& id, Format auto&, till<T, P> x)
-{
+bool read_final(Device auto& id, Format auto&, till<T, P> x) {
     read_till(id, x);
     return true;
 }

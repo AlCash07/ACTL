@@ -7,8 +7,7 @@
 #include <actl/container/dummy_container.hpp>
 #include "test.hpp"
 
-TEST_CASE("dummy_container basic")
-{
+TEST_CASE("dummy_container basic") {
     dummy_container c(3);
     c.emplace_back(1);
     CHECK(4l == c.size());

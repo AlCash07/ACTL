@@ -16,8 +16,7 @@ namespace ac::detail {
 // Special compressed_pair that mimics either T1 or T2 (defined by index I) for
 // the operations required by set and hash set.
 template <class T1, class T2, index I>
-struct mimic_pair
-{
+struct mimic_pair {
     T1 first;
     T2 second;
 
@@ -31,11 +30,9 @@ struct mimic_pair
     template <class FirstT, class... SecondTs>
     explicit constexpr mimic_pair(FirstT&& first, SecondTs&&... xs)
         : first{std::forward<FirstT>(first)}
-        , second{std::forward<SecondTs>(xs)...}
-    {}
+        , second{std::forward<SecondTs>(xs)...} {}
 
-    constexpr decltype(auto) key() const
-    {
+    constexpr decltype(auto) key() const {
         if constexpr (I == 1)
             return first;
         else
@@ -45,8 +42,7 @@ struct mimic_pair
 private:
     friend struct ac::hash_access;
 
-    size_t hash() const
-    {
+    size_t hash() const {
         return hash_value(key());
     }
 };
@@ -55,39 +51,33 @@ template <class T>
 concept MimicPair = requires { typename T::is_mimic_pair; };
 
 template <class T>
-decltype(auto) get_key(T const& x)
-{
-    if constexpr (MimicPair<T>)
-    {
+decltype(auto) get_key(T const& x) {
+    if constexpr (MimicPair<T>) {
         return x.key();
-    }
-    else
-    {
+    } else {
         return x;
     }
 }
 
 template <class T, class U>
     requires MimicPair<T> || MimicPair<U>
-auto operator==(T const& lhs, U const& rhs)
-{
+auto operator==(T const& lhs, U const& rhs) {
     return equal(get_key(lhs), get_key(rhs));
 }
 
 template <class T, class U>
     requires MimicPair<T> || MimicPair<U>
-auto operator<(T const& lhs, U const& rhs)
-{
+auto operator<(T const& lhs, U const& rhs) {
     return less(get_key(lhs), get_key(rhs));
 }
 
 template <class Map>
-auto get_second(Map&& map)
-{
+auto get_second(Map&& map) {
     using Pair = std::remove_reference_t<map_reference_t<Map>>;
 
     return composite_map{
-        std::forward<Map>(map), static_member_map<&Pair::second>{}};
+        std::forward<Map>(map), static_member_map<&Pair::second>{}
+    };
 }
 
 } // namespace ac::detail

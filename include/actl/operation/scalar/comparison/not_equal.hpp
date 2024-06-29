@@ -11,8 +11,7 @@
 
 namespace ac {
 
-struct not_equal_f : operation<not_equal_f>
-{
+struct not_equal_f : operation<not_equal_f> {
     using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;
@@ -23,8 +22,7 @@ inline constexpr not_equal_f not_equal;
 
 template <class T, class U>
     requires EnableOperators<T, U>
-constexpr auto operator!=(T&& lhs, U&& rhs)
-{
+constexpr auto operator!=(T&& lhs, U&& rhs) {
     return not_equal(pass<T>(lhs), pass<U>(rhs));
 }
 

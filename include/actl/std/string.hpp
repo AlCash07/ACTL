@@ -12,8 +12,7 @@
 namespace ac {
 
 template <class C, class T, class A>
-struct range_properties<std::basic_string<C, T, A>> : default_range_properties
-{
+struct range_properties<std::basic_string<C, T, A>> : default_range_properties {
     static constexpr bool is_container = true;
 };
 

@@ -13,33 +13,29 @@
 
 namespace ac {
 
-struct allow_promotion
-{
+struct allow_promotion {
     struct is_policy;
 };
 
-struct Promotion
-{
+struct Promotion {
     static constexpr size_t inner_count = 1;
 
     template <class T, class U>
     static constexpr auto evaluate(
-        select_f op, bool condition, T const& lhs, U const& rhs)
-    {
+        select_f op, bool condition, T const& lhs, U const& rhs
+    ) {
         using CT = std::common_type_t<T, U>;
         return op.evaluate(condition, cast<CT>(lhs), cast<CT>(rhs));
     }
 
     template <class Op, class... Ts>
-    static constexpr auto evaluate(Op const& op, Ts const&... xs)
-    {
+    static constexpr auto evaluate(Op const& op, Ts const&... xs) {
         using CT = std::common_type_t<decltype(eval(xs))...>;
         return op.evaluate(cast<CT>(xs)...);
     }
 };
 
-constexpr auto apply_policy(ScalarOperation auto const& op, allow_promotion)
-{
+constexpr auto apply_policy(ScalarOperation auto const& op, allow_promotion) {
     return operation_composer<Promotion>{}(op);
 }
 

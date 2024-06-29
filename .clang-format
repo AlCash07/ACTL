@@ -2,7 +2,7 @@
 Language: Cpp
 BasedOnStyle: Google
 AccessModifierOffset: -4
-AlignAfterOpenBracket: AlwaysBreak
+AlignAfterOpenBracket: BlockIndent
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
@@ -12,24 +12,6 @@ BinPackArguments: false
 BinPackParameters: false
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
-BreakBeforeBraces: Custom
-BraceWrapping:
-  AfterCaseLabel: true
-  AfterClass: true
-  AfterControlStatement: Always
-  AfterEnum: true
-  AfterFunction: true
-  AfterNamespace: false
-  AfterStruct: true
-  AfterUnion: true
-  AfterExternBlock: true
-  BeforeCatch: true
-  BeforeElse: true
-  BeforeLambdaBody: true
-  BeforeWhile: true
-  SplitEmptyFunction: false
-  SplitEmptyRecord: false
-  SplitEmptyNamespace: false
 ColumnLimit: 80
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true

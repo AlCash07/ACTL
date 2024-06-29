@@ -12,29 +12,25 @@
 
 namespace ac::io {
 
-struct braced
-{
+struct braced {
     struct format_tag;
 };
 
 template <Container AC>
     requires AssociativeRange<AC>
-auto encode(braced, AC const& cont)
-{
+auto encode(braced, AC const& cont) {
     return batch{'{', make_range(cont), '}'};
 }
 
 template <Container SC>
     requires SequenceRange<SC>
-auto encode(braced, SC const& cont)
-{
+auto encode(braced, SC const& cont) {
     return batch{'[', make_range(cont), ']'};
 }
 
 template <class T>
     requires(Tuple<T> || IO_Tuple<T>)
-auto encode(braced, T const& x)
-{
+auto encode(braced, T const& x) {
     return batch{'(', x, ')'};
 }
 

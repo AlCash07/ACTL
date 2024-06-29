@@ -9,8 +9,7 @@
 
 using namespace ac::io;
 
-TEST_CASE("read double")
-{
+TEST_CASE("read double") {
     text f;
     double x{};
     test_read<false>(x, ".1", f);

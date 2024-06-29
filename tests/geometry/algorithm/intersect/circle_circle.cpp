@@ -7,8 +7,7 @@
 #include <actl/geometry/algorithm/intersect/circle_circle.hpp>
 #include "test.hpp"
 
-TEST_CASE("default")
-{
+TEST_CASE("default") {
     circle<int> c0{{0, 0}, 17};
     using vpi = std::vector<point<int>>;
     std::vector<point<double>> res;

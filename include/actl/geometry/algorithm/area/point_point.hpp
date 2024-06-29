@@ -16,20 +16,15 @@ namespace ac {
 /// 2D: positive if p1 <- p0 counter-clockwise.
 template <index N, class T0, class T1>
 auto area(
-    Policy auto const& policy, point<T0, N> const& p0, point<T1, N> const& p1)
-{
-    if constexpr (N == 2)
-    {
+    Policy auto const& policy, point<T0, N> const& p0, point<T1, N> const& p1
+) {
+    if constexpr (N == 2) {
         return product(policy, p0[0], p1[1]) - product(policy, p0[1], p1[0]);
-    }
-    else if constexpr (N == 3)
-    {
+    } else if constexpr (N == 3) {
         // TODO: figure out the correct sign instead of returning the absolute
         // value.
         return sqrt(policy, dot(policy, cross(policy, p0, p1)));
-    }
-    else
-    {
+    } else {
         auto a = product(policy, dot(policy, p0), dot(policy, p1));
         return sqrt(policy, a - sqr(policy, dot(policy, p0, p1)));
     }

@@ -29,16 +29,14 @@ struct convex_monotone_polygon_tag : monotone_polygon_tag {};
 // clang-format on
 
 template <class T>
-struct geometry_traits
-{
+struct geometry_traits {
     using tag = scalar_tag;
     using scalar = T;
     static constexpr int dimension = 0;
 };
 
 template <class Tag, class Point>
-struct geometry_traits_base
-{
+struct geometry_traits_base {
     using tag = Tag;
     using scalar = typename geometry_traits<Point>::scalar;
     using point = Point;
@@ -61,8 +59,7 @@ using point_t = typename geometry_traits<std::remove_cvref_t<T>>::point;
 
 // Never change the order of existing IDs! However, new ones can be inserted
 // anywhere.
-enum : int
-{
+enum : int {
     scalar_id,
     point_id,
     line_id,
@@ -79,8 +76,7 @@ enum : int
 };
 
 template <class T>
-struct id : id<tag_t<T>>
-{};
+struct id : id<tag_t<T>> {};
 
 // clang-format off
 template <> struct id<scalar_tag> : index_constant<scalar_id> {};

@@ -12,15 +12,17 @@ namespace ac::detail {
 
 template <index N, class T0, class T1, class K>
 bool between_endpoints(
-    Policy auto const& policy, point<T0, N> const& p, line<T1, N, K> const& l)
-{
+    Policy auto const& policy, point<T0, N> const& p, line<T1, N, K> const& l
+) {
     if (end(l.kind()) == endpoint::free)
         return endpoint_test(
-            policy, begin(l.kind()), 0, dot(policy, p - l.begin, l.vector));
+            policy, begin(l.kind()), 0, dot(policy, p - l.begin, l.vector)
+        );
     if (l.kind() == line_kind::half_open_segment && equal(policy, p, l.begin))
         return false;
     return endpoint_test(
-        policy, end(l.kind()), 0, dot(policy, l.begin - p, p - l.end()));
+        policy, end(l.kind()), 0, dot(policy, l.begin - p, p - l.end())
+    );
 }
 
 } // namespace ac::detail

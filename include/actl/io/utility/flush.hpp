@@ -11,10 +11,8 @@
 
 namespace ac::io {
 
-struct flush_t
-{
-    bool operator()(Device auto& od) const
-    {
+struct flush_t {
+    bool operator()(Device auto& od) const {
         od.flush();
         return true;
     }

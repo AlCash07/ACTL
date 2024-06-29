@@ -9,8 +9,7 @@
 #include <actl/std/vector.hpp>
 #include "test.hpp"
 
-TEST_CASE("const_set&")
-{
+TEST_CASE("const_set&") {
     std::set<int> const s{1, 5};
     auto i0 = iterator_to_id(s, s.begin());
     auto i1 = iterator_to_id(s, --s.end());
@@ -20,8 +19,7 @@ TEST_CASE("const_set&")
     CHECK(C{{i0, 1}, {i1, 5}} == C{r.begin(), r.end()});
 }
 
-TEST_CASE("vector&")
-{
+TEST_CASE("vector&") {
     std::vector<int> v{3, 2, 1};
     CHECK(2 == get(v, 1));
     put(v, 2, 6);

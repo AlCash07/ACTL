@@ -12,12 +12,10 @@ namespace ac {
 
 namespace scalar {
 
-struct logical_and_f : scalar_operation<logical_and_f, 2>
-{
+struct logical_and_f : scalar_operation<logical_and_f, 2> {
     using operation_category = logical_operation_tag;
 
-    static constexpr bool eval_scalar(bool lhs, bool rhs)
-    {
+    static constexpr bool eval_scalar(bool lhs, bool rhs) {
         return lhs && rhs;
     }
 };
@@ -25,8 +23,7 @@ inline constexpr logical_and_f logical_and;
 
 } // namespace scalar
 
-struct logical_and_f : operation<logical_and_f>
-{
+struct logical_and_f : operation<logical_and_f> {
     using operation_category = logical_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -37,18 +34,15 @@ struct logical_and_f : operation<logical_and_f>
 inline constexpr logical_and_f logical_and;
 
 template <class T>
-struct identity_element<logical_and_f, T>
-{
-    static constexpr T value()
-    {
+struct identity_element<logical_and_f, T> {
+    static constexpr T value() {
         return T{true};
     }
 };
 
 template <class T, class U>
     requires EnableOperators<T, U>
-constexpr auto operator&&(T&& lhs, U&& rhs)
-{
+constexpr auto operator&&(T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
 }
 

@@ -16,23 +16,17 @@ namespace impl {
 
 template <class T>
 concept has_member_begin = requires(T& t) {
-                               {
-                                   t.begin()
-                                   } -> std::input_or_output_iterator;
-                           };
+    { t.begin() } -> std::input_or_output_iterator;
+};
 
 template <class T>
 concept has_non_member_begin = requires(T& t) {
-                                   {
-                                       begin(t)
-                                       } -> std::input_or_output_iterator;
-                               };
+    { begin(t) } -> std::input_or_output_iterator;
+};
 
-struct begin_f
-{
+struct begin_f {
     template <class T, size_t N>
-    constexpr T* operator()(T (&array)[N]) const noexcept
-    {
+    constexpr T* operator()(T (&array)[N]) const noexcept {
         return array;
     }
 

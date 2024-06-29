@@ -13,39 +13,32 @@
 namespace ac::detail {
 
 template <class Line, class Iter>
-class scalar_to_point_adaptor : public output_iterator_types
-{
+class scalar_to_point_adaptor : public output_iterator_types {
 public:
     explicit scalar_to_point_adaptor(Line const& line, Iter iter)
-        : line_{&line}, iter_{iter}
-    {}
+        : line_{&line}, iter_{iter} {}
 
     scalar_to_point_adaptor& operator=(scalar_to_point_adaptor const&) =
         default;
 
     template <class T>
-    void operator=(T const& x)
-    {
+    void operator=(T const& x) {
         *iter_ = (*line_)(x);
     }
 
-    scalar_to_point_adaptor& operator*()
-    {
+    scalar_to_point_adaptor& operator*() {
         return *this;
     }
 
-    scalar_to_point_adaptor& operator++()
-    {
+    scalar_to_point_adaptor& operator++() {
         return *this;
     }
 
-    scalar_to_point_adaptor operator++(int)
-    {
+    scalar_to_point_adaptor operator++(int) {
         return *this;
     }
 
-    operator Iter() const
-    {
+    operator Iter() const {
         return iter_;
     }
 

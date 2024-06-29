@@ -7,25 +7,21 @@
 #include <actl/map/identity_map.hpp>
 #include "test.hpp"
 
-TEST_CASE("identity_map int")
-{
+TEST_CASE("identity_map int") {
     identity_map<int, long long> map;
     CHECK(1LL == get(map, 1));
     CHECK(3 == invert(map, 3LL));
 }
 
-struct A
-{
+struct A {
     int a;
 };
 
-struct B : A
-{
+struct B : A {
     int b;
 };
 
-TEST_CASE("identity_map reference")
-{
+TEST_CASE("identity_map reference") {
     B x{{0}, 0};
     identity_map<B&, A&> map;
     get(map, x).a = 2;

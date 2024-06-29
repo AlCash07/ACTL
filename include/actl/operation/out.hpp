@@ -11,18 +11,15 @@
 namespace ac {
 
 template <class T>
-struct out
-{
+struct out {
     T x;
 
-    constexpr operator T()
-    {
+    constexpr operator T() {
         return x;
     }
 
     template <class U>
-    out& operator=(U const& y)
-    {
+    out& operator=(U const& y) {
         assign(*this, y);
         return *this;
     }

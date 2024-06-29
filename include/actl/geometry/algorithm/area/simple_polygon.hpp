@@ -16,13 +16,12 @@ namespace ac {
 template <class T>
     requires(
         std::is_base_of_v<simple_polygon_tag, geometry::tag_t<T>> &&
-        geometry_traits<T>::dimension == 2)
-auto area(Policy auto const& policy, T const& poly)
-{
+        geometry_traits<T>::dimension == 2
+    )
+auto area(Policy auto const& policy, T const& poly) {
     auto it = cyclic_begin(poly);
     decltype(product(policy, it->x(), it->y())) res{};
-    for (auto n = poly.size(); n != 0; --n)
-    {
+    for (auto n = poly.size(); n != 0; --n) {
         res += product(policy, it->x(), it[1].y() - it[-1].y());
         ++it;
     }

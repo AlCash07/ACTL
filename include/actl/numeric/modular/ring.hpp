@@ -12,12 +12,10 @@
 namespace ac {
 
 template <class Z, bool Static = false>
-struct quotient_ring_base
-{
+struct quotient_ring_base {
     using value_type = Z;
     static constexpr bool is_static = Static;
-    static constexpr Z one()
-    {
+    static constexpr Z one() {
         return Z(1);
     }
 };
@@ -25,13 +23,11 @@ struct quotient_ring_base
 namespace detail {
 
 template <class Z, Z Mod>
-struct static_quotient_ring_impl : quotient_ring_base<Z, true>
-{
+struct static_quotient_ring_impl : quotient_ring_base<Z, true> {
     constexpr static_quotient_ring_impl() = default;
     constexpr static_quotient_ring_impl(static_quotient_ring_impl const&) =
         default;
-    static constexpr Z mod()
-    {
+    static constexpr Z mod() {
         return Mod;
     }
 };
@@ -44,49 +40,38 @@ template <
 using static_quotient_ring = detail::static_quotient_ring_impl<Z, (Z)Mod>;
 
 template <class Z>
-struct singleton_quotient_ring : quotient_ring_base<Z>
-{
+struct singleton_quotient_ring : quotient_ring_base<Z> {
     static_assert(
-        !std::is_signed<Z>::value, "signed integers are not supported");
-    static Z& mod()
-    {
+        !std::is_signed<Z>::value, "signed integers are not supported"
+    );
+    static Z& mod() {
         static Z mod;
         return mod;
     }
 };
 
 template <class Z, class R>
-constexpr void mod_add(Z& x, Z const& y, R const& ring)
-{
-    if (std::is_integral<Z>::value)
-    {
+constexpr void mod_add(Z& x, Z const& y, R const& ring) {
+    if (std::is_integral<Z>::value) {
         Z z = ring.mod() - y;
         x < z ? x += y : x -= z;
-    }
-    else
-    {
+    } else {
         (x += y) %= ring.mod();
     }
 }
 
 template <class Z, class R>
-constexpr void mod_sub(Z& x, Z const& y, R const& ring)
-{
-    if (std::is_integral<Z>::value)
-    {
+constexpr void mod_sub(Z& x, Z const& y, R const& ring) {
+    if (std::is_integral<Z>::value) {
         x < y ? x += ring.mod() - y : x -= y;
-    }
-    else
-    {
+    } else {
         (x -= y) %= ring.mod();
     }
 }
 
 template <class Z, class R>
-constexpr Z mod_mul_binary(Z x, Z y, R const& ring)
-{
-    for (Z r = Z();;)
-    {
+constexpr Z mod_mul_binary(Z x, Z y, R const& ring) {
+    for (Z r = Z();;) {
         if (y & 1)
             mod_add(r, x, ring);
         if (y /= 2)
@@ -97,32 +82,22 @@ constexpr Z mod_mul_binary(Z x, Z y, R const& ring)
 }
 
 template <class Z, class R>
-constexpr Z mod_mul(Z const& x, Z const& y, R const& ring)
-{
-    if constexpr (!std::is_integral<Z>::value)
-    {
+constexpr Z mod_mul(Z const& x, Z const& y, R const& ring) {
+    if constexpr (!std::is_integral<Z>::value) {
         return (x * y) % ring.mod();
-    }
-    else if (R::is_static && ring.mod() == 0)
-    {
+    } else if (R::is_static && ring.mod() == 0) {
         return x * y;
-    }
-    else if constexpr (sizeof(Z) < sizeof(uint64_t))
-    {
+    } else if constexpr (sizeof(Z) < sizeof(uint64_t)) {
         return (uint64_t)x * y % ring.mod();
-    }
-    else
-    {
+    } else {
         return mod_mul_binary(x, y, ring);
     }
 }
 
 template <class Z, class R>
-constexpr Z mod_div(Z const& x, Z const& y, R const& ring)
-{
+constexpr Z mod_div(Z const& x, Z const& y, R const& ring) {
     Z p = ring.mod() - y, a = ring.mod() - ring.one(), q = y, b = ring.one();
-    for (; q != Z();)
-    {
+    for (; q != Z();) {
         mod_sub(a, mod_mul(p / q, b, ring), ring);
         std::swap(a, b);
         std::swap(p %= q, q);
@@ -133,99 +108,82 @@ constexpr Z mod_div(Z const& x, Z const& y, R const& ring)
 }
 
 template <class Ring>
-struct ring_element : Ring
-{
+struct ring_element : Ring {
     using value_type = typename Ring::value_type;
 
     value_type value;
 
-    Ring const& ring() const
-    {
+    Ring const& ring() const {
         return static_cast<Ring const&>(*this);
     }
 
     constexpr ring_element() : value(value_type()) {}
 
-    explicit operator value_type() const
-    {
+    explicit operator value_type() const {
         return value;
     }
 
     template <class... Args>
     constexpr ring_element(value_type const& value, Args&&... args)
-        : Ring(std::forward<Args>(args)...), value(value)
-    {}
+        : Ring(std::forward<Args>(args)...), value(value) {}
 
-    constexpr ring_element& operator+=(ring_element const& rhs)
-    {
+    constexpr ring_element& operator+=(ring_element const& rhs) {
         mod_add(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element& operator-=(ring_element const& rhs)
-    {
+    constexpr ring_element& operator-=(ring_element const& rhs) {
         mod_sub(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element& operator*=(ring_element const& rhs)
-    {
+    constexpr ring_element& operator*=(ring_element const& rhs) {
         value = mod_mul(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element& operator/=(ring_element const& rhs)
-    {
+    constexpr ring_element& operator/=(ring_element const& rhs) {
         value = mod_div(value, rhs.value, ring());
         return *this;
     }
 
-    constexpr ring_element operator-(ring_element const& rhs) const
-    {
+    constexpr ring_element operator-(ring_element const& rhs) const {
         auto r = *this;
         return r -= rhs;
     }
 
-    constexpr ring_element operator+(ring_element const& rhs) const
-    {
+    constexpr ring_element operator+(ring_element const& rhs) const {
         auto r = *this;
         return r += rhs;
     }
 
-    constexpr ring_element operator-() const
-    {
+    constexpr ring_element operator-() const {
         auto r = value_type();
         mod_sub(r, value, ring());
         return ring_element(r, ring());
     }
 
-    constexpr ring_element operator*(ring_element rhs) const
-    {
+    constexpr ring_element operator*(ring_element rhs) const {
         return ring_element(mod_mul(value, rhs.value, ring()), ring());
     }
 
-    constexpr ring_element operator/(ring_element rhs) const
-    {
+    constexpr ring_element operator/(ring_element rhs) const {
         return ring_element(mod_div(value, rhs.value, ring()), ring());
     }
 
-    constexpr bool operator==(ring_element const& rhs) const
-    {
+    constexpr bool operator==(ring_element const& rhs) const {
         return value == rhs.value;
     }
 
-    friend std::istream& operator>>(std::istream& in, ring_element& x)
-    {
+    friend std::istream& operator>>(std::istream& in, ring_element& x) {
         return in >> x.value;
     }
 
-    friend std::ostream& operator<<(std::ostream& out, ring_element const& x)
-    {
+    friend std::ostream& operator<<(std::ostream& out, ring_element const& x) {
         return out << x.value;
     }
 
-    void check() const
-    {
+    void check() const {
         assert(0 <= value && value < ring().mod());
     }
 };

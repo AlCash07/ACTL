@@ -13,8 +13,7 @@
 // 0 - 2 - 4   6
 // | \   \ |
 // 1 - 3   5 - 7
-TEST_CASE("bridges simple")
-{
+TEST_CASE("bridges simple") {
     using Graph = adjacency_list<undirected>;
     Graph graph;
     graph.add_edge(0, 1);
@@ -28,14 +27,14 @@ TEST_CASE("bridges simple")
     std::vector<edge_t<Graph>> bridges;
     std::vector<int> components(8);
     find_bridges_and_components<false>(
-        graph, std::back_inserter(bridges), components);
+        graph, std::back_inserter(bridges), components
+    );
     CHECK_EQUAL_SETS({{0, 2}, {5, 7}}, get_ends<false>(bridges));
     test_partition({{0, 1, 3}, {2, 4, 5}, {6}, {7}}, components);
 }
 
 // 0 = 1 - 2 = 3 - 4
-TEST_CASE("bridges with parallel edges")
-{
+TEST_CASE("bridges with parallel edges") {
     using Graph = adjacency_list<undirected>;
     Graph graph;
     graph.add_edge(0, 1);

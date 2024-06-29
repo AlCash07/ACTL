@@ -9,15 +9,13 @@
 
 constexpr auto two62 = 4611686018427387904ll;
 
-TEST_CASE("bit")
-{
+TEST_CASE("bit") {
     CHECK(1 == bit(0));
     CHECK(two62 == bit(62ll));
     CHECK(two62 == bit<long long>(62));
 }
 
-TEST_CASE("has_bit")
-{
+TEST_CASE("has_bit") {
     CHECK(has_bit(two62, 62));
     CHECK_FALSE(has_bit(two62, 61));
 }

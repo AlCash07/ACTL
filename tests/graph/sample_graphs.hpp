@@ -13,8 +13,7 @@
 // 2 - 3 - 4
 //     | /
 //     5
-inline auto sample_undirected_graph()
-{
+inline auto sample_undirected_graph() {
     ac::adjacency_list<ac::undirected> al;
     al.add_edge(0, 1);
     al.add_edge(1, 2);
@@ -33,8 +32,7 @@ inline auto sample_undirected_graph()
 //   3 4 5
 //     |
 //     6
-inline auto sample_undirected_tree()
-{
+inline auto sample_undirected_tree() {
     ac::adjacency_list<ac::undirected> al;
     al.add_edge(0, 1);
     al.add_edge(0, 2);

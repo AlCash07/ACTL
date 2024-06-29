@@ -12,30 +12,25 @@
 namespace ac {
 
 template <size_t N>
-class size_holder
-{
+class size_holder {
 public:
     static_assert(N >= 0);
 
-    constexpr size_holder(size_t n [[maybe_unused]])
-    {
+    constexpr size_holder(size_t n [[maybe_unused]]) {
         AC_ASSERT(n == N);
     }
 
-    static constexpr size_t size()
-    {
+    static constexpr size_t size() {
         return N;
     }
 };
 
 template <>
-class size_holder<dynamic_size>
-{
+class size_holder<dynamic_size> {
 public:
     constexpr size_holder(size_t n) : size_{n} {}
 
-    constexpr size_t size() const
-    {
+    constexpr size_t size() const {
         return size_;
     }
 

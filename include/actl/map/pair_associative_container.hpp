@@ -23,27 +23,22 @@ struct map_traits<AC>
           !std::is_const_v<AC>,
           false,
           true,
-          AC&>
-{};
+          AC&> {};
 
 template <class AC>
     requires UniqueRange<AC> && PairAssociativeRange<AC>
-struct map_ops<AC>
-{
+struct map_ops<AC> {
     // If key isn't present in container, default value is returned.
-    static map_reference_t<AC> get(AC const& map, map_key_t<AC> key)
-    {
+    static map_reference_t<AC> get(AC const& map, map_key_t<AC> key) {
         auto it = map.find(key);
         return it == map.end() ? map_reference_t<AC>{} : it->second;
     }
 
-    static void put(AC& map, map_key_t<AC> key, map_value_t<AC> value)
-    {
+    static void put(AC& map, map_key_t<AC> key, map_value_t<AC> value) {
         map[key] = value;
     }
 
-    static AC& map_range(AC& map)
-    {
+    static AC& map_range(AC& map) {
         return map;
     }
 };

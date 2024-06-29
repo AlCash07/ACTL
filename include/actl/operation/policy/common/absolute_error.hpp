@@ -15,20 +15,17 @@ namespace ac {
 
 // class E should provide public `T epsilon()`;
 template <class E>
-struct absolute_error : E
-{
+struct absolute_error : E {
     struct is_policy;
 };
 
 template <class E>
-constexpr auto apply_policy(scalar::equal_f, absolute_error<E> const& policy)
-{
+constexpr auto apply_policy(scalar::equal_f, absolute_error<E> const& policy) {
     return abs(sub) <= policy.epsilon();
 }
 
 template <class E>
-constexpr auto apply_policy(scalar::less_f, absolute_error<E> const& policy)
-{
+constexpr auto apply_policy(scalar::less_f, absolute_error<E> const& policy) {
     return policy.epsilon() < rhs_ - lhs_;
 }
 

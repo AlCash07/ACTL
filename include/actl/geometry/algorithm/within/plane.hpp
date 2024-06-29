@@ -13,8 +13,8 @@ namespace ac {
 
 template <index N, class T0, class T1>
 enum within within(
-    Policy auto const& policy, point<T0, N> const& p, plane<T1, N> const& pl)
-{
+    Policy auto const& policy, point<T0, N> const& p, plane<T1, N> const& pl
+) {
     return equal(policy, pl(policy, p), 0) ? within::border : within::outside;
 }
 

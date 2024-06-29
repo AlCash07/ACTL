@@ -12,14 +12,8 @@
 namespace ac::io {
 
 template <class UInt>
-class uint_simple_parser
-{
-    enum class states
-    {
-        empty,
-        ok,
-        overflow
-    };
+class uint_simple_parser {
+    enum class states { empty, ok, overflow };
     states state = states::empty;
     UInt x = 0;
 
@@ -28,59 +22,46 @@ public:
     UInt max;
 
     template <digit_kind Kind>
-    size_t parse_impl(cspan<char> s)
-    {
+    size_t parse_impl(cspan<char> s) {
         size_t i = 0;
-        if (state == states::empty)
-        {
+        if (state == states::empty) {
             x = to_digit<UInt, Kind>(s[i]);
-            if (is_digit_in_base(x, base))
-            {
+            if (is_digit_in_base(x, base)) {
                 ++i;
                 state = states::ok;
-            }
-            else
-            {
+            } else {
                 return i;
             }
         }
         UInt max_quotient = max / base;
         UInt max_remainder = max % base;
-        for (; i != s.size(); ++i)
-        {
+        for (; i != s.size(); ++i) {
             UInt d = to_digit<UInt, Kind>(s[i]);
             if (!is_digit_in_base(d, base))
                 break;
-            if (max_quotient < x || (max_quotient == x && max_remainder < d))
-            {
+            if (max_quotient < x || (max_quotient == x && max_remainder < d)) {
                 x = max;
                 state = states::overflow;
-            }
-            else
-            {
+            } else {
                 x = x * base + d;
             }
         }
         return i;
     }
 
-    size_t parse(cspan<char> s)
-    {
+    size_t parse(cspan<char> s) {
         return base <= 10 ? parse_impl<digit>(s) : parse_impl<alnum>(s);
     }
 
-    bool empty() const
-    {
+    bool empty() const {
         return state == states::empty;
     }
 
-    bool ready() const
-    {
+    bool ready() const {
         return state == states::ok;
     }
 
-    UInt value() const
-    {
+    UInt value() const {
         return x;
     }
 };

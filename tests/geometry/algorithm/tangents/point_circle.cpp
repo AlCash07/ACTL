@@ -7,8 +7,7 @@
 #include <actl/geometry/algorithm/tangents/point_circle.hpp>
 #include "test.hpp"
 
-TEST_CASE("default")
-{
+TEST_CASE("default") {
     circle<int> c{{0, 0}, 2};
     using vpi = std::vector<point<int>>;
     std::vector<point<double>> res;

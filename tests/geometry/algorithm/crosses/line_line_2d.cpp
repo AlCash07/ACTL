@@ -7,19 +7,13 @@
 #include <actl/geometry/algorithm/crosses/line_line_2d.hpp>
 #include "test.hpp"
 
-TEST_CASE("general position all kinds")
-{
+TEST_CASE("general position all kinds") {
     auto kinds = std::vector{endpoint::free, endpoint::closed, endpoint::open};
-    for (endpoint s0 : kinds)
-    {
-        for (endpoint e0 : kinds)
-        {
-            for (endpoint s1 : kinds)
-            {
-                for (endpoint e1 : kinds)
-                {
-                    auto crosses_line = [](int offset, endpoint s, endpoint e)
-                    {
+    for (endpoint s0 : kinds) {
+        for (endpoint e0 : kinds) {
+            for (endpoint s1 : kinds) {
+                for (endpoint e1 : kinds) {
+                    auto crosses_line = [](int offset, endpoint s, endpoint e) {
                         // clang-format off
                         switch (offset) {
                             case -2: return e == endpoint::free;
@@ -30,21 +24,21 @@ TEST_CASE("general position all kinds")
                         }
                         // clang-format on
                     };
-                    for (int x : irange(-2, 3))
-                    {
-                        for (int y : irange(-2, 3))
-                        {
+                    for (int x : irange(-2, 3)) {
+                        for (int y : irange(-2, 3)) {
                             auto h = make_any_line(
-                                point{x - 1, 0}, s0, point{x + 1, 0}, e0);
+                                point{x - 1, 0}, s0, point{x + 1, 0}, e0
+                            );
                             auto v = make_any_line(
-                                point{0, y - 1}, s1, point{0, y + 1}, e1);
+                                point{0, y - 1}, s1, point{0, y + 1}, e1
+                            );
                             bool expected = crosses_line(x, s0, e0) &&
                                             crosses_line(y, s1, e1);
                             CHECK(expected == crosses(h, v));
                             CHECK(
                                 expected ==
-                                crosses(
-                                    general_position_policy{policy{}}, h, v));
+                                crosses(general_position_policy{policy{}}, h, v)
+                            );
                         }
                     }
                 }

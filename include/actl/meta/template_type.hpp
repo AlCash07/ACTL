@@ -11,20 +11,17 @@
 namespace ac {
 
 template <class T>
-struct template_type
-{
+struct template_type {
     using type = T;
 };
 
 template <class T, size_t N>
-struct template_type<T[N]>
-{
+struct template_type<T[N]> {
     using type = T;
 };
 
 template <template <class...> class C, class... Ts>
-struct template_type<C<Ts...>>
-{
+struct template_type<C<Ts...>> {
     using type = type_at_t<0, Ts...>;
 };
 

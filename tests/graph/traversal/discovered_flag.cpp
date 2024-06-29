@@ -14,12 +14,12 @@
 
 using Log = std::vector<std::pair<int, bool>>;
 
-TEST_CASE("discovered_flag bfs")
-{
+TEST_CASE("discovered_flag bfs") {
     auto graph = sample_undirected_graph();
     Log log;
     auto map = logging_map{
-        make_default_vertex_map<bool>(graph), std::back_inserter(log)};
+        make_default_vertex_map<bool>(graph), std::back_inserter(log)
+    };
     breadth_first_search{discovered_flag{map}}(graph, 0);
     CHECK(
         Log{
@@ -35,15 +35,16 @@ TEST_CASE("discovered_flag bfs")
             {2, true},
             {4, true},
             {5, true},
-        } == log);
+        } == log
+    );
 }
 
-TEST_CASE("discovered_flag dfs")
-{
+TEST_CASE("discovered_flag dfs") {
     auto graph = sample_undirected_graph();
     Log log;
     auto map = logging_map{
-        make_default_vertex_map<bool>(graph), std::back_inserter(log)};
+        make_default_vertex_map<bool>(graph), std::back_inserter(log)
+    };
     depth_first_search{discovered_flag{map}}(graph, 0);
     CHECK(
         Log{
@@ -59,5 +60,6 @@ TEST_CASE("discovered_flag dfs")
             {3, true},
             {4, true},
             {5, true},
-        } == log);
+        } == log
+    );
 }

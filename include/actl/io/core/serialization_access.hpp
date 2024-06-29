@@ -10,8 +10,7 @@
 
 namespace ac::io {
 
-struct serialization_access
-{
+struct serialization_access {
     // All the checks are inside serialization_access because they check for
     // private functionality.
     template <class T>
@@ -32,11 +31,12 @@ concept IO_Tuple = serialization_access::is_io_tuple_v<T>;
 template <class T>
 bool write_final(Device auto& od, Format auto& fmt, T const& x)
     AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-        serialization_access::write_final(x, od, fmt))
+        serialization_access::write_final(x, od, fmt)
+    )
 
 template <class T>
-bool read_final(Device auto& id, Format auto& fmt, T& x)
-    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-        serialization_access::read(x, id, fmt))
+bool read_final(
+    Device auto& id, Format auto& fmt, T& x
+) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(serialization_access::read(x, id, fmt))
 
 } // namespace ac::io

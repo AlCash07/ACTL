@@ -15,8 +15,7 @@ namespace ac {
 namespace detail {
 
 template <class T, class... Args>
-constexpr void invoke_if_can(T&&, Args&...) noexcept
-{}
+constexpr void invoke_if_can(T&&, Args&...) noexcept {}
 
 template <class T, class... Args>
     requires std::is_invocable_v<T, Args...>
@@ -26,10 +25,12 @@ constexpr auto invoke_if_can(T&& callable, Args&... args)
 
 template <size_t... Is, Tuple T, class... Args>
 constexpr void invoke_all_matching_impl(
-    std::index_sequence<Is...>, T&& tuple_to_invoke, Args&... args)
-    AC_DEDUCE_NOEXCEPT_AND_RETURN((
-        ...,
-        invoke_if_can(std::get<Is>(std::forward<T>(tuple_to_invoke)), args...)))
+    std::index_sequence<Is...>, T&& tuple_to_invoke, Args&... args
+)
+    AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        (...,
+         invoke_if_can(std::get<Is>(std::forward<T>(tuple_to_invoke)), args...))
+    )
 
 } // namespace detail
 
@@ -39,6 +40,7 @@ constexpr void invoke_all_matching_impl(
 template <Tuple T, class... Args>
 constexpr void invoke_all_matching(T&& tuple_to_invoke, Args&&... args)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(detail::invoke_all_matching_impl(
-        tuple_indices_t<T>{}, std::forward<T>(tuple_to_invoke), args...))
+        tuple_indices_t<T>{}, std::forward<T>(tuple_to_invoke), args...
+    ))
 
 } // namespace ac

@@ -21,22 +21,18 @@ using strict_common_type_t =
     typename strict_common_type<std::decay_t<Ts>...>::type;
 
 template <class T>
-struct strict_common_type<T>
-{
+struct strict_common_type<T> {
     using type = T;
 };
 
 template <class T, class U>
-struct strict_common_type<T, U>
-{
-    static auto f()
-    {
+struct strict_common_type<T, U> {
+    static auto f() {
         if constexpr (is_constant_v<U>)
             return T{};
         else if constexpr (is_constant_v<T>)
             return U{};
-        else
-        {
+        else {
             static_assert(std::is_same_v<T, U>);
             return T{};
         }
@@ -47,7 +43,6 @@ struct strict_common_type<T, U>
 
 template <class T, class U, class... Ts>
 struct strict_common_type<T, U, Ts...>
-    : strict_common_type<strict_common_type_t<T, U>, Ts...>
-{};
+    : strict_common_type<strict_common_type_t<T, U>, Ts...> {};
 
 } // namespace ac

@@ -11,20 +11,17 @@
 
 namespace ac::io {
 
-struct const_data_parser
-{
+struct const_data_parser {
     cspan<char> pending;
 
-    size_t parse(cspan<char> s)
-    {
+    size_t parse(cspan<char> s) {
         size_t matching =
             static_cast<size_t>(mismatch(pending, s).second - s.begin());
         pending = pending.subspan(matching);
         return matching;
     }
 
-    bool ready() const
-    {
+    bool ready() const {
         return pending.empty();
     }
 };

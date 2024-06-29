@@ -12,23 +12,19 @@
 
 namespace ac {
 
-struct to_bool
-{
+struct to_bool {
     template <class T>
-    constexpr bool operator()(T const& x) const
-    {
+    constexpr bool operator()(T const& x) const {
         return static_cast<bool>(x);
     }
 };
 
 template <class Pred>
-struct test_second
-{
+struct test_second {
     AC_NO_UNIQUE_ADDRESS Pred predicate;
 
     template <class Pair>
-    constexpr bool operator()(Pair const& x) const
-    {
+    constexpr bool operator()(Pair const& x) const {
         return predicate(x.second);
     }
 };
@@ -36,31 +32,25 @@ struct test_second
 /// Container property map with traversal interface that skips values not
 /// satisfying predicate.
 template <class Map, class Predicate = to_bool>
-class filtered_map
-{
+class filtered_map {
 public:
     template <class MapT, class... PredArgs>
     explicit constexpr filtered_map(MapT&& map, PredArgs&&... xs)
-        : map_{std::forward<MapT>(map)}, pred_{std::forward<PredArgs>(xs)...}
-    {}
+        : map_{std::forward<MapT>(map)}, pred_{std::forward<PredArgs>(xs)...} {}
 
-    operator Map&()
-    {
+    operator Map&() {
         return map_;
     }
 
-    operator Map const&() const
-    {
+    operator Map const&() const {
         return map_;
     }
 
-    auto map_range()
-    {
+    auto map_range() {
         return filter_range(ac::map_range(map_), pred_);
     }
 
-    auto map_range() const
-    {
+    auto map_range() const {
         return filter_range(ac::map_range(map_), pred_);
     }
 
@@ -73,30 +63,24 @@ template <class M, class P = to_bool>
 filtered_map(M&&, P = {}) -> filtered_map<M, P>;
 
 template <class M, class P>
-struct map_traits<filtered_map<M, P>> : map_traits<M>
-{
+struct map_traits<filtered_map<M, P>> : map_traits<M> {
     using range_type = filtered_range<map_range_t<M>, test_second<P>>;
 };
 
 template <class M, class P>
 struct map_traits<filtered_map<M, P> const>
-    : map_traits<filtered_map<M const, P>>
-{};
+    : map_traits<filtered_map<M const, P>> {};
 
 template <class M, class P>
-struct map_ops<filtered_map<M, P>> : map_ops<M>
-{
-    static auto map_range(filtered_map<M, P>& map)
-    {
+struct map_ops<filtered_map<M, P>> : map_ops<M> {
+    static auto map_range(filtered_map<M, P>& map) {
         return map.map_range();
     }
 };
 
 template <class M, class P>
-struct map_ops<filtered_map<M, P> const> : map_ops<M const>
-{
-    static auto map_range(filtered_map<M, P> const& map)
-    {
+struct map_ops<filtered_map<M, P> const> : map_ops<M const> {
+    static auto map_range(filtered_map<M, P> const& map) {
         return map.map_range();
     }
 };

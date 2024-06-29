@@ -9,8 +9,7 @@
 #include "test.hpp"
 
 template <bool Invertible>
-void test_accounting_map()
-{
+void test_accounting_map() {
     accounting_map<std::map<std::string, int>, Invertible> map;
     CHECK(0 == get(map, "a"));
     CHECK(1 == get(map, "s"));
@@ -21,21 +20,17 @@ void test_accounting_map()
     C expected{{"a", 0}, {"s", 1}, {"p", 2}};
     auto r = map_range(map);
     CHECK_EQUAL_SETS(expected, {r.begin(), r.end()});
-    if constexpr (Invertible)
-    {
-        for (int i = 0; i < 3; ++i)
-        {
+    if constexpr (Invertible) {
+        for (int i = 0; i < 3; ++i) {
             CHECK(expected[(unsigned)i].first == invert(map, i));
         }
     }
 }
 
-TEST_CASE("non-invertible")
-{
+TEST_CASE("non-invertible") {
     test_accounting_map<false>();
 }
 
-TEST_CASE("invertible")
-{
+TEST_CASE("invertible") {
     test_accounting_map<true>();
 }

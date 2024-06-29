@@ -8,8 +8,7 @@
 
 namespace ac {
 
-struct dummy_output_iterator
-{
+struct dummy_output_iterator {
     using interator_category = std::output_iterator_tag;
     using value_type = void;
     using reference = void;
@@ -19,23 +18,19 @@ struct dummy_output_iterator
     using R = dummy_output_iterator&;
 
     template <class T>
-    R operator=(T const&)
-    {
+    R operator=(T const&) {
         return *this;
     }
 
-    R operator*()
-    {
+    R operator*() {
         return *this;
     }
 
-    R operator++()
-    {
+    R operator++() {
         return *this;
     }
 
-    R operator++(int)
-    {
+    R operator++(int) {
         return *this;
     }
 };

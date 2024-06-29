@@ -11,8 +11,7 @@
 namespace ac {
 
 template <class T>
-struct raw
-{
+struct raw {
     using type = T;
 };
 
@@ -22,14 +21,12 @@ using raw_t = typename raw<std::remove_cvref_t<T>>::type;
 namespace detail {
 
 template <bool B, class T>
-struct value_if
-{
+struct value_if {
     using type = range_value_t<raw_t<T>>;
 };
 
 template <class T>
-struct value_if<false, T>
-{
+struct value_if<false, T> {
     using type = T;
 };
 
@@ -45,16 +42,15 @@ using value_if_small =
 // pass is the same as std::forward except it converts reference into const
 // reference
 template <class T>
-constexpr T&& pass(std::remove_reference_t<T>& x)
-{
+constexpr T&& pass(std::remove_reference_t<T>& x) {
     return static_cast<T&&>(x);
 }
 
 template <class T>
-constexpr T const&& pass(std::remove_reference_t<T>&& x)
-{
+constexpr T const&& pass(std::remove_reference_t<T>&& x) {
     static_assert(
-        !std::is_lvalue_reference_v<T>, "can not pass an rvalue as an lvalue");
+        !std::is_lvalue_reference_v<T>, "can not pass an rvalue as an lvalue"
+    );
     return static_cast<T const&&>(x);
 }
 

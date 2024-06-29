@@ -9,8 +9,7 @@
 
 using namespace ac::io;
 
-TEST_CASE("read unsigned long long")
-{
+TEST_CASE("read unsigned long long") {
     auto const max_ull = std::numeric_limits<unsigned long long>::max();
     text f;
     unsigned long long x{};
@@ -24,7 +23,8 @@ TEST_CASE("read unsigned long long")
     test_read(
         max_ull,
         "1111111111111111111111111111111111111111111111111111111111111111",
-        f);
+        f
+    );
     f.base = 3;
     test_read(max_ull, "11112220022122120101211020120210210211220", f);
     f.base = 36;
@@ -37,8 +37,7 @@ TEST_CASE("read unsigned long long")
     test_read(0ull, "0x0xf", f);
 }
 
-TEST_CASE("read long long")
-{
+TEST_CASE("read long long") {
     auto const max_ull = std::numeric_limits<long long>::max();
     auto const min_ull = std::numeric_limits<long long>::min();
     text f;
@@ -53,11 +52,13 @@ TEST_CASE("read long long")
     test_read<true>(
         min_ull,
         "-1000000000000000000000000000000000000000000000000000000000000000",
-        f);
+        f
+    );
     test_read<true>(
         max_ull,
         "+111111111111111111111111111111111111111111111111111111111111111",
-        f);
+        f
+    );
     f.base = 3;
     test_read<true>(min_ull, "-2021110011022210012102010021220101220222", f);
     test_read<true>(max_ull, "+2021110011022210012102010021220101220221", f);
@@ -73,8 +74,7 @@ TEST_CASE("read long long")
     test_read<false>(x, "0x8000000000000000", f);
 }
 
-TEST_CASE("determin_ulle base")
-{
+TEST_CASE("determin_ulle base") {
     text f{0, detect_base};
     test_read<true>(10, "10", f);
     test_read<true>(2, "0b10", f);
@@ -84,8 +84,7 @@ TEST_CASE("determin_ulle base")
     test_read<true>(16, "0X10", f);
 }
 
-TEST_CASE("multiple signs")
-{
+TEST_CASE("multiple signs") {
     text f;
     int x{};
     test_read<false>(x, "++1", f);

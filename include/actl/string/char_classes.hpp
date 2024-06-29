@@ -9,32 +9,27 @@
 namespace ac {
 
 /// Checks if @p c is a decimal digit.
-inline constexpr bool is_digit(char c) noexcept
-{
+inline constexpr bool is_digit(char c) noexcept {
     return static_cast<unsigned char>(c - '0') < 10;
 }
 
 /// Checks if @p c is a lowercase letter.
-inline constexpr bool is_lower(char c) noexcept
-{
+inline constexpr bool is_lower(char c) noexcept {
     return static_cast<unsigned char>(c - 'a') < 26;
 }
 
 /// Checks if @p c is an uppercase letter.
-inline constexpr bool is_upper(char c) noexcept
-{
+inline constexpr bool is_upper(char c) noexcept {
     return static_cast<unsigned char>(c - 'A') < 26;
 }
 
 /// Checks if @p c is an alphabetic character (a letter).
-inline constexpr bool is_alpha(char c) noexcept
-{
+inline constexpr bool is_alpha(char c) noexcept {
     return is_upper(c & ~0x20);
 }
 
 /// Checks if @p c is an alphabetic character or a decimal digit.
-inline constexpr bool is_alphanumeric(char c) noexcept
-{
+inline constexpr bool is_alphanumeric(char c) noexcept {
     return is_alpha(c) || is_digit(c);
 }
 
@@ -45,8 +40,7 @@ inline constexpr bool is_alphanumeric(char c) noexcept
 /// - carriage return (0x0d, '\r')
 /// - horizontal tab (0x09, '\t')
 /// - vertical tab (0x0b, '\v')
-inline constexpr bool is_space(char c) noexcept
-{
+inline constexpr bool is_space(char c) noexcept {
     return static_cast<unsigned char>(c - '\t') < 5 || c == ' ';
 }
 

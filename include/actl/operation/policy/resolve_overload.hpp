@@ -12,32 +12,31 @@
 namespace ac {
 
 template <class Base, class P>
-struct policy_context : Base
-{
+struct policy_context : Base {
     P const& policy;
 };
 
 template <class Base, class Policy, class Op, class... Ts>
     requires can_apply_policy_v<Op, Policy>
-struct context_overload<policy_context<Base, Policy>, Op, Ts...>
-{
+struct context_overload<policy_context<Base, Policy>, Op, Ts...> {
     template <class Op1>
     static constexpr auto resolve(
-        policy_context<Base, Policy> context, Op1&& op)
-    {
+        policy_context<Base, Policy> context, Op1&& op
+    ) {
         return resolve_overload<Ts...>(
-            Base{context}, apply_policy(std::forward<Op1>(op), context.policy));
+            Base{context}, apply_policy(std::forward<Op1>(op), context.policy)
+        );
     }
 };
 
 template <class Context, class Op, class Policy, class... Ts>
-struct overload_resolver<Context, tuned_operation<Op, Policy>, Ts...>
-{
+struct overload_resolver<Context, tuned_operation<Op, Policy>, Ts...> {
     static constexpr decltype(auto) resolve(
-        Context context, tuned_operation<Op, Policy> const& op)
-    {
+        Context context, tuned_operation<Op, Policy> const& op
+    ) {
         return resolve_overload<Ts...>(
-            policy_context<Context, Policy>{context, op.policy}, op.operation);
+            policy_context<Context, Policy>{context, op.policy}, op.operation
+        );
     }
 };
 

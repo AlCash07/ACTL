@@ -12,26 +12,22 @@
 namespace ac::io {
 
 // Integer and real numbers base.
-class base_t
-{
+class base_t {
 public:
     struct is_manipulator;
 
     explicit constexpr base_t() = default;
 
     template <class T>
-    explicit constexpr base_t(T x) : value{static_cast<uint8_t>(x)}
-    {
+    explicit constexpr base_t(T x) : value{static_cast<uint8_t>(x)} {
         AC_ASSERT(x == 0 || 1 < x && x <= 36);
     }
 
-    base_t& operator=(size_t x)
-    {
+    base_t& operator=(size_t x) {
         return *this = base_t{x};
     }
 
-    constexpr operator uint8_t() const
-    {
+    constexpr operator uint8_t() const {
         return value;
     }
 

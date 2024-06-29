@@ -7,8 +7,7 @@
 #include <actl/geometry/algorithm/orientation/point_line.hpp>
 #include "test.hpp"
 
-TEST_CASE("default")
-{
+TEST_CASE("default") {
     line<int> l{{1, 1}, {3, 2}};
     CHECK(orientation2d::collinear == orientation(point{-1, 0}, l));
     CHECK(orientation2d::left == orientation(l, point{3, 3}));

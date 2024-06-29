@@ -12,25 +12,22 @@
 
 using namespace ac::io;
 
-auto ets()
-{
+auto ets() {
     return escaped{} >>= text_static<flag::boolalpha>{};
 }
 
-TEST_CASE("escaped int")
-{
+TEST_CASE("escaped int") {
     test_write("123", ets(), 123);
 }
 
-TEST_CASE("escaped char")
-{
+TEST_CASE("escaped char") {
     test_write("'0''\\n'", ets(), '0', '\n');
 }
 
-TEST_CASE("escaped string")
-{
+TEST_CASE("escaped string") {
     test_write(
         "\"\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\0rz\"",
         ets(),
-        "\0\a\b\t\n\v\f\r\"\'\\0rz"sv);
+        "\0\a\b\t\n\v\f\r\"\'\\0rz"sv
+    );
 }

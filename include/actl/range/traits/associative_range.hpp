@@ -34,11 +34,10 @@ concept PairAssociativeRange =
      detail::HasMappedType<super_range_t<std::remove_reference_t<T>>>);
 
 template <class T>
-concept SimpleAssociativeRange = AssociativeRange<T> && !
-PairAssociativeRange<T>;
+concept SimpleAssociativeRange =
+    AssociativeRange<T> && !PairAssociativeRange<T>;
 
 template <class C>
-concept SequenceRange = Range<C> && !
-AssociativeRange<C>;
+concept SequenceRange = Range<C> && !AssociativeRange<C>;
 
 } // namespace ac

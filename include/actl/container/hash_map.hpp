@@ -30,15 +30,14 @@ template <
 using hash_multimap = std::unordered_multimap<K, T, H, E, A>;
 
 template <class K, class T, class H, class E, class A>
-struct range_properties<hash_map<K, T, H, E, A>> : default_range_properties
-{
+struct range_properties<hash_map<K, T, H, E, A>> : default_range_properties {
     static constexpr bool is_container = true;
     static constexpr bool is_unique = true;
 };
 
 template <class K, class T, class H, class E, class A>
-struct range_properties<hash_multimap<K, T, H, E, A>> : default_range_properties
-{
+struct range_properties<hash_multimap<K, T, H, E, A>>
+    : default_range_properties {
     static constexpr bool is_container = true;
 };
 

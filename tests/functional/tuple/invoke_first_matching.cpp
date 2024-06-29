@@ -8,28 +8,22 @@
 
 namespace {
 
-struct int_cref_op
-{
-    constexpr int operator()(int const& x) const
-    {
+struct int_cref_op {
+    constexpr int operator()(int const& x) const {
         if (x < 0)
             throw;
         return 0;
     }
 };
 
-struct other_op
-{
-    constexpr int operator()(int&&) const noexcept
-    {
+struct other_op {
+    constexpr int operator()(int&&) const noexcept {
         return 1;
     }
-    constexpr int operator()(std::byte const&) const noexcept
-    {
+    constexpr int operator()(std::byte const&) const noexcept {
         return 2;
     }
-    constexpr int operator()(std::byte&&) const noexcept
-    {
+    constexpr int operator()(std::byte&&) const noexcept {
         return 3;
     }
 };

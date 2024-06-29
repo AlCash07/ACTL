@@ -11,8 +11,7 @@
 namespace ac::io {
 
 template <class T>
-struct size
-{
+struct size {
     T value;
 };
 
@@ -20,15 +19,13 @@ template <class T>
 size(T&&) -> size<T>;
 
 template <class T>
-bool write_final(Device auto& od, Format auto& fmt, size<T> size)
-{
+bool write_final(Device auto& od, Format auto& fmt, size<T> size) {
     nested_scope_guard g{fmt};
     return write(od, fmt, size.value);
 }
 
 template <class T>
-bool read_final(Device auto& id, Format auto& fmt, size<T&> size)
-{
+bool read_final(Device auto& id, Format auto& fmt, size<T&> size) {
     nested_scope_guard g{fmt};
     return read(id, fmt, size.value);
 }

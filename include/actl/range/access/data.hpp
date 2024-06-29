@@ -16,23 +16,17 @@ namespace impl {
 // TODO: check that data returns a pointer.
 template <class T>
 concept has_member_data = requires(T& t) {
-                              {
-                                  t.data()
-                              };
-                          };
+    { t.data() };
+};
 
 template <class T>
 concept has_non_member_data = requires(T& t) {
-                                  {
-                                      data(t)
-                                  };
-                              };
+    { data(t) };
+};
 
-struct data_f
-{
+struct data_f {
     template <class T, size_t N>
-    constexpr T* operator()(T (&array)[N]) const noexcept
-    {
+    constexpr T* operator()(T (&array)[N]) const noexcept {
         return array;
     }
 

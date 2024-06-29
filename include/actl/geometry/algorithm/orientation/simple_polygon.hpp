@@ -16,8 +16,8 @@ namespace ac {
 /// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 12.
 template <class T>
 orientation2d orientation(
-    Policy auto const& policy, simple_polygon<T> const& poly)
-{
+    Policy auto const& policy, simple_polygon<T> const& poly
+) {
     auto it = cyclic_iterator{poly, min_element(poly, less(policy))};
     return orientation(policy, it[-1], it[0], it[1]);
 }

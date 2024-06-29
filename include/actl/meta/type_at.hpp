@@ -14,14 +14,12 @@ template <size_t N, class... Ts>
 struct type_at;
 
 template <class T, class... Ts>
-struct type_at<0, T, Ts...>
-{
+struct type_at<0, T, Ts...> {
     using type = T;
 };
 
 template <size_t N, class T, class... Ts>
-struct type_at<N, T, Ts...> : type_at<N - 1, Ts...>
-{};
+struct type_at<N, T, Ts...> : type_at<N - 1, Ts...> {};
 
 template <size_t N, class... Ts>
 using type_at_t = typename type_at<N, Ts...>::type;

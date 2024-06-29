@@ -12,8 +12,8 @@ namespace {
 
 template <class Category>
 class int_iterator
-    : public ac::iterator_interface_selector_t<int_iterator<Category>, Category>
-{
+    : public ac::
+          iterator_interface_selector_t<int_iterator<Category>, Category> {
 public:
     using value_type = int;
 
@@ -21,37 +21,34 @@ public:
 
     explicit constexpr int_iterator(int value) noexcept : value_{value} {}
 
-    constexpr int const& operator*() const noexcept
-    {
+    constexpr int const& operator*() const noexcept {
         return value_;
     }
 
-    constexpr int_iterator& operator++() noexcept
-    {
+    constexpr int_iterator& operator++() noexcept {
         ++value_;
         return *this;
     }
 
-    constexpr int_iterator& operator--() noexcept
-    {
+    constexpr int_iterator& operator--() noexcept {
         --value_;
         return *this;
     }
 
-    constexpr int_iterator& operator+=(int n) noexcept
-    {
+    constexpr int_iterator& operator+=(int n) noexcept {
         value_ += n;
         return *this;
     }
 
     friend constexpr bool operator==(
-        int_iterator lhs, int_iterator rhs) noexcept
-    {
+        int_iterator lhs, int_iterator rhs
+    ) noexcept {
         return lhs.value_ == rhs.value_;
     }
 
-    friend constexpr int operator-(int_iterator lhs, int_iterator rhs) noexcept
-    {
+    friend constexpr int operator-(
+        int_iterator lhs, int_iterator rhs
+    ) noexcept {
         return lhs.value_ - rhs.value_;
     }
 
@@ -61,25 +58,27 @@ private:
 
 } // namespace
 
-TEST_CASE("iterator_interface")
-{
+TEST_CASE("iterator_interface") {
     SECTION(
         "iterator_interface provides full standard-compliant interface for "
         "each "
-        "iterator category")
-    {
+        "iterator category"
+    ) {
         test_iterator(
-            int_iterator<std::input_iterator_tag>{2},
-            std::input_iterator_tag{});
+            int_iterator<std::input_iterator_tag>{2}, std::input_iterator_tag{}
+        );
         test_iterator(
             int_iterator<std::forward_iterator_tag>{2},
-            std::forward_iterator_tag{});
+            std::forward_iterator_tag{}
+        );
         test_iterator(
             int_iterator<std::bidirectional_iterator_tag>{2},
-            std::bidirectional_iterator_tag{});
+            std::bidirectional_iterator_tag{}
+        );
         test_random_access_iterator(
             int_iterator<std::random_access_iterator_tag>{2},
-            int_iterator<std::random_access_iterator_tag>{5});
+            int_iterator<std::random_access_iterator_tag>{5}
+        );
     }
 
     constexpr int_iterator<std::random_access_iterator_tag> iter{2};

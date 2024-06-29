@@ -31,11 +31,9 @@ template <Tuple T, size_t... Is>
 struct tuple_nesting_depth<T, std::index_sequence<Is...>>
     : size_constant<
           1 + max_nesting_depth_v<
-                  std::tuple_element_t<Is, std::remove_reference_t<T>>...>>
-{};
+                  std::tuple_element_t<Is, std::remove_reference_t<T>>...>> {};
 
 template <Tuple T>
-struct nesting_depth<T> : tuple_nesting_depth<T>
-{};
+struct nesting_depth<T> : tuple_nesting_depth<T> {};
 
 } // namespace ac

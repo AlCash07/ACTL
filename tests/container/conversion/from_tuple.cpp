@@ -10,8 +10,7 @@
 #include "container/conversion/custom_convertion.hpp"
 #include "test.hpp"
 
-struct S
-{};
+struct S {};
 
 using my_int = ac::converted<int>;
 using my_char = ac::converted<char>;
@@ -33,8 +32,7 @@ static_assert(!ac::can_convert_to_v<std::tuple<my_int>, tuple_ic>);
 // incompatible src type
 static_assert(!ac::can_convert_to_v<tuple_ic, S>);
 
-TEST_CASE("tuple to vector")
-{
+TEST_CASE("tuple to vector") {
     using ivec = std::vector<int>;
     static_assert(ac::can_convert_to_v<ivec, std::tuple<int, int>>);
     static_assert(!noexcept(ac::convert_to<ivec>(std::tuple{4, 2})));

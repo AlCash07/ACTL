@@ -17,14 +17,12 @@ concept Byte = std::same_as<std::remove_cv_t<T>, std::byte> ||
                (std::is_arithmetic_v<T> && sizeof(T) == 1);
 
 template <Device Dev>
-bool write_final(Dev& od, Format auto&, Byte auto byte)
-{
+bool write_final(Dev& od, Format auto&, Byte auto byte) {
     return od.write(static_cast<char_t<Dev>>(byte)) == 1;
 }
 
 template <Byte B>
-bool read_final(Device auto& id, Format auto&, B& byte)
-{
+bool read_final(Device auto& id, Format auto&, B& byte) {
     byte = static_cast<B>(id.get());
     return !id.eof();
 }

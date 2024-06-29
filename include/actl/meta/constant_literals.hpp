@@ -15,8 +15,7 @@ namespace ac {
 namespace detail {
 
 template <char C>
-constexpr unsigned digit_to_value() noexcept
-{
+constexpr unsigned digit_to_value() noexcept {
     if constexpr ('a' <= C && C <= 'f')
         return unsigned{C - 'a' + 10};
     else if constexpr ('A' <= C && C <= 'F')
@@ -26,73 +25,62 @@ constexpr unsigned digit_to_value() noexcept
 }
 
 template <class Digits, char... Cs>
-struct filter_digits
-{
+struct filter_digits {
     using type = Digits;
 };
 
 template <unsigned... Digits, char... Cs>
 struct filter_digits<std::integer_sequence<unsigned, Digits...>, '\'', Cs...>
-    : filter_digits<std::integer_sequence<unsigned, Digits...>, Cs...>
-{};
+    : filter_digits<std::integer_sequence<unsigned, Digits...>, Cs...> {};
 
 template <unsigned... Digits, char C, char... Cs>
 struct filter_digits<std::integer_sequence<unsigned, Digits...>, C, Cs...>
     : filter_digits<
           std::integer_sequence<unsigned, Digits..., digit_to_value<C>()>,
-          Cs...>
-{};
+          Cs...> {};
 
 template <unsigned Base, char... Cs>
-struct base_and_digits
-{
+struct base_and_digits {
     static constexpr unsigned base = Base;
     using digits =
         typename filter_digits<std::integer_sequence<unsigned>, Cs...>::type;
 };
 
 template <char... Cs>
-struct to_number : base_and_digits<10, Cs...>
-{};
+struct to_number : base_and_digits<10, Cs...> {};
 
 template <char... Cs>
-struct to_number<'0', 'X', Cs...> : base_and_digits<16, Cs...>
-{};
+struct to_number<'0', 'X', Cs...> : base_and_digits<16, Cs...> {};
 
 template <char... Cs>
-struct to_number<'0', 'x', Cs...> : base_and_digits<16, Cs...>
-{};
+struct to_number<'0', 'x', Cs...> : base_and_digits<16, Cs...> {};
 
 template <char... Cs>
-struct to_number<'0', Cs...> : base_and_digits<8, Cs...>
-{};
+struct to_number<'0', Cs...> : base_and_digits<8, Cs...> {};
 
 template <char... Cs>
-struct to_number<'0', 'b', Cs...> : base_and_digits<2, Cs...>
-{};
+struct to_number<'0', 'b', Cs...> : base_and_digits<2, Cs...> {};
 
 template <char... Cs>
-struct to_number<'0', 'B', Cs...> : base_and_digits<2, Cs...>
-{};
+struct to_number<'0', 'B', Cs...> : base_and_digits<2, Cs...> {};
 
 template <class T, char... Cs>
-struct str_to_constant
-{
+struct str_to_constant {
     using U = std::make_unsigned_t<T>;
     using number = to_number<Cs...>;
 
     template <U X, unsigned D, unsigned... Ds>
-    static constexpr U fold(std::integer_sequence<unsigned, D, Ds...>) noexcept
-    {
+    static constexpr U
+    fold(std::integer_sequence<unsigned, D, Ds...>) noexcept {
         static_assert(0 <= D && D < number::base);
         static_assert(X <= (std::numeric_limits<U>::max() - D) / number::base);
         return fold<D + number::base * X>(
-            std::integer_sequence<unsigned, Ds...>{});
+            std::integer_sequence<unsigned, Ds...>{}
+        );
     }
 
     template <U X>
-    static constexpr U fold(std::integer_sequence<unsigned>) noexcept
-    {
+    static constexpr U fold(std::integer_sequence<unsigned>) noexcept {
         return X;
     }
 
@@ -106,29 +94,25 @@ inline namespace constant_literals {
 
 /// Literal that produces ac::constant of type `int`.
 template <char... Chars>
-constexpr auto operator""_c() noexcept
-{
+constexpr auto operator""_c() noexcept {
     return detail::str_to_constant<int, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `unsigned`.
 template <char... Chars>
-constexpr auto operator""_cu() noexcept
-{
+constexpr auto operator""_cu() noexcept {
     return detail::str_to_constant<unsigned, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `long long`.
 template <char... Chars>
-constexpr auto operator""_cll() noexcept
-{
+constexpr auto operator""_cll() noexcept {
     return detail::str_to_constant<long long, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `unsigned long long`.
 template <char... Chars>
-constexpr auto operator""_cull() noexcept
-{
+constexpr auto operator""_cull() noexcept {
     return detail::str_to_constant<unsigned long long, Chars...>::value;
 }
 

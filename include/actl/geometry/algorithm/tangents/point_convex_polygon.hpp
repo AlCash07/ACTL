@@ -19,8 +19,8 @@ OutIter tangents(
     Policy auto const& policy,
     point<T> const& p,
     convex_polygon<U> const& poly,
-    OutIter dst)
-{
+    OutIter dst
+) {
     *dst++ =
         extreme_vertex(policy, poly, [&p](auto const& x) { return x - p; });
     *dst++ =

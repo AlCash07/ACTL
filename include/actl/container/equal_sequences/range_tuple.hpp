@@ -14,9 +14,8 @@ namespace ac {
 namespace detail {
 
 template <class T, class U, size_t... Is>
-constexpr bool equal_tuple_range(
-    T const& lhs, U const& rhs, std::index_sequence<Is...>) noexcept
-{
+constexpr bool
+equal_tuple_range(T const& lhs, U const& rhs, std::index_sequence<Is...>) noexcept {
     using std::get;
     static_assert(noexcept((... && (get<Is>(lhs) == rhs[Is]))));
     return (... && (get<Is>(lhs) == rhs[Is]));
@@ -26,8 +25,7 @@ constexpr bool equal_tuple_range(
 
 template <Tuple T, class U>
     requires(is_dynamic_range_v<U>)
-constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
-{
+constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept {
     static_assert(RandomAccessRange<U>);
     constexpr size_t n = std::tuple_size_v<T>;
     static_assert(noexcept(rhs.size()));
@@ -38,8 +36,7 @@ constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
 
 template <class T, class U>
     requires(is_dynamic_range_v<T> && Tuple<U>)
-constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept
-{
+constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept {
     return equal_sequences(rhs, lhs);
 }
 

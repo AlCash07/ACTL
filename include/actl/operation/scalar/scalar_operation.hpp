@@ -31,39 +31,31 @@ struct logical_operation_tag : scalar_operation_tag {};
 // clang-format on
 
 template <class Op, size_t Arity>
-struct scalar_operation : operation<Op>
-{
+struct scalar_operation : operation<Op> {
     template <class T>
-    static constexpr T convert(T x)
-    {
+    static constexpr T convert(T x) {
         return x;
     }
 
     template <class T, auto X>
-    static constexpr T convert(constant<X>)
-    {
+    static constexpr T convert(constant<X>) {
         return T{X};
     }
 
     template <class... Ts>
-    constexpr auto evaluate(Ts const&... xs) const
-    {
+    constexpr auto evaluate(Ts const&... xs) const {
         if constexpr ((... && std::is_arithmetic_v<
-                                  unwrap_constant_t<decltype(eval(xs))>>))
-        {
+                                  unwrap_constant_t<decltype(eval(xs))>>)) {
             using T = strict_common_type_t<decltype(eval(xs))...>;
             if constexpr (!is_constant_v<T>)
                 return this->derived().eval_scalar(convert<T>(eval(xs))...);
-        }
-        else
-        {
+        } else {
             return this->derived().eval_scalar(eval(xs)...);
         }
     }
 
     template <class T, class... Ts>
-    constexpr void evaluate_to(T& dst, Ts const&... xs) const
-    {
+    constexpr void evaluate_to(T& dst, Ts const&... xs) const {
         dst = evaluate(xs...);
     }
 };

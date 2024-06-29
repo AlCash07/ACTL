@@ -12,24 +12,18 @@
 
 namespace ac {
 
-struct math_operation_tag
-{
+struct math_operation_tag {
     using base = scalar_operation_tag;
 };
 
-struct abs_t : scalar_operation<abs_t, 1>
-{
+struct abs_t : scalar_operation<abs_t, 1> {
     using operation_category = math_operation_tag;
 
     template <class T>
-    static constexpr T eval_scalar(T x)
-    {
-        if constexpr (std::is_unsigned_v<T>)
-        {
+    static constexpr T eval_scalar(T x) {
+        if constexpr (std::is_unsigned_v<T>) {
             return x;
-        }
-        else
-        {
+        } else {
             using std::abs;
             return abs(x);
         }
@@ -38,33 +32,28 @@ struct abs_t : scalar_operation<abs_t, 1>
 inline constexpr abs_t abs;
 
 template <class Op, size_t Arity>
-struct math_operation : scalar_operation<Op, Arity>
-{
+struct math_operation : scalar_operation<Op, Arity> {
     using operation_category = math_operation_tag;
 };
 
-#define MATH_OP1(name, op)                     \
-    struct name : math_operation<name, 1>      \
-    {                                          \
-        template <class T>                     \
-        static constexpr auto eval_scalar(T x) \
-        {                                      \
-            using std::op;                     \
-            return op(x);                      \
-        }                                      \
-    };                                         \
+#define MATH_OP1(name, op)                       \
+    struct name : math_operation<name, 1> {      \
+        template <class T>                       \
+        static constexpr auto eval_scalar(T x) { \
+            using std::op;                       \
+            return op(x);                        \
+        }                                        \
+    };                                           \
     constexpr name op;
 
-#define MATH_OP2(name, op)                              \
-    struct name : math_operation<name, 2>               \
-    {                                                   \
-        template <class T, class U>                     \
-        static constexpr auto eval_scalar(T lhs, U rhs) \
-        {                                               \
-            using std::op;                              \
-            return op(lhs, rhs);                        \
-        }                                               \
-    };                                                  \
+#define MATH_OP2(name, op)                                \
+    struct name : math_operation<name, 2> {               \
+        template <class T, class U>                       \
+        static constexpr auto eval_scalar(T lhs, U rhs) { \
+            using std::op;                                \
+            return op(lhs, rhs);                          \
+        }                                                 \
+    };                                                    \
     constexpr name op;
 
 MATH_OP1(cos_t, cos)

@@ -15,8 +15,7 @@ namespace ac {
 // TODO: consider making this map invertible. Iter's possible, but not
 // standard-compliant.
 template <class Class, class Member>
-class member_map
-{
+class member_map {
 public:
     using class_t = Class;
     using member_t = Member;
@@ -31,8 +30,7 @@ template <auto Ptr>
 class static_member_map;
 
 template <class Class, class Member, Member Class::*Ptr>
-class static_member_map<Ptr>
-{
+class static_member_map<Ptr> {
 public:
     using class_t = Class;
     using member_t = Member;
@@ -42,11 +40,10 @@ public:
 
 template <class MM>
     requires requires {
-                 typename MM::class_t;
-                 typename MM::member_t;
-             }
-struct map_traits<MM>
-{
+        typename MM::class_t;
+        typename MM::member_t;
+    }
+struct map_traits<MM> {
     static constexpr bool C = std::is_const_v<MM>;
 
     using key_type = add_const_if_t<C, typename MM::class_t>&;
@@ -61,13 +58,11 @@ struct map_traits<MM>
 
 template <class MM>
     requires requires {
-                 typename MM::class_t;
-                 typename MM::member_t;
-             }
-struct map_ops<MM> : map_put<MM>
-{
-    static map_reference_t<MM> get(MM& map, map_key_t<MM> key)
-    {
+        typename MM::class_t;
+        typename MM::member_t;
+    }
+struct map_ops<MM> : map_put<MM> {
+    static map_reference_t<MM> get(MM& map, map_key_t<MM> key) {
         return key.*map.ptr;
     }
 };

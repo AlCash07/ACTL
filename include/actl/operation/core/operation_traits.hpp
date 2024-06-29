@@ -11,8 +11,7 @@
 
 namespace ac {
 
-struct operation_tag
-{};
+struct operation_tag {};
 
 template <class T>
 concept Operation = requires { typename T::operation_category; };
@@ -22,7 +21,6 @@ struct identity_element;
 
 // TODO: we shouldn't need this.
 template <Operation T>
-struct nesting_depth<T> : constant<std::numeric_limits<size_t>::max()>
-{};
+struct nesting_depth<T> : constant<std::numeric_limits<size_t>::max()> {};
 
 } // namespace ac

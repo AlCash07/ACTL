@@ -11,44 +11,33 @@
 
 namespace ac::io {
 
-class base_parser
-{
-    enum class states
-    {
-        empty,
-        zero,
-        done
-    };
+class base_parser {
+    enum class states { empty, zero, done };
 
     states state = states::empty;
     uint8_t base;
 
-    uint8_t set_base(uint8_t value)
-    {
+    uint8_t set_base(uint8_t value) {
         if (base == 0)
             base = value;
         return base;
     }
 
-    bool parse_zero(char c)
-    {
+    bool parse_zero(char c) {
         if (c == '0')
             return true;
-        else
-        {
+        else {
             set_base(10);
             return false;
         }
     }
 
-    bool parse_base(char c)
-    {
+    bool parse_base(char c) {
         if (c == 'x' || c == 'X')
             return set_base(16) == 16;
         else if (c == 'b' || c == 'B')
             return set_base(2) == 2;
-        else
-        {
+        else {
             set_base(8);
             return false;
         }
@@ -57,22 +46,18 @@ class base_parser
 public:
     explicit base_parser(uint8_t base) : base{base} {}
 
-    size_t parse(cspan<char> s)
-    {
+    size_t parse(cspan<char> s) {
         size_t i = 0;
-        switch (state)
-        {
+        switch (state) {
             case states::empty:
-                if (!parse_zero(s[i]))
-                {
+                if (!parse_zero(s[i])) {
                     state = states::done;
                     break;
                 }
                 ++i;
                 state = states::zero;
             case states::zero:
-                if (i != s.size() && parse_base(s[i]))
-                {
+                if (i != s.size() && parse_base(s[i])) {
                     ++i;
                     state = states::done;
                 }
@@ -81,18 +66,15 @@ public:
         return i;
     }
 
-    bool zero() const
-    {
+    bool zero() const {
         return state == states::zero;
     }
 
-    bool ready() const
-    {
+    bool ready() const {
         return state != states::empty;
     }
 
-    uint8_t value() const
-    {
+    uint8_t value() const {
         return base;
     }
 };

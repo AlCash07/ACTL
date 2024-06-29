@@ -7,10 +7,10 @@
 #include <actl/geometry/algorithm/project/point_plane.hpp>
 #include "test.hpp"
 
-TEST_CASE("default")
-{
+TEST_CASE("default") {
     CHECK_NEAR(
         point{3, 0, -1},
         project(point{2, -2, -4}, plane<int>{{1, 2, 3}, 0}),
-        1e-12);
+        1e-12
+    );
 }

@@ -7,26 +7,22 @@
 #include <actl/map/member_map.hpp>
 #include "test.hpp"
 
-struct A
-{
+struct A {
     int a;
 };
 
 template <class Map>
-void test_member_map(Map&& map)
-{
+void test_member_map(Map&& map) {
     A x{0};
     get(map, x) = 1;
     CHECK(1 == x.a);
     CHECK(1 == get((Map const&)map, x));
 }
 
-TEST_CASE("static")
-{
+TEST_CASE("static") {
     test_member_map(static_member_map<&A::a>{});
 }
 
-TEST_CASE("non-static")
-{
+TEST_CASE("non-static") {
     test_member_map(member_map{&A::a});
 }

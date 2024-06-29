@@ -7,10 +7,10 @@
 #include <actl/container/equal_sequences/ranges.hpp>
 #include "test.hpp"
 
-TEST_CASE("equal_sequences for vectors")
-{
+TEST_CASE("equal_sequences for vectors") {
     CHECK(ac::equal_sequences(
-        std::vector<int>{4, 2}, std::vector<long long>{4, 2}));
+        std::vector<int>{4, 2}, std::vector<long long>{4, 2}
+    ));
     /* size mismatch with a common prefix */ {
         CHECK(!ac::equal_sequences(std::vector{4}, std::vector{4, 2}));
         CHECK(!ac::equal_sequences(std::vector{4, 2}, std::vector{4}));

@@ -15,12 +15,10 @@ namespace ac {
 
 template <Range T>
 struct range_nesting_depth
-    : size_constant<1 + nesting_depth_v<range_value_t<T>>>
-{};
+    : size_constant<1 + nesting_depth_v<range_value_t<T>>> {};
 
 template <Range T>
-struct nesting_depth<T> : range_nesting_depth<T>
-{};
+struct nesting_depth<T> : range_nesting_depth<T> {};
 
 // Some types model both Range and Tuple, so we need to explicitly address this
 // ambiguity. We do this by relying on the Range deduction, because it examines
@@ -28,7 +26,6 @@ struct nesting_depth<T> : range_nesting_depth<T>
 // The type is considered invalid if examining it as a Tuple changes the depth.
 template <class T>
     requires(Range<T> && Tuple<T>)
-struct nesting_depth<T> : range_nesting_depth<T>
-{};
+struct nesting_depth<T> : range_nesting_depth<T> {};
 
 } // namespace ac

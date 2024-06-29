@@ -14,10 +14,8 @@ namespace ac {
 template <class Range>
 class contiguous_non_const_range_interface
     : public random_access_non_const_range_interface<
-          contiguous_non_const_range_interface<Range>>
-{
-    constexpr Range& derived() noexcept
-    {
+          contiguous_non_const_range_interface<Range>> {
+    constexpr Range& derived() noexcept {
         return static_cast<Range&>(*this);
     }
 
@@ -31,7 +29,6 @@ public:
 template <class Derived>
 class contiguous_dual_range_interface
     : public contiguous_range_interface<Derived>
-    , public contiguous_non_const_range_interface<Derived>
-{};
+    , public contiguous_non_const_range_interface<Derived> {};
 
 } // namespace ac

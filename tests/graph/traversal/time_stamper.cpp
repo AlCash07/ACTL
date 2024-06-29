@@ -9,8 +9,7 @@
 #include "graph/sample_graphs.hpp"
 #include "test.hpp"
 
-TEST_CASE("time_stamper in")
-{
+TEST_CASE("time_stamper in") {
     auto graph = sample_undirected_graph();
     size_t n = (size_t)graph.vertex_count();
     std::vector<int> tin(n);
@@ -18,8 +17,7 @@ TEST_CASE("time_stamper in")
     CHECK(std::vector<int>{0, 1, 2, 3, 4, 5} == tin);
 }
 
-TEST_CASE("time_stamper in and out")
-{
+TEST_CASE("time_stamper in and out") {
     auto graph = sample_undirected_tree();
     size_t n = (size_t)graph.vertex_count();
     std::vector<int> tin(n), tout(n);

@@ -31,8 +31,9 @@ concept NothrowCopyConstructible =
 
 template <class T>
 // A type is broken if some copy constructor versions may throw and some not.
-concept MayThrowCopyConstructible = std::copy_constructible<T> && !
-std::is_nothrow_constructible_v<T, T&>&& MayThrowConvertibleTo<T&, T> &&
+concept MayThrowCopyConstructible =
+    std::copy_constructible<T> && !std::is_nothrow_constructible_v<T, T&> &&
+    MayThrowConvertibleTo<T&, T> &&
     !std::is_nothrow_constructible_v<T, T const&> &&
     MayThrowConvertibleTo<T const&, T> &&
     !std::is_nothrow_constructible_v<T, T const> &&

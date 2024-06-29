@@ -13,21 +13,17 @@ namespace ac {
 namespace detail {
 
 template <class T>
-struct is_const_pointer : std::false_type
-{};
+struct is_const_pointer : std::false_type {};
 
 template <class T>
-struct is_const_pointer<T const*> : std::true_type
-{};
+struct is_const_pointer<T const*> : std::true_type {};
 
 template <class T, bool = std::input_or_output_iterator<T>>
 struct is_const_iterator
-    : is_const_pointer<typename std::iterator_traits<T>::pointer>
-{};
+    : is_const_pointer<typename std::iterator_traits<T>::pointer> {};
 
 template <class T>
-struct is_const_iterator<T, false> : std::false_type
-{};
+struct is_const_iterator<T, false> : std::false_type {};
 
 } // namespace detail
 

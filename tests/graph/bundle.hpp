@@ -9,8 +9,7 @@
 #include <actl/std/string.hpp>
 #include <actl/std/utility.hpp>
 
-struct bundle
-{
+struct bundle {
     int i;
     std::string s;
 
@@ -18,18 +17,15 @@ struct bundle
 
     explicit bundle(int i, std::string s) : i{i}, s{s} {};
 
-    bool operator<(bundle const& rhs) const
-    {
+    bool operator<(bundle const& rhs) const {
         return i < rhs.i;
     }
 
-    bool operator==(bundle const& rhs) const
-    {
+    bool operator==(bundle const& rhs) const {
         return i == rhs.i;
     }
 
-    size_t hash() const
-    {
+    size_t hash() const {
         return ac::hash_value(i);
     }
 };

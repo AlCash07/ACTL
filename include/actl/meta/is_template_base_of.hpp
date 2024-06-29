@@ -22,14 +22,12 @@ std::false_type test_base(void const*);
 } // namespace detail
 
 template <template <class...> class B, class D>
-struct is_template_base_of : std::true_type
-{};
+struct is_template_base_of : std::true_type {};
 
 template <template <class...> class B, class D>
     requires requires { detail::test_base<B>(std::declval<D*>()); }
 struct is_template_base_of<B, D>
-    : decltype(detail::test_base<B>(std::declval<D*>()))
-{};
+    : decltype(detail::test_base<B>(std::declval<D*>())) {};
 
 template <template <class...> class B, class D>
 inline constexpr bool is_template_base_of_v = is_template_base_of<B, D>::value;

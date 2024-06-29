@@ -16,8 +16,8 @@ auto circumcenter(
     Policy auto const& policy,
     point<T0> const& a,
     point<T1> const& b,
-    point<T2> const& c)
-{
+    point<T2> const& c
+) {
     AC_ASSERT(!collinear(policy, a, b, c));
     using T = geometry::scalar_t<T0, T1, T2>;
     // TODO: use actual return type of intersect.
@@ -26,13 +26,13 @@ auto circumcenter(
         general_position_policy{policy},
         make_line(a + b, perpendicular(a - b), true),
         make_line(a + c, perpendicular(a - c), true),
-        &res);
+        &res
+    );
     return ratio(policy, res, 2);
 }
 
 template <class T0, class T1, class T2>
-auto circumcenter(point<T0> const& a, point<T1> const& b, point<T2> const& c)
-{
+auto circumcenter(point<T0> const& a, point<T1> const& b, point<T2> const& c) {
     return circumcenter(geometry_policy, a, b, c);
 }
 

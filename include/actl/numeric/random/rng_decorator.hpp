@@ -12,35 +12,28 @@
 namespace ac {
 
 template <class Rng>
-struct rng_decorator : public Rng
-{
+struct rng_decorator : public Rng {
     explicit constexpr rng_decorator() = default;
 
     template <class Seed>
-    explicit rng_decorator(Seed&& s)
-    {
+    explicit rng_decorator(Seed&& s) {
         seed(std::forward<Seed>(s));
     }
 
     /// Generates uniform random number in the range [from, to).
     template <class T>
         requires std::is_arithmetic_v<T>
-    T uniform(T from, T to)
-    {
-        if constexpr (std::is_integral_v<T>)
-        {
+    T uniform(T from, T to) {
+        if constexpr (std::is_integral_v<T>) {
             return std::uniform_int_distribution<T>{from, to - 1}(*this);
-        }
-        else
-        {
+        } else {
             return std::uniform_real_distribution<T>{from, to}(*this);
         }
     }
 
     /// Generates uniform random number in the range [0, to).
     template <class T>
-    T uniform(T to)
-    {
+    T uniform(T to) {
         return uniform(T{}, to);
     }
 
@@ -48,25 +41,20 @@ struct rng_decorator : public Rng
     /// = @p stddev.
     template <class T = double>
         requires std::is_floating_point_v<T>
-    T normal(T mean = T{}, T stddev = T{1})
-    {
+    T normal(T mean = T{}, T stddev = T{1}) {
         return std::normal_distribution<T>{mean, stddev}(*this);
     }
 
-    void seed(std::string_view value)
-    {
+    void seed(std::string_view value) {
         Rng& base = static_cast<Rng&>(*this);
         Rng default_rng;
-        do
-        {
+        do {
             default_rng();
             base = default_rng;
-            for (auto c : value)
-            {
+            for (auto c : value) {
                 this->state[0] += static_cast<typename Rng::result_type>(c);
             }
-        }
-        while (base() == base()); // improbable unless RNG state is degenerate
+        } while (base() == base()); // improbable unless RNG state is degenerate
     }
 };
 

@@ -13,8 +13,7 @@ namespace ac::detail {
 
 // "real" references
 template <class T>
-constexpr T* arrow_operator(T& x) noexcept
-{
+constexpr T* arrow_operator(T& x) noexcept {
     return std::addressof(x);
 }
 
@@ -22,16 +21,13 @@ constexpr T* arrow_operator(T& x) noexcept
 constexpr void arrow_operator(void) noexcept {}
 
 template <class T>
-class arrow_proxy
-{
+class arrow_proxy {
 public:
     template <class Arg>
     explicit arrow_proxy(Arg&& x) noexcept(noexcept(T{std::forward<Arg>(x)}))
-        : value_{std::forward<Arg>(x)}
-    {}
+        : value_{std::forward<Arg>(x)} {}
 
-    T* operator->() noexcept
-    {
+    T* operator->() noexcept {
         return std::addressof(value_);
     }
 
@@ -46,6 +42,7 @@ private:
 template <class Ref>
 constexpr auto arrow_operator(Ref&& ref)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(arrow_proxy<std::remove_cvref_t<Ref>>{
-        std::forward<Ref>(ref)})
+        std::forward<Ref>(ref)
+    })
 
 } // namespace ac::detail

@@ -11,8 +11,7 @@
 namespace ac {
 
 template <class Derived>
-class basic_non_const_range_interface
-{
+class basic_non_const_range_interface {
 public:
     constexpr auto cbegin() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin())
@@ -25,20 +24,17 @@ public:
     explicit constexpr operator bool() AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())
 
     constexpr decltype(auto) front() //
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin()))
-    {
+        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin())) {
         AC_ASSERT(!empty());
         return *derived().begin();
     }
 
 protected:
-    constexpr Derived& derived() noexcept
-    {
+    constexpr Derived& derived() noexcept {
         return static_cast<Derived&>(*this);
     }
 
-    constexpr Derived& derived() const noexcept
-    {
+    constexpr Derived& derived() const noexcept {
         return static_cast<Derived const&>(*this);
     }
 };
@@ -46,7 +42,6 @@ protected:
 template <class Derived, class Types>
 class basic_dual_range_interface
     : public range_interface<Derived, Types>
-    , public basic_non_const_range_interface<Derived, Types>
-{};
+    , public basic_non_const_range_interface<Derived, Types> {};
 
 } // namespace ac

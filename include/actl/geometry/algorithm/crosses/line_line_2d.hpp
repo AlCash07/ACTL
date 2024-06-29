@@ -15,22 +15,18 @@ namespace ac {
 namespace detail {
 
 class flag_output_iterator
-    : public output_iterator_interface<flag_output_iterator>
-{
+    : public output_iterator_interface<flag_output_iterator> {
 public:
     bool flag = false;
 
     template <class T>
-    void operator=(T) const
-    {}
+    void operator=(T) const {}
 
-    flag_output_iterator const& operator*() const noexcept
-    {
+    flag_output_iterator const& operator*() const noexcept {
         return *this;
     }
 
-    flag_output_iterator& operator++() noexcept
-    {
+    flag_output_iterator& operator++() noexcept {
         flag = true;
         return *this;
     }
@@ -42,8 +38,8 @@ template <class T0, class K0, class T1, class K1>
 bool crosses(
     Policy auto const& policy,
     line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs)
-{
+    line<T1, 2, K1> const& rhs
+) {
     return intersect(policy, lhs, rhs, detail::flag_output_iterator{}).flag;
 }
 
@@ -51,8 +47,8 @@ template <class P class T0, class K0, class T1, class K1>
 bool crosses(
     general_position_policy<P> gpp,
     line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs)
-{
+    line<T1, 2, K1> const& rhs
+) {
     return crosses(line_scalar_policy{gpp.policy}, lhs, rhs);
 }
 

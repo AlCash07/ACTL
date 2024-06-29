@@ -12,22 +12,18 @@
 namespace {
 
 template <class T>
-struct R
-{};
+struct R {};
 
-struct A
-{};
+struct A {};
 
-struct B
-{};
+struct B {};
 
 } // namespace
 
 namespace ac {
 
 template <class T, class U>
-struct rebind<R<T>, U>
-{
+struct rebind<R<T>, U> {
     using type = int;
 };
 

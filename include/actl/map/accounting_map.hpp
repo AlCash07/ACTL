@@ -18,8 +18,7 @@ namespace ac {
 /// every key not encountered before. Can be invertible with overhead of
 /// additional vector of pointers.
 template <class AssociativeContainer, bool Invertible = false>
-class accounting_map
-{
+class accounting_map {
     using AC = AssociativeContainer;
     using K = typename AC::key_type;
     using Key = K const&;
@@ -42,24 +41,20 @@ public:
         true,
         AC const&>;
 
-    V const& get(Key key)
-    {
+    V const& get(Key key) {
         auto pair = range_.insert({key, static_cast<V>(range_.size())});
-        if constexpr (Invertible)
-        {
+        if constexpr (Invertible) {
             if (pair.second)
                 inverse_.push_back(&pair.first->first);
         }
         return pair.first->second;
     }
 
-    Key invert(V const& value) const
-    {
+    Key invert(V const& value) const {
         return *inverse_[static_cast<size_t>(value)];
     }
 
-    AC const& map_range() const
-    {
+    AC const& map_range() const {
         return range_;
     }
 
@@ -71,7 +66,6 @@ private:
 
 template <class AM>
     requires requires { typename AM::is_accounting_map; }
-struct map_traits<AM> : AM::template traits<std::is_const_v<AM>>
-{};
+struct map_traits<AM> : AM::template traits<std::is_const_v<AM>> {};
 
 } // namespace ac

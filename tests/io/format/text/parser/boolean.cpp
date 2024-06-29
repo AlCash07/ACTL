@@ -9,8 +9,7 @@
 
 using namespace ac::io;
 
-TEST_CASE("read boolalpha")
-{
+TEST_CASE("read boolalpha") {
     text f;
     bool x{};
     test_read(true, "true", f, boolalpha);
@@ -20,8 +19,7 @@ TEST_CASE("read boolalpha")
     test_read<false>(x, "no", f);
 }
 
-TEST_CASE("read noboolalpha")
-{
+TEST_CASE("read noboolalpha") {
     text f;
     bool x{};
     test_read(true, "1", f, noboolalpha);

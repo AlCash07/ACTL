@@ -7,8 +7,7 @@
 #include <actl/map/dummy_map.hpp>
 #include "test.hpp"
 
-TEST_CASE("dummy_map basic")
-{
+TEST_CASE("dummy_map basic") {
     dummy_map map;
     put(map, 2, 2);
 }

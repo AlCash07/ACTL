@@ -15,83 +15,67 @@ namespace ac::io {
 
 /// Format that inserts delimiter between consecutive output units.
 template <class Space, class Colon = Space>
-struct spaced
-{
+struct spaced {
     Space space;
     Colon colon;
     bool separate = false;
 
     explicit constexpr spaced(Space space, Colon const& colon)
-        : space{std::move(space)}, colon{colon}
-    {}
+        : space{std::move(space)}, colon{colon} {}
 
     explicit constexpr spaced(Space space, Colon&& colon)
-        : space{std::move(space)}, colon{std::move(colon)}
-    {}
+        : space{std::move(space)}, colon{std::move(colon)} {}
 
     template <class S = Space>
         requires are_same_v<S, Colon>
-    explicit constexpr spaced(Space const& space) : spaced{space, space}
-    {}
+    explicit constexpr spaced(Space const& space) : spaced{space, space} {}
 
     template <class S = Space>
         requires are_same_v<char, S, Colon>
-    explicit constexpr spaced() : spaced{' '}
-    {}
+    explicit constexpr spaced() : spaced{' '} {}
 
     struct format_tag;
 };
 
-spaced()->spaced<char>;
+spaced() -> spaced<char>;
 
 template <class Space, class Char, size_t N>
 spaced(Space, Char const (&)[N]) -> spaced<Space, std::basic_string_view<Char>>;
 
 template <class T>
-auto as_cspan(T const& x)
-{
-    if constexpr (ContiguousRange<T>)
-    {
+auto as_cspan(T const& x) {
+    if constexpr (ContiguousRange<T>) {
         return span<range_value_t<T> const>{x};
-    }
-    else
-    {
+    } else {
         return span{&x, 1};
     }
 }
 
 template <class S, class C, class T>
-auto encode(spaced<S, C>& fmt, T& x)
-{
+auto encode(spaced<S, C>& fmt, T& x) {
     using Res = batch<decltype(as_cspan(fmt.space)), T&>;
-    if (fmt.separate)
-    {
+    if (fmt.separate) {
         return Res{as_cspan(fmt.space), x};
-    }
-    else
-    {
+    } else {
         fmt.separate = true;
         return Res{{}, x};
     }
 }
 
 template <class S, class C, class T>
-decltype(auto) encode(spaced<S, C>& fmt, raw<T> const& x)
-{
+decltype(auto) encode(spaced<S, C>& fmt, raw<T> const& x) {
     fmt.separate = false;
     return x;
 }
 
 template <class S, class C>
-auto encode(spaced<S, C>& fmt, colon)
-{
+auto encode(spaced<S, C>& fmt, colon) {
     fmt.separate = false;
     return batch{colon{}, fmt.colon};
 }
 
 template <class S, class C, bool Deeper>
-void manipulate(spaced<S, C>& fmt, change_level<Deeper>)
-{
+void manipulate(spaced<S, C>& fmt, change_level<Deeper>) {
     fmt.separate = !Deeper;
 }
 

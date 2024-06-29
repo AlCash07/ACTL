@@ -13,17 +13,14 @@
 namespace ac::io {
 
 template <class C, class T, class A, class P>
-void read_till(Device auto& id, till<std::basic_string<C, T, A>&, P> x)
-{
+void read_till(Device auto& id, till<std::basic_string<C, T, A>&, P> x) {
     size_t length = std::max(size_t{16}, x.value.capacity());
-    for (size_t last = 0;; length = last += length)
-    {
+    for (size_t last = 0;; length = last += length) {
         x.value.resize(last + length);
         auto* ptr = &x.value[last];
         size_t chars_read =
             read_till(id, till{span{ptr, length}, x.terminator});
-        if (chars_read < length)
-        {
+        if (chars_read < length) {
             x.value.resize(last + chars_read);
             return;
         }
@@ -31,8 +28,7 @@ void read_till(Device auto& id, till<std::basic_string<C, T, A>&, P> x)
 }
 
 template <class C, class T, class A>
-auto make_parser(TextFormat auto&, std::basic_string<C, T, A>& x)
-{
+auto make_parser(TextFormat auto&, std::basic_string<C, T, A>& x) {
     return till{x, is_space};
 }
 

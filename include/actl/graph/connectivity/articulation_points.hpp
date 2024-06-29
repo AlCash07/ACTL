@@ -19,74 +19,60 @@ template <
     class ComponentStack,
     class TimeMap,
     class LowMap>
-struct articulation_point_finder
-{
+struct articulation_point_finder {
     static_assert(Graph::is_undirected);
 
     using V = vertex_t<Graph>;
     using E = edge_t<Graph>;
     using T = map_value_t<TimeMap>;
 
-    void operator()(on_vertex_initialize, V u)
-    {
+    void operator()(on_vertex_initialize, V u) {
         put(time, u, 0);
     }
 
-    bool operator()(is_vertex_discovered, V u)
-    {
+    bool operator()(is_vertex_discovered, V u) {
         return get(time, u) != 0;
     }
 
-    void operator()(on_vertex_start, V u)
-    {
+    void operator()(on_vertex_start, V u) {
         put(time, u, ++time_now);
         put(low, u, time_now);
     }
 
-    void operator()(on_search_start, V u)
-    {
+    void operator()(on_search_start, V u) {
         root = u;
         root_children = 0;
     }
 
-    void operator()(on_non_tree_edge, E e)
-    {
+    void operator()(on_non_tree_edge, E e) {
         V u = e.source();
         V v = e.target();
         T vtime = get(time, v);
         if (vtime < get(time, u))
             components.push(e);
-        if (vtime < get(low, u))
-        {
+        if (vtime < get(low, u)) {
             put(low, u, vtime);
         }
     }
 
-    void operator()(on_tree_edge_finish, E e)
-    {
+    void operator()(on_tree_edge_finish, E e) {
         V u = e.source();
         V v = e.target();
         T utime = get(time, u);
-        if (utime <= get(low, v))
-        {
-            if (u == root)
-            {
+        if (utime <= get(low, v)) {
+            if (u == root) {
                 ++root_children;
-            }
-            else
-            {
+            } else {
                 put(articulation_map, u, true);
             }
-            components.pop_while(
-                [this, utime](E e) {
-                    return utime <= get(time, e.source()) &&
-                           utime <= get(time, e.target());
-                });
+            components.pop_while([this, utime](E e) {
+                return utime <= get(time, e.source()) &&
+                       utime <= get(time, e.target());
+            });
         }
     }
 
-    void operator()(on_search_finish, V u)
-    {
+    void operator()(on_search_finish, V u) {
         if (root_children > 1)
             put(articulation_map, u, true);
     }
@@ -101,8 +87,7 @@ struct articulation_point_finder
 };
 
 template <class G, class... Ts>
-auto get_articulation_point_finder(G const&, Ts&&... args)
-{
+auto get_articulation_point_finder(G const&, Ts&&... args) {
     return articulation_point_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
@@ -110,8 +95,8 @@ template <class Graph, class ArticulationMap, class ComponentMap>
 void find_articulation_points_and_components(
     Graph const& graph,
     ArticulationMap&& articulation_map,
-    ComponentMap&& component_map)
-{
+    ComponentMap&& component_map
+) {
     auto apf = get_articulation_point_finder(
         graph,
         std::forward<ArticulationMap>(articulation_map),
@@ -119,22 +104,23 @@ void find_articulation_points_and_components(
         // Values of the next two maps can be compressed into bits of one int
         // per vertex.
         make_default_vertex_map<int>(graph),
-        make_default_vertex_map<int>(graph));
+        make_default_vertex_map<int>(graph)
+    );
     depth_first_search{apf}(graph);
 }
 
 template <class Graph, class ArticulationMap>
-void find_articulation_points(Graph const& graph, ArticulationMap&& map)
-{
+void find_articulation_points(Graph const& graph, ArticulationMap&& map) {
     find_articulation_points_and_components(
-        graph, std::forward<ArticulationMap>(map), dummy_map{});
+        graph, std::forward<ArticulationMap>(map), dummy_map{}
+    );
 }
 
 template <class Graph, class ComponentMap>
-void find_biconnected_components(Graph const& graph, ComponentMap&& map)
-{
+void find_biconnected_components(Graph const& graph, ComponentMap&& map) {
     find_articulation_points_and_components(
-        graph, dummy_map{}, std::forward<ComponentMap>(map));
+        graph, dummy_map{}, std::forward<ComponentMap>(map)
+    );
 }
 
 } // namespace ac

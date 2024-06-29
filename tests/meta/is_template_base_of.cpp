@@ -10,11 +10,9 @@
 
 namespace {
 
-class public_derived : public std::vector<int>
-{};
+class public_derived : public std::vector<int> {};
 
-class private_derived : private std::vector<int>
-{};
+class private_derived : private std::vector<int> {};
 
 } // namespace
 

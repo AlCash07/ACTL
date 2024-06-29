@@ -16,21 +16,18 @@
 
 namespace ac::io {
 
-auto make_parser(TextFormat auto& fmt, bool& x)
-{
+auto make_parser(TextFormat auto& fmt, bool& x) {
     return parser_executor{x, boolean_parser{fmt.getf(flag::boolalpha)}};
 }
 
 template <std::integral Int>
     requires(!is_char_v<Int>)
-auto make_parser(TextFormat auto& fmt, Int& x)
-{
+auto make_parser(TextFormat auto& fmt, Int& x) {
     return parser_executor{x, integral_parser<Int>{fmt.base}};
 }
 
 template <std::floating_point Float>
-auto make_parser(TextFormat auto& fmt, Float& x)
-{
+auto make_parser(TextFormat auto& fmt, Float& x) {
     return parser_executor{x, float_unchecked_parser<Float>{fmt.base}};
 }
 

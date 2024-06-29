@@ -18,8 +18,7 @@
 namespace ac::io {
 
 template <class Pair>
-decltype(auto) key_representation(Pair& x)
-{
+decltype(auto) key_representation(Pair& x) {
     if constexpr (std::is_const_v<Pair>)
         return x.first;
     else
@@ -29,8 +28,7 @@ decltype(auto) key_representation(Pair& x)
 }
 
 template <class Range, class T>
-decltype(auto) element_representation(T& x)
-{
+decltype(auto) element_representation(T& x) {
     if constexpr (PairAssociativeRange<Range>)
         return batch{key_representation(x), colon{}, x.second};
     else
@@ -38,8 +36,7 @@ decltype(auto) element_representation(T& x)
 }
 
 template <Range R>
-bool write_final(Device auto& od, Format auto& fmt, R const& x)
-{
+bool write_final(Device auto& od, Format auto& fmt, R const& x) {
     nested_scope_guard g{fmt};
     if constexpr (Container<R> && static_size_v<R> == dynamic_size)
         if (!write(od, fmt, size{x.size()}))
@@ -50,10 +47,8 @@ bool write_final(Device auto& od, Format auto& fmt, R const& x)
     return true;
 }
 
-bool read_range(Device auto& id, Format auto& fmt, Range auto& x)
-{
-    for (auto& value : x)
-    {
+bool read_range(Device auto& id, Format auto& fmt, Range auto& x) {
+    for (auto& value : x) {
         if (!read(id, fmt, value))
             return false;
     }
@@ -61,33 +56,27 @@ bool read_range(Device auto& id, Format auto& fmt, Range auto& x)
 }
 
 template <class C>
-bool read_container(Device auto& id, Format auto& fmt, C& x)
-{
+bool read_container(Device auto& id, Format auto& fmt, C& x) {
     decltype(x.size()) size{};
     if (!read(id, fmt, io::size{size}))
         return false;
-    if constexpr (!RandomAccessRange<C>)
-    {
-        for (; size > 0; --size)
-        {
+    if constexpr (!RandomAccessRange<C>) {
+        for (; size > 0; --size) {
             range_value_t<C> value;
             if (!read(id, fmt, element_representation<C>(value)))
                 return false;
             emplace(x, std::move(value));
         }
         return true;
-    }
-    else
-    {
+    } else {
         x.resize(size);
         return read_range(id, fmt, x);
     }
 }
 
 template <Range R>
-    requires(!std::is_const_v<range_value_t<R>>) bool
-read_final(Device auto& id, Format auto& fmt, R& x)
-{
+    requires(!std::is_const_v<range_value_t<R>>)
+bool read_final(Device auto& id, Format auto& fmt, R& x) {
     nested_scope_guard g{fmt};
     if constexpr (Container<R> && static_size_v<R> == dynamic_size)
         return read_container(id, fmt, x);

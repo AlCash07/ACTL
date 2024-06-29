@@ -9,20 +9,17 @@
 namespace ac::io {
 
 // Number of digits after the decimal point.
-class precision_t
-{
+class precision_t {
 public:
     explicit constexpr precision_t() = default;
 
     explicit constexpr precision_t(size_t x) : value{x} {}
 
-    precision_t& operator=(size_t x)
-    {
+    precision_t& operator=(size_t x) {
         return *this = precision_t{x};
     }
 
-    constexpr operator size_t() const
-    {
+    constexpr operator size_t() const {
         return value;
     }
 

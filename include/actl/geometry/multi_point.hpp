@@ -20,46 +20,37 @@ concept Polygon = requires { typename T::is_polygon; };
 template <class T, bool = !Polygon<T> && Range<T>>
 struct is_multi_point
     : std::bool_constant<
-          std::is_same_v<point_tag, geometry::tag_t<range_value_t<T>>>>
-{};
+          std::is_same_v<point_tag, geometry::tag_t<range_value_t<T>>>> {};
 
 template <class T>
-struct is_multi_point<T, false> : std::false_type
-{};
+struct is_multi_point<T, false> : std::false_type {};
 
 } // namespace detail
 
 template <class T>
     requires detail::is_multi_point<T>::value
 struct geometry_traits<T>
-    : geometry_traits_base<multi_point_tag, range_value_t<T>>
-{};
+    : geometry_traits_base<multi_point_tag, range_value_t<T>> {};
 
 template <class T>
 inline constexpr bool is_multi_point_v =
     std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
 
 template <class T>
-struct identity_functor
-{
-    T operator()(T x) const
-    {
+struct identity_functor {
+    T operator()(T x) const {
         return x;
     }
 };
 
 template <class T>
-identity_functor<range_reference_t<T>> get_to_point(T&)
-{
+identity_functor<range_reference_t<T>> get_to_point(T&) {
     return {};
 }
 
 template <class Indices, class Points>
-struct indexed_multi_point
-{
-    static_assert(
-        Range<Indices> && std::is_integral_v<range_value_t<Indices>> &&
-        std::is_same_v<geometry::tag_t<range_value_t<Points>>, point_tag>);
+struct indexed_multi_point {
+    static_assert(Range<Indices> && std::is_integral_v<range_value_t<Indices>> && std::is_same_v<geometry::tag_t<range_value_t<Points>>, point_tag>);
 
     using value_type = range_value_t<Points>;
     using reference = range_reference_t<Indices>;
@@ -67,30 +58,24 @@ struct indexed_multi_point
     Indices indices;
     Points points;
 
-    auto begin()
-    {
+    auto begin() {
         return indices.begin();
     }
 
-    auto begin() const
-    {
+    auto begin() const {
         return indices.begin();
     }
 
-    auto end()
-    {
+    auto end() {
         return indices.end();
     }
 
-    auto end() const
-    {
+    auto end() const {
         return indices.end();
     }
 
-    friend auto get_to_point(indexed_multi_point& imp)
-    {
-        return [&p = imp.points](index x)
-        {
+    friend auto get_to_point(indexed_multi_point& imp) {
+        return [&p = imp.points](index x) {
             return p[static_cast<range_size_t<Points>>(x)];
         };
     }

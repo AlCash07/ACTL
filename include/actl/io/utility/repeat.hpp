@@ -12,8 +12,7 @@
 namespace ac::io {
 
 template <class Char>
-struct repeat
-{
+struct repeat {
     explicit repeat() : c{}, count{0} {}
     explicit repeat(Char c, size_t count) : c{c}, count{count} {}
 
@@ -22,24 +21,19 @@ struct repeat
 };
 
 template <Device Dev, class Char>
-bool write_final(Dev& od, Format auto&, repeat<Char> x)
-{
+bool write_final(Dev& od, Format auto&, repeat<Char> x) {
     for (; 0 < x.count; --x.count)
         od.write(static_cast<char_t<Dev>>(x.c));
     return true;
 }
 
 template <BufferedOutputDevice Dev, class Char>
-bool write_final(Dev& od, Format auto&, repeat<Char> x)
-{
+bool write_final(Dev& od, Format auto&, repeat<Char> x) {
     auto s = od.output_buffer();
-    if (x.count <= s.size())
-    {
+    if (x.count <= s.size()) {
         std::fill_n(s.data(), x.count, x.c);
         od.move(static_cast<index>(x.count));
-    }
-    else
-    {
+    } else {
         std::fill_n(s.data(), s.size(), x.c);
         od.move(static_cast<index>(s.size()));
         x.count -= s.size();
@@ -47,8 +41,7 @@ bool write_final(Dev& od, Format auto&, repeat<Char> x)
         std::fill_n(s.data(), std::min(x.count, s.size()), x.c);
         // Here we assume that s references device buffer and does not
         // change.
-        for (size_t n = x.count / s.size(); n > 0; --n)
-        {
+        for (size_t n = x.count / s.size(); n > 0; --n) {
             od.move(static_cast<index>(s.size()));
         }
         od.move(static_cast<index>(x.count % s.size()));

@@ -11,35 +11,29 @@
 namespace {
 
 template <class... Ts>
-struct op
-{
+struct op {
     bool invoked = false;
 
     template <class T>
         requires ac::is_one_of_v<T, Ts...>
-    constexpr void operator()(T x) noexcept(std::is_same_v<T, int>)
-    {
+    constexpr void operator()(T x) noexcept(std::is_same_v<T, int>) {
         invoked = true;
     }
 
-    constexpr operator bool() const noexcept
-    {
+    constexpr operator bool() const noexcept {
         return invoked;
     }
 };
 
 } // namespace
 
-TEST_CASE("invoke_all_matching")
-{
+TEST_CASE("invoke_all_matching") {
     std::tuple<op<int>, op<std::byte>, op<int, std::byte>> t3;
-    SECTION("invoke with int")
-    {
+    SECTION("invoke with int") {
         ac::invoke_all_matching(t3, int{});
         CHECK(std::tuple{true, false, true} == t3);
     }
-    SECTION("invoke with std::byte")
-    {
+    SECTION("invoke with std::byte") {
         ac::invoke_all_matching(t3, std::byte{});
         CHECK(std::tuple{false, true, true} == t3);
     }

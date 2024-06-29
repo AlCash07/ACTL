@@ -7,12 +7,11 @@
 #include <actl/geometry/algorithm/within/line.hpp>
 #include "test.hpp"
 
-TEST_CASE("all cases")
-{
+TEST_CASE("all cases") {
     std::vector<point<int>> points{
-        {-1, 0}, {1, 1}, {3, 2}, {5, 3}, {7, 4}, {4, 3}};
-    auto test_points = [&points](line_kind kind)
-    {
+        {-1, 0}, {1, 1}, {3, 2}, {5, 3}, {7, 4}, {4, 3}
+    };
+    auto test_points = [&points](line_kind kind) {
         any_line<int> l{points[1], points[3], kind};
         std::vector<bool> w;
         for (auto const& p : points)
@@ -21,20 +20,26 @@ TEST_CASE("all cases")
     };
     CHECK(
         std::vector{true, true, true, true, true, false} ==
-        test_points(line_kind::free));
+        test_points(line_kind::free)
+    );
     CHECK(
         std::vector{false, true, true, true, true, false} ==
-        test_points(line_kind::closed_ray));
+        test_points(line_kind::closed_ray)
+    );
     CHECK(
         std::vector{false, false, true, true, true, false} ==
-        test_points(line_kind::open_ray));
+        test_points(line_kind::open_ray)
+    );
     CHECK(
         std::vector{false, true, true, true, false, false} ==
-        test_points(line_kind::closed_segment));
+        test_points(line_kind::closed_segment)
+    );
     CHECK(
         std::vector{false, false, true, true, false, false} ==
-        test_points(line_kind::half_open_segment));
+        test_points(line_kind::half_open_segment)
+    );
     CHECK(
         std::vector{false, false, true, false, false, false} ==
-        test_points(line_kind::open_segment));
+        test_points(line_kind::open_segment)
+    );
 }

@@ -19,7 +19,6 @@
 ///     AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs < lhs)
 /// @endcode
 #define AC_DEDUCE_NOEXCEPT_AND_RETURN(...) \
-    noexcept(noexcept(__VA_ARGS__))        \
-    {                                      \
+    noexcept(noexcept(__VA_ARGS__)) {      \
         return __VA_ARGS__;                \
     }

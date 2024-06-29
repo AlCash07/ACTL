@@ -13,8 +13,8 @@ namespace ac {
 
 template <class CharPredicate0, class CharPredicate1>
 std::string trim(
-    std::string const& str, CharPredicate0 skip_left, CharPredicate1 skip_right)
-{
+    std::string const& str, CharPredicate0 skip_left, CharPredicate1 skip_right
+) {
     auto l = str.begin();
     auto r = str.end();
     for (; l != r && skip_left(l[0]); ++l) {}
@@ -23,13 +23,11 @@ std::string trim(
 }
 
 template <class CharPredicate>
-std::string trim(std::string const& str, CharPredicate skip)
-{
+std::string trim(std::string const& str, CharPredicate skip) {
     return trim(str, skip, skip);
 }
 
-inline std::string trim(std::string const& str)
-{
+inline std::string trim(std::string const& str) {
     return trim(str, is_space);
 }
 

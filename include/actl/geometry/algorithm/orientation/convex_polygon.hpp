@@ -13,8 +13,8 @@ namespace ac {
 
 template <class T>
 orientation2d orientation(
-    Policy auto const& policy, convex_polygon<T> const& poly)
-{
+    Policy auto const& policy, convex_polygon<T> const& poly
+) {
     if (poly.size() < 3)
         return orientation2d::collinear;
     auto it = poly.begin();

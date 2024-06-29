@@ -14,24 +14,21 @@ using namespace ac::io;
 
 using pss = std::pair<size_t, size_t>;
 
-TEST_CASE("adjustment::left")
-{
+TEST_CASE("adjustment::left") {
     adjusted fmt{4};
     CHECK(pss{0, 0} == adjustment(fmt, 8));
     CHECK(pss{0, 0} == adjustment(fmt, 4));
     CHECK(pss{0, 3} == adjustment(fmt, 1));
 }
 
-TEST_CASE("adjustment::right")
-{
+TEST_CASE("adjustment::right") {
     adjusted fmt{4, adjust_to::right};
     CHECK(pss{0, 0} == adjustment(fmt, 8));
     CHECK(pss{0, 0} == adjustment(fmt, 4));
     CHECK(pss{3, 0} == adjustment(fmt, 1));
 }
 
-TEST_CASE("adjustment::center")
-{
+TEST_CASE("adjustment::center") {
     adjusted fmt{4, adjust_to::center};
     CHECK(pss{0, 0} == adjustment(fmt, 8));
     CHECK(pss{0, 0} == adjustment(fmt, 4));
@@ -39,8 +36,7 @@ TEST_CASE("adjustment::center")
     CHECK(pss{1, 2} == adjustment(fmt, 1));
 }
 
-TEST_CASE("adjustment::center_right")
-{
+TEST_CASE("adjustment::center_right") {
     adjusted fmt{4, adjust_to::center_right};
     CHECK(pss{0, 0} == adjustment(fmt, 8));
     CHECK(pss{0, 0} == adjustment(fmt, 4));
@@ -48,8 +44,7 @@ TEST_CASE("adjustment::center_right")
     CHECK(pss{2, 1} == adjustment(fmt, 1));
 }
 
-TEST_CASE("fill")
-{
+TEST_CASE("fill") {
     auto fmt = text_static{} >>= adjusted{4, adjust_to::center, '*'};
     char s[14];
     memory<io::out> od{s};

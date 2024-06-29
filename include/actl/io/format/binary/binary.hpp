@@ -13,23 +13,20 @@
 
 namespace ac::io {
 
-struct binary
-{
+struct binary {
     struct format_tag;
 };
 
 template <class T>
 concept BinaryDevice = Device<T> && is_bin<T::mode>;
 
-binary deduce_format(BinaryDevice auto&)
-{
+binary deduce_format(BinaryDevice auto&) {
     return {};
 }
 
 template <class T>
     requires std::is_arithmetic_v<T>
-auto encode(binary, T& x)
-{
+auto encode(binary, T& x) {
     using byte_t = add_const_if_t<std::is_const_v<T>, std::byte>;
     return span<byte_t, sizeof(T)>{reinterpret_cast<byte_t*>(&x), sizeof(T)};
 }

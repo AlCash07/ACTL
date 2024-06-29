@@ -14,25 +14,23 @@
 namespace ac {
 
 template <class Derived>
-struct operation
-{
+struct operation {
     using operation_category = operation_tag;
     struct enable_operators;
 
     static constexpr bool is_associative = false;
     static constexpr bool is_commutative = false;
 
-    constexpr Derived const& derived() const noexcept
-    {
+    constexpr Derived const& derived() const noexcept {
         return static_cast<Derived const&>(*this);
     }
 
     template <class... Ts>
         requires is_any_inout_v<Ts...>
-    constexpr decltype(auto) operator()(Ts&&... xs) const&
-    {
+    constexpr decltype(auto) operator()(Ts&&... xs) const& {
         static_assert(
-            1 == (... + is_inout_v<Ts>), "single inout argument expected");
+            1 == (... + is_inout_v<Ts>), "single inout argument expected"
+        );
         auto&& op = resolve_overload<Ts...>(default_context{}, derived());
         auto& dst = find_dst(xs...);
         op.evaluate_to(dst, remove_inout(xs)...);
@@ -41,17 +39,16 @@ struct operation
 
     template <class... Ts>
         requires(!is_any_inout_v<Ts...>)
-    constexpr auto operator()(Ts&&... xs) const&
-    {
+    constexpr auto operator()(Ts&&... xs) const& {
         return expression{derived(), std::forward<Ts>(xs)...};
     }
 
     template <class... Ts>
         requires(!is_any_inout_v<Ts...>)
-    constexpr auto operator()(Ts&&... xs) &&
-    {
+    constexpr auto operator()(Ts&&... xs) && {
         return expression{
-            static_cast<Derived&&>(*this), std::forward<Ts>(xs)...};
+            static_cast<Derived&&>(*this), std::forward<Ts>(xs)...
+        };
     }
 };
 

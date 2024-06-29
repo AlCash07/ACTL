@@ -15,8 +15,7 @@ namespace ac::io {
 template <class T>
 concept Format = requires { typename std::remove_reference_t<T>::format_tag; };
 
-struct device_base
-{};
+struct device_base {};
 
 template <class Device>
 using char_t = typename Device::char_type;

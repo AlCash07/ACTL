@@ -8,20 +8,17 @@
 #include <cstring>
 #include "test.hpp"
 
-TEST_CASE("function_map free_function")
-{
+TEST_CASE("function_map free_function") {
     auto map = function_map{std::strlen};
     CHECK(0ul == get(map, ""));
     CHECK(3ul == get(map, "map"));
 }
 
-TEST_CASE("function_map lambda")
-{
+TEST_CASE("function_map lambda") {
     int count = 0;
-    auto map = function_map{[&count](int)
-                            {
-                                return count++;
-                            }};
+    auto map = function_map{[&count](int) {
+        return count++;
+    }};
     CHECK(0 == get(map, 0));
     CHECK(1 == get(map, 0));
     CHECK(2 == count);

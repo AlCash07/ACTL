@@ -12,8 +12,7 @@ namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/input_or_output_iterator
 template <class Iter>
-class basic_iterator_interface
-{
+class basic_iterator_interface {
 public:
     // Post-increment is a free function here so that it's not hidden by the
     // pre-increment operator++() defined by the derived iterator.
@@ -21,8 +20,8 @@ public:
     // to be exactly Iter
     // https://en.cppreference.com/w/cpp/iterator/weakly_incrementable
     friend constexpr Iter operator++(Iter& iter, int) noexcept(
-        noexcept(Iter{iter}, ++iter))
-    {
+        noexcept(Iter{iter}, ++iter)
+    ) {
         Iter iter_copy = iter;
         ++iter;
         return iter_copy;

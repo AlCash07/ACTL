@@ -8,8 +8,7 @@
 #include <array>
 #include "test.hpp"
 
-TEST_CASE("conversion from vector to tuple")
-{
+TEST_CASE("conversion from vector to tuple") {
     using vec_i = std::vector<int>;
     using tuple_iii = std::tuple<int, int, int>;
     static_assert(!std::is_constructible_v<tuple_iii, vec_i>);

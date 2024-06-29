@@ -8,25 +8,22 @@
 #include "geometry/polygons.hpp"
 #include "test.hpp"
 
-TEST_CASE("star")
-{
+TEST_CASE("star") {
     auto poly = get_star_polygon();
-    for (auto p : poly)
-    {
+    for (auto p : poly) {
         CHECK(within::border == within(p, poly));
     }
-    for (auto p : std::vector<point<int>>{{4, 2}, {-3, 2}})
-    {
+    for (auto p : std::vector<point<int>>{{4, 2}, {-3, 2}}) {
         CHECK(within::border == within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
-             {0, 0}, {0, 4}, {-3, 1}, {-2, -3}, {2, -3}, {3, 1}})
-    {
+             {0, 0}, {0, 4}, {-3, 1}, {-2, -3}, {2, -3}, {3, 1}
+         }) {
         CHECK(within::inside == within(p, poly));
     }
     for (auto p : std::vector<point<int>>{
-             {4, 1}, {1, 3}, {-4, 1}, {-3, -3}, {1, -3}, {0, -9}})
-    {
+             {4, 1}, {1, 3}, {-4, 1}, {-3, -3}, {1, -3}, {0, -9}
+         }) {
         CHECK(within::outside == within(p, poly));
     }
 }

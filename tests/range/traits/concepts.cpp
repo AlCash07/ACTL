@@ -42,21 +42,17 @@ static_assert(ac::RandomAccessRange<CArray>);
 static_assert(ac::ContiguousRange<CArray>);
 
 /* Test for non-contiguous range with data() method */
-struct array2x2
-{
+struct array2x2 {
     int arr[2][2];
 
-    auto begin()
-    {
+    auto begin() {
         return ac::ranges::begin(arr);
     }
-    auto end()
-    {
+    auto end() {
         return ac::ranges::end(arr);
     }
 
-    auto data()
-    {
+    auto data() {
         return &arr[0][0];
     }
 };

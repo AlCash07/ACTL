@@ -16,8 +16,8 @@ template <index N, class T0, class T1>
 bool crosses(
     Policy auto const& policy,
     sphere<T0, N> const& lhs,
-    sphere<T1, N> const& rhs)
-{
+    sphere<T1, N> const& rhs
+) {
     auto centers_dist = distance(policy, lhs.center, rhs.center);
     return !less(policy, centers_dist, abs(lhs.radius - rhs.radius)) &&
            !less(policy, lhs.radius + rhs.radius, centers_dist);

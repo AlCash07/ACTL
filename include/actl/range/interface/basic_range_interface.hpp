@@ -16,8 +16,7 @@
 namespace ac {
 
 template <class Derived>
-class basic_range_interface
-{
+class basic_range_interface {
 public:
     constexpr auto empty() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin() == derived().end())
@@ -27,15 +26,13 @@ public:
 
     // decltype(auto) because a reference can be returned here.
     constexpr decltype(auto) front() const
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin()))
-    {
+        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin())) {
         AC_ASSERT(!empty());
         return *derived().begin();
     }
 
 protected:
-    constexpr Derived const& derived() const noexcept
-    {
+    constexpr Derived const& derived() const noexcept {
         return static_cast<Derived const&>(*this);
     }
 };

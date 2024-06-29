@@ -9,8 +9,7 @@
 
 using namespace ac::io;
 
-TEST_CASE("write unsigned long long")
-{
+TEST_CASE("write unsigned long long") {
     auto const max_ull = std::numeric_limits<unsigned long long>::max();
     text f;
     test_write("0", f, showpos, showbase, 0ull);
@@ -20,7 +19,8 @@ TEST_CASE("write unsigned long long")
     test_write(
         "1111111111111111111111111111111111111111111111111111111111111111",
         f,
-        max_ull);
+        max_ull
+    );
     f.base = octal;
     test_write("0", f, 0ull);
     test_write("01777777777777777777777", f, max_ull);
@@ -37,8 +37,7 @@ TEST_CASE("write unsigned long long")
     test_write("3w5e11264sgsf", f, max_ull);
 }
 
-TEST_CASE("write long long")
-{
+TEST_CASE("write long long") {
     auto const min_ll = std::numeric_limits<long long>::min();
     auto const max_ll = std::numeric_limits<long long>::max();
     text f;
@@ -50,11 +49,13 @@ TEST_CASE("write long long")
     test_write(
         "-1000000000000000000000000000000000000000000000000000000000000000",
         f,
-        min_ll);
+        min_ll
+    );
     test_write(
         "+111111111111111111111111111111111111111111111111111111111111111",
         f,
-        max_ll);
+        max_ll
+    );
     f.base = octal;
     test_write("0", f, noshowpos, 0ll);
     test_write("-01000000000000000000000", f, min_ll);

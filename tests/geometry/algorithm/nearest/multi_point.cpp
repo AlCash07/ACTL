@@ -7,13 +7,10 @@
 #include <actl/geometry/algorithm/nearest/multi_point.hpp>
 #include "test.hpp"
 
-TEST_CASE("grid")
-{
+TEST_CASE("grid") {
     std::vector<point<int>> grid;
-    for (int i : irange(222))
-    {
-        for (int j : irange(222))
-        {
+    for (int i : irange(222)) {
+        for (int j : irange(222)) {
             grid.emplace_back(i * 3, j * 3);
         }
     }

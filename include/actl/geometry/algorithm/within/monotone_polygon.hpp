@@ -18,8 +18,8 @@ template <class T, class U>
 enum within within(
     Policy auto const& policy,
     point<T> const& p,
-    monotone_polygon<U> const& poly)
-{
+    monotone_polygon<U> const& poly
+) {
     if (poly.empty())
         return within::outside;
     if (poly.size() == 1)
@@ -30,12 +30,13 @@ enum within within(
         return within::outside;
     auto lit = std::lower_bound(first + 1, first + right, p, less(policy));
     auto orient = orientation(policy, p, lit[0], lit[-1]);
-    if (orient == orientation2d::right)
-    {
+    if (orient == orientation2d::right) {
         auto uit = std::lower_bound(
-            poly.rbegin(), poly.rend() - right - 1, p, less(policy));
+            poly.rbegin(), poly.rend() - right - 1, p, less(policy)
+        );
         orient = orientation(
-            policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]);
+            policy, p, uit == poly.rbegin() ? poly[0] : uit[-1], uit[0]
+        );
     }
     return detail::to_inclusion(orient);
 }

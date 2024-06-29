@@ -13,14 +13,13 @@
 namespace ac::detail {
 
 template <class Dir, class OEC, class IEC>
-struct vertex_edges
-{
+struct vertex_edges {
     OEC out_edges;
 };
 
 template <class OEC, class IEC>
-struct vertex_edges<bidirectional, OEC, IEC> : vertex_edges<directed, OEC, IEC>
-{
+struct vertex_edges<bidirectional, OEC, IEC>
+    : vertex_edges<directed, OEC, IEC> {
     IEC in_edges;
 };
 
@@ -28,8 +27,7 @@ template <class Dir, class OEC, class EC, class VC>
 class adj_list_vertex_data;
 
 template <class Dir, class OEC, class EC, class VC>
-struct adj_list_traits
-{
+struct adj_list_traits {
     using vertex = std::conditional_t<RandomAccessRange<VC>, int, void*>;
 
     using edge_selector = graph::list_value_t<EC>;
@@ -85,34 +83,32 @@ struct adj_list_traits
     // as void*.
     static_assert(
         std::is_same_v<vertex, int> ||
-        sizeof(typename vertices::vertex) == sizeof(void*));
+        sizeof(typename vertices::vertex) == sizeof(void*)
+    );
 };
 
 template <class Dir, class OEC, class EC, class VC>
 class adj_list_vertex_data
-    : public adj_list_traits<Dir, OEC, EC, VC>::vertex_data
-{
+    : public adj_list_traits<Dir, OEC, EC, VC>::vertex_data {
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
 
 public:
     template <class... Ts>
     explicit adj_list_vertex_data(Ts&&... args)
         : traits::vertex_data{
-              typename traits::vertex_edges{}, std::forward<Ts>(args)...}
-    {}
+              typename traits::vertex_edges{}, std::forward<Ts>(args)...
+          } {}
 };
 
 template <class V, class OE, class S>
-struct full_edge
-{
+struct full_edge {
     V u;
     OE e_out;
     OE e_in;
 };
 
 template <class V, class OE>
-struct full_edge<V, OE, directed>
-{
+struct full_edge<V, OE, directed> {
     V u;
     OE e_out;
 };

@@ -17,19 +17,17 @@ namespace ac {
 /// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 235.
 template <class T, class U>
 enum within within(
-    Policy auto const& policy, point<T> const& p, polygon<U> const& triangle)
-{
+    Policy auto const& policy, point<T> const& p, polygon<U> const& triangle
+) {
     AC_ASSERT(triangle.size() == 3);
     orientation2d signs[3] = {};
     auto it = cyclic_begin(triangle);
-    for (index i = 0; i < 3; ++i, ++it)
-    {
+    for (index i = 0; i < 3; ++i, ++it) {
         signs[i] = orientation(policy, p, it[1], it[0]);
     }
     if (signs[0] == signs[1] && signs[1] == signs[2])
         return within::inside;
-    for (index i = 0; i < 3; ++i)
-    {
+    for (index i = 0; i < 3; ++i) {
         if (signs[i] != orientation2d::collinear &&
             signs[i] == -signs[i + 1 == 3 ? 0 : i + 1])
             return within::outside;

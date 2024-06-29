@@ -14,12 +14,12 @@
 
 using Log = std::vector<std::pair<int, colors>>;
 
-TEST_CASE("color_recorder bfs")
-{
+TEST_CASE("color_recorder bfs") {
     auto graph = sample_undirected_graph();
     Log log;
     auto map = logging_map{
-        make_default_vertex_map<colors>(graph), std::back_inserter(log)};
+        make_default_vertex_map<colors>(graph), std::back_inserter(log)
+    };
     breadth_first_search{color_recorder{map}}(graph, 0);
     CHECK(
         Log{
@@ -41,15 +41,16 @@ TEST_CASE("color_recorder bfs")
             {2, colors::black},
             {4, colors::black},
             {5, colors::black},
-        } == log);
+        } == log
+    );
 }
 
-TEST_CASE("color_recorder dfs")
-{
+TEST_CASE("color_recorder dfs") {
     auto graph = sample_undirected_graph();
     Log log;
     auto map = logging_map{
-        make_default_vertex_map<colors>(graph), std::back_inserter(log)};
+        make_default_vertex_map<colors>(graph), std::back_inserter(log)
+    };
     depth_first_search{color_recorder{map}}(graph, 0);
     CHECK(
         Log{
@@ -71,5 +72,6 @@ TEST_CASE("color_recorder dfs")
             {2, colors::black},
             {1, colors::black},
             {0, colors::black},
-        } == log);
+        } == log
+    );
 }

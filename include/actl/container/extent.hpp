@@ -20,14 +20,12 @@ using extent_holder_t = std::
     conditional_t<StaticExtent == dynamic_extent<T>, T, constant<StaticExtent>>;
 
 template <class T, class Dst>
-struct static_extent
-{
+struct static_extent {
     static constexpr auto value = dynamic_extent<deduce_t<Dst, T>>;
 };
 
 template <auto N, class Dst>
-struct static_extent<constant<N>, Dst>
-{
+struct static_extent<constant<N>, Dst> {
     static constexpr auto value = deduce_t<Dst, decltype(N)>{N};
 };
 

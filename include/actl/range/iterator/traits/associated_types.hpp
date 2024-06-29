@@ -12,8 +12,7 @@
 namespace ac {
 
 template <std::input_or_output_iterator Iter>
-struct associated_types<Iter>
-{
+struct associated_types<Iter> {
     using value_type = std::iter_value_t<Iter>;
     using reference = std::iter_reference_t<Iter>;
 };

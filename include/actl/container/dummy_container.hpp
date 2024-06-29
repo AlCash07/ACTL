@@ -17,8 +17,7 @@ namespace ac {
 
 /// Container with no data that maintains size like a vector with empty
 /// elements.
-class dummy_container
-{
+class dummy_container {
 public:
     using size_type = index;
     using value_type = none;
@@ -30,58 +29,48 @@ public:
     constexpr dummy_container() = default;
     explicit constexpr dummy_container(index size) : n_{size} {}
 
-    constexpr index size() const
-    {
+    constexpr index size() const {
         return n_;
     }
 
-    constexpr bool empty() const
-    {
+    constexpr bool empty() const {
         return size() == 0;
     }
 
-    constexpr auto begin() const
-    {
+    constexpr auto begin() const {
         return iterator{0};
     }
 
-    constexpr auto end() const
-    {
+    constexpr auto end() const {
         return iterator{size()};
     }
 
-    none operator[](index) const
-    {
+    none operator[](index) const {
         return none{};
     }
 
     template <class... Ts>
-    void emplace_back(Ts...)
-    {
+    void emplace_back(Ts...) {
         ++n_;
     }
 
     template <class T>
-    void erase(T)
-    {
+    void erase(T) {
         --n_;
     }
 
-    void resize(index size)
-    {
+    void resize(index size) {
         n_ = size;
     }
 
-    void swap(dummy_container& rhs)
-    {
+    void swap(dummy_container& rhs) {
         std::swap(n_, rhs.n_);
     }
 
 private:
     friend struct ac::hash_access;
 
-    size_t hash() const
-    {
+    size_t hash() const {
         return hash_value(size());
     }
 
@@ -89,8 +78,7 @@ private:
 };
 
 template <>
-struct range_properties<dummy_container> : default_range_properties
-{
+struct range_properties<dummy_container> : default_range_properties {
     static constexpr bool is_container = true;
 };
 

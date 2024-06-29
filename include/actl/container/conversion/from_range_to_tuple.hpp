@@ -18,8 +18,7 @@ template <class S, class To, class From>
 struct range_to_tuple_impl;
 
 template <size_t... Is, class To, class From>
-struct range_to_tuple_impl<std::index_sequence<Is...>, To, From>
-{
+struct range_to_tuple_impl<std::index_sequence<Is...>, To, From> {
     using from_ref = range_reference_t<From>;
 
     static constexpr bool value =
@@ -27,10 +26,8 @@ struct range_to_tuple_impl<std::index_sequence<Is...>, To, From>
          static_size_v<From> == std::tuple_size_v<To>) //
         &&(... && can_convert_to_v<std::tuple_element_t<Is, To>, from_ref>);
 
-    static constexpr To convert(From&& x) noexcept(
-        AC_ASSERT_IS_NOEXCEPT() && noexcept(To{
-            convert_to<std::tuple_element_t<Is, To>>(x[Is])...}))
-    {
+    static constexpr To convert(From&& x) noexcept(AC_ASSERT_IS_NOEXCEPT(
+    ) && noexcept(To{convert_to<std::tuple_element_t<Is, To>>(x[Is])...})) {
         AC_ASSERT(std::tuple_size_v<To> == x.size());
         return To{convert_to<std::tuple_element_t<Is, To>>(x[Is])...};
     }
@@ -40,8 +37,7 @@ template <class To, class From>
 using range_to_tuple = range_to_tuple_impl<tuple_indices_t<To>, To, From>;
 
 template <class To, class From>
-static constexpr bool range_to_tuple_test()
-{
+static constexpr bool range_to_tuple_test() {
     if constexpr (Tuple<To> && StrictRange<From>)
         return range_to_tuple<To, From>::value;
     return false;
@@ -52,8 +48,8 @@ static constexpr bool range_to_tuple_test()
 template <class To, class From>
     requires(
         !can_convert_as_ranges<To, From>() &&
-        detail::range_to_tuple_test<To, From>())
-struct conversion<To, From> : detail::range_to_tuple<To, From>
-{};
+        detail::range_to_tuple_test<To, From>()
+    )
+struct conversion<To, From> : detail::range_to_tuple<To, From> {};
 
 } // namespace ac

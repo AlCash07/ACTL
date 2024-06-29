@@ -12,13 +12,11 @@ namespace ac {
 
 namespace scalar {
 
-struct bit_xor_f : scalar_operation<bit_xor_f, 2>
-{
+struct bit_xor_f : scalar_operation<bit_xor_f, 2> {
     using operation_category = bitwise_operation_tag;
 
     template <class T, class U>
-    static constexpr auto eval_scalar(T lhs, U rhs)
-    {
+    static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs ^ rhs;
     }
 };
@@ -26,8 +24,7 @@ inline constexpr bit_xor_f bit_xor;
 
 } // namespace scalar
 
-struct bit_xor_f : operation<bit_xor_f>
-{
+struct bit_xor_f : operation<bit_xor_f> {
     using operation_category = bitwise_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -38,25 +35,21 @@ struct bit_xor_f : operation<bit_xor_f>
 inline constexpr bit_xor_f bit_xor;
 
 template <class T>
-struct identity_element<bit_xor_f, T>
-{
-    static constexpr T value()
-    {
+struct identity_element<bit_xor_f, T> {
+    static constexpr T value() {
         return T{0};
     }
 };
 
 template <class T, class U>
     requires EnableOperators<T, U>
-constexpr auto operator^(T&& lhs, U&& rhs)
-{
+constexpr auto operator^(T&& lhs, U&& rhs) {
     return bit_xor(pass<T>(lhs), pass<U>(rhs));
 }
 
 template <class T, class U>
     requires EnableOperators<T, U>
-constexpr decltype(auto) operator^=(T&& lhs, U&& rhs)
-{
+constexpr decltype(auto) operator^=(T&& lhs, U&& rhs) {
     return bit_xor(inout{std::forward<T>(lhs)}, pass<U>(rhs));
 }
 

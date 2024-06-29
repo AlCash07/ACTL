@@ -14,8 +14,7 @@
 namespace ac {
 
 template <class To, class From>
-struct range_construction_from_iterators
-{
+struct range_construction_from_iterators {
     using from_iter = range_iterator_t<From const>;
 
     static constexpr bool value =
@@ -26,8 +25,7 @@ struct range_construction_from_iterators
 };
 
 template <class To, class From>
-struct range_construct_and_copy
-{
+struct range_construct_and_copy {
     static constexpr bool value = static_size_v<To> != dynamic_size &&
                                   std::is_default_constructible_v<To> &&
                                   std::is_assignable_v<
@@ -36,8 +34,9 @@ struct range_construct_and_copy
 
     static constexpr To convert(From const& x) noexcept(
         std::is_nothrow_default_constructible_v<To>&& noexcept(
-            ranges::copy(std::declval<To>(), x)))
-    {
+            ranges::copy(std::declval<To>(), x)
+        )
+    ) {
         To result{};
         ranges::copy(result, x);
         return result;
@@ -49,17 +48,13 @@ struct ranges_conversion
     : std::conditional_t<
           range_construction_from_iterators<To, From>::value,
           range_construction_from_iterators<To, From>,
-          range_construct_and_copy<To, From>>
-{};
+          range_construct_and_copy<To, From>> {};
 
 template <class To, class From>
-constexpr bool can_convert_as_ranges() noexcept
-{
+constexpr bool can_convert_as_ranges() noexcept {
     // We check for StrictRange, because we don't want to
     // miss additional type checking enabled by the tuple.
-    if constexpr (
-        StrictRange<To> && StrictRange<From> &&
-        have_matching_static_sizes_v<To, From>)
+    if constexpr (StrictRange<To> && StrictRange<From> && have_matching_static_sizes_v<To, From>)
         return ranges_conversion<To, From>::value;
     else
         return false;
@@ -67,7 +62,6 @@ constexpr bool can_convert_as_ranges() noexcept
 
 template <class To, class From>
     requires(can_convert_as_ranges<To, From>())
-struct conversion<To, From> : ranges_conversion<To, From>
-{};
+struct conversion<To, From> : ranges_conversion<To, From> {};
 
 } // namespace ac

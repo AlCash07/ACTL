@@ -14,8 +14,7 @@
 namespace ac {
 
 template <class P>
-struct andrew_monotone_chain_policy
-{
+struct andrew_monotone_chain_policy {
     andrew_monotone_chain_policy(P const& x) : policy{x} {}
 
     P const& policy;
@@ -27,28 +26,24 @@ struct andrew_monotone_chain_policy
 /// https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
 template <class P, class T>
     requires(geometry_traits<T>::dimension == 2)
-span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points)
-{
+span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points) {
     if (points.size() < 2)
         return points;
     auto& policy = amcp.policy;
     auto [a, b] = minmax_element(points, less(policy));
-    auto comp = [l = make_line(*a, *b), &policy](auto const& p)
-    {
+    auto comp = [l = make_line(*a, *b), &policy](auto const& p) {
         return !right_turn(policy, p, l);
     };
     index pivot = partition(points, comp) - points.begin();
     AC_ASSERT(2 <= pivot);
     sort(points.first(pivot), less(policy));
     index last = 1;
-    auto pop = [&](auto const& p)
-    {
+    auto pop = [&](auto const& p) {
         while (last != 0 &&
                !right_turn(policy, p, points[last], points[last - 1]))
             --last;
     };
-    for (index i = 2, n = points.size(); i != n; ++i)
-    {
+    for (index i = 2, n = points.size(); i != n; ++i) {
         // TODO: somehow output the right-top point when this condition is met.
         if (i == pivot)
             sort(points.last(n - i), greater_functor(policy));
@@ -62,8 +57,7 @@ span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points)
 }
 
 template <class T>
-span<T> convex_hull(span<T> points)
-{
+span<T> convex_hull(span<T> points) {
     return convex_hull(andrew_monotone_chain_policy{default_policy}, points);
 }
 

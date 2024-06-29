@@ -16,13 +16,12 @@
 namespace ac {
 
 template <class Derived, class Iter, class Category = iter_category_t<Iter>>
-class iterator_adaptor : public iterator_interface_selector_t<Derived, Category>
-{
+class iterator_adaptor
+    : public iterator_interface_selector_t<Derived, Category> {
     using base_t = iterator_interface_selector_t<Derived, Category>;
 
 protected:
-    constexpr Iter& base_ref() noexcept
-    {
+    constexpr Iter& base_ref() noexcept {
         return base_;
     }
 
@@ -36,18 +35,15 @@ public:
     // std::sentinel_for requires std::semiregular.
     template <class I = Iter>
         requires std::is_default_constructible_v<I>
-    constexpr iterator_adaptor() noexcept(
-        std::is_nothrow_default_constructible_v<Iter>)
-        : base_{Iter{}}
-    {}
+    constexpr iterator_adaptor(
+    ) noexcept(std::is_nothrow_default_constructible_v<Iter>)
+        : base_{Iter{}} {}
 
-    explicit constexpr iterator_adaptor(Iter const& iter) noexcept(
-        noexcept(Iter{iter}))
-        : base_{iter}
-    {}
+    explicit constexpr iterator_adaptor(Iter const& iter
+    ) noexcept(noexcept(Iter{iter}))
+        : base_{iter} {}
 
-    constexpr Iter const& base() const noexcept
-    {
+    constexpr Iter const& base() const noexcept {
         return base_;
     }
 
@@ -71,13 +67,13 @@ public:
     // TODO: make this a hidden friend.
     template <class Derived1, class Iter1, class Category1>
     constexpr auto operator==(
-        iterator_adaptor<Derived1, Iter1, Category1> const& rhs) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() == rhs.base())
+        iterator_adaptor<Derived1, Iter1, Category1> const& rhs
+    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() == rhs.base())
 
     template <class Derived1, class Iter1, class Types1>
     constexpr auto operator-(
-        iterator_adaptor<Derived1, Iter1, Types1> const& rhs) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() - rhs.base())
+        iterator_adaptor<Derived1, Iter1, Types1> const& rhs
+    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() - rhs.base())
 
 private:
     Iter base_;

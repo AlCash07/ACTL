@@ -9,8 +9,9 @@
 #include <memory>
 #include "test.hpp"
 
-static_assert(
-    std::is_same_v<ac::dummy_container, ac::rebind_container_t<none, int>>);
+static_assert(std::is_same_v<
+              ac::dummy_container,
+              ac::rebind_container_t<none, int>>);
 static_assert(std::is_same_v<
               ac::dummy_container,
               ac::rebind_container_t<ac::dummy_container, int>>);

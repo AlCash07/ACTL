@@ -14,9 +14,9 @@ namespace ac {
 // https://en.cppreference.com/w/cpp/ranges/range
 template <class T>
 concept Range = requires(T& t) {
-                    ranges::begin(t);
-                    ranges::end(t);
-                };
+    ranges::begin(t);
+    ranges::end(t);
+};
 
 // https://en.cppreference.com/w/cpp/ranges/input_range
 template <class T>
@@ -49,7 +49,7 @@ concept ContiguousRange =
     requires(T& t) {
         {
             *ranges::data(t)
-            } -> std::same_as<std::iter_reference_t<range_iterator_t<T>>>;
+        } -> std::same_as<std::iter_reference_t<range_iterator_t<T>>>;
     };
 
 } // namespace ac

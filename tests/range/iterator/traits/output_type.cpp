@@ -8,8 +8,7 @@
 #include <actl/std/deque.hpp>
 #include "test.hpp"
 
-TEST_CASE("output_type correctness")
-{
+TEST_CASE("output_type correctness") {
     CHECK(std::is_same_v<int, output_type_t<int*>>);
     CHECK(std::is_same_v<int, output_type_t<std::ostream_iterator<int>>>);
     CHECK(std::is_same_v<

@@ -10,8 +10,7 @@
 
 using namespace ac::io;
 
-TEST_CASE("write double")
-{
+TEST_CASE("write double") {
     auto const inf = std::numeric_limits<double>::infinity();
     auto const nan = std::numeric_limits<double>::quiet_NaN();
     text f;

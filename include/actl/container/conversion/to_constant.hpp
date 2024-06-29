@@ -13,25 +13,21 @@
 namespace ac {
 
 template <auto To, class From>
-struct conversion<constant<To>, From>
-{
+struct conversion<constant<To>, From> {
     static constexpr bool value = std::is_constructible_v<decltype(To), From>;
 
-    static constexpr constant<To> convert(From&& x) noexcept(
-        AC_ASSERT_IS_NOEXCEPT())
-    {
+    static constexpr constant<To> convert(From&& x
+    ) noexcept(AC_ASSERT_IS_NOEXCEPT()) {
         AC_ASSERT(x == To);
         return {};
     }
 };
 
 template <auto To, auto From>
-struct conversion<constant<To>, constant<From>>
-{
+struct conversion<constant<To>, constant<From>> {
     static constexpr bool value = To == From;
 
-    static constexpr constant<To> convert(constant<From>) noexcept
-    {
+    static constexpr constant<To> convert(constant<From>) noexcept {
         return {};
     }
 };

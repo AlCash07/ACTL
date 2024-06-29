@@ -16,17 +16,13 @@ template <
     class CharPredicate,
     class = decltype(std::declval<CharPredicate>()('\0'))>
 std::vector<std::string> split(
-    std::string_view line, CharPredicate is_delimiter, bool remove_empty = true)
-{
+    std::string_view line, CharPredicate is_delimiter, bool remove_empty = true
+) {
     std::vector<std::string> res(1);
-    for (char c : line)
-    {
-        if (!is_delimiter(c))
-        {
+    for (char c : line) {
+        if (!is_delimiter(c)) {
             res.back() += c;
-        }
-        else if (!remove_empty || !res.back().empty())
-        {
+        } else if (!remove_empty || !res.back().empty()) {
             res.emplace_back();
         }
     }
@@ -36,10 +32,11 @@ std::vector<std::string> split(
 }
 
 inline std::vector<std::string> split(
-    std::string_view line, char delimiter, bool remove_empty = true)
-{
+    std::string_view line, char delimiter, bool remove_empty = true
+) {
     return split(
-        line, [delimiter](char c) { return c == delimiter; }, remove_empty);
+        line, [delimiter](char c) { return c == delimiter; }, remove_empty
+    );
 }
 
 } // namespace ac

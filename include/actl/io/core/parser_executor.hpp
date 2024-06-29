@@ -12,8 +12,7 @@
 namespace ac::io {
 
 template <class Parser>
-bool parsed_available_data(Device auto& id, Parser& parser)
-{
+bool parsed_available_data(Device auto& id, Parser& parser) {
     auto s = id.input_buffer();
     if (s.empty())
         return false;
@@ -23,15 +22,12 @@ bool parsed_available_data(Device auto& id, Parser& parser)
 }
 
 template <class T, class Parser>
-struct parser_executor
-{
+struct parser_executor {
     T& dst;
     Parser parser;
 
-    bool operator()(Device auto& id)
-    {
-        while (parsed_available_data(id, parser))
-        {}
+    bool operator()(Device auto& id) {
+        while (parsed_available_data(id, parser)) {}
         bool ok = parser.ready();
         if (ok)
             dst = parser.value();
@@ -40,14 +36,11 @@ struct parser_executor
 };
 
 template <class Parser>
-struct parser_executor<void, Parser>
-{
+struct parser_executor<void, Parser> {
     Parser parser;
 
-    bool operator()(Device auto& id)
-    {
-        while (parsed_available_data(id, parser))
-        {}
+    bool operator()(Device auto& id) {
+        while (parsed_available_data(id, parser)) {}
         return parser.ready();
     }
 };

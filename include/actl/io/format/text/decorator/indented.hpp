@@ -12,8 +12,7 @@
 namespace ac::io {
 
 template <class Char = char>
-struct indented
-{
+struct indented {
     struct format_tag;
 
     Char fill = ' ';
@@ -25,31 +24,26 @@ struct indented
 
 template <class C, class T>
     requires(!Range<T>)
-batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x)
-{
-    if (!fmt.indent)
-    {
+batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x) {
+    if (!fmt.indent) {
         fmt.indent = true;
         return {raw{cspan<C>{}}, repeat<C>{}, x};
-    }
-    else
-    {
+    } else {
         return {
             raw{cspan<C>{&fmt.endl, 1}},
             repeat<C>{fmt.fill, fmt.count * fmt.level},
-            x};
+            x
+        };
     }
 }
 
 template <class C, class T>
-decltype(auto) encode(indented<C>& fmt, raw<T> const& x)
-{
+decltype(auto) encode(indented<C>& fmt, raw<T> const& x) {
     return x;
 }
 
 template <class C, bool Deeper>
-void manipulate(indented<C>& fmt, change_level<Deeper>)
-{
+void manipulate(indented<C>& fmt, change_level<Deeper>) {
     if constexpr (Deeper)
         fmt.indent = true;
     fmt.level += Deeper ? 1 : -1;

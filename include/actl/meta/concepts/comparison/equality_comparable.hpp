@@ -13,13 +13,9 @@ namespace ac {
 template <class T>
 concept NothrowEqualityComparable =
     std::equality_comparable<T> && requires(const T& t, const T& u) {
-                                       {
-                                           t == u
-                                       } noexcept;
-                                       {
-                                           t != u
-                                       } noexcept;
-                                   };
+        { t == u } noexcept;
+        { t != u } noexcept;
+    };
 
 // TODO: add NothrowEqualityComparableWith.
 

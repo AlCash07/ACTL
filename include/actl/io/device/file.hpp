@@ -14,8 +14,7 @@
 namespace ac::io {
 
 template <mode_t Mode, class Char, bool = is_in<Mode>>
-class in_file : public device<Mode, Char>
-{
+class in_file : public device<Mode, Char> {
     static constexpr char const* mode_str[14] = {
         "r",
         "rb",
@@ -30,31 +29,28 @@ class in_file : public device<Mode, Char>
         "a",
         "ab",
         "r+",
-        "r+b"};
+        "r+b"
+    };
 
 public:
-    explicit in_file(std::FILE* file, bool own = false) : file_{file}, own_{own}
-    {
+    explicit in_file(std::FILE* file, bool own = false)
+        : file_{file}, own_{own} {
         AC_ASSERT(file);
     }
 
     explicit in_file(char const* filename)
-        : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true}
-    {}
+        : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
-    ~in_file()
-    {
+    ~in_file() {
         if (own_)
             std::fclose(file_);
     }
 
-    std::FILE* get() const
-    {
+    std::FILE* get() const {
         return file_;
     }
 
-    bool eof() const
-    {
+    bool eof() const {
         return std::feof(file_) != 0;
     }
 
@@ -64,67 +60,57 @@ protected:
 };
 
 template <mode_t Mode, class Char>
-class in_file<Mode, Char, true> : public in_file<Mode, Char, false>
-{
+class in_file<Mode, Char, true> : public in_file<Mode, Char, false> {
 public:
     using in_file<Mode, Char, false>::in_file;
 
-    Char peek()
-    {
+    Char peek() {
         Char c = get();
         move(-1);
         return c;
     }
 
-    Char get()
-    {
+    Char get() {
         int c = std::fgetc(this->file_);
         return c == EOF ? Char{} : static_cast<Char>(c);
     }
 
-    size_t read(span<Char> dst)
-    {
+    size_t read(span<Char> dst) {
         return std::fread(dst.data(), sizeof(Char), dst.size(), this->file_);
     }
 
-    void move(index offset)
-    {
+    void move(index offset) {
         int res = std::fseek(
-            this->file_, offset * static_cast<index>(sizeof(Char)), SEEK_CUR);
+            this->file_, offset * static_cast<index>(sizeof(Char)), SEEK_CUR
+        );
         AC_ASSERT(res == 0);
     }
 };
 
 template <mode_t Mode, class Char = std::byte, bool = is_out<Mode>>
-class file : public in_file<Mode, Char>
-{
+class file : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;
 };
 
 template <mode_t Mode, class Char>
-class file<Mode, Char, true> : public in_file<Mode, Char>
-{
+class file<Mode, Char, true> : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;
 
-    size_t write(Char c)
-    {
+    size_t write(Char c) {
         return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0;
     }
 
-    size_t write(span<Char const> src)
-    {
+    size_t write(span<Char const> src) {
         return std::fwrite(src.data(), sizeof(Char), src.size(), this->file_);
     }
 
-    void flush()
-    {
+    void flush() {
         std::fflush(this->file_);
     }
 
-    ~file()
-    {
+    ~file() {
         flush();
     }
 };

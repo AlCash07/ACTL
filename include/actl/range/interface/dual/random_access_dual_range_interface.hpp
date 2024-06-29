@@ -13,26 +13,24 @@ namespace ac {
 
 template <class Derived>
 class random_access_non_const_range_interface
-    : public bidirectional_non_const_range_interface<Derived>
-{
+    : public bidirectional_non_const_range_interface<Derived> {
 public:
     template <class Difference>
     constexpr decltype(auto) operator[](Difference n) //
-        noexcept(
-            AC_ASSERT_IS_NOEXCEPT() && noexcept(this->derived().begin()[n]))
-    {
+        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(this->derived().begin()[n])
+        ) {
         AC_ASSERT(0 <= n && n < size());
         return this->derived().begin()[n];
     }
 
     constexpr auto size() AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        to_unsigned(this->derived().end() - this->derived().begin()))
+        to_unsigned(this->derived().end() - this->derived().begin())
+    )
 };
 
 template <class Derived>
 class random_access_dual_range_interface
     : public random_access_range_interface<Derived>
-    , public random_access_non_const_range_interface<Derived>
-{};
+    , public random_access_non_const_range_interface<Derived> {};
 
 } // namespace ac

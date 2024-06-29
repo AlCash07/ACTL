@@ -15,8 +15,7 @@ namespace ac {
 namespace detail {
 
 template <size_t I>
-constexpr decltype(auto) adl_get(Tuple auto const& x) noexcept
-{
+constexpr decltype(auto) adl_get(Tuple auto const& x) noexcept {
     using std::get;
     static_assert(noexcept(get<I>(x)));
     return get<I>(x);
@@ -26,13 +25,13 @@ template <class To, class From, class S = tuple_indices_t<From>>
 struct from_tuple;
 
 template <class To, class From, size_t... Is>
-struct from_tuple<To, From, std::index_sequence<Is...>>
-{
+struct from_tuple<To, From, std::index_sequence<Is...>> {
     static constexpr bool value =
         can_convert_to_v<To, decltype(adl_get<Is>(std::declval<From>()))...>;
 
     static constexpr To convert(From&& x) AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        convert_to<To>(adl_get<Is>(std::forward<From>(x))...))
+        convert_to<To>(adl_get<Is>(std::forward<From>(x))...)
+    )
 };
 
 } // namespace detail
@@ -40,8 +39,8 @@ struct from_tuple<To, From, std::index_sequence<Is...>>
 template <class To, class From>
     requires(
         !can_convert_as_ranges<To, From>() && Tuple<From> &&
-        !StrictRange<From> && (Tuple<To> || Range<To>))
-struct conversion<To, From> : detail::from_tuple<To, From>
-{};
+        !StrictRange<From> && (Tuple<To> || Range<To>)
+    )
+struct conversion<To, From> : detail::from_tuple<To, From> {};
 
 } // namespace ac

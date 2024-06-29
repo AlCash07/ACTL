@@ -18,9 +18,12 @@ static_assert(std::is_same_v<One, ac::strict_common_type_t<One, Zero, Zero>>);
 
 static_assert(std::is_same_v<int, ac::strict_common_type_t<int, Zero>>);
 static_assert(std::is_same_v<int, ac::strict_common_type_t<One, int>>);
-static_assert(
-    std::is_same_v<int, ac::strict_common_type_t<int, Zero, int, One>>);
-static_assert(
-    std::is_same_v<int, ac::strict_common_type_t<Zero, int, One, int>>);
-static_assert(
-    std::is_same_v<int, ac::strict_common_type_t<One, Zero, int, int>>);
+static_assert(std::is_same_v<
+              int,
+              ac::strict_common_type_t<int, Zero, int, One>>);
+static_assert(std::is_same_v<
+              int,
+              ac::strict_common_type_t<Zero, int, One, int>>);
+static_assert(std::is_same_v<
+              int,
+              ac::strict_common_type_t<One, Zero, int, int>>);

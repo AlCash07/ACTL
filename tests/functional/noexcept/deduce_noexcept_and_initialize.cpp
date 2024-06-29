@@ -7,20 +7,17 @@
 #include <actl/functional/noexcept/deduce_noexcept_and_initialize.hpp>
 #include "functional/noexcept/is_int.hpp"
 
-struct Base
-{
+struct Base {
     bool value;
 
     template <class T>
-    constexpr Base(T x) noexcept(noexcept(ac::is_int(x))) : value{ac::is_int(x)}
-    {}
+    constexpr Base(T x) noexcept(noexcept(ac::is_int(x)))
+        : value{ac::is_int(x)} {}
 };
 
-struct Derived : Base
-{
+struct Derived : Base {
     template <class T>
-    constexpr Derived(T x) AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(Base{x})
-    {}
+    constexpr Derived(T x) AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(Base{x}) {}
 };
 
 static_assert(noexcept(Derived{0}));

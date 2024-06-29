@@ -9,8 +9,7 @@
 
 using namespace ac::io;
 
-TEST_CASE("boolean write")
-{
+TEST_CASE("boolean write") {
     text f;
     test_write("true", f, boolalpha, true);
     test_write("false", f, false);

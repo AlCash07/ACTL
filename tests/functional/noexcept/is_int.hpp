@@ -6,13 +6,11 @@
 
 namespace ac {
 
-constexpr bool is_int(int) noexcept
-{
+constexpr bool is_int(int) noexcept {
     return true;
 }
 
-constexpr bool is_int(double x)
-{
+constexpr bool is_int(double x) {
     if (x < 0)
         throw;
     return false;

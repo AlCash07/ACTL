@@ -7,8 +7,7 @@
 #include <actl/string/traits.hpp>
 #include "test.hpp"
 
-TEST_CASE("is_string")
-{
+TEST_CASE("is_string") {
     CHECK(is_string_v<char[4]>);
     CHECK_FALSE(is_string_v<char16_t[4]>);
     CHECK(is_string_v<char16_t[4], char16_t>);

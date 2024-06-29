@@ -7,8 +7,7 @@
 #include <actl/geometry/point.hpp>
 #include "test.hpp"
 
-TEST_CASE("arithmetic")
-{
+TEST_CASE("arithmetic") {
     point pi{1, 2};
     point pf{3.5f, 4.5f};
     point pd{5.5, 6.5};
@@ -21,8 +20,7 @@ TEST_CASE("arithmetic")
     CHECK(18.5, dot(pi, pd) == 1e-12);
 }
 
-TEST_CASE("inout arithmetic")
-{
+TEST_CASE("inout arithmetic") {
     point p = {1, 2};
     CHECK(point{3, 5} == p += {2, 3});
     CHECK(point{2, 6} == p -= {1, -1});
@@ -31,25 +29,24 @@ TEST_CASE("inout arithmetic")
     CHECK(point{2, 3} == p = point<int>{point{2.5, 3.5}});
 }
 
-TEST_CASE("comparison")
-{
+TEST_CASE("comparison") {
     CHECK(point{1, 2} == point{1, 2});
     CHECK(point{1, 2} > point{0, 3});
     CHECK(point{1, 2} <= point{1, 3});
 }
 
-TEST_CASE("2d perpendicular")
-{
+TEST_CASE("2d perpendicular") {
     CHECK(point{-3, 2} == perpendicular(point{2, 3}));
 }
 
-TEST_CASE("3d cross product")
-{
+TEST_CASE("3d cross product") {
     constexpr int M = 1'000'000'000;
     CHECK(
         point{-2, 999999999000000001LL, -1000000001000000001LL} ==
         cross(
             cast_before<Mul, long long>{},
             point{1, M + 1, M - 1},
-            point{M + 1, M, M - 2}));
+            point{M + 1, M, M - 2}
+        )
+    );
 }

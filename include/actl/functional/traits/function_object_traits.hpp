@@ -12,8 +12,7 @@ namespace ac {
 
 /// Callable traits specialized only for function objects.
 template <class T>
-struct function_object_traits
-{
+struct function_object_traits {
     static constexpr bool is_function_object = false;
 };
 
@@ -24,13 +23,12 @@ concept FunctionObject = function_object_traits<T>::is_function_object;
 
 template <class Fn>
     requires requires(Fn) {
-                 &Fn::operator();
-                 // TODO: investigate whether type qualifiers on Fn can make it
-                 // impossible to call `operator()`, and, on the other hand, may
-                 // disambiguate it.
-             }
-struct function_object_traits<Fn>
-{
+        &Fn::operator();
+        // TODO: investigate whether type qualifiers on Fn can make it
+        // impossible to call `operator()`, and, on the other hand, may
+        // disambiguate it.
+    }
+struct function_object_traits<Fn> {
 private:
     using Traits = member_function_traits<decltype(&Fn::operator())>;
 

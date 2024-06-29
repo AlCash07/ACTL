@@ -15,8 +15,7 @@ namespace ac {
 /// Iterator that applies given function after dereferencing the base iterator.
 template <class Iter, class Fn, class Value = use_default>
 class transform_iterator
-    : public iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>
-{
+    : public iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter> {
     using base_t = iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>;
 
 public:
@@ -26,8 +25,7 @@ public:
 
     template <class... Ts>
     transform_iterator(Iter const& iter, Ts&&... args)
-        : base_t{iter}, fn_{std::forward<Ts>(args)...}
-    {}
+        : base_t{iter}, fn_{std::forward<Ts>(args)...} {}
 
     auto operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(fn_(*this->base()))
 

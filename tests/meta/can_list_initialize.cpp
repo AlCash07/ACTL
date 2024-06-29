@@ -6,8 +6,7 @@
 
 #include <actl/meta/can_list_initialize.hpp>
 
-struct aggregate
-{
+struct aggregate {
     int x;
     float y;
 };

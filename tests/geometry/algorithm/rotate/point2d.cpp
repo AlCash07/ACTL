@@ -8,11 +8,11 @@
 #include <actl/numeric/constants.hpp>
 #include "test.hpp"
 
-TEST_CASE("default")
-{
+TEST_CASE("default") {
     double const sqrt2 = sqrt(2.0);
     CHECK_NEAR(point{sqrt2, sqrt2}, rotate(point{2, 0}, math::pi / 4), 1e-12);
     CHECK_NEAR(point{-2, 0}, rotate(point{2, 0}, math::pi), 1e-12);
     CHECK_NEAR(
-        point{sqrt2, -sqrt2}, rotate(point{2, 0}, math::pi * 7 / 4), 1e-12);
+        point{sqrt2, -sqrt2}, rotate(point{2, 0}, math::pi * 7 / 4), 1e-12
+    );
 }

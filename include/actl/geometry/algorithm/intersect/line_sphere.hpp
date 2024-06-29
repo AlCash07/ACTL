@@ -18,8 +18,8 @@ OutIter intersect(
     line_scalar_policy<P> lsp,
     line<T0, N, K> const& l,
     sphere<T1, N> const& s,
-    OutIter dst)
-{
+    OutIter dst
+) {
     auto& policy = lsp.policy;
     auto vdot = dot(policy, l.vector);
     auto delta = product(policy, vdot, sqr(policy, s.radius)) -
@@ -28,19 +28,14 @@ OutIter intersect(
     if (delta_sgn < 0)
         return dst;
     auto projection = dot(policy, s.center - l.begin, l.vector);
-    auto output = [&](auto const& x)
-    {
-        if (detail::line_test(policy, l.kind(), x, vdot))
-        {
+    auto output = [&](auto const& x) {
+        if (detail::line_test(policy, l.kind(), x, vdot)) {
             *dst++ = ratio(policy, x, vdot);
         }
     };
-    if (delta_sgn == 0)
-    {
+    if (delta_sgn == 0) {
         output(projection);
-    }
-    else
-    {
+    } else {
         auto offset = sqrt(policy, delta);
         output(projection - offset);
         output(projection + offset);

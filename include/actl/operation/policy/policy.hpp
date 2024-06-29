@@ -19,15 +19,13 @@ inline constexpr bool can_apply_policy_v =
     requires(Op op, Policy policy) { apply_policy(op, policy); };
 
 template <class Op>
-constexpr decltype(auto) apply_policy_if_can(Op&& op, Policy auto const&)
-{
+constexpr decltype(auto) apply_policy_if_can(Op&& op, Policy auto const&) {
     return std::forward<Op>(op);
 }
 
 template <class Op, Policy P>
     requires can_apply_policy_v<Op, P>
-constexpr decltype(auto) apply_policy_if_can(Op&& op, P const& policy)
-{
+constexpr decltype(auto) apply_policy_if_can(Op&& op, P const& policy) {
     return apply_policy(std::forward<Op>(op), policy);
 }
 

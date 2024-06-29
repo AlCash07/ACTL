@@ -12,23 +12,16 @@
 namespace ac::io {
 
 template <class T>
-struct predicate
-{
+struct predicate {
     T pred;
 
     template <class Char>
-    constexpr bool operator()(Char c) const
-    {
-        if constexpr (std::is_same_v<T, Char>)
-        {
+    constexpr bool operator()(Char c) const {
+        if constexpr (std::is_same_v<T, Char>) {
             return pred == c;
-        }
-        else if constexpr (std::is_convertible_v<T, Char const*>)
-        {
+        } else if constexpr (std::is_convertible_v<T, Char const*>) {
             return std::strchr(pred, c) != nullptr;
-        }
-        else
-        {
+        } else {
             return pred(c);
         }
     }

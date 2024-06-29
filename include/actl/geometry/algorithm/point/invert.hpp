@@ -12,8 +12,9 @@
 namespace ac {
 
 template <index N, class T0, class T1>
-auto invert(Policy auto const& policy, point<T0, N> const& p, T1 const& radius)
-{
+auto invert(
+    Policy auto const& policy, point<T0, N> const& p, T1 const& radius
+) {
     AC_ASSERT(!degenerate(policy, p));
     auto t = ratio(policy, sqr(policy, radius), dot(policy, p));
     return product(policy, p, t);
@@ -21,14 +22,13 @@ auto invert(Policy auto const& policy, point<T0, N> const& p, T1 const& radius)
 
 template <index N, class T0, class T1>
 auto invert(
-    Policy auto const& policy, point<T0, N> const& p, sphere<T1, N> const& s)
-{
+    Policy auto const& policy, point<T0, N> const& p, sphere<T1, N> const& s
+) {
     return s.center + invert(policy, p - s.center, s.radius);
 }
 
 template <index N, class T, class U>
-auto invert(point<T, N> const& p, U const& x)
-{
+auto invert(point<T, N> const& p, U const& x) {
     return invert(geometry_policy, p, x);
 }
 

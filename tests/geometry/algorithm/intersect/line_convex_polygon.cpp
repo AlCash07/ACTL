@@ -7,8 +7,7 @@
 #include <actl/geometry/algorithm/intersect/line_convex_polygon.hpp>
 #include "test.hpp"
 
-TEST_CASE("square")
-{
+TEST_CASE("square") {
     convex_polygon<point<int>> poly{{2, 0}, {2, 2}, {0, 2}, {0, 0}};
     std::vector<point<double>> res;
     using vpi = std::vector<point<int>>;

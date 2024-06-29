@@ -12,10 +12,9 @@ namespace ac {
 
 template <class Derived>
 class contiguous_range_interface
-    : public random_access_range_interface<contiguous_range_interface<Derived>>
-{
-    constexpr Derived const& derived() const noexcept
-    {
+    : public random_access_range_interface<
+          contiguous_range_interface<Derived>> {
+    constexpr Derived const& derived() const noexcept {
         return static_cast<Derived const&>(*this);
     }
 

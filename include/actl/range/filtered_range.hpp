@@ -26,47 +26,41 @@ template <class Range, class Predicate>
 class filtered_range
     : public range_interface_selector_t<
           filtered_range<Range, Predicate>,
-          detail::filtered_iterator_category_t<range_iterator_t<Range>>>
-{
+          detail::filtered_iterator_category_t<range_iterator_t<Range>>> {
     using Iter = range_iterator_t<Range>;
     using iterator_category =
         detail::filtered_iterator_category_t<range_iterator_t<Range>>;
 
 public:
-    class iterator : public iterator_adaptor<iterator, Iter, iterator_category>
-    {
+    class iterator
+        : public iterator_adaptor<iterator, Iter, iterator_category> {
     public:
         // Required because std::sentinel_for requires std::semiregular.
         iterator() = default;
 
         explicit iterator(
-            range_iterator_t<Range> iter, filtered_range const& range)
+            range_iterator_t<Range> iter, filtered_range const& range
+        )
             : iterator_adaptor<iterator, Iter, iterator_category>{iter}
-            , range_{&range}
-        {
+            , range_{&range} {
             find_next();
         }
 
-        iterator& operator++()
-        {
+        iterator& operator++() {
             ++this->base_ref();
             find_next();
             return *this;
         }
 
-        iterator& operator--()
-        {
-            do
-            {
+        iterator& operator--() {
+            do {
                 --this->base_ref();
-            }
-            while (!range_->evaluate(*this->base()));
+            } while (!range_->evaluate(*this->base()));
             return *this;
         }
 
     private:
-        void find_next()
-        {
+        void find_next() {
             while (this->base() != range_->original().end() &&
                    !range_->evaluate(*this->base()))
                 ++this->base_ref();
@@ -78,26 +72,21 @@ public:
     };
 
     explicit filtered_range(Range&& range, Predicate pred)
-        : range_{std::forward<Range>(range)}, pred_{std::move(pred)}
-    {}
+        : range_{std::forward<Range>(range)}, pred_{std::move(pred)} {}
 
-    iterator begin() const
-    {
+    iterator begin() const {
         return iterator{original().begin(), *this};
     }
 
-    iterator end() const
-    {
+    iterator end() const {
         return iterator{original().end(), *this};
     }
 
-    Range const& original() const
-    {
+    Range const& original() const {
         return range_;
     }
 
-    bool evaluate(std::iter_reference_t<iterator> x) const
-    {
+    bool evaluate(std::iter_reference_t<iterator> x) const {
         return pred_(x);
     }
 
@@ -107,10 +96,10 @@ private:
 };
 
 template <class Range, class Predicate>
-auto filter_range(Range&& range, Predicate pred)
-{
+auto filter_range(Range&& range, Predicate pred) {
     return filtered_range<Range, Predicate>{
-        std::forward<Range>(range), std::move(pred)};
+        std::forward<Range>(range), std::move(pred)
+    };
 }
 
 } // namespace ac

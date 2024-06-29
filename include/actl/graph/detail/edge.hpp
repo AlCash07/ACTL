@@ -11,8 +11,7 @@
 namespace ac::detail {
 
 template <class V, class B, bool CompareSrc = false>
-class edge
-{
+class edge {
 public:
     using vertex = V;
     using id_type = std::conditional_t<CompareSrc, std::pair<V, B>, B>;
@@ -21,55 +20,44 @@ public:
 
     explicit constexpr edge(V u, V v, B b) : u_{u}, v_{v}, b_{b} {}
 
-    constexpr V source() const
-    {
+    constexpr V source() const {
         return u_;
     }
 
-    constexpr V target() const
-    {
+    constexpr V target() const {
         return v_;
     }
 
-    constexpr B bundle() const
-    {
+    constexpr B bundle() const {
         return b_;
     }
 
-    constexpr id_type id() const
-    {
-        if constexpr (CompareSrc)
-        {
+    constexpr id_type id() const {
+        if constexpr (CompareSrc) {
             return std::pair{u_, b_};
-        }
-        else
-        {
+        } else {
             return b_;
         }
     }
 
-    constexpr operator id_type() const
-    {
+    constexpr operator id_type() const {
         return id();
     }
 
-    bool operator<(edge const& rhs) const
-    {
+    bool operator<(edge const& rhs) const {
         return id() < rhs.id();
     }
 
     // TODO: for undirected and bidirectional graphs edge isn't equal to its
     // reverse.
-    bool operator==(edge const& rhs) const
-    {
+    bool operator==(edge const& rhs) const {
         return id() == rhs.id();
     }
 
 private:
     friend struct ac::hash_access;
 
-    size_t hash() const
-    {
+    size_t hash() const {
         return hash_value(id());
     }
 

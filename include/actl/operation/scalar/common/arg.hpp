@@ -11,16 +11,15 @@
 namespace ac {
 
 template <size_t I, size_t N>
-struct arg_f
-{
+struct arg_f {
     using operation_category = operation_tag;
 
     struct enable_operators;
 
     template <class T, class... Ts>
     constexpr decltype(auto) operator()(
-        [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs) const
-    {
+        [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs
+    ) const {
         static_assert(1 + sizeof...(Ts) == N);
         if constexpr (I == 0)
             return std::forward<T>(x);

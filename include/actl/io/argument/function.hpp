@@ -11,16 +11,14 @@
 namespace ac::io {
 
 template <Device Dev, class T>
-    requires std::is_invocable_r_v<bool, T&, Dev&> bool
-write_final(Dev& id, Format auto&, T& f)
-{
+    requires std::is_invocable_r_v<bool, T&, Dev&>
+bool write_final(Dev& id, Format auto&, T& f) {
     return f(id);
 }
 
 template <Device Dev, class T>
-    requires std::is_invocable_r_v<bool, T&, Dev&> bool
-read_final(Dev& od, Format auto&, T& f)
-{
+    requires std::is_invocable_r_v<bool, T&, Dev&>
+bool read_final(Dev& od, Format auto&, T& f) {
     return f(od);
 }
 

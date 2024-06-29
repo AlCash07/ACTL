@@ -8,8 +8,7 @@
 #include <actl_test/base/equal_same_type.hpp>
 #include "test.hpp"
 
-TEST_CASE("integral_constant conversion")
-{
+TEST_CASE("integral_constant conversion") {
     using int_2_t = ac::constant<2>;
     using ll_2_t = ac::constant<static_cast<long long>(2)>;
 
@@ -22,6 +21,7 @@ TEST_CASE("integral_constant conversion")
 
     static_assert(ac::can_convert_to_v<int_2_t, ll_2_t>);
     static_assert(
-        ac::equal_same_type(int_2_t{}, ac::convert_to<int_2_t>(ll_2_t{})));
+        ac::equal_same_type(int_2_t{}, ac::convert_to<int_2_t>(ll_2_t{}))
+    );
     static_assert(!ac::can_convert_to_v<int_2_t, ac::constant<3>>);
 }

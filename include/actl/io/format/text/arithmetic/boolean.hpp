@@ -17,8 +17,7 @@ inline constexpr char zero_c = '0';
 inline constexpr char one_c = '1';
 
 // We don't simply write bool, because that would allow implicit conversions.
-cspan<char> encode(TextFormat auto& fmt, std::same_as<bool> auto x)
-{
+cspan<char> encode(TextFormat auto& fmt, std::same_as<bool> auto x) {
     if (fmt.getf(flag::boolalpha))
         if (x)
             return true_s;

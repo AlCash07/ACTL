@@ -21,10 +21,8 @@ namespace ac {
 /// - All constexpr operations applied to ac::constant also produce a constant.
 /// For example, `-ac::constant<1>{}` results in `ac::constant<-1>{}`.
 template <auto X>
-struct constant : std::integral_constant<decltype(X), X>
-{
-    friend constexpr constant<true> operator==(constant, constant) noexcept
-    {
+struct constant : std::integral_constant<decltype(X), X> {
+    friend constexpr constant<true> operator==(constant, constant) noexcept {
         return {};
     }
 };
@@ -50,25 +48,21 @@ inline constexpr auto size_c = size_constant<N>{};
 /// Provides a member constant bool value indicating
 /// whether @p T is a specialization of ac::constant.
 template <class T>
-struct is_constant : std::false_type
-{};
+struct is_constant : std::false_type {};
 
 template <auto X>
-struct is_constant<constant<X>> : std::true_type
-{};
+struct is_constant<constant<X>> : std::true_type {};
 
 template <class T>
 inline constexpr bool is_constant_v = is_constant<T>::value;
 
 template <class T>
-struct unwrap_constant
-{
+struct unwrap_constant {
     using type = T;
 };
 
 template <auto X>
-struct unwrap_constant<constant<X>>
-{
+struct unwrap_constant<constant<X>> {
     using type = decltype(X);
 };
 

@@ -19,20 +19,17 @@ template <class Iter, class Super = none>
 class iterator_range
     : public range_interface_selector_t<
           iterator_range<Iter, Super>,
-          iter_category_t<Iter>>
-{
+          iter_category_t<Iter>> {
 public:
     constexpr iterator_range() = default;
 
     constexpr iterator_range(Iter begin, Iter end) : begin_{begin}, end_{end} {}
 
-    constexpr Iter begin() const
-    {
+    constexpr Iter begin() const {
         return begin_;
     }
 
-    constexpr Iter end() const
-    {
+    constexpr Iter end() const {
         return end_;
     }
 
@@ -42,39 +39,34 @@ private:
 };
 
 template <class Iter, class Super>
-struct super_range<iterator_range<Iter, Super>>
-{
+struct super_range<iterator_range<Iter, Super>> {
     using type = Super;
 };
 
 template <class Iter, class Super>
-struct range_properties<iterator_range<Iter, Super>> : range_properties<Super>
-{
+struct range_properties<iterator_range<Iter, Super>> : range_properties<Super> {
     static constexpr bool is_container = false;
 };
 
 template <class SuperRange = none, class Iterator>
-auto make_range(Iterator first, Iterator last)
-{
+auto make_range(Iterator first, Iterator last) {
     return iterator_range<Iterator, SuperRange>{first, last};
 }
 
 template <class SuperRange = none, class Iterator, class Int>
-auto make_range(Iterator first, Int n)
-{
+auto make_range(Iterator first, Int n) {
     return iterator_range<Iterator, SuperRange>{first, std::next(first, n)};
 }
 
 template <class Container>
-auto make_range(Container&& cont)
-{
+auto make_range(Container&& cont) {
     return make_range<std::remove_reference_t<Container>>(
-        ranges::begin(cont), ranges::end(cont));
+        ranges::begin(cont), ranges::end(cont)
+    );
 }
 
 template <class Container>
-auto make_crange(Container const& cont)
-{
+auto make_crange(Container const& cont) {
     return make_range(cont);
 }
 

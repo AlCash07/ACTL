@@ -12,16 +12,16 @@ namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/bidirectional_iterator
 template <class Iter>
-class bidirectional_iterator_interface : public forward_iterator_interface<Iter>
-{
+class bidirectional_iterator_interface
+    : public forward_iterator_interface<Iter> {
 public:
     using iterator_category = std::bidirectional_iterator_tag;
 
     // Post-decrement is a free function here so that it's not hidden by the
     // pre-decrement operator--() defined by the derived iterator.
     friend constexpr Iter operator--(Iter& iter, int) noexcept(
-        noexcept(Iter{iter}, --iter))
-    {
+        noexcept(Iter{iter}, --iter)
+    ) {
         Iter iter_copy = iter;
         --iter;
         return iter_copy;

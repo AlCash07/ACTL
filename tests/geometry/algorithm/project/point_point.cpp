@@ -7,7 +7,6 @@
 #include <actl/geometry/algorithm/project/point_point.hpp>
 #include "test.hpp"
 
-TEST_CASE("default")
-{
+TEST_CASE("default") {
     CHECK(point{2, 4} == project(point{9, 1}, point{2, 4}));
 }

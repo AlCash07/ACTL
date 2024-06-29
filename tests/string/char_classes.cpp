@@ -8,10 +8,8 @@
 #include <cctype>
 #include "test.hpp"
 
-TEST_CASE("char classes are identical to the ones in <cctype>")
-{
-    for (char c = 0; c != std::numeric_limits<char>::max(); ++c)
-    {
+TEST_CASE("char classes are identical to the ones in <cctype>") {
+    for (char c = 0; c != std::numeric_limits<char>::max(); ++c) {
         CHECK((std::isdigit(int{c}) != 0) == ac::is_digit(c));
         CHECK((std::islower(int{c}) != 0) == ac::is_lower(c));
         CHECK((std::isupper(int{c}) != 0) == ac::is_upper(c));
