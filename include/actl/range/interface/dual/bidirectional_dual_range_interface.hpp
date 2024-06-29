@@ -11,9 +11,9 @@
 
 namespace ac {
 
-template <class Derived, class Types>
+template <class Derived>
 class bidirectional_non_const_range_interface
-    : public basic_non_const_range_interface<Derived, Types>
+    : public basic_non_const_range_interface<Derived>
 {
 public:
     constexpr decltype(auto) back() //
@@ -25,10 +25,10 @@ public:
     }
 };
 
-template <class Derived, class Types>
+template <class Derived>
 class bidirectional_dual_range_interface
-    : public bidirectional_range_interface<Derived, Types>
-    , public bidirectional_non_const_range_interface<Derived, Types>
+    : public bidirectional_range_interface<Derived>
+    , public bidirectional_non_const_range_interface<Derived>
 {};
 
 } // namespace ac

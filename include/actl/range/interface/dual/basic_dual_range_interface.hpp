@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <class Derived, class Types>
+template <class Derived>
 class basic_non_const_range_interface
 {
 public:
@@ -19,7 +19,7 @@ public:
 
     constexpr auto cend() const AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().end())
 
-    constexpr bool empty()
+    constexpr auto empty()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin() == derived().end())
 
     explicit constexpr operator bool() AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())

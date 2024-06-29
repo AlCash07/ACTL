@@ -11,11 +11,10 @@
 
 namespace ac {
 
-template <class Range, class Types>
+template <class Range>
 class contiguous_non_const_range_interface
     : public random_access_non_const_range_interface<
-          contiguous_non_const_range_interface<Range, Types>,
-          Types>
+          contiguous_non_const_range_interface<Range>>
 {
     constexpr Range& derived() noexcept
     {
@@ -23,17 +22,16 @@ class contiguous_non_const_range_interface
     }
 
 public:
-    constexpr decltype(auto) begin()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
+    constexpr auto begin() AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
 
-    constexpr decltype(auto) end()
+    constexpr auto end()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(begin() + derived().size())
 };
 
-template <class Derived, class Types>
+template <class Derived>
 class contiguous_dual_range_interface
-    : public contiguous_range_interface<Derived, Types>
-    , public contiguous_non_const_range_interface<Derived, Types>
+    : public contiguous_range_interface<Derived>
+    , public contiguous_non_const_range_interface<Derived>
 {};
 
 } // namespace ac

@@ -11,22 +11,21 @@
 
 #include <actl/assert.hpp>
 #include <actl/functional/noexcept/deduce_noexcept_and_return.hpp>
-#include <actl/range/interface/range_types.hpp>
-#include <actl/range/iterator/traits/is_const_iterator.hpp>
 #include <iterator>
 
 namespace ac {
 
-template <class Derived, class Types>
-class basic_range_interface : public detail::range_types<Types>
+template <class Derived>
+class basic_range_interface
 {
 public:
-    constexpr bool empty() const
+    constexpr auto empty() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin() == derived().end())
 
     explicit constexpr operator bool() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())
 
+    // decltype(auto) because a reference can be returned here.
     constexpr decltype(auto) front() const
         noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin()))
     {

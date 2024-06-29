@@ -10,22 +10,19 @@
 
 namespace ac {
 
-template <class Range, class Types>
+template <class Derived>
 class contiguous_range_interface
-    : public random_access_range_interface<
-          contiguous_range_interface<Range, Types>,
-          Types>
+    : public random_access_range_interface<contiguous_range_interface<Derived>>
 {
-    constexpr Range const& derived() const noexcept
+    constexpr Derived const& derived() const noexcept
     {
-        return static_cast<Range const&>(*this);
+        return static_cast<Derived const&>(*this);
     }
 
 public:
-    constexpr decltype(auto) begin() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
+    constexpr auto begin() const AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
 
-    constexpr decltype(auto) end() const
+    constexpr auto end() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(begin() + derived().size())
 };
 

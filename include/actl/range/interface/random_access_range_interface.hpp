@@ -6,30 +6,26 @@
 
 #pragma once
 
+#include <actl/numeric/signedness.hpp>
 #include <actl/range/interface/bidirectional_range_interface.hpp>
 
 namespace ac {
 
-template <class Derived, class Types>
+template <class Derived>
 class random_access_range_interface
-    : public bidirectional_range_interface<Derived, Types>
+    : public bidirectional_range_interface<Derived>
 {
-    using base_t = bidirectional_range_interface<Derived, Types>;
-
 public:
-    using typename base_t::difference_type;
-    using typename base_t::size_type;
-
-    constexpr decltype(auto) operator[](size_type n) const
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(
-            this->derived().begin()[static_cast<difference_type>(n)]))
+    template <class Difference>
+    constexpr decltype(auto) operator[](Difference i) const noexcept(
+        AC_ASSERT_IS_NOEXCEPT() && noexcept(this->derived().begin()[i]))
     {
-        AC_ASSERT(0 <= n && n < size());
-        return this->derived().begin()[static_cast<difference_type>(n)];
+        AC_ASSERT(0 <= i && i < size());
+        return this->derived().begin()[i];
     }
 
     constexpr auto size() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        static_cast<size_type>(this->derived().end() - this->derived().begin()))
+        to_unsigned(this->derived().end() - this->derived().begin()))
 };
 
 } // namespace ac

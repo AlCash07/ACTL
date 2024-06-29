@@ -9,25 +9,30 @@
 #include <actl/memory/no_unique_address.hpp>
 #include <actl/range/interface/range_interface_selector.hpp>
 #include <actl/range/iterator/interface/iterator_adaptor.hpp>
-#include <actl/range/iterator/traits/is_const_iterator.hpp>
 
 namespace ac {
 
-template <class Range, class Predicate>
-class filtered_range;
-
 namespace detail {
 
-template <class R, class P>
-struct filtered_range_types
+template <class Iter>
+using filtered_iterator_category_t = std::conditional_t<
+    std::random_access_iterator<Iter>,
+    std::bidirectional_iterator_tag,
+    iter_category_t<Iter>>;
+
+} // namespace detail
+
+template <class Range, class Predicate>
+class filtered_range
+    : public range_interface_selector_t<
+          filtered_range<Range, Predicate>,
+          detail::filtered_iterator_category_t<range_iterator_t<Range>>>
 {
-    using Iter = range_iterator_t<R>;
+    using Iter = range_iterator_t<Range>;
+    using iterator_category =
+        detail::filtered_iterator_category_t<range_iterator_t<Range>>;
 
-    using iterator_category = std::conditional_t<
-        std::random_access_iterator<Iter>,
-        std::bidirectional_iterator_tag,
-        iter_category_t<Iter>>;
-
+public:
     class iterator : public iterator_adaptor<iterator, Iter, iterator_category>
     {
     public:
@@ -35,7 +40,7 @@ struct filtered_range_types
         iterator() = default;
 
         explicit iterator(
-            range_iterator_t<R> iter, filtered_range<R, P> const& range)
+            range_iterator_t<Range> iter, filtered_range const& range)
             : iterator_adaptor<iterator, Iter, iterator_category>{iter}
             , range_{&range}
         {
@@ -69,34 +74,19 @@ struct filtered_range_types
 
         // Pointer is used instead of a reference to support copy assignment
         // required for std::copyable.
-        filtered_range<R, P> const* range_;
+        filtered_range const* range_;
     };
-
-    using size_type = range_size_t<R>;
-};
-
-} // namespace detail
-
-template <class Range, class Predicate>
-class filtered_range
-    : public range_interface_selector_t<
-          filtered_range<Range, Predicate>,
-          detail::filtered_range_types<Range, Predicate>>
-{
-public:
-    using iterator =
-        typename detail::filtered_range_types<Range, Predicate>::iterator;
 
     explicit filtered_range(Range&& range, Predicate pred)
         : range_{std::forward<Range>(range)}, pred_{std::move(pred)}
     {}
 
-    auto begin() const
+    iterator begin() const
     {
         return iterator{original().begin(), *this};
     }
 
-    auto end() const
+    iterator end() const
     {
         return iterator{original().end(), *this};
     }
