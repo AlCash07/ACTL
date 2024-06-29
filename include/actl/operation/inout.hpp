@@ -6,31 +6,14 @@
 
 #pragma once
 
+#include <actl/functional/parameters/inout.hpp>
 #include <actl/operation/core/argument_traits.hpp>
 
 namespace ac {
 
-template<class T>
-struct inout {
-    struct enable_operators;
-
-    T x;
-};
-
-template<class T>
-inout(T&&) -> inout<T>;
-
-template<class T>
-struct is_inout : std::false_type {};
-
-template<class T>
-struct is_inout<inout<T>> : std::true_type {};
-
-template<class T>
-inline constexpr bool is_inout_v = is_inout<std::remove_cvref_t<T>>::value;
-
 template<class... Ts>
-inline constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);
+inline constexpr bool is_any_inout_v =
+    (... || is_inout_v<std::remove_cvref_t<Ts>>);
 
 template<class T>
 struct raw<inout<T>> : raw<T> {};
