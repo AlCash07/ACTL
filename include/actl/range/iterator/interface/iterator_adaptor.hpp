@@ -20,6 +20,12 @@ class iterator_adaptor : public iterator_interface_selector_t<Derived, Category>
 {
     using base_t = iterator_interface_selector_t<Derived, Category>;
 
+protected:
+    constexpr Iter& base_ref() noexcept
+    {
+        return base_;
+    }
+
 public:
     // These are the default aliases that can be overwritten in the Derived
     // iterator when needed.
@@ -72,12 +78,6 @@ public:
     constexpr auto operator-(
         iterator_adaptor<Derived1, Iter1, Types1> const& rhs) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() - rhs.base())
-
-protected:
-    constexpr Iter& base_ref() noexcept
-    {
-        return base_;
-    }
 
 private:
     Iter base_;
