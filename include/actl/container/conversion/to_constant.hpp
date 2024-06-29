@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <auto To, class From>
+template<auto To, class From>
 struct conversion<constant<To>, From> {
     static constexpr bool value = std::is_constructible_v<decltype(To), From>;
 
@@ -23,7 +23,7 @@ struct conversion<constant<To>, From> {
     }
 };
 
-template <auto To, auto From>
+template<auto To, auto From>
 struct conversion<constant<To>, constant<From>> {
     static constexpr bool value = To == From;
 

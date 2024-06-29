@@ -10,7 +10,7 @@
 
 namespace ac::io {
 
-template <bool Signed>
+template<bool Signed>
 class sign_parser {
     bool negate = false;
 
@@ -23,7 +23,7 @@ public:
         return c == '+';
     }
 
-    template <class Int>
+    template<class Int>
     auto max_abs() const {
         using UInt = std::make_unsigned_t<Int>;
         constexpr auto max_v = std::numeric_limits<UInt>::max();
@@ -33,7 +33,7 @@ public:
             return max_v;
     }
 
-    template <class T>
+    template<class T>
     auto value(T x) const {
         if constexpr (std::is_floating_point_v<T>) {
             return negate ? -x : x;

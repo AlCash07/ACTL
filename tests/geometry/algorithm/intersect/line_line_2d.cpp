@@ -27,7 +27,7 @@ TEST_CASE("general position") {
     CHECK(1u == res.size());
 }
 
-template <ac::index N, class T, class K1, class K2>
+template<ac::index N, class T, class K1, class K2>
 bool equal_lines(line<T, N, K1> const& lhs, line<T, N, K2> const& rhs) {
     if (lhs.kind() != rhs.kind())
         return false;

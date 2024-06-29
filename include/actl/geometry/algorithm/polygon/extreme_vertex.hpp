@@ -16,7 +16,7 @@ namespace ac {
 /// direction : O(log N). If there are two extreme vertices, the first one in
 /// counter-clockwise order is taken. Joseph O'Rourke, Computational Geometry in
 /// C (2nd Edition), p. 270.
-template <class T, class Function>
+template<class T, class Function>
 auto extreme_vertex(
     Policy auto const& policy, convex_polygon<T> const& poly, Function direction
 ) {
@@ -52,7 +52,7 @@ auto extreme_vertex(
     return first;
 }
 
-template <class T, class Function>
+template<class T, class Function>
 auto extreme_vertex(convex_polygon<T> const& poly, Function direction) {
     return extreme_vertex(geometry_policy, poly, direction);
 }

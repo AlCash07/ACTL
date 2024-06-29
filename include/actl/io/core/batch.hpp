@@ -11,40 +11,40 @@
 
 namespace ac::io {
 
-template <class... Ts>
+template<class... Ts>
 struct batch : std::tuple<Ts...> {
     using std::tuple<Ts...>::tuple;
 };
 
-template <class... Ts>
+template<class... Ts>
 batch(Ts&&...) -> batch<Ts...>;
 
-template <class D, class F, class T, size_t... Is>
+template<class D, class F, class T, size_t... Is>
 bool write_final_batch(D& od, F& fmt, T const& x, std::index_sequence<Is...>) {
     return (... && write_final(od, fmt, std::get<Is>(x)));
 }
 
-template <class D, class F, class... Ts>
+template<class D, class F, class... Ts>
 bool write_pre_final(D& od, F& fmt, batch<Ts...> const& x) {
     return write_final_batch(od, fmt, x, std::index_sequence_for<Ts...>{});
 }
 
-template <class D, class F, class T, size_t... Is>
+template<class D, class F, class T, size_t... Is>
 bool read_final_batch(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
     return (... && read_final(id, fmt, std::get<Is>(x)));
 }
 
-template <class D, class F, class... Ts>
+template<class D, class F, class... Ts>
 bool read_pre_final(D& id, F& fmt, batch<Ts...>& x) {
     return read_final_batch(id, fmt, x, std::index_sequence_for<Ts...>{});
 }
 
 namespace detail {
 
-template <class... Ts>
+template<class... Ts>
 struct batch_resolver;
 
-template <class D, class FF, class F, class Batch, size_t... Is>
+template<class D, class FF, class F, class Batch, size_t... Is>
 struct batch_resolver<D, FF, F, Batch, std::index_sequence<Is...>> {
     static bool write(D& od, FF& full_fmt, F& fmt, Batch const& x) {
         return (... && write_impl(od, full_fmt, fmt, std::get<Is>(x)));
@@ -55,7 +55,7 @@ struct batch_resolver<D, FF, F, Batch, std::index_sequence<Is...>> {
     }
 };
 
-template <class D, class FF, class F, class... Ts>
+template<class D, class FF, class F, class... Ts>
 struct arg_resolver<D, FF, F, batch<Ts...>, false>
     : batch_resolver<D, FF, F, batch<Ts...>, std::index_sequence_for<Ts...>> {};
 

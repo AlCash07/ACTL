@@ -12,12 +12,12 @@
 
 namespace ac {
 
-template <class T>
+template<class T>
 concept TriviallyMovable = std::movable<T> && TriviallyMoveConstructible<T> &&
                            TriviallyAssignableFrom<T&, T>;
 // Notion of trivial swap doesn't exist, so we don't check it.
 
-template <class T>
+template<class T>
 concept NothrowMovable = std::movable<T> && NothrowMoveConstructible<T> &&
                          NothrowAssignableFrom<T&, T> && NothrowSwappable<T>;
 

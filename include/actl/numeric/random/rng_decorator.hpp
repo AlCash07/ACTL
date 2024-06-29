@@ -11,17 +11,17 @@
 
 namespace ac {
 
-template <class Rng>
+template<class Rng>
 struct rng_decorator : public Rng {
     explicit constexpr rng_decorator() = default;
 
-    template <class Seed>
+    template<class Seed>
     explicit rng_decorator(Seed&& s) {
         seed(std::forward<Seed>(s));
     }
 
     /// Generates uniform random number in the range [from, to).
-    template <class T>
+    template<class T>
         requires std::is_arithmetic_v<T>
     T uniform(T from, T to) {
         if constexpr (std::is_integral_v<T>) {
@@ -32,14 +32,14 @@ struct rng_decorator : public Rng {
     }
 
     /// Generates uniform random number in the range [0, to).
-    template <class T>
+    template<class T>
     T uniform(T to) {
         return uniform(T{}, to);
     }
 
     /// Generates normal (Gaussian) random number with mean = @p mean and stddev
     /// = @p stddev.
-    template <class T = double>
+    template<class T = double>
         requires std::is_floating_point_v<T>
     T normal(T mean = T{}, T stddev = T{1}) {
         return std::normal_distribution<T>{mean, stddev}(*this);

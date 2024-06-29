@@ -11,11 +11,11 @@
 
 namespace ac {
 
-template <class Derived>
+template<class Derived>
 class random_access_range_interface
     : public bidirectional_range_interface<Derived> {
 public:
-    template <class Difference>
+    template<class Difference>
     constexpr decltype(auto) operator[](Difference i) const
         noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(this->derived().begin()[i])
         ) {

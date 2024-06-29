@@ -14,7 +14,7 @@
 namespace ac::io {
 
 /// Format that inserts delimiter between consecutive output units.
-template <class Space, class Colon = Space>
+template<class Space, class Colon = Space>
 struct spaced {
     Space space;
     Colon colon;
@@ -26,11 +26,11 @@ struct spaced {
     explicit constexpr spaced(Space space, Colon&& colon)
         : space{std::move(space)}, colon{std::move(colon)} {}
 
-    template <class S = Space>
+    template<class S = Space>
         requires are_same_v<S, Colon>
     explicit constexpr spaced(Space const& space) : spaced{space, space} {}
 
-    template <class S = Space>
+    template<class S = Space>
         requires are_same_v<char, S, Colon>
     explicit constexpr spaced() : spaced{' '} {}
 
@@ -39,10 +39,10 @@ struct spaced {
 
 spaced() -> spaced<char>;
 
-template <class Space, class Char, size_t N>
+template<class Space, class Char, size_t N>
 spaced(Space, Char const (&)[N]) -> spaced<Space, std::basic_string_view<Char>>;
 
-template <class T>
+template<class T>
 auto as_cspan(T const& x) {
     if constexpr (ContiguousRange<T>) {
         return span<range_value_t<T> const>{x};
@@ -51,7 +51,7 @@ auto as_cspan(T const& x) {
     }
 }
 
-template <class S, class C, class T>
+template<class S, class C, class T>
 auto encode(spaced<S, C>& fmt, T& x) {
     using Res = batch<decltype(as_cspan(fmt.space)), T&>;
     if (fmt.separate) {
@@ -62,19 +62,19 @@ auto encode(spaced<S, C>& fmt, T& x) {
     }
 }
 
-template <class S, class C, class T>
+template<class S, class C, class T>
 decltype(auto) encode(spaced<S, C>& fmt, raw<T> const& x) {
     fmt.separate = false;
     return x;
 }
 
-template <class S, class C>
+template<class S, class C>
 auto encode(spaced<S, C>& fmt, colon) {
     fmt.separate = false;
     return batch{colon{}, fmt.colon};
 }
 
-template <class S, class C, bool Deeper>
+template<class S, class C, bool Deeper>
 void manipulate(spaced<S, C>& fmt, change_level<Deeper>) {
     fmt.separate = !Deeper;
 }

@@ -11,14 +11,14 @@
 
 namespace ac {
 
-template <class T0, class T1>
+template<class T0, class T1>
     requires geometry::reverse_order<T, U>
 auto nearest(Policy auto const& policy, T0 const& lhs, T1 const& rhs) {
     auto pair = nearest(policy, rhs, lhs);
     return std::pair{pair.second, pair.first};
 }
 
-template <class T, class... Ts, disable_int_if_policy<T> = 0>
+template<class T, class... Ts, disable_int_if_policy<T> = 0>
 auto nearest(T&& x, Ts&&... xs) {
     return nearest(geometry_policy, x, xs...);
 }

@@ -12,11 +12,11 @@ namespace ac {
 
 class dummy_map {};
 
-template <>
+template<>
 struct const_map_traits<dummy_map>
     : map_traits_base<void, void, void, false, true> {};
 
-template <class K, class V>
+template<class K, class V>
 constexpr void put(dummy_map, K, V) {}
 
 } // namespace ac

@@ -15,7 +15,7 @@ namespace scalar {
 struct bit_not_f : scalar_operation<bit_not_f, 1> {
     using operation_category = bitwise_operation_tag;
 
-    template <class T>
+    template<class T>
     static constexpr auto eval_scalar(T x) {
         return ~x;
     }
@@ -31,7 +31,7 @@ struct bit_not_f : operation<bit_not_f> {
 };
 inline constexpr bit_not_f bit_not;
 
-template <class T>
+template<class T>
     requires EnableOperators<T>
 constexpr auto operator~(T&& x) {
     return bit_not(pass<T>(x));

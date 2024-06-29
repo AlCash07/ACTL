@@ -11,7 +11,7 @@
 namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/input_or_output_iterator
-template <class Iter>
+template<class Iter>
 class basic_iterator_interface {
 public:
     // Post-increment is a free function here so that it's not hidden by the

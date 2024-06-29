@@ -13,12 +13,12 @@
 namespace ac {
 
 /// @class static_array is an array with all the elements known at compile-time.
-template <class T, T... Values>
+template<class T, T... Values>
 class static_array
     : public contiguous_range_interface<static_array<T, Values...>> {
     using base_t = contiguous_range_interface<static_array<T, Values...>>;
 
-    template <class... Ts>
+    template<class... Ts>
     static constexpr bool can_construct_from() {
         if constexpr (sizeof...(Ts) == sizeof...(Values))
             return (... && std::is_same_v<constant<Values>, Ts>);
@@ -41,21 +41,21 @@ public:
 
     // TODO: when std::is_trivial implementation is fixes in clang,
     // this can be simplified to static_array(t_constant<Values>...)
-    template <class T0, class... Ts>
+    template<class T0, class... Ts>
         requires(can_construct_from<T0, Ts...>())
     constexpr static_array(T0, Ts...) noexcept {}
 
     using base_t::operator[];
 
     /// Indexing by a compile-time constant results in a compile-time constant.
-    template <auto I>
+    template<auto I>
     constexpr auto operator[](constant<I>) const noexcept {
         static_assert(0 <= I && I < size());
         return constant<array[I]>{};
     }
 
     // Structured binding support.
-    template <size_t I>
+    template<size_t I>
     friend constexpr auto get(static_array src) noexcept {
         return src[constant<I>{}];
     }
@@ -75,10 +75,10 @@ public:
     }
 };
 
-template <class T, T... Values>
+template<class T, T... Values>
 static_array(constant<Values>...) -> static_array<T, Values...>;
 
-template <class T, T... Values>
+template<class T, T... Values>
 struct range_properties<static_array<T, Values...>>
     : default_range_properties {};
 
@@ -86,12 +86,12 @@ struct range_properties<static_array<T, Values...>>
 
 namespace std {
 
-template <class T, T... Values>
+template<class T, T... Values>
 struct tuple_size<ac::static_array<T, Values...>> {
     static constexpr size_t value = sizeof...(Values);
 };
 
-template <size_t I, class T, T... Values>
+template<size_t I, class T, T... Values>
 struct tuple_element<I, ac::static_array<T, Values...>> {
     using type = decltype(get<I>(ac::static_array<T, Values...>{}));
 };

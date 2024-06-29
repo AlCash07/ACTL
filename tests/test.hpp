@@ -25,7 +25,7 @@ using namespace ac;
 
 namespace ac {
 
-template <class T>
+template<class T>
 struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
     using operation_category = scalar_operation_tag;
 
@@ -42,31 +42,31 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
     }
 };
 
-template <class T>
+template<class T>
 auto apply_policy(scalar::equal_f, abs_rel_error<T> const& policy) {
     return policy;
 }
 
 } // namespace ac
 
-template <class T>
+template<class T>
 void check_sets(std::vector<T> expected, std::vector<T> actual) {
     sort(expected);
     sort(actual);
     CHECK(expected == actual);
 }
 
-template <class T, class U, class E>
+template<class T, class U, class E>
 void check_near(T const& expected, U const& actual, E eps) {
     CHECK((ac::equal | ac::abs_rel_error<E>{eps})(expected, actual));
 }
 
-template <class T, class U>
+template<class T, class U>
 void check_equal(T const& expected, U const& actual) {
     CHECK(ac::equal(expected, actual));
 }
 
-template <class T, class U>
+template<class T, class U>
 void check_not_equal(T const& not_expected, U const& actual) {
     CHECK_FALSE(ac::equal(not_expected, actual));
 }

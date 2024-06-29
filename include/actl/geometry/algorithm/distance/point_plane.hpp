@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <index N, class T0, class T1>
+template<index N, class T0, class T1>
 auto distance(
     Policy auto const& policy, point<T0, N> const& p, plane<T1, N> const& pl
 ) {

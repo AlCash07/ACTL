@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <index N, class T0, class T1>
+template<index N, class T0, class T1>
 auto invert(
     Policy auto const& policy, point<T0, N> const& p, T1 const& radius
 ) {
@@ -20,14 +20,14 @@ auto invert(
     return product(policy, p, t);
 }
 
-template <index N, class T0, class T1>
+template<index N, class T0, class T1>
 auto invert(
     Policy auto const& policy, point<T0, N> const& p, sphere<T1, N> const& s
 ) {
     return s.center + invert(policy, p - s.center, s.radius);
 }
 
-template <index N, class T, class U>
+template<index N, class T, class U>
 auto invert(point<T, N> const& p, U const& x) {
     return invert(geometry_policy, p, x);
 }

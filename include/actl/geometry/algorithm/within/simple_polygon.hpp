@@ -12,7 +12,7 @@
 namespace ac {
 
 /// O(N).
-template <class T, class U>
+template<class T, class U>
 enum within within(
     Policy auto const& policy, point<T> const& p, simple_polygon<U> const& poly
 ) {

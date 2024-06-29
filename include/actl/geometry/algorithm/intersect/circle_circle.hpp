@@ -13,7 +13,7 @@
 
 namespace ac {
 
-template <class T0, class T1, class OutIter>
+template<class T0, class T1, class OutIter>
 OutIter intersect(
     Policy auto const& policy,
     circle<T0> const& lhs,
@@ -48,7 +48,7 @@ OutIter intersect(
     return dst;
 }
 
-template <class T0, class T1, class OutIter>
+template<class T0, class T1, class OutIter>
 OutIter intersect(
     polar_angle_policy<P> pap,
     circle<T0> const& lhs,

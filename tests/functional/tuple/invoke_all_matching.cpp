@@ -10,11 +10,11 @@
 
 namespace {
 
-template <class... Ts>
+template<class... Ts>
 struct op {
     bool invoked = false;
 
-    template <class T>
+    template<class T>
         requires ac::is_one_of_v<T, Ts...>
     constexpr void operator()(T x) noexcept(std::is_same_v<T, int>) {
         invoked = true;

@@ -7,7 +7,7 @@
 #include <actl/map/shift_map.hpp>
 #include "test.hpp"
 
-template <class Map>
+template<class Map>
 void test_lowercase(Map map) {
     CHECK(1 == get(map, 'b'));
     CHECK('c' == invert(map, 2));

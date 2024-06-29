@@ -13,7 +13,7 @@
 
 namespace ac::ranges {
 
-template <std::input_or_output_iterator OutIter, Range SrcRange>
+template<std::input_or_output_iterator OutIter, Range SrcRange>
 constexpr OutIter copy(OutIter dst, SrcRange const& src) noexcept(
     is_nothrow_iterable_v<SrcRange const>&& noexcept(
         ++dst, *dst = *ranges::begin(src)
@@ -26,7 +26,7 @@ constexpr OutIter copy(OutIter dst, SrcRange const& src) noexcept(
     return dst;
 }
 
-template <Range DstRange, Range SrcRange>
+template<Range DstRange, Range SrcRange>
     requires have_matching_static_sizes_v<DstRange, SrcRange>
 constexpr void copy(DstRange&& dst, SrcRange const& src) noexcept(
     AC_ASSERT_IS_NOEXCEPT() && noexcept(copy(ranges::begin(dst), src))

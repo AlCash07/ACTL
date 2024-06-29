@@ -13,10 +13,10 @@ namespace ac {
 
 namespace detail {
 
-template <class T, class Seq = tuple_indices_t<T>>
+template<class T, class Seq = tuple_indices_t<T>>
 struct matches_tuple;
 
-template <class T, size_t... Is>
+template<class T, size_t... Is>
 struct matches_tuple<T, std::index_sequence<Is...>> {
     static constexpr bool value =
         (... && std::is_same_v<range_value_t<T>, std::tuple_element_t<Is, T>>);
@@ -30,7 +30,7 @@ struct matches_tuple<T, std::index_sequence<Is...>> {
 /// An example is `std::array`.
 /// This concept is useful in generic code where we need to decide whether
 /// there's a benefit in treating a type as a Tuple instead of a Range.
-template <class T>
+template<class T>
 concept StrictRange =
     Range<T> &&
     (!Tuple<T> || detail::matches_tuple<std::remove_reference_t<T>>::value);

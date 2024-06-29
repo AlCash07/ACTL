@@ -11,7 +11,7 @@
 
 namespace ac::detail {
 
-template <class Map, class Stack>
+template<class Map, class Stack>
 class component_stack {
     using T = map_key_t<Map>;
 
@@ -39,7 +39,7 @@ public:
         ++n_;
     }
 
-    template <class P>
+    template<class P>
     void pop_while(P pred) {
         while (!stack_.empty()) {
             T& x = stack_.top();
@@ -52,22 +52,22 @@ public:
     }
 };
 
-template <class S>
+template<class S>
 class component_stack<dummy_map, S> {
 public:
     explicit component_stack(dummy_map) {}
 
-    template <class T>
+    template<class T>
     void push(T) {}
 
-    template <class T>
+    template<class T>
     void pop(T) {}
 
-    template <class P>
+    template<class P>
     void pop_while(P) {}
 };
 
-template <class Map>
+template<class Map>
 component_stack(Map&&) -> component_stack<Map, std::stack<map_key_t<Map>>>;
 
 component_stack(dummy_map) -> component_stack<dummy_map, void>;

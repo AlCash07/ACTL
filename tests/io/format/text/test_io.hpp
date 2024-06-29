@@ -9,14 +9,14 @@
 #include <actl/io/device/string.hpp>
 #include "test.hpp"
 
-template <class... Ts>
+template<class... Ts>
 void test_write(std::string const& expected, Ts&&... args) {
     std::string s;
     write(io::string<io::app>{s}, std::forward<Ts>(args)...);
     CHECK(expected == s);
 }
 
-template <bool Valid = true, class T, class... Ts>
+template<bool Valid = true, class T, class... Ts>
 void test_read(
     [[maybe_unused]] T const& expected, std::string const& input, Ts&&... args
 ) {

@@ -26,7 +26,7 @@ TEST_CASE("none") {
     CHECK(0l == graph.vertex_count());
 }
 
-template <class VC>
+template<class VC>
 void test_vertex_list() {
     vertex_list<VC> graph;
     auto vs = test_vertices(graph);

@@ -11,12 +11,12 @@
 
 namespace ac {
 
-template <class T>
+template<class T>
 concept TriviallyMoveConstructible =
     std::move_constructible<T> && TriviallyConstructibleFrom<T, T>;
 // Notion of trivial conversion doesn't exist, so we don't check it.
 
-template <class T>
+template<class T>
 concept NothrowMoveConstructible =
     std::move_constructible<T> && NothrowConstructibleFrom<T, T> &&
     NothrowConvertibleTo<T, T>;

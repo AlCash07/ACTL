@@ -15,7 +15,7 @@
 
 namespace ac {
 
-template <class C, class... Ts>
+template<class C, class... Ts>
 std::pair<range_iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
     if constexpr (AssociativeRange<C>) {
         auto res = cont.emplace(std::forward<Ts>(args)...);
@@ -31,7 +31,7 @@ std::pair<range_iterator_t<C>, bool> emplace(C& cont, Ts&&... args) {
     }
 }
 
-template <class C, class T>
+template<class C, class T>
 void erase(C& cont, T const& value) {
     if constexpr (AssociativeRange<C>)
         cont.erase(value);
@@ -39,7 +39,7 @@ void erase(C& cont, T const& value) {
         cont.erase(std::remove(cont.begin(), cont.end(), value), cont.end());
 }
 
-template <class C, class T>
+template<class C, class T>
 range_iterator_t<C> find(C& cont, T const& value) {
     if constexpr (AssociativeRange<C> && SortedRange<C>) {
         // TODO: make this case work for hash containers.

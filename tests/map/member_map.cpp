@@ -11,7 +11,7 @@ struct A {
     int a;
 };
 
-template <class Map>
+template<class Map>
 void test_member_map(Map&& map) {
     A x{0};
     get(map, x) = 1;

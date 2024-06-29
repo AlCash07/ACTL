@@ -16,7 +16,7 @@ namespace ac {
 
 namespace detail {
 
-template <class Point>
+template<class Point>
 auto nearest(Policy auto const& policy, span<Point> points, span<Point> tmp) {
     using T = decltype(distance(policy, points[0], points[0]));
     using Pair = std::pair<T, std::pair<Point, Point>>;

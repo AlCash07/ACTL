@@ -17,7 +17,7 @@ namespace ac {
 
 namespace detail {
 
-template <class M1, class M2, class V, bool I1, bool I2>
+template<class M1, class M2, class V, bool I1, bool I2>
 struct cm_range {
     struct get2 {
         // Pointer is used instead of a reference to support copy assignment
@@ -32,7 +32,7 @@ struct cm_range {
     using type = iterator_range<transform_iterator<map_iterator_t<M1>, get2>>;
 };
 
-template <class M1, class M2, class V>
+template<class M1, class M2, class V>
 struct cm_range<M1, M2, V, false, true> {
     struct invert1 {
         // Pointer is used instead of a reference to support copy assignment
@@ -48,18 +48,18 @@ struct cm_range<M1, M2, V, false, true> {
         iterator_range<transform_iterator<map_iterator_t<M2>, invert1>>;
 };
 
-template <class M1, class M2, class V>
+template<class M1, class M2, class V>
 struct cm_range<M1, M2, V, false, false> {
     using type = void;
 };
 
 } // namespace detail
 
-template <class Map1, class Map2, class... Maps>
+template<class Map1, class Map2, class... Maps>
 class composite_map
     : public composite_map<composite_map<Map1, Map2>, Maps...> {};
 
-template <class M1, class M2>
+template<class M1, class M2>
 class composite_map<M1, M2> {
     using K = map_key_t<M1>;
     using R = map_reference_t<M2>;
@@ -95,14 +95,14 @@ public:
         range_t>;
 };
 
-template <class... Ms>
+template<class... Ms>
 struct map_traits<composite_map<Ms...>> : composite_map<Ms...>::traits {};
 
-template <class... Ms>
+template<class... Ms>
 struct map_traits<composite_map<Ms...> const>
     : map_traits<composite_map<Ms const...>> {};
 
-template <class CM>
+template<class CM>
     requires requires { typename CM::is_composite_map; }
 struct map_ops<CM> {
     using K = map_key_t<CM>;
@@ -135,7 +135,7 @@ struct map_ops<CM> {
     }
 };
 
-template <class... Maps>
+template<class... Maps>
 composite_map(Maps&&...) -> composite_map<Maps...>;
 
 } // namespace ac

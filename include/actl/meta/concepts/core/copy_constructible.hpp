@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <class T>
+template<class T>
 concept TriviallyCopyConstructible =
     std::copy_constructible<T> &&
     // TODO: comment why different flawors of copy are necessary.
@@ -20,7 +20,7 @@ concept TriviallyCopyConstructible =
     TriviallyConstructibleFrom<T, T const>;
 // Notion of trivial conversion doesn't exist, so we don't check it.
 
-template <class T>
+template<class T>
 concept NothrowCopyConstructible =
     std::copy_constructible<T> &&
     // TODO: comment why both constructible and convertible are checked.
@@ -29,7 +29,7 @@ concept NothrowCopyConstructible =
     NothrowConvertibleTo<T const&, T> && NothrowConstructibleFrom<T, T const> &&
     NothrowConvertibleTo<T const, T>;
 
-template <class T>
+template<class T>
 // A type is broken if some copy constructor versions may throw and some not.
 concept MayThrowCopyConstructible =
     std::copy_constructible<T> && !std::is_nothrow_constructible_v<T, T&> &&

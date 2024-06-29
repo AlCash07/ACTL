@@ -8,7 +8,7 @@
 #include <vector>
 #include "test.hpp"
 
-template <bool Result, class T, class U>
+template<bool Result, class T, class U>
 void test_equal_sequences(T const& lhs, U const& rhs) {
     CHECK(Result == ac::equal_sequences(lhs, rhs));
     CHECK(Result == ac::equal_sequences(rhs, lhs));

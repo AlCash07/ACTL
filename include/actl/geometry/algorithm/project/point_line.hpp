@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <class P, index N, class T0, class T1, class K>
+template<class P, index N, class T0, class T1, class K>
 auto project(
     line_scalar_policy<P> lsp, point<T0, N> const& p, line<T1, N, K> const& l
 ) {
@@ -21,7 +21,7 @@ auto project(
     );
 }
 
-template <index N, class T0, class T1, class K>
+template<index N, class T0, class T1, class K>
 auto project(
     Policy auto const& policy, point<T0, N> const& p, line<T1, N, K> const& l
 ) {

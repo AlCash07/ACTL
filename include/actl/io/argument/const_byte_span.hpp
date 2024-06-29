@@ -13,7 +13,7 @@
 
 namespace ac::io {
 
-template <Byte B, size_t N>
+template<Byte B, size_t N>
 bool read_final(Device auto& id, Format auto&, span<B const, N>& s) {
     span sc{reinterpret_cast<char const*>(s.data()), s.size()};
     return parser_executor{const_data_parser{sc}}(id);

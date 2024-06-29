@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <index N, class T, class U>
+template<index N, class T, class U>
 auto reflect(point<T, N> const& src, U const& dst) {
     return reflect(geometry_policy, src, dst);
 }

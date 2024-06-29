@@ -14,7 +14,7 @@ namespace ac {
 
 /// Returns pair of iterators to polygon vertices tangent w.r.t. the given
 /// point. Point must be outside the polygon.
-template <class T, class U, class OutIter>
+template<class T, class U, class OutIter>
 OutIter tangents(
     Policy auto const& policy,
     point<T> const& p,

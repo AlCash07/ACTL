@@ -14,16 +14,16 @@
 
 namespace ac {
 
-template <class Result>
+template<class Result>
 struct can_convert_expression_implicitly : std::false_type {};
 
-template <class Derived, bool HasConversion = false>
+template<class Derived, bool HasConversion = false>
 struct expression_conversion {};
 
-template <class Derived, bool IsOperation = false>
+template<class Derived, bool IsOperation = false>
 struct operation_expression {};
 
-template <class Op, class... Ts>
+template<class Op, class... Ts>
 struct expression
     : expression_conversion<
           expression<Op, Ts...>,
@@ -38,7 +38,7 @@ struct expression
 
     std::tuple<Op, Ts...> args;
 
-    template <class... Us>
+    template<class... Us>
     constexpr expression(Us&&... xs) : args{std::forward<Us>(xs)...} {}
 
     constexpr auto& operation() const& {
@@ -50,39 +50,39 @@ struct expression
     }
 };
 
-template <class... Ts>
+template<class... Ts>
 expression(Ts&&...) -> expression<value_if_small<Ts>...>;
 
-template <class T>
+template<class T>
 struct is_expression : std::false_type {};
 
-template <class... Ts>
+template<class... Ts>
 struct is_expression<expression<Ts...>> : std::true_type {};
 
-template <class T>
+template<class T>
 inline constexpr bool is_expression_v =
     is_expression<std::remove_cvref_t<T>>::value;
 
-template <class Expr>
+template<class Expr>
 using argument_indices =
     std::make_index_sequence<std::remove_cvref_t<Expr>::argument_count>;
 
-template <class... Ts>
+template<class... Ts>
 struct expression_result_type<expression<Ts...>> {
     using type = resolved_result_type_t<Ts...>;
 };
 
-template <class Expr>
+template<class Expr>
 struct expression_conversion<Expr, true> {
     constexpr operator typename expression_result_type<Expr>::type() const {
         return eval(static_cast<Expr const&>(*this));
     }
 };
 
-template <class Expr, class S = argument_indices<Expr>>
+template<class Expr, class S = argument_indices<Expr>>
 struct expression_helper;
 
-template <class Op, class... Ts, size_t... Is>
+template<class Op, class... Ts, size_t... Is>
 struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
     using Expr = expression<Op, Ts...>;
 
@@ -96,13 +96,13 @@ struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
         };
     }
 
-    template <class T>
+    template<class T>
     static constexpr void assign_impl(T& dst, Expr const& e) {
         e.operation().evaluate_to(dst, std::get<Is + 1>(e.args)...);
     }
 };
 
-template <class T, class... Ts>
+template<class T, class... Ts>
 constexpr void assign(out<T>& dst, expression<Ts...> const& e) {
     using helper = expression_helper<expression<Ts...>>;
     if constexpr (helper::is_resolved)

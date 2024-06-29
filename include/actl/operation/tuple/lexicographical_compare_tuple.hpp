@@ -18,7 +18,7 @@ namespace ac {
 struct lexicographical_compare_tuple_f {
     static constexpr size_t inner_count = 0;
 
-    template <size_t I = 0, class Cmp3WayOps, class T, class U>
+    template<size_t I = 0, class Cmp3WayOps, class T, class U>
     static int evaluate(Cmp3WayOps const& ops, T const& lhs, U const& rhs) {
         using std::get;
         int v = get<I>(ops)(get<I>(lhs), get<I>(rhs));
@@ -31,14 +31,14 @@ struct lexicographical_compare_tuple_f {
 inline constexpr operation_composer<lexicographical_compare_tuple_f>
     lexicographical_compare_tuple;
 
-template <Tuple T, Tuple U>
+template<Tuple T, Tuple U>
 struct overload<cmp3way_f, T, U> {
     static constexpr auto formula = tuple_op_resolver<T, U>::resolve_tuple(
         lexicographical_compare_tuple, cmp3way
     );
 };
 
-template <Tuple T, Tuple U>
+template<Tuple T, Tuple U>
 struct overload<less_f, T, U> {
     static constexpr auto formula = cmp3way < 0_c;
 };

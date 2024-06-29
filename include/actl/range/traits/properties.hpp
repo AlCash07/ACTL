@@ -17,24 +17,24 @@ struct default_range_properties {
     static constexpr bool is_unique = false;
 };
 
-template <class T>
+template<class T>
 struct range_properties : default_range_properties {};
 
-template <class T>
+template<class T>
 struct range_properties<T const> : range_properties<T> {};
 
-template <class T, size_t N>
+template<class T, size_t N>
 struct range_properties<T[N]> : default_range_properties {
     static constexpr bool is_container = true;
 };
 
-template <class T>
+template<class T>
 concept Container = range_properties<T>::is_container;
 
-template <class T>
+template<class T>
 concept SortedRange = range_properties<T>::is_sorted;
 
-template <class T>
+template<class T>
 concept UniqueRange = range_properties<T>::is_unique;
 
 } // namespace ac

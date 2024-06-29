@@ -19,7 +19,7 @@ namespace ac::io {
 
 /* Device */
 
-template <mode_t Mode, class Char>
+template<mode_t Mode, class Char>
 struct device : device_base {
     static_assert(is_in<Mode> || is_out<Mode>, "invalid mode");
 
@@ -32,22 +32,22 @@ struct device : device_base {
    references into
    lvalue references, because I/O doesn't operate with rvalues. */
 
-template <class... Ts>
+template<class... Ts>
 bool write(Device auto&& od, Format auto&& fmt, Ts const&... args) {
     return (... && detail::write_impl(od, fmt, fmt, args));
 }
 
-template <class... Ts>
+template<class... Ts>
 bool write(Device auto&& od, Ts const&... args) {
     return write(od, deduce_format(od), args...);
 }
 
-template <class... Ts>
+template<class... Ts>
 bool read(Device auto&& id, Format auto&& fmt, Ts&&... args) {
     return (... && detail::read_impl(id, fmt, fmt, args));
 }
 
-template <class... Ts>
+template<class... Ts>
 bool read(Device auto&& id, Ts&&... args) {
     return read(id, deduce_format(id), args...);
 }

@@ -13,7 +13,7 @@
 
 namespace ac::io {
 
-template <class Int>
+template<class Int>
 class integral_parser {
     enum class states { empty, sign, value };
 

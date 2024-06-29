@@ -16,7 +16,7 @@ namespace ac {
 
 namespace detail {
 
-template <class C>
+template<class C>
 struct get_id_ref {
     // Pointer is used instead of a reference to support copy assignment
     // required for std::copyable.
@@ -29,7 +29,7 @@ struct get_id_ref {
 
 } // namespace detail
 
-template <Container C>
+template<Container C>
     requires(!PairAssociativeRange<C>)
 struct map_traits<C>
     : map_traits_base<
@@ -44,7 +44,7 @@ struct map_traits<C>
               container_id_iterator<C>,
               detail::get_id_ref<C>>>> {};
 
-template <Container C>
+template<Container C>
     requires(!PairAssociativeRange<C>)
 struct map_ops<C> : map_put<C> {
     static map_reference_t<C> get(C& map, map_key_t<C> key) {

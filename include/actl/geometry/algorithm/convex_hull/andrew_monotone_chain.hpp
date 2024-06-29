@@ -13,7 +13,7 @@
 
 namespace ac {
 
-template <class P>
+template<class P>
 struct andrew_monotone_chain_policy {
     andrew_monotone_chain_policy(P const& x) : policy{x} {}
 
@@ -24,7 +24,7 @@ struct andrew_monotone_chain_policy {
 /// https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
 /// Implementation reference:
 /// https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
-template <class P, class T>
+template<class P, class T>
     requires(geometry_traits<T>::dimension == 2)
 span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points) {
     if (points.size() < 2)
@@ -56,7 +56,7 @@ span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points) {
     return points.first(last + 1);
 }
 
-template <class T>
+template<class T>
 span<T> convex_hull(span<T> points) {
     return convex_hull(andrew_monotone_chain_policy{default_policy}, points);
 }

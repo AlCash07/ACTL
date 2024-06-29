@@ -29,6 +29,7 @@ IncludeCategories:
 IndentWidth:          4
 ObjCBlockIndentWidth: 4
 TabWidth:             4
+SpaceAfterTemplateKeyword: false
 SpacesBeforeTrailingComments: 1
 StatementMacros: [
   AC_DEDUCE_NOEXCEPT_AND_RETURN,

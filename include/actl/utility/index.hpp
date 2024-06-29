@@ -14,7 +14,7 @@ namespace ac {
 // http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-subscripts
 using index = std::ptrdiff_t;
 
-template <index N>
+template<index N>
 using index_constant = constant<N>;
 
 } // namespace ac

@@ -16,7 +16,7 @@ struct skipws {
     struct format_tag;
 };
 
-template <class T>
+template<class T>
     requires(std::is_arithmetic_v<T> || is_string_v<T>)
 auto encode(skipws&, T& x) {
     return batch{ws, x};

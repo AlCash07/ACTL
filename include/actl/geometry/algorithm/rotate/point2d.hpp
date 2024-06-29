@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <class T0, class T1>
+template<class T0, class T1>
 auto rotate(Policy auto const& policy, point<T0> const& p, T1 const& angle) {
     auto sin = sin(angle);
     auto cos = cos(angle);
@@ -20,7 +20,7 @@ auto rotate(Policy auto const& policy, point<T0> const& p, T1 const& angle) {
     };
 }
 
-template <class T0, class T1, class T2>
+template<class T0, class T1, class T2>
 auto rotate(
     Policy auto const& policy,
     point<T0> const& p,

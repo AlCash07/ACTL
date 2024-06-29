@@ -14,7 +14,7 @@
 
 namespace ac {
 
-template <class... Components>
+template<class... Components>
 class breadth_first_search : std::tuple<Components...> {
     using base_t = std::tuple<Components...>;
 
@@ -25,7 +25,7 @@ class breadth_first_search : std::tuple<Components...> {
 public:
     using base_t::base_t;
 
-    template <
+    template<
         class Graph,
         class Source,
         class VertexQueue = std::queue<vertex_t<Graph>>,
@@ -82,7 +82,7 @@ public:
     }
 };
 
-template <class... Components>
+template<class... Components>
 breadth_first_search(Components&&...) -> breadth_first_search<Components...>;
 
 } // namespace ac

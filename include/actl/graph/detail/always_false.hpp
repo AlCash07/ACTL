@@ -9,7 +9,7 @@
 namespace ac {
 
 struct always_false {
-    template <class T>
+    template<class T>
     constexpr bool operator()(T) const {
         return false;
     }

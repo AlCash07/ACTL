@@ -10,12 +10,12 @@
 
 namespace ac::io {
 
-template <class Device, bool Read = is_in<Device::mode>>
+template<class Device, bool Read = is_in<Device::mode>>
 struct line_buffered_reader : Device {
     using Device::Device;
 };
 
-template <mode_t Mode, class Char>
+template<mode_t Mode, class Char>
 struct line_buffered_reader<file<Mode, Char>, true>
     : line_buffered_reader<file<Mode, Char>, false> {
     using base_t = line_buffered_reader<file<Mode, Char>, false>;
@@ -30,12 +30,12 @@ struct line_buffered_reader<file<Mode, Char>, true>
     }
 };
 
-template <class Device, bool = is_out<Device::mode>>
+template<class Device, bool = is_out<Device::mode>>
 struct line_buffered : line_buffered_reader<Device> {
     using line_buffered_reader<Device>::line_buffered_reader;
 };
 
-template <class Device>
+template<class Device>
 struct line_buffered<Device, true> : line_buffered<Device, false> {
     using line_buffered<Device, false>::line_buffered;
 

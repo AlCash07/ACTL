@@ -45,7 +45,7 @@ bool write_final(Device auto& od, Format auto& fmt, float_string const& x) {
 
 } // namespace detail
 
-template <std::floating_point Float>
+template<std::floating_point Float>
 auto encode(TextFormat auto& fmt, Float x) {
     detail::float_string res;
     span<char> s;

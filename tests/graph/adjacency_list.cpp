@@ -18,14 +18,14 @@ TEST_CASE("adjacency_list none") {
     CHECK(1l == graph.edge_count());
 }
 
-template <class Dir, class OEC, class EC, class VC>
+template<class Dir, class OEC, class EC, class VC>
 void test_adjacency_list() {
     adjacency_list<Dir, OEC, EC, VC> graph;
     auto vs = test_vertices(graph);
     test_edges<true>(graph, vs[0], vs[1], vs[2]);
 }
 
-template <class Dir>
+template<class Dir>
 void test_adjacency_list1() {
     test_adjacency_list<Dir, hash_set<bundle>, none, std::vector<bundle>>();
     test_adjacency_list<

@@ -12,32 +12,32 @@
 
 namespace ac {
 
-template <class Fn>
+template<class Fn>
 struct callable_traits {};
 
 // Type qualifiers don't matter for regular functions.
-template <class Fn>
+template<class Fn>
     requires Function<std::remove_cvref_t<Fn>>
 struct callable_traits<Fn> : function_traits<std::remove_cvref_t<Fn>> {};
 
-template <class Fn>
+template<class Fn>
     requires FunctionObject<std::remove_reference_t<Fn>>
 struct callable_traits<Fn>
     : function_object_traits<std::remove_reference_t<Fn>> {};
 
 /* convenience aliases */
 
-template <class Fn>
+template<class Fn>
 using return_t = typename callable_traits<Fn>::return_type;
 
-template <class Fn>
+template<class Fn>
 inline constexpr size_t arity_v = callable_traits<Fn>::arity;
 
-template <size_t Index, class Fn>
+template<size_t Index, class Fn>
 using parameter_at_t =
     typename callable_traits<Fn>::template parameter_at<Index>;
 
-template <class Fn>
+template<class Fn>
 inline constexpr bool is_noexcept_v = callable_traits<Fn>::is_noexcept;
 
 } // namespace ac

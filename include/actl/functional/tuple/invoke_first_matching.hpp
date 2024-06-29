@@ -13,7 +13,7 @@ namespace ac {
 
 namespace detail {
 
-template <size_t I, Tuple T, class... Args>
+template<size_t I, Tuple T, class... Args>
 constexpr size_t find_first_matching() noexcept {
     static_assert(
         I < std::tuple_size_v<T>, "no element with requested signature"
@@ -28,7 +28,7 @@ constexpr size_t find_first_matching() noexcept {
 
 /// Invokes the first tuple element that is invocable with @p args
 /// (it's required to exist) and returns its result.
-template <Tuple T, class... Args>
+template<Tuple T, class... Args>
 constexpr decltype(auto) invoke_first_matching(
     T&& tuple_to_invoke, Args&&... args
 )

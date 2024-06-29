@@ -16,7 +16,7 @@
 namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/input_or_output_iterator
-template <class Iterator, class Category>
+template<class Iterator, class Category>
 void test_iterator(Iterator iter, Category) {
     static_assert(!std::is_const_v<std::iter_value_t<Iterator>>);
     static_assert(std::is_same_v<Iterator&, decltype(++iter)>);
@@ -24,7 +24,7 @@ void test_iterator(Iterator iter, Category) {
 }
 
 // https://en.cppreference.com/w/cpp/iterator/input_iterator
-template <class Iterator>
+template<class Iterator>
 void test_iterator(Iterator iter, std::input_iterator_tag) {
     test_iterator(iter, none{});
     static_assert(std::is_base_of_v<
@@ -36,7 +36,7 @@ void test_iterator(Iterator iter, std::input_iterator_tag) {
 }
 
 // https://en.cppreference.com/w/cpp/iterator/forward_iterator
-template <class Iterator>
+template<class Iterator>
 void test_iterator(Iterator iter, std::forward_iterator_tag) {
     test_iterator(iter, std::input_iterator_tag{});
     static_assert(std::is_base_of_v<
@@ -55,7 +55,7 @@ void test_iterator(Iterator iter, std::forward_iterator_tag) {
 }
 
 // https://en.cppreference.com/w/cpp/iterator/bidirectional_iterator
-template <class Iterator>
+template<class Iterator>
 void test_iterator(Iterator iter, std::bidirectional_iterator_tag) {
     test_iterator(iter, std::forward_iterator_tag{});
     static_assert(std::is_base_of_v<
@@ -76,7 +76,7 @@ void test_iterator(Iterator iter, std::bidirectional_iterator_tag) {
 }
 
 // https://en.cppreference.com/w/cpp/iterator/random_access_iterator
-template <class Iterator>
+template<class Iterator>
 void test_random_access_iterator(Iterator i, Iterator j) {
     REQUIRE(i < j);
     test_iterator(i, std::bidirectional_iterator_tag{});

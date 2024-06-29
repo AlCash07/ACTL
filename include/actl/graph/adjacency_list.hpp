@@ -13,7 +13,7 @@
 
 namespace ac {
 
-template <
+template<
     class Directed,
     class OutEdgeContainer = std::vector<none>,
     class EdgeContainer = none,
@@ -24,7 +24,7 @@ namespace detail {
 
 /* Adjacency list with edge container */
 
-template <
+template<
     class Dir,
     class OEC,
     class EC,
@@ -57,7 +57,7 @@ public:
     }
 };
 
-template <class Dir, class OEC, class EC, class VC, class S>
+template<class Dir, class OEC, class EC, class VC, class S>
 class adj_list_edges<Dir, OEC, EC, VC, S, none>
     : public adj_list_vertices<Dir, OEC, EC, VC> {
 protected:
@@ -95,7 +95,7 @@ protected:
         return get_edge(u, id_at(outs(u), oe));
     }
 
-    template <class... Ts>
+    template<class... Ts>
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         typename traits::edges::edge_id e;
         auto& u_edges = outs(u);
@@ -134,7 +134,7 @@ public:
 
 /* Adjacency list without edge container */
 
-template <class VC, class E, class Ref>
+template<class VC, class E, class Ref>
 class edge_map {
     VC& vertices_;
 
@@ -154,7 +154,7 @@ public:
     }
 };
 
-template <class Dir, class OEC, class EC, class VC, class T>
+template<class Dir, class OEC, class EC, class VC, class T>
 class adj_list_edges<Dir, OEC, EC, VC, none, T>
     : public adj_list_edges<Dir, OEC, EC, VC, none, none> {
     using base_t = adj_list_edges<Dir, OEC, EC, VC, none, none>;
@@ -184,7 +184,7 @@ public:
     }
 };
 
-template <class Dir, class OEC, class EC, class VC>
+template<class Dir, class OEC, class EC, class VC>
 class adj_list_edges<Dir, OEC, EC, VC, none, none>
     : public adj_list_vertices<Dir, OEC, EC, VC> {
 protected:
@@ -212,7 +212,7 @@ protected:
         return edge{vertex{ied.first}, u, ied.second};
     }
 
-    template <class... Ts>
+    template<class... Ts>
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         auto& u_edges = outs(u);
         auto [out_edge, ok] =
@@ -243,19 +243,19 @@ public:
 
 } // namespace detail
 
-template <class VC, class E, class R>
+template<class VC, class E, class R>
 struct const_map_traits<detail::edge_map<VC, E, R>>
     : detail::edge_map<VC, E, R>::traits {};
 
 /* Common functionality */
 
-template <class Dir, class OEC, class EC, class VC>
+template<class Dir, class OEC, class EC, class VC>
 class adjacency_list : public detail::adj_list_edges<Dir, OEC, EC, VC> {
     using base_t = detail::adj_list_edges<Dir, OEC, EC, VC>;
     using base_t::edge_list_;
     using typename base_t::traits;
 
-    template <class AL, class S>
+    template<class AL, class S>
     friend struct detail::edge_iter;
 
 public:
@@ -298,7 +298,7 @@ public:
         };
     }
 
-    template <bool D = std::is_same_v<Dir, directed>>
+    template<bool D = std::is_same_v<Dir, directed>>
         requires(!D)
     iterator_range<in_edge_iterator> in_edges(vertex u) const {
         if constexpr (base_t::is_undirected) {
@@ -321,7 +321,7 @@ public:
         }
     }
 
-    template <class... Ts>
+    template<class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (RandomAccessRange<VC>) {
             vertex n = std::max(u, v);
@@ -331,12 +331,12 @@ public:
         return this->try_add_edge_impl(u, v, std::forward<Ts>(args)...);
     }
 
-    template <class... Ts>
+    template<class... Ts>
     edge add_edge(vertex u, vertex v, Ts&&... args) {
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
-    template <
+    template<
         class... Ts,
         bool Unique = UniqueRange<VC>,
         class T = range_value_t<VC>>

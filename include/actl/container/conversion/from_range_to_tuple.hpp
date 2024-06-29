@@ -14,10 +14,10 @@ namespace ac {
 
 namespace detail {
 
-template <class S, class To, class From>
+template<class S, class To, class From>
 struct range_to_tuple_impl;
 
-template <size_t... Is, class To, class From>
+template<size_t... Is, class To, class From>
 struct range_to_tuple_impl<std::index_sequence<Is...>, To, From> {
     using from_ref = range_reference_t<From>;
 
@@ -33,10 +33,10 @@ struct range_to_tuple_impl<std::index_sequence<Is...>, To, From> {
     }
 };
 
-template <class To, class From>
+template<class To, class From>
 using range_to_tuple = range_to_tuple_impl<tuple_indices_t<To>, To, From>;
 
-template <class To, class From>
+template<class To, class From>
 static constexpr bool range_to_tuple_test() {
     if constexpr (Tuple<To> && StrictRange<From>)
         return range_to_tuple<To, From>::value;
@@ -45,7 +45,7 @@ static constexpr bool range_to_tuple_test() {
 
 } // namespace detail
 
-template <class To, class From>
+template<class To, class From>
     requires(
         !can_convert_as_ranges<To, From>() &&
         detail::range_to_tuple_test<To, From>()

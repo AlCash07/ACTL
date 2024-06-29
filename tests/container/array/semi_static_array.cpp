@@ -14,7 +14,7 @@ using namespace ac::constant_literals;
 
 namespace {
 
-template <class SemiStaticArray>
+template<class SemiStaticArray>
 void test_semi_static_array_type_traits() {
     static_assert(ac::TriviallySemiregular<SemiStaticArray>);
     static_assert(ac::NothrowRegular<SemiStaticArray>);
@@ -52,7 +52,7 @@ void test_static_array_constructors() {
     );
 }
 
-template <class Array, class D>
+template<class Array, class D>
 constexpr Array fill_dynamic_values(Array src, D dynamic) noexcept {
     size_t d = 0;
     for (size_t i = 0; i < src.size(); ++i)
@@ -61,7 +61,7 @@ constexpr Array fill_dynamic_values(Array src, D dynamic) noexcept {
     return src;
 }
 
-template <class T, T... StaticValues, T... DynamicValues, size_t... Is>
+template<class T, T... StaticValues, T... DynamicValues, size_t... Is>
 void test_semi_static_array_interface_impl(std::integer_sequence<T, DynamicValues...>, std::index_sequence<Is...>) {
     using ac::constant;
     using Array = ac::semi_static_array<T, StaticValues...>;
@@ -95,7 +95,7 @@ void test_semi_static_array_interface_impl(std::integer_sequence<T, DynamicValue
     );
 }
 
-template <class T, T... StaticValues, class DynamicValues>
+template<class T, T... StaticValues, class DynamicValues>
 void test_semi_static_array_interface(DynamicValues) {
     test_semi_static_array_interface_impl<T, StaticValues...>(
         DynamicValues{}, std::make_index_sequence<sizeof...(StaticValues)>{}

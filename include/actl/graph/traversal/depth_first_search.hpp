@@ -15,7 +15,7 @@
 
 namespace ac {
 
-template <class G, class V = vertex_t<G>, class OEI = out_edge_iterator_t<G>>
+template<class G, class V = vertex_t<G>, class OEI = out_edge_iterator_t<G>>
 class dfs_context {
     V u_;
     out_edge_t<G> oe_;
@@ -32,7 +32,7 @@ public:
     }
 };
 
-template <class... Components>
+template<class... Components>
 class depth_first_search : std::tuple<Components...> {
     using base_t = std::tuple<Components...>;
 
@@ -42,7 +42,7 @@ class depth_first_search : std::tuple<Components...> {
 
     // Recursive implementation to demonstrate dfs logic clearer.
     // Returns true immediately if terminator vertex was found.
-    template <class Graph, class VertexPredicate>
+    template<class Graph, class VertexPredicate>
     bool recurse(
         Graph const& graph, vertex_t<Graph> u, VertexPredicate is_terminator
     ) {
@@ -69,7 +69,7 @@ public:
     using base_t::base_t;
 
     // Depth first search without initialization.
-    template <
+    template<
         class Graph,
         class Stack = std::stack<dfs_context<Graph>>,
         class VertexPredicate = always_false,
@@ -118,7 +118,7 @@ public:
         invoke_all_matching(base(), on_search_finish{}, u);
     }
 
-    template <
+    template<
         class Graph,
         class Stack = std::stack<dfs_context<Graph>>,
         class VertexPredicate = always_false>
@@ -133,7 +133,7 @@ public:
         visit(graph, s, stack, is_terminator);
     }
 
-    template <
+    template<
         class Graph,
         class Stack = std::stack<dfs_context<Graph>>,
         class VertexPredicate = always_false>
@@ -152,7 +152,7 @@ public:
     }
 };
 
-template <class... Components>
+template<class... Components>
 depth_first_search(Components&&...) -> depth_first_search<Components...>;
 
 } // namespace ac

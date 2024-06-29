@@ -14,7 +14,7 @@
 
 namespace ac {
 
-template <class T, class Graph>
+template<class T, class Graph>
 auto make_default_vertex_map(Graph const& graph) {
     if constexpr (RandomAccessRange<typename Graph::vertex_container>) {
         return std::vector<T>(static_cast<size_t>(graph.vertex_count()));
@@ -23,7 +23,7 @@ auto make_default_vertex_map(Graph const& graph) {
     }
 }
 
-template <class T, class Graph>
+template<class T, class Graph>
 auto make_default_edge_map(Graph const& graph) {
     if constexpr (RandomAccessRange<typename Graph::edge_container>) {
         return std::vector<T>(static_cast<size_t>(graph.edge_count()));

@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template <class Char>
+template<class Char>
 struct repeat {
     explicit repeat() : c{}, count{0} {}
     explicit repeat(Char c, size_t count) : c{c}, count{count} {}
@@ -20,14 +20,14 @@ struct repeat {
     size_t count;
 };
 
-template <Device Dev, class Char>
+template<Device Dev, class Char>
 bool write_final(Dev& od, Format auto&, repeat<Char> x) {
     for (; 0 < x.count; --x.count)
         od.write(static_cast<char_t<Dev>>(x.c));
     return true;
 }
 
-template <BufferedOutputDevice Dev, class Char>
+template<BufferedOutputDevice Dev, class Char>
 bool write_final(Dev& od, Format auto&, repeat<Char> x) {
     auto s = od.output_buffer();
     if (x.count <= s.size()) {

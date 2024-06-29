@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <class T, class U, class OutIter>
+template<class T, class U, class OutIter>
     requires geometry::reverse_order<T, U>
 OutIter intersect(
     Policy auto const& policy, T const& lhs, U const& rhs, OutIter dst
@@ -20,7 +20,7 @@ OutIter intersect(
     return intersect(policy, rhs, lhs, dst);
 }
 
-template <index N, class T, class K, class U, class OutIter>
+template<index N, class T, class K, class U, class OutIter>
 OutIter intersect(
     Policy auto const& policy, line<T, N, K> const& l, U const& x, OutIter dst
 ) {
@@ -32,7 +32,7 @@ OutIter intersect(
     );
 }
 
-template <class T, class U, class OutIter>
+template<class T, class U, class OutIter>
 OutIter intersect(T const& lhs, U const& rhs, OutIter dst) {
     return intersect(geometry_policy, lhs, rhs, dst);
 }

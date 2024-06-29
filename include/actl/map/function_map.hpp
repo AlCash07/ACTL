@@ -12,7 +12,7 @@
 namespace ac {
 
 /// Map that applies given function to the key.
-template <class Function>
+template<class Function>
 class function_map {
 public:
     static_assert(arity_v<Function> == 1);
@@ -27,7 +27,7 @@ private:
     Function f_;
 };
 
-template <class F>
+template<class F>
 struct const_map_traits<function_map<F>>
     : map_traits_base<parameter_at_t<0, F>, return_t<F>> {};
 

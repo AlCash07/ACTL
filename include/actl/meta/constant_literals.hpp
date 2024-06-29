@@ -14,7 +14,7 @@ namespace ac {
 
 namespace detail {
 
-template <char C>
+template<char C>
 constexpr unsigned digit_to_value() noexcept {
     if constexpr ('a' <= C && C <= 'f')
         return unsigned{C - 'a' + 10};
@@ -24,52 +24,52 @@ constexpr unsigned digit_to_value() noexcept {
         return unsigned{C - '0'};
 }
 
-template <class Digits, char... Cs>
+template<class Digits, char... Cs>
 struct filter_digits {
     using type = Digits;
 };
 
-template <unsigned... Digits, char... Cs>
+template<unsigned... Digits, char... Cs>
 struct filter_digits<std::integer_sequence<unsigned, Digits...>, '\'', Cs...>
     : filter_digits<std::integer_sequence<unsigned, Digits...>, Cs...> {};
 
-template <unsigned... Digits, char C, char... Cs>
+template<unsigned... Digits, char C, char... Cs>
 struct filter_digits<std::integer_sequence<unsigned, Digits...>, C, Cs...>
     : filter_digits<
           std::integer_sequence<unsigned, Digits..., digit_to_value<C>()>,
           Cs...> {};
 
-template <unsigned Base, char... Cs>
+template<unsigned Base, char... Cs>
 struct base_and_digits {
     static constexpr unsigned base = Base;
     using digits =
         typename filter_digits<std::integer_sequence<unsigned>, Cs...>::type;
 };
 
-template <char... Cs>
+template<char... Cs>
 struct to_number : base_and_digits<10, Cs...> {};
 
-template <char... Cs>
+template<char... Cs>
 struct to_number<'0', 'X', Cs...> : base_and_digits<16, Cs...> {};
 
-template <char... Cs>
+template<char... Cs>
 struct to_number<'0', 'x', Cs...> : base_and_digits<16, Cs...> {};
 
-template <char... Cs>
+template<char... Cs>
 struct to_number<'0', Cs...> : base_and_digits<8, Cs...> {};
 
-template <char... Cs>
+template<char... Cs>
 struct to_number<'0', 'b', Cs...> : base_and_digits<2, Cs...> {};
 
-template <char... Cs>
+template<char... Cs>
 struct to_number<'0', 'B', Cs...> : base_and_digits<2, Cs...> {};
 
-template <class T, char... Cs>
+template<class T, char... Cs>
 struct str_to_constant {
     using U = std::make_unsigned_t<T>;
     using number = to_number<Cs...>;
 
-    template <U X, unsigned D, unsigned... Ds>
+    template<U X, unsigned D, unsigned... Ds>
     static constexpr U
     fold(std::integer_sequence<unsigned, D, Ds...>) noexcept {
         static_assert(0 <= D && D < number::base);
@@ -79,7 +79,7 @@ struct str_to_constant {
         );
     }
 
-    template <U X>
+    template<U X>
     static constexpr U fold(std::integer_sequence<unsigned>) noexcept {
         return X;
     }
@@ -93,25 +93,25 @@ struct str_to_constant {
 inline namespace constant_literals {
 
 /// Literal that produces ac::constant of type `int`.
-template <char... Chars>
+template<char... Chars>
 constexpr auto operator""_c() noexcept {
     return detail::str_to_constant<int, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `unsigned`.
-template <char... Chars>
+template<char... Chars>
 constexpr auto operator""_cu() noexcept {
     return detail::str_to_constant<unsigned, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `long long`.
-template <char... Chars>
+template<char... Chars>
 constexpr auto operator""_cll() noexcept {
     return detail::str_to_constant<long long, Chars...>::value;
 }
 
 /// Literal that produces ac::constant of type `unsigned long long`.
-template <char... Chars>
+template<char... Chars>
 constexpr auto operator""_cull() noexcept {
     return detail::str_to_constant<unsigned long long, Chars...>::value;
 }

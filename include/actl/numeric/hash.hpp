@@ -33,7 +33,7 @@ inline size_t const randomized_hash::seed = static_cast<size_t>(
     std::chrono::steady_clock::now().time_since_epoch().count()
 );
 
-template <class T>
+template<class T>
     requires std::is_arithmetic_v<T>
 constexpr size_t hash_value(T const& x) {
     static_assert(sizeof(T) <= sizeof(size_t), "TODO: remove this restriction");
@@ -46,23 +46,23 @@ constexpr size_t hash_value(T const& x) {
     return randomized_hash::compute(t);
 }
 
-template <class T>
+template<class T>
     requires std::is_empty_v<T>
 constexpr size_t hash_value(T) {
     return 0;
 }
 
-template <class T>
+template<class T>
 constexpr size_t hash_value(T* x) {
     return bit_cast<size_t>(x);
 }
 
-template <class T>
+template<class T>
 constexpr void hash_combine(size_t& seed, T const& x) {
     seed ^= (seed << 6) + (seed >> 2) + 0x9e3779b9 + hash_value(x);
 }
 
-template <class T, class... Ts>
+template<class T, class... Ts>
     requires(0 < sizeof...(Ts))
 constexpr size_t hash_value(T const& x, Ts const&... xs) {
     size_t res = hash_value(x);
@@ -77,24 +77,24 @@ constexpr size_t hash_value(Range auto const& x) {
     return res;
 }
 
-template <class T = void>
+template<class T = void>
 struct hash_function {
     constexpr size_t operator()(T const& x) const {
         return hash_value(x);
     }
 };
 
-template <>
+template<>
 struct hash_function<void> {
     using transparent_key_equal = std::equal_to<>;
 
-    template <class T>
+    template<class T>
     constexpr size_t operator()(T const& x) const {
         return hash_value(x);
     }
 };
 
-template <class T, class To>
+template<class T, class To>
 struct rebind<hash_function<T>, To> {
     using type = hash_function<>;
 };

@@ -13,7 +13,7 @@
 
 namespace ac {
 
-template <class To, class From>
+template<class To, class From>
 struct range_construction_from_iterators {
     using from_iter = range_iterator_t<From const>;
 
@@ -24,7 +24,7 @@ struct range_construction_from_iterators {
         AC_DEDUCE_NOEXCEPT_AND_RETURN(To{ranges::begin(x), ranges::end(x)})
 };
 
-template <class To, class From>
+template<class To, class From>
 struct range_construct_and_copy {
     static constexpr bool value = static_size_v<To> != dynamic_size &&
                                   std::is_default_constructible_v<To> &&
@@ -43,14 +43,14 @@ struct range_construct_and_copy {
     }
 };
 
-template <class To, class From>
+template<class To, class From>
 struct ranges_conversion
     : std::conditional_t<
           range_construction_from_iterators<To, From>::value,
           range_construction_from_iterators<To, From>,
           range_construct_and_copy<To, From>> {};
 
-template <class To, class From>
+template<class To, class From>
 constexpr bool can_convert_as_ranges() noexcept {
     // We check for StrictRange, because we don't want to
     // miss additional type checking enabled by the tuple.
@@ -60,7 +60,7 @@ constexpr bool can_convert_as_ranges() noexcept {
         return false;
 }
 
-template <class To, class From>
+template<class To, class From>
     requires(can_convert_as_ranges<To, From>())
 struct conversion<To, From> : ranges_conversion<To, From> {};
 

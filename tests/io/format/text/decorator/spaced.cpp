@@ -13,14 +13,14 @@
 
 using namespace ac::io;
 
-template <class T>
+template<class T>
 struct pair {
     struct is_io_tuple;
     explicit pair(T x, T y) : x{x}, y{y} {}
     T x, y;
 };
 
-template <class D, class F, class T>
+template<class D, class F, class T>
 bool write_final(D& od, F& fmt, pair<T> const& x) {
     return od.write('(') && write(od, fmt, x.x, x.y) && od.write(')');
 }

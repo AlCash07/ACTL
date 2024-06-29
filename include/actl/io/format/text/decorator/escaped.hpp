@@ -36,12 +36,12 @@ inline char escape(char c) {
     // clang-format on
 }
 
-template <class Char>
+template<class Char>
 struct escaped_string {
     std::basic_string_view<Char> value;
 };
 
-template <Device Dev, class Char>
+template<Device Dev, class Char>
 bool write_final(Dev& od, Format auto&, escaped_string<Char> const& s) {
     for (auto c : s.value) {
         using C = char_t<Dev>;
@@ -61,7 +61,7 @@ auto encode(escaped, std::same_as<char> auto const& c) {
     return batch{'\'', detail::escaped_string<char>{{&c, 1}}, '\''};
 }
 
-template <class S>
+template<class S>
     requires is_string_v<S>
 auto encode(escaped, S const& s) {
     return batch{'\"', detail::escaped_string<char>{s}, '\"'};

@@ -17,7 +17,7 @@
 
 namespace ac::io {
 
-template <class Pair>
+template<class Pair>
 decltype(auto) key_representation(Pair& x) {
     if constexpr (std::is_const_v<Pair>)
         return x.first;
@@ -27,7 +27,7 @@ decltype(auto) key_representation(Pair& x) {
         return const_cast<typename Pair::first_type&>(x.first);
 }
 
-template <class Range, class T>
+template<class Range, class T>
 decltype(auto) element_representation(T& x) {
     if constexpr (PairAssociativeRange<Range>)
         return batch{key_representation(x), colon{}, x.second};
@@ -35,7 +35,7 @@ decltype(auto) element_representation(T& x) {
         return x;
 }
 
-template <Range R>
+template<Range R>
 bool write_final(Device auto& od, Format auto& fmt, R const& x) {
     nested_scope_guard g{fmt};
     if constexpr (Container<R> && static_size_v<R> == dynamic_size)
@@ -55,7 +55,7 @@ bool read_range(Device auto& id, Format auto& fmt, Range auto& x) {
     return true;
 }
 
-template <class C>
+template<class C>
 bool read_container(Device auto& id, Format auto& fmt, C& x) {
     decltype(x.size()) size{};
     if (!read(id, fmt, io::size{size}))
@@ -74,7 +74,7 @@ bool read_container(Device auto& id, Format auto& fmt, C& x) {
     }
 }
 
-template <Range R>
+template<Range R>
     requires(!std::is_const_v<range_value_t<R>>)
 bool read_final(Device auto& id, Format auto& fmt, R& x) {
     nested_scope_guard g{fmt};

@@ -18,14 +18,14 @@ struct max_f : scalar_operation<max_f, 2> {
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 
-    template <class T, class U>
+    template<class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return eval(select(less(lhs, rhs), rhs, lhs));
     }
 };
 inline constexpr max_f max;
 
-template <class T>
+template<class T>
 struct identity_element<max_f, T> {
     static constexpr T value() {
         return std::numeric_limits<T>::lowest();

@@ -10,7 +10,7 @@
 
 namespace {
 
-template <class Category>
+template<class Category>
 class int_iterator
     : public ac::
           iterator_interface_selector_t<int_iterator<Category>, Category> {

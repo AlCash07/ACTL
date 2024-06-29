@@ -15,7 +15,7 @@ namespace ac::io {
 
 namespace detail {
 
-template <uint8_t Size>
+template<uint8_t Size>
 class int_string {
 public:
     void set_size(size_t size) {
@@ -39,14 +39,14 @@ private:
     char data_[Size + 1];
 };
 
-template <uint8_t Size>
+template<uint8_t Size>
 bool write_final(Device auto& od, Format auto& fmt, int_string<Size> const& x) {
     return write_final(od, fmt, cspan<char>{x});
 }
 
 } // namespace detail
 
-template <class Int>
+template<class Int>
     requires(std::integral<Int> && !std::same_as<Int, char> && !std::same_as<Int, bool>)
 auto encode(TextFormat auto& fmt, Int x) {
     using UInt = std::make_unsigned_t<Int>;

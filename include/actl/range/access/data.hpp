@@ -14,27 +14,27 @@ namespace ac::ranges {
 namespace impl {
 
 // TODO: check that data returns a pointer.
-template <class T>
+template<class T>
 concept has_member_data = requires(T& t) {
     { t.data() };
 };
 
-template <class T>
+template<class T>
 concept has_non_member_data = requires(T& t) {
     { data(t) };
 };
 
 struct data_f {
-    template <class T, size_t N>
+    template<class T, size_t N>
     constexpr T* operator()(T (&array)[N]) const noexcept {
         return array;
     }
 
-    template <has_member_data R>
+    template<has_member_data R>
     constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.data())
 
-    template <class R>
+    template<class R>
         requires(!has_member_data<R> && has_non_member_data<R>)
     constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(data(range))

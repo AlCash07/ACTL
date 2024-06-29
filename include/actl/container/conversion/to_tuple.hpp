@@ -14,10 +14,10 @@ namespace ac {
 
 namespace detail {
 
-template <class S, class To, class... Args>
+template<class S, class To, class... Args>
 struct to_tuple_impl;
 
-template <size_t... Is, class To, class... Args>
+template<size_t... Is, class To, class... Args>
 struct to_tuple_impl<std::index_sequence<Is...>, To, Args...> {
     static constexpr bool value =
         (... && can_convert_to_v<std::tuple_element_t<Is, To>, Args>);
@@ -27,10 +27,10 @@ struct to_tuple_impl<std::index_sequence<Is...>, To, Args...> {
     })
 };
 
-template <class To, class... Args>
+template<class To, class... Args>
 using to_tuple = to_tuple_impl<tuple_indices_t<To>, To, Args...>;
 
-template <class To, class... Args>
+template<class To, class... Args>
 static constexpr bool can_initialize_tuple() {
     // Avoid conflicts with from_tuple specialization.
     if constexpr (sizeof...(Args) == 1 && (... && Tuple<Args>))
@@ -46,7 +46,7 @@ static constexpr bool can_initialize_tuple() {
 
 } // namespace detail
 
-template <class To, class... Args>
+template<class To, class... Args>
     requires(detail::can_initialize_tuple<To, Args...>())
 struct conversion<To, Args...> : detail::to_tuple<To, Args...> {};
 

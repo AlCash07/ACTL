@@ -21,7 +21,7 @@ namespace ac {
 /// - if it's equal to `dynamic_extent<T>`, then the actual value is specified
 /// at runtime;
 /// - otherwise, the value is fixed at compile-time.
-template <class T, T... Values>
+template<class T, T... Values>
 class semi_static_array {
     static constexpr size_t size_dyn_v =
         (0 + ... + size_t{Values == dynamic_extent<T>});
@@ -50,7 +50,7 @@ public:
         : semi_static_array{indices, xs...} {}
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
-    template <class T0, class... Ts>
+    template<class T0, class... Ts>
         requires(
             1 + sizeof...(Ts) == size_dyn_v && std::is_convertible_v<T0, T> &&
             (... && std::is_convertible_v<Ts, T>)
@@ -68,7 +68,7 @@ public:
 
     /// Indexing by a compile-time constant results in a compile-time constant
     /// whenever possible.
-    template <auto I>
+    template<auto I>
     constexpr auto operator[](constant<I> i) const noexcept {
         if constexpr (static_values[i] != dynamic_extent<T>)
             return static_values[i];
@@ -76,14 +76,14 @@ public:
             return dynamic_values[dynamic_index<I>];
     }
 
-    template <auto I>
+    template<auto I>
         requires(static_values[I] == dynamic_extent<T>)
     constexpr T& operator[](constant<I>) noexcept {
         return dynamic_values[dynamic_index<I>];
     }
 
     // Structured binding support.
-    template <size_t I>
+    template<size_t I>
     friend constexpr auto get(semi_static_array const& src) noexcept {
         return src[size_constant<I>{}];
     }
@@ -103,13 +103,13 @@ public:
 private:
     static constexpr auto indices = std::make_index_sequence<size()>{};
 
-    template <size_t... Is>
+    template<size_t... Is>
     static constexpr size_t
     dymanic_index_impl(std::index_sequence<Is...>) noexcept {
         return (0 + ... + size_t{static_values[Is] == dynamic_extent<T>});
     }
 
-    template <size_t I>
+    template<size_t I>
     static constexpr size_t dynamic_index =
         dymanic_index_impl(std::make_index_sequence<I>{});
 
@@ -120,13 +120,13 @@ private:
         return result;
     }
 
-    template <size_t I>
+    template<size_t I>
     constexpr void assign_at([[maybe_unused]] T x) noexcept {
         if constexpr (static_values[I] == dynamic_extent<T>)
             dynamic_values[dynamic_index<I>] = x;
     }
 
-    template <size_t... Is>
+    template<size_t... Is>
     explicit constexpr semi_static_array(
         std::index_sequence<Is...>, extent_holder_t<T, Values>... xs
     ) noexcept
@@ -135,13 +135,13 @@ private:
     }
 };
 
-template <class... Ts>
+template<class... Ts>
     requires are_same_v<unwrap_constant_t<Ts>...>
 semi_static_array(Ts...) -> semi_static_array<
     std::common_type_t<unwrap_constant_t<Ts>...>,
     static_extent_v<Ts>...>;
 
-template <class T, T... Values, class... Args>
+template<class T, T... Values, class... Args>
     requires(
         sizeof...(Args) == semi_static_array<T, Values...>::size_dynamic() &&
         (... && can_convert_to_v<T, Args>)
@@ -157,12 +157,12 @@ struct conversion<semi_static_array<T, Values...>, Args...> : std::true_type {
 
 namespace std {
 
-template <class T, T... Values>
+template<class T, T... Values>
 struct tuple_size<ac::semi_static_array<T, Values...>> {
     static constexpr size_t value = sizeof...(Values);
 };
 
-template <size_t I, class T, T... Values>
+template<size_t I, class T, T... Values>
 struct tuple_element<I, ac::semi_static_array<T, Values...>> {
     using type = decltype(get<I>(ac::semi_static_array<T, Values...>{}));
 };

@@ -10,24 +10,22 @@
 
 namespace ac {
 
-template <class Range, class Category>
+template<class Range, class Category>
 struct range_interface_selector {
     using type = basic_range_interface<Range>;
 };
 
-template <class Range>
+template<class Range>
 struct range_interface_selector<Range, std::bidirectional_iterator_tag> {
     using type = bidirectional_range_interface<Range>;
 };
 
-template <class Range>
+template<class Range>
 struct range_interface_selector<Range, std::random_access_iterator_tag> {
     using type = random_access_range_interface<Range>;
 };
 
-template <
-    class Range,
-    class Category = iter_category_t<range_iterator_t<Range>>>
+template<class Range, class Category = iter_category_t<range_iterator_t<Range>>>
 using range_interface_selector_t =
     typename range_interface_selector<Range, Category>::type;
 

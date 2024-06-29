@@ -10,7 +10,7 @@
 
 namespace ac::detail {
 
-template <class V, class B, bool CompareSrc = false>
+template<class V, class B, bool CompareSrc = false>
 class edge {
 public:
     using vertex = V;

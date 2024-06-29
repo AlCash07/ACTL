@@ -11,7 +11,7 @@
 namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/forward_iterator
-template <class Iter>
+template<class Iter>
 class forward_iterator_interface : public input_iterator_interface<Iter> {
 public:
     using iterator_category = std::forward_iterator_tag;

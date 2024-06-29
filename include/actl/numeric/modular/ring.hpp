@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <class Z, bool Static = false>
+template<class Z, bool Static = false>
 struct quotient_ring_base {
     using value_type = Z;
     static constexpr bool is_static = Static;
@@ -22,7 +22,7 @@ struct quotient_ring_base {
 
 namespace detail {
 
-template <class Z, Z Mod>
+template<class Z, Z Mod>
 struct static_quotient_ring_impl : quotient_ring_base<Z, true> {
     constexpr static_quotient_ring_impl() = default;
     constexpr static_quotient_ring_impl(static_quotient_ring_impl const&) =
@@ -34,12 +34,12 @@ struct static_quotient_ring_impl : quotient_ring_base<Z, true> {
 
 } // namespace detail
 
-template <
+template<
     uint64_t Mod,
     class Z = std::conditional_t<(Mod > (1ull << 32)), uint64_t, uint32_t>>
 using static_quotient_ring = detail::static_quotient_ring_impl<Z, (Z)Mod>;
 
-template <class Z>
+template<class Z>
 struct singleton_quotient_ring : quotient_ring_base<Z> {
     static_assert(
         !std::is_signed<Z>::value, "signed integers are not supported"
@@ -50,7 +50,7 @@ struct singleton_quotient_ring : quotient_ring_base<Z> {
     }
 };
 
-template <class Z, class R>
+template<class Z, class R>
 constexpr void mod_add(Z& x, Z const& y, R const& ring) {
     if (std::is_integral<Z>::value) {
         Z z = ring.mod() - y;
@@ -60,7 +60,7 @@ constexpr void mod_add(Z& x, Z const& y, R const& ring) {
     }
 }
 
-template <class Z, class R>
+template<class Z, class R>
 constexpr void mod_sub(Z& x, Z const& y, R const& ring) {
     if (std::is_integral<Z>::value) {
         x < y ? x += ring.mod() - y : x -= y;
@@ -69,7 +69,7 @@ constexpr void mod_sub(Z& x, Z const& y, R const& ring) {
     }
 }
 
-template <class Z, class R>
+template<class Z, class R>
 constexpr Z mod_mul_binary(Z x, Z y, R const& ring) {
     for (Z r = Z();;) {
         if (y & 1)
@@ -81,7 +81,7 @@ constexpr Z mod_mul_binary(Z x, Z y, R const& ring) {
     }
 }
 
-template <class Z, class R>
+template<class Z, class R>
 constexpr Z mod_mul(Z const& x, Z const& y, R const& ring) {
     if constexpr (!std::is_integral<Z>::value) {
         return (x * y) % ring.mod();
@@ -94,7 +94,7 @@ constexpr Z mod_mul(Z const& x, Z const& y, R const& ring) {
     }
 }
 
-template <class Z, class R>
+template<class Z, class R>
 constexpr Z mod_div(Z const& x, Z const& y, R const& ring) {
     Z p = ring.mod() - y, a = ring.mod() - ring.one(), q = y, b = ring.one();
     for (; q != Z();) {
@@ -107,7 +107,7 @@ constexpr Z mod_div(Z const& x, Z const& y, R const& ring) {
     return mod_mul(a, x / p, ring);
 }
 
-template <class Ring>
+template<class Ring>
 struct ring_element : Ring {
     using value_type = typename Ring::value_type;
 
@@ -123,7 +123,7 @@ struct ring_element : Ring {
         return value;
     }
 
-    template <class... Args>
+    template<class... Args>
     constexpr ring_element(value_type const& value, Args&&... args)
         : Ring(std::forward<Args>(args)...), value(value) {}
 
@@ -188,7 +188,7 @@ struct ring_element : Ring {
     }
 };
 
-template <uint64_t Mod>
+template<uint64_t Mod>
 using int_modulo = ring_element<static_quotient_ring<Mod>>;
 
 } // namespace ac

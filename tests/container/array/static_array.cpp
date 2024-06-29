@@ -14,7 +14,7 @@ using namespace ac::constant_literals;
 
 namespace {
 
-template <class StaticArray>
+template<class StaticArray>
 void test_static_array_type_traits() {
     static_assert(ac::TriviallySemiregular<StaticArray>);
     static_assert(ac::NothrowRegular<StaticArray>);
@@ -36,7 +36,7 @@ void test_static_array_constructors() {
 #endif
 }
 
-template <class T, T... Values, size_t... Is>
+template<class T, T... Values, size_t... Is>
 void test_static_array_interface_impl(std::index_sequence<Is...>) {
     using ac::constant;
     using Array = ac::static_array<T, Values...>;
@@ -68,7 +68,7 @@ void test_static_array_interface_impl(std::index_sequence<Is...>) {
     static_assert(!(array != array));
 }
 
-template <class T, T... Values>
+template<class T, T... Values>
 void test_static_array_interface() {
     test_static_array_interface_impl<T, Values...>(
         std::make_index_sequence<sizeof...(Values)>{}

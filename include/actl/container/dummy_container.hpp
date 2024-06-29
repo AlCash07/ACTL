@@ -49,12 +49,12 @@ public:
         return none{};
     }
 
-    template <class... Ts>
+    template<class... Ts>
     void emplace_back(Ts...) {
         ++n_;
     }
 
-    template <class T>
+    template<class T>
     void erase(T) {
         --n_;
     }
@@ -77,7 +77,7 @@ private:
     index n_ = 0;
 };
 
-template <>
+template<>
 struct range_properties<dummy_container> : default_range_properties {
     static constexpr bool is_container = true;
 };

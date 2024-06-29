@@ -13,7 +13,7 @@ namespace ac {
 
 namespace detail {
 
-template <class T, class U, size_t... Is>
+template<class T, class U, size_t... Is>
 constexpr bool
 equal_tuple_range(T const& lhs, U const& rhs, std::index_sequence<Is...>) noexcept {
     using std::get;
@@ -23,7 +23,7 @@ equal_tuple_range(T const& lhs, U const& rhs, std::index_sequence<Is...>) noexce
 
 } // namespace detail
 
-template <Tuple T, class U>
+template<Tuple T, class U>
     requires(is_dynamic_range_v<U>)
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept {
     static_assert(RandomAccessRange<U>);
@@ -34,7 +34,7 @@ constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept {
     return detail::equal_tuple_range(lhs, rhs, std::make_index_sequence<n>{});
 }
 
-template <class T, class U>
+template<class T, class U>
     requires(is_dynamic_range_v<T> && Tuple<U>)
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept {
     return equal_sequences(rhs, lhs);

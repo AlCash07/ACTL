@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <class T>
+template<class T>
 struct out {
     T x;
 
@@ -18,14 +18,14 @@ struct out {
         return x;
     }
 
-    template <class U>
+    template<class U>
     out& operator=(U const& y) {
         assign(*this, y);
         return *this;
     }
 };
 
-template <class T>
+template<class T>
 out(T&&) -> out<T>;
 
 } // namespace ac

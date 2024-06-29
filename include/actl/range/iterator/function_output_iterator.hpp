@@ -12,13 +12,13 @@
 namespace ac {
 
 /// Iterator that applies a function to each assigned value.
-template <class Function>
+template<class Function>
 class function_output_iterator
     : public output_iterator_interface<function_output_iterator<Function>> {
 public:
     explicit function_output_iterator(Function const& f = {}) : f_{f} {}
 
-    template <class T>
+    template<class T>
     void operator=(T&& x) const {
         f_(std::forward<T>(x));
     }

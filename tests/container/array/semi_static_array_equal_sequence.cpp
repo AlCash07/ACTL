@@ -7,7 +7,7 @@
 #include <actl/container/array/semi_static_array_selector.hpp>
 #include <actl/container/equal_sequences/range_tuple.hpp>
 
-template <class T, T... Values>
+template<class T, T... Values>
 using ssa = ac::semi_static_array_t<T, Values...>;
 
 inline constexpr size_t dyn = ac::dynamic_extent<>;

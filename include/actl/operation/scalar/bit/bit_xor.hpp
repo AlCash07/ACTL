@@ -15,7 +15,7 @@ namespace scalar {
 struct bit_xor_f : scalar_operation<bit_xor_f, 2> {
     using operation_category = bitwise_operation_tag;
 
-    template <class T, class U>
+    template<class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs ^ rhs;
     }
@@ -34,20 +34,20 @@ struct bit_xor_f : operation<bit_xor_f> {
 };
 inline constexpr bit_xor_f bit_xor;
 
-template <class T>
+template<class T>
 struct identity_element<bit_xor_f, T> {
     static constexpr T value() {
         return T{0};
     }
 };
 
-template <class T, class U>
+template<class T, class U>
     requires EnableOperators<T, U>
 constexpr auto operator^(T&& lhs, U&& rhs) {
     return bit_xor(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
+template<class T, class U>
     requires EnableOperators<T, U>
 constexpr decltype(auto) operator^=(T&& lhs, U&& rhs) {
     return bit_xor(inout{std::forward<T>(lhs)}, pass<U>(rhs));

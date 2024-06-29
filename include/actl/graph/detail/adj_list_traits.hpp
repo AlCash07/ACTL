@@ -12,21 +12,21 @@
 
 namespace ac::detail {
 
-template <class Dir, class OEC, class IEC>
+template<class Dir, class OEC, class IEC>
 struct vertex_edges {
     OEC out_edges;
 };
 
-template <class OEC, class IEC>
+template<class OEC, class IEC>
 struct vertex_edges<bidirectional, OEC, IEC>
     : vertex_edges<directed, OEC, IEC> {
     IEC in_edges;
 };
 
-template <class Dir, class OEC, class EC, class VC>
+template<class Dir, class OEC, class EC, class VC>
 class adj_list_vertex_data;
 
-template <class Dir, class OEC, class EC, class VC>
+template<class Dir, class OEC, class EC, class VC>
 struct adj_list_traits {
     using vertex = std::conditional_t<RandomAccessRange<VC>, int, void*>;
 
@@ -87,27 +87,27 @@ struct adj_list_traits {
     );
 };
 
-template <class Dir, class OEC, class EC, class VC>
+template<class Dir, class OEC, class EC, class VC>
 class adj_list_vertex_data
     : public adj_list_traits<Dir, OEC, EC, VC>::vertex_data {
     using traits = adj_list_traits<Dir, OEC, EC, VC>;
 
 public:
-    template <class... Ts>
+    template<class... Ts>
     explicit adj_list_vertex_data(Ts&&... args)
         : traits::vertex_data{
               typename traits::vertex_edges{}, std::forward<Ts>(args)...
           } {}
 };
 
-template <class V, class OE, class S>
+template<class V, class OE, class S>
 struct full_edge {
     V u;
     OE e_out;
     OE e_in;
 };
 
-template <class V, class OE>
+template<class V, class OE>
 struct full_edge<V, OE, directed> {
     V u;
     OE e_out;

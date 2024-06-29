@@ -15,7 +15,7 @@ namespace ac {
 /// Outputs all candidates for the pairs of antipodal vertices (pairs of
 /// iterators). The actual antipodal pair for a vertex is the last pair with
 /// this vertex in the output.
-template <class T, class OutIter>
+template<class T, class OutIter>
 auto antipodal_vertices(
     Policy auto const& policy, convex_polygon<T> const& poly, OutIter dst
 ) {
@@ -30,7 +30,7 @@ auto antipodal_vertices(
     return dst;
 }
 
-template <class T, class OutIter>
+template<class T, class OutIter>
 auto antipodal_vertices(convex_polygon<T> const& poly, OutIter dst) {
     return antipodal_vertices(geometry_policy, poly, dst);
 }

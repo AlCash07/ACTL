@@ -8,7 +8,7 @@
 #include <actl/std/map.hpp>
 #include "test.hpp"
 
-template <bool Invertible>
+template<bool Invertible>
 void test_accounting_map() {
     accounting_map<std::map<std::string, int>, Invertible> map;
     CHECK(0 == get(map, "a"));

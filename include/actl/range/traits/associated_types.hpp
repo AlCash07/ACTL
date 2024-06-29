@@ -19,23 +19,23 @@ namespace ac {
 // template <class Range>
 // using range_iterator_t = decltype(ranges::begin(std::declval<Range&>()));
 
-template <Range R>
+template<Range R>
 using range_sentinel_t = decltype(ranges::end(std::declval<R&>()));
 
-template <Range R>
+template<Range R>
 using range_size_t =
     unwrap_constant_t<decltype(ranges::size(std::declval<R&>()))>;
 
-template <Range R>
+template<Range R>
 using range_difference_t = std::iter_difference_t<range_iterator_t<R>>;
 
-template <Range R>
+template<Range R>
 using range_value_t = std::iter_value_t<range_iterator_t<R>>;
 
-template <Range R>
+template<Range R>
 using range_reference_t = std::iter_reference_t<range_iterator_t<R>>;
 
-template <Range R>
+template<Range R>
 struct associated_types<R> {
     using value_type = range_value_t<R>;
     using reference = range_reference_t<R>;

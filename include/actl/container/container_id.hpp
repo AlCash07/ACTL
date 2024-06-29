@@ -18,10 +18,10 @@
 
 namespace ac {
 
-template <class C, bool = Container<C>, bool = RandomAccessRange<C>>
+template<class C, bool = Container<C>, bool = RandomAccessRange<C>>
 struct container_id_traits;
 
-template <class Iter>
+template<class Iter>
 class iterator_id : public iterator_adaptor<iterator_id<Iter>, Iter> {
     using base_t = iterator_adaptor<iterator_id<Iter>, Iter>;
 
@@ -59,13 +59,13 @@ private:
     }
 };
 
-template <class C>
+template<class C>
 struct container_id_traits<C, true, false> {
     using id = iterator_id<range_iterator_t<C const>>;
     using iterator = id;
 };
 
-template <class C>
+template<class C>
 struct container_id_traits<C, true, true> {
     using id = int;
     using iterator = integer_iterator<id>;
@@ -79,7 +79,7 @@ inline constexpr int id_to_raw(int id) {
     return id;
 }
 
-template <class Iter>
+template<class Iter>
 void* id_to_raw(iterator_id<Iter> id) {
     return bit_cast<void*>(id);
 }
@@ -87,17 +87,17 @@ void* id_to_raw(iterator_id<Iter> id) {
 /// Container Id is int for random access containers and wrapped const_iterator
 /// otherwise. Such Id isn't invalidated by emplace operation and can be used as
 /// map or hash map key.
-template <class C>
+template<class C>
 using container_id = typename container_id_traits<C>::id;
 
-template <class C>
+template<class C>
 using container_id_iterator = typename container_id_traits<C>::iterator;
 
 // This key can be used for id comparison.
-template <class Id>
+template<class Id>
 using id_key_t = decltype(get_id_key(std::declval<Id>()));
 
-template <class C>
+template<class C>
 container_id<C> id_begin(C const& cont) {
     if constexpr (RandomAccessRange<C>)
         return 0;
@@ -105,7 +105,7 @@ container_id<C> id_begin(C const& cont) {
         return container_id<C>{cont.begin()};
 }
 
-template <class C>
+template<class C>
 container_id<C> id_end(C const& cont) {
     if constexpr (RandomAccessRange<C>)
         return static_cast<container_id<C>>(ranges::size(cont));
@@ -114,7 +114,7 @@ container_id<C> id_end(C const& cont) {
 }
 
 // Returns an invalid Id that is fixed for the given container.
-template <class C>
+template<class C>
 container_id<C> id_null(C const& cont) {
     if constexpr (RandomAccessRange<C>)
         return -1;
@@ -122,13 +122,13 @@ container_id<C> id_null(C const& cont) {
         return id_end(cont);
 }
 
-template <class C>
+template<class C>
 auto id_range(C const& cont) {
     using iterator = container_id_iterator<C>;
     return make_range(iterator{id_begin(cont)}, iterator{id_end(cont)});
 }
 
-template <class C>
+template<class C>
 container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter) {
     if constexpr (RandomAccessRange<C>)
         return static_cast<container_id<C>>(iter - ranges::begin(cont));
@@ -136,7 +136,7 @@ container_id<C> iterator_to_id(C const& cont, range_iterator_t<C const> iter) {
         return container_id<C>{iter};
 }
 
-template <class C>
+template<class C>
 range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id) {
     if constexpr (RandomAccessRange<C>) {
         AC_ASSERT(0 <= id && id <= id_end(cont));
@@ -146,7 +146,7 @@ range_iterator_t<C const> id_to_iterator(C const& cont, container_id<C> id) {
     }
 }
 
-template <class C>
+template<class C>
 void id_check(C& cont, container_id<C> id) {
     if constexpr (RandomAccessRange<C>) {
         AC_ASSERT(0 <= id && id < id_end(cont));
@@ -155,7 +155,7 @@ void id_check(C& cont, container_id<C> id) {
     }
 }
 
-template <class C>
+template<class C>
 reference_t<C> id_at(C& cont, container_id<C> id) {
     id_check(cont, id);
     if constexpr (RandomAccessRange<C>)
@@ -167,7 +167,7 @@ reference_t<C> id_at(C& cont, container_id<C> id) {
         return const_cast<reference_t<C>>(*id.base());
 }
 
-template <class C>
+template<class C>
 reference_t<C const> id_at(C const& cont, container_id<C> id) {
     id_check(cont, id);
     if constexpr (RandomAccessRange<C>)
@@ -178,18 +178,18 @@ reference_t<C const> id_at(C const& cont, container_id<C> id) {
 
 /* Generic container functions with id */
 
-template <class C, class... Ts>
+template<class C, class... Ts>
 std::pair<container_id<C>, bool> id_emplace(C& cont, Ts&&... args) {
     auto res = emplace(cont, std::forward<Ts>(args)...);
     return {iterator_to_id(cont, res.first), res.second};
 }
 
-template <class C>
+template<class C>
 void id_erase(C& cont, container_id<C> id) {
     cont.erase(id_to_iterator(cont, id));
 }
 
-template <class C, class T>
+template<class C, class T>
 container_id<C> id_find(C const& cont, T const& value) {
     return iterator_to_id(cont, find(cont, value));
 }

@@ -14,12 +14,12 @@ namespace ac::ranges {
 namespace impl {
 
 // TODO: check that size is integer-like.
-template <class T>
+template<class T>
 concept has_member_size = requires(T& t) {
     { t.size() };
 };
 
-template <class T>
+template<class T>
 concept has_non_member_size = requires(T& t) {
     { size(t) };
 };
@@ -27,17 +27,17 @@ concept has_non_member_size = requires(T& t) {
 struct size_f {
     // We always return `ac::constant` when the size is a static constant,
     // even for types like `std::array` where size() returns a regular integer.
-    template <HasStaticSize R>
+    template<HasStaticSize R>
     constexpr constant<static_size_v<R>> operator()(R&&) const noexcept {
         return {};
     }
 
-    template <HasDynamicSize R>
+    template<HasDynamicSize R>
         requires has_member_size<R>
     constexpr decltype(auto) operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.size())
 
-    template <HasDynamicSize R>
+    template<HasDynamicSize R>
         requires(!has_member_size<R> && has_non_member_size<R>)
     constexpr decltype(auto) operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(size(range))

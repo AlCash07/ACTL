@@ -14,17 +14,17 @@ namespace ac {
 
 namespace detail {
 
-template <size_t I>
+template<size_t I>
 constexpr decltype(auto) adl_get(Tuple auto const& x) noexcept {
     using std::get;
     static_assert(noexcept(get<I>(x)));
     return get<I>(x);
 }
 
-template <class To, class From, class S = tuple_indices_t<From>>
+template<class To, class From, class S = tuple_indices_t<From>>
 struct from_tuple;
 
-template <class To, class From, size_t... Is>
+template<class To, class From, size_t... Is>
 struct from_tuple<To, From, std::index_sequence<Is...>> {
     static constexpr bool value =
         can_convert_to_v<To, decltype(adl_get<Is>(std::declval<From>()))...>;
@@ -36,7 +36,7 @@ struct from_tuple<To, From, std::index_sequence<Is...>> {
 
 } // namespace detail
 
-template <class To, class From>
+template<class To, class From>
     requires(
         !can_convert_as_ranges<To, From>() && Tuple<From> &&
         !StrictRange<From> && (Tuple<To> || Range<To>)

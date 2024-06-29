@@ -11,7 +11,7 @@
 namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/bidirectional_iterator
-template <class Iter>
+template<class Iter>
 class bidirectional_iterator_interface
     : public forward_iterator_interface<Iter> {
 public:

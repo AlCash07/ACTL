@@ -7,7 +7,7 @@
 #include <actl/functional/noexcept/deduce_noexcept_decltype_and_return.hpp>
 #include "functional/noexcept/is_int.hpp"
 
-template <class T>
+template<class T>
 constexpr auto is_int_wrapped(T x)
     AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(ac::is_int(x))
 
@@ -16,7 +16,7 @@ static_assert(is_int_wrapped(0));
 static_assert(!noexcept(is_int_wrapped(-1.0)));
 static_assert(!is_int_wrapped(0.0));
 
-template <class T>
+template<class T>
 concept has_is_int_wrapped = requires(T x) { is_int_wrapped(x); };
 
 static_assert(has_is_int_wrapped<int>);

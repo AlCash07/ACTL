@@ -12,27 +12,27 @@ namespace ac::ranges {
 
 namespace impl {
 
-template <class T>
+template<class T>
 concept has_member_end = requires(T& t) {
     { t.end() } -> std::sentinel_for<range_iterator_t<T>>;
 };
 
-template <class T>
+template<class T>
 concept has_non_member_end = requires(T& t) {
     { end(t) } -> std::sentinel_for<range_iterator_t<T>>;
 };
 
 struct end_f {
-    template <class T, size_t N>
+    template<class T, size_t N>
     constexpr T* operator()(T (&array)[N]) const noexcept {
         return array + N;
     }
 
-    template <has_member_end R>
+    template<has_member_end R>
     constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.end())
 
-    template <class R>
+    template<class R>
         requires(!has_member_end<R> && has_non_member_end<R>)
     constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(end(range))

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <class T, class... Args>
+template<class T, class... Args>
 inline constexpr bool can_list_initialize_v =
     requires(T, Args&&... args) { T{args...}; };
 

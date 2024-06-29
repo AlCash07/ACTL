@@ -18,7 +18,7 @@ public:
 
     explicit constexpr base_t() = default;
 
-    template <class T>
+    template<class T>
     explicit constexpr base_t(T x) : value{static_cast<uint8_t>(x)} {
         AC_ASSERT(x == 0 || 1 < x && x <= 36);
     }

@@ -8,22 +8,22 @@
 
 namespace ac {
 
-template <class Graph>
+template<class Graph>
 using vertex_t = typename Graph::vertex;
 
-template <class Graph>
+template<class Graph>
 using edge_t = typename Graph::edge;
 
-template <class Graph>
+template<class Graph>
 using out_edge_t = typename Graph::out_edge;
 
-template <class Graph>
+template<class Graph>
 using in_edge_t = typename Graph::in_edge;
 
-template <class Graph>
+template<class Graph>
 using out_edge_iterator_t = typename Graph::out_edge_iterator;
 
-template <class Graph>
+template<class Graph>
 using in_edge_iterator_t = typename Graph::in_edge_iterator;
 
 } // namespace ac

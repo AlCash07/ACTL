@@ -14,7 +14,7 @@
 
 namespace ac {
 
-template <class To, class... From>
+template<class To, class... From>
 struct range_initialization : std::true_type {
     // List initialization is intentionally used here instead of construction
     // to avoid accidental calls to constructors such as std::vector(size_t n).
@@ -23,10 +23,10 @@ struct range_initialization : std::true_type {
     })
 };
 
-template <class T, class>
+template<class T, class>
 using repeat_t = T;
 
-template <class To, class... From>
+template<class To, class... From>
 constexpr bool can_initialize_range() noexcept {
     // We check for StrictRange, because we don't want to
     // miss additional type checking enabled by the tuple.
@@ -38,7 +38,7 @@ constexpr bool can_initialize_range() noexcept {
         return false;
 }
 
-template <class To, class... From>
+template<class To, class... From>
     requires(can_initialize_range<To, From...>())
 struct conversion<To, From...> : range_initialization<To, From...> {};
 

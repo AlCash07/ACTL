@@ -10,11 +10,11 @@
 
 namespace ac {
 
-template <class Lhs, class Rhs>
+template<class Lhs, class Rhs>
 concept TriviallyAssignableFrom =
     std::assignable_from<Lhs, Rhs> && std::is_trivially_assignable_v<Lhs, Rhs>;
 
-template <class Lhs, class Rhs>
+template<class Lhs, class Rhs>
 concept NothrowAssignableFrom =
     std::assignable_from<Lhs, Rhs> && std::is_nothrow_assignable_v<Lhs, Rhs>;
 

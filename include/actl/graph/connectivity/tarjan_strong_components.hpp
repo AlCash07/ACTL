@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <class Graph, class ComponentStack, class TimeMap, class RootMap>
+template<class Graph, class ComponentStack, class TimeMap, class RootMap>
 struct strong_component_finder {
     static_assert(Graph::is_directed);
 
@@ -62,12 +62,12 @@ struct strong_component_finder {
     T time_now = 0;
 };
 
-template <class G, class... Ts>
+template<class G, class... Ts>
 auto get_strong_component_finder(G const&, Ts&&... args) {
     return strong_component_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
-template <class Graph, class ComponentMap>
+template<class Graph, class ComponentMap>
 void find_strong_components(Graph const& graph, ComponentMap&& map) {
     auto scf = get_strong_component_finder(
         graph,

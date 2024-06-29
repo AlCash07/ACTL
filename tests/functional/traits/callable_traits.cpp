@@ -10,7 +10,7 @@
 
 namespace {
 
-template <class Fn, bool IsNoexcept>
+template<class Fn, bool IsNoexcept>
 void test_void_free_function_traits() {
     static_assert(0ul == ac::arity_v<Fn>);
     static_assert(std::is_same_v<void, ac::return_t<Fn>>);
@@ -87,7 +87,7 @@ struct S {
     int const& member_function_params(int const, int&&) const noexcept;
 };
 
-template <class MemberFn, class ClassParam, bool IsNoexcept>
+template<class MemberFn, class ClassParam, bool IsNoexcept>
 void test_member_function_traits() {
     static_assert(1ul == ac::arity_v<MemberFn>);
     static_assert(std::is_same_v<int, ac::return_t<MemberFn>>);

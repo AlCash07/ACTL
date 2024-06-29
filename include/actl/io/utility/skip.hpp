@@ -12,7 +12,7 @@
 
 namespace ac::io {
 
-template <class T>
+template<class T>
 struct skip : private predicate<T> {
     explicit constexpr skip(T value) : predicate<T>{value} {}
 

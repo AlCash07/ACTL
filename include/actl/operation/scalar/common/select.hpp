@@ -13,7 +13,7 @@ namespace ac {
 struct select_f : scalar_operation<select_f, 3> {
     using operation_category = scalar_operation_tag;
 
-    template <class T, class U>
+    template<class T, class U>
     constexpr auto evaluate(bool condition, T const& lhs, U const& rhs) const {
         return condition ? eval(lhs) : eval(rhs);
     }

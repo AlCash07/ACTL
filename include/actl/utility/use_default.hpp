@@ -13,11 +13,11 @@ namespace ac {
 /// Indicates default type or policy where supported.
 struct use_default {};
 
-template <class T, class Default>
+template<class T, class Default>
 using deduce_type =
     std::conditional<std::is_same_v<T, use_default>, Default, T>;
 
-template <class T, class Default>
+template<class T, class Default>
 using deduce_t = typename deduce_type<T, Default>::type;
 
 } // namespace ac

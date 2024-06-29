@@ -10,7 +10,7 @@
 
 namespace ac::io::detail {
 
-template <class T, class U>
+template<class T, class U>
 constexpr size_t digit_count(T x, U base) {
     return x == 0 ? 0 : 1 + digit_count(x / base, base);
 }

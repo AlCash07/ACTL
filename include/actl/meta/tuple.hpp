@@ -16,24 +16,24 @@ namespace ac {
 /// heterogeneous types.
 /// Similarly to `std::ranges::range`, types with qualifiers and supported.
 // TODO: implement a full concept https://stackoverflow.com/a/68444475
-template <class T>
+template<class T>
 concept Tuple =
     requires { std::tuple_size<std::remove_reference_t<T>>::value; };
 
-template <Tuple T>
+template<Tuple T>
 using tuple_indices_t =
     std::make_index_sequence<std::tuple_size_v<std::remove_reference_t<T>>>;
 
-template <Tuple T, class Seq = tuple_indices_t<T>>
+template<Tuple T, class Seq = tuple_indices_t<T>>
 struct tuple_nesting_depth;
 
-template <Tuple T, size_t... Is>
+template<Tuple T, size_t... Is>
 struct tuple_nesting_depth<T, std::index_sequence<Is...>>
     : size_constant<
           1 + max_nesting_depth_v<
                   std::tuple_element_t<Is, std::remove_reference_t<T>>...>> {};
 
-template <Tuple T>
+template<Tuple T>
 struct nesting_depth<T> : tuple_nesting_depth<T> {};
 
 } // namespace ac

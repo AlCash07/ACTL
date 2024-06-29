@@ -14,7 +14,7 @@
 
 namespace ac::io {
 
-template <class Device, class Buffer, bool Read = is_in<Device::mode>>
+template<class Device, class Buffer, bool Read = is_in<Device::mode>>
 class buffered_reader : public Device {
 public:
     // TODO: design a way to pass constructor arguments to the buffer.
@@ -25,7 +25,7 @@ protected:
     char_t<Device>* ptr_ = ranges::data(buf_);
 };
 
-template <class Device, class Buffer>
+template<class Device, class Buffer>
 class buffered_reader<Device, Buffer, true>
     : public buffered_reader<Device, Buffer, false> {
 protected:
@@ -98,7 +98,7 @@ public:
     }
 };
 
-template <
+template<
     class Device,
     class Buffer = char_t<Device>[1 << 10],
     bool = is_out<Device::mode>>
@@ -107,7 +107,7 @@ public:
     using buffered_reader<Device, Buffer>::buffered_reader;
 };
 
-template <class Device, class Buffer>
+template<class Device, class Buffer>
 class buffered<Device, Buffer, true> : public buffered<Device, Buffer, false> {
 protected:
     using Char = char_t<Device>;

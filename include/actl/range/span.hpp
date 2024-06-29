@@ -14,14 +14,14 @@
 
 namespace ac {
 
-template <class T, size_t N = dynamic_size>
+template<class T, size_t N = dynamic_size>
 class span : public contiguous_range_interface<span<T, N>> {
 public:
     using element_type = T;
 
     static constexpr size_t extent = N;
 
-    template <size_t M = N>
+    template<size_t M = N>
         requires(M == 0 || M == dynamic_size)
     constexpr span() : storage_{nullptr, 0} {}
 
@@ -72,21 +72,21 @@ private:
     storage_t storage_;
 };
 
-template <ContiguousRange R>
+template<ContiguousRange R>
 span(R&&) -> span<
     std::remove_pointer_t<decltype(ranges::data(std::declval<R>()))>,
     static_size_v<R>>;
 
-template <class T, size_t N>
+template<class T, size_t N>
 struct range_properties<span<T, N>> : default_range_properties {};
 
-template <class T, size_t N = dynamic_size>
+template<class T, size_t N = dynamic_size>
 using cspan = span<T const, N>;
 
-template <class S, class T>
+template<class S, class T>
 struct is_span : std::false_type {};
 
-template <class T, size_t N>
+template<class T, size_t N>
 struct is_span<span<T, N>, T> : std::true_type {};
 
 } // namespace ac

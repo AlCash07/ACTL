@@ -13,7 +13,7 @@
 
 namespace ac {
 
-template <class P, index N, class T0, class K, class T1, class OutIter>
+template<class P, index N, class T0, class K, class T1, class OutIter>
 OutIter intersect(
     line_scalar_policy<P> lsp,
     line<T0, N, K> const& l,

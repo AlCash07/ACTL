@@ -12,7 +12,7 @@
 namespace ac {
 
 // T can be a reference to share global time.
-template <class Map, class T>
+template<class Map, class T>
 struct time_stamper {
     void operator()(on_vertex_start, map_key_t<Map> u) {
         put(map, u, time_now);
@@ -23,10 +23,10 @@ struct time_stamper {
     T time_now = 0;
 };
 
-template <class Map>
+template<class Map>
 time_stamper(Map&&) -> time_stamper<Map, map_value_t<Map>>;
 
-template <class Map, class T>
+template<class Map, class T>
 struct in_out_time_stamper : time_stamper<Map, T> {
     Map out_time;
 
@@ -37,31 +37,31 @@ struct in_out_time_stamper : time_stamper<Map, T> {
     }
 };
 
-template <class Map>
+template<class Map>
 in_out_time_stamper(Map&&) -> in_out_time_stamper<Map, map_value_t<Map>>;
 
-template <class Map, class T>
+template<class Map, class T>
 vertex_initializer<time_stamper<Map, T>> make_time_stamper(
     Map&& in_time, T value
 ) {
     return {{std::forward<Map>(in_time)}, value};
 }
 
-template <class Map>
+template<class Map>
 auto make_in_out_time_stamper(Map&& in_time, Map&& out_time) {
     return in_out_time_stamper{
         {std::forward<Map>(in_time)}, std::forward<Map>(out_time)
     };
 }
 
-template <class Map, class T>
+template<class Map, class T>
 vertex_initializer<in_out_time_stamper<Map, T>> make_in_out_time_stamper(
     Map&& in_time, Map&& out_time, T value
 ) {
     return {{{std::forward<Map>(in_time)}, std::forward<Map>(out_time)}, value};
 }
 
-template <class Graph>
+template<class Graph>
 auto make_default_time_stamper(Graph const& graph) {
     return make_time_stamper(make_default_vertex_map<int>(graph), -1);
 }

@@ -13,7 +13,7 @@ namespace ac {
 
 enum class colors : uint8_t { white, gray, black };
 
-template <class Map>
+template<class Map>
 struct color_recorder {
     static_assert(std::is_same_v<map_value_t<Map>, colors>);
 
@@ -38,10 +38,10 @@ struct color_recorder {
     Map map;
 };
 
-template <class Map>
+template<class Map>
 color_recorder(Map&&) -> color_recorder<Map>;
 
-template <class Graph>
+template<class Graph>
 auto make_default_color_recorder(Graph const& graph) {
     return color_recorder{make_default_vertex_map<colors>(graph)};
 }

@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template <class UInt>
+template<class UInt>
 class uint_simple_parser {
     enum class states { empty, ok, overflow };
     states state = states::empty;
@@ -21,7 +21,7 @@ public:
     UInt base;
     UInt max;
 
-    template <digit_kind Kind>
+    template<digit_kind Kind>
     size_t parse_impl(cspan<char> s) {
         size_t i = 0;
         if (state == states::empty) {

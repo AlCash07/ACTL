@@ -17,7 +17,7 @@ struct dummy_output_iterator {
 
     using R = dummy_output_iterator&;
 
-    template <class T>
+    template<class T>
     R operator=(T const&) {
         return *this;
     }

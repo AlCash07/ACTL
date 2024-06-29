@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <class Derived>
+template<class Derived>
 class bidirectional_non_const_range_interface
     : public basic_non_const_range_interface<Derived> {
 public:
@@ -23,7 +23,7 @@ public:
     }
 };
 
-template <class Derived>
+template<class Derived>
 class bidirectional_dual_range_interface
     : public bidirectional_range_interface<Derived>
     , public bidirectional_non_const_range_interface<Derived> {};

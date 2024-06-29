@@ -15,7 +15,7 @@
 #include "graph/edges_ends.hpp"
 #include "test.hpp"
 
-template <bool TestAdjacency = false, class Graph, class V = vertex_t<Graph>>
+template<bool TestAdjacency = false, class Graph, class V = vertex_t<Graph>>
 void test_edges(Graph& graph, V v0, V v1, V v2) {
     std::vector<edge_t<Graph>> es;
     es.push_back(graph.add_edge(v0, v1, 0, "e01"));

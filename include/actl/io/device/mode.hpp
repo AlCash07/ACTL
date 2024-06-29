@@ -17,13 +17,13 @@ inline constexpr mode_t out = 0x04;
 inline constexpr mode_t app = 0x08;
 inline constexpr mode_t trunc = in | out | app;
 
-template <mode_t Mode>
+template<mode_t Mode>
 inline constexpr bool is_bin = (Mode & bin) > 0;
 
-template <mode_t Mode>
+template<mode_t Mode>
 inline constexpr bool is_in = (Mode & in) > 0;
 
-template <mode_t Mode>
+template<mode_t Mode>
 inline constexpr bool is_out = (Mode & (out | app)) > 0;
 
 } // namespace ac::io

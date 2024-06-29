@@ -11,14 +11,14 @@
 
 namespace ac {
 
-template <class T0, class T1>
+template<class T0, class T1>
 constexpr orientation2d orientation(
     Policy auto const& policy, point<T0> const& lhs, point<T1> const& rhs
 ) {
     return static_cast<orientation2d>(sgn(policy, area(policy, rhs, lhs)));
 }
 
-template <class T0, class T1, class T2>
+template<class T0, class T1, class T2>
 constexpr orientation2d orientation(
     Policy auto const& policy,
     point<T0> const& lhs,
@@ -28,7 +28,7 @@ constexpr orientation2d orientation(
     return orientation(policy, lhs - origin, rhs - origin);
 }
 
-template <index N, class T0, class T1>
+template<index N, class T0, class T1>
 enum orientation orientation(
     Policy auto const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs
 ) {

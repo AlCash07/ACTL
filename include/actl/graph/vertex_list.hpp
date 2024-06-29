@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <
+template<
     class VertexContainer = none,
     class T = graph::list_value_t<VertexContainer>>
 class vertex_list : public vertex_list<VertexContainer, none> {
@@ -40,7 +40,7 @@ public:
     }
 };
 
-template <class VC>
+template<class VC>
 class vertex_list<VC, none> {
 public:
     using vertex_container =
@@ -54,7 +54,7 @@ private:
 public:
     vertex_list() = default;
 
-    template <bool B = RA>
+    template<bool B = RA>
         requires B
     explicit vertex_list(index n) {
         resize(n);
@@ -64,7 +64,7 @@ public:
         return static_cast<index>(vertices_.size());
     }
 
-    template <bool B = RA>
+    template<bool B = RA>
         requires B
     void resize(index n) {
         vertices_.resize(static_cast<range_size_t<vertex_container>>(n));
@@ -85,12 +85,12 @@ public:
         return *std::next(id_range(vertices_).begin(), n);
     }
 
-    template <class... Ts>
+    template<class... Ts>
     std::pair<vertex, bool> try_add_vertex(Ts&&... args) {
         return id_emplace(vertices_, std::forward<Ts>(args)...);
     }
 
-    template <class... Ts>
+    template<class... Ts>
     vertex add_vertex(Ts&&... args) {
         return try_add_vertex(std::forward<Ts>(args)...).first;
     }

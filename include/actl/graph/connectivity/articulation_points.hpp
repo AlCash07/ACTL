@@ -13,7 +13,7 @@
 
 namespace ac {
 
-template <
+template<
     class Graph,
     class ArticulationMap,
     class ComponentStack,
@@ -86,12 +86,12 @@ struct articulation_point_finder {
     T root_children = 0;
 };
 
-template <class G, class... Ts>
+template<class G, class... Ts>
 auto get_articulation_point_finder(G const&, Ts&&... args) {
     return articulation_point_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
-template <class Graph, class ArticulationMap, class ComponentMap>
+template<class Graph, class ArticulationMap, class ComponentMap>
 void find_articulation_points_and_components(
     Graph const& graph,
     ArticulationMap&& articulation_map,
@@ -109,14 +109,14 @@ void find_articulation_points_and_components(
     depth_first_search{apf}(graph);
 }
 
-template <class Graph, class ArticulationMap>
+template<class Graph, class ArticulationMap>
 void find_articulation_points(Graph const& graph, ArticulationMap&& map) {
     find_articulation_points_and_components(
         graph, std::forward<ArticulationMap>(map), dummy_map{}
     );
 }
 
-template <class Graph, class ComponentMap>
+template<class Graph, class ComponentMap>
 void find_biconnected_components(Graph const& graph, ComponentMap&& map) {
     find_articulation_points_and_components(
         graph, dummy_map{}, std::forward<ComponentMap>(map)

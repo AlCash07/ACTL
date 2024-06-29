@@ -19,7 +19,7 @@ class flag_output_iterator
 public:
     bool flag = false;
 
-    template <class T>
+    template<class T>
     void operator=(T) const {}
 
     flag_output_iterator const& operator*() const noexcept {
@@ -34,7 +34,7 @@ public:
 
 } // namespace detail
 
-template <class T0, class K0, class T1, class K1>
+template<class T0, class K0, class T1, class K1>
 bool crosses(
     Policy auto const& policy,
     line<T0, 2, K0> const& lhs,
@@ -43,7 +43,7 @@ bool crosses(
     return intersect(policy, lhs, rhs, detail::flag_output_iterator{}).flag;
 }
 
-template <class P class T0, class K0, class T1, class K1>
+template<class P class T0, class K0, class T1, class K1>
 bool crosses(
     general_position_policy<P> gpp,
     line<T0, 2, K0> const& lhs,

@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template <class UInt>
+template<class UInt>
 class uint_unchecked_parser {
     UInt x = 0;
     UInt base;
@@ -19,7 +19,7 @@ class uint_unchecked_parser {
 public:
     explicit uint_unchecked_parser(UInt base) : base{base} {}
 
-    template <digit_kind Kind>
+    template<digit_kind Kind>
     size_t parse_impl(cspan<char> s) {
         size_t i = 0;
         for (; i != s.size(); ++i) {

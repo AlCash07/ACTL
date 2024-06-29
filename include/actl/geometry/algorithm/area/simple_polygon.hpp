@@ -13,7 +13,7 @@ namespace ac {
 
 /// Doubled oriented area of a polygon : O(N).
 /// http://geomalgorithms.com/a01-_area.html area2D_Polygon().
-template <class T>
+template<class T>
     requires(
         std::is_base_of_v<simple_polygon_tag, geometry::tag_t<T>> &&
         geometry_traits<T>::dimension == 2

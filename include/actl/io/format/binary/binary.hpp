@@ -17,14 +17,14 @@ struct binary {
     struct format_tag;
 };
 
-template <class T>
+template<class T>
 concept BinaryDevice = Device<T> && is_bin<T::mode>;
 
 binary deduce_format(BinaryDevice auto&) {
     return {};
 }
 
-template <class T>
+template<class T>
     requires std::is_arithmetic_v<T>
 auto encode(binary, T& x) {
     using byte_t = add_const_if_t<std::is_const_v<T>, std::byte>;

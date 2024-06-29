@@ -12,7 +12,7 @@
 namespace ac::detail {
 
 // "real" references
-template <class T>
+template<class T>
 constexpr T* arrow_operator(T& x) noexcept {
     return std::addressof(x);
 }
@@ -20,10 +20,10 @@ constexpr T* arrow_operator(T& x) noexcept {
 // output iterator
 constexpr void arrow_operator(void) noexcept {}
 
-template <class T>
+template<class T>
 class arrow_proxy {
 public:
-    template <class Arg>
+    template<class Arg>
     explicit arrow_proxy(Arg&& x) noexcept(noexcept(T{std::forward<Arg>(x)}))
         : value_{std::forward<Arg>(x)} {}
 
@@ -39,7 +39,7 @@ private:
 // standard's requirements. If *i is not a reference type, we must still
 // produce an lvalue to which a pointer can be formed. We do that by
 // returning a proxy object containing an instance of the reference object.
-template <class Ref>
+template<class Ref>
 constexpr auto arrow_operator(Ref&& ref)
     AC_DEDUCE_NOEXCEPT_AND_RETURN(arrow_proxy<std::remove_cvref_t<Ref>>{
         std::forward<Ref>(ref)

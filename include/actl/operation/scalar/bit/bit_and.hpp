@@ -15,7 +15,7 @@ namespace scalar {
 struct bit_and_f : scalar_operation<bit_and_f, 2> {
     using operation_category = bitwise_operation_tag;
 
-    template <class T, class U>
+    template<class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs & rhs;
     }
@@ -34,20 +34,20 @@ struct bit_and_f : operation<bit_and_f> {
 };
 inline constexpr bit_and_f bit_and;
 
-template <class T>
+template<class T>
 struct identity_element<bit_and_f, T> {
     static constexpr T value() {
         return T{-1};
     }
 };
 
-template <class T, class U>
+template<class T, class U>
     requires EnableOperators<T, U>
 constexpr auto operator&(T&& lhs, U&& rhs) {
     return bit_and(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
+template<class T, class U>
     requires EnableOperators<T, U>
 constexpr decltype(auto) operator&=(T&& lhs, U&& rhs) {
     return bit_and(inout{std::forward<T>(lhs)}, pass<U>(rhs));

@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template <class Parser>
+template<class Parser>
 bool parsed_available_data(Device auto& id, Parser& parser) {
     auto s = id.input_buffer();
     if (s.empty())
@@ -21,7 +21,7 @@ bool parsed_available_data(Device auto& id, Parser& parser) {
     return offset == s.size();
 }
 
-template <class T, class Parser>
+template<class T, class Parser>
 struct parser_executor {
     T& dst;
     Parser parser;
@@ -35,7 +35,7 @@ struct parser_executor {
     }
 };
 
-template <class Parser>
+template<class Parser>
 struct parser_executor<void, Parser> {
     Parser parser;
 
@@ -45,10 +45,10 @@ struct parser_executor<void, Parser> {
     }
 };
 
-template <class T, class P>
+template<class T, class P>
 parser_executor(T&, P) -> parser_executor<T, P>;
 
-template <class P>
+template<class P>
 parser_executor(P) -> parser_executor<void, P>;
 
 } // namespace ac::io

@@ -12,7 +12,7 @@
 namespace ac {
 
 /// Property map that shifts key domain by the given offset (with casting).
-template <class Key, class Value = Key>
+template<class Key, class Value = Key>
 class shift_map {
 public:
     explicit constexpr shift_map(Key offset) : offset_{offset} {}
@@ -29,17 +29,17 @@ private:
     Key const offset_;
 };
 
-template <class Value = use_default, class Key>
+template<class Value = use_default, class Key>
 auto make_shift_map(Key offset) {
     return shift_map<Key, deduce_t<Value, Key>>(offset);
 }
 
-template <class K, class V>
+template<class K, class V>
 struct const_map_traits<shift_map<K, V>>
     : map_traits_base<K, V, V, true, false, true> {};
 
 /// Shift property map with offset known at compile-time.
-template <auto Offset, class Value = decltype(Offset)>
+template<auto Offset, class Value = decltype(Offset)>
 class static_shift_map {
     using Key = decltype(Offset);
 
@@ -53,7 +53,7 @@ public:
     }
 };
 
-template <auto O, class V>
+template<auto O, class V>
 struct const_map_traits<static_shift_map<O, V>>
     : map_traits_base<decltype(O), V, use_default, true, false, true> {};
 

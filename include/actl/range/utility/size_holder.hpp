@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template <size_t N>
+template<size_t N>
 class size_holder {
 public:
     static_assert(N >= 0);
@@ -25,7 +25,7 @@ public:
     }
 };
 
-template <>
+template<>
 class size_holder<dynamic_size> {
 public:
     constexpr size_holder(size_t n) : size_{n} {}

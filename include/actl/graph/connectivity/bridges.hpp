@@ -16,7 +16,7 @@ namespace ac {
 
 namespace detail {
 
-template <bool Once, bool Other>
+template<bool Once, bool Other>
 struct once_equal {
     operator bool() {
         if (x_ == Other)
@@ -28,7 +28,7 @@ struct once_equal {
     bool x_ = true;
 };
 
-template <bool All>
+template<bool All>
 struct once_equal<All, All> {
     constexpr operator bool() {
         return All;
@@ -37,14 +37,14 @@ struct once_equal<All, All> {
 
 } // namespace detail
 
-template <class Graph, bool ParallelEdges>
+template<class Graph, bool ParallelEdges>
 struct bridge_context
     : dfs_context<Graph>
     , detail::once_equal<true, !ParallelEdges> {
     using dfs_context<Graph>::dfs_context;
 };
 
-template <
+template<
     class Graph,
     class BridgeOutIter,
     class ComponentStack,
@@ -105,12 +105,12 @@ struct bridge_finder {
     T time_now = 0;
 };
 
-template <class G, class... Ts>
+template<class G, class... Ts>
 auto get_bridge_finder(G const&, Ts&&... args) {
     return bridge_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
-template <
+template<
     bool ParallelEdges = true,
     class Graph,
     class BridgeOutIter,
@@ -133,12 +133,12 @@ void find_bridges_and_components(
     depth_first_search{bf}(graph, bf.dfs_stack);
 }
 
-template <bool ParallelEdges = true, class Graph, class BridgeOutIter>
+template<bool ParallelEdges = true, class Graph, class BridgeOutIter>
 void find_bridges(Graph const& graph, BridgeOutIter bridges) {
     find_bridges_and_components<ParallelEdges>(graph, bridges, dummy_map{});
 }
 
-template <bool ParallelEdges = true, class Graph, class ComponentMap>
+template<bool ParallelEdges = true, class Graph, class ComponentMap>
 void find_two_edge_connected_components(
     Graph const& graph, ComponentMap&& map
 ) {

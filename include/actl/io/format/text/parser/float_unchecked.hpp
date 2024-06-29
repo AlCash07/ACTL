@@ -14,7 +14,7 @@
 
 namespace ac::io {
 
-template <class Float>
+template<class Float>
 class float_unchecked_parser {
     using UInt = unsigned long long;
 

@@ -13,7 +13,7 @@ namespace ac {
 /// N-dimensional sphere.
 // TODO: add bool parameter indicating if the inside is included, i.e. we have a
 // disk.
-template <class T, index N = 3>
+template<class T, index N = 3>
 class sphere {
 public:
     point<T, N> center;
@@ -21,11 +21,11 @@ public:
 
     constexpr sphere() = default;
 
-    template <class T1 = T, class T2 = T>
+    template<class T1 = T, class T2 = T>
     explicit constexpr sphere(point<T1, N> const& center, T2 const& radius)
         : center{center}, radius{static_cast<T>(radius)} {}
 
-    template <class T1>
+    template<class T1>
     explicit constexpr sphere(sphere<T1, N> const& rhs)
         : sphere{rhs.center, rhs.radius} {}
 
@@ -39,30 +39,30 @@ private:
     INTROSPECT(center, radius)
 };
 
-template <index N, class T0, class T1>
+template<index N, class T0, class T1>
 sphere(point<T0, N> const&, T1 const&) -> sphere<geometry::scalar_t<T0, T1>, N>;
 
-template <index N, class T>
+template<index N, class T>
 struct geometry_traits<sphere<T, N>>
     : geometry_traits_base<sphere_tag, point<T, N>> {};
 
-template <index N, class T>
+template<index N, class T>
 constexpr bool degenerate(Policy auto const& policy, sphere<T, N> const& s) {
     return !less(policy, 0, s.radius);
 }
 
 /* circle */
 
-template <class T>
+template<class T>
 using circle = sphere<T, 2>;
 
-template <class T0, class T1>
+template<class T0, class T1>
 constexpr auto make_circle(point<T0> const& center, T1 const& radius) {
     return circle<geometry::scalar_t<T0, T1>>{center, radius};
 }
 
 // Policy to indicate that polar angle is expected instead of a point.
-template <class P>
+template<class P>
 struct polar_angle_policy : virtual policy {
     explicit polar_angle_policy(P const& x) : policy{x} {}
 

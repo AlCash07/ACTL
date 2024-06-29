@@ -8,7 +8,7 @@
 
 namespace ac {
 
-template <class T = double>
+template<class T = double>
 inline constexpr T pi_v =
     static_cast<T>(3.141592653589793238462643383279502884L);
 

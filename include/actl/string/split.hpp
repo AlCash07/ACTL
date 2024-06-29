@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <
+template<
     class CharPredicate,
     class = decltype(std::declval<CharPredicate>()('\0'))>
 std::vector<std::string> split(

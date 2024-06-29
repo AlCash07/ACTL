@@ -14,41 +14,41 @@ namespace ac {
 
 namespace detail {
 
-template <class T>
+template<class T>
 concept Polygon = requires { typename T::is_polygon; };
 
-template <class T, bool = !Polygon<T> && Range<T>>
+template<class T, bool = !Polygon<T> && Range<T>>
 struct is_multi_point
     : std::bool_constant<
           std::is_same_v<point_tag, geometry::tag_t<range_value_t<T>>>> {};
 
-template <class T>
+template<class T>
 struct is_multi_point<T, false> : std::false_type {};
 
 } // namespace detail
 
-template <class T>
+template<class T>
     requires detail::is_multi_point<T>::value
 struct geometry_traits<T>
     : geometry_traits_base<multi_point_tag, range_value_t<T>> {};
 
-template <class T>
+template<class T>
 inline constexpr bool is_multi_point_v =
     std::is_same_v<multi_point_tag, geometry::tag_t<T>>;
 
-template <class T>
+template<class T>
 struct identity_functor {
     T operator()(T x) const {
         return x;
     }
 };
 
-template <class T>
+template<class T>
 identity_functor<range_reference_t<T>> get_to_point(T&) {
     return {};
 }
 
-template <class Indices, class Points>
+template<class Indices, class Points>
 struct indexed_multi_point {
     static_assert(Range<Indices> && std::is_integral_v<range_value_t<Indices>> && std::is_same_v<geometry::tag_t<range_value_t<Points>>, point_tag>);
 
@@ -81,7 +81,7 @@ struct indexed_multi_point {
     }
 };
 
-template <class I, class P>
+template<class I, class P>
 indexed_multi_point(I&&, P&&) -> indexed_multi_point<I, P>;
 
 } // namespace ac

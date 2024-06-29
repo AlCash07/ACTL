@@ -15,7 +15,7 @@
 
 namespace ac::io {
 
-template <mode_t Mode, class Char, bool = is_out<Mode>>
+template<mode_t Mode, class Char, bool = is_out<Mode>>
 class out_string : public device<Mode, Char> {
 public:
     explicit out_string(std::basic_string<Char> const& s) : s_{s} {}
@@ -24,7 +24,7 @@ protected:
     std::basic_string<Char> const& s_;
 };
 
-template <mode_t Mode, class Char>
+template<mode_t Mode, class Char>
 class out_string<Mode, Char, true> : public device<Mode, Char> {
 public:
     static_assert((Mode & app) > 0, "only append is supported now");
@@ -50,13 +50,13 @@ protected:
     std::basic_string<Char>& s_;
 };
 
-template <mode_t Mode, class Char, bool = is_in<Mode>>
+template<mode_t Mode, class Char, bool = is_in<Mode>>
 class in_string : public out_string<Mode, Char> {
 public:
     using out_string<Mode, Char>::out_string;
 };
 
-template <mode_t Mode, class Char>
+template<mode_t Mode, class Char>
 class in_string<Mode, Char, true> : public out_string<Mode, Char> {
 protected:
     using base_t = out_string<Mode, Char>;
@@ -98,7 +98,7 @@ public:
     }
 };
 
-template <mode_t Mode, class Char = char>
+template<mode_t Mode, class Char = char>
 using string = in_string<Mode, Char>;
 
 } // namespace ac::io

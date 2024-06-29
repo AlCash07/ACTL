@@ -13,14 +13,14 @@ namespace ac {
 
 struct operation_tag {};
 
-template <class T>
+template<class T>
 concept Operation = requires { typename T::operation_category; };
 
-template <class Operation, class T>
+template<class Operation, class T>
 struct identity_element;
 
 // TODO: we shouldn't need this.
-template <Operation T>
+template<Operation T>
 struct nesting_depth<T> : constant<std::numeric_limits<size_t>::max()> {};
 
 } // namespace ac

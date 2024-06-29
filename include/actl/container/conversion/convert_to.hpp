@@ -12,26 +12,26 @@
 
 namespace ac {
 
-template <class To, class... Args>
+template<class To, class... Args>
 struct conversion : std::false_type {};
 
-template <class To>
+template<class To>
     requires(std::is_default_constructible_v<To>)
 struct conversion<To> : std::true_type {
     static constexpr To convert() AC_DEDUCE_NOEXCEPT_AND_RETURN(To{})
 };
 
-template <class To, class From>
+template<class To, class From>
     requires(std::is_arithmetic_v<To> && std::is_convertible_v<From, To>)
 struct conversion<To, From> : std::true_type {
     static constexpr To convert(From&& x)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(static_cast<To>(std::forward<From>(x)))
 };
 
-template <class To, class... Args>
+template<class To, class... Args>
 inline constexpr bool can_convert_to_v = conversion<To, Args...>::value;
 
-template <class To, class... Args>
+template<class To, class... Args>
 constexpr To convert_to(Args&&... xs) AC_DEDUCE_NOEXCEPT_AND_RETURN(
     conversion<To, Args...>::convert(std::forward<Args>(xs)...)
 )

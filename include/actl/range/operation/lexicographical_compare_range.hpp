@@ -17,7 +17,7 @@ namespace ac {
 struct lexicographical_compare_range_f {
     static constexpr size_t inner_count = 1;
 
-    template <class Cmp3WayOp, class T, class U>
+    template<class Cmp3WayOp, class T, class U>
     static int evaluate(Cmp3WayOp const& op, T const& lhs, U const& rhs) {
         // Can't use std::lexicographical_compare because it doesn't compare
         // 3-way.
@@ -36,13 +36,13 @@ struct lexicographical_compare_range_f {
 inline constexpr operation_composer<lexicographical_compare_range_f>
     lexicographical_compare_range;
 
-template <Range T, Range U>
+template<Range T, Range U>
 struct overload<cmp3way_f, T, U> {
     static constexpr auto formula =
         lexicographical_compare_range(resolve_nested<T, U>(cmp3way));
 };
 
-template <Range T, Range U>
+template<Range T, Range U>
 struct overload<less_f, T, U> {
     static constexpr auto formula = cmp3way < 0_c;
 };

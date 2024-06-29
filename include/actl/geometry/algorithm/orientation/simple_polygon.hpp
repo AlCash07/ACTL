@@ -14,7 +14,7 @@ namespace ac {
 
 /// Orientation of a simple polygon : fast O(N).
 /// Joseph O'Rourke, Computational Geometry in C (2nd Edition), p. 12.
-template <class T>
+template<class T>
 orientation2d orientation(
     Policy auto const& policy, simple_polygon<T> const& poly
 ) {

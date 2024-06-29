@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <class Derived>
+template<class Derived>
 class bidirectional_range_interface : public basic_range_interface<Derived> {
 public:
     // decltype(auto) because a reference can be returned here.

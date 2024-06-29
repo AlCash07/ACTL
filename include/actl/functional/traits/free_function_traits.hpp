@@ -11,24 +11,24 @@
 namespace ac {
 
 /// Callable traits specialized only for free functions and pointers to them.
-template <class T>
+template<class T>
 struct free_function_traits {
     static constexpr bool is_free_function = false;
 };
 
 /// Concept of a free function, or a pointer to one (which are synonyms in C++).
-template <class T>
+template<class T>
 concept FreeFunction = free_function_traits<T>::is_free_function;
 
 /* free function */
 
-template <class Return, class... Params>
+template<class Return, class... Params>
 struct free_function_traits<Return(Params...)> {
     using return_type = Return;
 
     static constexpr size_t arity = sizeof...(Params);
 
-    template <size_t Index>
+    template<size_t Index>
     using parameter_at = type_at_t<Index, Params...>;
 
     static constexpr bool is_noexcept = false;
@@ -36,7 +36,7 @@ struct free_function_traits<Return(Params...)> {
     static constexpr bool is_free_function = true;
 };
 
-template <class Return, class... Params>
+template<class Return, class... Params>
 struct free_function_traits<Return(Params...) noexcept>
     : free_function_traits<Return(Params...)> {
     static constexpr bool is_noexcept = true;
@@ -44,11 +44,11 @@ struct free_function_traits<Return(Params...) noexcept>
 
 /* free function pointer */
 
-template <class Return, class... Params>
+template<class Return, class... Params>
 struct free_function_traits<Return (*)(Params...)>
     : free_function_traits<Return(Params...)> {};
 
-template <class Return, class... Params>
+template<class Return, class... Params>
 struct free_function_traits<Return (*)(Params...) noexcept>
     : free_function_traits<Return(Params...) noexcept> {};
 

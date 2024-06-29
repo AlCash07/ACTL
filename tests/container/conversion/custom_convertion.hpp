@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template <class T>
+template<class T>
 struct converted {
     T value;
 
@@ -21,7 +21,7 @@ struct converted {
     }
 };
 
-template <class To, class From>
+template<class To, class From>
 struct conversion<converted<To>, converted<From>> {
     static constexpr bool value = can_convert_to_v<To, From>;
 
@@ -30,7 +30,7 @@ struct conversion<converted<To>, converted<From>> {
     }
 };
 
-template <class To, class From>
+template<class To, class From>
 struct conversion<converted<To>, converted<From> const&>
     : conversion<converted<To>, converted<From>> {};
 

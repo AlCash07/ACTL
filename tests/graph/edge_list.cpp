@@ -17,7 +17,7 @@ TEST_CASE("edge_list none") {
     CHECK(std::is_same_v<void, decltype(graph[e])>);
 }
 
-template <class Dir, class EC>
+template<class Dir, class EC>
 void test_edge_list() {
     edge_list<Dir, int, EC> graph;
     test_edges(graph, 0, 1, 2);

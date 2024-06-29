@@ -19,14 +19,14 @@ namespace ac::io {
 
 struct text_tag {};
 
-template <class T>
+template<class T>
 concept TextDevice = Device<T> && !is_bin<T::mode>;
 
-template <class T>
+template<class T>
 concept TextFormat =
     Format<T> && std::same_as<typename T::format_tag, text_tag>;
 
-template <flag_t Flags = 0, uint8_t Base = 10, size_t Precision = 6>
+template<flag_t Flags = 0, uint8_t Base = 10, size_t Precision = 6>
 class text_static {
 public:
     using format_tag = text_tag;
@@ -81,25 +81,25 @@ text_static<> deduce_format(TextDevice auto&) {
     return {};
 }
 
-template <class S>
+template<class S>
     requires is_string_v<S>
 auto encode(TextFormat auto&, S const& s) {
     return span{std::basic_string_view<range_value_t<S>>{s}};
 }
 
-template <class... Ts>
+template<class... Ts>
 bool writeln(Device auto&& od, Ts&&... args) {
     return write(od, args..., raw{'\n'});
 }
 
 /* I/O manipulators analogous to https://en.cppreference.com/w/cpp/io/manip */
 
-template <flag_t Flag, bool Value>
+template<flag_t Flag, bool Value>
 struct setf {
     struct is_manipulator;
 };
 
-template <flag_t Group, flag_t Flag>
+template<flag_t Group, flag_t Flag>
 struct setg {
     struct is_manipulator;
 };
@@ -130,7 +130,7 @@ inline constexpr setg<groups::floatfield, flag::hexfloat> hexfloat{};
 inline constexpr setf<flag::showpoint, true> showpoint{};
 inline constexpr setf<flag::showpoint, false> noshowpoint{};
 
-template <flag_t Flag, bool Value>
+template<flag_t Flag, bool Value>
 void manipulate(Format auto& fmt, setf<Flag, Value>) {
     if constexpr (Value)
         fmt.setf(Flag);
@@ -138,7 +138,7 @@ void manipulate(Format auto& fmt, setf<Flag, Value>) {
         fmt.unsetf(Flag);
 }
 
-template <flag_t Group, flag_t Flag>
+template<flag_t Group, flag_t Flag>
 void manipulate(Format auto& fmt, setg<Group, Flag>) {
     fmt.setf(Flag, Group);
 }

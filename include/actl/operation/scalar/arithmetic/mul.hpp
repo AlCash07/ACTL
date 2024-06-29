@@ -15,7 +15,7 @@ namespace scalar {
 struct mul_f : scalar_operation<mul_f, 2> {
     using operation_category = multiplicative_operation_tag;
 
-    template <class T, class U>
+    template<class T, class U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs * rhs;
     }
@@ -34,20 +34,20 @@ struct mul_f : operation<mul_f> {
 };
 inline constexpr mul_f mul;
 
-template <class T>
+template<class T>
 struct identity_element<mul_f, T> {
     static constexpr T value() {
         return T{1};
     }
 };
 
-template <class T, class U>
+template<class T, class U>
     requires EnableOperators<T, U>
 constexpr auto operator*(T&& lhs, U&& rhs) {
     return mul(pass<T>(lhs), pass<U>(rhs));
 }
 
-template <class T, class U>
+template<class T, class U>
     requires EnableOperators<T, U>
 constexpr decltype(auto) operator*=(T&& lhs, U&& rhs) {
     return mul(inout{std::forward<T>(lhs)}, pass<U>(rhs));

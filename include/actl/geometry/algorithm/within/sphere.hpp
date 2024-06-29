@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template <index N, class T0, class T1>
+template<index N, class T0, class T1>
 enum within within(
     Policy auto const& policy, point<T0, N> const& p, sphere<T1, N> const& s
 ) {

@@ -33,14 +33,14 @@ struct logical_and_f : operation<logical_and_f> {
 };
 inline constexpr logical_and_f logical_and;
 
-template <class T>
+template<class T>
 struct identity_element<logical_and_f, T> {
     static constexpr T value() {
         return T{true};
     }
 };
 
-template <class T, class U>
+template<class T, class U>
     requires EnableOperators<T, U>
 constexpr auto operator&&(T&& lhs, U&& rhs) {
     return logical_and(pass<T>(lhs), pass<U>(rhs));
