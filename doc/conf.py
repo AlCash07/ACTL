@@ -10,8 +10,9 @@ breathe_default_project = "ACTL"
 highlight_language = "cpp"
 primary_domain = "cpp"
 
-extensions.append("sphinxjp.themes.basicstrap")
-html_theme = "basicstrap"
+import sphinx_bootstrap_theme
+html_theme = 'bootstrap'
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 html_copy_source = False
 
 extensions.append("sphinx.ext.autosectionlabel")
