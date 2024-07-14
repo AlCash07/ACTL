@@ -11,7 +11,7 @@ The main difference is that shell scripts are used insted of CMake commands for 
 but this may be revisited to make scripts portable.
 
 All the requirements can be installed using the
-`scripts/doc/setup.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/setup.sh>`_ script.
+`scripts/doc/install.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/install.sh>`_ script.
 
 Doxygen
 =======
