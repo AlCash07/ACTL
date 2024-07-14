@@ -1,5 +1,5 @@
 ********************************
-char_classes
+Character classification
 ********************************
 
 Character classification similar to the one provided in

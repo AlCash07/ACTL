@@ -1,8 +1,6 @@
 ********************************
-compiler
+Compiler detection
 ********************************
-
-Compiler detection macros
 
 Reference
 =========
