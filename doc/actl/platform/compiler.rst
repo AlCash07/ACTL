@@ -9,4 +9,4 @@ Reference
 
 :source:`Source code <platform/compiler.hpp>`
 
-:test:`Tests <platform/compiler.hpp>`
+:test:`Tests <platform/compiler.cpp>`
