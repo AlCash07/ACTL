@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/functional/noexcept/deduce_noexcept_and_initialize.hpp>
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_INITIALIZE.hpp>
 #include "functional/noexcept/is_int.hpp"
 
 struct Base {

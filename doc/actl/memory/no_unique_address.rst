@@ -20,8 +20,8 @@ For portability we need a custom wrapper until that's fixed. See
 Reference
 =========
 
-.. doxygenfile:: memory/no_unique_address.hpp
+.. doxygenfile:: memory/AC_NO_UNIQUE_ADDRESS.hpp
 
-:source:`Source code <memory/no_unique_address.hpp>`
+:source:`Source code <memory/AC_NO_UNIQUE_ADDRESS.hpp>`
 
 :test:`Tests <memory/no_unique_address.cpp>`

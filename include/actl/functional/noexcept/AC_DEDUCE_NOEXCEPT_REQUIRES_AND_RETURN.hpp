@@ -19,7 +19,7 @@
 /// bool operator > (T lhs, T rhs)
 ///     AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(rhs < lhs)
 /// @endcode
-/// @note Unlike #AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN, this macro requires
+/// Unlike #AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN, this macro requires
 /// return type specification, which can make the declaration more clear.
 #define AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(...) \
     noexcept(noexcept(__VA_ARGS__))                 \

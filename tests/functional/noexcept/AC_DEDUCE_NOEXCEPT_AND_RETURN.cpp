@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/functional/noexcept/deduce_noexcept_and_return.hpp>
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
 #include "functional/noexcept/is_int.hpp"
 
 template<class T>

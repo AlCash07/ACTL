@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
+#include <actl/AC_ASSERT.hpp>
 #include <actl/geometry/algorithm/intersect/intersect.hpp>
 #include <actl/geometry/algorithm/intersect/line_line_2d.hpp>
 #include <actl/geometry/algorithm/orientation/point_line.hpp>

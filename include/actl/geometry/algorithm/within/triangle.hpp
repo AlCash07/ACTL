@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
+#include <actl/AC_ASSERT.hpp>
 #include <actl/geometry/algorithm/orientation/point_point.hpp>
 #include <actl/geometry/algorithm/within/within.hpp>
 #include <actl/geometry/polygon.hpp>

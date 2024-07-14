@@ -19,7 +19,7 @@
 /// auto operator > (T lhs, T rhs)
 ///     AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(rhs < lhs)
 /// @endcode
-/// @note This macro is different from #AC_DEDUCE_NOEXCEPT_AND_RETURN, because
+/// This macro is different from #AC_DEDUCE_NOEXCEPT_AND_RETURN, because
 /// it correctly disables a function when the expression is ill-formed (SFINAE)
 /// instead of defining a function that always produces a compilation error.
 #define AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(...)          \

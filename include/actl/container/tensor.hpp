@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
+#include <actl/AC_ASSERT.hpp>
 #include <actl/container/array/semi_static_array.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/operation/scalar/basic_math/max.hpp>

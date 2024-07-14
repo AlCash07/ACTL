@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <actl/assert.hpp>
-#include <actl/functional/noexcept/deduce_noexcept_and_return.hpp>
+#include <actl/AC_ASSERT.hpp>
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
 #include <iterator>
 
 namespace ac {

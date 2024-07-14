@@ -4,17 +4,20 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/functional/noexcept/deduce_noexcept_decltype_and_return.hpp>
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN.hpp>
+#include <type_traits>
 #include "functional/noexcept/is_int.hpp"
 
+// Note that we can specify return type different from the wrapped function.
 template<class T>
-constexpr auto is_int_wrapped(T x)
-    AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(ac::is_int(x))
+constexpr int is_int_wrapped(T x)
+    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(ac::is_int(x))
 
 static_assert(noexcept(is_int_wrapped(0)));
-static_assert(is_int_wrapped(0));
+static_assert(std::is_same_v<int, decltype(is_int_wrapped(0))>);
+static_assert(0 != is_int_wrapped(0));
 static_assert(!noexcept(is_int_wrapped(-1.0)));
-static_assert(!is_int_wrapped(0.0));
+static_assert(0 == is_int_wrapped(0.0));
 
 template<class T>
 concept has_is_int_wrapped = requires(T x) { is_int_wrapped(x); };

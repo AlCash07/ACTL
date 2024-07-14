@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/functional/noexcept/deduce_noexcept_and_return.hpp>
-#include <actl/functional/noexcept/deduce_noexcept_decltype_and_return.hpp>
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN.hpp>
 #include <actl/meta/tuple.hpp>
 
 namespace ac {
