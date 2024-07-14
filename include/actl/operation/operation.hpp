@@ -29,8 +29,7 @@ struct operation {
         requires is_any_inout_v<Ts...>
     constexpr decltype(auto) operator()(Ts&&... xs) const& {
         static_assert(
-            1 == (... + is_inout_v<std::remove_reference_t<Ts>>),
-            "single inout argument expected"
+            1 == (... + is_inout_v<Ts>), "single inout argument expected"
         );
         auto&& op = resolve_overload<Ts...>(default_context{}, derived());
         auto& dst = find_dst(xs...);

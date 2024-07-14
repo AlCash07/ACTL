@@ -7,9 +7,9 @@
 #include <actl/operation/scalar/all.hpp>
 #include "test.hpp"
 
-TEST_CASE("output parameter") {
+TEST_CASE("expression assignment to out") {
     int res{};
-    CHECK(6 == (ac::out{res} = ac::add(2, 4)).x);
+    CHECK(6 == (ac::out{res} = ac::add(2, 4)));
     CHECK(6 == res);
     ac::out{res} = ac::add(2, res);
     CHECK(8 == res);

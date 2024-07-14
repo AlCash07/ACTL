@@ -12,15 +12,14 @@
 namespace ac {
 
 template<class... Ts>
-inline constexpr bool is_any_inout_v =
-    (... || is_inout_v<std::remove_cvref_t<Ts>>);
+inline constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);
 
 template<class T>
 struct raw<inout<T>> : raw<T> {};
 
 template<class T>
-constexpr T const& remove_inout(inout<T> const& x) {
-    return x.x;
+constexpr T const& remove_inout(inout<T>& x) {
+    return *x;
 }
 
 template<class T>
@@ -35,7 +34,7 @@ constexpr auto& find_dst(T&, Ts&... xs) {
 
 template<class T, class... Ts>
 constexpr T& find_dst(inout<T>& x, Ts&...) {
-    return x.x;
+    return *x;
 }
 
 } // namespace ac
