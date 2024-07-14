@@ -53,9 +53,9 @@ Detection traits
 .. doxygenvariable:: ac::is_out_v
 .. doxygenvariable:: ac::is_inout_v
 
-:source:`Source code <functional/parameters>`
+:source:`Source code <functional/parameter>`
 
-:test:`Tests <functional/out_inout.cpp>`
+:test:`Tests <functional/parameter/out_inout.cpp>`
 
 Design
 ======

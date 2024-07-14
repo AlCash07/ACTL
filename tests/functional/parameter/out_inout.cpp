@@ -4,8 +4,8 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/functional/parameters/inout.hpp>
-#include <actl/functional/parameters/out.hpp>
+#include <actl/functional/parameter/inout.hpp>
+#include <actl/functional/parameter/out.hpp>
 #include "test.hpp"
 
 namespace ac {

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/parameters/inout.hpp>
+#include <actl/functional/parameter/inout.hpp>
 #include <actl/operation/core/argument_traits.hpp>
 
 namespace ac {

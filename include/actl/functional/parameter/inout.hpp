@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_INITIALIZE.hpp>
-#include <actl/functional/parameters/out.hpp>
+#include <actl/functional/parameter/out.hpp>
 
 namespace ac {
 
