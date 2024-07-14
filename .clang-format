@@ -27,7 +27,7 @@ IncludeCategories:
   - Regex:         '^".*'
     SortPriority:  4
 IndentWidth:          4
-ObjCBlockIndentWidth: 4
+PPIndentWidth:       -1
 TabWidth:             4
 SpaceAfterTemplateKeyword: false
 SpacesBeforeTrailingComments: 1

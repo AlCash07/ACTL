@@ -6,10 +6,12 @@
 
 #pragma once
 
+#include <actl/platform/compiler.hpp>
+
 #define CAT_IMPL(x, y) x##y
 #define CAT(x, y) CAT_IMPL(x, y)
 
-#if __GNUG__
+#if AC_COMPILER_GCC_COMPATIBLE()
 
 #define EXPECT_TRUE(condition) __builtin_expect((condition), true)
 #define EXPECT_FALSE(condition) __builtin_expect((condition), false)

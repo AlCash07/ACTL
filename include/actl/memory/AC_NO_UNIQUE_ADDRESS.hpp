@@ -6,8 +6,10 @@
 
 #pragma once
 
+#include <actl/platform/compiler.hpp>
+
 /// Portable replacement for `[[no_unique_address]]` attribute.
-#ifdef _MSC_VER
+#if AC_COMPILER_MSVC()
 #define AC_NO_UNIQUE_ADDRESS [[msvc::no_unique_address]]
 #else
 #define AC_NO_UNIQUE_ADDRESS [[no_unique_address]]

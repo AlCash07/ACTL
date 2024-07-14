@@ -64,6 +64,6 @@ struct with_nested_empty {
 
 // Nested empty class objects should be able to share address,
 // but on MSVC they don't.
-#ifndef _MSC_VER
+#if !AC_COMPILER_MSVC()
 static_assert(sizeof(with_nested_empty) == sizeof(int));
 #endif

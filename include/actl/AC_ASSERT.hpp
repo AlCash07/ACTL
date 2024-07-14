@@ -6,13 +6,15 @@
 
 #pragma once
 
+#include <actl/platform/compiler.hpp>
+
 #ifndef AC_ASSERT
 #ifdef ACTL_DEBUG
 
 #include <stdexcept>
 #include <string>
 
-#ifdef _MSC_VER
+#if AC_COMPILER_MSVC()
 #define FUNCTION_NAME __FUNCSIG__
 #else
 #define FUNCTION_NAME __PRETTY_FUNCTION__

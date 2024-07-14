@@ -7,6 +7,7 @@
 #include <actl/container/array/static_array.hpp>
 #include <actl/meta/concepts/object/regular.hpp>
 #include <actl/meta/constant_literals.hpp>
+#include <actl/platform/compiler.hpp>
 #include <actl_test/base/equal_same_type.hpp>
 #include <catch2/catch_test_macros.hpp>
 
@@ -31,7 +32,7 @@ void test_static_array_constructors() {
     static_assert(!std::is_constructible_v<sa31, int, int>);
     static_assert(!std::is_constructible_v<sa31, int>);
     /* CTAD */
-#ifndef _MSC_VER // internal compiler error
+#if AC_COMPILER_MSVC() // internal compiler error
     static_assert(ac::equal_same_type(array, ac::static_array{3_c, 1_c}));
 #endif
 }

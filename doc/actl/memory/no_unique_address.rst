@@ -24,4 +24,4 @@ Reference
 
 :source:`Source code <memory/AC_NO_UNIQUE_ADDRESS.hpp>`
 
-:test:`Tests <memory/no_unique_address.cpp>`
+:test:`Tests <memory/AC_NO_UNIQUE_ADDRESS.cpp>`
