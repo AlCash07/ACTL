@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/functional/inlining/all.hpp>
+#include <actl/functional/name/all.hpp>
 #include <actl/functional/noexcept/all.hpp>
 #include <actl/functional/parameter/all.hpp>
 #include <actl/functional/traits/all.hpp>
