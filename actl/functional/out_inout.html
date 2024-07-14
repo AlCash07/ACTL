@@ -81,14 +81,21 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">out/inout parameters</a><ul>
-<li><a class="reference internal" href="#difference-between-out-and-inout">Difference between out and inout</a></li>
+<li><a class="reference internal" href="#difference-between-out-and-inout-parameters">Difference between out and inout parameters</a></li>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac3outE"><code class="docutils literal notranslate"><span class="pre">out</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3Arg"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">out::operator*()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">out::operator</span> <span class="pre">T()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">out::operator*()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">out::operator</span> <span class="pre">T()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4N2ac3outptEv"><code class="docutils literal notranslate"><span class="pre">out::operator-&gt;()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac3outaSER3outRR3Src"><code class="docutils literal notranslate"><span class="pre">out::operator=()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE"><code class="docutils literal notranslate"><span class="pre">inout</span></code></a></li>
+<li><a class="reference internal" href="#detection-traits">Detection traits</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac8is_out_vE"><code class="docutils literal notranslate"><span class="pre">is_out_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac10is_inout_vE"><code class="docutils literal notranslate"><span class="pre">is_inout_v</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -140,14 +147,21 @@
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
 <li><a class="reference internal" href="#">out/inout parameters</a><ul>
-<li><a class="reference internal" href="#difference-between-out-and-inout">Difference between out and inout</a></li>
+<li><a class="reference internal" href="#difference-between-out-and-inout-parameters">Difference between out and inout parameters</a></li>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac3outE"><code class="docutils literal notranslate"><span class="pre">out</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3Arg"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">out::operator*()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">out::operator</span> <span class="pre">T()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">out::operator*()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">out::operator</span> <span class="pre">T()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4N2ac3outptEv"><code class="docutils literal notranslate"><span class="pre">out::operator-&gt;()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac3outaSER3outRR3Src"><code class="docutils literal notranslate"><span class="pre">out::operator=()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE"><code class="docutils literal notranslate"><span class="pre">inout</span></code></a></li>
+<li><a class="reference internal" href="#detection-traits">Detection traits</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac8is_out_vE"><code class="docutils literal notranslate"><span class="pre">is_out_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac10is_inout_vE"><code class="docutils literal notranslate"><span class="pre">is_inout_v</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -179,25 +193,24 @@
   <section id="out-inout-parameters">
 <h1>out/inout parameters<a class="headerlink" href="#out-inout-parameters" title="Link to this heading">¶</a></h1>
 <p>One of the most important aspects of understanding the code behavior
-is to clearly see which values can change and when exactly.</p>
-<p>In modern C++ returning by value should be strongly preferred
-over output parameters.
-But there are cases where they are useful,
+is to clearly see which values can change and at which point.</p>
+<p>Modern C++ strongly encourages returning by value over output parameters.
+Structured binding and types like <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">optional</span></code> are the signs of that.
+However, output parameters are still useful in some cases,
 and C++ provides no built-in mechanism to distinguish them.</p>
-<p>For example, can you imagine any C++ newcomer to guess which parameter
+<p>For example, can you imagine a C++ newcomer to guess which parameter
 represents the output range of this algorithm?</p>
-<p><code class="docutils literal notranslate"><span class="pre">std::ranges::transform(x,</span> <span class="pre">y,</span> <span class="pre">z);</span></code></p>
-<p>We aim to make such code self-documenting with the help of simple wrappers:</p>
-<p><code class="docutils literal notranslate"><span class="pre">std::ranges::transform(x,</span> <span class="pre">ac::out{y},</span> <span class="pre">z);</span></code></p>
-<p>Google C++ style guide recognized this problem,
-but the proposed solution to use pointers was clearly misguided.
-And after many years this paragraph is finally removed from the guide</p>
-<p>“In fact it is a very strong convention in Google code that
-input arguments are values or const references
-while output arguments are pointers.”</p>
-<section id="difference-between-out-and-inout">
-<h2>Difference between out and inout<a class="headerlink" href="#difference-between-out-and-inout" title="Link to this heading">¶</a></h2>
-<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ac</span><span class="o">::</span><span class="n">inout</span></code> shouldn’t be used just because we read something from the parameter.
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">ranges</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>We aim to make such code more self-documenting with the help of simple wrappers:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ac</span><span class="o">::</span><span class="n">ranges</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">ac</span><span class="o">::</span><span class="n">out</span><span class="p">{</span><span class="n">y</span><span class="p">},</span><span class="w"> </span><span class="n">z</span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="difference-between-out-and-inout-parameters">
+<h2>Difference between out and inout parameters<a class="headerlink" href="#difference-between-out-and-inout-parameters" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ac::inout</span></code></a> shouldn’t be used just because
+we read something from the parameter.
 It should be used only if we read the referenced data.</p>
 <p>For example, <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">span</span></code> references a contiguous block of memory.
 But in order to access this memory, we clearly need to read
@@ -225,15 +238,21 @@ if we don’t read to referenced memory itself.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac3out3outERR3outI1UE">
-<span id="_CPPv3I0EN2ac3out3outERR3outI1UE"></span><span id="_CPPv2I0EN2ac3out3outERR3outI1UE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1out_1af5bea7292cb8789d8d470eb054bb785a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE" title="ac::out::out"><span class="n"><span class="pre">out</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE" title="ac::out::out::U"><span class="n"><span class="pre">U</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN2ac3out3outERR3outI1UE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Function arguments can undergo an implicit conversion to match the parameters type. For example, <code class="docutils literal notranslate"><span class="pre">std::vector&lt;int&gt;&amp;</span></code> to <code class="docutils literal notranslate"><span class="pre">std::span&lt;int&gt;</span></code>.</p>
-<p>This implicit constructor allows to preserve this behavior without an extra manual conversion when <code class="docutils literal notranslate"><span class="pre">out</span></code> wrapper is used if the wrapped types are implicitly convertible. For example, <code class="docutils literal notranslate"><span class="pre">out&lt;std::vector&lt;int&gt;&amp;&gt;</span></code> argument can be passed where <code class="docutils literal notranslate"><span class="pre">out&lt;std::span&lt;int&gt;&gt;</span></code> parameter is expected. </p>
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac3out3outERR3Arg">
+<span id="_CPPv3I0EN2ac3out3outERR3Arg"></span><span id="_CPPv2I0EN2ac3out3outERR3Arg"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arg</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1out_1aee07c3c1c9ae9a03d883e4f6c460f4d2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3Arg" title="ac::out::out::Arg"><span class="n"><span class="pre">Arg</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">arg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN2ac3out3outERR3Arg" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Constructor from an arbitrary type convertible to the wrapped type. </p>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N2ac3outmlEv">
-<span id="_CPPv3N2ac3outmlEv"></span><span id="_CPPv2N2ac3outmlEv"></span><span id="ac::out::mul-operator"></span><span class="target" id="classac_1_1out_1a52e2c8613373f752119755f8f1470f50"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N2ac3outmlEv" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac3out3outERR3outI1UE">
+<span id="_CPPv3I0EN2ac3out3outERR3outI1UE"></span><span id="_CPPv2I0EN2ac3out3outERR3outI1UE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1out_1af5bea7292cb8789d8d470eb054bb785a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE" title="ac::out::out"><span class="n"><span class="pre">out</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE" title="ac::out::out::U"><span class="n"><span class="pre">U</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN2ac3out3outERR3outI1UE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Function arguments in C++ can undergo an implicit conversion to match the parameter types. For example, <code class="docutils literal notranslate"><span class="pre">std::vector&lt;int&gt;&amp;</span></code> to <code class="docutils literal notranslate"><span class="pre">std::span&lt;int&gt;</span></code>.</p>
+<p>This implicit constructor allows to preserve this behavior without the extra manual conversion when <a class="reference internal" href="#classac_1_1out"><span class="std std-ref">ac::out</span></a> wrapper is used if the wrapped types are implicitly convertible. For example, <code class="docutils literal notranslate"><a class="reference internal" href="#classac_1_1out"><span class="std std-ref"><span class="pre">ac::out</span></span></a><span class="pre">&lt;std::vector&lt;int&gt;&amp;&gt;</span></code> argument can be passed where <code class="docutils literal notranslate"><a class="reference internal" href="#classac_1_1out"><span class="std std-ref"><span class="pre">ac::out</span></span></a><span class="pre">&lt;std::span&lt;int&gt;&gt;</span></code> parameter is expected. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK2ac3outmlEv">
+<span id="_CPPv3NK2ac3outmlEv"></span><span id="_CPPv2NK2ac3outmlEv"></span><span id="ac::out::mul-operatorC"></span><span class="target" id="classac_1_1out_1a20df7ba7cc49f1d63c98b69d57bbbf91"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK2ac3outmlEv" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Accesses the wrapped value. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -242,8 +261,8 @@ if we don’t read to referenced memory itself.</p>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N2ac3outcv1TEv">
-<span id="_CPPv3N2ac3outcv1TEv"></span><span id="_CPPv2N2ac3outcv1TEv"></span><span id="ac::out::castto-T-operatorCE"></span><span class="target" id="classac_1_1out_1a003e9347756b61d497a25f882c55df6f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out::T"><span class="n"><span class="pre">T</span></span></a></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N2ac3outcv1TEv" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK2ac3outcv1TEv">
+<span id="_CPPv3NK2ac3outcv1TEv"></span><span id="_CPPv2NK2ac3outcv1TEv"></span><span id="ac::out::castto-T-operatorCCE"></span><span class="target" id="classac_1_1out_1aeb6582a963982bb78b50411cd8461309"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out::T"><span class="n"><span class="pre">T</span></span></a></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK2ac3outcv1TEv" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Implicit conversion to the wrapped type. </p>
 </dd></dl>
 
@@ -264,11 +283,11 @@ if we don’t read to referenced memory itself.</p>
 <p>For example, if a third-party <code class="docutils literal notranslate"><span class="pre">Container</span></code> doesn’t support assignment from a range like <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">dstContainer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">srcRange</span><span class="p">;</span>
 </pre></div>
 </div>
- we can still achieve a similar syntax <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">out</span><span class="p">{</span><span class="n">dstContainer</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">srcRange</span><span class="p">;</span>
+ we can still achieve a similar syntax <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ac</span><span class="o">::</span><span class="n">out</span><span class="p">{</span><span class="n">dstContainer</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">srcRange</span><span class="p">;</span>
 </pre></div>
 </div>
  by implementing the <code class="docutils literal notranslate"><span class="pre">assign</span></code> function in the same namespace as Container: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">InRange</span><span class="o">&gt;</span>
-<span class="kt">void</span><span class="w"> </span><span class="n">assign</span><span class="p">(</span><span class="n">out</span><span class="o">&lt;</span><span class="n">Container</span><span class="o">&amp;&gt;</span><span class="w"> </span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">InRange</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">assign</span><span class="p">(</span><span class="n">ac</span><span class="o">::</span><span class="n">out</span><span class="o">&lt;</span><span class="n">Container</span><span class="o">&amp;&gt;</span><span class="w"> </span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">InRange</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
 </p>
@@ -278,73 +297,52 @@ if we don’t read to referenced memory itself.</p>
 </dd></dl>
 
 <dl class="cpp class">
-<dt class="sig sig-object cpp">
-<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inout</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out"><span class="n"><span class="pre">out</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac5inoutE">
+<span id="_CPPv3I0EN2ac5inoutE"></span><span id="_CPPv2I0EN2ac5inoutE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1inout"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inout</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out"><span class="n"><span class="pre">out</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac5inoutE" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Thin wrapper over a reference-like or a pointer-like type to specify an input-output function parameter.</p>
 <p>It helps to simplify reasoning about the code behavior by making potential variable modifications clearly visible at both the function definition and all the call sites.</p>
 <p>For example, in operations similar to sort it’s not immediately clear if we modify the argument in-place or return a new value: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">sort_range</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 </pre></div>
 </div>
- Using <code class="docutils literal notranslate"><span class="pre">ac::inout</span></code> wrapper, we can provide two clearly differentiated overloads, with <code class="docutils literal notranslate"><span class="pre">[[nodiscard]]</span></code> as another measure to prevent incorrect use: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Range</span><span class="o">&gt;</span>
-<span class="kt">void</span><span class="w"> </span><span class="n">sort_range</span><span class="p">(</span><span class="n">inout</span><span class="o">&lt;</span><span class="n">Range</span><span class="o">&amp;&gt;</span><span class="w"> </span><span class="n">range</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+ Using <a class="reference internal" href="#classac_1_1inout"><span class="std std-ref">ac::inout</span></a> wrapper, we can provide two clearly differentiated overloads, with <code class="docutils literal notranslate"><span class="pre">[[nodiscard]]</span></code> as another measure to prevent incorrect use: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Range</span><span class="o">&gt;</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">sort_range</span><span class="p">(</span><span class="n">ac</span><span class="o">::</span><span class="n">inout</span><span class="o">&lt;</span><span class="n">Range</span><span class="o">&amp;&gt;</span><span class="w"> </span><span class="n">range</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
 
 <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Range</span><span class="o">&gt;</span>
 <span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">Range</span><span class="w"> </span><span class="n">sort_range</span><span class="p">(</span><span class="n">Range</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">range</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
 
-<span class="n">sort_range</span><span class="p">(</span><span class="n">inout</span><span class="p">{</span><span class="n">x</span><span class="p">});</span>
+<span class="n">sort_range</span><span class="p">(</span><span class="n">ac</span><span class="o">::</span><span class="n">inout</span><span class="p">{</span><span class="n">x</span><span class="p">});</span>
 <span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sort_range</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 </pre></div>
 </div>
 </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inout</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN2ac5inout5inoutERR5inoutI1UE" title="ac::inout::inout"><span class="n"><span class="pre">inout</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac5inout5inoutERR5inoutI1UE" title="ac::inout::inout::U"><span class="n"><span class="pre">U</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">src</span></span><span class="sig-paren">)</span><br /></dt>
-<dd><p>See analogous <a class="reference internal" href="#classac_1_1out"><span class="std std-ref">ac::out</span></a> constructor. </p>
 </dd></dl>
 
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Src</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout"><span class="n"><span class="pre">inout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutaSER5inoutRR3Src" title="ac::inout::operator=::Src"><span class="n"><span class="pre">Src</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">src</span></span><span class="sig-paren">)</span><br /></dt>
-<dd><p>Analogous to <code class="docutils literal notranslate"><a class="reference internal" href="#classac_1_1out"><span class="std std-ref"><span class="pre">ac::out</span></span></a><span class="pre">&lt;T&gt;::operator=</span></code>. </p>
+<p>Interface of <a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ac::inout</span></code></a> basically repeats <a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ac::out</span></code></a>.</p>
+<section id="detection-traits">
+<h3>Detection traits<a class="headerlink" href="#detection-traits" title="Link to this heading">¶</a></h3>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac8is_out_vE">
+<span id="_CPPv3I0EN2ac8is_out_vE"></span><span id="_CPPv2I0EN2ac8is_out_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aea98923bae18dc09f5306bb346df1f50"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_out_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_out</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_cvref_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac8is_out_vE" title="ac::is_out_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><a class="headerlink" href="#_CPPv4I0EN2ac8is_out_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks whether T is a (possibly cvref-qualified) <a class="reference internal" href="#classac_1_1out"><span class="std std-ref">ac::out</span></a> wrapper. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>We need the override here to make the return type inout&amp; instead of out&amp;. </p>
+<p>If the program adds specializations for <a class="reference internal" href="#namespaceac_1a7cea51402fe25bdcae41277ebcf1939e"><span class="std std-ref">ac::is_inout_v</span></a>, the behavior is undefined. </p>
 </div>
 </dd></dl>
 
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><br /></dt>
-<dd><p>Accesses the wrapped value. </p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac10is_inout_vE">
+<span id="_CPPv3I0EN2ac10is_inout_vE"></span><span id="_CPPv2I0EN2ac10is_inout_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a7cea51402fe25bdcae41277ebcf1939e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_inout_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_inout</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_cvref_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac10is_inout_vE" title="ac::is_inout_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><a class="headerlink" href="#_CPPv4I0EN2ac10is_inout_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks whether T is a (possibly cvref-qualified) <a class="reference internal" href="#classac_1_1inout"><span class="std std-ref">ac::inout</span></a> wrapper. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>operator* is used for consistency with <code class="docutils literal notranslate"><span class="pre">std::optional</span></code>. Simple operator like this is even more appropriate here than in <code class="docutils literal notranslate"><span class="pre">std::optional</span></code>, because <code class="docutils literal notranslate"><span class="pre">std::optional</span></code> might not contain a value, but here it’s always available. </p>
-</div>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout::T"><span class="n"><span class="pre">T</span></span></a></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><br /></dt>
-<dd><p>Implicit conversion to the wrapped type. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_reference_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><br /></dt>
-<dd><p>Provides direct access to the members of the wrapped type as <code class="docutils literal notranslate"><span class="pre">out-&gt;member</span></code>. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>It would be better to support <code class="docutils literal notranslate"><span class="pre">out.member</span></code> syntax, but C++ doesn’t allow to overload <code class="docutils literal notranslate"><span class="pre">operator.</span></code> yet. </p>
-</div>
-</dd></dl>
-
+<p>If the program adds specializations for <a class="reference internal" href="#namespaceac_1a7cea51402fe25bdcae41277ebcf1939e"><span class="std std-ref">ac::is_inout_v</span></a>, the behavior is undefined. </p>
 </div>
 </dd></dl>
 
 <p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/parameters">Source code</a></p>
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/parameters.cpp">Tests</a></p>
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/out_inout.cpp">Tests</a></p>
+</section>
 </section>
 <section id="design">
 <h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
@@ -352,12 +350,19 @@ if we don’t read to referenced memory itself.</p>
 so they don’t enforce any guarantees about the parameters
 being actually written to.
 There are more advanced designs available with such guarantees,
-for example the one desribed in this article about the
+for example the one from this article about the
 <a class="reference external" href="https://www.foonathan.net/2016/10/output-parameter">output parameter</a>.
 But the added benefits don’t seem to be worth the extra complexity.
 Especially considering that returning by value should be strongly preferred
 over output parameters, so the latter are left to handle not single object,
 but ranges and the like.</p>
+<p>Google C++ style guide recognized the problem of output parameters,
+but the proposed solution to use pointers was clearly misguided:</p>
+<p>“In fact it is a very strong convention in Google code that
+input arguments are values or const references
+while output arguments are pointers.”</p>
+<p>After many years this paragraph is finally removed from the guide.
+But there’s no alternative provided, which we’re addressing here.</p>
 </section>
 </section>
 
