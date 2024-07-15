@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lazy evaluation &#8212; ACTL  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Name and signature" href="name.html" />
+    <link rel="prev" title="Inlining" href="inlining.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          ACTL</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../functional.html">functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meta.html">meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20code.html">Writing code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20documentation.html">Writing documentation</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Lazy evaluation</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I_NSt9invocableEEN2ac4lazyE"><code class="docutils literal notranslate"><span class="pre">lazy</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N2ac4lazycvNSt15invoke_result_tI8FunctionEEEv"><code class="docutils literal notranslate"><span class="pre">lazy::operator</span> <span class="pre">std::invoke_result_t&lt;Function&gt;()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="inlining.html" title="Previous Chapter: Inlining"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Inlining</span>
+    </a>
+  </li>
+  <li>
+    <a href="name.html" title="Next Chapter: Name and signature"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Name and signature &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Lazy evaluation</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I_NSt9invocableEEN2ac4lazyE"><code class="docutils literal notranslate"><span class="pre">lazy</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N2ac4lazycvNSt15invoke_result_tI8FunctionEEEv"><code class="docutils literal notranslate"><span class="pre">lazy::operator</span> <span class="pre">std::invoke_result_t&lt;Function&gt;()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="inlining.html" title="Previous Chapter: Inlining"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Inlining</span>
+    </a>
+  </li>
+  <li>
+    <a href="name.html" title="Next Chapter: Name and signature"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Name and signature &raquo;</span>
+    </a>
+  </li>
+<form action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="lazy-evaluation">
+<h1>Lazy evaluation<a class="headerlink" href="#lazy-evaluation" title="Link to this heading">¶</a></h1>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I_NSt9invocableEEN2ac4lazyE">
+<span id="_CPPv3I_NSt9invocableEEN2ac4lazyE"></span><span id="_CPPv2I_NSt9invocableEEN2ac4lazyE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">invocable</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structac_1_1lazy"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lazy</span></span></span><a class="headerlink" href="#_CPPv4I_NSt9invocableEEN2ac4lazyE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Wrapper to lazily evaluate a function (which has no parameters) only when the result is needed, specifically when conversion to the result is requested.</p>
+<p>This simple wrapper has surprisingly remarkable benefits:</p>
+<p><ol class="loweralpha simple">
+<li><p>It simplifies the code that uses the function result only conditionally, for example, when inserting an element into a map only if it doesn’t already exist: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">map</span><span class="p">.</span><span class="n">try_emplace</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">ac</span><span class="o">::</span><span class="n">lazy</span><span class="p">{</span><span class="n">computeValue</span><span class="p">});</span>
+</pre></div>
+</div>
+ If we want the function to be called only when necessary, the shortest alternative looks like this: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iter</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">    </span><span class="n">map</span><span class="p">.</span><span class="n">emplace_hint</span><span class="p">(</span><span class="n">iter</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">computeValue</span><span class="p">());</span>
+</pre></div>
+</div>
+</p></li>
+<li><p>Even when the function is always called unconditionally, approach similar to <a class="reference internal" href="#structac_1_1lazy"><span class="std std-ref">ac::lazy</span></a> is the only way to avoid an extra move constructor when emplacing a function result into a container. If a move constructor is not defined, copy constructor is called instead.</p></li>
+</ol>
+</p>
+<p>For example, the first line here results in the extra move constructor of the result, while the second doesn’t: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="w"> </span><span class="n">optional1</span><span class="p">{</span><span class="n">computeValue</span><span class="p">()};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="w"> </span><span class="n">optional2</span><span class="p">{</span><span class="n">ac</span><span class="o">::</span><span class="n">lazy</span><span class="p">{</span><span class="n">computeValue</span><span class="p">}};</span>
+</pre></div>
+</div>
+</p>
+<p>For the in-depth explanation, please refer to this article, where the analog is called <code class="docutils literal notranslate"><span class="pre">with_result_of_t</span></code> (I hope you’ll find our naming better): <a class="reference external" href="https://quuxplusone.github.io/blog/2018/05/17/super-elider-round-2/">https://quuxplusone.github.io/blog/2018/05/17/super-elider-round-2/</a></p>
+<p>Or to the original source of the idea: <a class="reference external" href="https://akrzemi1.wordpress.com/2018/05/16/rvalues-redefined/">https://akrzemi1.wordpress.com/2018/05/16/rvalues-redefined/</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the simplest possible implementation, so it doesn’t perform any result caching for the case where it can be used multiple times. </p>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N2ac4lazycvNSt15invoke_result_tI8FunctionEEEv">
+<span id="_CPPv3N2ac4lazycvNSt15invoke_result_tI8FunctionEEEv"></span><span id="_CPPv2N2ac4lazycvNSt15invoke_result_tI8FunctionEEEv"></span><span id="ac::lazy::castto-std::invoke_result_t:Function:-operator"></span><span class="target" id="structac_1_1lazy_1a2e4d8d4aa400634d3e323561c944cad1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">invoke_result_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_NSt9invocableEEN2ac4lazyE" title="ac::lazy::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N2ac4lazycvNSt15invoke_result_tI8FunctionEEEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Function result can be constructed from <a class="reference internal" href="#structac_1_1lazy"><span class="std std-ref">ac::lazy</span></a> thanks to this conversion operator. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/lazy.hpp">Source code</a></p>
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/lazy.cpp">Tests</a></p>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

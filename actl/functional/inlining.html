@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>compiler &#8212; ACTL  documentation</title>
+    <title>Inlining &#8212; ACTL  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
@@ -13,8 +13,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="string" href="../string.html" />
-    <link rel="prev" title="platform" href="../platform.html" />
+    <link rel="next" title="Lazy evaluation" href="lazy.html" />
+    <link rel="prev" title="functional" href="../functional.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -56,10 +56,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../functional.html">functional</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../functional.html">functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meta.html">meta</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
@@ -81,7 +81,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">compiler</a><ul>
+<li><a class="reference internal" href="#">Inlining</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
@@ -94,11 +94,11 @@
               
                 
   <li>
-    <a href="../platform.html" title="Previous Chapter: platform"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; platform</span>
+    <a href="../functional.html" title="Previous Chapter: functional"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; functional</span>
     </a>
   </li>
   <li>
-    <a href="../string.html" title="Next Chapter: string"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">string &raquo;</span>
+    <a href="lazy.html" title="Next Chapter: Lazy evaluation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Lazy evaluation &raquo;</span>
     </a>
   </li>
               
@@ -128,18 +128,18 @@
   <div class="row">
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
-<li><a class="reference internal" href="#">compiler</a><ul>
+<li><a class="reference internal" href="#">Inlining</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
 </ul>
 
   <li>
-    <a href="../platform.html" title="Previous Chapter: platform"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; platform</span>
+    <a href="../functional.html" title="Previous Chapter: functional"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; functional</span>
     </a>
   </li>
   <li>
-    <a href="../string.html" title="Next Chapter: string"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">string &raquo;</span>
+    <a href="lazy.html" title="Next Chapter: Lazy evaluation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Lazy evaluation &raquo;</span>
     </a>
   </li>
 <form action="../../search.html" method="get">
@@ -153,36 +153,34 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <section id="compiler">
-<h1>compiler<a class="headerlink" href="#compiler" title="Link to this heading">¶</a></h1>
-<p>Compiler detection macros</p>
+  <section id="inlining">
+<h1>Inlining<a class="headerlink" href="#inlining" title="Link to this heading">¶</a></h1>
+<p>Function inlining is an important concept for performance optimizations.
+However, standard C++ provides only a single
+<a class="reference external" href="https://en.cppreference.com/w/cpp/language/inline">inline</a> specifier,
+which doesn’t have its behavior defined precisely.
+We address this by exposing related compiler extensions in a portable way.</p>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
 <dl class="cpp macro">
-<dt class="sig sig-object cpp" id="c.AC_COMPILER_GCC">
-<span class="target" id="compiler_8hpp_1a0bcbeb579c0b91624c48fe1403b388b0"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_COMPILER_GCC</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_COMPILER_GCC" title="Link to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="cpp macro">
-<dt class="sig sig-object cpp" id="c.AC_COMPILER_CLANG">
-<span class="target" id="compiler_8hpp_1ab6571b545d7f171436bbf573d5682384"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_COMPILER_CLANG</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_COMPILER_CLANG" title="Link to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="cpp macro">
-<dt class="sig sig-object cpp" id="c.AC_COMPILER_MSVC">
-<span class="target" id="compiler_8hpp_1aa58432419d932fe0d2d3e7b06b8feb5b"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_COMPILER_MSVC</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_COMPILER_MSVC" title="Link to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="cpp macro">
-<dt class="sig sig-object cpp" id="c.AC_COMPILER_GCC_COMPATIBLE">
-<span class="target" id="compiler_8hpp_1a99b6f5d13ae038bccab2386ffffa050e"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_COMPILER_GCC_COMPATIBLE</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_COMPILER_GCC_COMPATIBLE" title="Link to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object cpp" id="c.AC_ALWAYS_INLINE">
+<span class="target" id="_a_c___a_l_w_a_y_s___i_n_l_i_n_e_8hpp_1a4c1092569324ca58d8af2db2761cb044"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_ALWAYS_INLINE</span></span></span><a class="headerlink" href="#c.AC_ALWAYS_INLINE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Macro to force inlining of a function.</p>
+<p>Should be used with caution to avoid undesirable binary size increase.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s not recommended to overuse it, because it disables stepping into the function in debug mode on some platforms. </p>
 </div>
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/platform/compiler.hpp">Source code</a></p>
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/platform/compiler.hpp">Tests</a></p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AC_NEVER_INLINE">
+<span class="target" id="_a_c___n_e_v_e_r___i_n_l_i_n_e_8hpp_1a3f66a422da9a40b7ca789804b4d82ff9"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_NEVER_INLINE</span></span></span><a class="headerlink" href="#c.AC_NEVER_INLINE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Macro to prevent inlining of a function. </p>
+</dd></dl>
+
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/inlining">Source code</a></p>
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/inlining">Tests</a></p>
 </section>
 </section>
 
