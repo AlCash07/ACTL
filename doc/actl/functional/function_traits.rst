@@ -1,10 +1,10 @@
 ********************************
-Callable traits
+Function traits
 ********************************
 
-:struct:`ac::callable_traits` provides information about a callable,
+:struct:`ac::function_traits` provides information about a function,
 such as return and parameter types.
-The following callables are supported:
+The following function types are supported:
 
 * free functions;
 * free function pointers;
@@ -28,10 +28,7 @@ The most convenient way to use the traits is through the following interface:
 
 The same information is available as members of
 
-.. doxygenstruct:: ac::callable_traits
-.. doxygenstruct:: ac::free_function_traits
-.. doxygenstruct:: ac::member_function_traits
-.. doxygenstruct:: ac::function_object_traits
+.. doxygenstruct:: ac::function_traits
 
 The following concepts are provided:
 

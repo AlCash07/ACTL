@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/traits/free_function_traits.hpp>
+#include <actl/functional/category/free_function.hpp>
 
 namespace ac {
 
