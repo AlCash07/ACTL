@@ -13,7 +13,7 @@ The following callables are supported:
 * const and reference-qualified versions of the above types.
 
 This is a lightweight analog of `Boost.CallableTraits
-<https://www.boost.org/doc/libs/1_78_0/libs/callable_traits/doc/html/index.html>`_
+<https://www.boost.org/doc/libs/1_85_0/libs/callable_traits/doc/html/index.html>`_
 with limited functionality.
 
 Reference
@@ -48,3 +48,26 @@ Design
 
 The following `reference <https://functionalcpp.wordpress.com/2013/08/05/function-traits/>`_
 was used at first, but it was heavily expanded.
+
+Qualified free functions
+------------------------
+
+`Boost.CallableTraits
+<https://www.boost.org/doc/libs/1_85_0/libs/callable_traits/doc/html/index.html>`_
+supports qualified free function types like
+
+.. code::
+
+  Return(Args...) const volatile &&
+
+These types indeed exist in C++, but declaring a function like
+`void f() const {}` results in a compilation error.
+This is confirmed by
+`cppreference <https://en.cppreference.com/w/cpp/language/function>`_:
+
+  cv	-	const/volatile qualification, only allowed in non-static member function declarations
+
+  ref	-	(since C++11) ref-qualification, only allowed in non-static member function declarations
+
+It's not clear why such types exist if they cannot be used in a declaration.
+For this reason, our function traits don't support them.
