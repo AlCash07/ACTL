@@ -10,7 +10,7 @@
 // So, we only test that function definitions are compiled successfully.
 // TODO: provide more meaningful examples.
 
-AC_ALWAYS_INLINE int force_inlined() {
+AC_ALWAYS_INLINE int always_inlined() {
     return 2;
 }
 
