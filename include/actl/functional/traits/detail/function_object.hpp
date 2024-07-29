@@ -7,20 +7,16 @@
 #pragma once
 
 #include <actl/functional/category/function_object.hpp>
-#include <actl/functional/category/member_function.hpp>
+#include <actl/functional/traits/detail/member_function.hpp>
 
 namespace ac::detail {
-
-template<class Fn>
-struct function_traits {};
 
 template<class Fn>
     requires FunctionObject<std::remove_reference_t<Fn>>
 struct function_traits<Fn> {
 private:
     using operator_traits =
-        member_function_traits<decltype(&std::remove_reference_t<Fn>::operator()
-        )>;
+        function_traits<decltype(&std::remove_reference_t<Fn>::operator())>;
 
 public:
     using return_type = typename operator_traits::return_type;
