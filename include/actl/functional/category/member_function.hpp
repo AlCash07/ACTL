@@ -36,31 +36,31 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 
 } // namespace detail
 
-#define DEFINE_MEMBER_FUNTIONS_TRAITS_1(VARARGS) \
-    DEFINE_MFT_2(VARARGS, )                      \
-    DEFINE_MFT_2(VARARGS, const)
+#define DEFINE_MEMBER_FUNTIONS_TRAITS_1(PARAMETERS) \
+    DEFINE_MFT_2(PARAMETERS, )                      \
+    DEFINE_MFT_2(PARAMETERS, const)
 
-#define DEFINE_MFT_2(VARARGS, CONST) \
-    DEFINE_MFT_3(VARARGS, CONST, )   \
-    DEFINE_MFT_3(VARARGS, CONST, volatile)
+#define DEFINE_MFT_2(PARAMETERS, CONST) \
+    DEFINE_MFT_3(PARAMETERS, CONST, )   \
+    DEFINE_MFT_3(PARAMETERS, CONST, volatile)
 
-#define DEFINE_MFT_3(VARARGS, CONST, VOLATILE) \
-    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, )   \
-    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, &)  \
-    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, &&)
+#define DEFINE_MFT_3(PARAMETERS, CONST, VOLATILE) \
+    DEFINE_MFT_4(PARAMETERS, CONST, VOLATILE, )   \
+    DEFINE_MFT_4(PARAMETERS, CONST, VOLATILE, &)  \
+    DEFINE_MFT_4(PARAMETERS, CONST, VOLATILE, &&)
 
-#define DEFINE_MFT_4(VARARGS, CONST, VOLATILE, REF) \
-    DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, )   \
-    DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, noexcept)
+#define DEFINE_MFT_4(PARAMETERS, CONST, VOLATILE, REF) \
+    DEFINE_MFT_5(PARAMETERS, CONST, VOLATILE, REF, )   \
+    DEFINE_MFT_5(PARAMETERS, CONST, VOLATILE, REF, noexcept)
 
-#define DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, NOEXCEPT) \
-    template<class Class, class Return, class... Parameters>  \
-    struct member_function_traits<Return (Class::*)(          \
-        Parameters... AC_UNPARENTHESIZED VARARGS              \
-    ) CONST VOLATILE REF NOEXCEPT>                            \
-        : detail::member_as_free_fn<Return(                   \
-              detail::class_t<Class CONST VOLATILE REF>,      \
-              Parameters... AC_UNPARENTHESIZED VARARGS        \
+#define DEFINE_MFT_5(PARAMETERS, CONST, VOLATILE, REF, NOEXCEPT) \
+    template<class Class, class Return, class... Parameters>     \
+    struct member_function_traits<Return (Class::*)(             \
+        AC_UNPARENTHESIZED PARAMETERS                            \
+    ) CONST VOLATILE REF NOEXCEPT>                               \
+        : detail::member_as_free_fn<Return(                      \
+              detail::class_t<Class CONST VOLATILE REF>,         \
+              AC_UNPARENTHESIZED PARAMETERS                      \
           ) NOEXCEPT> {};
 
 // We define all possible member function traits using a chain of macros,
@@ -70,9 +70,9 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 // 3. volatile qualifier: empty or volatile
 // 4. reference qualifier: empty, & or &&
 // 5. noexcept qualifier: empty or noexcept
-DEFINE_MEMBER_FUNTIONS_TRAITS_1(())
+DEFINE_MEMBER_FUNTIONS_TRAITS_1((Parameters...))
 // Extra () is required because of the comma inside.
-DEFINE_MEMBER_FUNTIONS_TRAITS_1((, ...))
+DEFINE_MEMBER_FUNTIONS_TRAITS_1((Parameters..., ...))
 
 #undef DEFINE_MEMBER_FUNTIONS_TRAITS_1
 #undef DEFINE_MFT_2
