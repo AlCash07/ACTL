@@ -28,52 +28,32 @@ struct member_as_free_fn : free_function_traits<Fn> {
 
 } // namespace detail
 
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...)>
-    : detail::member_as_free_fn<Return(Class&, Params...)> {};
+#define DEFINE_MEMBER_FUNCTION_TRAITS_5(CONST, REF, REF_ACTUAL, NOEXCEPT)     \
+    template<class Class, class Return, class... Params>                      \
+    struct member_function_traits<Return (Class::*)(Params...)                \
+                                      CONST REF NOEXCEPT>                     \
+        : detail::member_as_free_fn<Return(Class CONST REF_ACTUAL, Params...) \
+                                        NOEXCEPT> {};
 
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) noexcept>
-    : detail::member_as_free_fn<Return(Class&, Params...) noexcept> {};
+// We use different REF and REF_ACTUAL,
+// because empty member function reference qualification
+// actually implies lvalue reference for the class,
+// see DEFINE_MEMBER_FUNCTION_TRAITS_2.
+#define DEFINE_MEMBER_FUNCTION_TRAITS_4(CONST, REF, REF_ACTUAL) \
+    DEFINE_MEMBER_FUNCTION_TRAITS_5(CONST, REF, REF_ACTUAL, )   \
+    DEFINE_MEMBER_FUNCTION_TRAITS_5(CONST, REF, REF_ACTUAL, noexcept)
 
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const>
-    : detail::member_as_free_fn<Return(Class const&, Params...)> {};
+#define DEFINE_MEMBER_FUNCTION_TRAITS_2(CONST)   \
+    DEFINE_MEMBER_FUNCTION_TRAITS_4(CONST, , &)  \
+    DEFINE_MEMBER_FUNCTION_TRAITS_4(CONST, &, &) \
+    DEFINE_MEMBER_FUNCTION_TRAITS_4(CONST, &&, &&)
 
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const noexcept>
-    : detail::member_as_free_fn<Return(Class const&, Params...) noexcept> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...)&>
-    : detail::member_as_free_fn<Return(Class&, Params...)> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) & noexcept>
-    : detail::member_as_free_fn<Return(Class&, Params...) noexcept> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const&>
-    : detail::member_as_free_fn<Return(Class const&, Params...)> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const & noexcept>
-    : detail::member_as_free_fn<Return(Class const&, Params...) noexcept> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) &&>
-    : detail::member_as_free_fn<Return(Class&&, Params...)> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) && noexcept>
-    : detail::member_as_free_fn<Return(Class&&, Params...) noexcept> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const&&>
-    : detail::member_as_free_fn<Return(Class const&&, Params...)> {};
-
-template<class Class, class Return, class... Params>
-struct member_function_traits<Return (Class::*)(Params...) const && noexcept>
-    : detail::member_as_free_fn<Return(Class const&&, Params...) noexcept> {};
+// We define all possible member function traits using a chain of macros,
+// which enumerate separate properties in the following order:
+// 2. const qualifier: empty or const
+// 4. reference qualifier: empty, & or &&
+// 5. noexcept qualifier: empty or noexcept
+DEFINE_MEMBER_FUNCTION_TRAITS_2()
+DEFINE_MEMBER_FUNCTION_TRAITS_2(const)
 
 } // namespace ac

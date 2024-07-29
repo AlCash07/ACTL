@@ -55,7 +55,7 @@ supports qualified free function types like
 
 .. code::
 
-  Return(Args...) const volatile &&
+  Return(Args...) const volatile &
 
 These types indeed exist in C++, but declaring a function like
 `void f() const {}` results in a compilation error.
