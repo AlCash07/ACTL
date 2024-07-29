@@ -8,6 +8,7 @@
 
 #include <actl/functional/category/free_function.hpp>
 #include <actl/preprocessor/AC_UNPARENTHESIZED.hpp>
+#include <type_traits>
 
 namespace ac {
 
@@ -27,6 +28,12 @@ struct member_as_free_fn : free_function_traits<Fn> {
     static constexpr bool is_member_function = true;
 };
 
+// Class parameter of a member function is always a reference.
+// This helper trait ensures this by adding lvalue reference
+// when member function reference qualification is empty.
+template<class T>
+using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
+
 } // namespace detail
 
 #define DEFINE_MEMBER_FUNTIONS_TRAITS_1(VARARGS) \
@@ -37,27 +44,23 @@ struct member_as_free_fn : free_function_traits<Fn> {
     DEFINE_MFT_3(VARARGS, CONST, )   \
     DEFINE_MFT_3(VARARGS, CONST, volatile)
 
-#define DEFINE_MFT_3(VARARGS, CONST, VOLATILE)   \
-    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, , &)  \
-    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, &, &) \
-    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, &&, &&)
+#define DEFINE_MFT_3(VARARGS, CONST, VOLATILE) \
+    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, )   \
+    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, &)  \
+    DEFINE_MFT_4(VARARGS, CONST, VOLATILE, &&)
 
-// We use different REF and REF_ACTUAL,
-// because empty member function reference qualification
-// actually implies lvalue reference for the class,
-// see DEFINE_MFT_3.
-#define DEFINE_MFT_4(VARARGS, CONST, VOLATILE, REF, REF_ACTUAL) \
-    DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, REF_ACTUAL, )   \
-    DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, REF_ACTUAL, noexcept)
+#define DEFINE_MFT_4(VARARGS, CONST, VOLATILE, REF) \
+    DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, )   \
+    DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, noexcept)
 
-#define DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, REF_ACTUAL, NOEXCEPT) \
-    template<class Class, class Return, class... Parameters>              \
-    struct member_function_traits<Return (Class::*)(                      \
-        Parameters... AC_UNPARENTHESIZED VARARGS                          \
-    ) CONST VOLATILE REF NOEXCEPT>                                        \
-        : detail::member_as_free_fn<Return(                               \
-              Class CONST VOLATILE REF_ACTUAL,                            \
-              Parameters... AC_UNPARENTHESIZED VARARGS                    \
+#define DEFINE_MFT_5(VARARGS, CONST, VOLATILE, REF, NOEXCEPT) \
+    template<class Class, class Return, class... Parameters>  \
+    struct member_function_traits<Return (Class::*)(          \
+        Parameters... AC_UNPARENTHESIZED VARARGS              \
+    ) CONST VOLATILE REF NOEXCEPT>                            \
+        : detail::member_as_free_fn<Return(                   \
+              detail::class_t<Class CONST VOLATILE REF>,      \
+              Parameters... AC_UNPARENTHESIZED VARARGS        \
           ) NOEXCEPT> {};
 
 // We define all possible member function traits using a chain of macros,
