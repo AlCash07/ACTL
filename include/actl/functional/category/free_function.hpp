@@ -22,34 +22,58 @@ concept FreeFunction = free_function_traits<T>::is_free_function;
 
 /* free function */
 
-template<class Return, class... Params>
-struct free_function_traits<Return(Params...)> {
+template<class Return, class... Parameters>
+struct free_function_traits<Return(Parameters...)> {
     using return_type = Return;
 
-    static constexpr size_t arity = sizeof...(Params);
+    static constexpr size_t arity = sizeof...(Parameters);
 
     template<size_t Index>
-    using parameter_at = type_at_t<Index, Params...>;
+    using parameter_at = type_at_t<Index, Parameters...>;
+
+    static constexpr bool accepts_variadic_arguments = false;
 
     static constexpr bool is_noexcept = false;
 
     static constexpr bool is_free_function = true;
 };
 
-template<class Return, class... Params>
-struct free_function_traits<Return(Params...) noexcept>
-    : free_function_traits<Return(Params...)> {
+template<class Return, class... Parameters>
+struct free_function_traits<Return(Parameters...) noexcept>
+    : free_function_traits<Return(Parameters...)> {
+    static constexpr bool is_noexcept = true;
+};
+
+template<class Return, class... Parameters>
+struct free_function_traits<Return(Parameters..., ...)>
+    : free_function_traits<Return(Parameters...)> {
+    static constexpr bool accepts_variadic_arguments = true;
+};
+
+template<class Return, class... Parameters>
+struct free_function_traits<Return(Parameters..., ...) noexcept>
+    : free_function_traits<Return(Parameters...)> {
+    static constexpr bool accepts_variadic_arguments = true;
+
     static constexpr bool is_noexcept = true;
 };
 
 /* free function pointer */
 
-template<class Return, class... Params>
-struct free_function_traits<Return (*)(Params...)>
-    : free_function_traits<Return(Params...)> {};
+template<class Return, class... Parameters>
+struct free_function_traits<Return (*)(Parameters...)>
+    : free_function_traits<Return(Parameters...)> {};
 
-template<class Return, class... Params>
-struct free_function_traits<Return (*)(Params...) noexcept>
-    : free_function_traits<Return(Params...) noexcept> {};
+template<class Return, class... Parameters>
+struct free_function_traits<Return (*)(Parameters...) noexcept>
+    : free_function_traits<Return(Parameters...) noexcept> {};
+
+template<class Return, class... Parameters>
+struct free_function_traits<Return (*)(Parameters..., ...)>
+    : free_function_traits<Return(Parameters..., ...)> {};
+
+template<class Return, class... Parameters>
+struct free_function_traits<Return (*)(Parameters..., ...) noexcept>
+    : free_function_traits<Return(Parameters..., ...) noexcept> {};
 
 } // namespace ac

@@ -24,6 +24,7 @@ The most convenient way to use the traits is through the following interface:
 .. doxygentypedef:: ac::return_t
 .. doxygenvariable:: ac::arity_v
 .. doxygentypedef:: ac::parameter_at_t
+.. doxygenvariable:: ac::accepts_variadic_arguments_v
 .. doxygenvariable:: ac::is_noexcept_v
 
 The same information is available as members of

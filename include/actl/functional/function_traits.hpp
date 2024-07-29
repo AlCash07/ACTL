@@ -43,6 +43,10 @@ using parameter_at_t =
     typename function_traits<Fn>::template parameter_at<Index>;
 
 template<class Fn>
+inline constexpr bool accepts_variadic_arguments_v =
+    function_traits<Fn>::accepts_variadic_arguments;
+
+template<class Fn>
 inline constexpr bool is_noexcept_v = function_traits<Fn>::is_noexcept;
 
 } // namespace ac
