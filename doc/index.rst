@@ -28,6 +28,7 @@ Sub-libraries that emerged as helper utilities and can be used in various contex
    actl/meta
    actl/memory
    actl/platform
+   actl/preprocessor
 
 Thematic libraries focused on a specific topic:
 
