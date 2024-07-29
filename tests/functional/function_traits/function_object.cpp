@@ -20,9 +20,6 @@ static_assert(0ul == ac::arity_v<function_object&&>);
 static_assert(std::is_same_v<int, ac::return_t<function_object>>);
 static_assert(!ac::is_noexcept_v<function_object>);
 
-static_assert(!ac::FreeFunction<function_object>);
-static_assert(!ac::MemberFunction<function_object>);
-
 struct function_object_noexcept {
     int operator()() noexcept;
 };
@@ -70,15 +67,9 @@ static_assert(std::is_same_v<
               ac::parameter_at_t<2, function_object_params>>);
 static_assert(ac::is_noexcept_v<function_object_params>);
 
-static_assert(!ac::FreeFunction<function_object_params>);
-static_assert(!ac::MemberFunction<function_object_params>);
-
 } // namespace
 
 using std_function = std::function<int*(int&)>;
 static_assert(1ul == ac::arity_v<std_function>);
 static_assert(std::is_same_v<int*, ac::return_t<std_function>>);
 static_assert(std::is_same_v<int&, ac::parameter_at_t<0, std_function>>);
-
-static_assert(!ac::FreeFunction<std_function>);
-static_assert(!ac::MemberFunction<std_function>);

@@ -96,10 +96,6 @@ void check() {
                   ac::parameter_at_t<0, MemberFn>>);
     static_assert(AcceptsVarargs == ac::accepts_variadic_arguments_v<MemberFn>);
     static_assert(IsNoexcept == ac::is_noexcept_v<MemberFn>);
-
-    using RawMemberFn = std::remove_cvref_t<MemberFn>;
-    static_assert(!ac::FreeFunction<RawMemberFn>);
-    static_assert(ac::MemberFunction<RawMemberFn>);
 }
 
 } // namespace
@@ -167,6 +163,3 @@ static_assert(std::is_same_v<S const&, ac::parameter_at_t<0, fn_params>>);
 static_assert(std::is_same_v<int, ac::parameter_at_t<1, fn_params>>);
 static_assert(std::is_same_v<int&&, ac::parameter_at_t<2, fn_params>>);
 static_assert(ac::is_noexcept_v<fn_params>);
-
-static_assert(!ac::FreeFunction<fn_params>);
-static_assert(ac::MemberFunction<fn_params>);

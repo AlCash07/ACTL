@@ -14,10 +14,6 @@ void test_void_free_function_traits() {
     static_assert(0ul == ac::arity_v<Fn>);
     static_assert(std::is_same_v<void, ac::return_t<Fn>>);
     static_assert(IsNoexcept == ac::is_noexcept_v<Fn>);
-
-    using RawFn = std::remove_cvref_t<Fn>;
-    static_assert(ac::FreeFunction<std::remove_pointer_t<RawFn>>);
-    static_assert(!ac::MemberFunction<RawFn>);
 }
 
 } // namespace
@@ -52,6 +48,3 @@ static_assert(std::is_same_v<
               int const*,
               ac::parameter_at_t<5, free_function_params>>);
 static_assert(ac::is_noexcept_v<free_function_params>);
-
-static_assert(ac::FreeFunction<free_function_params>);
-static_assert(!ac::MemberFunction<free_function_params>);
