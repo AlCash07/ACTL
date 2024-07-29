@@ -36,31 +36,6 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 
 } // namespace detail
 
-#define DEFINE_MEMBER_FUNTIONS_TRAITS_1(PARAMETERS) \
-    DEFINE_MFT_2(PARAMETERS, )                      \
-    DEFINE_MFT_2(PARAMETERS, const)
-
-#define DEFINE_MFT_2(PARAMETERS, CONST) \
-    DEFINE_MFT_3(PARAMETERS, CONST)     \
-    DEFINE_MFT_3(PARAMETERS, CONST volatile)
-
-#define DEFINE_MFT_3(PARAMETERS, CV) \
-    DEFINE_MFT_4(PARAMETERS, CV)     \
-    DEFINE_MFT_4(PARAMETERS, CV&)    \
-    DEFINE_MFT_4(PARAMETERS, CV&&)
-
-#define DEFINE_MFT_4(PARAMETERS, CV_REF) \
-    DEFINE_MFT_5(PARAMETERS, CV_REF, )   \
-    DEFINE_MFT_5(PARAMETERS, CV_REF, noexcept)
-
-#define DEFINE_MFT_5(PARAMETERS, CV_REF, NOEXCEPT)                         \
-    template<class Class, class Return, class... Parameters>               \
-    struct member_function_traits<                                         \
-        Return (Class::*)(AC_UNPARENTHESIZED PARAMETERS) CV_REF NOEXCEPT>  \
-        : detail::member_as_free_fn<Return(                                \
-              detail::class_t<Class CV_REF>, AC_UNPARENTHESIZED PARAMETERS \
-          ) NOEXCEPT> {};
-
 // We define all possible member function traits using a chain of macros,
 // which enumerate separate properties in the following order:
 // 1. variadic arguments: empty or ...
@@ -68,14 +43,43 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 // 3. volatile qualifier: empty or volatile
 // 4. reference qualifier: empty, & or &&
 // 5. noexcept qualifier: empty or noexcept
-DEFINE_MEMBER_FUNTIONS_TRAITS_1((Parameters...))
+#define AC_MFT_PARAMETERS()       \
+    AC_MFT_CONST((Parameters...)) \
+    AC_MFT_CONST((Parameters..., ...))
 // Extra () is required because of the comma inside.
-DEFINE_MEMBER_FUNTIONS_TRAITS_1((Parameters..., ...))
 
-#undef DEFINE_MEMBER_FUNTIONS_TRAITS_1
-#undef DEFINE_MFT_2
-#undef DEFINE_MFT_3
-#undef DEFINE_MFT_4
-#undef DEFINE_MFT_5
+#define AC_MFT_CONST(PARAMETERS)  \
+    AC_MFT_VOLATILE(PARAMETERS, ) \
+    AC_MFT_VOLATILE(PARAMETERS, const)
+
+#define AC_MFT_VOLATILE(PARAMETERS, CONST) \
+    AC_MFT_REF(PARAMETERS, CONST)          \
+    AC_MFT_REF(PARAMETERS, CONST volatile)
+
+#define AC_MFT_REF(PARAMETERS, CV)   \
+    AC_MFT_NOEXCEPT(PARAMETERS, CV)  \
+    AC_MFT_NOEXCEPT(PARAMETERS, CV&) \
+    AC_MFT_NOEXCEPT(PARAMETERS, CV&&)
+
+#define AC_MFT_NOEXCEPT(PARAMETERS, CV_REF) \
+    AC_MFT_FULL(PARAMETERS, CV_REF, )       \
+    AC_MFT_FULL(PARAMETERS, CV_REF, noexcept)
+
+#define AC_MFT_FULL(PARAMETERS, CV_REF, NOEXCEPT)                          \
+    template<class Class, class Return, class... Parameters>               \
+    struct member_function_traits<                                         \
+        Return (Class::*)(AC_UNPARENTHESIZED PARAMETERS) CV_REF NOEXCEPT>  \
+        : detail::member_as_free_fn<Return(                                \
+              detail::class_t<Class CV_REF>, AC_UNPARENTHESIZED PARAMETERS \
+          ) NOEXCEPT> {};
+
+AC_MFT_PARAMETERS()
+
+#undef AC_MFT_PARAMETERS
+#undef AC_MFT_CONST
+#undef AC_MFT_VOLATILE
+#undef AC_MFT_REF
+#undef AC_MFT_NOEXCEPT
+#undef AC_MFT_FULL
 
 } // namespace ac
