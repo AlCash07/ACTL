@@ -16,10 +16,11 @@ namespace ac {
 template<class Fn>
 struct function_traits {};
 
-// Type qualifiers don't matter for regular functions.
+// Type qualifiers and pointer don't matter for regular functions.
 template<class Fn>
-    requires FreeFunction<std::remove_cvref_t<Fn>>
-struct function_traits<Fn> : free_function_traits<std::remove_cvref_t<Fn>> {};
+    requires FreeFunction<std::remove_pointer_t<std::remove_cvref_t<Fn>>>
+struct function_traits<Fn>
+    : free_function_traits<std::remove_pointer_t<std::remove_cvref_t<Fn>>> {};
 
 template<class Fn>
     requires MemberFunction<std::remove_cvref_t<Fn>>

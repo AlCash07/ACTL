@@ -6,19 +6,18 @@
 
 #pragma once
 
+#include <actl/functional/category/detail/is_free_function.hpp>
 #include <actl/meta/type_at.hpp>
 
 namespace ac {
 
 /// Callable traits specialized only for free functions and pointers to them.
 template<class T>
-struct free_function_traits {
-    static constexpr bool is_free_function = false;
-};
+struct free_function_traits;
 
-/// Concept of a free function, or a pointer to one (which are synonyms in C++).
+/// Concept of a free function.
 template<class T>
-concept FreeFunction = free_function_traits<T>::is_free_function;
+concept FreeFunction = detail::is_free_function<T>::value;
 
 /* free function */
 
@@ -34,8 +33,6 @@ struct free_function_traits<Return(Parameters...)> {
     static constexpr bool accepts_variadic_arguments = false;
 
     static constexpr bool is_noexcept = false;
-
-    static constexpr bool is_free_function = true;
 };
 
 template<class Return, class... Parameters>
@@ -57,23 +54,5 @@ struct free_function_traits<Return(Parameters..., ...) noexcept>
 
     static constexpr bool is_noexcept = true;
 };
-
-/* free function pointer */
-
-template<class Return, class... Parameters>
-struct free_function_traits<Return (*)(Parameters...)>
-    : free_function_traits<Return(Parameters...)> {};
-
-template<class Return, class... Parameters>
-struct free_function_traits<Return (*)(Parameters...) noexcept>
-    : free_function_traits<Return(Parameters...) noexcept> {};
-
-template<class Return, class... Parameters>
-struct free_function_traits<Return (*)(Parameters..., ...)>
-    : free_function_traits<Return(Parameters..., ...)> {};
-
-template<class Return, class... Parameters>
-struct free_function_traits<Return (*)(Parameters..., ...) noexcept>
-    : free_function_traits<Return(Parameters..., ...) noexcept> {};
 
 } // namespace ac

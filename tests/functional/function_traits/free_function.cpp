@@ -16,7 +16,7 @@ void test_void_free_function_traits() {
     static_assert(IsNoexcept == ac::is_noexcept_v<Fn>);
 
     using RawFn = std::remove_cvref_t<Fn>;
-    static_assert(ac::FreeFunction<RawFn>);
+    static_assert(ac::FreeFunction<std::remove_pointer_t<RawFn>>);
     static_assert(!ac::MemberFunction<RawFn>);
 }
 
