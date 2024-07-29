@@ -2,7 +2,7 @@
 Function traits
 ********************************
 
-:struct:`ac::function_traits` provides information about a function,
+Function traits provide information about a function,
 such as return and parameter types.
 The following function types are supported:
 
@@ -26,10 +26,6 @@ The most convenient way to use the traits is through the following interface:
 .. doxygentypedef:: ac::parameter_at_t
 .. doxygenvariable:: ac::accepts_variadic_arguments_v
 .. doxygenvariable:: ac::is_noexcept_v
-
-The same information is available as members of
-
-.. doxygenstruct:: ac::function_traits
 
 The following concepts are provided:
 

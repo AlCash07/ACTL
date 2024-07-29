@@ -73,12 +73,6 @@ static_assert(ac::is_noexcept_v<function_object_params>);
 static_assert(!ac::FreeFunction<function_object_params>);
 static_assert(!ac::MemberFunction<function_object_params>);
 
-/* Direct access to ac::function_object_traits */
-using FnObjTraits = ac::function_object_traits<function_object_noexcept>;
-static_assert(0ul == FnObjTraits::arity);
-static_assert(std::is_same_v<int, typename FnObjTraits::return_type>);
-static_assert(FnObjTraits::is_noexcept);
-
 } // namespace
 
 using std_function = std::function<int*(int&)>;

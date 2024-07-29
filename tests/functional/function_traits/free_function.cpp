@@ -55,12 +55,3 @@ static_assert(ac::is_noexcept_v<free_function_params>);
 
 static_assert(ac::FreeFunction<free_function_params>);
 static_assert(!ac::MemberFunction<free_function_params>);
-
-/* Direct access to ac::function_traits */
-using FnTraits = ac::function_traits<free_function_params>;
-static_assert(6ul == FnTraits::arity);
-static_assert(std::is_same_v<int&&, typename FnTraits::return_type>);
-static_assert(std::is_same_v<
-              int const*,
-              typename FnTraits::template parameter_at<5>>);
-static_assert(FnTraits::is_noexcept);
