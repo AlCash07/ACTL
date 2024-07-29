@@ -6,4 +6,5 @@
 
 #pragma once
 
+#include <actl/preprocessor/AC_CONCAT.hpp>
 #include <actl/preprocessor/AC_UNPARENTHESIZED.hpp>
