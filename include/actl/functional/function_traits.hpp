@@ -6,24 +6,9 @@
 
 #pragma once
 
-#include <actl/functional/category/free_function.hpp>
-#include <actl/functional/category/member_function.hpp>
 #include <actl/functional/traits/detail/function_object.hpp>
-#include <type_traits>
 
 namespace ac {
-
-namespace detail {
-
-// Type qualifiers and pointer don't matter for regular functions.
-template<class Fn>
-    requires FreeFunction<std::remove_pointer_t<std::remove_cvref_t<Fn>>>
-struct function_traits<Fn>
-    : free_function_traits<std::remove_pointer_t<std::remove_cvref_t<Fn>>> {};
-
-} // namespace detail
-
-/* convenience aliases */
 
 template<class Fn>
 using return_t = typename detail::function_traits<Fn>::return_type;

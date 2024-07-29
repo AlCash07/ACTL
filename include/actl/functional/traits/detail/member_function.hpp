@@ -7,11 +7,9 @@
 #pragma once
 
 #include <actl/functional/category/member_function.hpp>
+#include <actl/functional/traits/detail/free_function.hpp>
 
 namespace ac::detail {
-
-template<class Fn>
-struct function_traits {};
 
 template<class Fn>
     requires MemberFunction<std::remove_cvref_t<Fn>>
