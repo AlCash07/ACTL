@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/function_traits.hpp>
+#include <actl/functional/traits/parameters.hpp>
 #include <actl/range/iterator/interface/iterator_adaptor.hpp>
 #include <actl/utility/use_default.hpp>
 

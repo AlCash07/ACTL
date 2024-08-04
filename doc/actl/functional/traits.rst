@@ -1,8 +1,8 @@
 ********************************
-Function traits
+Functional traits
 ********************************
 
-Function traits provide information about a function,
+Functional traits provide information about a function,
 such as return and parameter types.
 The following function types are supported:
 
@@ -35,7 +35,7 @@ The following concepts are provided:
 
 :source:`Source code <functional/traits>`
 
-:test:`Tests <functional/traits/callable_traits.cpp>`
+:test:`Tests <functional/traits>`
 
 Design
 ======
