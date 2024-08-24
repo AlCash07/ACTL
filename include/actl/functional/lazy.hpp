@@ -21,13 +21,13 @@ namespace ac {
 /// 1. It simplifies the code that uses the function result only conditionally,
 /// for example, when inserting an element into a map
 /// only if it doesn't already exist: @code
-/// map.try_emplace(key, ac::lazy{computeValue});
+/// auto iter = map.try_emplace(key, ac::lazy{computeValue}).first;
 /// @endcode
-/// If we want the function to be called only when necessary,
+/// If we require the function to be called only when necessary,
 /// the shortest alternative looks like this: @code
 /// auto iter = map.find(key);
-/// if (iter != map.end())
-///     map.emplace_hint(iter, key, computeValue());
+/// if (iter == map.end())
+///     iter = map.emplace(key, computeValue()).first;
 /// @endcode
 ///
 /// 2. Even when the function is always called unconditionally,
