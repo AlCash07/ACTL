@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="actl/meta.html">meta</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/memory.html">memory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actl/preprocessor.html">preprocessor</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="actl/string.html">string</a></li>
@@ -134,13 +135,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="actl/string/char_classes.html#_CPPv42ac">ac (C++ type)</a>
 </li>
+      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac28accepts_variadic_arguments_vE">ac::accepts_variadic_arguments_v (C++ member)</a>
+</li>
       <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac7arity_vE">ac::arity_v (C++ member)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_bEN2ac6bool_cE">ac::bool_c (C++ member)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_bEN2ac13bool_constantE">ac::bool_constant (C++ type)</a>
-</li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac15callable_traitsE">ac::callable_traits (C++ struct)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_DaEN2ac8constantE">ac::constant (C++ struct)</a>
 </li>
@@ -154,11 +155,7 @@
 </li>
       <li><a href="actl/meta/constant_literals.html#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav">ac::constant_literals::operator&#34;&#34;_cull (C++ function)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac20free_function_traitsE">ac::free_function_traits (C++ struct)</a>
-</li>
       <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac12FreeFunctionE">ac::FreeFunction (C++ concept)</a>
-</li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac22function_object_traitsE">ac::function_object_traits (C++ struct)</a>
 </li>
       <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac14FunctionObjectE">ac::FunctionObject (C++ concept)</a>
 </li>
@@ -204,8 +201,6 @@
 </li>
       <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac25MayThrowCopyConstructibleE">ac::MayThrowCopyConstructible (C++ concept)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac22member_function_traitsE">ac::member_function_traits (C++ struct)</a>
-</li>
       <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac14MemberFunctionE">ac::MemberFunction (C++ concept)</a>
 </li>
       <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac21NothrowAssignableFromE">ac::NothrowAssignableFrom (C++ concept)</a>
@@ -216,12 +211,12 @@
 </li>
       <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac15NothrowCopyableE">ac::NothrowCopyable (C++ concept)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac24NothrowCopyConstructibleE">ac::NothrowCopyConstructible (C++ concept)</a>
 </li>
       <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac27NothrowDefaultInitializableE">ac::NothrowDefaultInitializable (C++ concept)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac25NothrowEqualityComparableE">ac::NothrowEqualityComparable (C++ concept)</a>
 </li>
       <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac30NothrowExplicitlyConvertibleToE">ac::NothrowExplicitlyConvertibleTo (C++ concept)</a>
@@ -286,6 +281,8 @@
 </li>
       <li><a href="actl/platform/compiler.html#c.AC_COMPILER_MSVC">AC_COMPILER_MSVC (C macro)</a>
 </li>
+      <li><a href="actl/preprocessor.html#c.AC_CONCAT">AC_CONCAT (C macro)</a>
+</li>
       <li><a href="actl/functional/noexcept.html#c.AC_DEDUCE_NOEXCEPT_AND_INITIALIZE">AC_DEDUCE_NOEXCEPT_AND_INITIALIZE (C macro)</a>
 </li>
       <li><a href="actl/functional/noexcept.html#c.AC_DEDUCE_NOEXCEPT_AND_RETURN">AC_DEDUCE_NOEXCEPT_AND_RETURN (C macro)</a>
@@ -301,6 +298,8 @@
       <li><a href="actl/functional/inlining.html#c.AC_NEVER_INLINE">AC_NEVER_INLINE (C macro)</a>
 </li>
       <li><a href="actl/memory/no_unique_address.html#c.AC_NO_UNIQUE_ADDRESS">AC_NO_UNIQUE_ADDRESS (C macro)</a>
+</li>
+      <li><a href="actl/preprocessor.html#c.AC_UNPARENTHESIZED">AC_UNPARENTHESIZED (C macro)</a>
 </li>
   </ul></td>
 </tr></table>

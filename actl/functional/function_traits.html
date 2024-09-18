@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Functional traits &#8212; ACTL  documentation</title>
+    <title>Function traits &#8212; ACTL  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
@@ -13,8 +13,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Tuple invocation" href="tuple.html" />
-    <link rel="prev" title="overloaded" href="overloaded.html" />
+    <link rel="next" title="Inlining" href="inlining.html" />
+    <link rel="prev" title="functional" href="../functional.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -82,13 +82,14 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Functional traits</a><ul>
+<li><a class="reference internal" href="#">Function traits</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac8return_tE"><code class="docutils literal notranslate"><span class="pre">return_t</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac7arity_vE"><code class="docutils literal notranslate"><span class="pre">arity_v</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE"><code class="docutils literal notranslate"><span class="pre">parameter_at_t</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE"><code class="docutils literal notranslate"><span class="pre">accepts_variadic_arguments_v</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac13is_noexcept_vE"><code class="docutils literal notranslate"><span class="pre">is_noexcept_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE"><code class="docutils literal notranslate"><span class="pre">function_traits</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac12FreeFunctionE"><code class="docutils literal notranslate"><span class="pre">FreeFunction</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac14MemberFunctionE"><code class="docutils literal notranslate"><span class="pre">MemberFunction</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac14FunctionObjectE"><code class="docutils literal notranslate"><span class="pre">FunctionObject</span></code></a></li>
@@ -109,11 +110,11 @@
               
                 
   <li>
-    <a href="overloaded.html" title="Previous Chapter: overloaded"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; overloaded</span>
+    <a href="../functional.html" title="Previous Chapter: functional"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; functional</span>
     </a>
   </li>
   <li>
-    <a href="tuple.html" title="Next Chapter: Tuple invocation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Tuple invocation &raquo;</span>
+    <a href="inlining.html" title="Next Chapter: Inlining"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Inlining &raquo;</span>
     </a>
   </li>
               
@@ -143,13 +144,14 @@
   <div class="row">
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
-<li><a class="reference internal" href="#">Functional traits</a><ul>
+<li><a class="reference internal" href="#">Function traits</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac8return_tE"><code class="docutils literal notranslate"><span class="pre">return_t</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac7arity_vE"><code class="docutils literal notranslate"><span class="pre">arity_v</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE"><code class="docutils literal notranslate"><span class="pre">parameter_at_t</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE"><code class="docutils literal notranslate"><span class="pre">accepts_variadic_arguments_v</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac13is_noexcept_vE"><code class="docutils literal notranslate"><span class="pre">is_noexcept_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE"><code class="docutils literal notranslate"><span class="pre">function_traits</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac12FreeFunctionE"><code class="docutils literal notranslate"><span class="pre">FreeFunction</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac14MemberFunctionE"><code class="docutils literal notranslate"><span class="pre">MemberFunction</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac14FunctionObjectE"><code class="docutils literal notranslate"><span class="pre">FunctionObject</span></code></a></li>
@@ -164,11 +166,11 @@
 </ul>
 
   <li>
-    <a href="overloaded.html" title="Previous Chapter: overloaded"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; overloaded</span>
+    <a href="../functional.html" title="Previous Chapter: functional"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; functional</span>
     </a>
   </li>
   <li>
-    <a href="tuple.html" title="Next Chapter: Tuple invocation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Tuple invocation &raquo;</span>
+    <a href="inlining.html" title="Next Chapter: Inlining"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Inlining &raquo;</span>
     </a>
   </li>
 <form action="../../search.html" method="get">
@@ -182,9 +184,9 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <section id="functional-traits">
-<h1>Functional traits<a class="headerlink" href="#functional-traits" title="Link to this heading">¶</a></h1>
-<p>Functional traits provide information about a function,
+  <section id="function-traits">
+<h1>Function traits<a class="headerlink" href="#function-traits" title="Link to this heading">¶</a></h1>
+<p><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE" title="ac::function_traits"><code class="xref cpp cpp-struct docutils literal notranslate"><span class="pre">ac::function_traits</span></code></a> provides information about a function,
 such as return and parameter types.
 The following function types are supported:</p>
 <ul class="simple">
@@ -201,27 +203,33 @@ with limited functionality.</p>
 <p>The most convenient way to use the traits is through the following interface:</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac8return_tE">
-<span id="_CPPv3I0EN2ac8return_tE"></span><span id="_CPPv2I0EN2ac8return_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a173903b3d56edb8f6be6220a09134a4c"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">return_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac8return_tE" title="ac::return_t::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">return_type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac8return_tE" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN2ac8return_tE"></span><span id="_CPPv2I0EN2ac8return_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a7d48c80e0a24a6686c613be4d42e2100"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">return_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE" title="ac::function_traits"><span class="n"><span class="pre">function_traits</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac8return_tE" title="ac::return_t::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">return_type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac8return_tE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac7arity_vE">
-<span id="_CPPv3I0EN2ac7arity_vE"></span><span id="_CPPv2I0EN2ac7arity_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a2da7c43c623217b9df3898603a01a1a5"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arity_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac7arity_vE" title="ac::arity_v::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">arity</span></span><a class="headerlink" href="#_CPPv4I0EN2ac7arity_vE" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN2ac7arity_vE"></span><span id="_CPPv2I0EN2ac7arity_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a2da7c43c623217b9df3898603a01a1a5"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arity_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE" title="ac::function_traits"><span class="n"><span class="pre">function_traits</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac7arity_vE" title="ac::arity_v::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">arity</span></span><a class="headerlink" href="#_CPPv4I0EN2ac7arity_vE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4I_6size_t0EN2ac14parameter_at_tE">
-<span id="_CPPv3I_6size_t0EN2ac14parameter_at_tE"></span><span id="_CPPv2I_6size_t0EN2ac14parameter_at_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a40ae22aa5071cd7d4e0fb18cf42a5bef"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">parameter_at_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE" title="ac::parameter_at_t::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">parameter_at</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE" title="ac::parameter_at_t::Index"><span class="n"><span class="pre">Index</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv3I_6size_t0EN2ac14parameter_at_tE"></span><span id="_CPPv2I_6size_t0EN2ac14parameter_at_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a839b2bd277a53993d4a4554cfd32d5a8"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">parameter_at_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE" title="ac::function_traits"><span class="n"><span class="pre">function_traits</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE" title="ac::parameter_at_t::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">parameter_at</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE" title="ac::parameter_at_t::Index"><span class="n"><span class="pre">Index</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_6size_t0EN2ac14parameter_at_tE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac28accepts_variadic_arguments_vE">
-<span id="_CPPv3I0EN2ac28accepts_variadic_arguments_vE"></span><span id="_CPPv2I0EN2ac28accepts_variadic_arguments_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aa53eab1c3c45bd4cf8ae414d08fc75b8"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">accepts_variadic_arguments_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE" title="ac::accepts_variadic_arguments_v::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">accepts_variadic_arguments</span></span><a class="headerlink" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN2ac28accepts_variadic_arguments_vE"></span><span id="_CPPv2I0EN2ac28accepts_variadic_arguments_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aa53eab1c3c45bd4cf8ae414d08fc75b8"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">accepts_variadic_arguments_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE" title="ac::function_traits"><span class="n"><span class="pre">function_traits</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE" title="ac::accepts_variadic_arguments_v::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">accepts_variadic_arguments</span></span><a class="headerlink" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac13is_noexcept_vE">
-<span id="_CPPv3I0EN2ac13is_noexcept_vE"></span><span id="_CPPv2I0EN2ac13is_noexcept_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a78eaea10d28fd1affc9faf7ba2075bca"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_noexcept_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac13is_noexcept_vE" title="ac::is_noexcept_v::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_noexcept</span></span><a class="headerlink" href="#_CPPv4I0EN2ac13is_noexcept_vE" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN2ac13is_noexcept_vE"></span><span id="_CPPv2I0EN2ac13is_noexcept_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a78eaea10d28fd1affc9faf7ba2075bca"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_noexcept_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE" title="ac::function_traits"><span class="n"><span class="pre">function_traits</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac13is_noexcept_vE" title="ac::is_noexcept_v::Fn"><span class="n"><span class="pre">Fn</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_noexcept</span></span><a class="headerlink" href="#_CPPv4I0EN2ac13is_noexcept_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p>The same information is available as members of</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac15function_traitsE">
+<span id="_CPPv3I0EN2ac15function_traitsE"></span><span id="_CPPv2I0EN2ac15function_traitsE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fn</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structac_1_1function__traits"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">function_traits</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac15function_traitsE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>The following concepts are provided:</p>
@@ -230,7 +238,7 @@ with limited functionality.</p>
 <span id="_CPPv3I0EN2ac12FreeFunctionE"></span><span id="_CPPv2I0EN2ac12FreeFunctionE"></span><span class="target" id="conceptac_1_1_free_function"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FreeFunction</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac12FreeFunctionE" title="Link to this definition">¶</a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;free_function.hpp&gt;</em></div>
-<p>Concept of a free function. </p>
+<p>Concept of a free function, or a pointer to one (which are synonyms in C++). </p>
 </dd></dl>
 
 <dl class="cpp concept">
@@ -249,7 +257,7 @@ with limited functionality.</p>
 </dd></dl>
 
 <p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits">Source code</a></p>
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/traits">Tests</a></p>
+<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/traits/callable_traits.cpp">Tests</a></p>
 </section>
 <section id="design">
 <h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
