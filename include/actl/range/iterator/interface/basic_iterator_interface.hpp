@@ -14,6 +14,31 @@ namespace ac {
 template<class Iter>
 class basic_iterator_interface {
 public:
+    // This constructor exists for a sole purpose of
+    // providing a clear compilation error message
+    // when the required nested types aren't specified.
+    //
+    // We cannot static_assert in the class scope,
+    // because those nested types are defined in a derived class.
+    //
+    // Constructor is a good place for the asserts,
+    // because it's the only interface function
+    // which is guaranteed to be called.
+    constexpr basic_iterator_interface() noexcept {
+        static_assert(
+            requires { typename Iter::value_type; },
+            "nested `value_type` has to be specified by the iterator"
+        );
+        if constexpr (!std::is_base_of_v<
+                          std::random_access_iterator_tag,
+                          typename Iter::iterator_category>)
+            static_assert(
+                requires { typename Iter::difference_type; },
+                "nested `difference_type` has to be specified by the iterator "
+                "that doesn't provide random access"
+            );
+    }
+
     // Post-increment is a free function here so that it's not hidden by the
     // pre-increment operator++() defined by the derived iterator.
     // TODO: std::input_or_output_iterator doesn't require the return type here

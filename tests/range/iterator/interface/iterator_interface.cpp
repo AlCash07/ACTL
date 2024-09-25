@@ -16,6 +16,7 @@ class int_iterator
           iterator_interface_selector_t<int_iterator<Category>, Category> {
 public:
     using value_type = int;
+    using difference_type = int;
 
     explicit constexpr int_iterator() = default;
 
