@@ -16,8 +16,16 @@ class forward_iterator_interface : public input_iterator_interface<Iter> {
 public:
     using iterator_category = std::forward_iterator_tag;
 
-    // This class adds no functionality to input_iterator_interface,
-    // because Iter authors themselves need to provide operator==.
+    // operator== is defined here to support defining it as = default
+    // in the derived Iter.
+    //
+    // The parameters are constrained here to make sure this operator
+    // doesn't get used by mistake for the instances of the derived Iter
+    // after an implicit conversion to the base class.
+    template<std::same_as<forward_iterator_interface> fii>
+    friend constexpr constant<true> operator==(fii, fii) noexcept {
+        return {};
+    }
 };
 
 } // namespace ac

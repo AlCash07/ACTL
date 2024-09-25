@@ -26,6 +26,12 @@ public:
         --iter;
         return iter_copy;
     }
+
+    // For clarification, see operator== in forward_iterator_interface.
+    template<std::same_as<bidirectional_iterator_interface> bii>
+    friend constexpr constant<true> operator==(bii, bii) noexcept {
+        return {};
+    }
 };
 
 } // namespace ac

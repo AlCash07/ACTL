@@ -24,7 +24,8 @@ public:
     constexpr auto operator[](Difference n) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(*(this->derived() + n))
 
-    // This is a method to allow overwriting it in the derived iterator.
+    // This is a member function not a friend function
+    // to allow overriding it in the derived iterator.
     constexpr Iter& operator++()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<1>{})
 
@@ -39,27 +40,26 @@ public:
     friend constexpr Iter operator+(Difference n, Iter iter)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(iter + n)
 
-    // This is a method to allow overwriting it in the derived iterator.
+    // This is a member function not a friend function
+    // to allow overriding it in the derived iterator.
     constexpr Iter& operator--()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<-1>{})
 
     template<class Difference>
-    friend constexpr Iter& operator-=(Iter& iter, Difference n)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(iter += -n)
+    constexpr Iter& operator-=(Difference n)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(this->derived() += -n)
 
     template<class Difference>
     friend constexpr Iter operator-(Iter iter, Difference n)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter -= n})
 
-    friend bool operator==(
-        random_access_iterator_interface const& lhs,
-        random_access_iterator_interface const& rhs
-    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs <=> rhs == 0)
+    // random_access_iterator_interface is used as the parameter type here
+    // to ensure that a custom user-defined operator== is a better match.
+    constexpr bool operator==(random_access_iterator_interface const& rhs) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() <=> rhs.derived() == 0)
 
-    friend auto operator<=>(
-        random_access_iterator_interface const& lhs,
-        random_access_iterator_interface const& rhs
-    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.derived() - rhs.derived() <=> 0)
+    constexpr auto operator<=>(random_access_iterator_interface const& rhs
+    ) const AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() - rhs.derived() <=> 0)
 };
 
 } // namespace ac
