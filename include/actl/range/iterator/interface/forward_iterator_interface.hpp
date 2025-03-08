@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/meta/constant.hpp>
 #include <actl/range/iterator/interface/input_iterator_interface.hpp>
 
 namespace ac {
