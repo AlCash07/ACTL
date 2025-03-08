@@ -53,9 +53,10 @@ void test_static_array_interface_impl(std::index_sequence<Is...>) {
     // static_assert(AC_ASSERT_IS_NOEXCEPT() == noexcept(array[0]));
     static_assert(((Values == array[Is]) && ...));
     static_assert(((noexcept(array[constant<Is>{}])) && ...));
-    static_assert(
-        (ac::equal_same_type(constant<Values>{}, array[constant<Is>{}]) && ...)
-    );
+    // T{Values} is a workaround for a brand new MSVC bug.
+    static_assert((
+        ac::equal_same_type(constant<T{Values}>{}, array[constant<Is>{}]) && ...
+    ));
     /* tuple interface */
     using std::get;
     static_assert(((noexcept(get<Is>(array))) && ...));

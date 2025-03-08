@@ -66,8 +66,10 @@ void test_semi_static_array_interface_impl(std::integer_sequence<T, DynamicValue
     using ac::constant;
     using Array = ac::semi_static_array<T, StaticValues...>;
     constexpr Array array{DynamicValues...};
+    // Can't write std::array{StaticValues...} because of a brand new MSVC bug.
     constexpr auto values = fill_dynamic_values(
-        std::array{StaticValues...}, std::array{DynamicValues...}
+        std::array<T, sizeof...(StaticValues)>{StaticValues...},
+        std::array{DynamicValues...}
     );
     /* size */
     static_assert(noexcept(Array::size()));
