@@ -6,6 +6,7 @@
 
 #include <actl/numeric/signedness.hpp>
 #include <actl_test/base/equal_same_type.hpp>
+#include <cstdint>
 
 static_assert(ac::equal_same_type(int32_t{3}, ac::to_signed(uint32_t{3})));
 // to_signed doesn't change a signed type
