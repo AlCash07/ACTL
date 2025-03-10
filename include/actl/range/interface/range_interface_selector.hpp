@@ -6,7 +6,9 @@
 
 #pragma once
 
+#include <actl/range/access/begin.hpp>
 #include <actl/range/interface/random_access_range_interface.hpp>
+#include <actl/range/iterator/traits/category.hpp>
 
 namespace ac {
 
