@@ -65,9 +65,10 @@ public:
     /// Analogous to `ac::out<T>::operator=`.
     /// Overridden to change the return type from ac::out& to ac::inout&.
     template<class Src>
-    constexpr auto operator=(Src&& src) AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(
-        out<T>::operator=(std::forward<Src>(src)), *this
-    )
+    constexpr inout& operator=(Src&& src)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
+            this->out<T>::operator=(std::forward<Src>(src)), *this
+        )
 };
 
 template<class T>

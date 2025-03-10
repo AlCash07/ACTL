@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN.hpp>
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN.hpp>
 #include <memory> // for std::addressof
 #include <type_traits>
@@ -110,7 +109,7 @@ public:
     /// void assign(ac::out<Container&> dst, InRange const& src) { ... }
     /// ```
     template<class Src>
-    constexpr auto operator=(Src&& src) AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(
+    constexpr out& operator=(Src&& src) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
         assign(*this, std::forward<Src>(src)), *this
     )
 
