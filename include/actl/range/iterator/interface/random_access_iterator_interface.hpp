@@ -30,15 +30,15 @@ public:
         AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<1>{})
 
     template<class Difference>
-    friend constexpr Iter operator+(Iter iter, Difference n)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter += n})
+    friend constexpr auto operator+(Iter iter, Difference n)
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(Iter{iter += n})
 
     template<class Difference>
     // This constraint is needed to fix the gcc compilation error:
     // "satisfaction of atomic constraint depends on itself".
         requires(!std::input_or_output_iterator<Difference>)
-    friend constexpr Iter operator+(Difference n, Iter iter)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(iter + n)
+    friend constexpr auto operator+(Difference n, Iter iter)
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(iter + n)
 
     // This is a member function not a friend function
     // to allow overriding it in the derived iterator.
@@ -46,12 +46,12 @@ public:
         AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<-1>{})
 
     template<class Difference>
-    constexpr Iter& operator-=(Difference n)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(this->derived() += -n)
+    constexpr auto operator-=(Difference n)
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->derived() += -n)
 
     template<class Difference>
-    friend constexpr Iter operator-(Iter iter, Difference n)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(Iter{iter -= n})
+    friend constexpr auto operator-(Iter iter, Difference n)
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(Iter{iter -= n})
 
     // random_access_iterator_interface is used as the parameter type here
     // to ensure that a custom user-defined operator== is a better match.
