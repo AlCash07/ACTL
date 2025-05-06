@@ -55,8 +55,8 @@ public:
     }
 
 private:
-    AC_NO_UNIQUE_ADDRESS Map map_;
-    AC_NO_UNIQUE_ADDRESS test_second<Predicate> pred_;
+    Map map_;
+    test_second<Predicate> pred_;
 };
 
 template<class M, class P = to_bool>
