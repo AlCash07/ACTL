@@ -45,3 +45,29 @@ static_assert(std::is_same_v<
               ac::parameters_t<free_function_params>>);
 static_assert(ac::accepts_variadic_arguments_v<free_function_params>);
 static_assert(ac::is_noexcept_v<free_function_params>);
+
+/* variadic arguments modification */
+// add_variadic_arguments_t
+static_assert(std::is_same_v<fn_va, ac::add_variadic_arguments_t<fn>>);
+static_assert(std::is_same_v<
+              fn_va_noexcept,
+              ac::add_variadic_arguments_t<fn_noexcept>>);
+// remove_variadic_arguments_t
+static_assert(std::is_same_v<fn, ac::remove_variadic_arguments_t<fn_va>>);
+static_assert(std::is_same_v<
+              fn_noexcept,
+              ac::remove_variadic_arguments_t<fn_va_noexcept>>);
+// The same function is returned if it already has requested variadic arguments
+static_assert(std::is_same_v<fn_va, ac::add_variadic_arguments_t<fn_va>>);
+static_assert(std::is_same_v<fn, ac::remove_variadic_arguments_t<fn>>);
+
+/* noexcept modification */
+// add_noexcept_t
+static_assert(std::is_same_v<fn_noexcept, ac::add_noexcept_t<fn>>);
+static_assert(std::is_same_v<fn_va_noexcept, ac::add_noexcept_t<fn_va>>);
+// remove_noexcept_t
+static_assert(std::is_same_v<fn, ac::remove_noexcept_t<fn_noexcept>>);
+static_assert(std::is_same_v<fn_va, ac::remove_noexcept_t<fn_va_noexcept>>);
+// The same function is returned if it already has requested noexcept
+static_assert(std::is_same_v<fn_noexcept, ac::add_noexcept_t<fn_noexcept>>);
+static_assert(std::is_same_v<fn, ac::remove_noexcept_t<fn>>);

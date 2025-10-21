@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/functional/traits/Function.hpp>
+#include <actl/functional/traits/assemble_function.hpp>
 
 namespace ac {
 
@@ -32,16 +33,26 @@ struct function_traits<Fn*> : function_traits<Fn> {};
     AC_FF_FULL(VARGS, )       \
     AC_FF_FULL(VARGS, noexcept)
 
-#define AC_FF_FULL(VARGS, NOEXCEPT)                                       \
-    template<class Return, class... Parameters>                           \
-    struct function_traits<Return(Parameters... AC_UNPARENTHESIZED VARGS) \
-                               NOEXCEPT> {                                \
-        static constexpr auto category = function_category::free;         \
-        using return_type = Return;                                       \
-        using parameter_types = type_list<Parameters...>;                 \
-        static constexpr bool accepts_variadic_arguments =                \
-            !AC_IS_EMPTY(VARGS);                                          \
-        static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);       \
+#define AC_FF_FULL(VARGS, NOEXCEPT)                                           \
+    template<class Return, class... Parameters>                               \
+    struct function_traits<Return(Parameters... AC_UNPARENTHESIZED VARGS)     \
+                               NOEXCEPT> {                                    \
+        static constexpr auto category = function_category::free;             \
+        using return_type = Return;                                           \
+        using parameter_types = type_list<Parameters...>;                     \
+        static constexpr bool accepts_variadic_arguments =                    \
+            !AC_IS_EMPTY(VARGS);                                              \
+        static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);           \
+    };                                                                        \
+                                                                              \
+    template<class Return, class... Parameters>                               \
+    struct assemble_function<                                                 \
+        function_category::free,                                              \
+        Return,                                                               \
+        type_list<Parameters...>,                                             \
+        !AC_IS_EMPTY(VARGS),                                                  \
+        !AC_IS_EMPTY(NOEXCEPT)> {                                             \
+        using type = Return(Parameters... AC_UNPARENTHESIZED VARGS) NOEXCEPT; \
     };
 
 AC_FF_VARGS()

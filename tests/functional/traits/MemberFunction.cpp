@@ -160,3 +160,49 @@ static_assert(std::is_same_v<
               ac::parameters_t<fn_params>>);
 static_assert(ac::accepts_variadic_arguments_v<fn_params>);
 static_assert(ac::is_noexcept_v<fn_params>);
+
+/* variadic arguments modification */
+// add_variadic_arguments_t
+static_assert(std::is_same_v<
+              decltype(&S::fn_va_c),
+              ac::add_variadic_arguments_t<decltype(&S::fn_c)>>);
+static_assert(std::is_same_v<
+              decltype(&S::fn_va_noexcept),
+              ac::add_variadic_arguments_t<decltype(&S::fn_noexcept)>>);
+// remove_variadic_arguments_t
+static_assert(std::is_same_v<
+              decltype(&S::fn_c),
+              ac::remove_variadic_arguments_t<decltype(&S::fn_va_c)>>);
+static_assert(std::is_same_v<
+              decltype(&S::fn_c_noexcept),
+              ac::remove_variadic_arguments_t<decltype(&S::fn_va_c_noexcept)>>);
+// The same function is returned if it already has requested variadic arguments
+static_assert(std::is_same_v<
+              decltype(&S::fn_va),
+              ac::add_variadic_arguments_t<decltype(&S::fn_va)>>);
+static_assert(std::is_same_v<
+              decltype(&S::fn_c),
+              ac::remove_variadic_arguments_t<decltype(&S::fn_c)>>);
+
+/* noexcept modification */
+// add_noexcept_t
+static_assert(std::is_same_v<
+              decltype(&S::fn_c_noexcept),
+              ac::add_noexcept_t<decltype(&S::fn_c)>>);
+static_assert(std::is_same_v<
+              decltype(&S::fn_va_noexcept),
+              ac::add_noexcept_t<decltype(&S::fn_va)>>);
+// remove_noexcept_t
+static_assert(std::is_same_v<
+              decltype(&S::fn_c),
+              ac::remove_noexcept_t<decltype(&S::fn_c_noexcept)>>);
+static_assert(std::is_same_v<
+              decltype(&S::fn_va),
+              ac::remove_noexcept_t<decltype(&S::fn_va_noexcept)>>);
+// The same function is returned if it already has requested noexcept
+static_assert(std::is_same_v<
+              decltype(&S::fn_noexcept),
+              ac::add_noexcept_t<decltype(&S::fn_noexcept)>>);
+static_assert(std::is_same_v<
+              decltype(&S::fn_c),
+              ac::remove_noexcept_t<decltype(&S::fn_c)>>);
