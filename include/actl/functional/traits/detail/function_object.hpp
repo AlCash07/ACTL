@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/category/function_object.hpp>
+#include <actl/functional/traits/FunctionObject.hpp>
 #include <actl/functional/traits/detail/member_function.hpp>
 
 namespace ac::detail {

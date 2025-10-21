@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/functional/category/all.hpp>
 #include <actl/functional/inlining/all.hpp>
 #include <actl/functional/lazy.hpp>
 #include <actl/functional/name/all.hpp>

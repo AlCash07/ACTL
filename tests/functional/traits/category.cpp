@@ -4,7 +4,9 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/functional/category/all.hpp>
+#include <actl/functional/traits/FreeFunction.hpp>
+#include <actl/functional/traits/FunctionObject.hpp>
+#include <actl/functional/traits/MemberFunction.hpp>
 
 namespace {
 

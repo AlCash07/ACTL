@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <actl/functional/traits/FreeFunction.hpp>
+#include <actl/functional/traits/FunctionObject.hpp>
+#include <actl/functional/traits/MemberFunction.hpp>
 #include <actl/functional/traits/noexcept.hpp>
 #include <actl/functional/traits/parameters.hpp>
 #include <actl/functional/traits/variadic_arguments.hpp>

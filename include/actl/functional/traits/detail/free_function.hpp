@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/category/free_function.hpp>
+#include <actl/functional/traits/FreeFunction.hpp>
 #include <actl/meta/type_at.hpp>
 
 namespace ac::detail {
