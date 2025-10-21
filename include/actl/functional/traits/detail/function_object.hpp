@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/traits/FunctionObject.hpp>
-#include <actl/functional/traits/detail/member_function.hpp>
+#include <actl/functional/traits/MemberFunction.hpp>
 #include <actl/meta/type_list/slice.hpp>
 
 namespace ac::detail {

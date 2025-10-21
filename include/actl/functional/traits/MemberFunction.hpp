@@ -6,23 +6,19 @@
 
 #pragma once
 
+#include <actl/functional/traits/detail/free_function.hpp>
 #include <actl/preprocessor/AC_UNPARENTHESIZED.hpp>
 #include <type_traits>
 
 namespace ac {
 
-namespace detail {
 template<class T>
-struct as_free_function;
-} // namespace detail
-
-template<class T>
-concept MemberFunction = detail::as_free_function<T>::is_member_function;
+concept MemberFunction = detail::function_traits<T>::is_member_function;
 
 namespace detail {
 
-template<class T>
-using as_free_function_t = typename as_free_function<T>::type;
+template<MemberFunction Fn>
+struct function_traits<Fn const> : function_traits<Fn> {};
 
 // Class parameter of a member function is always a reference.
 // This helper trait ensures this by adding lvalue reference
@@ -37,10 +33,10 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 // 3. volatile qualifier: empty or volatile
 // 4. reference qualifier: empty, & or &&
 // 5. noexcept qualifier: empty or noexcept
-#define AC_MF_PARAMETERS() \
-    AC_MF_CONST(())        \
+#define AC_MF_VARGS() \
+    AC_MF_CONST()     \
     AC_MF_CONST((, ...))
-// Extra () is required because of the comma inside.
+// Extra parenthesis () are required because of the comma inside.
 
 #define AC_MF_CONST(VARGS)  \
     AC_MF_VOLATILE(VARGS, ) \
@@ -59,19 +55,24 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
     AC_MF_FULL(VARGS, CV_REF, )       \
     AC_MF_FULL(VARGS, CV_REF, noexcept)
 
-#define AC_MF_FULL(VARGS, CV_REF, NOEXCEPT)                                    \
-    template<class Class, class Return, class... Parameters>                   \
-    struct as_free_function<Return (Class::*)(Parameters... AC_UNPARENTHESIZED \
-                                                  VARGS) CV_REF NOEXCEPT> {    \
-        using type = Return(                                                   \
-            class_t<Class CV_REF>, Parameters... AC_UNPARENTHESIZED VARGS      \
-        ) NOEXCEPT;                                                            \
-        static constexpr bool is_member_function = true;                       \
+// We could inherit function_traits of a corresponding free function here,
+// but that would create an unnecessary template instantiation.
+#define AC_MF_FULL(VARGS, CV_REF, NOEXCEPT)                                   \
+    template<class Class, class Return, class... Parameters>                  \
+    struct function_traits<Return (Class::*)(Parameters... AC_UNPARENTHESIZED \
+                                                 VARGS) CV_REF NOEXCEPT> {    \
+        static constexpr bool is_member_function = true;                      \
+        using return_type = Return;                                           \
+        using parameter_types =                                               \
+            type_list<class_t<Class CV_REF>, Parameters...>;                  \
+        static constexpr bool accepts_variadic_arguments =                    \
+            !AC_IS_EMPTY(VARGS);                                              \
+        static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);           \
     };
 
-AC_MF_PARAMETERS()
+AC_MF_VARGS()
 
-#undef AC_MF_PARAMETERS
+#undef AC_MF_VARGS
 #undef AC_MF_CONST
 #undef AC_MF_VOLATILE
 #undef AC_MF_REF

@@ -7,12 +7,9 @@
 #pragma once
 
 #include <actl/functional/traits/FreeFunction.hpp>
-#include <actl/meta/type_list/type_list.hpp>
+#include <actl/functional/traits/function_traits.hpp>
 
 namespace ac::detail {
-
-template<class Fn>
-struct function_traits {};
 
 template<class Return, class... Parameters>
 struct function_traits<Return(Parameters...)> {

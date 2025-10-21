@@ -22,9 +22,10 @@ concept FreeFunction = detail::is_free_function<T>::value;
 
 namespace detail {
 
-#define AC_FF_PARAMETERS() \
-    AC_FF_NOEXCEPT(())     \
+#define AC_FF_VARGS() \
+    AC_FF_NOEXCEPT()  \
     AC_FF_NOEXCEPT((, ...))
+// Extra parenthesis () are required because of the comma inside.
 
 #define AC_FF_NOEXCEPT(VARGS) \
     AC_FF_FULL(VARGS, )       \
@@ -35,9 +36,9 @@ namespace detail {
     struct is_free_function<Return(Parameters... AC_UNPARENTHESIZED VARGS) \
                                 NOEXCEPT> : std::true_type {};
 
-AC_FF_PARAMETERS()
+AC_FF_VARGS()
 
-#undef AC_FF_PARAMETERS
+#undef AC_FF_VARGS
 #undef AC_FF_NOEXCEPT
 #undef AC_FF_FULL
 
