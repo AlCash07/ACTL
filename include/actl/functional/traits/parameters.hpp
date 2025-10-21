@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/functional/traits/FreeFunction.hpp>
 #include <actl/functional/traits/FunctionObject.hpp>
 #include <actl/meta/type_list/at.hpp>
 

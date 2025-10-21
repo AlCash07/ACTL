@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/functional/traits/FreeFunction.hpp>
 #include <actl/functional/traits/FunctionObject.hpp>
 
 namespace ac {

@@ -6,15 +6,14 @@
 
 #pragma once
 
-#include <actl/functional/traits/detail/free_function.hpp>
-#include <actl/preprocessor/AC_UNPARENTHESIZED.hpp>
-#include <type_traits>
+#include <actl/functional/traits/function_traits.hpp>
 
 namespace ac {
 
 template<class T>
 concept MemberFunction = function_traits<T>::is_member_function;
 
+// Type qualifiers don't matter for member functions.
 template<MemberFunction Fn>
 struct function_traits<Fn const> : function_traits<Fn> {};
 
