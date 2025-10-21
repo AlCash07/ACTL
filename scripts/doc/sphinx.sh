@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .venv/bin/activate
+
 sphinx_source=doc
 sphinx_build=build/doc/sphinx
 
@@ -8,3 +10,5 @@ sphinx-build -b html \
     $sphinx_source $sphinx_build
 
 python3 scripts/doc/postprocess.py $sphinx_build
+
+deactivate
