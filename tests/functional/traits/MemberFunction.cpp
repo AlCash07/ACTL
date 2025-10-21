@@ -7,8 +7,6 @@
 #include <actl/functional/traits/all.hpp>
 #include "test.hpp"
 
-namespace {
-
 struct S {
     // The following abbreviations are used to make the test code concise,
     // because they are hopefully obvious from the member function declaration:
@@ -80,13 +78,13 @@ struct S {
     int fn_va_v_rref_noexcept(...) volatile&& noexcept;
     int fn_va_cv_rref_noexcept(...) const volatile&& noexcept;
 
-    int const& fn_params(int const, int&&) const noexcept;
+    int const& fn_params(int const, int&&, ...) const noexcept;
 };
 
 template<
     class MemberFn,
     class ClassParameter,
-    bool AcceptsVarargs,
+    bool AcceptsVArgs,
     bool IsNoexcept>
 void check() {
     static_assert(1ul == ac::arity_v<MemberFn>);
@@ -94,11 +92,9 @@ void check() {
     static_assert(std::is_same_v<
                   ClassParameter,
                   ac::parameter_at_t<0, MemberFn>>);
-    static_assert(AcceptsVarargs == ac::accepts_variadic_arguments_v<MemberFn>);
+    static_assert(AcceptsVArgs == ac::accepts_variadic_arguments_v<MemberFn>);
     static_assert(IsNoexcept == ac::is_noexcept_v<MemberFn>);
 }
-
-} // namespace
 
 TEST_CASE("member function pointers") {
     check<decltype(&S::fn), S&, false, false>();
@@ -152,14 +148,15 @@ TEST_CASE("member function pointers") {
     check<decltype(&S::fn_va_cv_rref_noexcept), S const volatile&&, true, true>(
     );
     /* qualifying a member function pointer doesn't change its traits */
-    check<decltype(&S::fn_noexcept) const&, S&, false, true>();
-    check<decltype(&S::fn_noexcept)&&, S&, false, true>();
+    check<decltype(&S::fn) const&, S&, false, false>();
+    check<decltype(&S::fn_va_noexcept)&&, S&, true, true>();
 }
 
 using fn_params = decltype(&S::fn_params);
 static_assert(3ul == ac::arity_v<fn_params>);
 static_assert(std::is_same_v<int const&, ac::return_t<fn_params>>);
-static_assert(std::is_same_v<S const&, ac::parameter_at_t<0, fn_params>>);
-static_assert(std::is_same_v<int, ac::parameter_at_t<1, fn_params>>);
-static_assert(std::is_same_v<int&&, ac::parameter_at_t<2, fn_params>>);
+static_assert(std::is_same_v<
+              ac::type_list<S const&, int, int&&>,
+              ac::parameters_t<fn_params>>);
+static_assert(ac::accepts_variadic_arguments_v<fn_params>);
 static_assert(ac::is_noexcept_v<fn_params>);
