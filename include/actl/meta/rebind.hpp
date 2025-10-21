@@ -43,9 +43,9 @@ struct rebind0 {
     using type = T;
 };
 
-template<template<class...> class C, class... Ts, class To>
-struct rebind0<C<Ts...>, To> {
-    using type = C<typename rebind1<Ts, To, type_at_t<0, Ts...>>::type...>;
+template<template<class...> class C, class T0, class... Ts, class To>
+struct rebind0<C<T0, Ts...>, To> {
+    using type = C<To, typename rebind1<Ts, To, T0>::type...>;
 };
 
 } // namespace detail

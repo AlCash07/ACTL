@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/traits/FreeFunction.hpp>
-#include <actl/meta/type_at.hpp>
+#include <actl/meta/type_list/at.hpp>
 
 namespace ac::detail {
 
@@ -21,7 +21,7 @@ struct function_traits<Return(Parameters...)> {
     static constexpr size_t arity = sizeof...(Parameters);
 
     template<size_t Index>
-    using parameter_at = type_at_t<Index, Parameters...>;
+    using parameter_at = at_t<type_list<Parameters...>, Index>;
 
     static constexpr bool accepts_variadic_arguments = false;
 

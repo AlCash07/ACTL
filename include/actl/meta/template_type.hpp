@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/type_at.hpp>
+#include <cstddef>
 
 namespace ac {
 
@@ -20,9 +20,9 @@ struct template_type<T[N]> {
     using type = T;
 };
 
-template<template<class...> class C, class... Ts>
-struct template_type<C<Ts...>> {
-    using type = type_at_t<0, Ts...>;
+template<template<class...> class C, class T0, class... Ts>
+struct template_type<C<T0, Ts...>> {
+    using type = T0;
 };
 
 } // namespace ac
