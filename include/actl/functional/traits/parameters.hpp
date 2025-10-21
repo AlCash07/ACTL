@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/functional/traits/detail/function_object.hpp>
+#include <actl/meta/type_list/at.hpp>
 
 namespace ac {
 
@@ -14,10 +15,12 @@ template<class Fn>
 using return_t = typename detail::function_traits<Fn>::return_type;
 
 template<class Fn>
-inline constexpr size_t arity_v = detail::function_traits<Fn>::arity;
+using parameters_t = typename detail::function_traits<Fn>::parameter_types;
+
+template<class Fn>
+inline constexpr size_t arity_v = parameters_t<Fn>::length;
 
 template<size_t Index, class Fn>
-using parameter_at_t =
-    typename detail::function_traits<Fn>::template parameter_at<Index>;
+using parameter_at_t = at_t<parameters_t<Fn>, Index>;
 
 } // namespace ac

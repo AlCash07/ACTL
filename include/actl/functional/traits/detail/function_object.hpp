@@ -8,26 +8,21 @@
 
 #include <actl/functional/traits/FunctionObject.hpp>
 #include <actl/functional/traits/detail/member_function.hpp>
+#include <actl/meta/type_list/slice.hpp>
 
 namespace ac::detail {
 
 template<class Fn>
     requires FunctionObject<std::remove_reference_t<Fn>>
-struct function_traits<Fn> {
+struct function_traits<Fn>
+    : function_traits<decltype(&std::remove_reference_t<Fn>::operator())> {
 private:
-    using operator_traits =
-        function_traits<decltype(&std::remove_reference_t<Fn>::operator())>;
+    using full_parameters = typename function_traits<
+        decltype(&std::remove_reference_t<Fn>::operator())>::parameter_types;
 
 public:
-    using return_type = typename operator_traits::return_type;
-
-    static constexpr size_t arity = operator_traits::arity - 1;
-
-    template<size_t Index>
-    using parameter_at =
-        typename operator_traits::template parameter_at<Index + 1>;
-
-    static constexpr bool is_noexcept = operator_traits::is_noexcept;
+    using parameter_types =
+        slice_t<full_parameters, 1, full_parameters::length>;
 };
 
 } // namespace ac::detail
