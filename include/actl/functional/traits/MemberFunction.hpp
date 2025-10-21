@@ -13,18 +13,18 @@
 namespace ac {
 
 template<class T>
-concept MemberFunction = detail::function_traits<T>::is_member_function;
-
-namespace detail {
+concept MemberFunction = function_traits<T>::is_member_function;
 
 template<MemberFunction Fn>
 struct function_traits<Fn const> : function_traits<Fn> {};
 
+namespace detail {
 // Class parameter of a member function is always a reference.
 // This helper trait ensures this by adding lvalue reference
 // when member function reference qualification is empty.
 template<class T>
 using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
+} // namespace detail
 
 // We define all possible member function traits using a chain of macros,
 // which enumerate separate properties in the following order:
@@ -64,7 +64,7 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
         static constexpr bool is_member_function = true;                      \
         using return_type = Return;                                           \
         using parameter_types =                                               \
-            type_list<class_t<Class CV_REF>, Parameters...>;                  \
+            type_list<detail::class_t<Class CV_REF>, Parameters...>;          \
         static constexpr bool accepts_variadic_arguments =                    \
             !AC_IS_EMPTY(VARGS);                                              \
         static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);           \
@@ -79,5 +79,4 @@ AC_MF_VARGS()
 #undef AC_MF_NOEXCEPT
 #undef AC_MF_FULL
 
-} // namespace detail
 } // namespace ac

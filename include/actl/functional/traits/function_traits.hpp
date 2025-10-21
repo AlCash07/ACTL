@@ -9,7 +9,7 @@
 #include <actl/meta/type_list/type_list.hpp>
 #include <actl/preprocessor/AC_IS_EMPTY.hpp>
 
-namespace ac::detail {
+namespace ac {
 
 template<class Fn>
 struct function_traits;
@@ -19,4 +19,4 @@ struct function_traits<Fn&> : function_traits<Fn> {};
 template<class Fn>
 struct function_traits<Fn&&> : function_traits<Fn> {};
 
-} // namespace ac::detail
+} // namespace ac

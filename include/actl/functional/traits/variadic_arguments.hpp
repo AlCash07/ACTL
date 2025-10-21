@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <actl/functional/traits/detail/function_object.hpp>
+#include <actl/functional/traits/FunctionObject.hpp>
 
 namespace ac {
 
 template<class Fn>
 inline constexpr bool accepts_variadic_arguments_v =
-    detail::function_traits<Fn>::accepts_variadic_arguments;
+    function_traits<Fn>::accepts_variadic_arguments;
 
 } // namespace ac

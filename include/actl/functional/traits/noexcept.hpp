@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <actl/functional/traits/detail/function_object.hpp>
+#include <actl/functional/traits/FunctionObject.hpp>
 
 namespace ac {
 
 template<class Fn>
-inline constexpr bool is_noexcept_v = detail::function_traits<Fn>::is_noexcept;
+inline constexpr bool is_noexcept_v = function_traits<Fn>::is_noexcept;
 
 } // namespace ac

@@ -9,7 +9,7 @@
 #include <actl/functional/traits/FreeFunction.hpp>
 #include <actl/functional/traits/function_traits.hpp>
 
-namespace ac::detail {
+namespace ac {
 
 template<class Return, class... Parameters>
 struct function_traits<Return(Parameters...)> {
@@ -44,4 +44,4 @@ template<class Fn>
 struct function_traits<Fn>
     : function_traits<std::remove_pointer_t<std::remove_cvref_t<Fn>>> {};
 
-} // namespace ac::detail
+} // namespace ac

@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <actl/functional/traits/MemberFunction.hpp>
+#include <actl/meta/type_list/slice.hpp>
+
 namespace ac {
 
 /// Concept of a function object, that is a type with
@@ -16,6 +19,20 @@ concept FunctionObject = requires(T) {
     // TODO: investigate whether type qualifiers on Fn can make it
     // impossible to call `operator()`, and, on the other hand, may
     // disambiguate it.
+};
+
+template<FunctionObject Fn>
+struct function_traits<Fn>
+    : function_traits<decltype(&std::remove_reference_t<Fn>::operator())> {
+private:
+    using full_parameters = typename function_traits<
+        decltype(&std::remove_reference_t<Fn>::operator())>::parameter_types;
+
+public:
+    static constexpr bool is_member_function = false;
+    // Excluding the class parameter.
+    using parameter_types =
+        slice_t<full_parameters, 1, full_parameters::length>;
 };
 
 } // namespace ac
