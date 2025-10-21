@@ -10,21 +10,16 @@
 
 namespace ac {
 
+/// Concept of a class member function, often called a method.
 template<class T>
 concept MemberFunction =
     Function<T> && function_traits<T>::category == function_category::member;
 
+/* Implementation */
+
 // Type qualifiers don't matter for a member function.
 template<MemberFunction Fn>
 struct function_traits<Fn const> : function_traits<Fn> {};
-
-namespace detail {
-// Class parameter of a member function is always a reference.
-// This helper trait ensures this by adding lvalue reference
-// when member function reference qualification is empty.
-template<class T>
-using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
-} // namespace detail
 
 // We define all possible member function traits using a chain of macros,
 // which enumerate separate properties in the following order:
@@ -54,6 +49,14 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 #define AC_MF_NOEXCEPT(VARGS, CV_REF) \
     AC_MF_FULL(VARGS, CV_REF, )       \
     AC_MF_FULL(VARGS, CV_REF, noexcept)
+
+namespace detail {
+// Class parameter of a member function is always a reference.
+// This helper trait ensures this by adding lvalue reference
+// when member function reference qualification is empty.
+template<class T>
+using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
+} // namespace detail
 
 // We could inherit function_traits of a corresponding free function here,
 // but that would create an unnecessary template instantiation.

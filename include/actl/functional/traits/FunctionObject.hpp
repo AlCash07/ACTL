@@ -21,6 +21,8 @@ concept FunctionObject = requires(T) {
     // disambiguate it.
 };
 
+/* Implementation */
+
 template<FunctionObject Fn>
 struct function_traits<Fn>
     : function_traits<decltype(&std::remove_reference_t<Fn>::operator())> {
@@ -30,7 +32,7 @@ private:
 
 public:
     static constexpr auto category = function_category::object;
-    // Excluding the class parameter.
+    // class parameter is the function object itself, so it should be excluded
     using parameter_types = slice_t<all_parameters, 1, all_parameters::length>;
 };
 

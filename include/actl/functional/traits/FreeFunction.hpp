@@ -10,10 +10,12 @@
 
 namespace ac {
 
-/// Concept of a free function.
+/// Concept of a free function, including a free function pointer.
 template<class T>
 concept FreeFunction =
     Function<T> && function_traits<T>::category == function_category::free;
+
+/* Implementation */
 
 // Type qualifiers and pointer don't matter for a free function.
 template<FreeFunction Fn>
