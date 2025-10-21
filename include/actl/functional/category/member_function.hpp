@@ -37,46 +37,46 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 // 3. volatile qualifier: empty or volatile
 // 4. reference qualifier: empty, & or &&
 // 5. noexcept qualifier: empty or noexcept
-#define AC_MFT_PARAMETERS()       \
-    AC_MFT_CONST((Parameters...)) \
-    AC_MFT_CONST((Parameters..., ...))
+#define AC_MF_PARAMETERS() \
+    AC_MF_CONST(())        \
+    AC_MF_CONST((, ...))
 // Extra () is required because of the comma inside.
 
-#define AC_MFT_CONST(PARAMETERS)  \
-    AC_MFT_VOLATILE(PARAMETERS, ) \
-    AC_MFT_VOLATILE(PARAMETERS, const)
+#define AC_MF_CONST(VARGS)  \
+    AC_MF_VOLATILE(VARGS, ) \
+    AC_MF_VOLATILE(VARGS, const)
 
-#define AC_MFT_VOLATILE(PARAMETERS, CONST) \
-    AC_MFT_REF(PARAMETERS, CONST)          \
-    AC_MFT_REF(PARAMETERS, CONST volatile)
+#define AC_MF_VOLATILE(VARGS, CONST) \
+    AC_MF_REF(VARGS, CONST)          \
+    AC_MF_REF(VARGS, CONST volatile)
 
-#define AC_MFT_REF(PARAMETERS, CV)   \
-    AC_MFT_NOEXCEPT(PARAMETERS, CV)  \
-    AC_MFT_NOEXCEPT(PARAMETERS, CV&) \
-    AC_MFT_NOEXCEPT(PARAMETERS, CV&&)
+#define AC_MF_REF(VARGS, CV)   \
+    AC_MF_NOEXCEPT(VARGS, CV)  \
+    AC_MF_NOEXCEPT(VARGS, CV&) \
+    AC_MF_NOEXCEPT(VARGS, CV&&)
 
-#define AC_MFT_NOEXCEPT(PARAMETERS, CV_REF) \
-    AC_MFT_FULL(PARAMETERS, CV_REF, )       \
-    AC_MFT_FULL(PARAMETERS, CV_REF, noexcept)
+#define AC_MF_NOEXCEPT(VARGS, CV_REF) \
+    AC_MF_FULL(VARGS, CV_REF, )       \
+    AC_MF_FULL(VARGS, CV_REF, noexcept)
 
-#define AC_MFT_FULL(PARAMETERS, CV_REF, NOEXCEPT)                            \
-    template<class Class, class Return, class... Parameters>                 \
-    struct as_free_function<Return (Class::*)(AC_UNPARENTHESIZED PARAMETERS) \
-                                CV_REF NOEXCEPT> {                           \
-        using type = Return(                                                 \
-            class_t<Class CV_REF>, AC_UNPARENTHESIZED PARAMETERS             \
-        ) NOEXCEPT;                                                          \
-        static constexpr bool is_member_function = true;                     \
+#define AC_MF_FULL(VARGS, CV_REF, NOEXCEPT)                                    \
+    template<class Class, class Return, class... Parameters>                   \
+    struct as_free_function<Return (Class::*)(Parameters... AC_UNPARENTHESIZED \
+                                                  VARGS) CV_REF NOEXCEPT> {    \
+        using type = Return(                                                   \
+            class_t<Class CV_REF>, Parameters... AC_UNPARENTHESIZED VARGS      \
+        ) NOEXCEPT;                                                            \
+        static constexpr bool is_member_function = true;                       \
     };
 
-AC_MFT_PARAMETERS()
+AC_MF_PARAMETERS()
 
-#undef AC_MFT_PARAMETERS
-#undef AC_MFT_CONST
-#undef AC_MFT_VOLATILE
-#undef AC_MFT_REF
-#undef AC_MFT_NOEXCEPT
-#undef AC_MFT_FULL
+#undef AC_MF_PARAMETERS
+#undef AC_MF_CONST
+#undef AC_MF_VOLATILE
+#undef AC_MF_REF
+#undef AC_MF_NOEXCEPT
+#undef AC_MF_FULL
 
 } // namespace detail
 } // namespace ac
