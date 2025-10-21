@@ -22,18 +22,18 @@ concept FreeFunction = detail::is_free_function<T>::value;
 
 namespace detail {
 
-#define AC_FF_PARAMETERS()          \
-    AC_FF_NOEXCEPT((Parameters...)) \
-    AC_FF_NOEXCEPT((Parameters..., ...))
+#define AC_FF_PARAMETERS() \
+    AC_FF_NOEXCEPT(())     \
+    AC_FF_NOEXCEPT((, ...))
 
-#define AC_FF_NOEXCEPT(PARAMETERS) \
-    AC_FF_FULL(PARAMETERS, )       \
-    AC_FF_FULL(PARAMETERS, noexcept)
+#define AC_FF_NOEXCEPT(VARGS) \
+    AC_FF_FULL(VARGS, )       \
+    AC_FF_FULL(VARGS, noexcept)
 
-#define AC_FF_FULL(PARAMETERS, NOEXCEPT)                                    \
-    template<class Return, class... Parameters>                             \
-    struct is_free_function<Return(AC_UNPARENTHESIZED PARAMETERS) NOEXCEPT> \
-        : std::true_type {};
+#define AC_FF_FULL(VARGS, NOEXCEPT)                                        \
+    template<class Return, class... Parameters>                            \
+    struct is_free_function<Return(Parameters... AC_UNPARENTHESIZED VARGS) \
+                                NOEXCEPT> : std::true_type {};
 
 AC_FF_PARAMETERS()
 
