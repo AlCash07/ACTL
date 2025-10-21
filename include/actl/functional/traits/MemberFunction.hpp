@@ -6,14 +6,15 @@
 
 #pragma once
 
-#include <actl/functional/traits/function_traits.hpp>
+#include <actl/functional/traits/Function.hpp>
 
 namespace ac {
 
 template<class T>
-concept MemberFunction = function_traits<T>::is_member_function;
+concept MemberFunction =
+    Function<T> && function_traits<T>::category == function_category::member;
 
-// Type qualifiers don't matter for member functions.
+// Type qualifiers don't matter for a member function.
 template<MemberFunction Fn>
 struct function_traits<Fn const> : function_traits<Fn> {};
 
@@ -60,7 +61,7 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
     template<class Class, class Return, class... Parameters>                  \
     struct function_traits<Return (Class::*)(Parameters... AC_UNPARENTHESIZED \
                                                  VARGS) CV_REF NOEXCEPT> {    \
-        static constexpr bool is_member_function = true;                      \
+        static constexpr auto category = function_category::member;           \
         using return_type = Return;                                           \
         using parameter_types =                                               \
             type_list<detail::class_t<Class CV_REF>, Parameters...>;          \

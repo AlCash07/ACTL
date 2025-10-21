@@ -25,14 +25,13 @@ template<FunctionObject Fn>
 struct function_traits<Fn>
     : function_traits<decltype(&std::remove_reference_t<Fn>::operator())> {
 private:
-    using full_parameters = typename function_traits<
+    using all_parameters = typename function_traits<
         decltype(&std::remove_reference_t<Fn>::operator())>::parameter_types;
 
 public:
-    static constexpr bool is_member_function = false;
+    static constexpr auto category = function_category::object;
     // Excluding the class parameter.
-    using parameter_types =
-        slice_t<full_parameters, 1, full_parameters::length>;
+    using parameter_types = slice_t<all_parameters, 1, all_parameters::length>;
 };
 
 } // namespace ac

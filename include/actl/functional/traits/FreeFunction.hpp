@@ -6,15 +6,16 @@
 
 #pragma once
 
-#include <actl/functional/traits/function_traits.hpp>
+#include <actl/functional/traits/Function.hpp>
 
 namespace ac {
 
 /// Concept of a free function.
 template<class T>
-concept FreeFunction = function_traits<T>::is_free_function;
+concept FreeFunction =
+    Function<T> && function_traits<T>::category == function_category::free;
 
-// Type qualifiers and pointer don't matter for free functions.
+// Type qualifiers and pointer don't matter for a free function.
 template<FreeFunction Fn>
 struct function_traits<Fn const> : function_traits<Fn> {};
 template<FreeFunction Fn>
@@ -33,7 +34,7 @@ struct function_traits<Fn*> : function_traits<Fn> {};
     template<class Return, class... Parameters>                           \
     struct function_traits<Return(Parameters... AC_UNPARENTHESIZED VARGS) \
                                NOEXCEPT> {                                \
-        static constexpr bool is_free_function = true;                    \
+        static constexpr auto category = function_category::free;         \
         using return_type = Return;                                       \
         using parameter_types = type_list<Parameters...>;                 \
         static constexpr bool accepts_variadic_arguments =                \
