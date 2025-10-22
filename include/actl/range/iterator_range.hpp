@@ -1,5 +1,5 @@
 // Two iterators incapsulated to represent a range. Adopted from boost:
-// http://www.boost.org/doc/libs/1_65_1/libs/range/doc/html/range/reference/utilities/iterator_range.html
+// http://www.boost.org/doc/libs/latest/libs/range/doc/html/range/reference/utilities/iterator_range.html
 //
 // Copyright 2017 Oleksandr Bacherikov.
 //

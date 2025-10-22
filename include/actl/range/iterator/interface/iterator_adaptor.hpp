@@ -1,6 +1,6 @@
 // Iterator adaptor is designed to simplify creation of similar iterators.
 // Adopted from boost:
-// http://www.boost.org/doc/libs/1_65_1/libs/iterator/doc/iterator_adaptor.html
+// http://www.boost.org/doc/libs/latest/libs/iterator/doc/iterator_adaptor.html
 //
 // Copyright 2017 Oleksandr Bacherikov.
 //

@@ -1,10 +1,10 @@
 ********************************
-Functional traits
+Function traits
 ********************************
 
-Functional traits provide information about a function,
+Function traits provide information about a function,
 such as return and parameter types.
-The following function types are supported:
+The following function categories are supported:
 
 * free functions;
 * free function pointers;
@@ -13,7 +13,7 @@ The following function types are supported:
 * const and reference-qualified versions of the above types.
 
 This is a lightweight analog of `Boost.CallableTraits
-<https://www.boost.org/doc/libs/1_85_0/libs/callable_traits/doc/html/index.html>`_
+<https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html>`_
 with limited functionality.
 
 Reference
@@ -47,7 +47,7 @@ Qualified free functions
 ------------------------
 
 `Boost.CallableTraits
-<https://www.boost.org/doc/libs/1_85_0/libs/callable_traits/doc/html/index.html>`_
+<https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html>`_
 supports qualified free function types like
 
 .. code::

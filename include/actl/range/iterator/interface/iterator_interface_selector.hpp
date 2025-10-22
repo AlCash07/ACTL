@@ -1,6 +1,6 @@
 // Iterator interface is designed to produce complete iterator interface from a
 // set of core functions. Adopted from boost (with simplifications):
-// http://www.boost.org/doc/libs/1_65_1/libs/iterator/doc/iterator_interface.html
+// http://www.boost.org/doc/libs/latest/libs/iterator/doc/iterator_interface.html
 //
 // Copyright 2017 Oleksandr Bacherikov.
 //

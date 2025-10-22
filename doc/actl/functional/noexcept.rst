@@ -30,4 +30,4 @@ Design
 ======
 
 These utilities are inspired by `BOOST_HOF_RETURNS
-<https://www.boost.org/doc/libs/1_78_0/libs/hof/doc/html/include/boost/hof/returns.html>`_.
+<https://www.boost.org/doc/libs/latest/libs/hof/doc/html/include/boost/hof/returns.html>`_.
