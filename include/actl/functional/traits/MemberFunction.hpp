@@ -6,15 +6,15 @@
 
 #pragma once
 
-#include <actl/functional/traits/Function.hpp>
 #include <actl/functional/traits/assemble_function.hpp>
+#include <actl/functional/traits/function_traits.hpp>
 
 namespace ac {
 
 /// Concept of a class member function, often called a method.
 template<class T>
 concept MemberFunction =
-    Function<T> && function_traits<T>::category == function_category::member;
+    function_traits<T>::category == function_category::member;
 
 /* Implementation */
 

@@ -7,10 +7,9 @@
 #pragma once
 
 #include <actl/functional/traits/FreeFunction.hpp>
-#include <actl/functional/traits/Function.hpp>
 #include <actl/functional/traits/FunctionObject.hpp>
 #include <actl/functional/traits/MemberFunction.hpp>
-#include <actl/functional/traits/function_category.hpp>
+#include <actl/functional/traits/function_traits.hpp>
 #include <actl/functional/traits/member_traits.hpp>
 #include <actl/functional/traits/noexcept.hpp>
 #include <actl/functional/traits/parameters.hpp>
