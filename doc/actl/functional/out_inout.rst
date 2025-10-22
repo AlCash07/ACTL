@@ -1,9 +1,9 @@
-********************************
-out/inout parameters
-********************************
+************************************
+`out` and `inout` parameter wrappers
+************************************
 
 One of the most important aspects of understanding the code behavior
-is to clearly see which values can change and at which point.
+is to clearly see which values can change and when exactly.
 
 Modern C++ strongly encourages returning by value over output parameters.
 Structured binding and types like `std::optional` are the signs of that.
@@ -23,8 +23,8 @@ We aim to make such code more self-documenting with the help of simple wrappers:
 
   ac::ranges::transform(x, ac::out{y}, z);
 
-Difference between out and inout parameters
-===========================================
+Difference between `out` and `inout` parameters
+===============================================
 
 :cpp:class:`ac::inout` shouldn't be used just because
 we read something from the parameter.
@@ -60,7 +60,7 @@ Detection traits
 Design
 ======
 
-out/inout wrappers are designed to be as simple as possible,
+`out` and `inout` wrappers are designed to be as simple as possible,
 so they don't enforce any guarantees about the parameters
 being actually written to.
 There are more advanced designs available with such guarantees,
@@ -68,7 +68,7 @@ for example the one from this article about the
 `output parameter <https://www.foonathan.net/2016/10/output-parameter>`_.
 But the added benefits don't seem to be worth the extra complexity.
 Especially considering that returning by value should be strongly preferred
-over output parameters, so the latter are left to handle not single object,
+over output parameters, so the latter are left to handle not a single object,
 but ranges and the like.
 
 Google C++ style guide recognized the problem of output parameters,

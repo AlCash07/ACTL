@@ -23,13 +23,11 @@ template<class T>
 inline constexpr bool is_inout_v =
     detail::is_inout<std::remove_cvref_t<T>>::value;
 
-/// Thin wrapper over a reference-like or a pointer-like type
+/// Thin wrapper over a reference-like type
 /// to specify an input-output function parameter.
 ///
-/// It helps to simplify reasoning about the code behavior
-/// by making potential variable modifications clearly visible
+/// Improves code clarity by making variable modifications clearly visible
 /// at both the function definition and all the call sites.
-///
 /// For example, in operations similar to sort it's not immediately clear
 /// if we modify the argument in-place or return a new value:
 /// ```

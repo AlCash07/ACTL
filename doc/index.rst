@@ -2,24 +2,17 @@
 ACTL documentation
 ********************************
 
-ACTL started as a template library for algorithm competitions,
-but ended up providing numerous widely applicable components.
+ACTL library aims to provides accessible generic implementation
+of advanced algorithms not available in the C++ standard library.
 
-Design
-================================
-
-These design decisions affect a large portion of the library,
-so it's useful to understand them:
-
-.. toctree::
-   :maxdepth: 1
-
-   actl/meta/constant
+ACTL stands for Algorithm Competition Template Library
+because competitive programming was the original inspiration,
+but the content has much wider applicability.
 
 Contents
 ================================
 
-Sub-libraries that emerged as helper utilities and can be used in various contexts:
+Low-level supplemetary libraries useful in various contexts:
 
 .. toctree::
    :maxdepth: 1
@@ -30,12 +23,33 @@ Sub-libraries that emerged as helper utilities and can be used in various contex
    actl/platform
    actl/preprocessor
 
-Thematic libraries focused on a specific topic:
+High-level thematic libraries:
 
 .. toctree::
    :maxdepth: 1
 
    actl/string
+
+Design
+================================
+
+The main guiding design principles for the library are:
+
+- consistency;
+- composability;
+- configurability;
+- clarity;
+- convenience.
+
+C++ standard library facilities turned out to be insufficient
+to implement more advanced algorithms following these principles,
+so the following foundational facilities were devised
+and widely used across the library:
+
+.. toctree::
+   :maxdepth: 1
+
+   actl/meta/constant
 
 Contributing
 ================================

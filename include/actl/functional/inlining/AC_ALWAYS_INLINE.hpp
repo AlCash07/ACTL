@@ -8,11 +8,20 @@
 
 #include <actl/platform/compiler.hpp>
 
-/// Macro to force inlining of a function.
+/// Macro to force inlining of a function to avoid an explicit function call.
 ///
-/// Should be used with caution to avoid undesirable binary size increase.
+/// Typically used for simple functions after observing
+/// that the compiler doesn't inline them as expected.
+/// For example, @code
+/// AC_ALWAYS_INLINE int squared(int x) { return x * x; }
+/// @endcode
 ///
-/// @note It's not recommended to overuse it, because
+/// @note Should be used with caution
+/// to avoid undesirable binary size increase
+/// and potential performance loss because of
+/// higher instruction cache utilization.
+///
+/// @note It's not recommended to overuse it because
 /// it disables stepping into the function in debug mode on some platforms.
 #if AC_COMPILER_GCC_COMPATIBLE()
 #define AC_ALWAYS_INLINE __attribute__((__always_inline__))

@@ -11,14 +11,20 @@ namespace ac {
 /// Function object that combines all the overloads from the given Lambdas.
 ///
 /// Designed primarily for convenience when visiting a variant,
-/// see https://en.cppreference.com/w/cpp/utility/variant/visit.
+/// see https://en.cppreference.com/w/cpp/utility/variant/visit
+/// @code
+/// std::visit(ac::overloaded{
+///     [](int i) { std::print("int = {}", i); },
+///     [](std::string_view s) { std::print("string = “{}”", s); },
+/// }, std::variant<int, std::string>{...});
+/// @endcode
 template<class... Lambdas>
 struct overloaded : Lambdas... {
     using Lambdas::operator()...;
 };
 
 // The link above says this deduction guide is not needed as of C++20,
-// but in fact it is.
+// but in fact for some compilers it is needed.
 template<class... Lambdas>
 overloaded(Lambdas...) -> overloaded<Lambdas...>;
 

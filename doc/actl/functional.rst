@@ -2,7 +2,7 @@
 functional
 ********************************
 
-functional library provides a collection of utilities related to functions:
+functional library provides the following utilities related to functions:
 
 .. toctree::
    :glob:

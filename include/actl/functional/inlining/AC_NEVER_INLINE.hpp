@@ -8,7 +8,15 @@
 
 #include <actl/platform/compiler.hpp>
 
-/// Macro to prevent inlining of a function.
+/// Macro to prevent inlining of a function, typically to reduce binary size.
+/// For example, @code
+/// template<class Exception, class... Args>
+/// [[noreturn]] AC_NEVER_INLINE void throw_exception(Args&&... args) {
+///     throw Exception{std::forward<Args>(args)...};
+/// } @endcode
+///
+/// @note Should be used with caution because of
+/// the potential overhead of the added function call.
 #if AC_COMPILER_GCC_COMPATIBLE()
 #define AC_NEVER_INLINE __attribute__((noinline))
 #elif AC_COMPILER_MSVC()

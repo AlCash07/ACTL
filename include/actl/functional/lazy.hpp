@@ -12,25 +12,24 @@
 
 namespace ac {
 
-/// Wrapper to lazily evaluate a function (which has no parameters)
-/// only when the result is needed,
-/// specifically when conversion to the result is requested.
+/// Wrapper to lazily evaluate a function (with no parameters)
+/// only when the result is needed.
 ///
 /// This simple wrapper has surprisingly remarkable benefits:
 ///
-/// 1. It simplifies the code that uses the function result only conditionally,
-/// for example, when inserting an element into a map
+/// 1. Simpler and more efficient code when the function result is used
+/// conditionally, for example, when inserting an element into a map
 /// only if it doesn't already exist: @code
 /// auto iter = map.try_emplace(key, ac::lazy{computeValue}).first;
 /// @endcode
-/// If we require the function to be called only when necessary,
-/// the shortest alternative looks like this: @code
+/// The shortest alternative looks like this,
+/// and does an extra pass over the map: @code
 /// auto iter = map.find(key);
 /// if (iter == map.end())
 ///     iter = map.emplace(key, computeValue()).first;
 /// @endcode
 ///
-/// 2. Even when the function is always called unconditionally,
+/// 2. Even when the function is called unconditionally,
 /// approach similar to ac::lazy is the only way to avoid an
 /// extra move constructor when emplacing a function result into a container.
 /// If a move constructor is not defined, copy constructor is called instead.

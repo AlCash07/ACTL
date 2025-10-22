@@ -24,19 +24,17 @@ struct is_out : std::false_type {};
 template<class T>
 inline constexpr bool is_out_v = detail::is_out<std::remove_cvref_t<T>>::value;
 
-/// Thin wrapper over a reference-like or a pointer-like type
+/// Thin wrapper over a reference-like type
 /// to specify an output-only function parameter.
 ///
-/// It helps to simplify reasoning about the code behavior
-/// by making potential variable modifications clearly visible
+/// Improves code clarity by making variable modifications clearly visible
 /// at both the function definition and all the call sites.
-///
 /// For example, in operations similar to copy it's not immediately clear
 /// which of the arguments we're copying to:
 /// ```
 /// copy_range(x, y);
 /// ```
-/// Using ac::out wrapper, we can make it obvious
+/// Using ac::out wrapper, we can make it clear
 /// without any extra documentation:
 /// ```
 /// template<class Range>
