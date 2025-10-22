@@ -11,9 +11,9 @@
 namespace ac {
 
 /// @file Traits that add or remove type qualifiers:
-/// - const;
-/// - volatile;
-/// - cv for const and volatile.
+/// - `const`;
+/// - `volatile`;
+/// - cv for `const` and `volatile`.
 /// If the type is a reference, then the referenced type is modified.
 
 template<class T>

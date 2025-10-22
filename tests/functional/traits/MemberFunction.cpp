@@ -162,17 +162,17 @@ static_assert(ac::is_noexcept_v<fn_params>);
     static_assert(std::is_same_v<decltype(expected), trait<decltype(input)>>);
 
 /* variadic arguments modification */
-// add_variadic_arguments_t
-AC_MF_CHECK(&S::fn_va, ac::add_variadic_arguments_t, &S::fn);
+/* add_variadic_arguments_t */
 AC_MF_CHECK(&S::fn_va, ac::add_variadic_arguments_t, &S::fn_va); // unchanged
+AC_MF_CHECK(&S::fn_va, ac::add_variadic_arguments_t, &S::fn);
 AC_MF_CHECK(
     &S::fn_va_c_lref_noexcept,
     ac::add_variadic_arguments_t,
     &S::fn_c_lref_noexcept
 );
-// remove_variadic_arguments_t
-AC_MF_CHECK(&S::fn, ac::remove_variadic_arguments_t, &S::fn_va);
+/* remove_variadic_arguments_t */
 AC_MF_CHECK(&S::fn, ac::remove_variadic_arguments_t, &S::fn); // unchanged
+AC_MF_CHECK(&S::fn, ac::remove_variadic_arguments_t, &S::fn_va);
 AC_MF_CHECK(
     &S::fn_c_rref_noexcept,
     ac::remove_variadic_arguments_t,
@@ -180,13 +180,171 @@ AC_MF_CHECK(
 );
 
 /* noexcept modification */
-// add_noexcept_t
-AC_MF_CHECK(&S::fn_noexcept, ac::add_noexcept_t, &S::fn);
+/* add_noexcept_t */
 AC_MF_CHECK(&S::fn_noexcept, ac::add_noexcept_t, &S::fn_noexcept); // unchanged
-AC_MF_CHECK(&S::fn_va_v_lref_noexcept, ac::add_noexcept_t, &S::fn_va_v_lref);
-// remove_noexcept_t
-AC_MF_CHECK(&S::fn, ac::remove_noexcept_t, &S::fn_noexcept);
+AC_MF_CHECK(&S::fn_noexcept, ac::add_noexcept_t, &S::fn);
+AC_MF_CHECK(&S::fn_va_c_lref_noexcept, ac::add_noexcept_t, &S::fn_va_c_lref);
+/* remove_noexcept_t */
 AC_MF_CHECK(&S::fn, ac::remove_noexcept_t, &S::fn); // unchanged
+AC_MF_CHECK(&S::fn, ac::remove_noexcept_t, &S::fn_noexcept);
 AC_MF_CHECK(&S::fn_va_c_rref, ac::remove_noexcept_t, &S::fn_va_c_rref_noexcept);
+
+/* member traits */
+
+/* class_parameter_t */
+static_assert(std::is_same_v<S&, ac::class_parameter_t<decltype(&S::fn)>>);
+static_assert(std::is_same_v<
+              S const&,
+              ac::class_parameter_t<decltype(&S::fn_c_lref)>>);
+static_assert(std::is_same_v<
+              S&&,
+              ac::class_parameter_t<decltype(&S::fn_rref_noexcept)>>);
+
+/* const */
+static_assert(!ac::is_const_member_v<decltype(&S::fn)>);
+static_assert(ac::is_const_member_v<decltype(&S::fn_c)>);
+static_assert(!ac::is_const_member_v<decltype(&S::fn_va_lref_noexcept)>);
+static_assert(ac::is_const_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
+AC_MF_CHECK(&S::fn_c, ac::add_member_const_t, &S::fn_c); // unchanged
+AC_MF_CHECK(&S::fn_c, ac::add_member_const_t, &S::fn);
+AC_MF_CHECK(
+    &S::fn_va_c_lref_noexcept, ac::add_member_const_t, &S::fn_va_lref_noexcept
+);
+AC_MF_CHECK(&S::fn, ac::remove_member_const_t, &S::fn); // unchanged
+AC_MF_CHECK(&S::fn, ac::remove_member_const_t, &S::fn_c);
+AC_MF_CHECK(
+    &S::fn_va_rref_noexcept,
+    ac::remove_member_const_t,
+    &S::fn_va_c_rref_noexcept
+);
+
+/* reference */
+static_assert(!ac::is_reference_member_v<decltype(&S::fn)>);
+static_assert(ac::is_reference_member_v<decltype(&S::fn_lref)>);
+static_assert(ac::is_reference_member_v<decltype(&S::fn_rref)>);
+static_assert(!ac::is_reference_member_v<decltype(&S::fn_va_c_noexcept)>);
+static_assert(ac::is_reference_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
+static_assert(ac::is_reference_member_v<decltype(&S::fn_va_c_rref_noexcept)>);
+AC_MF_CHECK(&S::fn, ac::remove_member_reference_t, &S::fn); // unchanged
+AC_MF_CHECK(&S::fn, ac::remove_member_reference_t, &S::fn_lref);
+AC_MF_CHECK(&S::fn, ac::remove_member_reference_t, &S::fn_rref);
+AC_MF_CHECK(
+    &S::fn_va_c_noexcept,
+    ac::remove_member_reference_t,
+    &S::fn_va_c_lref_noexcept
+);
+AC_MF_CHECK(
+    &S::fn_va_c_noexcept,
+    ac::remove_member_reference_t,
+    &S::fn_va_c_rref_noexcept
+);
+
+/* lvalue reference */
+static_assert(!ac::is_lvalue_reference_member_v<decltype(&S::fn)>);
+static_assert(!ac::is_lvalue_reference_member_v<decltype(&S::fn_rref)>);
+static_assert(ac::is_lvalue_reference_member_v<decltype(&S::fn_lref)>);
+static_assert(!ac::is_lvalue_reference_member_v<decltype(&S::fn_va_c_noexcept
+              )>);
+static_assert(!ac::is_lvalue_reference_member_v<
+              decltype(&S::fn_va_c_rref_noexcept)>);
+static_assert(ac::is_lvalue_reference_member_v<
+              decltype(&S::fn_va_c_lref_noexcept)>);
+AC_MF_CHECK(
+    &S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_lref
+); // unchanged
+AC_MF_CHECK(&S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_lref);
+AC_MF_CHECK(
+    &S::fn_va_c_lref_noexcept,
+    ac::add_member_lvalue_reference_t,
+    &S::fn_va_c_lref_noexcept
+); // unchanged
+AC_MF_CHECK(
+    &S::fn_va_c_lref_noexcept,
+    ac::add_member_lvalue_reference_t,
+    &S::fn_va_c_noexcept
+);
+// lvalue reference prevails over rvalue reference
+// according to the reference collapsing rules
+AC_MF_CHECK(&S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_rref);
+AC_MF_CHECK(
+    &S::fn_va_c_lref_noexcept,
+    ac::add_member_lvalue_reference_t,
+    &S::fn_va_c_rref_noexcept
+);
+
+/* rvalue reference */
+static_assert(!ac::is_rvalue_reference_member_v<decltype(&S::fn)>);
+static_assert(!ac::is_rvalue_reference_member_v<decltype(&S::fn_lref)>);
+static_assert(ac::is_rvalue_reference_member_v<decltype(&S::fn_rref)>);
+static_assert(!ac::is_rvalue_reference_member_v<decltype(&S::fn_va_c_noexcept
+              )>);
+static_assert(!ac::is_rvalue_reference_member_v<
+              decltype(&S::fn_va_c_lref_noexcept)>);
+static_assert(ac::is_rvalue_reference_member_v<
+              decltype(&S::fn_va_c_rref_noexcept)>);
+AC_MF_CHECK(
+    &S::fn_rref, ac::add_member_rvalue_reference_t, &S::fn_rref
+); // unchanged
+AC_MF_CHECK(&S::fn_rref, ac::add_member_rvalue_reference_t, &S::fn_rref);
+AC_MF_CHECK(
+    &S::fn_va_c_rref_noexcept,
+    ac::add_member_rvalue_reference_t,
+    &S::fn_va_c_rref_noexcept
+); // unchanged
+AC_MF_CHECK(
+    &S::fn_va_c_rref_noexcept,
+    ac::add_member_rvalue_reference_t,
+    &S::fn_va_c_noexcept
+);
+// lvalue reference prevails over rvalue reference
+// according to the reference collapsing rules
+AC_MF_CHECK(&S::fn_lref, ac::add_member_rvalue_reference_t, &S::fn_lref);
+AC_MF_CHECK(
+    &S::fn_va_c_lref_noexcept,
+    ac::add_member_rvalue_reference_t,
+    &S::fn_va_c_lref_noexcept
+);
+
+/* volatile */
+static_assert(!ac::is_volatile_member_v<decltype(&S::fn)>);
+static_assert(ac::is_volatile_member_v<decltype(&S::fn_v)>);
+static_assert(!ac::is_volatile_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
+static_assert(ac::is_volatile_member_v<decltype(&S::fn_va_cv_lref_noexcept)>);
+AC_MF_CHECK(&S::fn_v, ac::add_member_volatile_t, &S::fn_v); // unchanged
+AC_MF_CHECK(&S::fn_v, ac::add_member_volatile_t, &S::fn);
+AC_MF_CHECK(
+    &S::fn_va_cv_lref_noexcept,
+    ac::add_member_volatile_t,
+    &S::fn_va_c_lref_noexcept
+);
+AC_MF_CHECK(&S::fn, ac::remove_member_volatile_t, &S::fn); // unchanged
+AC_MF_CHECK(&S::fn, ac::remove_member_volatile_t, &S::fn_v);
+AC_MF_CHECK(
+    &S::fn_va_c_rref_noexcept,
+    ac::remove_member_volatile_t,
+    &S::fn_va_cv_rref_noexcept
+);
+
+/* cv - const volatile */
+static_assert(!ac::is_cv_member_v<decltype(&S::fn_c)>);
+static_assert(!ac::is_cv_member_v<decltype(&S::fn_v)>);
+static_assert(ac::is_cv_member_v<decltype(&S::fn_cv)>);
+static_assert(!ac::is_cv_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
+static_assert(!ac::is_cv_member_v<decltype(&S::fn_va_v_lref_noexcept)>);
+static_assert(ac::is_cv_member_v<decltype(&S::fn_va_cv_lref_noexcept)>);
+AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn_cv); // unchanged
+AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn);
+AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn_c);
+AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn_v);
+AC_MF_CHECK(
+    &S::fn_va_cv_lref_noexcept, ac::add_member_cv_t, &S::fn_va_lref_noexcept
+);
+AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn); // unchanged
+AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn_c);
+AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn_v);
+AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn_cv);
+AC_MF_CHECK(
+    &S::fn_va_rref_noexcept, ac::remove_member_cv_t, &S::fn_va_cv_rref_noexcept
+);
 
 #undef AC_MF_CHECK
