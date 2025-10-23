@@ -2,17 +2,18 @@
 ACTL documentation
 ********************************
 
-ACTL library aims to provides accessible generic implementation
-of advanced algorithms not available in the C++ standard library.
+ACTL library aims to provide accessible generic implementation
+of advanced algorithms not available in the C++ standard library,
+and also improve the ones available there if possible.
 
-ACTL stands for Algorithm Competition Template Library
+ACTL stands for Algorithm Competition Template Library,
 because competitive programming was the original inspiration,
 but the content has much wider applicability.
 
 Contents
 ================================
 
-Low-level supplemetary libraries useful in various contexts:
+Low-level supplementary libraries useful in various contexts:
 
 .. toctree::
    :maxdepth: 1
