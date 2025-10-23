@@ -2,9 +2,28 @@
 Function traits
 ********************************
 
-Function traits provide information about a function,
-such as return and parameter types.
-The following function categories are supported:
+Function traits provide the following inspection and synthesis utilities.
+
+For traits specific to member functions, see :doc:`traits/member_traits`.
+
+============================== =============================== ================================
+Trait name                     Example 1                       Example 2                       
+============================== =============================== ================================
+Input type                     `void(int, char) noexcept`      `int(const char*, ...)`         
+`return_t`                     `void`                          `int`                           
+`parameters_t`                 `type_list<int, char>`          `type_list<const char*>`        
+`arity_v`                      `2`                             `1`                             
+`parameter_at_t` for 0         `int`                           `const char*`                   
+`is_noexcept_v`                `true`                          `false`                         
+`add_noexcept_t`               `void(int, char) noexcept`      `int(const char*, ...) noexcept`
+`remove_noexcept_t`            `void(int, char)`               `int(const char*, ...)`         
+`accepts_variadic_arguments_v` `false`                         `true`                          
+`add_variadic_arguments_t`     `void(int, char, ...) noexcept` `int(const char*, ...)`         
+`remove_variadic_arguments_t`  `void(int, char) noexcept`      `int(const char*)`              
+============================== =============================== ================================
+
+Traits above are visualized on the free function examples for simplicify,
+but the following categories of functions are also supported:
 
 * free functions;
 * free function pointers;
@@ -24,8 +43,8 @@ The most convenient way to use the traits is through the following interface:
 .. doxygentypedef:: ac::return_t
 .. doxygenvariable:: ac::arity_v
 .. doxygentypedef:: ac::parameter_at_t
-.. doxygenvariable:: ac::accepts_variadic_arguments_v
 .. doxygenvariable:: ac::is_noexcept_v
+.. doxygenvariable:: ac::accepts_variadic_arguments_v
 
 The following concepts are provided:
 
@@ -64,4 +83,4 @@ This is confirmed by
   ref	-	(since C++11) ref-qualification, only allowed in non-static member function declarations
 
 It's not clear why such types exist if they cannot be used in a declaration.
-For this reason, our function traits don't support them.
+For this reason, we don't support them.
