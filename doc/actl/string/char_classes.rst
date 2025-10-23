@@ -15,8 +15,7 @@ The difference is that functions here:
 Reference
 =========
 
+.. ac-include:: actl/string/char_classes.hpp
 .. doxygenfile:: string/char_classes.hpp
 
-:source:`Source code <string/char_classes.hpp>`
-
-:test:`Tests <string/char_classes.cpp>`
+.. ac-tests:: tests/string/char_classes.cpp

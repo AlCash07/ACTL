@@ -40,21 +40,34 @@ Reference
 
 The most convenient way to use the traits is through the following interface:
 
+.. ac-include:: actl/functional/traits/parameters.hpp
 .. doxygentypedef:: ac::return_t
+.. doxygentypedef:: ac::parameters_t
 .. doxygenvariable:: ac::arity_v
 .. doxygentypedef:: ac::parameter_at_t
+
+.. ac-include:: actl/functional/traits/noexcept.hpp
 .. doxygenvariable:: ac::is_noexcept_v
+.. doxygentypedef:: ac::add_noexcept_t
+.. doxygentypedef:: ac::remove_noexcept_t
+
+.. ac-include:: actl/functional/traits/variadic_arguments.hpp
 .. doxygenvariable:: ac::accepts_variadic_arguments_v
+.. doxygentypedef:: ac::add_variadic_arguments_t
+.. doxygentypedef:: ac::remove_variadic_arguments_t
 
 The following concepts are provided:
 
+.. ac-include:: actl/functional/traits/FreeFunction.hpp
 .. doxygenconcept:: ac::FreeFunction
+
+.. ac-include:: actl/functional/traits/MemberFunction.hpp
 .. doxygenconcept:: ac::MemberFunction
+
+.. ac-include:: actl/functional/traits/FunctionObject.hpp
 .. doxygenconcept:: ac::FunctionObject
 
-:source:`Source code <functional/traits>`
-
-:test:`Tests <functional/traits>`
+.. ac-tests:: tests/functional/traits
 
 Design
 ======

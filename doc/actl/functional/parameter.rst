@@ -39,10 +39,12 @@ if we don't read to referenced memory itself.
 Reference
 =========
 
+.. ac-include:: actl/functional/parameter/out.hpp
 .. doxygenclass:: ac::out
     :undoc-members:
     :members:
 
+.. ac-include:: actl/functional/parameter/inout.hpp
 .. doxygenclass:: ac::inout
 
 Interface of :cpp:class:`ac::inout` basically repeats :cpp:class:`ac::out`.
@@ -53,9 +55,7 @@ Detection traits
 .. doxygenvariable:: ac::is_out_v
 .. doxygenvariable:: ac::is_inout_v
 
-:source:`Source code <functional/parameter>`
-
-:test:`Tests <functional/parameter/out_inout.cpp>`
+.. ac-tests:: tests/functional/parameter/out_inout.cpp
 
 Design
 ======

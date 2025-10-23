@@ -5,8 +5,7 @@ Compiler detection
 Reference
 =========
 
+.. ac-include:: actl/platform/compiler.hpp
 .. doxygenfile:: platform/compiler.hpp
 
-:source:`Source code <platform/compiler.hpp>`
-
-:test:`Tests <platform/compiler.cpp>`
+.. ac-tests:: tests/platform/compiler.cpp

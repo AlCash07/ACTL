@@ -5,9 +5,9 @@ Lazy evaluation
 Reference
 =========
 
+.. ac-include:: actl/functional/lazy.hpp
+
 .. doxygenstruct:: ac::lazy
     :members:
 
-:source:`Source code <functional/lazy.hpp>`
-
-:test:`Tests <functional/lazy.cpp>`
+.. ac-tests:: tests/functional/lazy.cpp

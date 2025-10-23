@@ -24,6 +24,8 @@ Standard facilities such as `std::true_type` can still be used for type traits.
 Reference
 =========
 
+.. ac-include:: actl/meta/constant.hpp
+
 .. doxygenstruct:: ac::constant
 
 .. doxygentypedef:: ac::bool_constant
@@ -40,6 +42,4 @@ Constant detection utilities
 .. doxygenstruct:: ac::is_constant
 .. doxygenvariable:: ac::is_constant_v
 
-:source:`Source code <meta/constant.hpp>`
-
-:test:`Tests <meta/constant.cpp>`
+.. ac-tests:: tests/meta/constant.cpp

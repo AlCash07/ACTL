@@ -27,11 +27,6 @@ extensions.append("sphinx.ext.autosectionlabel")
 autosectionlabel_prefix_document = True
 
 extensions.append("ac.links")
-extensions.append("sphinx.ext.extlinks")
-extlinks = {
-    "source": ("https://github.com/AlCash07/ACTL/tree/master/include/actl/%s", "Source code"),
-    "test": ("https://github.com/AlCash07/ACTL/tree/master/tests/%s", "Tests")
-}
 
 rst_prolog = """
 .. role:: cpp(code)

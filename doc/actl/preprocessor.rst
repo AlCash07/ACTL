@@ -4,10 +4,8 @@ preprocessor
 
 Preprocessing utilities
 
+.. ac-include:: actl/preprocessor/AC_UNPARENTHESIZED.hpp
 .. doxygendefine:: AC_UNPARENTHESIZED
 
-:source:`Source code <preprocessor/AC_UNPARENTHESIZED.hpp>`
-
+.. ac-include:: actl/preprocessor/AC_CONCAT.hpp
 .. doxygendefine:: AC_CONCAT
-
-:source:`Source code <preprocessor/AC_CONCAT.hpp>`

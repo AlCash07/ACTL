@@ -12,11 +12,10 @@ Similarly to the standard namespaces with literals, `namespace constant_literals
 is an inline namespace within `namespace ac`.
 Access to its content can be gained with `using namespace ac::constant_literals`.
 
+.. ac-include:: actl/meta/constant_literals.hpp
 .. doxygennamespace:: ac::constant_literals
 
-:source:`Source code <meta/constant_literals.hpp>`
-
-:test:`Tests <meta/constant_literals.cpp>`
+.. ac-tests:: tests/meta/constant_literals.cpp
 
 Design
 ======

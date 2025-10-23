@@ -5,8 +5,7 @@ overloaded
 Reference
 =========
 
+.. ac-include:: actl/functional/overloaded.hpp
 .. doxygenstruct:: ac::overloaded
 
-:source:`Source code <functional/overloaded.hpp>`
-
-:test:`Tests <functional/overloaded.cpp>`
+.. ac-tests:: tests/functional/overloaded.cpp

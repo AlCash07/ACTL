@@ -63,8 +63,7 @@ Input type                      `int(Class::*)()`                `int(Class::*)(
 Reference
 =========
 
+.. ac-include:: actl/functional/traits/member_traits.hpp
 .. doxygenfile:: functional/traits/member_traits.hpp
 
-:source:`Source code <functional/traits/member_traits.hpp>`
-
-:test:`Tests <functional/traits/MemberFunction.cpp>`
+.. ac-tests:: tests/functional/traits/MemberFunction.cpp

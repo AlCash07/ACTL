@@ -11,12 +11,13 @@ We address this by exposing related compiler extensions in a portable way.
 Reference
 =========
 
+.. ac-include:: actl/functional/inlining/AC_ALWAYS_INLINE.hpp
 .. doxygendefine:: AC_ALWAYS_INLINE
+
+.. ac-include:: actl/functional/inlining/AC_NEVER_INLINE.hpp
 .. doxygendefine:: AC_NEVER_INLINE
 
-:source:`Source code <functional/inlining>`
-
-:test:`Tests <functional/inlining>`
+.. ac-tests:: tests/functional/inlining.cpp
 
 Design
 ======

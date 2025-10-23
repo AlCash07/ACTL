@@ -20,8 +20,7 @@ For portability we need a custom wrapper until that's fixed. See
 Reference
 =========
 
+.. ac-include:: actl/memory/AC_NO_UNIQUE_ADDRESS.hpp
 .. doxygenfile:: memory/AC_NO_UNIQUE_ADDRESS.hpp
 
-:source:`Source code <memory/AC_NO_UNIQUE_ADDRESS.hpp>`
-
-:test:`Tests <memory/AC_NO_UNIQUE_ADDRESS.cpp>`
+.. ac-tests:: tests/memory/AC_NO_UNIQUE_ADDRESS.cpp

@@ -17,14 +17,19 @@ doesn't help either (see Notes).
 Reference
 =========
 
+.. ac-include:: actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_AND_RETURN
+
+.. ac-include:: actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN.hpp
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN
+
+.. ac-include:: actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN.hpp
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN
+
+.. ac-include:: actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_INITIALIZE.hpp
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_AND_INITIALIZE
 
-:source:`Source code <functional/noexcept>`
-
-:test:`Tests <functional/noexcept>`
+.. ac-tests:: tests/functional/noexcept
 
 Design
 ======
