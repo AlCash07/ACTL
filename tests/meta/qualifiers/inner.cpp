@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/meta/const_volatile.hpp>
+#include <actl/meta/qualifiers/inner.hpp>
 
 /* add_inner_const_t */
 static_assert(std::is_same_v<int const, ac::add_inner_const_t<int>>);

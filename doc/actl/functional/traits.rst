@@ -4,7 +4,7 @@ Function traits
 
 Function traits provide the following inspection and synthesis utilities.
 
-For traits specific to member functions, see :doc:`traits/member_traits`.
+For traits specific to member functions, see :doc:`member_traits`.
 
 ============================== =============================== ================================
 Trait name                     Example 1                       Example 2                       

@@ -47,7 +47,7 @@ Addition traits change the member function type in the following way,
 and removal traits do an inverse operation.
 
 =============================== ================================ =================================
-Trait name                      Example 1                        Example 2                    
+Trait name                      Non-reference                    Reference                    
 =============================== ================================ =================================
 Input type                      `int(Class::*)()`                `int(Class::*)() &`              
 `add_member_const_t`            `int(Class::*)() const`          `int(Class::*)() const&`         
@@ -59,6 +59,16 @@ Input type                      `int(Class::*)()`                `int(Class::*)(
 
 .. note:: `add_member_rvalue_reference_t` doesn't change the l-value reference
   because of the C++ reference collapsing rules.
+
+=========================== ================================ =================================
+Trait name                  Non-reference                    Reference                    
+=========================== ================================ =================================
+Input type                  `int(Class::*)() const volatile` `int(Class::*)() const volatile&`
+`remove_member_const_t`     `int(Class::*)() volatile`       `int(Class::*)() volatile&`      
+`remove_member_reference_t` `int(Class::*)() const volatile` `int(Class::*)() const volatile`              
+`remove_member_volatile_t`  `int(Class::*)() const`          `int(Class::*)() const&`         
+`remove_member_cv_t`        `int(Class::*)()`                `int(Class::*)() &`              
+=========================== ================================ =================================
 
 Reference
 =========

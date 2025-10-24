@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/traits/detail/modify_class.hpp>
-#include <actl/meta/const_volatile.hpp>
+#include <actl/meta/qualifiers/inner.hpp>
 
 namespace ac {
 
