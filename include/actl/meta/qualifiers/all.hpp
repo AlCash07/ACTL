@@ -7,4 +7,5 @@
 #pragma once
 
 #include <actl/meta/qualifiers/copy.hpp>
+#include <actl/meta/qualifiers/detection.hpp>
 #include <actl/meta/qualifiers/inner.hpp>

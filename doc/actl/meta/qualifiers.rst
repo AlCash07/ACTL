@@ -9,6 +9,15 @@ as well as `reference declaration <https://en.cppreference.com/w/cpp/language/re
 Reference
 =========
 
+Detection traits
+----------------
+
+.. ac-include:: actl/meta/qualifiers/detection.hpp
+.. doxygenvariable:: is_cv_v
+.. doxygenvariable:: has_qualifiers_v
+
+.. ac-tests:: tests/meta/qualifiers/detection.cpp
+
 Qualifiers copy between types
 -----------------------------
 
@@ -59,6 +68,8 @@ Source type S                    `char`      `char const volatile` `char const&`
 .. doxygentypedef:: copy_cv_t
 .. doxygentypedef:: copy_reference_t
 .. doxygentypedef:: copy_cvref_t
+
+.. ac-tests:: tests/meta/qualifiers/copy.cpp
 
 Inner qualifiers modification
 -----------------------------

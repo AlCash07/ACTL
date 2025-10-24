@@ -7,12 +7,26 @@
 #pragma once
 
 #include <actl/functional/traits/detail/modify_class.hpp>
+#include <actl/meta/qualifiers/detection.hpp>
 #include <actl/meta/qualifiers/inner.hpp>
 
 namespace ac {
 
+/// Class parameter of the member function including qualifiers.
 template<MemberFunction MF>
 using class_parameter_t = at_t<parameters_t<MF>, 0>;
+
+/// Class parameter of the member function excluding qualifiers.
+template<MemberFunction MF>
+using unqualified_class_t = std::remove_cvref_t<at_t<parameters_t<MF>, 0>>;
+
+/// Checks if a member function has any of
+/// `const`, `volatile`, `&` or `&&` qualifiers.
+///
+/// `false` only for functions like `void(Class::*)(int)`.
+template<MemberFunction MF>
+inline constexpr bool has_member_qualifiers_v =
+    has_qualifiers_v<at_t<unique_parameters_t<MF>, 0>>;
 
 /* const */
 
