@@ -18,12 +18,14 @@ template<
     bool IsNoexcept>
 struct assemble_function;
 
+/// Assembles a function type with the given properties.
 template<
     function_category Category,
     class Return,
     class ParametersList,
     bool AcceptsVArgs,
     bool IsNoexcept>
+    requires(Category != function_category::object)
 using assemble_function_t = typename assemble_function<
     Category,
     Return,
@@ -33,7 +35,8 @@ using assemble_function_t = typename assemble_function<
 
 /// Member function with either empty or & qualifier
 /// results in the class parameter being passed by reference.
-/// Because of that, we need to use unique types when assembling a function.
+/// To disambiguate these cases, we need to use unique types
+/// when assembling a member function.
 template<class Fn>
 using unique_parameters_t = decltype([] {
     if constexpr (requires {

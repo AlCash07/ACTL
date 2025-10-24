@@ -79,7 +79,7 @@ struct S {
     int fn_va_v_rref_noexcept(...) volatile&& noexcept;
     int fn_va_cv_rref_noexcept(...) const volatile&& noexcept;
 
-    int const& fn_params(int const, int&&, ...) const noexcept;
+    int const& fn_parameters(int const, int&&, ...) const noexcept;
 };
 
 template<auto Member, class ClassParameter, bool AcceptsVArgs, bool IsNoexcept>
@@ -88,8 +88,11 @@ void check() {
     static_assert(1ul == ac::arity_v<MemberFn>);
     static_assert(std::is_same_v<int, ac::return_t<MemberFn>>);
     static_assert(std::is_same_v<
+                  ac::type_list<ClassParameter>,
+                  ac::parameters_t<MemberFn>>);
+    static_assert(std::is_same_v<
                   ClassParameter,
-                  ac::parameter_at_t<0, MemberFn>>);
+                  ac::parameter_at_t<MemberFn, 0>>);
     static_assert(AcceptsVArgs == ac::accepts_variadic_arguments_v<MemberFn>);
     static_assert(IsNoexcept == ac::is_noexcept_v<MemberFn>);
 }
@@ -149,14 +152,19 @@ TEST_CASE("member function pointers") {
     check<std::move(&S::fn_va_noexcept), S&, true, true>();
 }
 
-using fn_params = decltype(&S::fn_params);
-static_assert(3ul == ac::arity_v<fn_params>);
-static_assert(std::is_same_v<int const&, ac::return_t<fn_params>>);
+using fn_parameters = decltype(&S::fn_parameters);
+static_assert(std::is_same_v<int const&, ac::return_t<fn_parameters>>);
 static_assert(std::is_same_v<
               ac::type_list<S const&, int, int&&>,
-              ac::parameters_t<fn_params>>);
-static_assert(ac::accepts_variadic_arguments_v<fn_params>);
-static_assert(ac::is_noexcept_v<fn_params>);
+              ac::parameters_t<fn_parameters>>);
+static_assert(ac::accepts_variadic_arguments_v<fn_parameters>);
+static_assert(ac::is_noexcept_v<fn_parameters>);
+/* derived traits */
+static_assert(3 == ac::arity_v<fn_parameters>);
+static_assert(!ac::returns_void_v<fn_parameters>);
+static_assert(std::is_same_v<S const&, ac::parameter_at_t<fn_parameters, 0>>);
+static_assert(std::is_same_v<int, ac::parameter_at_t<fn_parameters, 1>>);
+static_assert(std::is_same_v<int&&, ac::parameter_at_t<fn_parameters, 2>>);
 
 #define AC_MF_CHECK(expected, trait, input) \
     static_assert(std::is_same_v<decltype(expected), trait<decltype(input)>>);
@@ -249,15 +257,14 @@ static_assert(!ac::is_lvalue_reference_member_v<
               decltype(&S::fn_va_c_rref_noexcept)>);
 static_assert(ac::is_lvalue_reference_member_v<
               decltype(&S::fn_va_c_lref_noexcept)>);
-AC_MF_CHECK(
-    &S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_lref
-); // unchanged
+// unchanged
 AC_MF_CHECK(&S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_lref);
-AC_MF_CHECK(
+AC_MF_CHECK(&S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_lref);
+AC_MF_CHECK( // unchanged
     &S::fn_va_c_lref_noexcept,
     ac::add_member_lvalue_reference_t,
     &S::fn_va_c_lref_noexcept
-); // unchanged
+);
 AC_MF_CHECK(
     &S::fn_va_c_lref_noexcept,
     ac::add_member_lvalue_reference_t,
@@ -282,15 +289,14 @@ static_assert(!ac::is_rvalue_reference_member_v<
               decltype(&S::fn_va_c_lref_noexcept)>);
 static_assert(ac::is_rvalue_reference_member_v<
               decltype(&S::fn_va_c_rref_noexcept)>);
-AC_MF_CHECK(
-    &S::fn_rref, ac::add_member_rvalue_reference_t, &S::fn_rref
-); // unchanged
+// unchanged
 AC_MF_CHECK(&S::fn_rref, ac::add_member_rvalue_reference_t, &S::fn_rref);
-AC_MF_CHECK(
+AC_MF_CHECK(&S::fn_rref, ac::add_member_rvalue_reference_t, &S::fn_rref);
+AC_MF_CHECK( // unchanged
     &S::fn_va_c_rref_noexcept,
     ac::add_member_rvalue_reference_t,
     &S::fn_va_c_rref_noexcept
-); // unchanged
+);
 AC_MF_CHECK(
     &S::fn_va_c_rref_noexcept,
     ac::add_member_rvalue_reference_t,

@@ -11,6 +11,8 @@
 
 namespace ac {
 
+/// Checks if the function accepts variadic arguments, see
+/// https://en.cppreference.com/w/cpp/language/variadic_arguments.html
 template<class Fn>
 inline constexpr bool accepts_variadic_arguments_v =
     function_traits<Fn>::accepts_variadic_arguments;

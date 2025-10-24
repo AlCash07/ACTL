@@ -26,6 +26,31 @@ using add_member_const_t = detail::modify_class_t<MF, add_inner_const>;
 template<MemberFunction MF>
 using remove_member_const_t = detail::modify_class_t<MF, remove_inner_const>;
 
+/* volatile */
+
+template<MemberFunction MF>
+inline constexpr bool is_volatile_member_v =
+    std::is_volatile_v<std::remove_reference_t<detail::unique_class_t<MF>>>;
+
+template<MemberFunction MF>
+using add_member_volatile_t = detail::modify_class_t<MF, add_inner_volatile>;
+
+template<MemberFunction MF>
+using remove_member_volatile_t =
+    detail::modify_class_t<MF, remove_inner_volatile>;
+
+/* cv - const volatile */
+
+template<MemberFunction MF>
+inline constexpr bool is_cv_member_v =
+    is_const_member_v<MF> && is_volatile_member_v<MF>;
+
+template<MemberFunction MF>
+using add_member_cv_t = detail::modify_class_t<MF, add_inner_cv>;
+
+template<MemberFunction MF>
+using remove_member_cv_t = detail::modify_class_t<MF, remove_inner_cv>;
+
 /* reference */
 
 template<MemberFunction MF>
@@ -51,30 +76,5 @@ inline constexpr bool is_rvalue_reference_member_v =
 template<MemberFunction MF>
 using add_member_rvalue_reference_t =
     detail::modify_class_t<MF, std::add_rvalue_reference>;
-
-/* volatile */
-
-template<MemberFunction MF>
-inline constexpr bool is_volatile_member_v =
-    std::is_volatile_v<std::remove_reference_t<detail::unique_class_t<MF>>>;
-
-template<MemberFunction MF>
-using add_member_volatile_t = detail::modify_class_t<MF, add_inner_volatile>;
-
-template<MemberFunction MF>
-using remove_member_volatile_t =
-    detail::modify_class_t<MF, remove_inner_volatile>;
-
-/* cv - const volatile */
-
-template<MemberFunction MF>
-inline constexpr bool is_cv_member_v =
-    is_const_member_v<MF> && is_volatile_member_v<MF>;
-
-template<MemberFunction MF>
-using add_member_cv_t = detail::modify_class_t<MF, add_inner_cv>;
-
-template<MemberFunction MF>
-using remove_member_cv_t = detail::modify_class_t<MF, remove_inner_cv>;
 
 } // namespace ac

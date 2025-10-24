@@ -11,6 +11,8 @@
 
 namespace ac {
 
+/// Checks if the function is noexcept, see
+/// https://en.cppreference.com/w/cpp/language/noexcept_spec.html
 template<class Fn>
 inline constexpr bool is_noexcept_v = function_traits<Fn>::is_noexcept;
 

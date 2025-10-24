@@ -11,7 +11,8 @@
 
 namespace ac {
 
-/// Concept of a free function, including a free function pointer.
+/// Concept of a free function, for example, `float(int, int)`,
+/// including a free function pointer.
 template<class T>
 concept FreeFunction = function_traits<T>::category == function_category::free;
 

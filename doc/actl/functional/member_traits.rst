@@ -33,14 +33,14 @@ Table with the full list:
 +===========+================================+=================================+=============================+
 | const     | `is_const_member_v`            | `add_member_const_t`            | `remove_member_const_t`     |
 +-----------+--------------------------------+---------------------------------+-----------------------------+
-| &         | `is_lvalue_reference_member_v` | `add_member_lvalue_reference_t` | `remove_member_reference_t` |
-+-----------+--------------------------------+---------------------------------+-----------------------------+
-| &&        | `is_rvalue_reference_member_v` | `add_member_rvalue_reference_t` | `remove_member_reference_t` |
-+-----------+--------------------------------+---------------------------------+-----------------------------+
 | volatile  | `is_volatile_member_v`         | `add_member_volatile_t`         | `remove_member_volatile_t`  |
 +-----------+--------------------------------+---------------------------------+-----------------------------+
 || const    | `is_cv_member_v`               | `add_member_cv_t`               | `remove_member_cv_t`        |
 || volatile |                                |                                 |                             |
++-----------+--------------------------------+---------------------------------+-----------------------------+
+| &         | `is_lvalue_reference_member_v` | `add_member_lvalue_reference_t` | `remove_member_reference_t` |
++-----------+--------------------------------+---------------------------------+-----------------------------+
+| &&        | `is_rvalue_reference_member_v` | `add_member_rvalue_reference_t` | `remove_member_reference_t` |
 +-----------+--------------------------------+---------------------------------+-----------------------------+
 
 Addition traits change the member function type in the following way,
@@ -51,23 +51,23 @@ Trait name                      Non-reference                    Reference
 =============================== ================================ =================================
 Input type                      `int(Class::*)()`                `int(Class::*)() &`              
 `add_member_const_t`            `int(Class::*)() const`          `int(Class::*)() const&`         
-`add_member_lvalue_reference_t` `int(Class::*)() &`              `int(Class::*)() &`              
-`add_member_rvalue_reference_t` `int(Class::*)() &&`             `int(Class::*)() &`              
 `add_member_volatile_t`         `int(Class::*)() volatile`       `int(Class::*)() volatile&`      
 `add_member_cv_t`               `int(Class::*)() const volatile` `int(Class::*)() const volatile&`
+`add_member_lvalue_reference_t` `int(Class::*)() &`              `int(Class::*)() &`              
+`add_member_rvalue_reference_t` `int(Class::*)() &&`             `int(Class::*)() &`              
 =============================== ================================ =================================
 
-.. note:: `add_member_rvalue_reference_t` doesn't change the l-value reference
-  because of the C++ reference collapsing rules.
+.. note:: `add_member_rvalue_reference_t` doesn't change the l-value reference because of the C++
+  `reference collapsing rules <https://stackoverflow.com/questions/13725747/what-are-the-reference-collapsing-rules-and-how-are-they-utilized-by-the-c-st>`_.
 
 =========================== ================================ =================================
-Trait name                  Non-reference                    Reference                    
+Trait name                  Non-reference                    Reference                        
 =========================== ================================ =================================
 Input type                  `int(Class::*)() const volatile` `int(Class::*)() const volatile&`
 `remove_member_const_t`     `int(Class::*)() volatile`       `int(Class::*)() volatile&`      
-`remove_member_reference_t` `int(Class::*)() const volatile` `int(Class::*)() const volatile`              
 `remove_member_volatile_t`  `int(Class::*)() const`          `int(Class::*)() const&`         
 `remove_member_cv_t`        `int(Class::*)()`                `int(Class::*)() &`              
+`remove_member_reference_t` `int(Class::*)() const volatile` `int(Class::*)() const volatile` 
 =========================== ================================ =================================
 
 Reference
