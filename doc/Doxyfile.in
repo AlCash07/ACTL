@@ -50,7 +50,7 @@ SIP_SUPPORT            = NO
 IDL_PROPERTY_SUPPORT   = YES
 DISTRIBUTE_GROUP_DOC   = NO
 GROUP_NESTED_COMPOUNDS = NO
-SUBGROUPING            = YES
+SUBGROUPING            = NO
 INLINE_GROUPED_CLASSES = NO
 INLINE_SIMPLE_STRUCTS  = NO
 TYPEDEF_HIDES_STRUCT   = NO
@@ -61,7 +61,7 @@ EXTRACT_PRIVATE        = NO
 EXTRACT_PRIV_VIRTUAL   = NO
 EXTRACT_PACKAGE        = NO
 EXTRACT_STATIC         = NO
-EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_CLASSES  = NO
 EXTRACT_LOCAL_METHODS  = NO
 EXTRACT_ANON_NSPACES   = NO
 RESOLVE_UNNAMED_PARAMS = YES
@@ -73,8 +73,8 @@ INTERNAL_DOCS          = NO
 CASE_SENSE_NAMES       = NO
 HIDE_SCOPE_NAMES       = NO
 HIDE_COMPOUND_REFERENCE= NO
-SHOW_HEADERFILE        = YES
-SHOW_INCLUDE_FILES     = YES
+SHOW_HEADERFILE        = NO
+SHOW_INCLUDE_FILES     = NO
 SHOW_GROUPED_MEMB_INC  = NO
 FORCE_LOCAL_INCLUDES   = NO
 INLINE_INFO            = YES
@@ -90,8 +90,8 @@ GENERATE_BUGLIST       = YES
 GENERATE_DEPRECATEDLIST= YES
 ENABLED_SECTIONS       =
 MAX_INITIALIZER_LINES  = 30
-SHOW_USED_FILES        = YES
-SHOW_FILES             = YES
+SHOW_USED_FILES        = NO
+SHOW_FILES             = NO
 SHOW_NAMESPACES        = YES
 FILE_VERSION_FILTER    =
 LAYOUT_FILE            =
@@ -107,52 +107,8 @@ WARN_FORMAT            = "$file:$line: $text"
 WARN_LOGFILE           =
 INPUT                  = "include/actl"
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.c \
-                         *.cc \
-                         *.cxx \
-                         *.cpp \
-                         *.c++ \
-                         *.java \
-                         *.ii \
-                         *.ixx \
-                         *.ipp \
-                         *.i++ \
-                         *.inl \
-                         *.idl \
-                         *.ddl \
-                         *.odl \
-                         *.h \
-                         *.hh \
-                         *.hxx \
-                         *.hpp \
-                         *.h++ \
-                         *.l \
-                         *.cs \
-                         *.d \
-                         *.php \
-                         *.php4 \
-                         *.php5 \
-                         *.phtml \
-                         *.inc \
-                         *.m \
-                         *.markdown \
-                         *.md \
-                         *.mm \
-                         *.dox \
-                         *.py \
-                         *.pyw \
-                         *.f90 \
-                         *.f95 \
-                         *.f03 \
-                         *.f08 \
-                         *.f18 \
-                         *.f \
-                         *.for \
-                         *.vhd \
-                         *.vhdl \
-                         *.ucf \
-                         *.qsf \
-                         *.ice
+FILE_PATTERNS          = *.h \
+                         *.hpp
 RECURSIVE              = YES
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
@@ -175,7 +131,7 @@ REFERENCES_RELATION    = NO
 REFERENCES_LINK_SOURCE = YES
 SOURCE_TOOLTIPS        = YES
 USE_HTAGS              = NO
-VERBATIM_HEADERS       = YES
+VERBATIM_HEADERS       = NO
 ALPHABETICAL_INDEX     = YES
 IGNORE_PREFIX          =
 GENERATE_HTML          = NO
@@ -272,7 +228,7 @@ MAN_SUBDIR             =
 MAN_LINKS              = NO
 GENERATE_XML           = YES
 XML_OUTPUT             = xml
-XML_PROGRAMLISTING     = YES
+XML_PROGRAMLISTING     = NO
 XML_NS_MEMB_FILE_SCOPE = NO
 GENERATE_DOCBOOK       = NO
 DOCBOOK_OUTPUT         = docbook
@@ -291,15 +247,15 @@ PREDEFINED             = \
     "AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(...) = : " \
     "AC_COMPILER_GCC_COMPATIBLE() = 1"
 EXPAND_AS_DEFINED      =
-SEARCH_INCLUDES        = YES
+SEARCH_INCLUDES        = NO
 INCLUDE_PATH           =
 INCLUDE_FILE_PATTERNS  =
 SKIP_FUNCTION_MACROS   = YES
 TAGFILES               =
 GENERATE_TAGFILE       =
 ALLEXTERNALS           = NO
-EXTERNAL_GROUPS        = YES
-EXTERNAL_PAGES         = YES
+EXTERNAL_GROUPS        = NO
+EXTERNAL_PAGES         = NO
 DIA_PATH               =
 HIDE_UNDOC_RELATIONS   = YES
 HAVE_DOT               = NO
@@ -307,20 +263,20 @@ DOT_NUM_THREADS        = 0
 DOT_FONTNAME           = Helvetica
 DOT_FONTSIZE           = 10
 DOT_FONTPATH           =
-CLASS_GRAPH            = YES
-COLLABORATION_GRAPH    = YES
-GROUP_GRAPHS           = YES
+CLASS_GRAPH            = NO
+COLLABORATION_GRAPH    = NO
+GROUP_GRAPHS           = NO
 UML_LOOK               = NO
 UML_LIMIT_NUM_FIELDS   = 10
 DOT_UML_DETAILS        = NO
 DOT_WRAP_THRESHOLD     = 17
 TEMPLATE_RELATIONS     = NO
-INCLUDE_GRAPH          = YES
-INCLUDED_BY_GRAPH      = YES
+INCLUDE_GRAPH          = NO
+INCLUDED_BY_GRAPH      = NO
 CALL_GRAPH             = NO
 CALLER_GRAPH           = NO
-GRAPHICAL_HIERARCHY    = YES
-DIRECTORY_GRAPH        = YES
+GRAPHICAL_HIERARCHY    = NO
+DIRECTORY_GRAPH        = NO
 DIR_GRAPH_MAX_DEPTH    = 1
 DOT_IMAGE_FORMAT       = png
 INTERACTIVE_SVG        = NO

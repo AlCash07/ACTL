@@ -12,6 +12,7 @@ substr_to_remove = [
 ]
 regex_to_remove = [
     '<p>Subclassed by .*</p>\n',
+    '<em>#include &lt;.*&gt;</em></div>\n',
 ]
 
 doc_dir = sys.argv[1]
