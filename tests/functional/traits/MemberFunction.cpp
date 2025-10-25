@@ -5,82 +5,8 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/functional/traits/all.hpp>
+#include "functional/traits/M.hpp"
 #include "test.hpp"
-
-// Struct with all the possible qualifier combinations for member functions.
-struct S {
-    // The following abbreviations are used to make the test code concise,
-    // because they are hopefully obvious from the member function declaration:
-    // - c = const
-    // - v = volatile
-    // - cv = const volatile
-    // - lref = lvalue reference
-    // - rref = rvalue reference
-    // - va = variadic arguments
-    int fn();
-    int fn_c() const;
-    int fn_v() volatile;
-    int fn_cv() const volatile;
-
-    int fn_lref() &;
-    int fn_c_lref() const&;
-    int fn_v_lref() volatile&;
-    int fn_cv_lref() const volatile&;
-
-    int fn_rref() &&;
-    int fn_c_rref() const&&;
-    int fn_v_rref() volatile&&;
-    int fn_cv_rref() const volatile&&;
-
-    int fn_noexcept() noexcept;
-    int fn_c_noexcept() const noexcept;
-    int fn_v_noexcept() volatile noexcept;
-    int fn_cv_noexcept() const volatile noexcept;
-
-    int fn_lref_noexcept() & noexcept;
-    int fn_c_lref_noexcept() const& noexcept;
-    int fn_v_lref_noexcept() volatile& noexcept;
-    int fn_cv_lref_noexcept() const volatile& noexcept;
-
-    int fn_rref_noexcept() && noexcept;
-    int fn_c_rref_noexcept() const&& noexcept;
-    int fn_v_rref_noexcept() volatile&& noexcept;
-    int fn_cv_rref_noexcept() const volatile&& noexcept;
-
-    // Variadic arguments are tested last,
-    // because they are less common in code.
-    int fn_va(...);
-    int fn_va_c(...) const;
-    int fn_va_v(...) volatile;
-    int fn_va_cv(...) const volatile;
-
-    int fn_va_lref(...) &;
-    int fn_va_c_lref(...) const&;
-    int fn_va_v_lref(...) volatile&;
-    int fn_va_cv_lref(...) const volatile&;
-
-    int fn_va_rref(...) &&;
-    int fn_va_c_rref(...) const&&;
-    int fn_va_v_rref(...) volatile&&;
-    int fn_va_cv_rref(...) const volatile&&;
-
-    int fn_va_noexcept(...) noexcept;
-    int fn_va_c_noexcept(...) const noexcept;
-    int fn_va_v_noexcept(...) volatile noexcept;
-    int fn_va_cv_noexcept(...) const volatile noexcept;
-
-    int fn_va_lref_noexcept(...) & noexcept;
-    int fn_va_c_lref_noexcept(...) const& noexcept;
-    int fn_va_v_lref_noexcept(...) volatile& noexcept;
-    int fn_va_cv_lref_noexcept(...) const volatile& noexcept;
-
-    int fn_va_rref_noexcept(...) && noexcept;
-    int fn_va_c_rref_noexcept(...) const&& noexcept;
-    int fn_va_v_rref_noexcept(...) volatile&& noexcept;
-    int fn_va_cv_rref_noexcept(...) const volatile&& noexcept;
-
-    int const& fn_parameters(int const, int&&, ...) const noexcept;
-};
 
 template<auto Member, class ClassParameter, bool AcceptsVArgs, bool IsNoexcept>
 void check() {
@@ -91,88 +17,79 @@ void check() {
                   ac::parameters_t<MF>>);
     static_assert(1ul == ac::arity_v<MF>);
     static_assert(std::is_same_v<ClassParameter, ac::class_parameter_t<MF>>);
-    static_assert(std::is_same_v<S, ac::unqualified_class_t<MF>>);
+    static_assert(std::is_same_v<M, ac::unqualified_class_t<MF>>);
     static_assert(AcceptsVArgs == ac::accepts_variadic_arguments_v<MF>);
     static_assert(IsNoexcept == ac::is_noexcept_v<MF>);
 }
 
 TEST_CASE("member function pointers") {
-    check<&S::fn, S&, false, false>();
-    check<&S::fn_c, S const&, false, false>();
-    check<&S::fn_v, S volatile&, false, false>();
-    check<&S::fn_cv, S const volatile&, false, false>();
-    check<&S::fn_lref, S&, false, false>();
-    check<&S::fn_c_lref, S const&, false, false>();
-    check<&S::fn_v_lref, S volatile&, false, false>();
-    check<&S::fn_cv_lref, S const volatile&, false, false>();
-    check<&S::fn_rref, S&&, false, false>();
-    check<&S::fn_c_rref, S const&&, false, false>();
-    check<&S::fn_v_rref, S volatile&&, false, false>();
-    check<&S::fn_cv_rref, S const volatile&&, false, false>();
-    check<&S::fn_noexcept, S&, false, true>();
-    check<&S::fn_c_noexcept, S const&, false, true>();
-    check<&S::fn_v_noexcept, S volatile&, false, true>();
-    check<&S::fn_cv_noexcept, S const volatile&, false, true>();
-    check<&S::fn_lref_noexcept, S&, false, true>();
-    check<&S::fn_c_lref_noexcept, S const&, false, true>();
-    check<&S::fn_v_lref_noexcept, S volatile&, false, true>();
-    check<&S::fn_cv_lref_noexcept, S const volatile&, false, true>();
-    check<&S::fn_rref_noexcept, S&&, false, true>();
-    check<&S::fn_c_rref_noexcept, S const&&, false, true>();
-    check<&S::fn_v_rref_noexcept, S volatile&&, false, true>();
-    check<&S::fn_cv_rref_noexcept, S const volatile&&, false, true>();
+    check<&M::fn, M&, false, false>();
+    check<&M::fn_c, M const&, false, false>();
+    check<&M::fn_v, M volatile&, false, false>();
+    check<&M::fn_cv, M const volatile&, false, false>();
+    check<&M::fn_lref, M&, false, false>();
+    check<&M::fn_c_lref, M const&, false, false>();
+    check<&M::fn_v_lref, M volatile&, false, false>();
+    check<&M::fn_cv_lref, M const volatile&, false, false>();
+    check<&M::fn_rref, M&&, false, false>();
+    check<&M::fn_c_rref, M const&&, false, false>();
+    check<&M::fn_v_rref, M volatile&&, false, false>();
+    check<&M::fn_cv_rref, M const volatile&&, false, false>();
+    check<&M::fn_noexcept, M&, false, true>();
+    check<&M::fn_c_noexcept, M const&, false, true>();
+    check<&M::fn_v_noexcept, M volatile&, false, true>();
+    check<&M::fn_cv_noexcept, M const volatile&, false, true>();
+    check<&M::fn_lref_noexcept, M&, false, true>();
+    check<&M::fn_c_lref_noexcept, M const&, false, true>();
+    check<&M::fn_v_lref_noexcept, M volatile&, false, true>();
+    check<&M::fn_cv_lref_noexcept, M const volatile&, false, true>();
+    check<&M::fn_rref_noexcept, M&&, false, true>();
+    check<&M::fn_c_rref_noexcept, M const&&, false, true>();
+    check<&M::fn_v_rref_noexcept, M volatile&&, false, true>();
+    check<&M::fn_cv_rref_noexcept, M const volatile&&, false, true>();
     /* variadic arguments */
-    check<&S::fn_va, S&, true, false>();
-    check<&S::fn_va_c, S const&, true, false>();
-    check<&S::fn_va_v, S volatile&, true, false>();
-    check<&S::fn_va_cv, S const volatile&, true, false>();
-    check<&S::fn_va_lref, S&, true, false>();
-    check<&S::fn_va_c_lref, S const&, true, false>();
-    check<&S::fn_va_v_lref, S volatile&, true, false>();
-    check<&S::fn_va_cv_lref, S const volatile&, true, false>();
-    check<&S::fn_va_rref, S&&, true, false>();
-    check<&S::fn_va_c_rref, S const&&, true, false>();
-    check<&S::fn_va_v_rref, S volatile&&, true, false>();
-    check<&S::fn_va_cv_rref, S const volatile&&, true, false>();
-    check<&S::fn_va_noexcept, S&, true, true>();
-    check<&S::fn_va_c_noexcept, S const&, true, true>();
-    check<&S::fn_va_v_noexcept, S volatile&, true, true>();
-    check<&S::fn_va_cv_noexcept, S const volatile&, true, true>();
-    check<&S::fn_va_lref_noexcept, S&, true, true>();
-    check<&S::fn_va_c_lref_noexcept, S const&, true, true>();
-    check<&S::fn_va_v_lref_noexcept, S volatile&, true, true>();
-    check<&S::fn_va_cv_lref_noexcept, S const volatile&, true, true>();
-    check<&S::fn_va_rref_noexcept, S&&, true, true>();
-    check<&S::fn_va_c_rref_noexcept, S const&&, true, true>();
-    check<&S::fn_va_v_rref_noexcept, S volatile&&, true, true>();
-    check<&S::fn_va_cv_rref_noexcept, S const volatile&&, true, true>();
+    check<&M::fn_va, M&, true, false>();
+    check<&M::fn_va_c, M const&, true, false>();
+    check<&M::fn_va_v, M volatile&, true, false>();
+    check<&M::fn_va_cv, M const volatile&, true, false>();
+    check<&M::fn_va_lref, M&, true, false>();
+    check<&M::fn_va_c_lref, M const&, true, false>();
+    check<&M::fn_va_v_lref, M volatile&, true, false>();
+    check<&M::fn_va_cv_lref, M const volatile&, true, false>();
+    check<&M::fn_va_rref, M&&, true, false>();
+    check<&M::fn_va_c_rref, M const&&, true, false>();
+    check<&M::fn_va_v_rref, M volatile&&, true, false>();
+    check<&M::fn_va_cv_rref, M const volatile&&, true, false>();
+    check<&M::fn_va_noexcept, M&, true, true>();
+    check<&M::fn_va_c_noexcept, M const&, true, true>();
+    check<&M::fn_va_v_noexcept, M volatile&, true, true>();
+    check<&M::fn_va_cv_noexcept, M const volatile&, true, true>();
+    check<&M::fn_va_lref_noexcept, M&, true, true>();
+    check<&M::fn_va_c_lref_noexcept, M const&, true, true>();
+    check<&M::fn_va_v_lref_noexcept, M volatile&, true, true>();
+    check<&M::fn_va_cv_lref_noexcept, M const volatile&, true, true>();
+    check<&M::fn_va_rref_noexcept, M&&, true, true>();
+    check<&M::fn_va_c_rref_noexcept, M const&&, true, true>();
+    check<&M::fn_va_v_rref_noexcept, M volatile&&, true, true>();
+    check<&M::fn_va_cv_rref_noexcept, M const volatile&&, true, true>();
     /* qualifying a member function pointer doesn't change its traits */
-    check<static_cast<decltype(&S::fn) const&>(&S::fn), S&, false, false>();
-    check<std::move(&S::fn_va_noexcept), S&, true, true>();
+    check<static_cast<decltype(&M::fn) const&>(&M::fn), M&, false, false>();
+    check<std::move(&M::fn_va_noexcept), M&, true, true>();
 }
 
-using fn_parameters = decltype(&S::fn_parameters);
+using fn_parameters = decltype(&M::fn_parameters);
 static_assert(std::is_same_v<int const&, ac::return_t<fn_parameters>>);
 static_assert(std::is_same_v<
-              ac::type_list<S const&, int, int&&>,
+              ac::type_list<M const&, int, int&&>,
               ac::parameters_t<fn_parameters>>);
 static_assert(ac::accepts_variadic_arguments_v<fn_parameters>);
 static_assert(ac::is_noexcept_v<fn_parameters>);
 /* derived traits */
 static_assert(3 == ac::arity_v<fn_parameters>);
 static_assert(!ac::returns_void_v<fn_parameters>);
-static_assert(std::is_same_v<S const&, ac::parameter_at_t<fn_parameters, 0>>);
+static_assert(std::is_same_v<M const&, ac::parameter_at_t<fn_parameters, 0>>);
 static_assert(std::is_same_v<int, ac::parameter_at_t<fn_parameters, 1>>);
 static_assert(std::is_same_v<int&&, ac::parameter_at_t<fn_parameters, 2>>);
-
-/* has_member_qualifiers_v */
-static_assert(!ac::has_member_qualifiers_v<decltype(&S::fn)>);
-static_assert(!ac::has_member_qualifiers_v<decltype(&S::fn_va)>);
-static_assert(!ac::has_member_qualifiers_v<decltype(&S::fn_noexcept)>);
-static_assert(ac::has_member_qualifiers_v<decltype(&S::fn_c)>);
-static_assert(ac::has_member_qualifiers_v<decltype(&S::fn_v)>);
-static_assert(ac::has_member_qualifiers_v<decltype(&S::fn_lref)>);
-static_assert(ac::has_member_qualifiers_v<decltype(&S::fn_rref)>);
 
 /* modification */
 
@@ -181,175 +98,30 @@ static_assert(ac::has_member_qualifiers_v<decltype(&S::fn_rref)>);
 
 /* variadic arguments modification */
 /* add_variadic_arguments_t */
-AC_MF_CHECK(&S::fn_va, ac::add_variadic_arguments_t, &S::fn_va); // unchanged
-AC_MF_CHECK(&S::fn_va, ac::add_variadic_arguments_t, &S::fn);
+AC_MF_CHECK(&M::fn_va, ac::add_variadic_arguments_t, &M::fn_va); // unchanged
+AC_MF_CHECK(&M::fn_va, ac::add_variadic_arguments_t, &M::fn);
 AC_MF_CHECK(
-    &S::fn_va_c_lref_noexcept,
+    &M::fn_va_c_lref_noexcept,
     ac::add_variadic_arguments_t,
-    &S::fn_c_lref_noexcept
+    &M::fn_c_lref_noexcept
 );
 /* remove_variadic_arguments_t */
-AC_MF_CHECK(&S::fn, ac::remove_variadic_arguments_t, &S::fn); // unchanged
-AC_MF_CHECK(&S::fn, ac::remove_variadic_arguments_t, &S::fn_va);
+AC_MF_CHECK(&M::fn, ac::remove_variadic_arguments_t, &M::fn); // unchanged
+AC_MF_CHECK(&M::fn, ac::remove_variadic_arguments_t, &M::fn_va);
 AC_MF_CHECK(
-    &S::fn_c_rref_noexcept,
+    &M::fn_c_rref_noexcept,
     ac::remove_variadic_arguments_t,
-    &S::fn_va_c_rref_noexcept
+    &M::fn_va_c_rref_noexcept
 );
 
 /* noexcept modification */
 /* add_noexcept_t */
-AC_MF_CHECK(&S::fn_noexcept, ac::add_noexcept_t, &S::fn_noexcept); // unchanged
-AC_MF_CHECK(&S::fn_noexcept, ac::add_noexcept_t, &S::fn);
-AC_MF_CHECK(&S::fn_va_c_lref_noexcept, ac::add_noexcept_t, &S::fn_va_c_lref);
+AC_MF_CHECK(&M::fn_noexcept, ac::add_noexcept_t, &M::fn_noexcept); // unchanged
+AC_MF_CHECK(&M::fn_noexcept, ac::add_noexcept_t, &M::fn);
+AC_MF_CHECK(&M::fn_va_c_lref_noexcept, ac::add_noexcept_t, &M::fn_va_c_lref);
 /* remove_noexcept_t */
-AC_MF_CHECK(&S::fn, ac::remove_noexcept_t, &S::fn); // unchanged
-AC_MF_CHECK(&S::fn, ac::remove_noexcept_t, &S::fn_noexcept);
-AC_MF_CHECK(&S::fn_va_c_rref, ac::remove_noexcept_t, &S::fn_va_c_rref_noexcept);
-
-/* const */
-static_assert(!ac::is_const_member_v<decltype(&S::fn)>);
-static_assert(ac::is_const_member_v<decltype(&S::fn_c)>);
-static_assert(!ac::is_const_member_v<decltype(&S::fn_va_lref_noexcept)>);
-static_assert(ac::is_const_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
-AC_MF_CHECK(&S::fn_c, ac::add_member_const_t, &S::fn_c); // unchanged
-AC_MF_CHECK(&S::fn_c, ac::add_member_const_t, &S::fn);
-AC_MF_CHECK(
-    &S::fn_va_c_lref_noexcept, ac::add_member_const_t, &S::fn_va_lref_noexcept
-);
-AC_MF_CHECK(&S::fn, ac::remove_member_const_t, &S::fn); // unchanged
-AC_MF_CHECK(&S::fn, ac::remove_member_const_t, &S::fn_c);
-AC_MF_CHECK(
-    &S::fn_va_rref_noexcept,
-    ac::remove_member_const_t,
-    &S::fn_va_c_rref_noexcept
-);
-
-/* reference */
-static_assert(!ac::is_reference_member_v<decltype(&S::fn)>);
-static_assert(ac::is_reference_member_v<decltype(&S::fn_lref)>);
-static_assert(ac::is_reference_member_v<decltype(&S::fn_rref)>);
-static_assert(!ac::is_reference_member_v<decltype(&S::fn_va_c_noexcept)>);
-static_assert(ac::is_reference_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
-static_assert(ac::is_reference_member_v<decltype(&S::fn_va_c_rref_noexcept)>);
-AC_MF_CHECK(&S::fn, ac::remove_member_reference_t, &S::fn); // unchanged
-AC_MF_CHECK(&S::fn, ac::remove_member_reference_t, &S::fn_lref);
-AC_MF_CHECK(&S::fn, ac::remove_member_reference_t, &S::fn_rref);
-AC_MF_CHECK(
-    &S::fn_va_c_noexcept,
-    ac::remove_member_reference_t,
-    &S::fn_va_c_lref_noexcept
-);
-AC_MF_CHECK(
-    &S::fn_va_c_noexcept,
-    ac::remove_member_reference_t,
-    &S::fn_va_c_rref_noexcept
-);
-
-/* lvalue reference */
-static_assert(!ac::is_lvalue_reference_member_v<decltype(&S::fn)>);
-static_assert(!ac::is_lvalue_reference_member_v<decltype(&S::fn_rref)>);
-static_assert(ac::is_lvalue_reference_member_v<decltype(&S::fn_lref)>);
-static_assert(!ac::is_lvalue_reference_member_v<decltype(&S::fn_va_c_noexcept
-              )>);
-static_assert(!ac::is_lvalue_reference_member_v<
-              decltype(&S::fn_va_c_rref_noexcept)>);
-static_assert(ac::is_lvalue_reference_member_v<
-              decltype(&S::fn_va_c_lref_noexcept)>);
-// unchanged
-AC_MF_CHECK(&S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_lref);
-AC_MF_CHECK(&S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_lref);
-AC_MF_CHECK( // unchanged
-    &S::fn_va_c_lref_noexcept,
-    ac::add_member_lvalue_reference_t,
-    &S::fn_va_c_lref_noexcept
-);
-AC_MF_CHECK(
-    &S::fn_va_c_lref_noexcept,
-    ac::add_member_lvalue_reference_t,
-    &S::fn_va_c_noexcept
-);
-// lvalue reference prevails over rvalue reference
-// according to the reference collapsing rules
-AC_MF_CHECK(&S::fn_lref, ac::add_member_lvalue_reference_t, &S::fn_rref);
-AC_MF_CHECK(
-    &S::fn_va_c_lref_noexcept,
-    ac::add_member_lvalue_reference_t,
-    &S::fn_va_c_rref_noexcept
-);
-
-/* rvalue reference */
-static_assert(!ac::is_rvalue_reference_member_v<decltype(&S::fn)>);
-static_assert(!ac::is_rvalue_reference_member_v<decltype(&S::fn_lref)>);
-static_assert(ac::is_rvalue_reference_member_v<decltype(&S::fn_rref)>);
-static_assert(!ac::is_rvalue_reference_member_v<decltype(&S::fn_va_c_noexcept
-              )>);
-static_assert(!ac::is_rvalue_reference_member_v<
-              decltype(&S::fn_va_c_lref_noexcept)>);
-static_assert(ac::is_rvalue_reference_member_v<
-              decltype(&S::fn_va_c_rref_noexcept)>);
-// unchanged
-AC_MF_CHECK(&S::fn_rref, ac::add_member_rvalue_reference_t, &S::fn_rref);
-AC_MF_CHECK(&S::fn_rref, ac::add_member_rvalue_reference_t, &S::fn_rref);
-AC_MF_CHECK( // unchanged
-    &S::fn_va_c_rref_noexcept,
-    ac::add_member_rvalue_reference_t,
-    &S::fn_va_c_rref_noexcept
-);
-AC_MF_CHECK(
-    &S::fn_va_c_rref_noexcept,
-    ac::add_member_rvalue_reference_t,
-    &S::fn_va_c_noexcept
-);
-// lvalue reference prevails over rvalue reference
-// according to the reference collapsing rules
-AC_MF_CHECK(&S::fn_lref, ac::add_member_rvalue_reference_t, &S::fn_lref);
-AC_MF_CHECK(
-    &S::fn_va_c_lref_noexcept,
-    ac::add_member_rvalue_reference_t,
-    &S::fn_va_c_lref_noexcept
-);
-
-/* volatile */
-static_assert(!ac::is_volatile_member_v<decltype(&S::fn)>);
-static_assert(ac::is_volatile_member_v<decltype(&S::fn_v)>);
-static_assert(!ac::is_volatile_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
-static_assert(ac::is_volatile_member_v<decltype(&S::fn_va_cv_lref_noexcept)>);
-AC_MF_CHECK(&S::fn_v, ac::add_member_volatile_t, &S::fn_v); // unchanged
-AC_MF_CHECK(&S::fn_v, ac::add_member_volatile_t, &S::fn);
-AC_MF_CHECK(
-    &S::fn_va_cv_lref_noexcept,
-    ac::add_member_volatile_t,
-    &S::fn_va_c_lref_noexcept
-);
-AC_MF_CHECK(&S::fn, ac::remove_member_volatile_t, &S::fn); // unchanged
-AC_MF_CHECK(&S::fn, ac::remove_member_volatile_t, &S::fn_v);
-AC_MF_CHECK(
-    &S::fn_va_c_rref_noexcept,
-    ac::remove_member_volatile_t,
-    &S::fn_va_cv_rref_noexcept
-);
-
-/* cv - const volatile */
-static_assert(!ac::is_cv_member_v<decltype(&S::fn_c)>);
-static_assert(!ac::is_cv_member_v<decltype(&S::fn_v)>);
-static_assert(ac::is_cv_member_v<decltype(&S::fn_cv)>);
-static_assert(!ac::is_cv_member_v<decltype(&S::fn_va_c_lref_noexcept)>);
-static_assert(!ac::is_cv_member_v<decltype(&S::fn_va_v_lref_noexcept)>);
-static_assert(ac::is_cv_member_v<decltype(&S::fn_va_cv_lref_noexcept)>);
-AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn_cv); // unchanged
-AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn);
-AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn_c);
-AC_MF_CHECK(&S::fn_cv, ac::add_member_cv_t, &S::fn_v);
-AC_MF_CHECK(
-    &S::fn_va_cv_lref_noexcept, ac::add_member_cv_t, &S::fn_va_lref_noexcept
-);
-AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn); // unchanged
-AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn_c);
-AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn_v);
-AC_MF_CHECK(&S::fn, ac::remove_member_cv_t, &S::fn_cv);
-AC_MF_CHECK(
-    &S::fn_va_rref_noexcept, ac::remove_member_cv_t, &S::fn_va_cv_rref_noexcept
-);
+AC_MF_CHECK(&M::fn, ac::remove_noexcept_t, &M::fn); // unchanged
+AC_MF_CHECK(&M::fn, ac::remove_noexcept_t, &M::fn_noexcept);
+AC_MF_CHECK(&M::fn_va_c_rref, ac::remove_noexcept_t, &M::fn_va_c_rref_noexcept);
 
 #undef AC_MF_CHECK

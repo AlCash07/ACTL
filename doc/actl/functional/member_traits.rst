@@ -2,6 +2,18 @@
 Member function traits
 ********************************
 
+Reference
+=========
+
+.. ac-include:: actl/functional/traits/member_traits.hpp
+.. doxygenfile:: functional/traits/member_traits.hpp
+
+.. ac-tests:: tests/functional/traits/MemberFunction.cpp
+
+********************************
+Member qualifier traits
+********************************
+
 For each member function qualifier, the following traits are provided:
 
 - Detection of the qualifier presence.
@@ -73,7 +85,7 @@ Input type                  `int(Class::*)() const volatile` `int(Class::*)() co
 Reference
 =========
 
-.. ac-include:: actl/functional/traits/member_traits.hpp
-.. doxygenfile:: functional/traits/member_traits.hpp
+.. ac-include:: actl/functional/traits/member_qualifiers.hpp
+.. doxygenfile:: functional/traits/member_qualifiers.hpp
 
-.. ac-tests:: tests/functional/traits/MemberFunction.cpp
+.. ac-tests:: tests/functional/traits/member_qualifiers.cpp
