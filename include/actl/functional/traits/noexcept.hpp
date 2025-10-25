@@ -16,20 +16,30 @@ namespace ac {
 template<class Fn>
 inline constexpr bool is_noexcept_v = function_traits<Fn>::is_noexcept;
 
-template<class Fn, class Traits = function_traits<Fn>>
-using add_noexcept_t = assemble_function_t<
-    Traits::category,
-    typename Traits::return_type,
-    unique_parameters_t<Fn>,
-    Traits::accepts_variadic_arguments,
-    true>;
+template<class Fn>
+struct add_noexcept {
+    using traits = function_traits<Fn>;
+    using type = assemble_function_t<
+        traits::category,
+        typename traits::return_type,
+        unique_parameters_t<Fn>,
+        traits::accepts_variadic_arguments,
+        true>;
+};
+template<class Fn>
+using add_noexcept_t = typename add_noexcept<Fn>::type;
 
-template<class Fn, class Traits = function_traits<Fn>>
-using remove_noexcept_t = assemble_function_t<
-    Traits::category,
-    typename Traits::return_type,
-    unique_parameters_t<Fn>,
-    Traits::accepts_variadic_arguments,
-    false>;
+template<class Fn>
+struct remove_noexcept {
+    using traits = function_traits<Fn>;
+    using type = assemble_function_t<
+        traits::category,
+        typename traits::return_type,
+        unique_parameters_t<Fn>,
+        traits::accepts_variadic_arguments,
+        false>;
+};
+template<class Fn>
+using remove_noexcept_t = typename remove_noexcept<Fn>::type;
 
 } // namespace ac

@@ -17,20 +17,31 @@ template<class Fn>
 inline constexpr bool accepts_variadic_arguments_v =
     function_traits<Fn>::accepts_variadic_arguments;
 
-template<class Fn, class Traits = function_traits<Fn>>
-using add_variadic_arguments_t = assemble_function_t<
-    Traits::category,
-    typename Traits::return_type,
-    unique_parameters_t<Fn>,
-    true,
-    Traits::is_noexcept>;
+template<class Fn>
+struct add_variadic_arguments {
+    using traits = function_traits<Fn>;
+    using type = assemble_function_t<
+        traits::category,
+        typename traits::return_type,
+        unique_parameters_t<Fn>,
+        true,
+        traits::is_noexcept>;
+};
+template<class Fn>
+using add_variadic_arguments_t = typename add_variadic_arguments<Fn>::type;
 
-template<class Fn, class Traits = function_traits<Fn>>
-using remove_variadic_arguments_t = assemble_function_t<
-    Traits::category,
-    typename Traits::return_type,
-    unique_parameters_t<Fn>,
-    false,
-    Traits::is_noexcept>;
+template<class Fn>
+struct remove_variadic_arguments {
+    using traits = function_traits<Fn>;
+    using type = assemble_function_t<
+        traits::category,
+        typename traits::return_type,
+        unique_parameters_t<Fn>,
+        false,
+        traits::is_noexcept>;
+};
+template<class Fn>
+using remove_variadic_arguments_t =
+    typename remove_variadic_arguments<Fn>::type;
 
 } // namespace ac
