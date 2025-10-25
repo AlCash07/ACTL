@@ -125,3 +125,19 @@ AC_MF_CHECK(&M::fn, ac::remove_noexcept_t, &M::fn_noexcept);
 AC_MF_CHECK(&M::fn_va_c_rref, ac::remove_noexcept_t, &M::fn_va_c_rref_noexcept);
 
 #undef AC_MF_CHECK
+
+/* as_member_of_t */
+struct Dst {};
+static_assert(std::is_same_v<int Dst::*, ac::as_member_of_t<int, Dst>>);
+static_assert(std::is_same_v<
+              void (Dst::*)(int),
+              ac::as_member_of_t<void(int), Dst>>);
+static_assert(std::is_same_v<
+              void (Dst::*)(...) noexcept,
+              ac::as_member_of_t<void(...) noexcept, Dst>>);
+static_assert(std::is_same_v<
+              int (Dst::*)(),
+              ac::as_member_of_t<decltype(&M::fn), Dst>>);
+static_assert(std::is_same_v<
+              int (Dst::*)(...) const volatile & noexcept,
+              ac::as_member_of_t<decltype(&M::fn_va_cv_lref_noexcept), Dst>>);

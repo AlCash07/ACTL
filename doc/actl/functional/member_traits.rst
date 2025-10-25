@@ -6,13 +6,14 @@ Reference
 =========
 
 .. ac-include:: actl/functional/traits/member_traits.hpp
-.. doxygenfile:: functional/traits/member_traits.hpp
+.. doxygentypedef:: ac::class_parameter_t
+.. doxygentypedef:: ac::unqualified_class_t
+.. doxygentypedef:: ac::as_member_of_t
 
 .. ac-tests:: tests/functional/traits/MemberFunction.cpp
 
-********************************
 Member qualifier traits
-********************************
+=======================
 
 For each member function qualifier, the following traits are provided:
 
