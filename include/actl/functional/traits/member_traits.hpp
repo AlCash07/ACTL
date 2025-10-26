@@ -41,7 +41,7 @@ struct as_member_of<FF, Class> {
     using type = assemble_function_t<
         function_category::member,
         typename traits::return_type,
-        concat_t<type_list<Class>, typename traits::parameter_types>,
+        concat_t<type_list<Class>, typename traits::parameters_type>,
         traits::accepts_variadic_arguments,
         traits::is_noexcept>;
 };

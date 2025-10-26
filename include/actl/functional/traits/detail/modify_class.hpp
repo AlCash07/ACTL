@@ -13,7 +13,7 @@ namespace ac::detail {
 
 template<MemberFunction MF>
 using unique_class_t =
-    at_t<typename function_traits<MF>::unique_parameter_types, 0>;
+    at_t<typename function_traits<MF>::unique_parameters_type, 0>;
 
 template<MemberFunction MF, template<class> class Modifier, class ParameterList>
 struct modify_class;

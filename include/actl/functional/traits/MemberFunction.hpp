@@ -67,9 +67,9 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
                                                  VARGS) CV_REF NOEXCEPT> {     \
         static constexpr auto category = function_category::member;            \
         using return_type = Return;                                            \
-        using parameter_types =                                                \
+        using parameters_type =                                                \
             type_list<detail::class_t<Class CV_REF>, Parameters...>;           \
-        using unique_parameter_types = type_list<Class CV_REF, Parameters...>; \
+        using unique_parameters_type = type_list<Class CV_REF, Parameters...>; \
         static constexpr bool accepts_variadic_arguments =                     \
             !AC_IS_EMPTY(VARGS);                                               \
         static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);            \

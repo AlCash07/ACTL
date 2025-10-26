@@ -33,18 +33,18 @@ using assemble_function_t = typename assemble_function<
     AcceptsVArgs,
     IsNoexcept>::type;
 
-/// Member function with either empty or & qualifier
-/// results in the class parameter being passed by reference.
-/// To disambiguate these cases, we need to use unique types
-/// when assembling a member function.
 template<class Fn>
-using unique_parameters_t = decltype([] {
-    if constexpr (requires {
-                      typename function_traits<Fn>::unique_parameter_types;
-                  })
-        return typename function_traits<Fn>::unique_parameter_types{};
-    else
-        return typename function_traits<Fn>::parameter_types{};
-}());
+struct as_free_function {
+    using traits = function_traits<Fn>;
+    using type = assemble_function_t<
+        function_category::free,
+        typename traits::return_type,
+        typename traits::parameters_type,
+        traits::accepts_variadic_arguments,
+        traits::is_noexcept>;
+};
+/// Free function with the same parameters and return type as Fn.
+template<class Fn>
+using as_free_function_t = typename as_free_function<Fn>::type;
 
 } // namespace ac

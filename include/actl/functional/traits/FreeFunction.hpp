@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/functional/traits/assemble_function.hpp>
-#include <actl/functional/traits/function_traits.hpp>
 
 namespace ac {
 
@@ -15,20 +14,6 @@ namespace ac {
 /// including a free function pointer.
 template<class T>
 concept FreeFunction = function_traits<T>::category == function_category::free;
-
-template<class Fn>
-struct as_free_function {
-    using traits = function_traits<Fn>;
-    using type = assemble_function_t<
-        function_category::free,
-        typename traits::return_type,
-        typename traits::parameter_types,
-        traits::accepts_variadic_arguments,
-        traits::is_noexcept>;
-};
-/// Free function with the same parameters and return type as Fn.
-template<class Fn>
-using as_free_function_t = typename as_free_function<Fn>::type;
 
 /* Implementation */
 
@@ -53,7 +38,7 @@ struct function_traits<Fn*> : function_traits<Fn> {};
                                NOEXCEPT> {                                    \
         static constexpr auto category = function_category::free;             \
         using return_type = Return;                                           \
-        using parameter_types = type_list<Parameters...>;                     \
+        using parameters_type = type_list<Parameters...>;                     \
         static constexpr bool accepts_variadic_arguments =                    \
             !AC_IS_EMPTY(VARGS);                                              \
         static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);           \

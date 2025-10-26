@@ -12,7 +12,7 @@ Trait name                     Example 1                       Example 2
 Input type                     `float(int, int) noexcept`      `void(const char*, ...)`         
 `return_t`                     `float`                         `void`                           
 `returns_void_v`               `false`                         `true`                           
-`parameters_t`                 `type_list<int, int>`           `type_list<const char*>`         
+`parameters_t`                 `ac::type_list<int, int>`       `ac::type_list<const char*>`     
 `arity_v`                      `2`                             `1`                              
 `parameter_at_t` for 0         `int`                           `const char*`                    
 `accepts_variadic_arguments_v` `false`                         `true`                           
@@ -60,6 +60,7 @@ Traits
 .. doxygentypedef:: ac::parameters_t
 .. doxygenvariable:: ac::arity_v
 .. doxygentypedef:: ac::parameter_at_t
+.. doxygentypedef:: ac::unique_parameters_t
 
 .. ac-include:: actl/functional/traits/variadic_arguments.hpp
 .. doxygenvariable:: ac::accepts_variadic_arguments_v
@@ -71,7 +72,8 @@ Traits
 .. doxygentypedef:: ac::add_noexcept_t
 .. doxygentypedef:: ac::remove_noexcept_t
 
-.. ac-include:: actl/functional/traits/FreeFunction.hpp
+.. ac-include:: actl/functional/traits/assemble_function.hpp
+.. doxygentypedef:: ac::assemble_function_t
 .. doxygentypedef:: ac::as_free_function_t
 
 .. ac-tests:: tests/functional/traits
