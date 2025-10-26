@@ -18,11 +18,11 @@ namespace ac {
 enum class function_category { free, member, object };
 
 /// If @p Fn is a function, then specifies the following traits:
-/// - category as a function_category;
+/// - category as #ac::function_category;
 /// - return_type;
-/// - parameters_type as ac::type_list;
-/// - accepts_variadic_arguments as a bool;
-/// - is_noexcept as a bool.
+/// - parameters_type as #ac::type_list;
+/// - accepts_variadic_arguments as a `bool`;
+/// - is_noexcept as a `bool`.
 template<class Fn>
 struct function_traits;
 

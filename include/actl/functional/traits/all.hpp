@@ -14,4 +14,5 @@
 #include <actl/functional/traits/member_traits.hpp>
 #include <actl/functional/traits/noexcept.hpp>
 #include <actl/functional/traits/parameters.hpp>
+#include <actl/functional/traits/return.hpp>
 #include <actl/functional/traits/variadic_arguments.hpp>

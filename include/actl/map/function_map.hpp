@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/functional/traits/parameters.hpp>
+#include <actl/functional/traits/return.hpp>
 #include <actl/map/traits.hpp>
 
 namespace ac {

@@ -126,6 +126,16 @@ AC_MF_CHECK(&M::fn_va_c_rref, ac::remove_noexcept_t, &M::fn_va_c_rref_noexcept);
 
 #undef AC_MF_CHECK
 
+/* with_return_type_t */
+static_assert(std::is_same_v<
+              char (M::*)(),
+              ac::with_return_type_t<decltype(&M::fn), char>>);
+static_assert(std::is_same_v<
+              char (M::*)(...) const & noexcept,
+              ac::with_return_type_t<
+                  decltype(&M::fn_va_c_lref_noexcept),
+                  char>>);
+
 /* as_free_function_t */
 static_assert(std::
                   is_same_v<int(M&), ac::as_free_function_t<decltype(&M::fn)>>);

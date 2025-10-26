@@ -12,12 +12,6 @@
 
 namespace ac {
 
-template<class Fn>
-using return_t = typename function_traits<Fn>::return_type;
-
-template<class Fn>
-inline constexpr bool returns_void_v = std::is_same_v<return_t<Fn>, void>;
-
 /// Parameter types of a function as ac::type_list.
 ///
 /// @note Arguments name is sometimes incorrectly used instead of parameters.

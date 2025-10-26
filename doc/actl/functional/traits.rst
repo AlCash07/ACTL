@@ -9,12 +9,12 @@ For traits specific to member functions, see :doc:`member_traits`.
 ============================== =============================== =================================
 Trait name                     Example 1                       Example 2                        
 ============================== =============================== =================================
-Input type                     `float(int, int) noexcept`      `void(const char*, ...)`         
+Input type `Fn`                `float(int, int) noexcept`      `void(const char*, ...)`         
 `return_t`                     `float`                         `void`                           
 `returns_void_v`               `false`                         `true`                           
 `parameters_t`                 `ac::type_list<int, int>`       `ac::type_list<const char*>`     
 `arity_v`                      `2`                             `1`                              
-`parameter_at_t` for 0         `int`                           `const char*`                    
+`parameter_at_t<Fn, 0>`        `int`                           `const char*`                    
 `accepts_variadic_arguments_v` `false`                         `true`                           
 `add_variadic_arguments_t`     `float(int, int, ...) noexcept` `void(const char*, ...)`         
 `remove_variadic_arguments_t`  `float(int, int) noexcept`      `void(const char*)`              
@@ -54,9 +54,15 @@ Concepts
 Traits
 ------
 
-.. ac-include:: actl/functional/traits/parameters.hpp
+.. ac-include:: actl/functional/traits/function_traits.hpp
+.. doxygenstruct:: ac::function_traits
+
+.. ac-include:: actl/functional/traits/return.hpp
 .. doxygentypedef:: ac::return_t
 .. doxygenvariable:: ac::returns_void_v
+.. doxygentypedef:: ac::with_return_type_t
+
+.. ac-include:: actl/functional/traits/parameters.hpp
 .. doxygentypedef:: ac::parameters_t
 .. doxygenvariable:: ac::arity_v
 .. doxygentypedef:: ac::parameter_at_t
