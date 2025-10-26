@@ -83,3 +83,9 @@ static_assert(std::is_same_v<fn_noexcept, ac::add_noexcept_t<fn_noexcept>>);
 static_assert(std::is_same_v<fn, ac::remove_noexcept_t<fn_noexcept>>);
 static_assert(std::is_same_v<fn_va, ac::remove_noexcept_t<fn_va_noexcept>>);
 static_assert(std::is_same_v<fn, ac::remove_noexcept_t<fn>>); // unchanged
+
+/* as_free_function_t */
+static_assert(std::is_same_v<fn, ac::as_free_function_t<fn>>);
+static_assert(std::is_same_v<
+              fn_va_noexcept,
+              ac::as_free_function_t<fn_va_noexcept>>);

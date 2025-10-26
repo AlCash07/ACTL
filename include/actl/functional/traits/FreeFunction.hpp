@@ -16,6 +16,20 @@ namespace ac {
 template<class T>
 concept FreeFunction = function_traits<T>::category == function_category::free;
 
+template<class Fn>
+struct as_free_function {
+    using traits = function_traits<Fn>;
+    using type = assemble_function_t<
+        function_category::free,
+        typename traits::return_type,
+        typename traits::parameter_types,
+        traits::accepts_variadic_arguments,
+        traits::is_noexcept>;
+};
+/// Free function with the same parameters and return type as Fn.
+template<class Fn>
+using as_free_function_t = typename as_free_function<Fn>::type;
+
 /* Implementation */
 
 // Type qualifiers and pointer don't matter for a free function.

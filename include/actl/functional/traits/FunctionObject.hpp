@@ -24,16 +24,20 @@ concept FunctionObject = requires(T) {
 /* Implementation */
 
 template<FunctionObject Fn>
-struct function_traits<Fn>
-    : function_traits<decltype(&std::remove_reference_t<Fn>::operator())> {
+struct function_traits<Fn> {
 private:
-    using all_parameters = typename function_traits<
-        decltype(&std::remove_reference_t<Fn>::operator())>::parameter_types;
+    using member_traits =
+        function_traits<decltype(&std::remove_reference_t<Fn>::operator())>;
+    using all_parameters = typename member_traits::parameter_types;
 
 public:
     static constexpr auto category = function_category::object;
+    using return_type = typename member_traits::return_type;
     // class parameter is the function object itself, so it should be excluded
     using parameter_types = slice_t<all_parameters, 1, all_parameters::length>;
+    static constexpr bool accepts_variadic_arguments =
+        member_traits::accepts_variadic_arguments;
+    static constexpr bool is_noexcept = member_traits::is_noexcept;
 };
 
 } // namespace ac

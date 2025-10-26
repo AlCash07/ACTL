@@ -65,3 +65,9 @@ static_assert(std::is_same_v<int*, ac::return_t<std_function>>);
 static_assert(std::is_same_v<
               ac::type_list<int&>,
               ac::parameters_t<std_function>>);
+
+/* as_free_function_t */
+static_assert(std::is_same_v<int(), ac::as_free_function_t<function_object>>);
+static_assert(std::is_same_v<
+              void const*(int const*, int&&, int, ...) noexcept,
+              ac::as_free_function_t<function_object_params>>);

@@ -126,6 +126,13 @@ AC_MF_CHECK(&M::fn_va_c_rref, ac::remove_noexcept_t, &M::fn_va_c_rref_noexcept);
 
 #undef AC_MF_CHECK
 
+/* as_free_function_t */
+static_assert(std::
+                  is_same_v<int(M&), ac::as_free_function_t<decltype(&M::fn)>>);
+static_assert(std::is_same_v<
+              int(M const&&, ...) noexcept,
+              ac::as_free_function_t<decltype(&M::fn_va_c_rref_noexcept)>>);
+
 /* as_member_of_t */
 struct Dst {};
 static_assert(std::is_same_v<int Dst::*, ac::as_member_of_t<int, Dst>>);
@@ -139,5 +146,5 @@ static_assert(std::is_same_v<
               int (Dst::*)(),
               ac::as_member_of_t<decltype(&M::fn), Dst>>);
 static_assert(std::is_same_v<
-              int (Dst::*)(...) const volatile & noexcept,
-              ac::as_member_of_t<decltype(&M::fn_va_cv_lref_noexcept), Dst>>);
+              int (Dst::*)(...) const & noexcept,
+              ac::as_member_of_t<decltype(&M::fn_va_c_lref_noexcept), Dst>>);

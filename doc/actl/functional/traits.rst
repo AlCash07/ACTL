@@ -71,6 +71,9 @@ Traits
 .. doxygentypedef:: ac::add_noexcept_t
 .. doxygentypedef:: ac::remove_noexcept_t
 
+.. ac-include:: actl/functional/traits/FreeFunction.hpp
+.. doxygentypedef:: ac::as_free_function_t
+
 .. ac-tests:: tests/functional/traits
 
 Design
