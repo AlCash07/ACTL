@@ -17,7 +17,7 @@ void check() {
                   ac::parameters_t<MF>>);
     static_assert(1ul == ac::arity_v<MF>);
     static_assert(std::is_same_v<ClassParameter, ac::class_parameter_t<MF>>);
-    static_assert(std::is_same_v<M, ac::unqualified_class_t<MF>>);
+    static_assert(std::is_same_v<M, ac::class_of_t<MF>>);
     static_assert(AcceptsVArgs == ac::accepts_variadic_arguments_v<MF>);
     static_assert(IsNoexcept == ac::is_noexcept_v<MF>);
 }
@@ -90,6 +90,9 @@ static_assert(!ac::returns_void_v<fn_parameters>);
 static_assert(std::is_same_v<M const&, ac::parameter_at_t<fn_parameters, 0>>);
 static_assert(std::is_same_v<int, ac::parameter_at_t<fn_parameters, 1>>);
 static_assert(std::is_same_v<int&&, ac::parameter_at_t<fn_parameters, 2>>);
+
+/* class_of_t */
+static_assert(std::is_same_v<M, ac::class_of_t<int M::*>>);
 
 /* modification */
 

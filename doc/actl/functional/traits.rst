@@ -2,12 +2,14 @@
 Function traits
 ********************************
 
-Traits for function inspection and synthesis.
+Traits for function type inspection and assembly.
 For traits specific to member functions, see :doc:`member_traits`.
 
-This is a lightweight analog of `Boost.CallableTraits
+This is a complete analog of `Boost.CallableTraits
 <https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html>`_
-with limited functionality.
+implemented with much less code, so expect reduced compilation times!
+The only feature not supported is `transaction_safe` from Transactional Memory TS,
+because it's still experimental for a long time without notable progress.
 
 Reference
 =========
@@ -16,7 +18,7 @@ Concepts
 --------
 
 Free functions are typically used in examples for simplicify,
-but all the following function concepts are supported,
+but most traits support all the following function concepts,
 including their const and reference-qualified versions:
 
 .. ac-include:: actl/functional/traits/FreeFunction.hpp
@@ -28,12 +30,28 @@ including their const and reference-qualified versions:
 .. ac-include:: actl/functional/traits/FunctionObject.hpp
 .. doxygenconcept:: ac::FunctionObject
 
+.. note::
+
+  Some libraries support
+  `pointers to data members <https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_data_members>`_
+  similarly to pointers to member functions.
+  Data members are obviously not functions,
+  but they are indeed related and this makes sense, for example, for
+  `std::mem_fn <https://en.cppreference.com/w/cpp/utility/functional/mem_fn.html>`_.
+  However, the result of applying a pointer to data member
+  to a class object inherits the qualifiers of this object.
+  So, it defines not a single function, but an overload set,
+  which is not supported by the library as of now.
+
 Traits
 ------
 
 .. ac-include:: actl/functional/traits/function_traits.hpp
 .. doxygenstruct:: ac::function_traits
 .. doxygenenum:: ac::function_category
+
+Return type
+-----------
 
 .. ac-include:: actl/functional/traits/return.hpp
 
@@ -49,6 +67,9 @@ Input type `Fn`                `float(int, int) noexcept`      `void(const char*
 `returns_void_v`               `false`                         `true`                           
 `with_return_type_t<Fn, int>`  `int(int, int) noexcept`        `int(const char*, ...)`          
 ============================== =============================== =================================
+
+Parameters
+----------
 
 .. ac-include:: actl/functional/traits/parameters.hpp
 
@@ -66,6 +87,9 @@ Input type `Fn`                `float(int, int) noexcept`      `void(const char*
 `parameter_at_t<Fn, 0>`        `int`                           `const char*`                    
 ============================== =============================== =================================
 
+Variadic arguments
+------------------
+
 .. ac-include:: actl/functional/traits/variadic_arguments.hpp
 
 .. doxygenvariable:: ac::accepts_variadic_arguments_v
@@ -81,6 +105,9 @@ Input type                     `float(int, int) noexcept`      `void(const char*
 `remove_variadic_arguments_t`  `float(int, int) noexcept`      `void(const char*)`              
 ============================== =============================== =================================
 
+`noexcept`
+----------
+
 .. ac-include:: actl/functional/traits/noexcept.hpp
 
 .. doxygenvariable:: ac::is_noexcept_v
@@ -95,6 +122,9 @@ Input type                     `float(int, int) noexcept`      `void(const char*
 `add_noexcept_t`               `float(int, int) noexcept`      `void(const char*, ...) noexcept`
 `remove_noexcept_t`            `float(int, int)`               `void(const char*, ...)`         
 ============================== =============================== =================================
+
+Function type assembly
+----------------------
 
 .. ac-include:: actl/functional/traits/assemble_function.hpp
 .. doxygentypedef:: ac::assemble_function_t

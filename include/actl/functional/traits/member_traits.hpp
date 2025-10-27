@@ -16,9 +16,12 @@ namespace ac {
 template<MemberFunction MF>
 using class_parameter_t = at_t<parameters_t<MF>, 0>;
 
-/// Class parameter of the member function excluding qualifiers.
-template<MemberFunction MF>
-using unqualified_class_t = std::remove_cvref_t<at_t<parameters_t<MF>, 0>>;
+template<class T>
+struct class_of;
+/// Class corresponding to a member function or member data pointer
+/// excluding qualifiers.
+template<class T>
+using class_of_t = typename class_of<T>::type;
 
 template<class T, class Class>
 struct as_member_of {
@@ -34,6 +37,15 @@ template<class T, class Class>
 using as_member_of_t = typename as_member_of<T, Class>::type;
 
 /* implementation */
+
+template<MemberFunction MF>
+struct class_of<MF> {
+    using type = std::remove_cvref_t<class_parameter_t<MF>>;
+};
+template<class Class, class Member>
+struct class_of<Member Class::*> {
+    using type = Class;
+};
 
 namespace detail {
 

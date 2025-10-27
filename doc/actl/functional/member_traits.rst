@@ -7,7 +7,7 @@ Reference
 
 .. ac-include:: actl/functional/traits/member_traits.hpp
 .. doxygentypedef:: ac::class_parameter_t
-.. doxygentypedef:: ac::unqualified_class_t
+.. doxygentypedef:: ac::class_of_t
 .. doxygentypedef:: ac::as_member_of_t
 
 .. ac-tests:: tests/functional/traits/MemberFunction.cpp
