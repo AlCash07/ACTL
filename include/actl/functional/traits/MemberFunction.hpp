@@ -12,6 +12,8 @@
 namespace ac {
 
 /// Concept of a class member function, often called a method.
+///
+/// Its first parameter is the enclosing class.
 template<class T>
 concept MemberFunction =
     function_traits<T>::category == function_category::member;

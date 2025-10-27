@@ -13,31 +13,13 @@ Reference
 .. ac-tests:: tests/functional/traits/MemberFunction.cpp
 
 Member qualifier traits
-=======================
+-----------------------
 
 For each member function qualifier, the following traits are provided:
 
 - Detection of the qualifier presence.
 - Addition of a qualifier (doesn't change the type if already present).
 - Removal of a qualifier (doesn't change the type if not present).
-
-Here's how the traits can be used, on the example of `const`:
-
-.. code::
-
-  static_assert(ac::is_const_member_v<
-      int(Class::*)() const
-  >);
-
-  static_assert(std::is_same_v<
-      ac::add_member_const_t<int(Class::*)()>,
-      int(Class::*)() const
-  >);
-
-  static_assert(std::is_same_v<
-      ac::remove_member_const_t<int(Class::*)() const>,
-      int(Class::*)()
-  >);
 
 Table with the full list:
 
@@ -82,9 +64,6 @@ Input type                  `int(Class::*)() const volatile` `int(Class::*)() co
 `remove_member_cv_t`        `int(Class::*)()`                `int(Class::*)() &`              
 `remove_member_reference_t` `int(Class::*)() const volatile` `int(Class::*)() const volatile` 
 =========================== ================================ =================================
-
-Reference
-=========
 
 .. ac-include:: actl/functional/traits/member_qualifiers.hpp
 .. doxygenfile:: functional/traits/member_qualifiers.hpp

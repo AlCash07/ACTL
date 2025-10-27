@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/traits/detail/modify_class.hpp>
-#include <actl/functional/traits/parameters.hpp>
+#include <actl/functional/traits/member_traits.hpp>
 #include <actl/meta/qualifiers/detection.hpp>
 #include <actl/meta/qualifiers/inner.hpp>
 

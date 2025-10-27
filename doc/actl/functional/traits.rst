@@ -2,35 +2,8 @@
 Function traits
 ********************************
 
-Function traits provide the following inspection and synthesis utilities.
-
+Traits for function inspection and synthesis.
 For traits specific to member functions, see :doc:`member_traits`.
-
-============================== =============================== =================================
-Trait name                     Example 1                       Example 2                        
-============================== =============================== =================================
-Input type `Fn`                `float(int, int) noexcept`      `void(const char*, ...)`         
-`return_t`                     `float`                         `void`                           
-`returns_void_v`               `false`                         `true`                           
-`parameters_t`                 `ac::type_list<int, int>`       `ac::type_list<const char*>`     
-`arity_v`                      `2`                             `1`                              
-`parameter_at_t<Fn, 0>`        `int`                           `const char*`                    
-`accepts_variadic_arguments_v` `false`                         `true`                           
-`add_variadic_arguments_t`     `float(int, int, ...) noexcept` `void(const char*, ...)`         
-`remove_variadic_arguments_t`  `float(int, int) noexcept`      `void(const char*)`              
-`is_noexcept_v`                `true`                          `false`                          
-`add_noexcept_t`               `float(int, int) noexcept`      `void(const char*, ...) noexcept`
-`remove_noexcept_t`            `float(int, int)`               `void(const char*, ...)`         
-============================== =============================== =================================
-
-Traits above are visualized on the free function examples for simplicify,
-but the following categories of functions are also supported:
-
-* free functions;
-* free `function pointers <https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_functions>`_;
-* member function pointers (in this case the first parameter is the enclosing class);
-* function objects with a non-overloaded function call operator;
-* const and reference-qualified versions of the above types.
 
 This is a lightweight analog of `Boost.CallableTraits
 <https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html>`_
@@ -41,6 +14,10 @@ Reference
 
 Concepts
 --------
+
+Free functions are typically used in examples for simplicify,
+but all the following function concepts are supported,
+including their const and reference-qualified versions:
 
 .. ac-include:: actl/functional/traits/FreeFunction.hpp
 .. doxygenconcept:: ac::FreeFunction
@@ -56,27 +33,68 @@ Traits
 
 .. ac-include:: actl/functional/traits/function_traits.hpp
 .. doxygenstruct:: ac::function_traits
+.. doxygenenum:: ac::function_category
 
 .. ac-include:: actl/functional/traits/return.hpp
+
 .. doxygentypedef:: ac::return_t
 .. doxygenvariable:: ac::returns_void_v
 .. doxygentypedef:: ac::with_return_type_t
 
+============================== =============================== =================================
+Trait name                     Example 1                       Example 2                        
+============================== =============================== =================================
+Input type `Fn`                `float(int, int) noexcept`      `void(const char*, ...)`         
+`return_t`                     `float`                         `void`                           
+`returns_void_v`               `false`                         `true`                           
+`with_return_type_t<Fn, int>`  `int(int, int) noexcept`        `int(const char*, ...)`          
+============================== =============================== =================================
+
 .. ac-include:: actl/functional/traits/parameters.hpp
+
 .. doxygentypedef:: ac::parameters_t
 .. doxygenvariable:: ac::arity_v
 .. doxygentypedef:: ac::parameter_at_t
 .. doxygentypedef:: ac::unique_parameters_t
 
+============================== =============================== =================================
+Trait name                     Example 1                       Example 2                        
+============================== =============================== =================================
+Input type `Fn`                `float(int, int) noexcept`      `void(const char*, ...)`         
+`parameters_t`                 `ac::type_list<int, int>`       `ac::type_list<const char*>`     
+`arity_v`                      `2`                             `1`                              
+`parameter_at_t<Fn, 0>`        `int`                           `const char*`                    
+============================== =============================== =================================
+
 .. ac-include:: actl/functional/traits/variadic_arguments.hpp
+
 .. doxygenvariable:: ac::accepts_variadic_arguments_v
 .. doxygentypedef:: ac::add_variadic_arguments_t
 .. doxygentypedef:: ac::remove_variadic_arguments_t
 
+============================== =============================== =================================
+Trait name                     Example 1                       Example 2                        
+============================== =============================== =================================
+Input type                     `float(int, int) noexcept`      `void(const char*, ...)`         
+`accepts_variadic_arguments_v` `false`                         `true`                           
+`add_variadic_arguments_t`     `float(int, int, ...) noexcept` `void(const char*, ...)`         
+`remove_variadic_arguments_t`  `float(int, int) noexcept`      `void(const char*)`              
+============================== =============================== =================================
+
 .. ac-include:: actl/functional/traits/noexcept.hpp
+
 .. doxygenvariable:: ac::is_noexcept_v
 .. doxygentypedef:: ac::add_noexcept_t
 .. doxygentypedef:: ac::remove_noexcept_t
+
+============================== =============================== =================================
+Trait name                     Example 1                       Example 2                        
+============================== =============================== =================================
+Input type                     `float(int, int) noexcept`      `void(const char*, ...)`         
+`is_noexcept_v`                `true`                          `false`                          
+`add_noexcept_t`               `float(int, int) noexcept`      `void(const char*, ...) noexcept`
+`remove_noexcept_t`            `float(int, int)`               `void(const char*, ...)`         
+============================== =============================== =================================
 
 .. ac-include:: actl/functional/traits/assemble_function.hpp
 .. doxygentypedef:: ac::assemble_function_t
