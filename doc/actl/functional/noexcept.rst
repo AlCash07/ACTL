@@ -29,7 +29,7 @@ Reference
 .. ac-include:: actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_INITIALIZE.hpp
 .. doxygendefine:: AC_DEDUCE_NOEXCEPT_AND_INITIALIZE
 
-.. ac-tests:: tests/functional/noexcept
+.. ac-tests:: tests/functional/noexcept/
 
 Design
 ======

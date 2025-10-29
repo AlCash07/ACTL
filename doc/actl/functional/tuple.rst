@@ -13,4 +13,4 @@ Reference
 .. ac-include:: actl/functional/tuple/invoke_first_matching.hpp
 .. doxygenfunction:: ac::invoke_first_matching
 
-.. ac-tests:: tests/functional/tuple
+.. ac-tests:: tests/functional/tuple/

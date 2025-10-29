@@ -3,7 +3,7 @@ Function traits
 ********************************
 
 Traits for function type inspection and assembly.
-For traits specific to member functions, see :doc:`member_traits`.
+For traits specific to member functions, see :doc:`1_member_traits`.
 
 This is a complete analog of `Boost.CallableTraits
 <https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html>`_
@@ -130,7 +130,7 @@ Function type assembly
 .. doxygentypedef:: ac::assemble_function_t
 .. doxygentypedef:: ac::as_free_function_t
 
-.. ac-tests:: tests/functional/traits
+.. ac-tests:: tests/functional/traits/
 
 Design
 ======
