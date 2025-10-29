@@ -81,7 +81,7 @@ inline constexpr int id_to_raw(int id) {
 
 template<class Iter>
 void* id_to_raw(iterator_id<Iter> id) {
-    return bit_cast<void*>(id);
+    return ac::bit_cast<void*>(id);
 }
 
 /// Container Id is int for random access containers and wrapped const_iterator

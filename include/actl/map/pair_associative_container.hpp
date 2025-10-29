@@ -16,7 +16,7 @@ template<class AC>
     requires UniqueRange<AC> && PairAssociativeRange<AC>
 struct map_traits<AC>
     : map_traits_base<
-          typename AC::key_type const,
+          typename AC::key_type,
           typename AC::mapped_type,
           use_default,
           true,

@@ -27,6 +27,8 @@ public:
     using typename vbase_t::vertex;
 
     using vbase_t::vbase_t;
+    using vbase_t::operator[];
+    using ebase_t::operator[];
 
     template<class... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
