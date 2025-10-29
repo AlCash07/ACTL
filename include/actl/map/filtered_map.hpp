@@ -36,27 +36,28 @@ class filtered_map {
 public:
     template<class MapT, class... PredArgs>
     explicit constexpr filtered_map(MapT&& map, PredArgs&&... xs)
-        : map_{std::forward<MapT>(map)}, pred_{std::forward<PredArgs>(xs)...} {}
+        : m_map{std::forward<MapT>(map)}
+        , m_pred{std::forward<PredArgs>(xs)...} {}
 
     operator Map&() {
-        return map_;
+        return m_map;
     }
 
     operator Map const&() const {
-        return map_;
+        return m_map;
     }
 
     auto map_range() {
-        return filter_range(ac::map_range(map_), pred_);
+        return filter_range(ac::map_range(m_map), m_pred);
     }
 
     auto map_range() const {
-        return filter_range(ac::map_range(map_), pred_);
+        return filter_range(ac::map_range(m_map), m_pred);
     }
 
 private:
-    Map map_;
-    test_second<Predicate> pred_;
+    Map m_map;
+    test_second<Predicate> m_pred;
 };
 
 template<class M, class P = to_bool>

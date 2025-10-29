@@ -20,41 +20,41 @@ public:
 
     explicit constexpr int_iterator() = default;
 
-    explicit constexpr int_iterator(int value) noexcept : value_{value} {}
+    explicit constexpr int_iterator(int value) noexcept : m_value{value} {}
 
     constexpr int const& operator*() const noexcept {
-        return value_;
+        return m_value;
     }
 
     constexpr int_iterator& operator++() noexcept {
-        ++value_;
+        ++m_value;
         return *this;
     }
 
     constexpr int_iterator& operator--() noexcept {
-        --value_;
+        --m_value;
         return *this;
     }
 
     constexpr int_iterator& operator+=(int n) noexcept {
-        value_ += n;
+        m_value += n;
         return *this;
     }
 
     friend constexpr bool operator==(
         int_iterator lhs, int_iterator rhs
     ) noexcept {
-        return lhs.value_ == rhs.value_;
+        return lhs.m_value == rhs.m_value;
     }
 
     friend constexpr int operator-(
         int_iterator lhs, int_iterator rhs
     ) noexcept {
-        return lhs.value_ - rhs.value_;
+        return lhs.m_value - rhs.m_value;
     }
 
 private:
-    int value_ = 0;
+    int m_value = 0;
 };
 
 } // namespace

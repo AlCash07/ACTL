@@ -23,19 +23,20 @@ class iterator_range
 public:
     constexpr iterator_range() = default;
 
-    constexpr iterator_range(Iter begin, Iter end) : begin_{begin}, end_{end} {}
+    constexpr iterator_range(Iter begin, Iter end)
+        : m_begin{begin}, m_end{end} {}
 
     constexpr Iter begin() const {
-        return begin_;
+        return m_begin;
     }
 
     constexpr Iter end() const {
-        return end_;
+        return m_end;
     }
 
 private:
-    Iter begin_;
-    Iter end_;
+    Iter m_begin;
+    Iter m_end;
 };
 
 template<class Iter, class Super>

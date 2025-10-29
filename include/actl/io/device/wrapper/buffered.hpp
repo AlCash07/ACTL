@@ -20,8 +20,8 @@ public:
     using Device::Device;
 
 protected:
-    Buffer buf_;
-    char_t<Device>* ptr_ = ranges::data(buf_);
+    Buffer m_buf;
+    char_t<Device>* m_ptr = ranges::data(m_buf);
 };
 
 template<class Device, class Buffer>
@@ -30,24 +30,24 @@ class buffered_reader<Device, Buffer, true>
 protected:
     using Char = char_t<Device>;
     using base_t = buffered_reader<Device, Buffer, false>;
-    using base_t::ptr_;
+    using base_t::m_ptr;
 
-    Char* end_ = ptr_;
+    Char* m_end = m_ptr;
 
     void underflow() {
-        ptr_ = ranges::data(this->buf_);
-        end_ = ptr_ + Device::read(this->buf_);
+        m_ptr = ranges::data(this->m_buf);
+        m_end = m_ptr + Device::read(this->m_buf);
     }
 
 public:
     using base_t::base_t;
 
     cspan<Char> input_buffer() const {
-        return {ptr_, end_};
+        return {m_ptr, m_end};
     }
 
     Char peek() {
-        return ptr_ < end_ ? *ptr_ : Char{};
+        return m_ptr < m_end ? *m_ptr : Char{};
     }
 
     Char get() {
@@ -59,25 +59,25 @@ public:
     size_t read(span<Char> dst) {
         Char* dstPtr = dst.data();
         size_t count = dst.size();
-        size_t available = static_cast<size_t>(end_ - ptr_);
+        size_t available = static_cast<size_t>(m_end - m_ptr);
         if (count < available) {
-            std::copy_n(ptr_, count, dstPtr);
-            ptr_ += count;
+            std::copy_n(m_ptr, count, dstPtr);
+            m_ptr += count;
             return count;
         }
         size_t res = available;
-        dstPtr = std::copy_n(ptr_, available, dstPtr);
+        dstPtr = std::copy_n(m_ptr, available, dstPtr);
         count -= available;
-        size_t remainder = count % ranges::size(base_t::buf_);
+        size_t remainder = count % ranges::size(base_t::m_buf);
         if (remainder < count) {
             res += Device::read({dstPtr, count - remainder});
             dstPtr += count - remainder;
         }
         underflow();
-        min(inout{remainder}, end_ - ptr_);
+        min(inout{remainder}, m_end - m_ptr);
         if (0 < remainder) {
             res += remainder;
-            std::copy_n(ptr_, remainder, dstPtr);
+            std::copy_n(m_ptr, remainder, dstPtr);
             move(remainder);
         }
         return res;
@@ -86,14 +86,14 @@ public:
     void move(index offset) {
         // TODO: support move fully along the underlying device, not just along
         // the buffer.
-        ptr_ += offset;
-        AC_ASSERT(ranges::data(this->buf_) <= ptr_);
-        if (ptr_ == end_)
+        m_ptr += offset;
+        AC_ASSERT(ranges::data(this->m_buf) <= m_ptr);
+        if (m_ptr == m_end)
             underflow();
     }
 
     bool eof() {
-        return end_ < ptr_;
+        return m_end < m_ptr;
     }
 };
 
@@ -111,23 +111,23 @@ class buffered<Device, Buffer, true> : public buffered<Device, Buffer, false> {
 protected:
     using Char = char_t<Device>;
     using base_t = buffered<Device, Buffer, false>;
-    using base_t::buf_;
-    using base_t::ptr_;
+    using base_t::m_buf;
+    using base_t::m_ptr;
 
     void overflow() {
-        Device::write({ranges::data(buf_), ptr_});
-        ptr_ = ranges::data(buf_);
+        Device::write({ranges::data(m_buf), m_ptr});
+        m_ptr = ranges::data(m_buf);
     }
 
 public:
     using base_t::base_t;
 
     span<Char> output_buffer() const {
-        return {ptr_, ranges::end(buf_)};
+        return {m_ptr, ranges::end(m_buf)};
     }
 
     size_t write(Char c) {
-        *ptr_ = c;
+        *m_ptr = c;
         move(1);
         return 1;
     }
@@ -135,32 +135,32 @@ public:
     size_t write(span<Char const> src) {
         Char const* srcPtr = src.data();
         size_t count = src.size();
-        size_t available = static_cast<size_t>(ranges::end(buf_) - ptr_);
+        size_t available = static_cast<size_t>(ranges::end(m_buf) - m_ptr);
         if (count < available) {
             if (count == 1)
-                *ptr_++ = *srcPtr;
+                *m_ptr++ = *srcPtr;
             else
-                ptr_ = ranges::copy(ptr_, src);
+                m_ptr = ranges::copy(m_ptr, src);
         } else {
-            std::copy_n(srcPtr, available, ptr_);
-            Device::write(buf_);
+            std::copy_n(srcPtr, available, m_ptr);
+            Device::write(m_buf);
             srcPtr += available;
             count -= available;
-            size_t remainder = count % ranges::size(buf_);
+            size_t remainder = count % ranges::size(m_buf);
             if (remainder < count) {
                 Device::write({srcPtr, count - remainder});
                 srcPtr += count - remainder;
             }
             if (0 < remainder)
-                ptr_ = std::copy_n(srcPtr, remainder, ranges::data(buf_));
+                m_ptr = std::copy_n(srcPtr, remainder, ranges::data(m_buf));
         }
         return src.size();
     }
 
     void move(index offset) {
-        ptr_ += offset;
-        AC_ASSERT(ranges::data(buf_) <= ptr_);
-        if (ptr_ == ranges::end(buf_))
+        m_ptr += offset;
+        AC_ASSERT(ranges::data(m_buf) <= m_ptr);
+        if (m_ptr == ranges::end(m_buf))
             overflow();
     }
 

@@ -14,14 +14,14 @@ namespace ac {
 template<class T>
 class square_root {
 public:
-    constexpr explicit square_root(T const& value = {}) : sqr_{value} {}
+    constexpr explicit square_root(T const& value = {}) : m_sqr{value} {}
 
     operator decltype(eval(sqrt(std::declval<T>())))() const {
-        return eval(sqrt(sqr_));
+        return eval(sqrt(m_sqr));
     }
 
     friend constexpr T const& perform(Sqr, square_root const& x) {
-        return x.sqr_;
+        return x.m_sqr;
     }
 
     friend constexpr auto perform(
@@ -29,11 +29,11 @@ public:
         square_root const& lhs,
         square_root const& rhs
     ) {
-        return op(lhs.sqr_, rhs.sqr_);
+        return op(lhs.m_sqr, rhs.m_sqr);
     }
 
 private:
-    T sqr_;
+    T m_sqr;
 };
 
 struct defer_sqrt {

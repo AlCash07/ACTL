@@ -34,7 +34,7 @@ class in_file : public device<Mode, Char> {
 
 public:
     explicit in_file(std::FILE* file, bool own = false)
-        : file_{file}, own_{own} {
+        : m_file{file}, m_own{own} {
         AC_ASSERT(file);
     }
 
@@ -42,21 +42,21 @@ public:
         : in_file{std::fopen(filename, mode_str[(Mode & 0xF) - 2]), true} {}
 
     ~in_file() {
-        if (own_)
-            std::fclose(file_);
+        if (m_own)
+            std::fclose(m_file);
     }
 
     std::FILE* get() const {
-        return file_;
+        return m_file;
     }
 
     bool eof() const {
-        return std::feof(file_) != 0;
+        return std::feof(m_file) != 0;
     }
 
 protected:
-    std::FILE* file_;
-    bool own_;
+    std::FILE* m_file;
+    bool m_own;
 };
 
 template<mode_t Mode, class Char>
@@ -71,17 +71,17 @@ public:
     }
 
     Char get() {
-        int c = std::fgetc(this->file_);
+        int c = std::fgetc(this->m_file);
         return c == EOF ? Char{} : static_cast<Char>(c);
     }
 
     size_t read(span<Char> dst) {
-        return std::fread(dst.data(), sizeof(Char), dst.size(), this->file_);
+        return std::fread(dst.data(), sizeof(Char), dst.size(), this->m_file);
     }
 
     void move(index offset) {
         int res = std::fseek(
-            this->file_, offset * static_cast<index>(sizeof(Char)), SEEK_CUR
+            this->m_file, offset * static_cast<index>(sizeof(Char)), SEEK_CUR
         );
         AC_ASSERT(res == 0);
     }
@@ -99,15 +99,15 @@ public:
     using in_file<Mode, Char>::in_file;
 
     size_t write(Char c) {
-        return std::fputc(static_cast<int>(c), this->file_) != EOF ? 1 : 0;
+        return std::fputc(static_cast<int>(c), this->m_file) != EOF ? 1 : 0;
     }
 
     size_t write(span<Char const> src) {
-        return std::fwrite(src.data(), sizeof(Char), src.size(), this->file_);
+        return std::fwrite(src.data(), sizeof(Char), src.size(), this->m_file);
     }
 
     void flush() {
-        std::fflush(this->file_);
+        std::fflush(this->m_file);
     }
 
     ~file() {

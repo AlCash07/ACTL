@@ -15,18 +15,18 @@ namespace ac {
 template<class Key, class Value = Key>
 class shift_map {
 public:
-    explicit constexpr shift_map(Key offset) : offset_{offset} {}
+    explicit constexpr shift_map(Key offset) : m_offset{offset} {}
 
     constexpr Value get(Key key) const {
-        return static_cast<Value>(key - offset_);
+        return static_cast<Value>(key - m_offset);
     }
 
     constexpr Key invert(Value value) const {
-        return static_cast<Key>(value) + offset_;
+        return static_cast<Key>(value) + m_offset;
     }
 
 private:
-    Key const offset_;
+    Key const m_offset;
 };
 
 template<class Value = use_default, class Key>

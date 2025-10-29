@@ -69,19 +69,19 @@ public:
     }
 
     T* data() {
-        return data_.data();
+        return m_data.data();
     }
 
     T const* data() const {
-        return data_.data();
+        return m_data.data();
     }
 
     void swap(tensor_container& rhs) {
-        std::swap(data_, rhs.data_);
+        std::swap(m_data, rhs.m_data);
     }
 
 private:
-    std::array<T, Size> data_;
+    std::array<T, Size> m_data;
 };
 
 template<class T>
@@ -89,22 +89,22 @@ class tensor_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
 
-    tensor_container(size_t size) : data_{new T[size]} {}
+    tensor_container(size_t size) : m_data{new T[size]} {}
 
     T* data() {
-        return data_.get();
+        return m_data.get();
     }
 
     T const* data() const {
-        return data_.get();
+        return m_data.get();
     }
 
     void swap(tensor_container& rhs) {
-        std::swap(data_, rhs.data_);
+        std::swap(m_data, rhs.m_data);
     }
 
 private:
-    std::unique_ptr<T[]> data_;
+    std::unique_ptr<T[]> m_data;
 };
 
 /* NDArray data class, supports container or pointer as data. */
@@ -172,22 +172,22 @@ class tensor_data<N, T*> {
 public:
     using value_type = T;
 
-    tensor_data(size_t, T* ptr) : ptr_{ptr} {}
+    tensor_data(size_t, T* ptr) : m_ptr{ptr} {}
 
     T* data() {
-        return ptr_;
+        return m_ptr;
     }
 
     T const* data() const {
-        return ptr_;
+        return m_ptr;
     }
 
     void swap(tensor_data& rhs) {
-        std::swap(ptr_, rhs.ptr_);
+        std::swap(m_ptr, rhs.m_ptr);
     }
 
 private:
-    T* ptr_;
+    T* m_ptr;
 };
 
 /* NDArray shape class, manages dimensions. */
@@ -196,7 +196,7 @@ private:
 // undefined behavior.
 template<class Dims>
 struct tensor_dims {
-    Dims dims_;
+    Dims m_dims;
 };
 
 template<class Int, size_t N>
@@ -204,10 +204,10 @@ struct tensor_dims<std::array<Int, N>> {
     tensor_dims() = default;
 
     tensor_dims(std::initializer_list<Int> dims) {
-        std::copy_n(dims.begin(), N, dims_.begin());
+        std::copy_n(dims.begin(), N, m_dims.begin());
     }
 
-    std::array<Int, N> dims_ = {};
+    std::array<Int, N> m_dims = {};
 };
 
 template<size_t N, class Data, class Dims>
@@ -219,7 +219,7 @@ class tensor_shape
     using Int = range_value_t<Dims>;
     using T = typename base_data::value_type;
 
-    using base_dims::dims_;
+    using base_dims::m_dims;
 
 public:
     template<class... Ts>
@@ -240,24 +240,24 @@ public:
     explicit tensor_shape(nd_initializer_list_t<T, N> il)
         : base_dims{}
         , base_data{
-              (compute_dimensions<0>(il), size()), il, ranges::data(dims_)
+              (compute_dimensions<0>(il), size()), il, ranges::data(m_dims)
           } {}
 
     constexpr size_t rank() const {
-        return ranges::size(dims_);
+        return ranges::size(m_dims);
     }
 
     size_t size() const {
-        return compute_product<Int>(dims_);
+        return compute_product<Int>(m_dims);
     }
 
     Dims const& dimensions() const {
-        return dims_;
+        return m_dims;
     }
 
     void swap(tensor_shape& rhs) {
         using std::swap;
-        swap(dims_, rhs.dims_);
+        swap(m_dims, rhs.m_dims);
         base_data::swap(rhs);
     }
 
@@ -265,7 +265,7 @@ private:
     template<size_t I>
     void compute_dimensions(nd_initializer_list_t<T, N - I> il) {
         if constexpr (I < N) {
-            max(inout{dims_[I]}, static_cast<Int>(il.size()));
+            max(inout{m_dims[I]}, static_cast<Int>(il.size()));
             for (auto i : il)
                 compute_dimensions<I + 1>(i);
         }
@@ -276,7 +276,7 @@ template<size_t N, class Data, size_t... Ds>
 class tensor_shape<N, Data, static_array<size_t, Ds...>>
     : public tensor_data<N, Data> {
     using base_t = tensor_data<N, Data>;
-    using dims_t = static_array<size_t, Ds...>;
+    using m_dimst = static_array<size_t, Ds...>;
 
 public:
     template<class... Ts>
@@ -290,14 +290,14 @@ public:
         : base_t{size(), il, dimensions()} {}
 
     static constexpr size_t rank() {
-        return static_size_v<dims_t>;
+        return static_size_v<m_dimst>;
     }
 
     static constexpr size_t size() {
         return static_product_v<Ds...>;
     }
 
-    static constexpr dims_t dimensions() {
+    static constexpr m_dimst dimensions() {
         return {};
     }
 };

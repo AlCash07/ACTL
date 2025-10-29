@@ -49,11 +49,11 @@ public:
     using format_tag = text_tag;
 
     flag_t flags() const {
-        return flags_;
+        return m_flags;
     }
 
     void flags(flag_t value) {
-        flags_ = value;
+        m_flags = value;
     }
 
     bool getf(flag_t flag) const {
@@ -61,18 +61,18 @@ public:
     }
 
     void setf(flag_t flag) {
-        flags_ |= flag;
+        m_flags |= flag;
     }
 
     void unsetf(flag_t flag) {
-        flags_ = clear_bits(flags_, flag);
+        m_flags = clear_bits(m_flags, flag);
     }
 
     void setf(flag_t flag, flag_t group) {
-        flags_ = set_bits(flags_, group_bits[group], flag);
+        m_flags = set_bits(m_flags, group_bits[group], flag);
     }
 
-    flag_t flags_ = 0;
+    flag_t m_flags = 0;
     base_t base = base_t{};
     precision_t precision = precision_t{};
 };

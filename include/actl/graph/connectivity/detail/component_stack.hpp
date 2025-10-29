@@ -15,40 +15,40 @@ template<class Map, class Stack>
 class component_stack {
     using T = map_key_t<Map>;
 
-    Map map_;
-    Stack stack_ = {};
-    map_value_t<Map> n_ = 0;
+    Map m_map;
+    Stack m_stack = {};
+    map_value_t<Map> m_n = 0;
 
 public:
     static_assert(std::is_same_v<T, typename Stack::value_type>);
 
-    explicit component_stack(Map map) : map_{map} {}
+    explicit component_stack(Map map) : m_map{map} {}
 
     void push(T x) {
-        stack_.push(x);
+        m_stack.push(x);
     }
 
     void pop(T last) {
         while (true) {
-            T x = stack_.top();
-            stack_.pop();
-            put(map_, x, n_);
+            T x = m_stack.top();
+            m_stack.pop();
+            put(m_map, x, m_n);
             if (x == last)
                 break;
         }
-        ++n_;
+        ++m_n;
     }
 
     template<class P>
     void pop_while(P pred) {
-        while (!stack_.empty()) {
-            T& x = stack_.top();
+        while (!m_stack.empty()) {
+            T& x = m_stack.top();
             if (!pred(x))
                 break;
-            put(map_, x, n_);
-            stack_.pop();
+            put(m_map, x, m_n);
+            m_stack.pop();
         }
-        ++n_;
+        ++m_n;
     }
 };
 

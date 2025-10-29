@@ -25,27 +25,27 @@ public:
     static_assert(std::is_same_v<T, value_type>);
 
     bool empty() const {
-        return begin_ == vector_.size();
+        return m_begin == m_vector.size();
     }
 
     size_type size() const {
-        return vector_.size() - begin_;
+        return m_vector.size() - m_begin;
     }
 
     reference front() {
-        return vector_[begin_];
+        return m_vector[m_begin];
     }
 
     const_reference front() const {
-        return vector_[begin_];
+        return m_vector[m_begin];
     }
 
     reference back() {
-        return vector_.back();
+        return m_vector.back();
     }
 
     const_reference back() const {
-        return vector_.back();
+        return m_vector.back();
     }
 
     void push(T const& value) {
@@ -58,17 +58,17 @@ public:
 
     template<class... Ts>
     void emplace(Ts&&... args) {
-        vector_.emplace_back(std::forward<Ts>(args)...);
+        m_vector.emplace_back(std::forward<Ts>(args)...);
     }
 
     void pop() {
-        AC_ASSERT(begin_ < vector_.size());
-        ++begin_;
+        AC_ASSERT(m_begin < m_vector.size());
+        ++m_begin;
     }
 
 protected:
-    Vector vector_;
-    size_type begin_ = 0; // not an iterator since vector can reallocate
+    Vector m_vector;
+    size_type m_begin = 0; // not an iterator since vector can reallocate
 };
 
 } // namespace ac

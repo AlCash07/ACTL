@@ -27,10 +27,10 @@ public:
     using const_iterator = integer_iterator<index>;
 
     constexpr dummy_container() = default;
-    explicit constexpr dummy_container(index size) : n_{size} {}
+    explicit constexpr dummy_container(index size) : m_size{size} {}
 
     constexpr index size() const {
-        return n_;
+        return m_size;
     }
 
     constexpr bool empty() const {
@@ -51,20 +51,20 @@ public:
 
     template<class... Ts>
     void emplace_back(Ts...) {
-        ++n_;
+        ++m_size;
     }
 
     template<class T>
     void erase(T) {
-        --n_;
+        --m_size;
     }
 
     void resize(index size) {
-        n_ = size;
+        m_size = size;
     }
 
     void swap(dummy_container& rhs) {
-        std::swap(n_, rhs.n_);
+        std::swap(m_size, rhs.m_size);
     }
 
 private:
@@ -74,7 +74,7 @@ private:
         return hash_value(size());
     }
 
-    index n_ = 0;
+    index m_size = 0;
 };
 
 template<>

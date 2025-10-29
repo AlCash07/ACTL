@@ -18,14 +18,14 @@ class limited_input_iterator
     using base_t = iterator_adaptor<limited_input_iterator<Iterator>, Iterator>;
 
 public:
-    explicit limited_input_iterator() : base_t{Iterator{}}, limit_{0} {}
+    explicit limited_input_iterator() : base_t{Iterator{}}, m_limit{0} {}
 
     explicit limited_input_iterator(Iterator const& iter, int limit)
-        : base_t{iter}, limit_{limit} {}
+        : base_t{iter}, m_limit{limit} {}
 
     limited_input_iterator& operator++() {
-        AC_ASSERT(limit_ > 0);
-        if (--limit_ > 0)
+        AC_ASSERT(m_limit > 0);
+        if (--m_limit > 0)
             ++this->base_ref();
         else
             this->base_ref() = Iterator{};
@@ -33,7 +33,7 @@ public:
     }
 
 private:
-    int limit_;
+    int m_limit;
 };
 
 } // namespace ac

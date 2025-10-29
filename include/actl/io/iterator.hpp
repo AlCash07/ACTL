@@ -19,30 +19,30 @@ template<class T, class Device>
 class input_device_iterator
     : public input_iterator_interface<input_device_iterator<T, Device>> {
 public:
-    using value_type = T;
+    using m_valuetype = T;
 
     explicit input_device_iterator() = default;
 
-    explicit input_device_iterator(Device& device) : device_{&device} {
+    explicit input_device_iterator(Device& device) : m_device{&device} {
         ++*this;
     }
 
     input_device_iterator(input_device_iterator const&) = default;
 
     T const& operator*() const noexcept {
-        return value_;
+        return m_value;
     }
 
     input_device_iterator& operator++() {
-        AC_ASSERT(device_);
-        if (!io::read(*device_, value_))
-            device_ = nullptr;
+        AC_ASSERT(m_device);
+        if (!io::read(*m_device, m_value))
+            m_device = nullptr;
         return *this;
     }
 
 private:
-    Device* device_;
-    T value_;
+    Device* m_device;
+    T m_value;
 };
 
 template<class T, class Device>
@@ -56,12 +56,12 @@ template<class T, class Device>
 class output_device_iterator
     : public output_iterator_interface<output_device_iterator<T, Device>> {
 public:
-    explicit output_device_iterator(Device& device) : device_{&device} {}
+    explicit output_device_iterator(Device& device) : m_device{&device} {}
 
     output_device_iterator(output_device_iterator const&) = default;
 
     void operator=(T const& value) const {
-        io::write(*device_, value);
+        io::write(*m_device, value);
     }
 
     output_device_iterator const& operator*() const noexcept {
@@ -73,7 +73,7 @@ public:
     }
 
 private:
-    Device* device_;
+    Device* m_device;
 };
 
 template<class T, class Device>

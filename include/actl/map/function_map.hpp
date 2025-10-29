@@ -18,14 +18,14 @@ class function_map {
 public:
     static_assert(arity_v<Function> == 1);
 
-    explicit function_map(Function f = {}) : f_{f} {}
+    explicit function_map(Function f = {}) : m_f{f} {}
 
     map_reference_t<function_map> get(map_key_t<function_map> key) const {
-        return f_(key);
+        return m_f(key);
     }
 
 private:
-    Function f_;
+    Function m_f;
 };
 
 template<class F>

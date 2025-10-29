@@ -18,25 +18,25 @@ public:
 
     explicit constexpr edge() = default;
 
-    explicit constexpr edge(V u, V v, B b) : u_{u}, v_{v}, b_{b} {}
+    explicit constexpr edge(V u, V v, B b) : m_u{u}, m_v{v}, m_b{b} {}
 
     constexpr V source() const {
-        return u_;
+        return m_u;
     }
 
     constexpr V target() const {
-        return v_;
+        return m_v;
     }
 
     constexpr B bundle() const {
-        return b_;
+        return m_b;
     }
 
     constexpr id_type id() const {
         if constexpr (CompareSrc) {
-            return std::pair{u_, b_};
+            return std::pair{m_u, m_b};
         } else {
-            return b_;
+            return m_b;
         }
     }
 
@@ -61,9 +61,9 @@ private:
         return hash_value(id());
     }
 
-    V u_;
-    V v_;
-    B b_;
+    V m_u;
+    V m_v;
+    B m_b;
 };
 
 } // namespace ac::detail

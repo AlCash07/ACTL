@@ -23,9 +23,9 @@ struct edge_inverter {
 template<class G, class Iter>
 class adj_list_out_edge_iter
     : public forward_iterator_interface<adj_list_out_edge_iter<G, Iter>> {
-    G const* g_;
-    vertex_t<G> u_;
-    Iter iter_;
+    G const* m_g;
+    vertex_t<G> m_u;
+    Iter m_iter;
 
 public:
     using value_type = edge_t<G>;
@@ -34,58 +34,58 @@ public:
     explicit adj_list_out_edge_iter() = default;
 
     explicit adj_list_out_edge_iter(G const* g, vertex_t<G> u, Iter iter)
-        : g_{g}, u_{u}, iter_{iter} {}
+        : m_g{g}, m_u{u}, m_iter{iter} {}
 
     Iter id() const {
-        return iter_;
+        return m_iter;
     }
 
     edge_t<G> operator*() const {
-        return g_->get_edge(u_, *iter_);
+        return m_g->get_edge(m_u, *m_iter);
     }
 
     adj_list_out_edge_iter& operator++() {
-        ++iter_;
+        ++m_iter;
         return *this;
     }
 
     friend bool operator==(
         adj_list_out_edge_iter const& lhs, adj_list_out_edge_iter const& rhs
-    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.iter_ == rhs.iter_)
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.m_iter == rhs.m_iter)
 };
 
 template<class G>
 class adj_list_edge_iter
     : public forward_iterator_interface<adj_list_edge_iter<G>> {
     bool is_end() const {
-        return u_ == id_end(g_->vertices_);
+        return m_u == id_end(m_g->m_vertices);
     }
 
     bool is_reverse_edge() const {
         if constexpr (G::is_undirected)
-            return (*(*this)).target() < u_;
+            return (*(*this)).target() < m_u;
         else
             return false;
     }
 
     void skip_empty() {
         while (!is_end()) {
-            if (iter_ == g_->out_end(u_)) {
-                ++u_;
+            if (m_iter == m_g->out_end(m_u)) {
+                ++m_u;
                 if (!is_end())
-                    iter_ = g_->out_begin(u_);
+                    m_iter = m_g->out_begin(m_u);
             } else {
                 if (is_reverse_edge())
-                    ++iter_;
+                    ++m_iter;
                 else
                     break;
             }
         }
     }
 
-    G const* g_;
-    vertex_t<G> u_;
-    typename G::out_iter iter_;
+    G const* m_g;
+    vertex_t<G> m_u;
+    typename G::out_iter m_iter;
 
 public:
     using value_type = edge_t<G>;
@@ -93,24 +93,24 @@ public:
 
     explicit adj_list_edge_iter() = default;
 
-    explicit adj_list_edge_iter(G const* g, bool begin) : g_{g} {
+    explicit adj_list_edge_iter(G const* g, bool begin) : m_g{g} {
         if (begin) {
-            u_ = id_begin(g_->vertices_);
-            iter_ = g_->out_begin(u_);
+            m_u = id_begin(m_g->m_vertices);
+            m_iter = m_g->out_begin(m_u);
             skip_empty();
         } else {
-            u_ = id_end(g_->vertices_);
+            m_u = id_end(m_g->m_vertices);
         }
     }
 
     edge_t<G> operator*() const {
-        return g_->get_edge(u_, *iter_);
+        return m_g->get_edge(m_u, *m_iter);
     }
 
     adj_list_edge_iter& operator++() {
         if (is_end())
             return *this;
-        ++iter_;
+        ++m_iter;
         skip_empty();
         return *this;
     }
@@ -119,7 +119,7 @@ public:
         adj_list_edge_iter const& lhs, adj_list_edge_iter const& rhs
     )
         AC_DEDUCE_NOEXCEPT_AND_RETURN(
-            lhs.u_ == rhs.u_ && (lhs.is_end() || lhs.iter_ == rhs.iter_)
+            lhs.m_u == rhs.m_u && (lhs.is_end() || lhs.m_iter == rhs.m_iter)
         )
 };
 

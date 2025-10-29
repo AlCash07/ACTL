@@ -42,7 +42,7 @@ public:
             range_iterator_t<Range> iter, filtered_range const& range
         )
             : iterator_adaptor<iterator, Iter, iterator_category>{iter}
-            , range_{&range} {
+            , m_range{&range} {
             find_next();
         }
 
@@ -55,24 +55,24 @@ public:
         iterator& operator--() {
             do {
                 --this->base_ref();
-            } while (!range_->evaluate(*this->base()));
+            } while (!m_range->evaluate(*this->base()));
             return *this;
         }
 
     private:
         void find_next() {
-            while (this->base() != range_->original().end() &&
-                   !range_->evaluate(*this->base()))
+            while (this->base() != m_range->original().end() &&
+                   !m_range->evaluate(*this->base()))
                 ++this->base_ref();
         }
 
         // Pointer is used instead of a reference to support copy assignment
         // required for std::copyable.
-        filtered_range const* range_;
+        filtered_range const* m_range;
     };
 
     explicit filtered_range(Range&& range, Predicate pred)
-        : range_{std::forward<Range>(range)}, pred_{std::move(pred)} {}
+        : m_range{std::forward<Range>(range)}, m_pred{std::move(pred)} {}
 
     iterator begin() const {
         return iterator{original().begin(), *this};
@@ -83,16 +83,16 @@ public:
     }
 
     Range const& original() const {
-        return range_;
+        return m_range;
     }
 
     bool evaluate(std::iter_reference_t<iterator> x) const {
-        return pred_(x);
+        return m_pred(x);
     }
 
 private:
-    AC_NO_UNIQUE_ADDRESS Range range_;
-    AC_NO_UNIQUE_ADDRESS Predicate pred_;
+    AC_NO_UNIQUE_ADDRESS Range m_range;
+    AC_NO_UNIQUE_ADDRESS Predicate m_pred;
 };
 
 template<class Range, class Predicate>

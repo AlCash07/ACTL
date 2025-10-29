@@ -22,7 +22,7 @@ class iterator_adaptor
 
 protected:
     constexpr Iter& base_ref() noexcept {
-        return base_;
+        return m_base;
     }
 
 public:
@@ -37,14 +37,14 @@ public:
         requires std::is_default_constructible_v<I>
     constexpr iterator_adaptor(
     ) noexcept(std::is_nothrow_default_constructible_v<Iter>)
-        : base_{Iter{}} {}
+        : m_base{Iter{}} {}
 
     explicit constexpr iterator_adaptor(Iter const& iter
     ) noexcept(noexcept(Iter{iter}))
-        : base_{iter} {}
+        : m_base{iter} {}
 
     constexpr Iter const& base() const noexcept {
-        return base_;
+        return m_base;
     }
 
     constexpr decltype(auto) operator*() const
@@ -76,7 +76,7 @@ public:
     ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() - rhs.base())
 
 private:
-    Iter base_;
+    Iter m_base;
 };
 
 } // namespace ac

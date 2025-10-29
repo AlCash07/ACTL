@@ -16,11 +16,11 @@ template<class Function>
 class function_output_iterator
     : public output_iterator_interface<function_output_iterator<Function>> {
 public:
-    explicit function_output_iterator(Function const& f = {}) : f_{f} {}
+    explicit function_output_iterator(Function const& f = {}) : m_f{f} {}
 
     template<class T>
     void operator=(T&& x) const {
-        f_(std::forward<T>(x));
+        m_f(std::forward<T>(x));
     }
 
     function_output_iterator const& operator*() const noexcept {
@@ -32,7 +32,7 @@ public:
     }
 
 private:
-    Function f_;
+    Function m_f;
 };
 
 } // namespace ac

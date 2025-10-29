@@ -17,18 +17,18 @@ namespace ac {
 
 template<class G, class V = vertex_t<G>, class OEI = out_edge_iterator_t<G>>
 class dfs_context {
-    V u_;
-    out_edge_t<G> oe_;
+    V m_u;
+    out_edge_t<G> m_oe;
 
 public:
-    dfs_context(V u, OEI it, OEI) : u_{u}, oe_{it.id()} {}
+    dfs_context(V u, OEI it, OEI) : m_u{u}, m_oe{it.id()} {}
 
     V vertex() const {
-        return u_;
+        return m_u;
     }
 
     auto get(G const& g) const {
-        return std::tuple{u_, OEI{&g, u_, oe_}, g.out_edges(u_).end()};
+        return std::tuple{m_u, OEI{&g, m_u, m_oe}, g.out_edges(m_u).end()};
     }
 };
 

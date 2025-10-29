@@ -23,14 +23,14 @@ public:
         return x ^ (x >> 31);
     }
 
-    explicit splitmix64(uint64_t seed = {}) : state_{seed} {}
+    explicit splitmix64(uint64_t seed = {}) : m_state{seed} {}
 
     uint64_t operator()() {
-        return state_ = next(state_);
+        return m_state = next(m_state);
     }
 
 private:
-    uint64_t state_;
+    uint64_t m_state;
 };
 
 } // namespace ac

@@ -41,11 +41,11 @@ public:
     using base_t::operator[];
 
     auto operator[](edge_property) {
-        return this->edge_list_[edge_property{}];
+        return this->m_edge_list[edge_property{}];
     }
 
     auto operator[](edge_property) const {
-        return this->edge_list_[edge_property{}];
+        return this->m_edge_list[edge_property{}];
     }
 
     T& operator[](edge e) {
@@ -82,7 +82,7 @@ protected:
         if constexpr (std::is_same_v<
                           typename traits::out_edge_data::first_type,
                           none>) {
-            v = vertex{edge_list_.get_target(id_to_raw(u), e)};
+            v = vertex{m_edge_list.get_target(id_to_raw(u), e)};
         } else {
             v = vertex{oed.first};
         }
@@ -103,7 +103,7 @@ protected:
         if (!ok) {
             return {edge{}, false};
         }
-        e = edge_list_.add_edge(
+        e = m_edge_list.add_edge(
             id_to_raw(u), id_to_raw(v), std::forward<Ts>(args)...
         );
         id_at(u_edges, out_edge).second = e;
@@ -116,7 +116,7 @@ protected:
         return {edge{u, v, e}, true};
     }
 
-    typename traits::edges edge_list_;
+    typename traits::edges m_edge_list;
 
 public:
     static_assert(
@@ -136,16 +136,16 @@ public:
 
 template<class VC, class E, class Ref>
 class edge_map {
-    VC& vertices_;
+    VC& m_vertices;
 
 public:
     using traits =
         map_traits_base<E, Ref, use_default, true, !std::is_const_v<Ref>>;
 
-    edge_map(VC& vertices) : vertices_{vertices} {}
+    edge_map(VC& vertices) : m_vertices{vertices} {}
 
     Ref get(E e) const {
-        return id_at(id_at(vertices_, e.source()).first.out_edges, e.bundle())
+        return id_at(id_at(m_vertices, e.source()).first.out_edges, e.bundle())
             .second;
     }
 
@@ -168,11 +168,11 @@ public:
     using base_t::operator[];
 
     edge_map<AVC, edge, Ref> operator[](edge_property) {
-        return {this->vertices_};
+        return {this->m_vertices};
     }
 
     edge_map<AVC const, edge, Ref const> operator[](edge_property) const {
-        return {this->vertices_};
+        return {this->m_vertices};
     }
 
     Ref operator[](edge e) {
@@ -220,7 +220,7 @@ protected:
         if (!ok) {
             return {edge{}, false};
         }
-        edge_list_.add_edge(id_to_raw(u), id_to_raw(v));
+        m_edge_list.add_edge(id_to_raw(u), id_to_raw(v));
         if constexpr (base_t::is_undirected) {
             if (u != v)
                 id_emplace(outs(v), id_to_raw(u), std::forward<Ts>(args)...);
@@ -230,7 +230,7 @@ protected:
         return {edge{u, v, out_edge}, true};
     }
 
-    typename traits::edges edge_list_;
+    typename traits::edges m_edge_list;
 
 public:
     using edge_container = none;
@@ -252,7 +252,7 @@ struct const_map_traits<detail::edge_map<VC, E, R>>
 template<class Dir, class OEC, class EC, class VC>
 class adjacency_list : public detail::adj_list_edges<Dir, OEC, EC, VC> {
     using base_t = detail::adj_list_edges<Dir, OEC, EC, VC>;
-    using base_t::edge_list_;
+    using base_t::m_edge_list;
     using typename base_t::traits;
 
     template<class AL, class S>
@@ -276,7 +276,7 @@ public:
     using base_t::base_t;
 
     index edge_count() const {
-        return edge_list_.edge_count();
+        return m_edge_list.edge_count();
     }
 
     index degree(vertex u) const {
@@ -285,7 +285,7 @@ public:
 
     iterator_range<edge_iterator> edges() const {
         if constexpr (std::is_same_v<edge_selector, two_vertices>) {
-            return edge_list_.template edges<edge>();
+            return m_edge_list.template edges<edge>();
         } else {
             return {edge_iterator{this, true}, edge_iterator{this, false}};
         }
@@ -361,7 +361,7 @@ public:
 
     void swap(adjacency_list& rhs) {
         detail::adj_list_vertices<Dir, OEC, EC, VC>::swap(rhs);
-        edge_list_.swap(rhs.edge_list_);
+        m_edge_list.swap(rhs.m_edge_list);
     }
 
     friend edge_iterator;

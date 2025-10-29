@@ -31,11 +31,11 @@ public:
     using base_t::base_t;
 
     auto operator[](edge_property) {
-        return get_second(this->edges_);
+        return get_second(this->m_edges);
     }
 
     auto operator[](edge_property) const {
-        return get_second(this->edges_);
+        return get_second(this->m_edges);
     }
 
     T& operator[](edge e) {
@@ -73,7 +73,7 @@ public:
     edge_list_edges() = default;
 
     index edge_count() const {
-        return static_cast<index>(edges_.size());
+        return static_cast<index>(m_edges.size());
     }
 
     template<class... Ts>
@@ -83,7 +83,7 @@ public:
                 std::swap(u, v);
         }
         auto res =
-            id_emplace(edges_, edge_vertices(u, v), std::forward<Ts>(args)...);
+            id_emplace(m_edges, edge_vertices(u, v), std::forward<Ts>(args)...);
         return {edge{u, v, res.first}, res.second};
     }
 
@@ -93,17 +93,17 @@ public:
     }
 
     vertex get_target(vertex u, edge_id e) const {
-        return id_at(edges_, e).first.other(u);
+        return id_at(m_edges, e).first.other(u);
     }
 
     void swap(edge_list_edges& rhs) {
-        edges_.swap(rhs.edges_);
+        m_edges.swap(rhs.m_edges);
     }
 
     void operator[](edge) const {}
 
 protected:
-    edge_container edges_;
+    edge_container m_edges;
 };
 
 template<class Dir, class V, class EC, class S>
@@ -122,7 +122,7 @@ template<class Dir, class V, class EC>
 class edge_list_impl<Dir, V, EC, two_vertices>
     : public edge_list_edges<Dir, V, EC, two_vertices> {
     using base_t = edge_list_edges<Dir, V, EC, two_vertices>;
-    using base_t::edges_;
+    using base_t::m_edges;
 
 public:
     using typename base_t::edge;
@@ -139,29 +139,30 @@ public:
         edge_iterator() = default;
 
         E operator*() const {
-            auto& vertices = id_at(el_->edges_, id_).first;
+            auto& vertices = id_at(m_el->m_edges, m_id).first;
             using V1 = typename E::vertex;
-            return E{V1{vertices.u}, V1{vertices.v}, id_};
+            return E{V1{vertices.u}, V1{vertices.v}, m_id};
         }
 
         edge_iterator& operator++() {
-            ++id_;
+            ++m_id;
             return *this;
         }
 
         friend bool operator==(
             edge_iterator const& lhs, edge_iterator const& rhs
-        ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.id_ == rhs.id_)
+        ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.m_id == rhs.m_id)
 
     private:
         friend class edge_list_impl;
 
         using ec_id = container_id<typename base_t::edge_container>;
 
-        edge_iterator(edge_list_impl const& el, ec_id id) : el_{&el}, id_{id} {}
+        edge_iterator(edge_list_impl const& el, ec_id id)
+            : m_el{&el}, m_id{id} {}
 
-        edge_list_impl const* el_;
-        ec_id id_;
+        edge_list_impl const* m_el;
+        ec_id m_id;
     };
 
     // E template parameter is needed for adjacency_list where vertices aren't
@@ -169,8 +170,8 @@ public:
     template<class E = edge>
     iterator_range<edge_iterator<E>> edges() const {
         return {
-            edge_iterator<E>{*this, id_begin(edges_)},
-            edge_iterator<E>{*this, id_end(edges_)}
+            edge_iterator<E>{*this, id_begin(m_edges)},
+            edge_iterator<E>{*this, id_end(m_edges)}
         };
     }
 
@@ -180,12 +181,12 @@ public:
                 std::swap(u, v);
         }
         return edge{
-            u, v, id_find(edges_, typename base_t::edge_vertices(u, v))
+            u, v, id_find(m_edges, typename base_t::edge_vertices(u, v))
         };
     }
 
     void remove_edge(edge e) {
-        id_erase(edges_, e);
+        id_erase(m_edges, e);
     }
 
     void swap(edge_list_impl& rhs) {

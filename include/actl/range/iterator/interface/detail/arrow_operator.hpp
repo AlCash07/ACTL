@@ -25,14 +25,14 @@ class arrow_proxy {
 public:
     template<class Arg>
     explicit arrow_proxy(Arg&& x) noexcept(noexcept(T{std::forward<Arg>(x)}))
-        : value_{std::forward<Arg>(x)} {}
+        : m_value{std::forward<Arg>(x)} {}
 
     T* operator->() noexcept {
-        return std::addressof(value_);
+        return std::addressof(m_value);
     }
 
 private:
-    T value_;
+    T m_value;
 };
 
 // operator->() needs special support for input iterators to strictly meet the

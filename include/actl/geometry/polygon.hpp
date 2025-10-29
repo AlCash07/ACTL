@@ -70,10 +70,10 @@ public:
     using point_type = range_value_t<simple_polygon<T>>;
 
     point_type const& observer() const {
-        return observer_;
+        return m_observer;
     }
 
-    point_type observer_;
+    point_type m_observer;
 };
 
 template<class T>
@@ -86,14 +86,14 @@ template<class T>
 class monotone_polygon : public simple_polygon<T> {
 public:
     index right() const {
-        return right_;
+        return m_right;
     }
 
     void right(index value) {
-        right_ = value;
+        m_right = value;
     }
 
-    index right_;
+    index m_right;
 };
 
 template<class T>
@@ -129,9 +129,9 @@ public:
         std::rotate_copy(
             polygon.begin(), minmax.first, polygon.end(), this->begin()
         );
-        this->right_ = minmax.second - minmax.first;
-        if (this->right_ < 0)
-            this->right_ += static_cast<index>(polygon.size());
+        this->m_right = minmax.second - minmax.first;
+        if (this->m_right < 0)
+            this->m_right += static_cast<index>(polygon.size());
     }
 
     range_reference_t<monotone_polygon<T> const> observer() const {

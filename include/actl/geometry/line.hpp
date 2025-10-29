@@ -70,24 +70,24 @@ public:
 
     void operator=(line_kind kind) {
         AC_ASSERT(is_valid(kind));
-        kind_ = kind;
+        m_kind = kind;
     }
 
     line_kind kind() const {
-        return kind_;
+        return m_kind;
     }
 
 private:
-    line_kind kind_;
+    line_kind m_kind;
 
     friend struct ac::io::serialization_access;
 
     bool write_final(Device auto& od, Format auto& fmt) const {
-        return write(od, fmt, static_cast<int>(kind_));
+        return write(od, fmt, static_cast<int>(m_kind));
     }
 
     bool read_final(Device auto& id, Format auto& fmt) {
-        return read(id, fmt, kind_) && is_valid(kind_);
+        return read(id, fmt, m_kind) && is_valid(m_kind);
     }
 };
 

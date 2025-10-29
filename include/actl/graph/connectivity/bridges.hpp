@@ -19,13 +19,13 @@ namespace detail {
 template<bool Once, bool Other>
 struct once_equal {
     operator bool() {
-        if (x_ == Other)
+        if (m_x == Other)
             return Other;
-        x_ = Other;
+        m_x = Other;
         return Once;
     }
 
-    bool x_ = true;
+    bool m_x = true;
 };
 
 template<bool All>

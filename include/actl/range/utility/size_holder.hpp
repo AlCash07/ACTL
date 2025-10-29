@@ -28,14 +28,14 @@ public:
 template<>
 class size_holder<dynamic_size> {
 public:
-    constexpr size_holder(size_t n) : size_{n} {}
+    constexpr size_holder(size_t n) : m_size{n} {}
 
     constexpr size_t size() const {
-        return size_;
+        return m_size;
     }
 
 private:
-    size_t size_;
+    size_t m_size;
 };
 
 } // namespace ac

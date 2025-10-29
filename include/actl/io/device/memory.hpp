@@ -22,24 +22,24 @@ class out_memory : public device<Mode, Char> {
 
 public:
     explicit out_memory(span<C> data)
-        : data_{std::move(data)}, ptr_{data_.begin()} {}
+        : m_data{std::move(data)}, m_ptr{m_data.begin()} {}
 
     void move(index offset) {
-        ptr_ += offset;
-        AC_ASSERT(data_.begin() <= ptr_ && ptr_ <= end());
+        m_ptr += offset;
+        AC_ASSERT(m_data.begin() <= m_ptr && m_ptr <= end());
     }
 
     bool eof() const {
-        return end() < ptr_;
+        return end() < m_ptr;
     }
 
 protected:
     C* end() const {
-        return data_.end();
+        return m_data.end();
     }
 
-    span<C> const data_;
-    C* ptr_;
+    span<C> const m_data;
+    C* m_ptr;
 };
 
 template<mode_t Mode, class Char>
@@ -47,26 +47,26 @@ class out_memory<Mode, Char, true> : public out_memory<Mode, Char, false> {
 protected:
     using base_t = out_memory<Mode, Char, false>;
     using base_t::end;
-    using base_t::ptr_;
+    using base_t::m_ptr;
 
 public:
     using base_t::base_t;
 
     span<Char> output_buffer() const {
-        return {ptr_, end()};
+        return {m_ptr, end()};
     }
 
     size_t write(Char c) {
-        if (ptr_ >= end())
+        if (m_ptr >= end())
             return 0;
-        *ptr_++ = c;
+        *m_ptr++ = c;
         return 1;
     }
 
     size_t write(cspan<Char> src) {
-        size_t count = std::min(src.size(), static_cast<size_t>(end() - ptr_));
-        std::memcpy(ptr_, src.data(), count * sizeof(Char));
-        ptr_ += count;
+        size_t count = std::min(src.size(), static_cast<size_t>(end() - m_ptr));
+        std::memcpy(m_ptr, src.data(), count * sizeof(Char));
+        m_ptr += count;
         return count;
     }
 
@@ -84,29 +84,29 @@ class in_memory<Mode, Char, true> : public out_memory<Mode, Char> {
 protected:
     using base_t = out_memory<Mode, Char>;
     using base_t::end;
-    using base_t::ptr_;
+    using base_t::m_ptr;
 
 public:
     using base_t::base_t;
 
     cspan<Char> input_buffer() const {
-        return {ptr_, end()};
+        return {m_ptr, end()};
     }
 
     Char peek() {
-        return ptr_ < end() ? *ptr_ : Char{};
+        return m_ptr < end() ? *m_ptr : Char{};
     }
 
     Char get() {
         Char c = peek();
-        ++ptr_;
+        ++m_ptr;
         return c;
     }
 
     size_t read(span<Char> dst) {
-        size_t count = std::min(dst.size(), static_cast<size_t>(end() - ptr_));
-        std::memcpy(dst.data(), ptr_, count);
-        ptr_ += count;
+        size_t count = std::min(dst.size(), static_cast<size_t>(end() - m_ptr));
+        std::memcpy(dst.data(), m_ptr, count);
+        m_ptr += count;
         return count;
     }
 };

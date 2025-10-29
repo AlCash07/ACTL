@@ -15,14 +15,14 @@ namespace ac {
 template<class T, class Stack = std::stack<T>>
 class queue_using_stacks {
 protected:
-    Stack in_stack_;
-    Stack out_stack_;
+    Stack m_in_stack;
+    Stack m_out_stack;
 
     void fill_out_stack() {
-        if (out_stack_.empty()) {
-            while (!in_stack_.empty()) {
-                out_stack_.push(in_stack_.top());
-                in_stack_.pop();
+        if (m_out_stack.empty()) {
+            while (!m_in_stack.empty()) {
+                m_out_stack.push(m_in_stack.top());
+                m_in_stack.pop();
             }
         }
     }
@@ -35,16 +35,16 @@ public:
     static_assert(std::is_same_v<T, value_type>);
 
     bool empty() const {
-        return in_stack_.empty() && out_stack_.empty();
+        return m_in_stack.empty() && m_out_stack.empty();
     }
 
     size_type size() const {
-        return in_stack_.size() + out_stack_.size();
+        return m_in_stack.size() + m_out_stack.size();
     }
 
     reference top() {
         fill_out_stack();
-        return out_stack_.top();
+        return m_out_stack.top();
     }
 
     void push(T const& value) {
@@ -57,12 +57,12 @@ public:
 
     template<class... Ts>
     void emplace(Ts&&... args) {
-        in_stack_.push(std::forward<Ts>(args)...);
+        m_in_stack.push(std::forward<Ts>(args)...);
     }
 
     void pop() {
         fill_out_stack();
-        out_stack_.pop_back();
+        m_out_stack.pop_back();
     }
 };
 

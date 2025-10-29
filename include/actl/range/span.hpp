@@ -23,9 +23,9 @@ public:
 
     template<size_t M = N>
         requires(M == 0 || M == dynamic_size)
-    constexpr span() : storage_{nullptr, 0} {}
+    constexpr span() : m_storage{nullptr, 0} {}
 
-    constexpr span(T* ptr, size_t count) : storage_{ptr, count} {}
+    constexpr span(T* ptr, size_t count) : m_storage{ptr, count} {}
 
     constexpr span(T* first, T* last)
         : span{first, static_cast<size_t>(last - first)} {}
@@ -34,11 +34,11 @@ public:
         : span{ranges::data(r), ranges::size(r)} {}
 
     constexpr T* data() const {
-        return storage_.data;
+        return m_storage.data;
     }
 
     constexpr size_t size() const {
-        return storage_.size();
+        return m_storage.size();
     }
 
     constexpr span<T> first(size_t n) const {
@@ -69,7 +69,7 @@ private:
         }
     };
 
-    storage_t storage_;
+    storage_t m_storage;
 };
 
 template<ContiguousRange R>

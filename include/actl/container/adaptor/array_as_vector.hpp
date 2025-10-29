@@ -24,22 +24,22 @@ public:
     using const_iterator = range_iterator_t<Array const>;
     using size_type = range_size_t<Array>;
 
-    array_as_vector() : end_{array_.begin()} {}
+    array_as_vector() : m_end{m_array.begin()} {}
 
     iterator begin() noexcept {
-        return array_.begin();
+        return m_array.begin();
     }
 
     const_iterator begin() const noexcept {
-        return array_.begin();
+        return m_array.begin();
     }
 
     iterator end() noexcept {
-        return end_;
+        return m_end;
     }
 
     const_iterator end() const noexcept {
-        return end_;
+        return m_end;
     }
 
     size_type size() const noexcept {
@@ -51,11 +51,11 @@ public:
     }
 
     reference operator[](size_type n) {
-        return array_[n];
+        return m_array[n];
     }
 
     const_reference operator[](size_type n) const {
-        return array_[n];
+        return m_array[n];
     }
 
     reference front() {
@@ -75,11 +75,11 @@ public:
     }
 
     value_type* data() noexcept {
-        return array_.data();
+        return m_array.data();
     }
 
     value_type const* data() const noexcept {
-        return array_.data();
+        return m_array.data();
     }
 
     void push_back(T const& v) {
@@ -92,22 +92,22 @@ public:
 
     template<class... Ts>
     void emplace(Ts&&... args) {
-        AC_ASSERT(end_ < N);
-        *end_++ = T{std::forward<Ts>(args)...};
+        AC_ASSERT(m_end < N);
+        *m_end++ = T{std::forward<Ts>(args)...};
     }
 
     void pop_back() {
-        AC_ASSERT(end_ != array_.begin());
-        --end_;
+        AC_ASSERT(m_end != m_array.begin());
+        --m_end;
     }
 
     void clear() noexcept {
-        end_ = array_.begin();
+        m_end = m_array.begin();
     }
 
 protected:
-    Array array_;
-    iterator end_;
+    Array m_array;
+    iterator m_end;
 };
 
 } // namespace ac

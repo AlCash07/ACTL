@@ -32,21 +32,21 @@ public:
     template<class... Ts>
         requires(... && std::is_convertible_v<Ts, T>)
     constexpr point_base(Ts&&... xs)
-        : coordinates_{T{std::forward<Ts>(xs)}...} {}
+        : m_coordinates{T{std::forward<Ts>(xs)}...} {}
 
     // TODO: make explicit when conversion is narrowing.
     template<class T1>
     constexpr point_base(point<T1, N> const& rhs) {
         for (index i = 0; i < N; ++i)
-            coordinates_[i] = static_cast<T>(rhs[i]);
+            m_coordinates[i] = static_cast<T>(rhs[i]);
     }
 
     constexpr T* data() {
-        return coordinates_;
+        return m_coordinates;
     }
 
     constexpr T const* data() const {
-        return coordinates_;
+        return m_coordinates;
     }
 
     static constexpr index size() {
@@ -76,9 +76,9 @@ public:
     }
 
 private:
-    INTROSPECT(span{coordinates_})
+    INTROSPECT(span{m_coordinates})
 
-    T coordinates_[N];
+    T m_coordinates[N];
 };
 
 template<class... Ts>

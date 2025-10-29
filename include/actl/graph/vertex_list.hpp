@@ -24,19 +24,19 @@ public:
     using base_t::base_t;
 
     auto operator[](vertex_property) {
-        return std::ref(this->vertices_);
+        return std::ref(this->m_vertices);
     }
 
     auto operator[](vertex_property) const {
-        return std::ref(this->vertices_);
+        return std::ref(this->m_vertices);
     }
 
     T& operator[](vertex u) {
-        return get(this->vertices_, u);
+        return get(this->m_vertices, u);
     }
 
     T const& operator[](vertex u) const {
-        return get(this->vertices_, u);
+        return get(this->m_vertices, u);
     }
 };
 
@@ -61,33 +61,33 @@ public:
     }
 
     index vertex_count() const {
-        return static_cast<index>(vertices_.size());
+        return static_cast<index>(m_vertices.size());
     }
 
     template<bool B = RA>
         requires B
     void resize(index n) {
-        vertices_.resize(static_cast<range_size_t<vertex_container>>(n));
+        m_vertices.resize(static_cast<range_size_t<vertex_container>>(n));
     }
 
     iterator_range<vertex_iterator> vertices() const {
-        return id_range(vertices_);
+        return id_range(m_vertices);
     }
 
     vertex null_vertex() const {
-        return id_null(vertices_);
+        return id_null(m_vertices);
     }
 
     vertex nth_vertex(
         std::iter_difference_t<container_id_iterator<vertex_container>> n
     ) const {
         AC_ASSERT(0 <= n && n < vertex_count());
-        return *std::next(id_range(vertices_).begin(), n);
+        return *std::next(id_range(m_vertices).begin(), n);
     }
 
     template<class... Ts>
     std::pair<vertex, bool> try_add_vertex(Ts&&... args) {
-        return id_emplace(vertices_, std::forward<Ts>(args)...);
+        return id_emplace(m_vertices, std::forward<Ts>(args)...);
     }
 
     template<class... Ts>
@@ -96,17 +96,17 @@ public:
     }
 
     void remove_vertex(vertex u) {
-        id_erase(vertices_, u);
+        id_erase(m_vertices, u);
     }
 
     void swap(vertex_list& rhs) {
-        vertices_.swap(rhs.vertices_);
+        m_vertices.swap(rhs.m_vertices);
     }
 
     void operator[](vertex) const {}
 
 protected:
-    vertex_container vertices_;
+    vertex_container m_vertices;
 };
 
 } // namespace ac

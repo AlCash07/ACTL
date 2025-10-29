@@ -42,26 +42,26 @@ public:
         AC const&>;
 
     V const& get(Key key) {
-        auto pair = range_.insert({key, static_cast<V>(range_.size())});
+        auto pair = m_range.insert({key, static_cast<V>(m_range.size())});
         if constexpr (Invertible) {
             if (pair.second)
-                inverse_.push_back(&pair.first->first);
+                m_inverse.push_back(&pair.first->first);
         }
         return pair.first->second;
     }
 
     Key invert(V const& value) const {
-        return *inverse_[static_cast<size_t>(value)];
+        return *m_inverse[static_cast<size_t>(value)];
     }
 
     AC const& map_range() const {
-        return range_;
+        return m_range;
     }
 
 private:
-    AC_NO_UNIQUE_ADDRESS AC range_;
+    AC_NO_UNIQUE_ADDRESS AC m_range;
     AC_NO_UNIQUE_ADDRESS
-    std::conditional_t<Invertible, std::vector<K const*>, none> inverse_;
+    std::conditional_t<Invertible, std::vector<K const*>, none> m_inverse;
 };
 
 template<class AM>

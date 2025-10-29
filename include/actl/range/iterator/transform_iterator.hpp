@@ -25,12 +25,12 @@ public:
 
     template<class... Ts>
     transform_iterator(Iter const& iter, Ts&&... args)
-        : base_t{iter}, fn_{std::forward<Ts>(args)...} {}
+        : base_t{iter}, m_fn{std::forward<Ts>(args)...} {}
 
-    auto operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(fn_(*this->base()))
+    auto operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(m_fn(*this->base()))
 
 private:
-    Fn fn_;
+    Fn m_fn;
 };
 
 } // namespace ac

@@ -22,11 +22,11 @@ public:
     using base_t::base_t;
 
     auto operator[](vertex_property) {
-        return get_second(this->vertices_);
+        return get_second(this->m_vertices);
     }
 
     auto operator[](vertex_property) const {
-        return get_second(this->vertices_);
+        return get_second(this->m_vertices);
     }
 
     T& operator[](vertex v) {
@@ -57,11 +57,11 @@ public:
 
 protected:
     auto& data(vertex u) {
-        return id_at(this->vertices_, u).first;
+        return id_at(this->m_vertices, u).first;
     }
 
     auto& data(vertex u) const {
-        return id_at(this->vertices_, u).first;
+        return id_at(this->m_vertices, u).first;
     }
 
     auto& outs(vertex u) {

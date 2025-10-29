@@ -22,21 +22,21 @@ namespace detail {
 class float_string {
 public:
     span<char> reserve(size_t size) {
-        ptr_ = std::make_unique<char[]>(size);
-        return {ptr_.get(), size};
+        m_ptr = std::make_unique<char[]>(size);
+        return {m_ptr.get(), size};
     }
 
     explicit operator cspan<char>() const {
-        return data_;
+        return m_data;
     }
 
     void set_span(cspan<char> value) {
-        data_ = value;
+        m_data = value;
     }
 
 private:
-    std::unique_ptr<char[]> ptr_;
-    cspan<char> data_;
+    std::unique_ptr<char[]> m_ptr;
+    cspan<char> m_data;
 };
 
 bool write_final(Device auto& od, Format auto& fmt, float_string const& x) {

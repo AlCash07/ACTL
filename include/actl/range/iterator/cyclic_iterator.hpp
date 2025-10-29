@@ -24,7 +24,8 @@ class cyclic_iterator
 
 public:
     explicit cyclic_iterator(Range& range, Iter iter)
-        : iterator_adaptor<cyclic_iterator<Range>, Iter>{iter}, range_{&range} {
+        : iterator_adaptor<cyclic_iterator<Range>, Iter>{iter}
+        , m_range{&range} {
         AC_ASSERT(!std::empty(range));
         if (iter == end())
             this->base_ref() = begin();
@@ -46,7 +47,7 @@ public:
 
     cyclic_iterator& operator+=(std::iter_difference_t<Iter> n) {
         auto cycle =
-            static_cast<std::iter_difference_t<Iter>>(ranges::size(*range_));
+            static_cast<std::iter_difference_t<Iter>>(ranges::size(*m_range));
         AC_ASSERT(abs(n) < cycle);
         if (n > 0) {
             iter() += n - (n >= (end() - iter()) ? cycle : 0);
@@ -62,20 +63,20 @@ public:
         auto dist = lhs.base() - rhs.base();
         return dist >= 0 ? dist
                          : dist + static_cast<std::iter_difference_t<Iter>>(
-                                      ranges::size(*lhs.range_)
+                                      ranges::size(*lhs.m_range)
                                   );
     }
 
 private:
     Iter begin() const {
-        return ranges::begin(*range_);
+        return ranges::begin(*m_range);
     }
 
     Iter end() const {
-        return ranges::end(*range_);
+        return ranges::end(*m_range);
     }
 
-    Range* range_;
+    Range* m_range;
 };
 
 template<class Range>
