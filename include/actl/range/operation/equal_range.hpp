@@ -16,7 +16,7 @@ namespace ac {
 struct equal_range_f {
     static constexpr size_t inner_count = 1;
 
-    template<class EqualOp, class T, class U>
+    template<typename EqualOp, typename T, typename U>
     static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs) {
         return std::equal(
             ranges::begin(lhs),

@@ -10,19 +10,19 @@
 
 namespace ac {
 
-template<class Iterator, class Category>
+template<typename Iterator, typename Category>
 void test_iterator_noexcept(Iterator iter, Category tag) {
     test_iterator_noexcept_traversal(iter, tag);
     test_iterator_noexcept_construction(iter, tag);
 }
 
-template<class Iterator>
+template<typename Iterator>
 void test_iterator_noexcept_traversal(Iterator iter, std::input_iterator_tag) {
     static_assert(noexcept(*iter));
     static_assert(noexcept(++iter));
 }
 
-template<class Iterator>
+template<typename Iterator>
 void test_iterator_noexcept_construction(
     Iterator iter, std::input_iterator_tag
 ) {
@@ -30,7 +30,7 @@ void test_iterator_noexcept_construction(
     static_assert(std::is_nothrow_move_assignable_v<Iterator>);
 }
 
-template<class Iterator>
+template<typename Iterator>
 void test_iterator_noexcept_construction(
     Iterator iter, std::forward_iterator_tag
 ) {
@@ -40,7 +40,7 @@ void test_iterator_noexcept_construction(
     static_assert(noexcept(iter++));
 }
 
-template<class Iterator>
+template<typename Iterator>
 void test_iterator_noexcept_traversal(
     Iterator iter, std::bidirectional_iterator_tag
 ) {
@@ -48,7 +48,7 @@ void test_iterator_noexcept_traversal(
     static_assert(noexcept(--iter));
 }
 
-template<class Iterator>
+template<typename Iterator>
 void test_iterator_noexcept_construction(
     Iterator iter, std::bidirectional_iterator_tag
 ) {
@@ -56,7 +56,7 @@ void test_iterator_noexcept_construction(
     static_assert(noexcept(iter--));
 }
 
-template<class Iterator>
+template<typename Iterator>
 void test_iterator_noexcept_traversal(
     Iterator iter, std::random_access_iterator_tag
 ) {
@@ -69,7 +69,7 @@ void test_iterator_noexcept_traversal(
     static_assert(noexcept(iter[n]));
 }
 
-template<class Iterator>
+template<typename Iterator>
 void test_iterator_noexcept_construction(
     Iterator iter, std::random_access_iterator_tag
 ) {

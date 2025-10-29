@@ -10,7 +10,7 @@
 
 namespace ac::io {
 
-template<class Device, class Format = text>
+template<typename Device, typename Format = text>
 class formatted
     : public Device
     , public Format {
@@ -18,7 +18,7 @@ public:
     using Device::Device;
 };
 
-template<class Device, class Format>
+template<typename Device, typename Format>
 Format& deduce_format(formatted<Device, Format>& dev) {
     return dev;
 }

@@ -14,13 +14,13 @@
 namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/random_access_iterator
-template<class Iter>
+template<typename Iter>
 class random_access_iterator_interface
     : public bidirectional_iterator_interface<Iter> {
 public:
     using iterator_category = std::random_access_iterator_tag;
 
-    template<class Difference>
+    template<typename Difference>
     constexpr auto operator[](Difference n) const
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(*(this->derived() + n))
 
@@ -29,11 +29,11 @@ public:
     constexpr Iter& operator++()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<1>{})
 
-    template<class Difference>
+    template<typename Difference>
     friend constexpr auto operator+(Iter iter, Difference n)
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(Iter{iter += n})
 
-    template<class Difference>
+    template<typename Difference>
     // This constraint is needed to fix the gcc compilation error:
     // "satisfaction of atomic constraint depends on itself".
         requires(!std::input_or_output_iterator<Difference>)
@@ -45,11 +45,11 @@ public:
     constexpr Iter& operator--()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() += constant<-1>{})
 
-    template<class Difference>
+    template<typename Difference>
     constexpr auto operator-=(Difference n)
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->derived() += -n)
 
-    template<class Difference>
+    template<typename Difference>
     friend constexpr auto operator-(Iter iter, Difference n)
         AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(Iter{iter -= n})
 

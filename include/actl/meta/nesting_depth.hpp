@@ -13,10 +13,10 @@ namespace ac {
 /// Nesting depth specifies the maximum number of nested composite types
 /// (such as tuples and ranges) in the given type @p T.
 /// For example, nesting depth of `std::tuple<int, std::vector<int>>` is 2.
-template<class T>
+template<typename T>
 struct nesting_depth : size_constant<0> {};
 
-template<class T>
+template<typename T>
 inline constexpr size_t nesting_depth_v = nesting_depth<T>::value;
 
 namespace detail {
@@ -33,11 +33,11 @@ constexpr auto operator||(max_v<N>, max_v<M>) {
 
 } // namespace detail
 
-template<class... Ts>
+template<typename... Ts>
 struct max_nesting_depth
     : size_constant<(... || detail::max_v<nesting_depth_v<Ts>>{})> {};
 
-template<class... Ts>
+template<typename... Ts>
 inline constexpr size_t max_nesting_depth_v = max_nesting_depth<Ts...>::value;
 
 } // namespace ac

@@ -24,7 +24,7 @@ struct nesting_depth<T> : range_nesting_depth<T> {};
 // ambiguity. We do this by relying on the Range deduction, because it examines
 // a single `range_value_t` type, so it's easier for a compiler.
 // The type is considered invalid if examining it as a Tuple changes the depth.
-template<class T>
+template<typename T>
     requires(Range<T> && Tuple<T>)
 struct nesting_depth<T> : range_nesting_depth<T> {};
 

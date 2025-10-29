@@ -13,7 +13,7 @@ namespace ac {
 
 /// Map that writes all key-value pairs from put operations into output
 /// iterator.
-template<class Map, class OutIter>
+template<typename Map, typename OutIter>
 struct logging_map {
     AC_NO_UNIQUE_ADDRESS Map map;
     AC_NO_UNIQUE_ADDRESS OutIter iter;
@@ -23,13 +23,13 @@ struct logging_map {
     }
 };
 
-template<class M, class OI>
+template<typename M, typename OI>
 logging_map(M&&, OI) -> logging_map<M, OI>;
 
-template<class M, class OI>
+template<typename M, typename OI>
 struct map_traits<logging_map<M, OI>> : map_traits<M> {};
 
-template<class M, class OI>
+template<typename M, typename OI>
 struct map_ops<logging_map<M, OI>> : map_ops<M> {
     static void put(
         logging_map<M, OI>& map, map_key_t<M> key, map_value_t<M> value

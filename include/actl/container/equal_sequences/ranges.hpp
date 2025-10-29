@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class T, class U>
+template<typename T, typename U>
     requires(is_dynamic_range_v<T> && is_dynamic_range_v<U>)
 constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept {
     static_assert(RandomAccessRange<T>);

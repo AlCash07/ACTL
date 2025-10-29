@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class T, class A>
+template<typename T, typename A>
 struct range_properties<std::list<T, A>> : default_range_properties {
     static constexpr bool is_container = true;
 };

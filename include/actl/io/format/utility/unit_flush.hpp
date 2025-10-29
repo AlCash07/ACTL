@@ -16,7 +16,7 @@ struct unit_flush {
     struct format_tag;
 };
 
-template<class T>
+template<typename T>
 auto encode(unit_flush&, T const& x) {
     return batch{x, flush_t{}};
 }

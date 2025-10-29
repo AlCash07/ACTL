@@ -10,7 +10,7 @@
 
 /// Macro to prevent inlining of a function, typically to reduce binary size.
 /// For example, @code
-/// template<class Exception, class... Args>
+/// template<typename Exception, typename... Args>
 /// [[noreturn]] AC_NEVER_INLINE void throw_exception(Args&&... args) {
 ///     throw Exception{std::forward<Args>(args)...};
 /// } @endcode

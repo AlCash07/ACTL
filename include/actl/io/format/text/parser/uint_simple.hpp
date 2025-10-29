@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template<class UInt>
+template<typename UInt>
 class uint_simple_parser {
     enum class states { empty, ok, overflow };
     states state = states::empty;

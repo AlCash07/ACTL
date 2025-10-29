@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class Iter>
+template<typename Iter>
 class output_iterator_interface : public basic_iterator_interface<Iter> {
 public:
     using iterator_category = std::output_iterator_tag;

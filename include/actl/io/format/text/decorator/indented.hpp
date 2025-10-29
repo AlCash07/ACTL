@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template<class Char = char>
+template<typename Char = char>
 struct indented {
     struct format_tag;
 
@@ -22,7 +22,7 @@ struct indented {
     bool indent = false;
 };
 
-template<class C, class T>
+template<typename C, typename T>
     requires(!Range<T>)
 batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x) {
     if (!fmt.indent) {
@@ -37,12 +37,12 @@ batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x) {
     }
 }
 
-template<class C, class T>
+template<typename C, typename T>
 decltype(auto) encode(indented<C>& fmt, raw<T> const& x) {
     return x;
 }
 
-template<class C, bool Deeper>
+template<typename C, bool Deeper>
 void manipulate(indented<C>& fmt, change_level<Deeper>) {
     if constexpr (Deeper)
         fmt.indent = true;

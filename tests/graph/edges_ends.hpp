@@ -10,7 +10,7 @@
 #include <actl/range/traits/associated_types.hpp>
 #include <actl/std/vector.hpp>
 
-template<bool Directed, class Edges>
+template<bool Directed, typename Edges>
 auto get_ends(Edges const& es) {
     using V = ac::vertex_t<ac::range_value_t<Edges>>;
     std::vector<std::pair<V, V>> res;
@@ -26,7 +26,7 @@ auto get_ends(Edges const& es) {
     return res;
 }
 
-template<class Edges>
+template<typename Edges>
 auto get_sources(Edges const& es) {
     std::vector<ac::vertex_t<ac::range_value_t<Edges>>> res;
     for (auto e : es)
@@ -34,7 +34,7 @@ auto get_sources(Edges const& es) {
     return res;
 }
 
-template<class Edges>
+template<typename Edges>
 auto get_targets(Edges const& es) {
     std::vector<ac::vertex_t<ac::range_value_t<Edges>>> res;
     for (auto e : es)

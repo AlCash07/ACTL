@@ -10,12 +10,12 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 concept NothrowSwappable = std::swappable<T> && requires(T& a, T& b) {
     { std::ranges::swap(a, b) } noexcept;
 };
 
-template<class T, class U>
+template<typename T, typename U>
 concept NothrowSwappableWith =
     std::swappable_with<T, U> && requires(T&& t, U&& u) {
         { std::ranges::swap(std::forward<T>(t), std::forward<T>(t)) } noexcept;

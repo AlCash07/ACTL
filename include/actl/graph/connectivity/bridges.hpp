@@ -37,7 +37,7 @@ struct once_equal<All, All> {
 
 } // namespace detail
 
-template<class Graph, bool ParallelEdges>
+template<typename Graph, bool ParallelEdges>
 struct bridge_context
     : dfs_context<Graph>
     , detail::once_equal<true, !ParallelEdges> {
@@ -45,12 +45,12 @@ struct bridge_context
 };
 
 template<
-    class Graph,
-    class BridgeOutIter,
-    class ComponentStack,
-    class TimeMap,
-    class RootMap,
-    class DfsStack>
+    typename Graph,
+    typename BridgeOutIter,
+    typename ComponentStack,
+    typename TimeMap,
+    typename RootMap,
+    typename DfsStack>
 struct bridge_finder {
     static_assert(Graph::is_undirected);
 
@@ -105,16 +105,16 @@ struct bridge_finder {
     T time_now = 0;
 };
 
-template<class G, class... Ts>
+template<typename G, typename... Ts>
 auto get_bridge_finder(G const&, Ts&&... args) {
     return bridge_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
 template<
     bool ParallelEdges = true,
-    class Graph,
-    class BridgeOutIter,
-    class ComponentMap>
+    typename Graph,
+    typename BridgeOutIter,
+    typename ComponentMap>
 void find_bridges_and_components(
     Graph const& graph, BridgeOutIter bridges, ComponentMap&& map
 ) {
@@ -133,12 +133,12 @@ void find_bridges_and_components(
     depth_first_search{bf}(graph, bf.dfs_stack);
 }
 
-template<bool ParallelEdges = true, class Graph, class BridgeOutIter>
+template<bool ParallelEdges = true, typename Graph, typename BridgeOutIter>
 void find_bridges(Graph const& graph, BridgeOutIter bridges) {
     find_bridges_and_components<ParallelEdges>(graph, bridges, dummy_map{});
 }
 
-template<bool ParallelEdges = true, class Graph, class ComponentMap>
+template<bool ParallelEdges = true, typename Graph, typename ComponentMap>
 void find_two_edge_connected_components(
     Graph const& graph, ComponentMap&& map
 ) {

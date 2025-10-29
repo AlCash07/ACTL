@@ -10,13 +10,13 @@
 
 namespace ac {
 
-template<class Fn>
+template<typename Fn>
 using return_t = typename function_traits<Fn>::return_type;
 
-template<class Fn>
+template<typename Fn>
 inline constexpr bool returns_void_v = std::is_same_v<return_t<Fn>, void>;
 
-template<class Fn, class ReturnType>
+template<typename Fn, typename ReturnType>
 struct with_return_type {
     using traits = function_traits<Fn>;
     using type = assemble_function_t<
@@ -26,7 +26,7 @@ struct with_return_type {
         traits::accepts_variadic_arguments,
         traits::is_noexcept>;
 };
-template<class... Ts, class ReturnType>
+template<typename... Ts, typename ReturnType>
 struct with_return_type<type_list<Ts...>, ReturnType> {
     using type = assemble_function_t<
         function_category::free,
@@ -40,7 +40,7 @@ struct with_return_type<type_list<Ts...>, ReturnType> {
 ///   but otherwise identical to T.
 /// - If T is an ac::type_list template instantiaion, then it's a
 ///   free function with the given return type and T as its parameters list.
-template<class T, class ReturnType>
+template<typename T, typename ReturnType>
 using with_return_type_t = typename with_return_type<T, ReturnType>::type;
 
 } // namespace ac

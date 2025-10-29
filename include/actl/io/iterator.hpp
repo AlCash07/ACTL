@@ -15,7 +15,7 @@ namespace ac {
 
 /// Iterator similar to
 /// http://en.cppreference.com/w/cpp/iterator/istream_iterator
-template<class T, class Device>
+template<typename T, typename Device>
 class input_device_iterator
     : public input_iterator_interface<input_device_iterator<T, Device>> {
 public:
@@ -45,14 +45,14 @@ private:
     T m_value;
 };
 
-template<class T, class Device>
+template<typename T, typename Device>
 auto make_input_device_iterator(Device& device) {
     return input_device_iterator<T, Device>{device};
 }
 
 /// Iterator similar to
 /// http://en.cppreference.com/w/cpp/iterator/ostream_iterator
-template<class T, class Device>
+template<typename T, typename Device>
 class output_device_iterator
     : public output_iterator_interface<output_device_iterator<T, Device>> {
 public:
@@ -76,7 +76,7 @@ private:
     Device* m_device;
 };
 
-template<class T, class Device>
+template<typename T, typename Device>
 auto make_output_device_iterator(Device& device) {
     return output_device_iterator<T, Device>{device};
 }

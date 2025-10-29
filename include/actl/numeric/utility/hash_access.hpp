@@ -12,19 +12,19 @@
 namespace ac {
 
 struct hash_access {
-    template<class T, class = decltype(std::declval<T const>().hash())>
+    template<typename T, typename = decltype(std::declval<T const>().hash())>
     std::true_type has_hash(int);
 
-    template<class T>
+    template<typename T>
     std::false_type has_hash(...);
 
-    template<class T>
+    template<typename T>
     static constexpr size_t hash(T const& x) {
         return x.hash();
     }
 };
 
-template<class T>
+template<typename T>
     requires(decltype(hash_access{}.has_hash<T>(0))::value)
 constexpr size_t hash_value(T const& x) {
     return hash_access::hash(x);

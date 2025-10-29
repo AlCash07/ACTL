@@ -11,14 +11,14 @@
 
 namespace ac {
 
-template<class T, class C, class A>
+template<typename T, typename C, typename A>
 struct range_properties<std::set<T, C, A>> : default_range_properties {
     static constexpr bool is_container = true;
     static constexpr bool is_sorted = true;
     static constexpr bool is_unique = true;
 };
 
-template<class T, class C, class A>
+template<typename T, typename C, typename A>
 struct range_properties<std::multiset<T, C, A>> : default_range_properties {
     static constexpr bool is_container = true;
     static constexpr bool is_sorted = true;

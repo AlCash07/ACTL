@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 bool crosses(
     Policy auto const& policy, plane<T0, N> const& lhs, plane<T1, N> const& rhs
 ) {

@@ -10,15 +10,15 @@
 
 namespace ac::io {
 
-template<class T>
+template<typename T>
 struct raw {
     T value;
 };
 
-template<class T>
+template<typename T>
 raw(T) -> raw<T>;
 
-template<class T>
+template<typename T>
 bool write_final(Device auto& od, Format auto& fmt, raw<T> const& x) {
     return write_final(od, fmt, x.value);
 }

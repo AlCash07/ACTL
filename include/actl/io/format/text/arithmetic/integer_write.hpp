@@ -46,7 +46,7 @@ bool write_final(Device auto& od, Format auto& fmt, int_string<Size> const& x) {
 
 } // namespace detail
 
-template<class Int>
+template<typename Int>
     requires(std::integral<Int> && !std::same_as<Int, char> && !std::same_as<Int, bool>)
 auto encode(TextFormat auto& fmt, Int x) {
     using UInt = std::make_unsigned_t<Int>;

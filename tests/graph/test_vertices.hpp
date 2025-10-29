@@ -12,7 +12,7 @@
 #include "graph/bundle.hpp"
 #include "test.hpp"
 
-template<class Graph, class V = vertex_t<Graph>>
+template<typename Graph, typename V = vertex_t<Graph>>
 std::vector<V> test_vertices(Graph& graph) {
     std::vector<V> vs;
     vs.push_back(graph.add_vertex(0, "v0"));

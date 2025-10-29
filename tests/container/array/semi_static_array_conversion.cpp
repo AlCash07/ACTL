@@ -7,7 +7,7 @@
 #include <actl/container/array/semi_static_array_selector.hpp>
 #include <actl/container/conversion/all.hpp>
 
-template<class T, T... Values>
+template<typename T, T... Values>
 using ssa = ac::semi_static_array_t<T, Values...>;
 
 inline constexpr size_t dyn = ac::dynamic_extent<>;

@@ -7,7 +7,7 @@
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
 #include "functional/noexcept/is_int.hpp"
 
-template<class T>
+template<typename T>
 constexpr auto is_int_wrapped(T x) AC_DEDUCE_NOEXCEPT_AND_RETURN(ac::is_int(x))
 
 static_assert(noexcept(is_int_wrapped(0)));

@@ -14,18 +14,18 @@ namespace ac::ranges {
 
 namespace impl {
 
-template<class T>
+template<typename T>
 concept has_member_begin = requires(T& t) {
     { t.begin() } -> std::input_or_output_iterator;
 };
 
-template<class T>
+template<typename T>
 concept has_non_member_begin = requires(T& t) {
     { begin(t) } -> std::input_or_output_iterator;
 };
 
 struct begin_f {
-    template<class T, size_t N>
+    template<typename T, size_t N>
     constexpr T* operator()(T (&array)[N]) const noexcept {
         return array;
     }
@@ -34,7 +34,7 @@ struct begin_f {
     constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(range.begin())
 
-    template<class R>
+    template<typename R>
         requires(!has_member_begin<R> && has_non_member_begin<R>)
     constexpr auto operator()(R&& range) const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(begin(range))
@@ -52,7 +52,7 @@ inline constexpr impl::begin_f begin;
 namespace ac {
 
 // This declaration is here because it's needed for ranges::end.
-template<class R>
+template<typename R>
 using range_iterator_t = decltype(ranges::begin(std::declval<R&>()));
 
 } // namespace ac

@@ -11,7 +11,7 @@
 namespace ac {
 
 /// Property map that simply casts the key. Fitting to be a default map.
-template<class Key, class Value = Key>
+template<typename Key, typename Value = Key>
 class identity_map {
 public:
     constexpr static Value get(Key key) {
@@ -23,7 +23,7 @@ public:
     }
 };
 
-template<class K, class V>
+template<typename K, typename V>
 struct const_map_traits<identity_map<K, V>>
     : map_traits_base<
           K,

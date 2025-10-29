@@ -14,7 +14,7 @@
 namespace ac {
 
 /// O(log N).
-template<class T, class U>
+template<typename T, typename U>
 enum within within(
     Policy auto const& policy,
     point<T> const& p,

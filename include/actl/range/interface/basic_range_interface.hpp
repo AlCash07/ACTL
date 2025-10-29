@@ -15,7 +15,7 @@
 
 namespace ac {
 
-template<class Derived>
+template<typename Derived>
 class basic_range_interface {
 public:
     constexpr auto empty() const

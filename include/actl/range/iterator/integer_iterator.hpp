@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template<class Int, bool Increment = true>
+template<typename Int, bool Increment = true>
 class integer_iterator
     : public random_access_iterator_interface<
           integer_iterator<Int, Increment>> {
@@ -27,7 +27,7 @@ public:
         return m_value;
     }
 
-    template<class Difference>
+    template<typename Difference>
     constexpr integer_iterator& operator+=(Difference n) noexcept {
         Increment ? m_value += n : m_value -= n;
         return *this;
@@ -44,7 +44,7 @@ private:
     Int m_value = 0;
 };
 
-template<class Int>
+template<typename Int>
 class integer_iterator_with_step
     : public random_access_iterator_interface<integer_iterator_with_step<Int>> {
 public:
@@ -59,7 +59,7 @@ public:
         return m_value;
     }
 
-    template<class Difference>
+    template<typename Difference>
     constexpr integer_iterator_with_step& operator+=(Difference n) noexcept {
         m_value += n * m_step;
         return *this;

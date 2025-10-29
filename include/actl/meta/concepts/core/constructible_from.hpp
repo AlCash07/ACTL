@@ -10,13 +10,13 @@
 
 namespace ac {
 
-template<class T, class... Args>
+template<typename T, typename... Args>
 concept TriviallyConstructibleFrom =
     std::constructible_from<T, Args...> &&
     std::is_trivially_destructible_v<T> &&
     std::is_trivially_constructible_v<T, Args...>;
 
-template<class T, class... Args>
+template<typename T, typename... Args>
 concept NothrowConstructibleFrom =
     std::constructible_from<T, Args...> &&
     // `std::constructible_from` subsumes `std::destructible` which requires the

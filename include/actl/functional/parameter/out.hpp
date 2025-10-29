@@ -14,14 +14,14 @@
 namespace ac {
 
 namespace detail {
-template<class T>
+template<typename T>
 struct is_out : std::false_type {};
 } // namespace detail
 
 /// Checks whether T is a (possibly cvref-qualified) ac::out wrapper.
 /// @note If the program adds specializations for ac::is_inout_v,
 /// the behavior is undefined.
-template<class T>
+template<typename T>
 inline constexpr bool is_out_v = detail::is_out<std::remove_cvref_t<T>>::value;
 
 /// Thin wrapper over a reference-like type
@@ -37,16 +37,16 @@ inline constexpr bool is_out_v = detail::is_out<std::remove_cvref_t<T>>::value;
 /// Using ac::out wrapper, we can make it clear
 /// without any extra documentation:
 /// ```
-/// template<class Range>
+/// template<typename Range>
 /// void copy_range(out<Range&> dst, Range const& src) { ... }
 ///
 /// copy_range(out{x}, y);
 /// ```
-template<class T>
+template<typename T>
 class out {
 public:
     /// Constructor from an arbitrary type convertible to the wrapped type.
-    template<class Arg>
+    template<typename Arg>
         requires(std::is_constructible_v<T, Arg &&> && !is_out_v<Arg>)
     explicit constexpr out(Arg&& arg
     ) noexcept(std::is_nothrow_constructible_v<T, Arg&&>)
@@ -61,7 +61,7 @@ public:
     /// if the wrapped types are implicitly convertible.
     /// For example, `ac::out<std::vector<int>&>` argument can be passed
     /// where `ac::out<std::span<int>>` parameter is expected.
-    template<class U>
+    template<typename U>
         requires(std::is_convertible_v<U, T>)
     constexpr out(out<U>&& src) noexcept(std::is_nothrow_constructible_v<T, U>)
         : x{*src} {}
@@ -103,10 +103,10 @@ public:
     /// by implementing the `assign` function
     /// in the same namespace as Container:
     /// ```
-    /// template<class InRange>
+    /// template<typename InRange>
     /// void assign(ac::out<Container&> dst, InRange const& src) { ... }
     /// ```
-    template<class Src>
+    template<typename Src>
     constexpr out& operator=(Src&& src) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
         assign(*this, std::forward<Src>(src)), *this
     )
@@ -117,15 +117,15 @@ private:
     T x;
 };
 
-template<class T>
+template<typename T>
 out(T&&) -> out<T>;
 
 namespace detail {
-template<class T>
+template<typename T>
 struct is_out<out<T>> : std::true_type {};
 } // namespace detail
 
-template<class Dst, class Src>
+template<typename Dst, typename Src>
 constexpr Dst assign(out<Dst>& dst, Src&& src)
     AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(*dst = std::forward<Src>(src))
 

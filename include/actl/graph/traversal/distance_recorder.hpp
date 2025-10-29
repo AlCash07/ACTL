@@ -11,13 +11,13 @@
 
 namespace ac {
 
-template<class Map>
+template<typename Map>
 struct distance_recorder {
     void operator()(on_search_start, map_key_t<Map> u) {
         put(map, u, 0);
     }
 
-    template<class E>
+    template<typename E>
     void operator()(on_tree_edge_start, E e) {
         put(map, e.target(), get(map, e.source()) + 1);
     }
@@ -25,17 +25,17 @@ struct distance_recorder {
     Map map;
 };
 
-template<class Map>
+template<typename Map>
 distance_recorder(Map&&) -> distance_recorder<Map>;
 
-template<class Map, class T>
+template<typename Map, typename T>
 vertex_initializer<distance_recorder<Map>> make_distance_recorder(
     Map&& distance, T value
 ) {
     return {{std::forward<Map>(distance)}, value};
 }
 
-template<class Graph>
+template<typename Graph>
 auto make_default_distance_recorder(Graph const& graph) {
     return make_distance_recorder(make_default_vertex_map<int>(graph), -1);
 }

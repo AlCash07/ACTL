@@ -13,10 +13,10 @@ namespace ac {
 
 struct operation_tag {};
 
-template<class T>
+template<typename T>
 concept Operation = requires { typename T::operation_category; };
 
-template<class Operation, class T>
+template<typename Operation, typename T>
 struct identity_element;
 
 // TODO: we shouldn't need this.

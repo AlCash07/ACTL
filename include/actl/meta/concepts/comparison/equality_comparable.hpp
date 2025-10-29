@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 concept NothrowEqualityComparable =
     std::equality_comparable<T> && requires(const T& t, const T& u) {
         { t == u } noexcept;

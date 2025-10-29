@@ -12,8 +12,8 @@ namespace ac {
 
 template<
     function_category Category,
-    class Return,
-    class ParametersList,
+    typename Return,
+    typename ParametersList,
     bool AcceptsVArgs,
     bool IsNoexcept>
 struct assemble_function;
@@ -21,8 +21,8 @@ struct assemble_function;
 /// Assembles a function type with the given properties.
 template<
     function_category Category,
-    class Return,
-    class ParametersList,
+    typename Return,
+    typename ParametersList,
     bool AcceptsVArgs,
     bool IsNoexcept>
     requires(Category != function_category::object)
@@ -33,7 +33,7 @@ using assemble_function_t = typename assemble_function<
     AcceptsVArgs,
     IsNoexcept>::type;
 
-template<class Fn>
+template<typename Fn>
 struct as_free_function {
     using traits = function_traits<Fn>;
     using type = assemble_function_t<
@@ -44,7 +44,7 @@ struct as_free_function {
         traits::is_noexcept>;
 };
 /// Free function with the same parameters and return type as Fn.
-template<class Fn>
+template<typename Fn>
 using as_free_function_t = typename as_free_function<Fn>::type;
 
 } // namespace ac

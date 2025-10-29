@@ -24,7 +24,7 @@ constexpr unsigned digit_to_value() noexcept {
         return unsigned{C - '0'};
 }
 
-template<class Digits, char... Cs>
+template<typename Digits, char... Cs>
 struct filter_digits {
     using type = Digits;
 };
@@ -64,7 +64,7 @@ struct to_number<'0', 'b', Cs...> : base_and_digits<2, Cs...> {};
 template<char... Cs>
 struct to_number<'0', 'B', Cs...> : base_and_digits<2, Cs...> {};
 
-template<class T, char... Cs>
+template<typename T, char... Cs>
 struct str_to_constant {
     using U = std::make_unsigned_t<T>;
     using number = to_number<Cs...>;

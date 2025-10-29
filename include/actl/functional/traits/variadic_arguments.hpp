@@ -13,11 +13,11 @@ namespace ac {
 
 /// Checks if the function accepts variadic arguments, see
 /// https://en.cppreference.com/w/cpp/language/variadic_arguments.html
-template<class Fn>
+template<typename Fn>
 inline constexpr bool accepts_variadic_arguments_v =
     function_traits<Fn>::accepts_variadic_arguments;
 
-template<class Fn>
+template<typename Fn>
 struct add_variadic_arguments {
     using traits = function_traits<Fn>;
     using type = assemble_function_t<
@@ -27,10 +27,10 @@ struct add_variadic_arguments {
         true,
         traits::is_noexcept>;
 };
-template<class Fn>
+template<typename Fn>
 using add_variadic_arguments_t = typename add_variadic_arguments<Fn>::type;
 
-template<class Fn>
+template<typename Fn>
 struct remove_variadic_arguments {
     using traits = function_traits<Fn>;
     using type = assemble_function_t<
@@ -40,7 +40,7 @@ struct remove_variadic_arguments {
         false,
         traits::is_noexcept>;
 };
-template<class Fn>
+template<typename Fn>
 using remove_variadic_arguments_t =
     typename remove_variadic_arguments<Fn>::type;
 

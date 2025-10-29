@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 void test_relational_operators_for_equal_values(T const& x, T const& y) {
     REQUIRE(x == y);
     CHECK_FALSE(x != y);
@@ -20,7 +20,7 @@ void test_relational_operators_for_equal_values(T const& x, T const& y) {
     CHECK(x >= y);
 }
 
-template<class T>
+template<typename T>
 void test_relational_operators_for_different_values(
     T const& smaller, T const& bigger
 ) {
@@ -32,7 +32,7 @@ void test_relational_operators_for_different_values(
     CHECK_FALSE(smaller >= bigger);
 }
 
-template<class T>
+template<typename T>
 void test_relational_operators_noexcept(T const& x) {
     static_assert(noexcept(x == x));
     static_assert(noexcept(x != x));

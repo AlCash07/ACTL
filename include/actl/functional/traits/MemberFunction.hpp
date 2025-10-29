@@ -14,7 +14,7 @@ namespace ac {
 /// Concept of a class member function, often called a method.
 ///
 /// Its first parameter is the enclosing class.
-template<class T>
+template<typename T>
 concept MemberFunction =
     function_traits<T>::category == function_category::member;
 
@@ -57,14 +57,14 @@ namespace detail {
 // Class parameter of a member function is always a reference.
 // This helper trait ensures this by adding lvalue reference
 // when member function reference qualifier is empty.
-template<class T>
+template<typename T>
 using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 } // namespace detail
 
 // We could inherit function_traits of a corresponding free function here,
 // but that would create an unnecessary template instantiation.
 #define AC_MF_FULL(VARGS, CV_REF, NOEXCEPT)                                    \
-    template<class Return, class Class, class... Parameters>                   \
+    template<typename Return, typename Class, typename... Parameters>          \
     struct function_traits<Return (Class::*)(Parameters... AC_UNPARENTHESIZED  \
                                                  VARGS) CV_REF NOEXCEPT> {     \
         static constexpr auto category = function_category::member;            \
@@ -77,7 +77,7 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
         static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);            \
     };                                                                         \
                                                                                \
-    template<class Return, class Class, class... Parameters>                   \
+    template<typename Return, typename Class, typename... Parameters>          \
     struct assemble_function<                                                  \
         function_category::member,                                             \
         Return,                                                                \

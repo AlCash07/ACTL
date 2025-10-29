@@ -12,21 +12,21 @@
 
 namespace ac::io {
 
-template<class T>
+template<typename T>
 concept Format = requires { typename std::remove_reference_t<T>::format_tag; };
 
 struct device_base {};
 
-template<class Device>
+template<typename Device>
 using char_t = typename Device::char_type;
 
-template<class T>
+template<typename T>
 concept Device = std::derived_from<std::remove_reference_t<T>, device_base>;
 
-template<class T>
+template<typename T>
 concept BufferedInputDevice = Device<T> && requires(T t) { t.input_buffer(); };
 
-template<class T>
+template<typename T>
 concept BufferedOutputDevice =
     Device<T> && requires(T t) { t.output_buffer(); };
 

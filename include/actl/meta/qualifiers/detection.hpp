@@ -11,11 +11,11 @@
 namespace ac {
 
 /// Checks if the type has both `const` and `volatile` qualifiers.
-template<class T>
+template<typename T>
 inline constexpr bool is_cv_v = std::is_const_v<T> && std::is_volatile_v<T>;
 
 /// Checks if the type has any of `const`, `volatile` or reference qualifiers.
-template<class T>
+template<typename T>
 inline constexpr bool has_qualifiers_v =
     std::is_reference_v<T> || std::is_const_v<T> || std::is_volatile_v<T>;
 

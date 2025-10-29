@@ -19,7 +19,7 @@ struct math_operation_tag {
 struct abs_t : scalar_operation<abs_t, 1> {
     using operation_category = math_operation_tag;
 
-    template<class T>
+    template<typename T>
     static constexpr T eval_scalar(T x) {
         if constexpr (std::is_unsigned_v<T>) {
             return x;
@@ -31,14 +31,14 @@ struct abs_t : scalar_operation<abs_t, 1> {
 };
 inline constexpr abs_t abs;
 
-template<class Op, size_t Arity>
+template<typename Op, size_t Arity>
 struct math_operation : scalar_operation<Op, Arity> {
     using operation_category = math_operation_tag;
 };
 
 #define MATH_OP1(name, op)                       \
     struct name : math_operation<name, 1> {      \
-        template<class T>                        \
+        template<typename T>                     \
         static constexpr auto eval_scalar(T x) { \
             using std::op;                       \
             return op(x);                        \
@@ -48,7 +48,7 @@ struct math_operation : scalar_operation<Op, Arity> {
 
 #define MATH_OP2(name, op)                                \
     struct name : math_operation<name, 2> {               \
-        template<class T, class U>                        \
+        template<typename T, typename U>                  \
         static constexpr auto eval_scalar(T lhs, U rhs) { \
             using std::op;                                \
             return op(lhs, rhs);                          \

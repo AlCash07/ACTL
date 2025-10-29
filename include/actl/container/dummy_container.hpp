@@ -49,12 +49,12 @@ public:
         return none{};
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     void emplace_back(Ts...) {
         ++m_size;
     }
 
-    template<class T>
+    template<typename T>
     void erase(T) {
         --m_size;
     }

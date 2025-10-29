@@ -13,7 +13,7 @@
 
 namespace ac {
 
-template<class Derived>
+template<typename Derived>
 struct operation {
     using operation_category = operation_tag;
     struct enable_operators;
@@ -25,7 +25,7 @@ struct operation {
         return static_cast<Derived const&>(*this);
     }
 
-    template<class... Ts>
+    template<typename... Ts>
         requires is_any_inout_v<Ts...>
     constexpr decltype(auto) operator()(Ts&&... xs) const& {
         static_assert(
@@ -37,13 +37,13 @@ struct operation {
         return dst;
     }
 
-    template<class... Ts>
+    template<typename... Ts>
         requires(!is_any_inout_v<Ts...>)
     constexpr auto operator()(Ts&&... xs) const& {
         return expression{derived(), std::forward<Ts>(xs)...};
     }
 
-    template<class... Ts>
+    template<typename... Ts>
         requires(!is_any_inout_v<Ts...>)
     constexpr auto operator()(Ts&&... xs) && {
         return expression{

@@ -21,32 +21,32 @@ namespace ac {
 
 namespace detail {
 
-template<class Data, class Dimensions>
+template<typename Data, typename Dimensions>
 class tensor_base;
 
-template<class T, size_t N>
+template<typename T, size_t N>
 struct nd_initializer_list {
     using type =
         std::initializer_list<typename nd_initializer_list<T, N - 1>::type>;
 };
 
-template<class T>
+template<typename T>
 struct nd_initializer_list<T, 0> {
     using type = T;
 };
 
-template<class T>
+template<typename T>
 struct nd_initializer_list<T, dynamic_size> {
     struct type {};
 };
 
-template<class T, size_t N>
+template<typename T, size_t N>
 using nd_initializer_list_t = typename nd_initializer_list<T, N>::type;
 
 template<size_t... Is>
 inline constexpr size_t static_product_v = (1 * ... * Is);
 
-template<class Int>
+template<typename Int>
 size_t compute_product(cspan<Int> x) {
     size_t res = 1;
     for (auto v : x)
@@ -56,10 +56,10 @@ size_t compute_product(cspan<Int> x) {
 
 /* NDArray container class, supports array and std::unique_ptr as data. */
 
-template<class Data>
+template<typename Data>
 class tensor_container;
 
-template<class T, size_t Size>
+template<typename T, size_t Size>
 class tensor_container<std::array<T, Size>> {
 public:
     using value_type = T;
@@ -84,7 +84,7 @@ private:
     std::array<T, Size> m_data;
 };
 
-template<class T>
+template<typename T>
 class tensor_container<std::unique_ptr<T[]>> {
 public:
     using value_type = T;
@@ -109,7 +109,7 @@ private:
 
 /* NDArray data class, supports container or pointer as data. */
 
-template<size_t N, class Data>
+template<size_t N, typename Data>
 class tensor_data : public tensor_container<Data> {
     using base_t = tensor_container<Data>;
     using T = typename base_t::value_type;
@@ -117,7 +117,7 @@ class tensor_data : public tensor_container<Data> {
 public:
     tensor_data(size_t size) : base_t{size} {}
 
-    template<class InRange>
+    template<typename InRange>
     tensor_data(size_t size, InRange data) : base_t{size} {
         AC_ASSERT(size == ranges::size(data));
         std::copy_n(ranges::begin(data), size, this->data());
@@ -127,7 +127,7 @@ public:
         std::fill_n(this->data(), size, value);
     }
 
-    template<class Dims>
+    template<typename Dims>
     tensor_data(size_t size, nd_initializer_list_t<T, N> const& il, Dims dims)
         : base_t{size} {
         // Array of size 0 is not standard-compliant.
@@ -146,7 +146,7 @@ public:
     }
 
 private:
-    template<size_t I, class Dims>
+    template<size_t I, typename Dims>
     T* initialize(
         T* ptr,
         nd_initializer_list_t<T, N - I> const& il,
@@ -167,7 +167,7 @@ private:
     }
 };
 
-template<size_t N, class T>
+template<size_t N, typename T>
 class tensor_data<N, T*> {
 public:
     using value_type = T;
@@ -194,12 +194,12 @@ private:
 
 // This class is needed to guarantee dims construction before data to avoid
 // undefined behavior.
-template<class Dims>
+template<typename Dims>
 struct tensor_dims {
     Dims m_dims;
 };
 
-template<class Int, size_t N>
+template<typename Int, size_t N>
 struct tensor_dims<std::array<Int, N>> {
     tensor_dims() = default;
 
@@ -210,7 +210,7 @@ struct tensor_dims<std::array<Int, N>> {
     std::array<Int, N> m_dims = {};
 };
 
-template<size_t N, class Data, class Dims>
+template<size_t N, typename Data, typename Dims>
 class tensor_shape
     : private tensor_dims<Dims>
     , public tensor_data<N, Data> {
@@ -222,15 +222,15 @@ class tensor_shape
     using base_dims::m_dims;
 
 public:
-    template<class... Ts>
+    template<typename... Ts>
     explicit tensor_shape(Dims const& dims, Ts... args)
         : base_dims{dims}, base_data{size(), args...} {}
 
-    template<class... Ts>
+    template<typename... Ts>
     explicit tensor_shape(Dims&& dims, Ts... args)
         : base_dims{std::move(dims)}, base_data{size(), args...} {}
 
-    template<class... Ts>
+    template<typename... Ts>
     explicit tensor_shape(
         std::conditional_t<N == 1, Int, std::initializer_list<Int>> dims,
         Ts... args
@@ -272,14 +272,14 @@ private:
     }
 };
 
-template<size_t N, class Data, size_t... Ds>
+template<size_t N, typename Data, size_t... Ds>
 class tensor_shape<N, Data, static_array<size_t, Ds...>>
     : public tensor_data<N, Data> {
     using base_t = tensor_data<N, Data>;
     using m_dimst = static_array<size_t, Ds...>;
 
 public:
-    template<class... Ts>
+    template<typename... Ts>
     explicit tensor_shape(Ts... args) : base_t{size(), args...} {}
 
     template<bool B = 0 < N>
@@ -304,42 +304,42 @@ public:
 
 /* NDArray subscript operator implementation */
 
-template<class T, size_t N, class Dims, bool = 1 < N>
+template<typename T, size_t N, typename Dims, bool = 1 < N>
 struct tensor_reference {
     using Int = range_value_t<Dims>;
     using type = tensor_base<T*, span<Int, N - 1>>;
 
-    template<class TensorPtr>
+    template<typename TensorPtr>
     static type get(TensorPtr ptr, size_t i) {
         span<Int, N - 1> dims{ranges::data(ptr->dimensions()) + 1, N - 1};
         return type{dims, ptr->data() + i * compute_product(dims)};
     }
 };
 
-template<class T, size_t N, size_t D0, size_t... Ds>
+template<typename T, size_t N, size_t D0, size_t... Ds>
 struct tensor_reference<T, N, static_array<size_t, D0, Ds...>, true> {
     using type = tensor_base<T*, static_array<size_t, Ds...>>;
 
-    template<class TensorPtr>
+    template<typename TensorPtr>
     static type get(TensorPtr ptr, size_t i) {
         return type{ptr->data() + i * static_product_v<Ds...>};
     }
 };
 
-template<class T, class Dims>
+template<typename T, typename Dims>
 struct tensor_reference<T, 1, Dims, false> {
     using type = T&;
 
-    template<class TensorPtr>
+    template<typename TensorPtr>
     static type get(TensorPtr ptr, size_t i) {
         return ptr->data()[i];
     }
 };
 
-template<class T, size_t N, class Dims>
+template<typename T, size_t N, typename Dims>
 using tensor_reference_t = typename tensor_reference<T, N, Dims>::type;
 
-template<size_t N, class Data, class Dims>
+template<size_t N, typename Data, typename Dims>
 class tensor_subscript : public tensor_shape<N, Data, Dims> {
     using base_t = tensor_shape<N, Data, Dims>;
     using T = typename base_t::value_type;
@@ -366,7 +366,7 @@ public:
     }
 };
 
-template<class Data, class Dims>
+template<typename Data, typename Dims>
 class tensor_subscript<0, Data, Dims>
     : public tensor_shape<0, Data, static_array<size_t>> {
     using base_t = tensor_shape<0, Data, static_array<size_t>>;
@@ -386,7 +386,7 @@ public:
 
 /* Base class, defines type aliases and secondary interface methods. */
 
-template<class Data, class Dims>
+template<typename Data, typename Dims>
 class tensor_base : public tensor_subscript<static_size_v<Dims>, Data, Dims> {
     using base_t = tensor_subscript<static_size_v<Dims>, Data, Dims>;
     using T = typename base_t::value_type;
@@ -457,12 +457,12 @@ public:
         return this->size() == 0;
     }
 
-    template<class... Ints>
+    template<typename... Ints>
     reference operator()(Ints... is) {
         return this->data()[get_index<0>(0, static_cast<size_t>(is)...)];
     }
 
-    template<class... Ints>
+    template<typename... Ints>
     const_reference operator()(Ints... is) const {
         return this->data()[get_index<0>(0, static_cast<size_t>(is)...)];
     }
@@ -474,7 +474,7 @@ private:
         return res;
     }
 
-    template<size_t I, class... Ints>
+    template<size_t I, typename... Ints>
     size_t get_index(size_t res, size_t i, Ints... is) const {
         AC_ASSERT(0 <= i && i < this->dimension(I));
         if constexpr (I > 0)
@@ -483,18 +483,18 @@ private:
     }
 };
 
-template<class D, class S>
+template<typename D, typename S>
 void swap(tensor_base<D, S>& lhs, tensor_base<D, S>& rhs) {
     lhs.swap(rhs);
 }
 
-template<class T, size_t D, size_t... Dims>
+template<typename T, size_t D, size_t... Dims>
 struct tensor_fixed {
     using type =
         tensor_base<std::unique_ptr<T[]>, semi_static_array<int, Dims...>>;
 };
 
-template<class T, size_t... Dims>
+template<typename T, size_t... Dims>
 struct tensor_fixed<T, 0, Dims...> {
     static constexpr size_t size = static_product_v<Dims...>;
 
@@ -522,29 +522,29 @@ struct dimensions<dynamic_size> {
 template<size_t N>
 using dimensions_t = typename dimensions<N>::type;
 
-template<class T, size_t N>
+template<typename T, size_t N>
 struct tensor {
     using type = tensor_base<std::unique_ptr<T[]>, dimensions_t<N>>;
 };
 
-template<class T>
+template<typename T>
 struct tensor<T, 0> : tensor_fixed<T, 0> {};
 
-template<class T>
+template<typename T>
 struct is_tensor : std::false_type {};
 
-template<class... Ts>
+template<typename... Ts>
 struct is_tensor<ac::detail::tensor_base<Ts...>> : std::true_type {};
 
 } // namespace detail
 
-template<class T>
+template<typename T>
 concept Tensor = detail::is_tensor<T>::value;
 
 struct tensor_equal_f {
     static constexpr size_t inner_count = 1;
 
-    template<class EqualOp, class T, class U>
+    template<typename EqualOp, typename T, typename U>
     static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs) {
         if (lhs.rank() != rhs.rank())
             return false;
@@ -564,18 +564,18 @@ struct overload<equal_f, T, U> {
 
 /// N-dimensional array with dimensions completely or partially known at compile
 /// time.
-template<class T, size_t... Dimensions>
+template<typename T, size_t... Dimensions>
 using tensor_fixed = typename detail::tensor_fixed<
     T,
     (0 + ... + (Dimensions == dynamic_size)),
     Dimensions...>::type;
 
 /// N-dimensional array.
-template<class T, size_t N = dynamic_size>
+template<typename T, size_t N = dynamic_size>
 using tensor = typename detail::tensor<T, N>::type;
 
 /// View of an N-dimensional array.
-template<class T, size_t N = dynamic_size>
+template<typename T, size_t N = dynamic_size>
 using tensor_view = detail::tensor_base<T*, detail::dimensions_t<N>>;
 
 } // namespace ac

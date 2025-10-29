@@ -11,18 +11,18 @@
 
 namespace ac {
 
-template<class Map>
+template<typename Map>
 struct predecessor_recorder {
     void operator()(on_search_start, map_key_t<Map> u) {
         put(map, u, u);
     }
 
-    template<class E>
+    template<typename E>
     void operator()(on_tree_edge_start, E e) {
         put(map, e.target(), e.source());
     }
 
-    template<class E>
+    template<typename E>
     void operator()(on_edge_relaxed, E e) {
         operator()(on_tree_edge_start{}, e);
     }
@@ -30,17 +30,17 @@ struct predecessor_recorder {
     Map map;
 };
 
-template<class Map>
+template<typename Map>
 predecessor_recorder(Map&&) -> predecessor_recorder<Map>;
 
-template<class Map, class T>
+template<typename Map, typename T>
 vertex_initializer<predecessor_recorder<Map>> make_predecessor_recorder(
     Map&& predecessor, T value
 ) {
     return {{std::forward<Map>(predecessor)}, value};
 }
 
-template<class Graph>
+template<typename Graph>
 auto make_default_predecessor_recorder(Graph const& graph) {
     return make_predecessor_recorder(
         make_default_vertex_map<vertex_t<Graph>>(graph), graph.null_vertex()

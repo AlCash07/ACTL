@@ -15,7 +15,10 @@
 
 namespace ac {
 
-template<class G, class V = vertex_t<G>, class OEI = out_edge_iterator_t<G>>
+template<
+    typename G,
+    typename V = vertex_t<G>,
+    typename OEI = out_edge_iterator_t<G>>
 class dfs_context {
     V m_u;
     out_edge_t<G> m_oe;
@@ -32,7 +35,7 @@ public:
     }
 };
 
-template<class... Components>
+template<typename... Components>
 class depth_first_search : std::tuple<Components...> {
     using base_t = std::tuple<Components...>;
 
@@ -42,7 +45,7 @@ class depth_first_search : std::tuple<Components...> {
 
     // Recursive implementation to demonstrate dfs logic clearer.
     // Returns true immediately if terminator vertex was found.
-    template<class Graph, class VertexPredicate>
+    template<typename Graph, typename VertexPredicate>
     bool recurse(
         Graph const& graph, vertex_t<Graph> u, VertexPredicate is_terminator
     ) {
@@ -70,10 +73,10 @@ public:
 
     // Depth first search without initialization.
     template<
-        class Graph,
-        class Stack = std::stack<dfs_context<Graph>>,
-        class VertexPredicate = always_false,
-        class V = vertex_t<Graph>>
+        typename Graph,
+        typename Stack = std::stack<dfs_context<Graph>>,
+        typename VertexPredicate = always_false,
+        typename V = vertex_t<Graph>>
     void visit(
         Graph const& graph,
         V u,
@@ -119,9 +122,9 @@ public:
     }
 
     template<
-        class Graph,
-        class Stack = std::stack<dfs_context<Graph>>,
-        class VertexPredicate = always_false>
+        typename Graph,
+        typename Stack = std::stack<dfs_context<Graph>>,
+        typename VertexPredicate = always_false>
     void operator()(
         Graph const& graph,
         vertex_t<Graph> s,
@@ -134,9 +137,9 @@ public:
     }
 
     template<
-        class Graph,
-        class Stack = std::stack<dfs_context<Graph>>,
-        class VertexPredicate = always_false>
+        typename Graph,
+        typename Stack = std::stack<dfs_context<Graph>>,
+        typename VertexPredicate = always_false>
         requires(!std::is_same_v<std::remove_cvref_t<Stack>, vertex_t<Graph>>)
     void operator()(
         Graph const& graph,
@@ -152,7 +155,7 @@ public:
     }
 };
 
-template<class... Components>
+template<typename... Components>
 depth_first_search(Components&&...) -> depth_first_search<Components...>;
 
 } // namespace ac

@@ -10,7 +10,7 @@
 
 namespace ac::io::detail {
 
-template<bool ShowBase = true, class Char, class UInt>
+template<bool ShowBase = true, typename Char, typename UInt>
 Char* uitoa(Char* last, TextFormat auto& fmt, UInt x, UInt base) {
     if (base <= 10) {
         bool show_base =

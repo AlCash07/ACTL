@@ -16,14 +16,14 @@ namespace ac {
 template<MemberFunction MF>
 using class_parameter_t = at_t<parameters_t<MF>, 0>;
 
-template<class T>
+template<typename T>
 struct class_of;
 /// Class corresponding to a member function or member data pointer
 /// excluding qualifiers.
-template<class T>
+template<typename T>
 using class_of_t = typename class_of<T>::type;
 
-template<class T, class Class>
+template<typename T, typename Class>
 struct as_member_of {
     using type = T Class::*;
 };
@@ -33,7 +33,7 @@ struct as_member_of {
 /// - If T is a member function, then it's a member function of Class
 ///   with the same member qualifiers, parameters and return type.
 /// - Otherwise, it's a member data pointer `T Class::*`.
-template<class T, class Class>
+template<typename T, typename Class>
 using as_member_of_t = typename as_member_of<T, Class>::type;
 
 /* implementation */
@@ -42,7 +42,7 @@ template<MemberFunction MF>
 struct class_of<MF> {
     using type = std::remove_cvref_t<class_parameter_t<MF>>;
 };
-template<class Class, class Member>
+template<typename Class, typename Member>
 struct class_of<Member Class::*> {
     using type = Class;
 };
@@ -53,15 +53,17 @@ template<MemberFunction MF>
 using unique_class_t =
     at_t<typename function_traits<MF>::unique_parameters_type, 0>;
 
-template<MemberFunction MF, template<class> class Modifier, class ParameterList>
+template<
+    MemberFunction MF,
+    template<typename> typename Modifier,
+    typename ParameterList>
 struct modify_class;
 
 template<
     MemberFunction MF,
-    template<class>
-    class Modifier,
-    class Class,
-    class... Parameters>
+    template<typename> typename Modifier,
+    typename Class,
+    typename... Parameters>
 struct modify_class<MF, Modifier, type_list<Class, Parameters...>> {
     using Traits = function_traits<MF>;
 
@@ -73,13 +75,13 @@ struct modify_class<MF, Modifier, type_list<Class, Parameters...>> {
         Traits::is_noexcept>;
 };
 
-template<MemberFunction MF, template<class> class Modifier>
+template<MemberFunction MF, template<typename> typename Modifier>
 using modify_class_t =
     typename modify_class<MF, Modifier, unique_parameters_t<MF>>::type;
 
 } // namespace detail
 
-template<FreeFunction FF, class Class>
+template<FreeFunction FF, typename Class>
 struct as_member_of<FF, Class> {
     using traits = function_traits<FF>;
 
@@ -91,9 +93,9 @@ struct as_member_of<FF, Class> {
         traits::is_noexcept>;
 };
 
-template<MemberFunction MF, class Class>
+template<MemberFunction MF, typename Class>
 struct as_member_of<MF, Class> {
-    template<class T>
+    template<typename T>
     struct copy_cvref_from {
         using type = copy_cvref_t<Class, T>;
     };

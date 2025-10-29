@@ -28,7 +28,7 @@ auto encode(braced, SC const& cont) {
     return batch{'[', make_range(cont), ']'};
 }
 
-template<class T>
+template<typename T>
     requires(Tuple<T> || IO_Tuple<T>)
 auto encode(braced, T const& x) {
     return batch{'(', x, ')'};

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class Op, class... Ts>
+template<typename Op, typename... Ts>
 constexpr decltype(auto) pass_arguments(
     Op const& op, [[maybe_unused]] Ts const&... xs
 ) {
@@ -23,7 +23,7 @@ constexpr decltype(auto) pass_arguments(
         return op;
 }
 
-template<size_t... Is, class OE, class... Ts>
+template<size_t... Is, typename OE, typename... Ts>
 constexpr auto pass_arguments_impl(
     std::index_sequence<Is...>, OE const& oe, Ts const&... xs
 ) {
@@ -32,12 +32,12 @@ constexpr auto pass_arguments_impl(
     };
 }
 
-template<class Derived>
+template<typename Derived>
 struct operation;
 
-template<class Derived>
+template<typename Derived>
 struct operation_expression<Derived, true> : operation<Derived> {
-    template<class... Ts>
+    template<typename... Ts>
     using result_type = typename expression_result_type<decltype(pass_arguments(
         std::declval<Derived>(), std::declval<Ts>()...
     ))>::type;
@@ -45,12 +45,12 @@ struct operation_expression<Derived, true> : operation<Derived> {
     // TODO: deduce exact category here.
     using operation_category = operation_tag;
 
-    template<class... Ts>
+    template<typename... Ts>
     constexpr auto evaluate(Ts const&... xs) const {
         return eval(pass_arguments(this->derived(), xs...));
     }
 
-    template<class T, class... Ts>
+    template<typename T, typename... Ts>
     constexpr void evaluate_to(T& dst, Ts const&... xs) const {
         assign(out{dst}, pass_arguments(this->derived(), xs...));
     }

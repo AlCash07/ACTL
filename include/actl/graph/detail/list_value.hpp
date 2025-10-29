@@ -11,7 +11,7 @@
 
 namespace ac::graph {
 
-template<class T>
+template<typename T>
 struct list_value {
     using type = value_t<T>;
 };
@@ -21,7 +21,7 @@ struct list_value<none> {
     using type = none;
 };
 
-template<class T>
+template<typename T>
 using list_value_t = typename list_value<T>::type;
 
 } // namespace ac::graph

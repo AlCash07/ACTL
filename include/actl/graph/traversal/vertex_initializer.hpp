@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class Base>
+template<typename Base>
 struct vertex_initializer : Base {
     using Base::map;
     using map_t = decltype(map);

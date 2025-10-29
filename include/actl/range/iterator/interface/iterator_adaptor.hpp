@@ -15,7 +15,10 @@
 
 namespace ac {
 
-template<class Derived, class Iter, class Category = iter_category_t<Iter>>
+template<
+    typename Derived,
+    typename Iter,
+    typename Category = iter_category_t<Iter>>
 class iterator_adaptor
     : public iterator_interface_selector_t<Derived, Category> {
     using base_t = iterator_interface_selector_t<Derived, Category>;
@@ -33,7 +36,7 @@ public:
 
     // Default constructor is useful because
     // std::sentinel_for requires std::semiregular.
-    template<class I = Iter>
+    template<typename I = Iter>
         requires std::is_default_constructible_v<I>
     constexpr iterator_adaptor(
     ) noexcept(std::is_nothrow_default_constructible_v<Iter>)
@@ -53,24 +56,24 @@ public:
     constexpr Derived& operator++()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), base_t::derived())
 
-    template<class C = Category>
+    template<typename C = Category>
         requires std::is_base_of_v<std::bidirectional_iterator_tag, C>
     constexpr Derived& operator--()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
 
-    template<class Difference>
+    template<typename Difference>
     // AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN didn't work for some reason.
         requires requires(Iter& iter, Difference n) { iter += n; }
     constexpr Derived& operator+=(Difference n)
         AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n, base_t::derived())
 
     // TODO: make this a hidden friend.
-    template<class Derived1, class Iter1, class Category1>
+    template<typename Derived1, typename Iter1, typename Category1>
     constexpr auto operator==(
         iterator_adaptor<Derived1, Iter1, Category1> const& rhs
     ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() == rhs.base())
 
-    template<class Derived1, class Iter1, class Types1>
+    template<typename Derived1, typename Iter1, typename Types1>
     constexpr auto operator-(
         iterator_adaptor<Derived1, Iter1, Types1> const& rhs
     ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() - rhs.base())

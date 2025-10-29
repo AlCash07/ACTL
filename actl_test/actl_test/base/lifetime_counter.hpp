@@ -27,7 +27,7 @@ struct lifetime_counts {
 /// @tparam Tag should be different in every use case of lifetime_counter
 /// to avoid mixing the results and
 /// to avoid concurrent modification of the same class variables.
-template<class Tag>
+template<typename Tag>
 struct lifetime_counter {
     static lifetime_counts counts;
 
@@ -55,7 +55,7 @@ struct lifetime_counter {
     }
 };
 
-template<class Tag>
+template<typename Tag>
 lifetime_counts lifetime_counter<Tag>::counts = {};
 
 } // namespace ac

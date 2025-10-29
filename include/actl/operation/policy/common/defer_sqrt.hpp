@@ -11,7 +11,7 @@
 namespace ac {
 
 /// Comparable square root with deferred call to sqrt.
-template<class T>
+template<typename T>
 class square_root {
 public:
     constexpr explicit square_root(T const& value = {}) : m_sqr{value} {}
@@ -40,7 +40,7 @@ struct defer_sqrt {
     struct is_policy;
 };
 
-template<class T>
+template<typename T>
 auto perform(Sqrt, defer_sqrt, T const& x) {
     return square_root{x};
 }

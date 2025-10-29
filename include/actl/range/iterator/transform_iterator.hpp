@@ -13,7 +13,7 @@
 namespace ac {
 
 /// Iterator that applies given function after dereferencing the base iterator.
-template<class Iter, class Fn, class Value = use_default>
+template<typename Iter, typename Fn, typename Value = use_default>
 class transform_iterator
     : public iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter> {
     using base_t = iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>;
@@ -23,7 +23,7 @@ public:
 
     transform_iterator() = default;
 
-    template<class... Ts>
+    template<typename... Ts>
     transform_iterator(Iter const& iter, Ts&&... args)
         : base_t{iter}, m_fn{std::forward<Ts>(args)...} {}
 

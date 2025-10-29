@@ -11,7 +11,7 @@
 namespace ac {
 
 // https://en.cppreference.com/w/cpp/iterator/input_or_output_iterator
-template<class Iter>
+template<typename Iter>
 class basic_iterator_interface {
 public:
     // This constructor exists for a sole purpose of

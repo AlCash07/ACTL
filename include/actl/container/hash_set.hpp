@@ -13,26 +13,26 @@
 namespace ac {
 
 template<
-    class T,
-    class H = hash_function<>,
-    class E = std::equal_to<>,
-    class A = std::allocator<T>>
+    typename T,
+    typename H = hash_function<>,
+    typename E = std::equal_to<>,
+    typename A = std::allocator<T>>
 using hash_set = std::unordered_set<T, H, E, A>;
 
 template<
-    class T,
-    class H = hash_function<>,
-    class E = std::equal_to<>,
-    class A = std::allocator<T>>
+    typename T,
+    typename H = hash_function<>,
+    typename E = std::equal_to<>,
+    typename A = std::allocator<T>>
 using hash_multiset = std::unordered_multiset<T, H, E, A>;
 
-template<class T, class H, class E, class A>
+template<typename T, typename H, typename E, typename A>
 struct range_properties<hash_set<T, H, E, A>> : default_range_properties {
     static constexpr bool is_container = true;
     static constexpr bool is_unique = true;
 };
 
-template<class T, class H, class E, class A>
+template<typename T, typename H, typename E, typename A>
 struct range_properties<hash_multiset<T, H, E, A>> : default_range_properties {
     static constexpr bool is_container = true;
 };

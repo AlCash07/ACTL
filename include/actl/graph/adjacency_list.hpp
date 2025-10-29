@@ -14,10 +14,10 @@
 namespace ac {
 
 template<
-    class Directed,
-    class OutEdgeContainer = std::vector<none>,
-    class EdgeContainer = none,
-    class VertexContainer = std::vector<none>>
+    typename Directed,
+    typename OutEdgeContainer = std::vector<none>,
+    typename EdgeContainer = none,
+    typename VertexContainer = std::vector<none>>
 class adjacency_list;
 
 namespace detail {
@@ -25,12 +25,12 @@ namespace detail {
 /* Adjacency list with edge container */
 
 template<
-    class Dir,
-    class OEC,
-    class EC,
-    class VC,
-    class S = graph::list_value_t<EC>,
-    class T = range_value_t<OEC>>
+    typename Dir,
+    typename OEC,
+    typename EC,
+    typename VC,
+    typename S = graph::list_value_t<EC>,
+    typename T = range_value_t<OEC>>
 class adj_list_edges : public adj_list_edges<Dir, OEC, EC, VC, S, none> {
     using base_t = adj_list_edges<Dir, OEC, EC, VC, S, none>;
 
@@ -57,7 +57,7 @@ public:
     }
 };
 
-template<class Dir, class OEC, class EC, class VC, class S>
+template<typename Dir, typename OEC, typename EC, typename VC, typename S>
 class adj_list_edges<Dir, OEC, EC, VC, S, none>
     : public adj_list_vertices<Dir, OEC, EC, VC> {
 protected:
@@ -95,7 +95,7 @@ protected:
         return get_edge(u, id_at(outs(u), oe));
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         typename traits::edges::edge_id e;
         auto& u_edges = outs(u);
@@ -134,7 +134,7 @@ public:
 
 /* Adjacency list without edge container */
 
-template<class VC, class E, class Ref>
+template<typename VC, typename E, typename Ref>
 class edge_map {
     VC& m_vertices;
 
@@ -154,7 +154,7 @@ public:
     }
 };
 
-template<class Dir, class OEC, class EC, class VC, class T>
+template<typename Dir, typename OEC, typename EC, typename VC, typename T>
 class adj_list_edges<Dir, OEC, EC, VC, none, T>
     : public adj_list_edges<Dir, OEC, EC, VC, none, none> {
     using base_t = adj_list_edges<Dir, OEC, EC, VC, none, none>;
@@ -184,7 +184,7 @@ public:
     }
 };
 
-template<class Dir, class OEC, class EC, class VC>
+template<typename Dir, typename OEC, typename EC, typename VC>
 class adj_list_edges<Dir, OEC, EC, VC, none, none>
     : public adj_list_vertices<Dir, OEC, EC, VC> {
 protected:
@@ -212,7 +212,7 @@ protected:
         return edge{vertex{ied.first}, u, ied.second};
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     std::pair<edge, bool> try_add_edge_impl(vertex u, vertex v, Ts&&... args) {
         auto& u_edges = outs(u);
         auto [out_edge, ok] =
@@ -243,19 +243,19 @@ public:
 
 } // namespace detail
 
-template<class VC, class E, class R>
+template<typename VC, typename E, typename R>
 struct const_map_traits<detail::edge_map<VC, E, R>>
     : detail::edge_map<VC, E, R>::traits {};
 
 /* Common functionality */
 
-template<class Dir, class OEC, class EC, class VC>
+template<typename Dir, typename OEC, typename EC, typename VC>
 class adjacency_list : public detail::adj_list_edges<Dir, OEC, EC, VC> {
     using base_t = detail::adj_list_edges<Dir, OEC, EC, VC>;
     using base_t::m_edge_list;
     using typename base_t::traits;
 
-    template<class AL, class S>
+    template<typename AL, typename S>
     friend struct detail::edge_iter;
 
 public:
@@ -321,7 +321,7 @@ public:
         }
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (RandomAccessRange<VC>) {
             vertex n = std::max(u, v);
@@ -331,15 +331,15 @@ public:
         return this->try_add_edge_impl(u, v, std::forward<Ts>(args)...);
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     edge add_edge(vertex u, vertex v, Ts&&... args) {
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
     template<
-        class... Ts,
+        typename... Ts,
         bool Unique = UniqueRange<VC>,
-        class T = range_value_t<VC>>
+        typename T = range_value_t<VC>>
         requires Unique
     edge add_edge(T const& u, T const& v, Ts&&... args) {
         return add_edge(

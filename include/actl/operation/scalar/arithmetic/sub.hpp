@@ -15,7 +15,7 @@ namespace scalar {
 struct sub_f : scalar_operation<sub_f, 2> {
     using operation_category = additive_operation_tag;
 
-    template<class T, class U>
+    template<typename T, typename U>
     static constexpr auto eval_scalar(T lhs, U rhs) {
         return lhs - rhs;
     }
@@ -31,13 +31,13 @@ struct sub_f : operation<sub_f> {
 };
 inline constexpr sub_f sub;
 
-template<class T, class U>
+template<typename T, typename U>
     requires EnableOperators<T, U>
 constexpr auto operator-(T&& lhs, U&& rhs) {
     return sub(pass<T>(lhs), pass<U>(rhs));
 }
 
-template<class T, class U>
+template<typename T, typename U>
     requires EnableOperators<T, U>
 constexpr decltype(auto) operator-=(T&& lhs, U&& rhs) {
     return sub(inout{std::forward<T>(lhs)}, pass<U>(rhs));

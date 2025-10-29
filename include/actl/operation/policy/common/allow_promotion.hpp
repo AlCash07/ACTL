@@ -20,7 +20,7 @@ struct allow_promotion {
 struct Promotion {
     static constexpr size_t inner_count = 1;
 
-    template<class T, class U>
+    template<typename T, typename U>
     static constexpr auto evaluate(
         select_f op, bool condition, T const& lhs, U const& rhs
     ) {
@@ -28,7 +28,7 @@ struct Promotion {
         return op.evaluate(condition, cast<CT>(lhs), cast<CT>(rhs));
     }
 
-    template<class Op, class... Ts>
+    template<typename Op, typename... Ts>
     static constexpr auto evaluate(Op const& op, Ts const&... xs) {
         using CT = std::common_type_t<decltype(eval(xs))...>;
         return op.evaluate(cast<CT>(xs)...);

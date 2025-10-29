@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class Derived>
+template<typename Derived>
 class basic_non_const_range_interface {
 public:
     constexpr auto cbegin() const
@@ -39,7 +39,7 @@ protected:
     }
 };
 
-template<class Derived, class Types>
+template<typename Derived, typename Types>
 class basic_dual_range_interface
     : public range_interface<Derived, Types>
     , public basic_non_const_range_interface<Derived, Types> {};

@@ -15,8 +15,8 @@ namespace ac {
 /// Sorts 2d points by polar angle from 0 to 2 * pi around the origin.
 /// Points at the origin go first.
 template <
-    class U,
-    class T> requires (is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
+    typename U,
+    typename T> requires (is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
         0>
 void sort_by_angle(Policy auto const& policy, U& points, point<T> const& origin)
 {
@@ -39,7 +39,7 @@ void sort_by_angle(Policy auto const& policy, U& points, point<T> const& origin)
 
 /// Sort by angle around (0, 0).
 template <
-    class U> requires (is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
+    typename U> requires (is_multi_point_v<U> && geometry_traits<U>::dimension == 2> =
         0>
 void sort_by_angle(Policy auto const& policy, U& points)
 {
@@ -59,7 +59,7 @@ void sort_by_angle(Policy auto const& policy, U& points)
     std::sort(pivot, last, comp);
 }
 
-template <class T, class... Ts, disable_int_if_policy<T> = 0>
+template<typename T, typename... Ts, disable_int_if_policy<T> = 0>
 auto sort_by_angle(T&& x, Ts&&... xs)
 {
     return sort_by_angle(geometry_policy, x, xs...);

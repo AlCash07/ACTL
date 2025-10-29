@@ -17,7 +17,7 @@ namespace ac {
 struct lexicographical_compare_range_f {
     static constexpr size_t inner_count = 1;
 
-    template<class Cmp3WayOp, class T, class U>
+    template<typename Cmp3WayOp, typename T, typename U>
     static int evaluate(Cmp3WayOp const& op, T const& lhs, U const& rhs) {
         // Can't use std::lexicographical_compare because it doesn't compare
         // 3-way.

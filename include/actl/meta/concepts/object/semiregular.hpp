@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 concept TriviallySemiregular =
     std::semiregular<T> && TriviallyCopyable<T> &&
     TriviallyDefaultInitializable<T> &&
@@ -20,7 +20,7 @@ concept TriviallySemiregular =
     // implementation by a compiler, so it's useful to do an extra check.
     std::is_trivial_v<T>;
 
-template<class T>
+template<typename T>
 concept NothrowSemiregular =
     std::semiregular<T> && NothrowCopyable<T> && NothrowDefaultInitializable<T>;
 

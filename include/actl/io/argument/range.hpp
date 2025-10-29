@@ -17,7 +17,7 @@
 
 namespace ac::io {
 
-template<class Pair>
+template<typename Pair>
 decltype(auto) key_representation(Pair& x) {
     if constexpr (std::is_const_v<Pair>)
         return x.first;
@@ -27,7 +27,7 @@ decltype(auto) key_representation(Pair& x) {
         return const_cast<typename Pair::first_type&>(x.first);
 }
 
-template<class Range, class T>
+template<typename Range, typename T>
 decltype(auto) element_representation(T& x) {
     if constexpr (PairAssociativeRange<Range>)
         return batch{key_representation(x), colon{}, x.second};
@@ -55,7 +55,7 @@ bool read_range(Device auto& id, Format auto& fmt, Range auto& x) {
     return true;
 }
 
-template<class C>
+template<typename C>
 bool read_container(Device auto& id, Format auto& fmt, C& x) {
     decltype(x.size()) size{};
     if (!read(id, fmt, io::size{size}))

@@ -16,7 +16,7 @@ namespace ac {
 /// direction. If the point is on the boundary, returns
 /// std::numeric_limits<int>::max().
 /// http://geomalgorithms.com/a03-_inclusion.html
-template<class T, class U>
+template<typename T, typename U>
 int winding_number(
     Policy auto const& policy, point<T> const& p, polygon<U> const& poly
 ) {

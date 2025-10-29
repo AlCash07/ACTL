@@ -8,7 +8,7 @@
 
 #include "test.hpp"
 
-template<class T>
+template<typename T>
 void test_partition(
     std::vector<std::vector<size_t>> const& expected, T const& actual
 ) {

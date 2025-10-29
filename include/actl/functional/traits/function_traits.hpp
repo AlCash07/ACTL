@@ -23,13 +23,13 @@ enum class function_category { free, member, object };
 /// - parameters_type as ac::type_list;
 /// - accepts_variadic_arguments as a `bool`;
 /// - is_noexcept as a `bool`.
-template<class Fn>
+template<typename Fn>
 struct function_traits;
 
 // Reference qualifier doesn't matter for a function.
-template<class Fn>
+template<typename Fn>
 struct function_traits<Fn&> : function_traits<Fn> {};
-template<class Fn>
+template<typename Fn>
 struct function_traits<Fn&&> : function_traits<Fn> {};
 
 } // namespace ac

@@ -15,7 +15,7 @@ namespace ac::detail {
 
 // Special compressed_pair that mimics either T1 or T2 (defined by index I) for
 // the operations required by set and hash set.
-template<class T1, class T2, index I>
+template<typename T1, typename T2, index I>
 struct mimic_pair {
     T1 first;
     T2 second;
@@ -27,7 +27,7 @@ struct mimic_pair {
 
     static_assert(I == 1 || I == 2);
 
-    template<class FirstT, class... SecondTs>
+    template<typename FirstT, typename... SecondTs>
     explicit constexpr mimic_pair(FirstT&& first, SecondTs&&... xs)
         : first{std::forward<FirstT>(first)}
         , second{std::forward<SecondTs>(xs)...} {}
@@ -47,10 +47,10 @@ private:
     }
 };
 
-template<class T>
+template<typename T>
 concept MimicPair = requires { typename T::is_mimic_pair; };
 
-template<class T>
+template<typename T>
 decltype(auto) get_key(T const& x) {
     if constexpr (MimicPair<T>) {
         return x.key();
@@ -59,19 +59,19 @@ decltype(auto) get_key(T const& x) {
     }
 }
 
-template<class T, class U>
+template<typename T, typename U>
     requires MimicPair<T> || MimicPair<U>
 auto operator==(T const& lhs, U const& rhs) {
     return equal(get_key(lhs), get_key(rhs));
 }
 
-template<class T, class U>
+template<typename T, typename U>
     requires MimicPair<T> || MimicPair<U>
 auto operator<(T const& lhs, U const& rhs) {
     return less(get_key(lhs), get_key(rhs));
 }
 
-template<class Map>
+template<typename Map>
 auto get_second(Map&& map) {
     using Pair = std::remove_reference_t<map_reference_t<Map>>;
 

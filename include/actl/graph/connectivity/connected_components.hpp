@@ -12,7 +12,7 @@
 namespace ac {
 
 // Should be used only for undirected graphs.
-template<class Map>
+template<typename Map>
 struct connected_component_recorder {
     using vertex = map_key_t<Map>;
 
@@ -28,16 +28,16 @@ struct connected_component_recorder {
     map_value_t<Map> count = {};
 };
 
-template<class Map>
+template<typename Map>
 connected_component_recorder(Map&&) -> connected_component_recorder<Map>;
 
-template<class Map, class T>
+template<typename Map, typename T>
 vertex_initializer<connected_component_recorder<Map>>
 make_connected_component_recorder(Map&& component, T value) {
     return {{std::forward<Map>(component)}, value};
 }
 
-template<class Graph>
+template<typename Graph>
 auto make_default_connected_component_recorder(Graph const& graph) {
     return make_connected_component_recorder(
         make_default_vertex_map<int>(graph), -1

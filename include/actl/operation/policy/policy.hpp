@@ -11,19 +11,19 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 concept Policy = requires { typename std::remove_reference_t<T>::is_policy; };
 
-template<class Op, class Policy>
+template<typename Op, typename Policy>
 inline constexpr bool can_apply_policy_v =
     requires(Op op, Policy policy) { apply_policy(op, policy); };
 
-template<class Op>
+template<typename Op>
 constexpr decltype(auto) apply_policy_if_can(Op&& op, Policy auto const&) {
     return std::forward<Op>(op);
 }
 
-template<class Op, Policy P>
+template<typename Op, Policy P>
     requires can_apply_policy_v<Op, P>
 constexpr decltype(auto) apply_policy_if_can(Op&& op, P const& policy) {
     return apply_policy(std::forward<Op>(op), policy);

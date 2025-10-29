@@ -16,7 +16,7 @@ namespace ac {
 
 namespace detail {
 
-template<class C>
+template<typename C>
 struct get_id_ref {
     // Pointer is used instead of a reference to support copy assignment
     // required for std::copyable.

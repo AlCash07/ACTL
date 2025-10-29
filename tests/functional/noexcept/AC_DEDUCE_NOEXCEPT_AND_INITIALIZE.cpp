@@ -10,13 +10,13 @@
 struct Base {
     bool value;
 
-    template<class T>
+    template<typename T>
     constexpr Base(T x) noexcept(noexcept(ac::is_int(x)))
         : value{ac::is_int(x)} {}
 };
 
 struct Derived : Base {
-    template<class T>
+    template<typename T>
     constexpr Derived(T x) AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(Base{x}) {}
 };
 

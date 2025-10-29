@@ -12,29 +12,29 @@
 
 namespace ac {
 
-template<bool B, class T>
+template<bool B, typename T>
 struct add_const_if : std::conditional<B, T const, T> {};
 
-template<bool B, class T>
+template<bool B, typename T>
 using add_const_if_t = typename add_const_if<B, T>::type;
 
-template<class T, class... Ts>
+template<typename T, typename... Ts>
 inline constexpr bool is_one_of_v = (... || std::is_same_v<T, Ts>);
 
-template<class T>
+template<typename T>
 inline constexpr bool is_char_v =
     is_one_of_v<T, char, wchar_t, char16_t, char32_t>;
 
-template<class... Ts>
+template<typename... Ts>
 struct are_same : std::false_type {};
 
-template<class T>
+template<typename T>
 struct are_same<T> : std::true_type {};
 
-template<class T, class... Ts>
+template<typename T, typename... Ts>
 struct are_same<T, T, Ts...> : are_same<T, Ts...> {};
 
-template<class... Ts>
+template<typename... Ts>
 inline constexpr bool are_same_v = are_same<Ts...>::value;
 
 } // namespace ac

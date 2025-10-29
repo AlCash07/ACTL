@@ -9,7 +9,7 @@
 
 using namespace ac::constant_literals;
 
-template<class Int, class Constant>
+template<typename Int, typename Constant>
 constexpr bool equal_constants(Int expected, Constant) noexcept {
     return ac::equal_same_type(expected, Constant::value);
 }

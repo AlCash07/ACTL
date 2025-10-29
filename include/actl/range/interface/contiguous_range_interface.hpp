@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class Derived>
+template<typename Derived>
 class contiguous_range_interface
     : public random_access_range_interface<
           contiguous_range_interface<Derived>> {

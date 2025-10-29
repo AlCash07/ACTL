@@ -14,13 +14,13 @@ namespace ac::io {
 
 namespace detail {
 
-template<class D, class F, class T, size_t... Is>
+template<typename D, typename F, typename T, size_t... Is>
 bool write_tuple(D& od, F& fmt, T const& x, std::index_sequence<Is...>) {
     using std::get;
     return write(od, fmt, get<Is>(x)...);
 }
 
-template<class D, class F, class T, size_t... Is>
+template<typename D, typename F, typename T, size_t... Is>
 bool read_tuple(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
     using std::get;
     return read(id, fmt, get<Is>(x)...);

@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<index N, class T0, class T1, class K>
+template<index N, typename T0, typename T1, typename K>
 auto area(
     Policy auto const& policy, point<T0, N> const& p, line<T1, N, K> const& l
 ) {

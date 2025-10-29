@@ -16,11 +16,11 @@
 namespace ac {
 
 /// N-dimensional point.
-template<class T, index N = 2>
+template<typename T, index N = 2>
 class point;
 
 /// N-dimensional point base class implementing common functionality.
-template<class T, index N>
+template<typename T, index N>
 class point_base : base<> {
 public:
     using value_type = T;
@@ -29,13 +29,13 @@ public:
     using pointer = T*;
     using const_pointer = T const*;
 
-    template<class... Ts>
+    template<typename... Ts>
         requires(... && std::is_convertible_v<Ts, T>)
     constexpr point_base(Ts&&... xs)
         : m_coordinates{T{std::forward<Ts>(xs)}...} {}
 
     // TODO: make explicit when conversion is narrowing.
-    template<class T1>
+    template<typename T1>
     constexpr point_base(point<T1, N> const& rhs) {
         for (index i = 0; i < N; ++i)
             m_coordinates[i] = static_cast<T>(rhs[i]);
@@ -81,16 +81,16 @@ private:
     T m_coordinates[N];
 };
 
-template<class... Ts>
+template<typename... Ts>
 point(Ts&&...) -> point<geometry::scalar_t<Ts...>, sizeof...(Ts)>;
 
-template<class T, index N>
+template<typename T, index N>
 class point : public point_base<T, N> {
 public:
     using point_base<T, N>::point_base;
 };
 
-template<index N, class T>
+template<index N, typename T>
 struct geometry_traits<point<T, N>> {
     using tag = point_tag;
     using scalar = T;
@@ -98,19 +98,19 @@ struct geometry_traits<point<T, N>> {
     static constexpr index dimension = N;
 };
 
-template<class T, index N>
+template<typename T, index N>
 struct range_properties<point<T, N>> : default_range_properties {};
 
 namespace detail {
 
-template<class T, index N, class Operation, class... Points>
+template<typename T, index N, typename Operation, typename... Points>
 constexpr auto& apply(Operation op, point<T, N>& dst, Points const&... points) {
     for (index i = 0; i < N; ++i)
         op(dst[i], points[i]...);
     return dst;
 }
 
-template<index N, class Operation, class... Points>
+template<index N, typename Operation, typename... Points>
 constexpr auto apply(Operation op, Points const&... points) {
     point<decltype(op(points[0]...)), N> dst;
     for (index i = 0; i < N; ++i)
@@ -122,42 +122,42 @@ constexpr auto apply(Operation op, Points const&... points) {
 
 /* Vector operations */
 
-template<index N, class T0, class T1 = T0>
+template<index N, typename T0, typename T1 = T0>
 constexpr auto& operator+=(point<T0, N>& lhs, point<T1, N> const& rhs) {
     return detail::apply([](T0& lhs, T1 const& src) { lhs += src; }, lhs, rhs);
 }
 
-template<index N, class T0, class T1 = T0>
+template<index N, typename T0, typename T1 = T0>
 constexpr auto& operator-=(point<T0, N>& lhs, point<T1, N> const& rhs) {
     return detail::apply([](T0& lhs, T1 const& src) { lhs -= src; }, lhs, rhs);
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto& operator*=(point<T0, N>& lhs, T1 const& factor) {
     return detail::apply([&factor](T0& lhs) { lhs *= factor; }, lhs);
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto& operator/=(point<T0, N>& lhs, T1 const& factor) {
     return detail::apply([&factor](T0& lhs) { lhs /= factor; }, lhs);
 }
 
-template<index N, class T>
+template<index N, typename T>
 constexpr auto operator-(point<T, N> const& src) {
     return detail::apply<N>(std::negate<T>{}, src);
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto operator+(point<T0, N> const& lhs, point<T1, N> const& rhs) {
     return detail::apply<N>(std::plus{}, lhs, rhs);
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto operator-(point<T0, N> const& lhs, point<T1, N> const& rhs) {
     return detail::apply<N>(std::minus{}, lhs, rhs);
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr bool perform(
     equal_t,
     Policy auto const& policy,
@@ -167,7 +167,7 @@ constexpr bool perform(
     return equal(policy, span{lhs}, span{rhs});
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr bool perform(
     less_t,
     Policy auto const& policy,
@@ -177,7 +177,7 @@ constexpr bool perform(
     return less(policy, span{lhs}, span{rhs});
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto perform(
     Mul, Policy auto const& policy, point<T0, N> const& lhs, T1 const& factor
 ) {
@@ -186,7 +186,7 @@ constexpr auto perform(
     );
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto perform(
     Mul, Policy auto const& policy, T0 const& factor, point<T1, N> const& rhs
 ) {
@@ -195,7 +195,7 @@ constexpr auto perform(
     );
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto perform(
     Div, Policy auto const& policy, point<T0, N> const& lhs, T1 const& factor
 ) {
@@ -205,7 +205,7 @@ constexpr auto perform(
     );
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto dot(
     Policy auto const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs
 ) {
@@ -215,22 +215,22 @@ constexpr auto dot(
     return res;
 }
 
-template<index N, class T0, class T1>
+template<index N, typename T0, typename T1>
 constexpr auto dot(point<T0, N> const& lhs, point<T1, N> const& rhs) {
     return dot(default_policy, lhs, rhs);
 }
 
-template<index N, class T>
+template<index N, typename T>
 constexpr auto dot(Policy auto const& policy, point<T, N> const& p) {
     return dot(policy, p, p);
 }
 
-template<index N, class T>
+template<index N, typename T>
 constexpr auto dot(point<T, N> const& p) {
     return dot(default_policy, p);
 }
 
-template<index N, class T>
+template<index N, typename T>
 constexpr bool degenerate(Policy auto const& policy, point<T, N> const& p) {
     for (index i = 0; i < N; ++i) {
         if (!equal(policy, p[i], 0))
@@ -239,14 +239,14 @@ constexpr bool degenerate(Policy auto const& policy, point<T, N> const& p) {
     return true;
 }
 
-template<class T>
+template<typename T>
 constexpr bool degenerate(T const& x) {
     return degenerate(default_policy, x);
 }
 
 namespace detail {
 
-template<class T, index N>
+template<typename T, index N>
 class point_xy : public point_base<T, N> {
 public:
     using point_base<T, N>::point_base;
@@ -268,7 +268,7 @@ public:
     }
 };
 
-template<class T, index N>
+template<typename T, index N>
 class point_xyz : public point_xy<T, N> {
 public:
     using point_xy<T, N>::point_xy;
@@ -285,16 +285,16 @@ public:
 } // namespace detail
 
 /// 2-dimensional point specialization.
-template<class T>
+template<typename T>
 class point<T, 2> : public detail::point_xy<T, 2> {
 public:
     using detail::point_xy<T, 2>::point_xy;
 };
 
-template<class T>
+template<typename T>
 using point2d = point<T, 2>;
 
-template<class T0, class T1>
+template<typename T0, typename T1>
 constexpr bool y_compare(
     Policy auto const& policy, point<T0> const& lhs, point<T1> const& rhs
 ) {
@@ -303,22 +303,22 @@ constexpr bool y_compare(
 }
 
 /// Point @p src rotated by pi/2 counter-clockwise.
-template<class T>
+template<typename T>
 constexpr point<T> perpendicular(point<T> const& src) {
     return point{-src[1], src[0]};
 }
 
 /// 3-dimensional point specialization.
-template<class T>
+template<typename T>
 class point<T, 3> : public detail::point_xyz<T, 3> {
 public:
     using detail::point_xyz<T, 3>::point_xyz;
 };
 
-template<class T>
+template<typename T>
 using point3d = point<T, 3>;
 
-template<class T0, class T1>
+template<typename T0, typename T1>
 constexpr auto cross(
     Policy auto const& policy, point3d<T0> const& lhs, point3d<T1> const& rhs
 ) {
@@ -329,7 +329,7 @@ constexpr auto cross(
     };
 }
 
-template<class T0, class T1>
+template<typename T0, typename T1>
 constexpr auto cross(point3d<T0> const& lhs, point3d<T1> const& rhs) {
     return cross(default_policy, lhs, rhs);
 }

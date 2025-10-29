@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class Range>
+template<typename Range>
 inline constexpr bool is_nothrow_iterable_v = noexcept(noexcept(
     ranges::begin(std::declval<Range>()) != ranges::end(std::declval<Range>())
 )&& noexcept(++std::declval<range_iterator_t<Range>&>()));

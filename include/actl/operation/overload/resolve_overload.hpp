@@ -14,7 +14,7 @@ namespace ac {
 
 struct default_context {};
 
-template<class Context, class Op, class... Ts>
+template<typename Context, typename Op, typename... Ts>
 struct context_overload {
     struct is_resolved;
 
@@ -22,23 +22,23 @@ struct context_overload {
         return op;
     }
 
-    template<class Op1>
+    template<typename Op1>
     static constexpr auto& resolve(Context, Op1& op) {
         return op;
     }
 };
 
-template<class Context, class Op, class... Ts>
+template<typename Context, typename Op, typename... Ts>
 struct overload_resolver : context_overload<Context, Op, Ts...> {};
 
-template<class... Ts, class Context, class Op>
+template<typename... Ts, typename Context, typename Op>
 constexpr decltype(auto) resolve_overload(Context context, Op&& op) {
     return overload_resolver<Context, raw_t<Op>, raw_t<Ts>...>::resolve(
         context, std::forward<Op>(op)
     );
 }
 
-template<class... Ts, class Op>
+template<typename... Ts, typename Op>
 constexpr decltype(auto) resolve_nested(Op const& op) {
     constexpr auto max_depth = max_nesting_depth_v<Ts...>;
     return resolve_overload<
@@ -47,14 +47,14 @@ constexpr decltype(auto) resolve_nested(Op const& op) {
     );
 }
 
-template<class... Ts>
+template<typename... Ts>
 inline constexpr bool is_overload_resolved_v =
     requires { typename overload_resolver<raw_t<Ts>...>::is_resolved; };
 
-template<class Context, class Op, class... Ts>
+template<typename Context, typename Op, typename... Ts>
     requires requires { overload<Op, Ts...>::formula; }
 struct overload_resolver<Context, Op, Ts...> {
-    template<class Op1>
+    template<typename Op1>
     static constexpr auto resolve(Context context, Op1&& op) {
         return resolve_overload<Ts...>(
             context,

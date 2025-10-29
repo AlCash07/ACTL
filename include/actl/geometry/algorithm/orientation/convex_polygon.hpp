@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 orientation2d orientation(
     Policy auto const& policy, convex_polygon<T> const& poly
 ) {

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class T, class Char = char>
+template<typename T, typename Char = char>
 inline constexpr bool is_string_v =
     std::is_convertible_v<T, std::basic_string_view<Char>>;
 

@@ -12,7 +12,12 @@
 
 namespace ac::detail {
 
-template<class Dir, class OEC, class EC, class VC, class T = range_value_t<VC>>
+template<
+    typename Dir,
+    typename OEC,
+    typename EC,
+    typename VC,
+    typename T = range_value_t<VC>>
 class adj_list_vertices : public adj_list_vertices<Dir, OEC, EC, VC, none> {
     using base_t = adj_list_vertices<Dir, OEC, EC, VC, none>;
 
@@ -38,7 +43,7 @@ public:
     }
 };
 
-template<class Dir, class OEC, class EC, class VC>
+template<typename Dir, typename OEC, typename EC, typename VC>
 class adj_list_vertices<Dir, OEC, EC, VC, none>
     : public adj_list_traits<Dir, OEC, EC, VC>::vertices {
     using base_t = typename adj_list_traits<Dir, OEC, EC, VC>::vertices;

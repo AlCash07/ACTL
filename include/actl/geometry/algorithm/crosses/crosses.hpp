@@ -10,13 +10,13 @@
 
 namespace ac {
 
-template<class T, class U>
+template<typename T, typename U>
     requires geometry::reverse_order<T, U>
 bool crosses(Policy auto const& policy, T const& lhs, U const& rhs) {
     return crosses(policy, rhs, lhs);
 }
 
-template<class T, class U>
+template<typename T, typename U>
 bool crosses(T const& lhs, U const& rhs) {
     return crosses(geometry_policy, rhs, lhs);
 }

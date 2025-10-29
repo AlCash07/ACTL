@@ -10,14 +10,14 @@
 
 namespace ac {
 
-template<class... TypeLists>
+template<typename... TypeLists>
 struct types_concat;
 
 /// Concatenation of the given TypeLists as a single ac::type_list.
-template<class... TypeLists>
+template<typename... TypeLists>
 using concat_t = typename types_concat<TypeLists...>::type;
 
-template<class... Types>
+template<typename... Types>
 struct types_concat<type_list<Types...>> {
     using type = type_list<Types...>;
 };
@@ -27,7 +27,7 @@ struct types_concat<> {
     using type = type_list<>;
 };
 
-template<class... Types0, class... Types1, class... TypeLists>
+template<typename... Types0, typename... Types1, typename... TypeLists>
 struct types_concat<type_list<Types0...>, type_list<Types1...>, TypeLists...> {
     using type = concat_t<type_list<Types0..., Types1...>, TypeLists...>;
 };

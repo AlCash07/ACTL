@@ -8,7 +8,11 @@
 #include "functional/traits/M.hpp"
 #include "test.hpp"
 
-template<auto Member, class ClassParameter, bool AcceptsVArgs, bool IsNoexcept>
+template<
+    auto Member,
+    typename ClassParameter,
+    bool AcceptsVArgs,
+    bool IsNoexcept>
 void check() {
     using MF = decltype(Member);
     static_assert(std::is_same_v<int, ac::return_t<MF>>);

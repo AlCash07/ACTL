@@ -14,7 +14,7 @@ namespace ac {
 
 namespace detail {
 
-template<class Iter>
+template<typename Iter>
 using filtered_iterator_category_t = std::conditional_t<
     std::random_access_iterator<Iter>,
     std::bidirectional_iterator_tag,
@@ -22,7 +22,7 @@ using filtered_iterator_category_t = std::conditional_t<
 
 } // namespace detail
 
-template<class Range, class Predicate>
+template<typename Range, typename Predicate>
 class filtered_range
     : public range_interface_selector_t<
           filtered_range<Range, Predicate>,
@@ -95,7 +95,7 @@ private:
     AC_NO_UNIQUE_ADDRESS Predicate m_pred;
 };
 
-template<class Range, class Predicate>
+template<typename Range, typename Predicate>
 auto filter_range(Range&& range, Predicate pred) {
     return filtered_range<Range, Predicate>{
         std::forward<Range>(range), std::move(pred)

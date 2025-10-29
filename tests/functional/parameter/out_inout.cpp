@@ -80,7 +80,7 @@ struct TestPtr {
 
 constexpr int intValue = 42;
 
-template<template<class> class Wrapper>
+template<template<typename> typename Wrapper>
 constexpr bool test_wrapper_constructors() {
     /* Constructor noexcept specification follows the wrapped type */ {
         static_assert(noexcept(Wrapper<TestPtr>{std::declval<const int*>()}));
@@ -101,7 +101,7 @@ constexpr bool test_wrapper_constructors() {
     return true;
 }
 
-template<template<class> class Wrapper>
+template<template<typename> typename Wrapper>
 constexpr bool test_wrapper_conversions() {
     /* Conversion is allowed only if the wrapped types are implicitly
      * convertible */

@@ -15,37 +15,37 @@
 
 namespace ac {
 
-template<class Iter, class Category>
+template<typename Iter, typename Category>
 struct iterator_interface_selector {
     using type = basic_iterator_interface<Iter>;
 };
 
-template<class Iter>
+template<typename Iter>
 struct iterator_interface_selector<Iter, std::input_iterator_tag> {
     using type = input_iterator_interface<Iter>;
 };
 
-template<class Iter>
+template<typename Iter>
 struct iterator_interface_selector<Iter, std::forward_iterator_tag> {
     using type = forward_iterator_interface<Iter>;
 };
 
-template<class Iter>
+template<typename Iter>
 struct iterator_interface_selector<Iter, std::bidirectional_iterator_tag> {
     using type = bidirectional_iterator_interface<Iter>;
 };
 
-template<class Iter>
+template<typename Iter>
 struct iterator_interface_selector<Iter, std::random_access_iterator_tag> {
     using type = random_access_iterator_interface<Iter>;
 };
 
-template<class Iter>
+template<typename Iter>
 struct iterator_interface_selector<Iter, std::output_iterator_tag> {
     using type = output_iterator_interface<Iter>;
 };
 
-template<class Iter, class Category>
+template<typename Iter, typename Category>
 using iterator_interface_selector_t =
     typename iterator_interface_selector<Iter, Category>::type;
 

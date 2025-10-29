@@ -16,7 +16,7 @@ namespace ac {
 // between each pair of children or once after them if there are less than 2
 // children. The output has from n (for binary tree) to 2 n - 3 (for star graph)
 // vertices.
-template<class VertexOutIter, class VertexStateMap>
+template<typename VertexOutIter, typename VertexStateMap>
 struct inorder_printer {
     VertexOutIter dst;
     VertexStateMap state;
@@ -35,7 +35,7 @@ struct inorder_printer {
         return get(state, u) != -1;
     }
 
-    template<class E>
+    template<typename E>
     void operator()(on_tree_edge_start, E e) {
         vertex u = e.source();
         decltype(auto) current = get(state, u);
@@ -51,7 +51,7 @@ struct inorder_printer {
     }
 };
 
-template<class Event, class VertexOutIter>
+template<typename Event, typename VertexOutIter>
 struct vertex_printer {
     VertexOutIter dst;
 
@@ -60,7 +60,7 @@ struct vertex_printer {
     }
 };
 
-template<class Graph, class VertexOutIter>
+template<typename Graph, typename VertexOutIter>
 void inorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
     auto state = make_default_vertex_map<char>(graph);
     depth_first_search{
@@ -68,7 +68,7 @@ void inorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
     }(graph, s);
 }
 
-template<class Graph, class VertexOutIter>
+template<typename Graph, typename VertexOutIter>
 void postorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
     depth_first_search{
         vertex_printer<on_vertex_finish, VertexOutIter>{dst},
@@ -76,7 +76,7 @@ void postorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
     }(graph, s);
 }
 
-template<class Graph, class VertexOutIter>
+template<typename Graph, typename VertexOutIter>
 void preorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
     depth_first_search{
         vertex_printer<on_vertex_start, VertexOutIter>{dst},
@@ -85,7 +85,7 @@ void preorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
 }
 
 /// Outputs topological sort of the DAG in reverse order.
-template<class Graph, class VertexOutIter>
+template<typename Graph, typename VertexOutIter>
 void topological_sort(Graph const& graph, VertexOutIter dst) {
     depth_first_search{
         vertex_printer<on_vertex_finish, VertexOutIter>{dst},

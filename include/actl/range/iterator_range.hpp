@@ -15,7 +15,7 @@
 
 namespace ac {
 
-template<class Iter, class Super = none>
+template<typename Iter, typename Super = none>
 class iterator_range
     : public range_interface_selector_t<
           iterator_range<Iter, Super>,
@@ -39,34 +39,34 @@ private:
     Iter m_end;
 };
 
-template<class Iter, class Super>
+template<typename Iter, typename Super>
 struct super_range<iterator_range<Iter, Super>> {
     using type = Super;
 };
 
-template<class Iter, class Super>
+template<typename Iter, typename Super>
 struct range_properties<iterator_range<Iter, Super>> : range_properties<Super> {
     static constexpr bool is_container = false;
 };
 
-template<class SuperRange = none, class Iterator>
+template<typename SuperRange = none, typename Iterator>
 auto make_range(Iterator first, Iterator last) {
     return iterator_range<Iterator, SuperRange>{first, last};
 }
 
-template<class SuperRange = none, class Iterator, class Int>
+template<typename SuperRange = none, typename Iterator, typename Int>
 auto make_range(Iterator first, Int n) {
     return iterator_range<Iterator, SuperRange>{first, std::next(first, n)};
 }
 
-template<class Container>
+template<typename Container>
 auto make_range(Container&& cont) {
     return make_range<std::remove_reference_t<Container>>(
         ranges::begin(cont), ranges::end(cont)
     );
 }
 
-template<class Container>
+template<typename Container>
 auto make_crange(Container const& cont) {
     return make_range(cont);
 }

@@ -13,19 +13,19 @@ namespace ac {
 /// If all the types are the same excluding integral constants, provides the
 /// member typedef type of this type. If all the types are integral constants,
 /// the first of them is provided.
-template<class... Ts>
+template<typename... Ts>
 struct strict_common_type;
 
-template<class... Ts>
+template<typename... Ts>
 using strict_common_type_t =
     typename strict_common_type<std::decay_t<Ts>...>::type;
 
-template<class T>
+template<typename T>
 struct strict_common_type<T> {
     using type = T;
 };
 
-template<class T, class U>
+template<typename T, typename U>
 struct strict_common_type<T, U> {
     static auto f() {
         if constexpr (is_constant_v<U>)
@@ -41,7 +41,7 @@ struct strict_common_type<T, U> {
     using type = decltype(f());
 };
 
-template<class T, class U, class... Ts>
+template<typename T, typename U, typename... Ts>
 struct strict_common_type<T, U, Ts...>
     : strict_common_type<strict_common_type_t<T, U>, Ts...> {};
 

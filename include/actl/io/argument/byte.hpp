@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template<class T>
+template<typename T>
 // cv is removed for consistency with std::is_arithmetic.
 concept Byte = std::same_as<std::remove_cv_t<T>, std::byte> ||
                (std::is_arithmetic_v<T> && sizeof(T) == 1);

@@ -13,14 +13,14 @@
 
 namespace ac::detail {
 
-template<class E>
+template<typename E>
 struct edge_inverter {
     E operator()(E e) const {
         return E{e.target(), e.source(), e.bundle()};
     }
 };
 
-template<class G, class Iter>
+template<typename G, typename Iter>
 class adj_list_out_edge_iter
     : public forward_iterator_interface<adj_list_out_edge_iter<G, Iter>> {
     G const* m_g;
@@ -54,7 +54,7 @@ public:
     ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.m_iter == rhs.m_iter)
 };
 
-template<class G>
+template<typename G>
 class adj_list_edge_iter
     : public forward_iterator_interface<adj_list_edge_iter<G>> {
     bool is_end() const {
@@ -123,12 +123,12 @@ public:
         )
 };
 
-template<class G, class = typename G::edge_selector>
+template<typename G, typename = typename G::edge_selector>
 struct edge_iter {
     using type = adj_list_edge_iter<G>;
 };
 
-template<class G>
+template<typename G>
 struct edge_iter<G, two_vertices> {
     using type = typename G::traits::edges::template edge_iterator<edge_t<G>>;
 };

@@ -12,7 +12,7 @@
 namespace ac {
 
 /// Queue implemented with 2 stacks : amortized O(1).
-template<class T, class Stack = std::stack<T>>
+template<typename T, typename Stack = std::stack<T>>
 class queue_using_stacks {
 protected:
     Stack m_in_stack;
@@ -55,7 +55,7 @@ public:
         emplace(std::move(value));
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     void emplace(Ts&&... args) {
         m_in_stack.push(std::forward<Ts>(args)...);
     }

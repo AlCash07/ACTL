@@ -10,21 +10,21 @@
 
 namespace ac::io {
 
-template<class T>
+template<typename T>
 struct size {
     T value;
 };
 
-template<class T>
+template<typename T>
 size(T&&) -> size<T>;
 
-template<class T>
+template<typename T>
 bool write_final(Device auto& od, Format auto& fmt, size<T> size) {
     nested_scope_guard g{fmt};
     return write(od, fmt, size.value);
 }
 
-template<class T>
+template<typename T>
 bool read_final(Device auto& id, Format auto& fmt, size<T&> size) {
     nested_scope_guard g{fmt};
     return read(id, fmt, size.value);

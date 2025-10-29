@@ -29,7 +29,7 @@ constexpr int simple_function() noexcept {
     return 0;
 }
 
-template<class Result, class Input>
+template<typename Result, typename Input>
 constexpr Result function_template(Input const& input) {
     static_assert(AC_FUNCTION_NAME == "function_template"sv);
     return Result{};

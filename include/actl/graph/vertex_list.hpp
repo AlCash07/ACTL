@@ -13,8 +13,8 @@
 namespace ac {
 
 template<
-    class VertexContainer = none,
-    class T = graph::list_value_t<VertexContainer>>
+    typename VertexContainer = none,
+    typename T = graph::list_value_t<VertexContainer>>
 class vertex_list : public vertex_list<VertexContainer, none> {
     using base_t = vertex_list<VertexContainer, none>;
 
@@ -40,7 +40,7 @@ public:
     }
 };
 
-template<class VC>
+template<typename VC>
 class vertex_list<VC, none> {
 public:
     using vertex_container =
@@ -85,12 +85,12 @@ public:
         return *std::next(id_range(m_vertices).begin(), n);
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     std::pair<vertex, bool> try_add_vertex(Ts&&... args) {
         return id_emplace(m_vertices, std::forward<Ts>(args)...);
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     vertex add_vertex(Ts&&... args) {
         return try_add_vertex(std::forward<Ts>(args)...).first;
     }

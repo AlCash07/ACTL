@@ -14,12 +14,12 @@ namespace ac::ranges {
 namespace impl {
 
 // TODO: check that size is integer-like.
-template<class T>
+template<typename T>
 concept has_member_size = requires(T& t) {
     { t.size() };
 };
 
-template<class T>
+template<typename T>
 concept has_non_member_size = requires(T& t) {
     { size(t) };
 };

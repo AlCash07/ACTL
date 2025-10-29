@@ -13,7 +13,7 @@
 
 namespace ac::io {
 
-template<class First, class Second>
+template<typename First, typename Second>
 struct composed_format {
     First first;
     Second second;
@@ -30,7 +30,7 @@ auto operator>>=(First&& first, Second&& second) {
 
 namespace detail {
 
-template<class D, class FF, class First, class Second, class T>
+template<typename D, typename FF, typename First, typename Second, typename T>
 struct format_resolver<D, FF, composed_format<First, Second>, T> {
     static bool write(
         D& od, FF& full_fmt, composed_format<First, Second>& fmt, T const& x
@@ -51,7 +51,7 @@ struct format_resolver<D, FF, composed_format<First, Second>, T> {
 
 } // namespace detail
 
-template<class First, class Second, class Manipulator>
+template<typename First, typename Second, typename Manipulator>
 void manipulate(composed_format<First, Second>& fmt, Manipulator const& m) {
     manipulate(fmt.first, m);
     manipulate(fmt.second, m);

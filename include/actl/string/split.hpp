@@ -13,8 +13,8 @@
 namespace ac {
 
 template<
-    class CharPredicate,
-    class = decltype(std::declval<CharPredicate>()('\0'))>
+    typename CharPredicate,
+    typename = decltype(std::declval<CharPredicate>()('\0'))>
 std::vector<std::string> split(
     std::string_view line, CharPredicate is_delimiter, bool remove_empty = true
 ) {

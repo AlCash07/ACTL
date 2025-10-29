@@ -11,7 +11,7 @@
 namespace ac {
 
 // TODO: switch to iter_concept_t
-template<class T>
+template<typename T>
 using iter_category_t = typename std::iterator_traits<T>::iterator_category;
 
 } // namespace ac

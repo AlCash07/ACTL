@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class... Ts>
+template<typename... Ts>
 concept EnableOperators =
     (... || (requires {
          typename std::remove_cvref_t<Ts>::enable_operators;

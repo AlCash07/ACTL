@@ -12,9 +12,9 @@ namespace ac {
 
 /// Concept of a free function, for example, `float(int, int)`, including a free
 /// <a
-/// href="https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_functions">function
-/// pointer</a>.
-template<class T>
+/// href="https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_functions">
+/// function pointer</a>.
+template<typename T>
 concept FreeFunction = function_traits<T>::category == function_category::free;
 
 /* Implementation */
@@ -35,7 +35,7 @@ struct function_traits<Fn*> : function_traits<Fn> {};
     AC_FF_FULL(VARGS, noexcept)
 
 #define AC_FF_FULL(VARGS, NOEXCEPT)                                           \
-    template<class Return, class... Parameters>                               \
+    template<typename Return, typename... Parameters>                         \
     struct function_traits<Return(Parameters... AC_UNPARENTHESIZED VARGS)     \
                                NOEXCEPT> {                                    \
         static constexpr auto category = function_category::free;             \
@@ -46,7 +46,7 @@ struct function_traits<Fn*> : function_traits<Fn> {};
         static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);           \
     };                                                                        \
                                                                               \
-    template<class Return, class... Parameters>                               \
+    template<typename Return, typename... Parameters>                         \
     struct assemble_function<                                                 \
         function_category::free,                                              \
         Return,                                                               \

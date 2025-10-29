@@ -13,17 +13,17 @@
 namespace ac {
 
 struct to_bool {
-    template<class T>
+    template<typename T>
     constexpr bool operator()(T const& x) const {
         return static_cast<bool>(x);
     }
 };
 
-template<class Pred>
+template<typename Pred>
 struct test_second {
     AC_NO_UNIQUE_ADDRESS Pred predicate;
 
-    template<class Pair>
+    template<typename Pair>
     constexpr bool operator()(Pair const& x) const {
         return predicate(x.second);
     }
@@ -31,10 +31,10 @@ struct test_second {
 
 /// Container property map with traversal interface that skips values not
 /// satisfying predicate.
-template<class Map, class Predicate = to_bool>
+template<typename Map, typename Predicate = to_bool>
 class filtered_map {
 public:
-    template<class MapT, class... PredArgs>
+    template<typename MapT, typename... PredArgs>
     explicit constexpr filtered_map(MapT&& map, PredArgs&&... xs)
         : m_map{std::forward<MapT>(map)}
         , m_pred{std::forward<PredArgs>(xs)...} {}
@@ -60,26 +60,26 @@ private:
     test_second<Predicate> m_pred;
 };
 
-template<class M, class P = to_bool>
+template<typename M, typename P = to_bool>
 filtered_map(M&&, P = {}) -> filtered_map<M, P>;
 
-template<class M, class P>
+template<typename M, typename P>
 struct map_traits<filtered_map<M, P>> : map_traits<M> {
     using range_type = filtered_range<map_range_t<M>, test_second<P>>;
 };
 
-template<class M, class P>
+template<typename M, typename P>
 struct map_traits<filtered_map<M, P> const>
     : map_traits<filtered_map<M const, P>> {};
 
-template<class M, class P>
+template<typename M, typename P>
 struct map_ops<filtered_map<M, P>> : map_ops<M> {
     static auto map_range(filtered_map<M, P>& map) {
         return map.map_range();
     }
 };
 
-template<class M, class P>
+template<typename M, typename P>
 struct map_ops<filtered_map<M, P> const> : map_ops<M const> {
     static auto map_range(filtered_map<M, P> const& map) {
         return map.map_range();
@@ -87,7 +87,7 @@ struct map_ops<filtered_map<M, P> const> : map_ops<M const> {
 };
 
 /// Transition property map with underlying fixed-size array.
-template<class T, int N, class Predicate>
+template<typename T, int N, typename Predicate>
 using filtered_array_map = filtered_map<std::array<T, N>, Predicate>;
 
 } // namespace ac

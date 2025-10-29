@@ -11,28 +11,28 @@
 
 namespace ac {
 
-template<class... Ts>
+template<typename... Ts>
 inline constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);
 
-template<class T>
+template<typename T>
 struct raw<inout<T>> : raw<T> {};
 
-template<class T>
+template<typename T>
 constexpr T const& remove_inout(inout<T>& x) {
     return *x;
 }
 
-template<class T>
+template<typename T>
 constexpr T const& remove_inout(T const& x) {
     return x;
 }
 
-template<class T, class... Ts>
+template<typename T, typename... Ts>
 constexpr auto& find_dst(T&, Ts&... xs) {
     return find_dst(xs...);
 }
 
-template<class T, class... Ts>
+template<typename T, typename... Ts>
 constexpr T& find_dst(inout<T>& x, Ts&...) {
     return *x;
 }

@@ -21,7 +21,7 @@ namespace ac {
 /// - if it's equal to `dynamic_extent<T>`, then the actual value is specified
 /// at runtime;
 /// - otherwise, the value is fixed at compile-time.
-template<class T, T... Values>
+template<typename T, T... Values>
 class semi_static_array {
     static constexpr size_t size_dyn_v =
         (0 + ... + size_t{Values == dynamic_extent<T>});
@@ -50,7 +50,7 @@ public:
         : semi_static_array{indices, xs...} {}
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
-    template<class T0, class... Ts>
+    template<typename T0, typename... Ts>
         requires(
             1 + sizeof...(Ts) == size_dyn_v && std::is_convertible_v<T0, T> &&
             (... && std::is_convertible_v<Ts, T>)
@@ -135,13 +135,13 @@ private:
     }
 };
 
-template<class... Ts>
+template<typename... Ts>
     requires are_same_v<unwrap_constant_t<Ts>...>
 semi_static_array(Ts...) -> semi_static_array<
     std::common_type_t<unwrap_constant_t<Ts>...>,
     static_extent_v<Ts>...>;
 
-template<class T, T... Values, class... Args>
+template<typename T, T... Values, typename... Args>
     requires(
         sizeof...(Args) == semi_static_array<T, Values...>::size_dynamic() &&
         (... && can_convert_to_v<T, Args>)
@@ -157,12 +157,12 @@ struct conversion<semi_static_array<T, Values...>, Args...> : std::true_type {
 
 namespace std {
 
-template<class T, T... Values>
+template<typename T, T... Values>
 struct tuple_size<ac::semi_static_array<T, Values...>> {
     static constexpr size_t value = sizeof...(Values);
 };
 
-template<size_t I, class T, T... Values>
+template<size_t I, typename T, T... Values>
 struct tuple_element<I, ac::semi_static_array<T, Values...>> {
     using type = decltype(get<I>(ac::semi_static_array<T, Values...>{}));
 };

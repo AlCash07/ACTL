@@ -30,19 +30,19 @@ struct ordering_operation_tag   : comparison_operation_tag {};
 struct logical_operation_tag : scalar_operation_tag {};
 // clang-format on
 
-template<class Op, size_t Arity>
+template<typename Op, size_t Arity>
 struct scalar_operation : operation<Op> {
-    template<class T>
+    template<typename T>
     static constexpr T convert(T x) {
         return x;
     }
 
-    template<class T, auto X>
+    template<typename T, auto X>
     static constexpr T convert(constant<X>) {
         return T{X};
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     constexpr auto evaluate(Ts const&... xs) const {
         if constexpr ((... && std::is_arithmetic_v<
                                   unwrap_constant_t<decltype(eval(xs))>>)) {
@@ -54,18 +54,18 @@ struct scalar_operation : operation<Op> {
         }
     }
 
-    template<class T, class... Ts>
+    template<typename T, typename... Ts>
     constexpr void evaluate_to(T& dst, Ts const&... xs) const {
         dst = evaluate(xs...);
     }
 };
 
-template<class T>
+template<typename T>
 concept ScalarOperation =
     Operation<T> &&
     std::derived_from<typename T::operation_category, scalar_operation_tag>;
 
-template<class T>
+template<typename T>
 concept ComparisonOperation =
     ScalarOperation<T> &&
     std::derived_from<typename T::operation_category, comparison_operation_tag>;

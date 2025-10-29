@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class CharPredicate0, class CharPredicate1>
+template<typename CharPredicate0, typename CharPredicate1>
 std::string trim(
     std::string const& str, CharPredicate0 skip_left, CharPredicate1 skip_right
 ) {
@@ -22,7 +22,7 @@ std::string trim(
     return std::string(l, r);
 }
 
-template<class CharPredicate>
+template<typename CharPredicate>
 std::string trim(std::string const& str, CharPredicate skip) {
     return trim(str, skip, skip);
 }

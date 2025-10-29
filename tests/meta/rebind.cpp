@@ -11,7 +11,7 @@
 
 namespace {
 
-template<class T>
+template<typename T>
 struct R {};
 
 struct A {};
@@ -22,7 +22,7 @@ struct B {};
 
 namespace ac {
 
-template<class T, class U>
+template<typename T, typename U>
 struct rebind<R<T>, U> {
     using type = int;
 };

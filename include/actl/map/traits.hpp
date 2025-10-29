@@ -22,14 +22,14 @@
 namespace ac {
 
 template<
-    class Key,
-    class Ref,
-    class Value = use_default,
+    typename Key,
+    typename Ref,
+    typename Value = use_default,
     bool Readable = true,
     bool Writable = false,
     bool Invertible = false,
     bool Iterable = false,
-    class Range = void>
+    typename Range = void>
 struct map_traits_base {
     using key_type = Key;
     using reference = Ref;
@@ -42,42 +42,42 @@ struct map_traits_base {
     static constexpr bool iterable = Iterable;
 };
 
-template<class T>
+template<typename T>
 struct const_map_traits {};
 
-template<class T>
+template<typename T>
 struct const_map_traits<T const> : const_map_traits<T> {};
 
-template<class T>
+template<typename T>
 struct map_traits : const_map_traits<T> {};
 
-template<class T>
+template<typename T>
 struct map_traits<T&> : map_traits<T> {};
 
-template<class T>
+template<typename T>
 struct map_traits<std::reference_wrapper<T>> : map_traits<T> {};
 
-template<class T>
+template<typename T>
 using map_key_t = typename map_traits<T>::key_type;
 
-template<class T>
+template<typename T>
 using map_reference_t = typename map_traits<T>::reference;
 
-template<class T>
+template<typename T>
 using map_value_t = typename map_traits<T>::value_type;
 
-template<class T>
+template<typename T>
 using map_pair_t = std::pair<map_key_t<T>, map_reference_t<T>>;
 
-template<class T>
+template<typename T>
 using map_range_t = typename map_traits<T>::range_type;
 
-template<class T>
+template<typename T>
 using map_iterator_t = range_iterator_t<map_range_t<T>>;
 
 // This struct guarantees that function declaration is found during unqualified
 // name lookup.
-template<class T>
+template<typename T>
 struct map_ops {
     using K = map_key_t<T>;
     using V = map_value_t<T>;
@@ -99,37 +99,37 @@ struct map_ops {
     }
 };
 
-template<class T>
+template<typename T>
 struct map_ops<T&> : map_ops<T> {};
 
-template<class T>
+template<typename T>
 struct map_ops<std::reference_wrapper<T>> : map_ops<T> {};
 
-template<class T>
+template<typename T>
     requires map_traits<T>::readable
 map_reference_t<T> get(T&& map, map_key_t<T> key) {
     return map_ops<T>::get(map, key);
 }
 
-template<class T>
+template<typename T>
     requires map_traits<T>::writable
 void put(T&& map, map_key_t<T> key, map_value_t<T> value) {
     return map_ops<T>::put(map, key, value);
 }
 
-template<class T>
+template<typename T>
     requires map_traits<T>::invertible
 map_key_t<T> invert(T&& map, map_value_t<T> value) {
     return map_ops<T>::invert(map, value);
 }
 
-template<class T>
+template<typename T>
     requires map_traits<T>::iterable
 map_range_t<T> map_range(T&& map) {
     return map_ops<T>::map_range(map);
 }
 
-template<class T>
+template<typename T>
 struct map_put {
     static constexpr void put(
         T& map, map_key_t<T> key, map_value_t<T> const& value

@@ -14,7 +14,7 @@ namespace ac {
 
 /// Array with vector interface.
 // TODO: implement full vector interface.
-template<class T, size_t N, class Array = std::array<T, N>>
+template<typename T, size_t N, typename Array = std::array<T, N>>
 class array_as_vector {
 public:
     using value_type = range_value_t<Array>;
@@ -90,7 +90,7 @@ public:
         emplace(std::move(v));
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     void emplace(Ts&&... args) {
         AC_ASSERT(m_end < N);
         *m_end++ = T{std::forward<Ts>(args)...};

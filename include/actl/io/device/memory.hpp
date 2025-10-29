@@ -16,7 +16,7 @@
 
 namespace ac::io {
 
-template<mode_t Mode, class Char, bool = is_out<Mode>>
+template<mode_t Mode, typename Char, bool = is_out<Mode>>
 class out_memory : public device<Mode, Char> {
     using C = add_const_if_t<!is_out<Mode>, Char>;
 
@@ -42,7 +42,7 @@ protected:
     C* m_ptr;
 };
 
-template<mode_t Mode, class Char>
+template<mode_t Mode, typename Char>
 class out_memory<Mode, Char, true> : public out_memory<Mode, Char, false> {
 protected:
     using base_t = out_memory<Mode, Char, false>;
@@ -73,13 +73,13 @@ public:
     void flush() {}
 };
 
-template<mode_t Mode, class Char, bool = is_in<Mode>>
+template<mode_t Mode, typename Char, bool = is_in<Mode>>
 class in_memory : public out_memory<Mode, Char> {
 public:
     using out_memory<Mode, Char>::out_memory;
 };
 
-template<mode_t Mode, class Char>
+template<mode_t Mode, typename Char>
 class in_memory<Mode, Char, true> : public out_memory<Mode, Char> {
 protected:
     using base_t = out_memory<Mode, Char>;
@@ -111,7 +111,7 @@ public:
     }
 };
 
-template<mode_t Mode, class Char = char>
+template<mode_t Mode, typename Char = char>
 using memory = in_memory<Mode, Char>;
 
 } // namespace ac::io

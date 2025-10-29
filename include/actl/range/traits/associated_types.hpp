@@ -16,7 +16,7 @@
 namespace ac {
 
 // range_iterator_t is defined together with range concepts.
-// template <class Range>
+// template<typename Range>
 // using range_iterator_t = decltype(ranges::begin(std::declval<Range&>()));
 
 template<Range R>

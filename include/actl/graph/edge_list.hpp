@@ -17,11 +17,11 @@ namespace ac {
 namespace detail {
 
 template<
-    class Dir,
-    class V,
-    class EC,
-    class S,
-    class T = graph::list_value_t<EC>>
+    typename Dir,
+    typename V,
+    typename EC,
+    typename S,
+    typename T = graph::list_value_t<EC>>
 class edge_list_edges : public edge_list_edges<Dir, V, EC, S, none> {
     using base_t = edge_list_edges<Dir, V, EC, S, none>;
 
@@ -47,7 +47,7 @@ public:
     }
 };
 
-template<class Dir, class V, class EC, class S>
+template<typename Dir, typename V, typename EC, typename S>
 class edge_list_edges<Dir, V, EC, S, none> {
 protected:
     using traits = edge_list_traits<Dir, V, EC, S>;
@@ -76,7 +76,7 @@ public:
         return static_cast<index>(m_edges.size());
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (is_undirected) {
             if (v < u)
@@ -87,7 +87,7 @@ public:
         return {edge{u, v, res.first}, res.second};
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     edge add_edge(vertex u, vertex v, Ts&&... args) {
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
@@ -106,7 +106,7 @@ protected:
     edge_container m_edges;
 };
 
-template<class Dir, class V, class EC, class S>
+template<typename Dir, typename V, typename EC, typename S>
 class edge_list_impl : public edge_list_edges<Dir, V, EC, S> {
     using base_t = edge_list_edges<Dir, V, EC, S>;
 
@@ -118,7 +118,7 @@ public:
     }
 };
 
-template<class Dir, class V, class EC>
+template<typename Dir, typename V, typename EC>
 class edge_list_impl<Dir, V, EC, two_vertices>
     : public edge_list_edges<Dir, V, EC, two_vertices> {
     using base_t = edge_list_edges<Dir, V, EC, two_vertices>;
@@ -130,8 +130,9 @@ public:
 
     using base_t::base_t;
 
-    template<class E>
-    class edge_iterator : public forward_iterator_interface<edge_iterator<E>> {
+    template<typename E>
+    class edge_iterator
+        : public forward_iterator_interface<edge_iterator<E>> {
     public:
         using value_type = E;
         using difference_type = std::ptrdiff_t;
@@ -167,7 +168,7 @@ public:
 
     // E template parameter is needed for adjacency_list where vertices aren't
     // stored directly.
-    template<class E = edge>
+    template<typename E = edge>
     iterator_range<edge_iterator<E>> edges() const {
         return {
             edge_iterator<E>{*this, id_begin(m_edges)},
@@ -196,7 +197,10 @@ public:
 
 } // namespace detail
 
-template<class Directed, class Vertex, class EdgeContainer = std::vector<none>>
+template<
+    typename Directed,
+    typename Vertex,
+    typename EdgeContainer = std::vector<none>>
 using edge_list =
     detail::edge_list_impl<Directed, Vertex, EdgeContainer, two_vertices>;
 

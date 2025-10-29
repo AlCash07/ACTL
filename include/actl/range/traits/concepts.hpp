@@ -12,28 +12,28 @@
 namespace ac {
 
 // https://en.cppreference.com/w/cpp/ranges/range
-template<class T>
+template<typename T>
 concept Range = requires(T& t) {
     ranges::begin(t);
     ranges::end(t);
 };
 
 // https://en.cppreference.com/w/cpp/ranges/input_range
-template<class T>
+template<typename T>
 concept InputRange = Range<T> && std::input_iterator<range_iterator_t<T>>;
 
 // https://en.cppreference.com/w/cpp/ranges/forward_range
-template<class T>
+template<typename T>
 concept ForwardRange =
     InputRange<T> && std::forward_iterator<range_iterator_t<T>>;
 
 // https://en.cppreference.com/w/cpp/ranges/bidirectional_range
-template<class T>
+template<typename T>
 concept BidirectionalRange =
     ForwardRange<T> && std::bidirectional_iterator<range_iterator_t<T>>;
 
 // https://en.cppreference.com/w/cpp/ranges/random_access_range
-template<class T>
+template<typename T>
 concept RandomAccessRange =
     BidirectionalRange<T> && std::random_access_iterator<range_iterator_t<T>>;
 
@@ -43,7 +43,7 @@ concept RandomAccessRange =
 // https://en.cppreference.com/w/cpp/ranges/contiguous_range
 // we just compare references.
 // This is done to support custom pointers instead of just raw pointers.
-template<class T>
+template<typename T>
 concept ContiguousRange =
     RandomAccessRange<T> && std::contiguous_iterator<range_iterator_t<T>> &&
     requires(T& t) {

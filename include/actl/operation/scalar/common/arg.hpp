@@ -16,7 +16,7 @@ struct arg_f {
 
     struct enable_operators;
 
-    template<class T, class... Ts>
+    template<typename T, typename... Ts>
     constexpr decltype(auto) operator()(
         [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs
     ) const {

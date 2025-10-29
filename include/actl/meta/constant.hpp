@@ -47,16 +47,16 @@ inline constexpr auto size_c = size_constant<N>{};
 
 /// Provides a member constant bool value indicating
 /// whether @p T is a specialization of ac::constant.
-template<class T>
+template<typename T>
 struct is_constant : std::false_type {};
 
 template<auto X>
 struct is_constant<constant<X>> : std::true_type {};
 
-template<class T>
+template<typename T>
 inline constexpr bool is_constant_v = is_constant<T>::value;
 
-template<class T>
+template<typename T>
 struct unwrap_constant {
     using type = T;
 };
@@ -68,7 +68,7 @@ struct unwrap_constant<constant<X>> {
 
 /// Provides the type of the underlying constant value.
 /// Types other than ac::constant are unchanged.
-template<class T>
+template<typename T>
 using unwrap_constant_t = typename unwrap_constant<T>::type;
 
 } // namespace ac

@@ -12,9 +12,9 @@
 namespace ac {
 
 template<
-    class Directed,
-    class EdgeContainer = std::vector<none>,
-    class VertexContainer = none>
+    typename Directed,
+    typename EdgeContainer = std::vector<none>,
+    typename VertexContainer = none>
 class vertex_edge_list
     : public vertex_list<VertexContainer>
     , public edge_list<Directed, container_id<VertexContainer>, EdgeContainer> {
@@ -30,7 +30,7 @@ public:
     using vbase_t::operator[];
     using ebase_t::operator[];
 
-    template<class... Ts>
+    template<typename... Ts>
     std::pair<edge, bool> try_add_edge(vertex u, vertex v, Ts&&... args) {
         if constexpr (RandomAccessRange<VertexContainer>) {
             vertex n = std::max(u, v);
@@ -40,15 +40,15 @@ public:
         return ebase_t::try_add_edge(u, v, std::forward<Ts>(args)...);
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     edge add_edge(vertex u, vertex v, Ts&&... args) {
         return try_add_edge(u, v, std::forward<Ts>(args)...).first;
     }
 
     template<
-        class... Ts,
+        typename... Ts,
         bool Unique = UniqueRange<VertexContainer>,
-        class T = range_value_t<VertexContainer>>
+        typename T = range_value_t<VertexContainer>>
         requires Unique
     edge add_edge(T const& u, T const& v, Ts&&... args) {
         return add_edge(

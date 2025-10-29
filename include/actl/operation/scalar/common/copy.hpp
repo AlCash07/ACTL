@@ -13,7 +13,7 @@ namespace ac {
 struct copy_f : scalar_operation<copy_f, 1> {
     using operation_category = scalar_operation_tag;
 
-    template<class T>
+    template<typename T>
     static constexpr T eval_scalar(T x) {
         return x;
     }

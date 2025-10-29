@@ -14,7 +14,7 @@ namespace ac {
 
 /// Vector with queue interface.
 // TODO: replace with vector_as_deque.
-template<class T, class Vector = std::vector<T>>
+template<typename T, typename Vector = std::vector<T>>
 class vector_as_queue {
 public:
     using value_type = range_value_t<Vector>;
@@ -56,7 +56,7 @@ public:
         emplace(std::move(value));
     }
 
-    template<class... Ts>
+    template<typename... Ts>
     void emplace(Ts&&... args) {
         m_vector.emplace_back(std::forward<Ts>(args)...);
     }

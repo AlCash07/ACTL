@@ -16,22 +16,22 @@ struct none {
     none() = default;
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
-    template<class T, class... Ts>
+    template<typename T, typename... Ts>
     explicit constexpr none(T, Ts...) noexcept {}
 
     using value_type = none;
 };
 
-template<class T>
+template<typename T>
 inline constexpr bool is_none_v = std::is_same_v<T, none>;
 
 // clang-format off
-template <class T> struct void_to_none             { using type = T;          };
+template<typename T> struct void_to_none             { using type = T;          };
 template <>        struct void_to_none<void>       { using type = none;       };
 template <>        struct void_to_none<void const> { using type = none const; };
 // clang-format on
 
-template<class T>
+template<typename T>
 using void_to_none_t = typename void_to_none<T>::type;
 
 } // namespace ac

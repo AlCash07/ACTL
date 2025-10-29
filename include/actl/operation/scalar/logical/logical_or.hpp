@@ -33,14 +33,14 @@ struct logical_or_f : operation<logical_or_f> {
 };
 inline constexpr logical_or_f logical_or;
 
-template<class T>
+template<typename T>
 struct identity_element<logical_or_f, T> {
     static constexpr T value() {
         return T{false};
     }
 };
 
-template<class T, class U>
+template<typename T, typename U>
     requires EnableOperators<T, U>
 constexpr auto operator||(T&& lhs, U&& rhs) {
     return logical_or(pass<T>(lhs), pass<U>(rhs));

@@ -20,7 +20,7 @@ std::map<int, int> get_map() {
 
 } // namespace
 
-template<bool Writable, class Map>
+template<bool Writable, typename Map>
 void test_associative_map(Map&& map) {
     for (auto [key, value] : kv) {
         CHECK(value == get(map, key));

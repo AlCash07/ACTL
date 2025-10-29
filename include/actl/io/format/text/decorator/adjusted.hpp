@@ -19,7 +19,7 @@ enum class adjust_to : uint8_t {
     center_right = 3
 };
 
-template<class Char = char>
+template<typename Char = char>
 struct adjusted {
     explicit constexpr adjusted(
         size_t width, adjust_to where = adjust_to::left, Char fill = ' '
@@ -33,7 +33,7 @@ struct adjusted {
     struct format_tag;
 };
 
-template<class Format>
+template<typename Format>
 constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size) {
     if (fmt.width <= size)
         return {0, 0};
@@ -48,14 +48,14 @@ constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size) {
                : p;
 }
 
-template<class Char, class T>
+template<typename Char, typename T>
     requires std::is_constructible_v<cspan<Char>, T>
 auto encode(adjusted<Char> const& fmt, T&& x) {
     auto [l, r] = adjustment(fmt, cspan<Char>{x}.size());
     return batch{repeat{fmt.fill, l}, std::forward<T>(x), repeat{fmt.fill, r}};
 }
 
-template<class Char>
+template<typename Char>
 auto encode(adjusted<Char> const& fmt, Char x) {
     auto [l, r] = adjustment(fmt, 1);
     return batch{repeat{fmt.fill, l}, std::move(x), repeat{fmt.fill, r}};

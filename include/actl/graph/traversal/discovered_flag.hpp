@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template<class Map>
+template<typename Map>
 struct discovered_flag {
     static_assert(std::is_same_v<map_value_t<Map>, bool>);
 
@@ -33,10 +33,10 @@ struct discovered_flag {
     Map map;
 };
 
-template<class Map>
+template<typename Map>
 discovered_flag(Map&&) -> discovered_flag<Map>;
 
-template<class Graph>
+template<typename Graph>
 auto make_default_discovered_flag(Graph const& graph) {
     return discovered_flag{make_default_vertex_map<bool>(graph)};
 }

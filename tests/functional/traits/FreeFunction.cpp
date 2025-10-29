@@ -7,7 +7,7 @@
 #include <actl/functional/traits/all.hpp>
 #include "test.hpp"
 
-template<class Fn, bool AcceptsVArgs, bool IsNoexcept>
+template<typename Fn, bool AcceptsVArgs, bool IsNoexcept>
 void test_void_free_function_traits() {
     static_assert(std::is_same_v<void, ac::return_t<Fn>>);
     static_assert(std::is_same_v<ac::type_list<int>, ac::parameters_t<Fn>>);

@@ -10,11 +10,11 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 concept TriviallyDefaultInitializable =
     std::default_initializable<T> && std::is_trivially_constructible_v<T>;
 
-template<class T>
+template<typename T>
 concept NothrowDefaultInitializable =
     std::default_initializable<T> &&
     std::is_nothrow_constructible_v<T>&& noexcept(T{});

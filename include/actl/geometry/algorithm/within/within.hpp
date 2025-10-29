@@ -17,7 +17,7 @@ bool write(Device auto& od, Format auto& fmt, enum within x) {
     return write(od, fmt, within_name[static_cast<index>(x)]);
 }
 
-template<index N, class T, class U>
+template<index N, typename T, typename U>
 enum within within(point<T, N> const& lhs, U const& rhs) {
     return within(geometry_policy, lhs, rhs);
 }

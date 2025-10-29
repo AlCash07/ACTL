@@ -14,11 +14,11 @@
 namespace ac {
 
 template<
-    class Graph,
-    class ArticulationMap,
-    class ComponentStack,
-    class TimeMap,
-    class LowMap>
+    typename Graph,
+    typename ArticulationMap,
+    typename ComponentStack,
+    typename TimeMap,
+    typename LowMap>
 struct articulation_point_finder {
     static_assert(Graph::is_undirected);
 
@@ -86,12 +86,12 @@ struct articulation_point_finder {
     T root_children = 0;
 };
 
-template<class G, class... Ts>
+template<typename G, typename... Ts>
 auto get_articulation_point_finder(G const&, Ts&&... args) {
     return articulation_point_finder<G, Ts...>{std::forward<Ts>(args)...};
 }
 
-template<class Graph, class ArticulationMap, class ComponentMap>
+template<typename Graph, typename ArticulationMap, typename ComponentMap>
 void find_articulation_points_and_components(
     Graph const& graph,
     ArticulationMap&& articulation_map,
@@ -109,14 +109,14 @@ void find_articulation_points_and_components(
     depth_first_search{apf}(graph);
 }
 
-template<class Graph, class ArticulationMap>
+template<typename Graph, typename ArticulationMap>
 void find_articulation_points(Graph const& graph, ArticulationMap&& map) {
     find_articulation_points_and_components(
         graph, std::forward<ArticulationMap>(map), dummy_map{}
     );
 }
 
-template<class Graph, class ComponentMap>
+template<typename Graph, typename ComponentMap>
 void find_biconnected_components(Graph const& graph, ComponentMap&& map) {
     find_articulation_points_and_components(
         graph, dummy_map{}, std::forward<ComponentMap>(map)

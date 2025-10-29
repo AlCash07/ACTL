@@ -11,15 +11,15 @@
 
 namespace ac {
 
-template<class Base, class P>
+template<typename Base, typename P>
 struct policy_context : Base {
     P const& policy;
 };
 
-template<class Base, class Policy, class Op, class... Ts>
+template<typename Base, typename Policy, typename Op, typename... Ts>
     requires can_apply_policy_v<Op, Policy>
 struct context_overload<policy_context<Base, Policy>, Op, Ts...> {
-    template<class Op1>
+    template<typename Op1>
     static constexpr auto resolve(
         policy_context<Base, Policy> context, Op1&& op
     ) {
@@ -29,7 +29,7 @@ struct context_overload<policy_context<Base, Policy>, Op, Ts...> {
     }
 };
 
-template<class Context, class Op, class Policy, class... Ts>
+template<typename Context, typename Op, typename Policy, typename... Ts>
 struct overload_resolver<Context, tuned_operation<Op, Policy>, Ts...> {
     static constexpr decltype(auto) resolve(
         Context context, tuned_operation<Op, Policy> const& op

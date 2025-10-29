@@ -12,7 +12,7 @@
 
 namespace ac::io {
 
-template<class C, class T, class A, class P>
+template<typename C, typename T, typename A, typename P>
 void read_till(Device auto& id, till<std::basic_string<C, T, A>&, P> x) {
     size_t length = std::max(size_t{16}, x.value.capacity());
     for (size_t last = 0;; length = last += length) {
@@ -27,7 +27,7 @@ void read_till(Device auto& id, till<std::basic_string<C, T, A>&, P> x) {
     }
 }
 
-template<class C, class T, class A>
+template<typename C, typename T, typename A>
 auto make_parser(TextFormat auto&, std::basic_string<C, T, A>& x) {
     return till{x, is_space};
 }

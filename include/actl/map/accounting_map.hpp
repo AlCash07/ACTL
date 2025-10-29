@@ -17,7 +17,7 @@ namespace ac {
 /// Property map into integer domain that assigns next non-negative integer to
 /// every key not encountered before. Can be invertible with overhead of
 /// additional vector of pointers.
-template<class AssociativeContainer, bool Invertible = false>
+template<typename AssociativeContainer, bool Invertible = false>
 class accounting_map {
     using AC = AssociativeContainer;
     using K = typename AC::key_type;
@@ -64,7 +64,7 @@ private:
     std::conditional_t<Invertible, std::vector<K const*>, none> m_inverse;
 };
 
-template<class AM>
+template<typename AM>
     requires requires { typename AM::is_accounting_map; }
 struct map_traits<AM> : AM::template traits<std::is_const_v<AM>> {};
 

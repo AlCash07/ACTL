@@ -13,19 +13,19 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 concept TriviallyCopyable =
     std::copyable<T> && TriviallyCopyConstructible<T> && TriviallyMovable<T> &&
     TriviallyAssignableFrom<T&, T&> && TriviallyAssignableFrom<T&, const T&> &&
     TriviallyAssignableFrom<T&, const T>;
 
-template<class T>
+template<typename T>
 concept NothrowCopyable =
     std::copyable<T> && NothrowCopyConstructible<T> && NothrowMovable<T> &&
     NothrowAssignableFrom<T&, T&> && NothrowAssignableFrom<T&, const T&> &&
     NothrowAssignableFrom<T&, const T>;
 
-template<class T>
+template<typename T>
 // A type is broken if some copy versions may throw and some not.
 concept MayThrowCopyable = std::copyable<T> && MayThrowCopyConstructible<T> &&
                            !std::is_nothrow_assignable_v<T&, T&> &&

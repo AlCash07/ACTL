@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 concept NothrowRegular = NothrowSemiregular<T> && NothrowEqualityComparable<T>;
 
 } // namespace ac

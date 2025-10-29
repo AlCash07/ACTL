@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template<class T, class P>
+template<typename T, typename P>
 struct till {
     explicit constexpr till(T x, P pred) : value{x}, terminator{pred} {}
 
@@ -19,10 +19,10 @@ struct till {
     predicate<P> terminator;
 };
 
-template<class T, class P>
+template<typename T, typename P>
 till(T&&, P) -> till<T, P>;
 
-template<class P, size_t N>
+template<typename P, size_t N>
 size_t read_till(Device auto& id, till<span<char, N>, P> x) {
     size_t i = 0;
     size_t const size = x.value.size();
@@ -35,7 +35,7 @@ size_t read_till(Device auto& id, till<span<char, N>, P> x) {
     return i;
 }
 
-template<class P, size_t N>
+template<typename P, size_t N>
 size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x) {
     size_t i = 0;
     size_t const size = x.value.size();
@@ -52,7 +52,7 @@ size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x) {
     return i;
 }
 
-template<class T, class P>
+template<typename T, typename P>
 bool read_final(Device auto& id, Format auto&, till<T, P> x) {
     read_till(id, x);
     return true;

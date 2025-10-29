@@ -15,12 +15,12 @@
 
 namespace ac::detail {
 
-template<class Dir, class V, class Selector>
+template<typename Dir, typename V, typename Selector>
 struct edge_vertices {
     edge_vertices(V, V) {}
 };
 
-template<class V>
+template<typename V>
 struct edge_vertices<directed, V, one_vertex> {
     V v;
 
@@ -31,7 +31,7 @@ struct edge_vertices<directed, V, one_vertex> {
     }
 };
 
-template<class Dir, class V>
+template<typename Dir, typename V>
 struct edge_vertices<Dir, V, one_vertex> {
     V x;
 
@@ -49,7 +49,7 @@ struct edge_vertices<Dir, V, one_vertex> {
     }
 };
 
-template<class Dir, class V>
+template<typename Dir, typename V>
 struct edge_vertices<Dir, V, two_vertices> {
     V u, v;
 
@@ -82,7 +82,7 @@ private:
     }
 };
 
-template<class Dir, class V, class EC, class Selector>
+template<typename Dir, typename V, typename EC, typename Selector>
 struct edge_list_traits {
     using bundle = graph::list_value_t<EC>;
     using vertices = edge_vertices<Dir, V, Selector>;
@@ -90,7 +90,7 @@ struct edge_list_traits {
     using container = rebind_container_t<EC, edge_data>;
 };
 
-template<class Dir, class V, class EC>
+template<typename Dir, typename V, typename EC>
 struct edge_list_traits<Dir, V, EC, none> {
     using bundle = graph::list_value_t<EC>;
     using vertices = none;

@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template<class UInt>
+template<typename UInt>
 class uint_unchecked_parser {
     UInt x = 0;
     UInt base;

@@ -18,7 +18,7 @@ struct greater_equal_f : operation<greater_equal_f> {
 };
 inline constexpr greater_equal_f greater_equal;
 
-template<class T, class U>
+template<typename T, typename U>
     requires EnableOperators<T, U>
 constexpr auto operator>=(T&& lhs, U&& rhs) {
     return greater_equal(pass<T>(lhs), pass<U>(rhs));

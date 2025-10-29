@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template<class AC>
+template<typename AC>
     requires UniqueRange<AC> && PairAssociativeRange<AC>
 struct map_traits<AC>
     : map_traits_base<
@@ -25,7 +25,7 @@ struct map_traits<AC>
           true,
           AC&> {};
 
-template<class AC>
+template<typename AC>
     requires UniqueRange<AC> && PairAssociativeRange<AC>
 struct map_ops<AC> {
     // If key isn't present in container, default value is returned.

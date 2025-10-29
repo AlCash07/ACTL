@@ -14,30 +14,30 @@ namespace ac {
 
 namespace detail {
 
-template<class T>
+template<typename T>
 concept HasKeyType = requires { typename T::key_type; };
 
-template<class T>
+template<typename T>
 concept HasMappedType = requires { typename T::mapped_type; };
 
 } // namespace detail
 
-template<class T>
+template<typename T>
 concept AssociativeRange =
     Range<T> && (detail::HasKeyType<std::remove_reference_t<T>> ||
                  detail::HasKeyType<super_range_t<std::remove_reference_t<T>>>);
 
-template<class T>
+template<typename T>
 concept PairAssociativeRange =
     AssociativeRange<T> &&
     (detail::HasMappedType<std::remove_reference_t<T>> ||
      detail::HasMappedType<super_range_t<std::remove_reference_t<T>>>);
 
-template<class T>
+template<typename T>
 concept SimpleAssociativeRange =
     AssociativeRange<T> && !PairAssociativeRange<T>;
 
-template<class C>
+template<typename C>
 concept SequenceRange = Range<C> && !AssociativeRange<C>;
 
 } // namespace ac

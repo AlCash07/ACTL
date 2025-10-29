@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<class T>
+template<typename T>
 inline constexpr bool is_dynamic_range_v =
     Range<T> && static_size_v<T> == dynamic_size;
 

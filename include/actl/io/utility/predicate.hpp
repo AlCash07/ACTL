@@ -11,11 +11,11 @@
 
 namespace ac::io {
 
-template<class T>
+template<typename T>
 struct predicate {
     T pred;
 
-    template<class Char>
+    template<typename Char>
     constexpr bool operator()(Char c) const {
         if constexpr (std::is_same_v<T, Char>) {
             return pred == c;

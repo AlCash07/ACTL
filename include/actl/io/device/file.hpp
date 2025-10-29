@@ -13,7 +13,7 @@
 
 namespace ac::io {
 
-template<mode_t Mode, class Char, bool = is_in<Mode>>
+template<mode_t Mode, typename Char, bool = is_in<Mode>>
 class in_file : public device<Mode, Char> {
     static constexpr char const* mode_str[14] = {
         "r",
@@ -59,7 +59,7 @@ protected:
     bool m_own;
 };
 
-template<mode_t Mode, class Char>
+template<mode_t Mode, typename Char>
 class in_file<Mode, Char, true> : public in_file<Mode, Char, false> {
 public:
     using in_file<Mode, Char, false>::in_file;
@@ -87,13 +87,13 @@ public:
     }
 };
 
-template<mode_t Mode, class Char = std::byte, bool = is_out<Mode>>
+template<mode_t Mode, typename Char = std::byte, bool = is_out<Mode>>
 class file : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;
 };
 
-template<mode_t Mode, class Char>
+template<mode_t Mode, typename Char>
 class file<Mode, Char, true> : public in_file<Mode, Char> {
 public:
     using in_file<Mode, Char>::in_file;

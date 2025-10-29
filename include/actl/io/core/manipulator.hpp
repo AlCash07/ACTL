@@ -11,7 +11,7 @@
 
 namespace ac::io {
 
-template<class T>
+template<typename T>
 concept Manipulator = requires { typename T::is_manipulator; };
 
 void manipulate(Format auto&, Manipulator auto const&) {}
@@ -21,7 +21,7 @@ struct change_level {
     struct is_manipulator;
 };
 
-template<class Format>
+template<typename Format>
 struct nested_scope_guard {
     explicit nested_scope_guard(Format& fmt) : fmt{fmt} {
         manipulate(fmt, change_level<true>{});

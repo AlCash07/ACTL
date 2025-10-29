@@ -16,7 +16,7 @@ namespace ac {
 
 namespace detail {
 
-template<class Point>
+template<typename Point>
 auto nearest(Policy auto const& policy, span<Point> points, span<Point> tmp) {
     using T = decltype(distance(policy, points[0], points[0]));
     using Pair = std::pair<T, std::pair<Point, Point>>;
@@ -64,7 +64,7 @@ auto nearest(Policy auto const& policy, span<Point> points, span<Point> tmp) {
 
 /// Minimum distance between two different points from the set : O(N log N).
 template <
-    class T> requires (is_multi_point_v<T> && geometry_traits<T>::dimension == 2> =
+    typename T> requires (is_multi_point_v<T> && geometry_traits<T>::dimension == 2> =
         0>
 auto nearest(Policy auto const& policy, T& points)
 {

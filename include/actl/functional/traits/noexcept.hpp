@@ -13,10 +13,10 @@ namespace ac {
 
 /// Checks if the function is noexcept, see
 /// https://en.cppreference.com/w/cpp/language/noexcept_spec.html
-template<class Fn>
+template<typename Fn>
 inline constexpr bool is_noexcept_v = function_traits<Fn>::is_noexcept;
 
-template<class Fn>
+template<typename Fn>
 struct add_noexcept {
     using traits = function_traits<Fn>;
     using type = assemble_function_t<
@@ -26,10 +26,10 @@ struct add_noexcept {
         traits::accepts_variadic_arguments,
         true>;
 };
-template<class Fn>
+template<typename Fn>
 using add_noexcept_t = typename add_noexcept<Fn>::type;
 
-template<class Fn>
+template<typename Fn>
 struct remove_noexcept {
     using traits = function_traits<Fn>;
     using type = assemble_function_t<
@@ -39,7 +39,7 @@ struct remove_noexcept {
         traits::accepts_variadic_arguments,
         false>;
 };
-template<class Fn>
+template<typename Fn>
 using remove_noexcept_t = typename remove_noexcept<Fn>::type;
 
 } // namespace ac

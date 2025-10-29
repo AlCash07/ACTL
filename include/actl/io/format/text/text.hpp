@@ -19,10 +19,10 @@ namespace ac::io {
 
 struct text_tag {};
 
-template<class T>
+template<typename T>
 concept TextDevice = Device<T> && !is_bin<T::mode>;
 
-template<class T>
+template<typename T>
 concept TextFormat =
     Format<T> && std::same_as<typename T::format_tag, text_tag>;
 
@@ -81,13 +81,13 @@ text_static<> deduce_format(TextDevice auto&) {
     return {};
 }
 
-template<class S>
+template<typename S>
     requires is_string_v<S>
 auto encode(TextFormat auto&, S const& s) {
     return span{std::basic_string_view<range_value_t<S>>{s}};
 }
 
-template<class... Ts>
+template<typename... Ts>
 bool writeln(Device auto&& od, Ts&&... args) {
     return write(od, args..., raw{'\n'});
 }

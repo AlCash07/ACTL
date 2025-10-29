@@ -14,7 +14,7 @@ namespace ac {
 /// Property map that fetches member from a class key.
 // TODO: consider making this map invertible. Iter's possible, but not
 // standard-compliant.
-template<class Class, class Member>
+template<typename Class, typename Member>
 class member_map {
 public:
     using class_t = Class;
@@ -29,7 +29,7 @@ public:
 template<auto Ptr>
 class static_member_map;
 
-template<class Class, class Member, Member Class::*Ptr>
+template<typename Class, typename Member, Member Class::*Ptr>
 class static_member_map<Ptr> {
 public:
     using class_t = Class;
@@ -38,7 +38,7 @@ public:
     static constexpr auto ptr = Ptr;
 };
 
-template<class MM>
+template<typename MM>
     requires requires {
         typename MM::class_t;
         typename MM::member_t;
@@ -56,7 +56,7 @@ struct map_traits<MM> {
     static constexpr bool iterable = false;
 };
 
-template<class MM>
+template<typename MM>
     requires requires {
         typename MM::class_t;
         typename MM::member_t;

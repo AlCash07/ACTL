@@ -16,7 +16,7 @@
 namespace ac {
 
 /// Increasing range from @p first to @p last (not inclusive).
-template<class Int>
+template<typename Int>
 auto irange(Int first, Int last) {
     auto begin = integer_iterator<Int>{first};
     if (first >= last)
@@ -25,13 +25,13 @@ auto irange(Int first, Int last) {
 }
 
 /// Increasing range from 0 to @p last (not inclusive).
-template<class Int>
+template<typename Int>
 auto irange(Int last) {
     return irange(Int{}, last);
 }
 
 /// Decreasing range from @p first to @p last (inclusive).
-template<class Int>
+template<typename Int>
 auto drange(Int first, Int last) {
     auto begin = integer_iterator<Int, false>{first};
     if (first < last)
@@ -40,14 +40,14 @@ auto drange(Int first, Int last) {
 }
 
 /// Decreasing range from @p first to 0 (inclusive).
-template<class Int>
+template<typename Int>
 auto drange(Int first) {
     return drange(first, Int{});
 }
 
 /// Range with given @p step from @p first to @p last (inclusive if @p step is
 /// negative).
-template<class Int, class StepType>
+template<typename Int, typename StepType>
 auto irange(Int first, Int last, StepType step) {
     AC_ASSERT(step != 0);
     auto begin = integer_iterator_with_step<Int>{first, step};

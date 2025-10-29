@@ -10,13 +10,13 @@
 
 namespace ac::io {
 
-template<Device Dev, class T>
+template<Device Dev, typename T>
     requires(std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Dev&>)
 bool write_final(Dev&, Format auto&, T&) {
     return true;
 }
 
-template<Device Dev, class T>
+template<Device Dev, typename T>
     requires(std::is_empty_v<T> && !std::is_invocable_r_v<bool, T&, Dev&>)
 bool read_final(Dev&, Format auto&, T&) {
     return true;

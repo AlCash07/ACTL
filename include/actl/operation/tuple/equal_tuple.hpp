@@ -15,14 +15,14 @@ namespace ac {
 struct equal_tuple_f {
     static constexpr size_t inner_count = 0;
 
-    template<class EqualOps, class T, class U, size_t... Is>
+    template<typename EqualOps, typename T, typename U, size_t... Is>
     static bool
     eval(EqualOps const& ops, T const& lhs, U const& rhs, std::index_sequence<Is...>) {
         using std::get;
         return (... && get<Is>(ops)(get<Is>(lhs), get<Is>(rhs)));
     }
 
-    template<class EqualOps, class T, class U>
+    template<typename EqualOps, typename T, typename U>
     static bool evaluate(EqualOps const& ops, T const& lhs, U const& rhs) {
         return eval(ops, lhs, rhs, tuple_indices_t<T>{});
     }

@@ -11,7 +11,7 @@
 namespace ac::io {
 
 #define DEFINE_CAN(f)                                                \
-    template<class... Ts>                                            \
+    template<typename... Ts>                                         \
     auto can_##f(Ts&... xs) -> decltype(f(xs...), std::true_type{}); \
     std::false_type can_##f(...);
 
@@ -20,7 +20,7 @@ DEFINE_CAN(make_parser)
 
 #undef DEFINE_CAN
 
-template<class T>
+template<typename T>
 decltype(auto) apply_format_write(Format auto& fmt, T const& x) {
     if constexpr (decltype(can_encode(fmt, x))::value)
         return encode(fmt, x);
@@ -28,7 +28,7 @@ decltype(auto) apply_format_write(Format auto& fmt, T const& x) {
         return x;
 }
 
-template<class T>
+template<typename T>
 decltype(auto) apply_format_read(Format auto& fmt, T& x) {
     if constexpr (decltype(can_make_parser(fmt, x))::value)
         return make_parser(fmt, x);

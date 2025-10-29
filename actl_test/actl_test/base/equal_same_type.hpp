@@ -10,7 +10,7 @@
 
 namespace ac {
 
-template<class T, class U>
+template<typename T, typename U>
 constexpr bool equal_same_type(T const& lhs, U const& rhs) noexcept(
     noexcept(lhs == rhs)
 ) {

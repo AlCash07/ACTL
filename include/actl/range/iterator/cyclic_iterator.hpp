@@ -13,7 +13,7 @@
 namespace ac {
 
 /// Iterator that moves from the last element to the first and vice versa.
-template<class Range>
+template<typename Range>
 class cyclic_iterator
     : public iterator_adaptor<cyclic_iterator<Range>, range_iterator_t<Range>> {
     using Iter = range_iterator_t<Range>;
@@ -79,7 +79,7 @@ private:
     Range* m_range;
 };
 
-template<class Range>
+template<typename Range>
 auto cyclic_begin(Range& range) {
     return cyclic_iterator{range, ranges::begin(range)};
 }

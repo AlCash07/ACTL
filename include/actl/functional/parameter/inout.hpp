@@ -12,14 +12,14 @@
 namespace ac {
 
 namespace detail {
-template<class T>
+template<typename T>
 struct is_inout : std::false_type {};
 } // namespace detail
 
 /// Checks whether T is a (possibly cvref-qualified) ac::inout wrapper.
 /// @note If the program adds specializations for ac::is_inout_v,
 /// the behavior is undefined.
-template<class T>
+template<typename T>
 inline constexpr bool is_inout_v =
     detail::is_inout<std::remove_cvref_t<T>>::value;
 
@@ -36,46 +36,46 @@ inline constexpr bool is_inout_v =
 /// Using ac::inout wrapper, we can provide two clearly differentiated
 /// overloads, with `[[nodiscard]]` as another measure to prevent incorrect use:
 /// ```
-/// template<class Range>
+/// template<typename Range>
 /// void sort_range(ac::inout<Range&> range) { ... }
 ///
-/// template<class Range>
+/// template<typename Range>
 /// [[nodiscard]] Range sort_range(Range const& range) { ... }
 ///
 /// sort_range(ac::inout{x});
 /// auto y = sort_range(x);
 /// ```
-template<class T>
+template<typename T>
 class inout : public out<T> {
 public:
     /// Constructor from an arbitrary type convertible to the wrapped type.
-    template<class Arg>
+    template<typename Arg>
         requires(std::is_constructible_v<T, Arg &&> && !is_out_v<Arg>)
     explicit constexpr inout(Arg&& arg)
         AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<T>{std::forward<Arg>(arg)}) {}
 
     /// See analogous ac::out constructor.
-    template<class U>
+    template<typename U>
         requires(std::is_convertible_v<U, T>)
     constexpr inout(inout<U>&& src)
         AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<T>{*src}) {}
 
     /// Analogous to `ac::out<T>::operator=`.
     /// Overridden to change the return type from ac::out& to ac::inout&.
-    template<class Src>
+    template<typename Src>
     constexpr inout& operator=(Src&& src)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
             this->out<T>::operator=(std::forward<Src>(src)), *this
         )
 };
 
-template<class T>
+template<typename T>
 inout(T&&) -> inout<T>;
 
 namespace detail {
-template<class T>
+template<typename T>
 struct is_inout<inout<T>> : std::true_type {};
-template<class T>
+template<typename T>
 struct is_out<inout<T>> : std::true_type {};
 } // namespace detail
 

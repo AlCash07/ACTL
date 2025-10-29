@@ -12,17 +12,17 @@
 
 namespace ac {
 
-template<class T, size_t N>
+template<typename T, size_t N>
 struct range_properties<std::array<T, N>> : default_range_properties {
     static constexpr bool is_container = true;
 };
 
-template<class T, size_t N>
+template<typename T, size_t N>
 struct template_type<std::array<T, N>> {
     using type = T;
 };
 
-template<class T, size_t N, class To>
+template<typename T, size_t N, typename To>
 struct rebind<std::array<T, N>, To> {
     using type = std::array<To, N>;
 };

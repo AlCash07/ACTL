@@ -13,7 +13,7 @@ namespace ac {
 
 /// Concept of a function object, that is a type with
 /// a non-overloaded `operator()`.
-template<class T>
+template<typename T>
 concept FunctionObject = requires(T) {
     &T::operator();
     // TODO: investigate whether type qualifiers on Fn can make it

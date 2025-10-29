@@ -11,12 +11,12 @@
 
 namespace ac {
 
-template<class T, size_t... Is>
+template<typename T, size_t... Is>
 constexpr size_t hash_tuple(T const& x, std::index_sequence<Is...>) {
     return hash_value(std::get<Is>(x)...);
 }
 
-template<class... Ts>
+template<typename... Ts>
 constexpr size_t hash_value(std::tuple<Ts...> const& x) {
     return hash_tuple(x, std::index_sequence_for<Ts...>{});
 }

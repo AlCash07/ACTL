@@ -15,7 +15,7 @@ namespace ac {
 
 /// This policy implies that lines are in general position (don't coincide but
 /// can be parallel).
-template<class P>
+template<typename P>
 struct general_position_policy {
     explicit general_position_policy(P const& x) : policy{x} {}
 
@@ -24,7 +24,7 @@ struct general_position_policy {
 
 namespace detail {
 
-template<class T0, class K0, class T1, class K1, class T2>
+template<typename T0, typename K0, typename T1, typename K1, typename T2>
 bool cross_test(
     Policy auto const& policy,
     line<T0, 2, K0> const& lhs,
@@ -44,7 +44,7 @@ bool cross_test(
 
 } // namespace detail
 
-template<class T0, class K0, class T1, class K1, class OutIter>
+template<typename T0, typename K0, typename T1, typename K1, typename OutIter>
 OutIter intersect(
     line_scalar_policy<P> lsp,
     line<T0, 2, K0> const& lhs,
@@ -64,7 +64,7 @@ OutIter intersect(
     return dst;
 }
 
-template<class T0, class K0, class T1, class K1, class OutIter>
+template<typename T0, typename K0, typename T1, typename K1, typename OutIter>
 OutIter intersect(
     general_position_policy<P> gpp,
     line<T0, 2, K0> const& lhs,
@@ -79,7 +79,7 @@ OutIter intersect(
     );
 }
 
-template<class T0, class K0, class T1, class K1, class OutIter>
+template<typename T0, typename K0, typename T1, typename K1, typename OutIter>
 OutIter intersect(
     Policy auto const& policy,
     line<T0, 2, K0> const& lhs,

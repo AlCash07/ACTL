@@ -18,14 +18,14 @@ namespace ac {
 ///     [](std::string_view s) { std::print("string = “{}”", s); },
 /// }, std::variant<int, std::string>{...});
 /// @endcode
-template<class... Lambdas>
+template<typename... Lambdas>
 struct overloaded : Lambdas... {
     using Lambdas::operator()...;
 };
 
 // The link above says this deduction guide is not needed as of C++20,
 // but in fact for some compilers it is needed.
-template<class... Lambdas>
+template<typename... Lambdas>
 overloaded(Lambdas...) -> overloaded<Lambdas...>;
 
 } // namespace ac
