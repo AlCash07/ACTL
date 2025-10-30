@@ -17,12 +17,12 @@ struct bundle {
 
     explicit bundle(int i, std::string s) : i{i}, s{s} {};
 
-    bool operator<(bundle const& rhs) const {
-        return i < rhs.i;
+    bool operator<(bundle const& that) const {
+        return this->i < that.i;
     }
 
-    bool operator==(bundle const& rhs) const {
-        return i == rhs.i;
+    bool operator==(bundle const& that) const {
+        return this->i == that.i;
     }
 
     size_t hash() const {

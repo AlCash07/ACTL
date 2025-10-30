@@ -63,8 +63,8 @@ public:
         m_size = size;
     }
 
-    void swap(dummy_container& rhs) {
-        std::swap(m_size, rhs.m_size);
+    void swap(dummy_container& that) {
+        std::swap(this->m_size, that.m_size);
     }
 
 private:

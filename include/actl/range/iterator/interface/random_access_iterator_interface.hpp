@@ -55,11 +55,13 @@ public:
 
     // random_access_iterator_interface is used as the parameter type here
     // to ensure that a custom user-defined operator== is a better match.
-    constexpr bool operator==(random_access_iterator_interface const& rhs) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() <=> rhs.derived() == 0)
+    constexpr bool operator==(random_access_iterator_interface const& that
+    ) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() <=> that.derived() == 0)
 
-    constexpr auto operator<=>(random_access_iterator_interface const& rhs
-    ) const AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() - rhs.derived() <=> 0)
+    constexpr auto operator<=>(random_access_iterator_interface const& that
+    ) const
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(this->derived() - that.derived() <=> 0)
 };
 
 } // namespace ac

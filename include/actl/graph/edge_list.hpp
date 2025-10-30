@@ -96,8 +96,8 @@ public:
         return id_at(m_edges, e).first.other(u);
     }
 
-    void swap(edge_list_edges& rhs) {
-        m_edges.swap(rhs.m_edges);
+    void swap(edge_list_edges& that) {
+        this->m_edges.swap(that.m_edges);
     }
 
     void operator[](edge) const {}
@@ -113,8 +113,8 @@ class edge_list_impl : public edge_list_edges<Dir, V, EC, S> {
 public:
     using base_t::base_t;
 
-    void swap(edge_list_impl& rhs) {
-        base_t::swap(rhs);
+    void swap(edge_list_impl& that) {
+        base_t::swap(that);
     }
 };
 
@@ -190,8 +190,8 @@ public:
         id_erase(m_edges, e);
     }
 
-    void swap(edge_list_impl& rhs) {
-        base_t::swap(rhs);
+    void swap(edge_list_impl& that) {
+        base_t::swap(that);
     }
 };
 

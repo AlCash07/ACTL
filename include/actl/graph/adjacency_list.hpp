@@ -359,9 +359,9 @@ public:
         }
     }
 
-    void swap(adjacency_list& rhs) {
-        detail::adj_list_vertices<Dir, OEC, EC, VC>::swap(rhs);
-        m_edge_list.swap(rhs.m_edge_list);
+    void swap(adjacency_list& that) {
+        detail::adj_list_vertices<Dir, OEC, EC, VC>::swap(that);
+        this->m_edge_list.swap(that.m_edge_list);
     }
 
     friend edge_iterator;

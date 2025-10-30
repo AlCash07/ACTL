@@ -70,13 +70,13 @@ public:
     // TODO: make this a hidden friend.
     template<typename Derived1, typename Iter1, typename Category1>
     constexpr auto operator==(
-        iterator_adaptor<Derived1, Iter1, Category1> const& rhs
-    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() == rhs.base())
+        iterator_adaptor<Derived1, Iter1, Category1> const& that
+    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->base() == that.base())
 
     template<typename Derived1, typename Iter1, typename Types1>
     constexpr auto operator-(
-        iterator_adaptor<Derived1, Iter1, Types1> const& rhs
-    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(base() - rhs.base())
+        iterator_adaptor<Derived1, Iter1, Types1> const& that
+    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->base() - that.base())
 
 private:
     Iter m_base;

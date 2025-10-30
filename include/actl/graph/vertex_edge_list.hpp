@@ -60,9 +60,9 @@ public:
     // decrease int IDs.
     void remove_vertex(vertex u);
 
-    void swap(vertex_edge_list& rhs) {
-        vbase_t::swap(rhs);
-        ebase_t::swap(rhs);
+    void swap(vertex_edge_list& that) {
+        vbase_t::swap(that);
+        ebase_t::swap(that);
     }
 };
 

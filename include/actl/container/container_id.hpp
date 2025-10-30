@@ -42,8 +42,8 @@ public:
         return reinterpret_cast<std::uintptr_t>(std::addressof(*id.base()));
     }
 
-    bool operator<(iterator_id rhs) const {
-        return get_id_key(*this) < get_id_key(rhs);
+    bool operator<(iterator_id that) const {
+        return get_id_key(*this) < get_id_key(that);
     }
 
     iterator_id operator*() const

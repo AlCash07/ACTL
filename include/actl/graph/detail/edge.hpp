@@ -44,14 +44,14 @@ public:
         return id();
     }
 
-    bool operator<(edge const& rhs) const {
-        return id() < rhs.id();
+    bool operator<(edge const& that) const {
+        return this->id() < that.id();
     }
 
     // TODO: for undirected and bidirectional graphs edge isn't equal to its
     // reverse.
-    bool operator==(edge const& rhs) const {
-        return id() == rhs.id();
+    bool operator==(edge const& that) const {
+        return this->id() == that.id();
     }
 
 private:

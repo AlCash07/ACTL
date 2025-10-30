@@ -76,8 +76,8 @@ public:
         return m_data.data();
     }
 
-    void swap(tensor_container& rhs) {
-        std::swap(m_data, rhs.m_data);
+    void swap(tensor_container& that) {
+        std::swap(this->m_data, that.m_data);
     }
 
 private:
@@ -99,8 +99,8 @@ public:
         return m_data.get();
     }
 
-    void swap(tensor_container& rhs) {
-        std::swap(m_data, rhs.m_data);
+    void swap(tensor_container& that) {
+        std::swap(this->m_data, that.m_data);
     }
 
 private:
@@ -141,8 +141,8 @@ public:
         std::fill(end, this->data() + size, T{});
     }
 
-    void swap(tensor_data& rhs) {
-        base_t::swap(rhs);
+    void swap(tensor_data& that) {
+        base_t::swap(that);
     }
 
 private:
@@ -182,8 +182,8 @@ public:
         return m_ptr;
     }
 
-    void swap(tensor_data& rhs) {
-        std::swap(m_ptr, rhs.m_ptr);
+    void swap(tensor_data& that) {
+        std::swap(this->m_ptr, that.m_ptr);
     }
 
 private:
@@ -255,10 +255,10 @@ public:
         return m_dims;
     }
 
-    void swap(tensor_shape& rhs) {
+    void swap(tensor_shape& that) {
         using std::swap;
-        swap(m_dims, rhs.m_dims);
-        base_data::swap(rhs);
+        swap(this->m_dims, that.m_dims);
+        base_data::swap(that);
     }
 
 private:

@@ -99,8 +99,8 @@ public:
         id_erase(m_vertices, u);
     }
 
-    void swap(vertex_list& rhs) {
-        m_vertices.swap(rhs.m_vertices);
+    void swap(vertex_list& that) {
+        this->m_vertices.swap(that.m_vertices);
     }
 
     void operator[](vertex) const {}

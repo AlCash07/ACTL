@@ -16,8 +16,8 @@ struct converted {
 
     explicit constexpr converted(T x) noexcept : value{x} {}
 
-    constexpr bool operator==(converted rhs) const noexcept {
-        return value == rhs.value;
+    constexpr bool operator==(converted that) const noexcept {
+        return this->value == that.value;
     }
 };
 
