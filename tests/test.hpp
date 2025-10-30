@@ -35,9 +35,9 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
 
     T eps;
 
-    bool eval_scalar(T lhs, T rhs) const {
-        T numerator = abs(lhs - rhs);
-        T denominator = max(max(std::abs(lhs), std::abs(rhs)), T{1});
+    bool eval_scalar(T l, T r) const {
+        T numerator = abs(l - r);
+        T denominator = max(max(std::abs(l), std::abs(r)), T{1});
         return numerator <= eps * denominator;
     }
 };

@@ -12,6 +12,6 @@
 
 namespace ac {
 
-inline constexpr auto logical_implies = !lhs_ || rhs_;
+inline constexpr auto logical_implies = !l_ || r_;
 
 } // namespace ac

@@ -15,20 +15,20 @@ namespace detail {
 
 template<size_t... Is>
 constexpr bool
-equal_tuples(Tuple auto const& lhs, Tuple auto const& rhs, std::index_sequence<Is...>) noexcept {
+equal_tuples(Tuple auto const& l, Tuple auto const& r, std::index_sequence<Is...>) noexcept {
     using std::get;
-    static_assert(noexcept((... && (get<Is>(lhs) == get<Is>(rhs)))));
-    return (... && (get<Is>(lhs) == get<Is>(rhs)));
+    static_assert(noexcept((... && (get<Is>(l) == get<Is>(r)))));
+    return (... && (get<Is>(l) == get<Is>(r)));
 }
 
 } // namespace detail
 
-template<Tuple T, Tuple U>
-constexpr auto equal_sequences(T const& lhs, U const& rhs) noexcept {
-    if constexpr (std::tuple_size_v<T> != std::tuple_size_v<U>)
+template<Tuple L, Tuple R>
+constexpr auto equal_sequences(L const& l, R const& r) noexcept {
+    if constexpr (std::tuple_size_v<L> != std::tuple_size_v<R>)
         return std::false_type{};
     else
-        return detail::equal_tuples(lhs, rhs, tuple_indices_t<T>{});
+        return detail::equal_tuples(l, r, tuple_indices_t<L>{});
 }
 
 } // namespace ac

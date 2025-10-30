@@ -15,9 +15,9 @@ namespace scalar {
 struct add_f : scalar_operation<add_f, 2> {
     using operation_category = additive_operation_tag;
 
-    template<typename T, typename U>
-    static constexpr auto eval_scalar(T lhs, U rhs) {
-        return lhs + rhs;
+    template<typename L, typename R>
+    static constexpr auto eval_scalar(L l, R r) {
+        return l + r;
     }
 };
 inline constexpr add_f add;
@@ -41,16 +41,16 @@ struct identity_element<add_f, T> {
     }
 };
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator+(T&& lhs, U&& rhs) {
-    return add(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator+(L&& l, R&& r) {
+    return add(pass<L>(l), pass<R>(r));
 }
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr decltype(auto) operator+=(T&& lhs, U&& rhs) {
-    return add(inout{std::forward<T>(lhs)}, pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr decltype(auto) operator+=(L&& l, R&& r) {
+    return add(inout{std::forward<L>(l)}, pass<R>(r));
 }
 
 } // namespace ac

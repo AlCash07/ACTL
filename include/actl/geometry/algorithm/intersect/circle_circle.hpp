@@ -13,11 +13,11 @@
 
 namespace ac {
 
-template<typename T0, typename T1, typename OutIter>
+template<typename TL, typename TR, typename OutIter>
 OutIter intersect(
     Policy auto const& policy,
-    circle<T0> const& lhs,
-    circle<T1> const& rhs,
+    circle<TL> const& lhs,
+    circle<TR> const& rhs,
     OutIter dst
 ) {
     auto centers_vector = rhs.center - lhs.center;
@@ -48,14 +48,14 @@ OutIter intersect(
     return dst;
 }
 
-template<typename T0, typename T1, typename OutIter>
+template<typename TL, typename TR, typename OutIter>
 OutIter intersect(
     polar_angle_policy<P> pap,
-    circle<T0> const& lhs,
-    circle<T1> const& rhs,
+    circle<TL> const& l,
+    circle<TR> const& r,
     OutIter dst
 ) {
-    auto centers_vector = rhs.center - lhs.center;
+    auto centers_vector = r.center - l.center;
     auto centers_angle = angle(pap.policy, centers_vector);
     // TODO: implement using cosine theorem.
     return dst;

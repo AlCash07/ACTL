@@ -13,9 +13,9 @@ namespace ac {
 struct select_f : scalar_operation<select_f, 3> {
     using operation_category = scalar_operation_tag;
 
-    template<typename T, typename U>
-    constexpr auto evaluate(bool condition, T const& lhs, U const& rhs) const {
-        return condition ? eval(lhs) : eval(rhs);
+    template<typename L, typename R>
+    constexpr auto evaluate(bool condition, L const& l, R const& r) const {
+        return condition ? eval(l) : eval(r);
     }
 };
 inline constexpr select_f select;

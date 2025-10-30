@@ -24,31 +24,31 @@ struct general_position_policy {
 
 namespace detail {
 
-template<typename T0, typename K0, typename T1, typename K1, typename T2>
+template<typename TL, typename KL, typename TR, typename KR, typename TA>
 bool cross_test(
     Policy auto const& policy,
-    line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs,
-    T2 tarea,
-    T2 larea,
-    T2 rarea
+    line<TL, 2, KL> const& l,
+    line<TR, 2, KR> const& r,
+    TA tarea,
+    TA larea,
+    TA rarea
 ) {
     if (less(policy, tarea, 0)) {
         tarea = -tarea;
         larea = -larea;
         rarea = -rarea;
     }
-    return line_test(policy, lhs.kind(), larea, tarea) &&
-           line_test(policy, rhs.kind(), rarea, tarea);
+    return line_test(policy, l.kind(), larea, tarea) &&
+           line_test(policy, r.kind(), rarea, tarea);
 }
 
 } // namespace detail
 
-template<typename T0, typename K0, typename T1, typename K1, typename OutIter>
+template<typename TL, typename KL, typename TR, typename KR, typename OutIter>
 OutIter intersect(
     line_scalar_policy<P> lsp,
-    line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs,
+    line<TL, 2, KL> const& lhs,
+    line<TR, 2, KR> const& rhs,
     OutIter dst
 ) {
     auto& policy = lsp.policy;
@@ -64,26 +64,26 @@ OutIter intersect(
     return dst;
 }
 
-template<typename T0, typename K0, typename T1, typename K1, typename OutIter>
+template<typename TL, typename KL, typename TR, typename KR, typename OutIter>
 OutIter intersect(
     general_position_policy<P> gpp,
-    line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs,
+    line<TL, 2, KL> const& l,
+    line<TR, 2, KR> const& r,
     OutIter dst
 ) {
     return intersect(
         line_scalar_policy{gpp.policy},
-        lhs,
-        rhs,
-        detail::scalar_to_point_adaptor{lhs, dst}
+        l,
+        r,
+        detail::scalar_to_point_adaptor{l, dst}
     );
 }
 
-template<typename T0, typename K0, typename T1, typename K1, typename OutIter>
+template<typename TL, typename KL, typename TR, typename KR, typename OutIter>
 OutIter intersect(
     Policy auto const& policy,
-    line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs,
+    line<TL, 2, KL> const& lhs,
+    line<TR, 2, KR> const& rhs,
     OutIter dst
 ) {
     auto tarea = area(policy, rhs.vector, lhs.vector);

@@ -12,9 +12,9 @@
 
 namespace ac {
 
-template<index N, typename T, typename U>
-bool crosses(Policy auto const& policy, point<T, N> const& lhs, U const& rhs) {
-    return within(policy, lhs, rhs) == within::border;
+template<index N, typename TL, typename R>
+bool crosses(Policy auto const& policy, point<TL, N> const& l, R const& r) {
+    return within(policy, l, r) == within::border;
 }
 
 } // namespace ac

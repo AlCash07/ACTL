@@ -8,10 +8,10 @@
 #include <vector>
 #include "test.hpp"
 
-template<bool Result, typename T, typename U>
-void test_equal_sequences(T const& lhs, U const& rhs) {
-    CHECK(Result == ac::equal_sequences(lhs, rhs));
-    CHECK(Result == ac::equal_sequences(rhs, lhs));
+template<bool Result, typename L, typename R>
+void test_equal_sequences(L const& l, R const& r) {
+    CHECK(Result == ac::equal_sequences(l, r));
+    CHECK(Result == ac::equal_sequences(r, l));
 }
 
 TEST_CASE("equal_sequences for tuple/vector combination") {

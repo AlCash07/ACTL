@@ -10,16 +10,16 @@
 
 namespace ac {
 
-int add_ints(int lhs, int rhs) {
-    return lhs + rhs;
+int add_ints(int l, int r) {
+    return l + r;
 }
 
-int& add_ints(out<int&> dst, int lhs, int rhs) {
-    return *dst = lhs + rhs;
+int& add_ints(out<int&> dst, int l, int r) {
+    return *dst = l + r;
 }
 
-int& add_ints(inout<int&> lhs, int rhs) {
-    return *lhs += rhs;
+int& add_ints(inout<int&> l, int r) {
+    return *l += r;
 }
 
 TEST_CASE("Output parameter wrappers example") {

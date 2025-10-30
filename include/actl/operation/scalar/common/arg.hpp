@@ -31,7 +31,7 @@ template<size_t I, size_t N>
 inline constexpr arg_f<I, N> arg;
 
 inline constexpr arg_f<0, 1> x_;
-inline constexpr arg_f<0, 2> lhs_;
-inline constexpr arg_f<1, 2> rhs_;
+inline constexpr arg_f<0, 2> l_;
+inline constexpr arg_f<1, 2> r_;
 
 } // namespace ac

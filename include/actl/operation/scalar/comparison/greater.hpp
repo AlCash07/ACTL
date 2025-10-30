@@ -14,14 +14,14 @@ namespace ac {
 struct greater_f : operation<greater_f> {
     using operation_category = ordering_operation_tag;
 
-    static constexpr auto formula = rhs_ < lhs_;
+    static constexpr auto formula = r_ < l_;
 };
 inline constexpr greater_f greater;
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator>(T&& lhs, U&& rhs) {
-    return greater(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator>(L&& l, R&& r) {
+    return greater(pass<L>(l), pass<R>(r));
 }
 
 } // namespace ac

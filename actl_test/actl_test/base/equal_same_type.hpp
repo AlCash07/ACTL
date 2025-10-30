@@ -10,12 +10,11 @@
 
 namespace ac {
 
-template<typename T, typename U>
-constexpr bool equal_same_type(T const& lhs, U const& rhs) noexcept(
-    noexcept(lhs == rhs)
+template<typename L, typename R>
+constexpr bool equal_same_type(L const& l, R const& r) noexcept(noexcept(l == r)
 ) {
-    static_assert(std::is_same_v<T, U>);
-    return lhs == rhs;
+    static_assert(std::is_same_v<L, R>);
+    return l == r;
 }
 
 } // namespace ac

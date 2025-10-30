@@ -26,10 +26,10 @@ enum orientation operator-(enum orientation x) {
     return x;
 }
 
-template<typename T, typename U>
-    requires geometry::reverse_order<T, U>
-auto orientation(Policy auto const& policy, T const& lhs, U const& rhs) {
-    return -orientation(policy, rhs, lhs);
+template<typename L, typename R>
+    requires geometry::reverse_order<L, R>
+auto orientation(Policy auto const& policy, L const& l, R const& r) {
+    return -orientation(policy, r, l);
 }
 
 template<typename T, typename... Ts, disable_int_if_policy<T> = 0>

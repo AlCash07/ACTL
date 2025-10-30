@@ -26,13 +26,13 @@ public:
         : center{center}, radius{static_cast<T>(radius)} {}
 
     template<typename T1>
-    explicit constexpr sphere(sphere<T1, N> const& rhs)
-        : sphere{rhs.center, rhs.radius} {}
+    explicit constexpr sphere(sphere<T1, N> const& r)
+        : sphere{r.center, r.radius} {}
 
-    friend void swap(sphere& lhs, sphere& rhs) {
+    friend void swap(sphere& l, sphere& r) {
         using std::swap;
-        swap(lhs.center, rhs.center);
-        swap(lhs.radius, rhs.radius);
+        swap(l.center, r.center);
+        swap(l.radius, r.radius);
     }
 
 private:

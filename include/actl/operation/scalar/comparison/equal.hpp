@@ -15,9 +15,9 @@ namespace scalar {
 struct equal_f : scalar_operation<equal_f, 2> {
     using operation_category = equality_operation_tag;
 
-    template<typename T, typename U>
-    static constexpr bool eval_scalar(T lhs, U rhs) {
-        return lhs == rhs;
+    template<typename L, typename R>
+    static constexpr bool eval_scalar(L l, R r) {
+        return l == r;
     }
 };
 inline constexpr equal_f equal;
@@ -33,10 +33,10 @@ struct equal_f : operation<equal_f> {
 };
 inline constexpr equal_f equal;
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator==(T&& lhs, U&& rhs) {
-    return equal(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator==(L&& l, R&& r) {
+    return equal(pass<L>(l), pass<R>(r));
 }
 
 } // namespace ac

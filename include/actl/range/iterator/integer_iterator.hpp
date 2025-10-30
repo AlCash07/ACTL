@@ -34,9 +34,9 @@ public:
     }
 
     friend constexpr Int operator-(
-        integer_iterator const& lhs, integer_iterator const& rhs
+        integer_iterator const& l, integer_iterator const& r
     ) noexcept {
-        Int diff = lhs.m_value - rhs.m_value;
+        Int diff = l.m_value - r.m_value;
         return Increment ? diff : -diff;
     }
 
@@ -66,21 +66,19 @@ public:
     }
 
     constexpr friend bool operator==(
-        integer_iterator_with_step const& lhs,
-        integer_iterator_with_step const& rhs
+        integer_iterator_with_step const& l, integer_iterator_with_step const& r
     ) noexcept {
-        return lhs.m_value == rhs.m_value;
+        return l.m_value == r.m_value;
     }
 
     // TODO: if this operation is called often then it's better to avoid
     // division.
     friend constexpr Int operator-(
-        integer_iterator_with_step const& lhs,
-        integer_iterator_with_step const& rhs
+        integer_iterator_with_step const& l, integer_iterator_with_step const& r
     ) noexcept(AC_ASSERT_IS_NOEXCEPT()) {
-        AC_ASSERT(lhs.m_step == rhs.m_step);
-        AC_ASSERT((lhs.m_value - rhs.m_value) % lhs.m_step == 0);
-        return (lhs.m_value - rhs.m_value) / lhs.m_step;
+        AC_ASSERT(l.m_step == r.m_step);
+        AC_ASSERT((l.m_value - r.m_value) % l.m_step == 0);
+        return (l.m_value - r.m_value) / l.m_step;
     }
 
 private:

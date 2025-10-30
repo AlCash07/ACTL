@@ -484,8 +484,8 @@ private:
 };
 
 template<typename D, typename S>
-void swap(tensor_base<D, S>& lhs, tensor_base<D, S>& rhs) {
-    lhs.swap(rhs);
+void swap(tensor_base<D, S>& l, tensor_base<D, S>& r) {
+    l.swap(r);
 }
 
 template<typename T, size_t D, size_t... Dims>
@@ -544,15 +544,15 @@ concept Tensor = detail::is_tensor<T>::value;
 struct tensor_equal_f {
     static constexpr size_t inner_count = 1;
 
-    template<typename EqualOp, typename T, typename U>
-    static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs) {
-        if (lhs.rank() != rhs.rank())
+    template<typename EqualOp, typename L, typename R>
+    static bool evaluate(EqualOp const& op, L const& l, R const& r) {
+        if (l.rank() != r.rank())
             return false;
-        for (size_t i = 0; i < lhs.rank(); ++i) {
-            if (lhs.dimension(i) != rhs.dimension(i))
+        for (size_t i = 0; i < l.rank(); ++i) {
+            if (l.dimension(i) != r.dimension(i))
                 return false;
         }
-        return op(span{lhs}, span{rhs});
+        return op(span{l}, span{r});
     }
 };
 

@@ -18,28 +18,28 @@ namespace ac {
 struct lexicographical_compare_tuple_f {
     static constexpr size_t inner_count = 0;
 
-    template<size_t I = 0, typename Cmp3WayOps, typename T, typename U>
-    static int evaluate(Cmp3WayOps const& ops, T const& lhs, U const& rhs) {
+    template<size_t I = 0, typename Cmp3WayOps, typename L, typename R>
+    static int evaluate(Cmp3WayOps const& ops, L const& l, R const& r) {
         using std::get;
-        int v = get<I>(ops)(get<I>(lhs), get<I>(rhs));
-        if constexpr (I + 1 == std::tuple_size_v<T>)
+        int v = get<I>(ops)(get<I>(l), get<I>(r));
+        if constexpr (I + 1 == std::tuple_size_v<L>)
             return v;
         else
-            return select(v == 0, evaluate<I + 1>(ops, lhs, rhs), v);
+            return select(v == 0, evaluate<I + 1>(ops, l, r), v);
     }
 };
 inline constexpr operation_composer<lexicographical_compare_tuple_f>
     lexicographical_compare_tuple;
 
-template<Tuple T, Tuple U>
-struct overload<cmp3way_f, T, U> {
-    static constexpr auto formula = tuple_op_resolver<T, U>::resolve_tuple(
+template<Tuple L, Tuple R>
+struct overload<cmp3way_f, L, R> {
+    static constexpr auto formula = tuple_op_resolver<L, R>::resolve_tuple(
         lexicographical_compare_tuple, cmp3way
     );
 };
 
-template<Tuple T, Tuple U>
-struct overload<less_f, T, U> {
+template<Tuple L, Tuple R>
+struct overload<less_f, L, R> {
     static constexpr auto formula = cmp3way < 0_c;
 };
 

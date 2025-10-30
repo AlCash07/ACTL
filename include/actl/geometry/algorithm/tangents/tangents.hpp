@@ -10,17 +10,17 @@
 
 namespace ac {
 
-template<typename T, typename U, typename OutIter>
-    requires geometry::reverse_order<T, U>
+template<typename L, typename R, typename OutIter>
+    requires geometry::reverse_order<L, R>
 OutIter tangents(
-    Policy auto const& policy, T const& lhs, U const& rhs, OutIter dst
+    Policy auto const& policy, L const& l, R const& r, OutIter dst
 ) {
-    return tangents(policy, rhs, lhs, dst);
+    return tangents(policy, r, l, dst);
 }
 
-template<typename T, typename U, typename OutIter>
-OutIter tangents(T const& lhs, U const& rhs, OutIter dst) {
-    return tangents(geometry_policy, lhs, rhs, dst);
+template<typename L, typename R, typename OutIter>
+OutIter tangents(L const& l, R const& r, OutIter dst) {
+    return tangents(geometry_policy, l, r, dst);
 }
 
 } // namespace ac

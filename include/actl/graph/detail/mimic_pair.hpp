@@ -59,16 +59,16 @@ decltype(auto) get_key(T const& x) {
     }
 }
 
-template<typename T, typename U>
-    requires MimicPair<T> || MimicPair<U>
-auto operator==(T const& lhs, U const& rhs) {
-    return equal(get_key(lhs), get_key(rhs));
+template<typename L, typename R>
+    requires MimicPair<L> || MimicPair<R>
+auto operator==(L const& l, R const& r) {
+    return equal(get_key(l), get_key(r));
 }
 
-template<typename T, typename U>
-    requires MimicPair<T> || MimicPair<U>
-auto operator<(T const& lhs, U const& rhs) {
-    return less(get_key(lhs), get_key(rhs));
+template<typename L, typename R>
+    requires MimicPair<L> || MimicPair<R>
+auto operator<(L const& l, R const& r) {
+    return less(get_key(l), get_key(r));
 }
 
 template<typename Map>

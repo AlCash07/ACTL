@@ -46,12 +46,12 @@ template<typename T>
 concept HasStaticSize = !HasDynamicSize<T>;
 
 /// Static sizes match if they are equal, or one of them is a dynamic_size.
-inline constexpr bool static_sizes_match(size_t lhs, size_t rhs) noexcept {
-    return lhs == dynamic_size || rhs == dynamic_size || lhs == rhs;
+inline constexpr bool static_sizes_match(size_t l, size_t r) noexcept {
+    return l == dynamic_size || r == dynamic_size || l == r;
 }
 
-template<typename Lhs, typename Rhs>
+template<typename L, typename R>
 inline constexpr bool have_matching_static_sizes_v =
-    static_sizes_match(static_size_v<Lhs>, static_size_v<Rhs>);
+    static_sizes_match(static_size_v<L>, static_size_v<R>);
 
 } // namespace ac

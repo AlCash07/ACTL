@@ -12,15 +12,13 @@
 
 namespace ac {
 
-template<index N, typename T0, typename T1>
+template<index N, typename TL, typename TR>
 bool crosses(
-    Policy auto const& policy,
-    sphere<T0, N> const& lhs,
-    sphere<T1, N> const& rhs
+    Policy auto const& policy, sphere<TL, N> const& l, sphere<TR, N> const& r
 ) {
-    auto centers_dist = distance(policy, lhs.center, rhs.center);
-    return !less(policy, centers_dist, abs(lhs.radius - rhs.radius)) &&
-           !less(policy, lhs.radius + rhs.radius, centers_dist);
+    auto centers_dist = distance(policy, l.center, r.center);
+    return !less(policy, centers_dist, abs(l.radius - r.radius)) &&
+           !less(policy, l.radius + r.radius, centers_dist);
 }
 
 } // namespace ac

@@ -89,15 +89,15 @@ public:
     }
 
     friend constexpr void swap(
-        semi_static_array& lhs, semi_static_array& rhs
+        semi_static_array& l, semi_static_array& r
     ) noexcept {
-        lhs.dynamic_values.swap(rhs.dynamic_values);
+        l.dynamic_values.swap(r.dynamic_values);
     }
 
     friend constexpr auto operator==(
-        semi_static_array const& lhs, semi_static_array const& rhs
+        semi_static_array const& l, semi_static_array const& r
     ) noexcept {
-        return equal_arrays(lhs.dynamic_values, rhs.dynamic_values);
+        return equal_arrays(l.dynamic_values, r.dynamic_values);
     }
 
 private:

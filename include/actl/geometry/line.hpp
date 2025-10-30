@@ -124,22 +124,22 @@ public:
         , vector{vector ? point<T, N>{b} : point<T, N>{b - a}} {}
 
     template<typename T1, typename K1>
-    explicit constexpr line(line<T1, N, K1> const& rhs)
-        : Kind{rhs.kind()}, begin{rhs.begin}, vector{rhs.vector} {}
+    explicit constexpr line(line<T1, N, K1> const& r)
+        : Kind{r.kind()}, begin{r.begin}, vector{r.vector} {}
 
     template<typename T1, typename K1>
-    constexpr line& operator=(line<T1, N, K1> const& rhs) {
-        Kind::operator=(rhs.kind());
-        begin = rhs.begin;
-        vector = rhs.vector;
+    constexpr line& operator=(line<T1, N, K1> const& r) {
+        Kind::operator=(r.kind());
+        begin = r.begin;
+        vector = r.vector;
         return *this;
     }
 
-    friend void swap(line& lhs, line& rhs) {
+    friend void swap(line& l, line& r) {
         using std::swap;
-        swap(lhs.begin, rhs.begin);
-        swap(lhs.vector, rhs.vector);
-        swap(static_cast<Kind&>(lhs), rhs);
+        swap(l.begin, r.begin);
+        swap(l.vector, r.vector);
+        swap(static_cast<Kind&>(l), r);
     }
 
     constexpr point<T, N> end() const {

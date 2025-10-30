@@ -50,8 +50,8 @@ public:
     }
 
     friend bool operator==(
-        adj_list_out_edge_iter const& lhs, adj_list_out_edge_iter const& rhs
-    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.m_iter == rhs.m_iter)
+        adj_list_out_edge_iter const& l, adj_list_out_edge_iter const& r
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(l.m_iter == r.m_iter)
 };
 
 template<typename G>
@@ -116,10 +116,10 @@ public:
     }
 
     friend bool operator==(
-        adj_list_edge_iter const& lhs, adj_list_edge_iter const& rhs
+        adj_list_edge_iter const& l, adj_list_edge_iter const& r
     )
         AC_DEDUCE_NOEXCEPT_AND_RETURN(
-            lhs.m_u == rhs.m_u && (lhs.is_end() || lhs.m_iter == rhs.m_iter)
+            l.m_u == r.m_u && (l.is_end() || l.m_iter == r.m_iter)
         )
 };
 

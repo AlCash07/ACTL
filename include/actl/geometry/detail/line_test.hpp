@@ -10,17 +10,17 @@
 
 namespace ac::detail {
 
-template<typename T, typename U>
+template<typename L, typename R>
 bool endpoint_test(
-    Policy auto const& policy, endpoint kind, T const& lhs, U const& rhs
+    Policy auto const& policy, endpoint kind, L const& l, R const& r
 ) {
     switch (kind) {
         case endpoint::free:
             return true;
         case endpoint::closed:
-            return !less(policy, rhs, lhs);
+            return !less(policy, r, l);
         case endpoint::open:
-            return less(policy, lhs, rhs);
+            return less(policy, l, r);
     }
 }
 

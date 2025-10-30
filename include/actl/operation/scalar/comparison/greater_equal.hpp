@@ -18,10 +18,10 @@ struct greater_equal_f : operation<greater_equal_f> {
 };
 inline constexpr greater_equal_f greater_equal;
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator>=(T&& lhs, U&& rhs) {
-    return greater_equal(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator>=(L&& l, R&& r) {
+    return greater_equal(pass<L>(l), pass<R>(r));
 }
 
 } // namespace ac

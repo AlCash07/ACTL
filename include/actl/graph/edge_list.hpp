@@ -150,9 +150,8 @@ public:
             return *this;
         }
 
-        friend bool operator==(
-            edge_iterator const& lhs, edge_iterator const& rhs
-        ) AC_DEDUCE_NOEXCEPT_AND_RETURN(lhs.m_id == rhs.m_id)
+        friend bool operator==(edge_iterator const& l, edge_iterator const& r)
+            AC_DEDUCE_NOEXCEPT_AND_RETURN(l.m_id == r.m_id)
 
     private:
         friend class edge_list_impl;

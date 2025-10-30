@@ -24,15 +24,12 @@ range_difference_t<Range> count(Range const& src, T const& value) {
     return std::count(ranges::begin(src), ranges::end(src), value);
 }
 
-template<typename Range0, typename Range1>
-std::pair<range_iterator_t<Range0>, range_iterator_t<Range1>> mismatch(
-    Range0 const& lhs, Range1 const& rhs
+template<typename RangeL, typename RangeR>
+std::pair<range_iterator_t<RangeL>, range_iterator_t<RangeR>> mismatch(
+    RangeL const& l, RangeR const& r
 ) {
     return std::mismatch(
-        ranges::begin(lhs),
-        ranges::end(lhs),
-        ranges::begin(rhs),
-        ranges::end(rhs)
+        ranges::begin(l), ranges::end(l), ranges::begin(r), ranges::end(r)
     );
 }
 
@@ -105,24 +102,20 @@ range_iterator_t<Range const> upper_bound(
     return std::upper_bound(ranges::begin(src), ranges::end(src), value, comp);
 }
 
-template<typename Range0, typename Range1, typename OutIter>
-bool merge(Range0 const& lhs, Range1 const& rhs, OutIter dst) {
+template<typename RangeL, typename RangeR, typename OutIter>
+bool merge(RangeL const& l, RangeR const& r, OutIter dst) {
     return std::merge(
-        ranges::begin(lhs),
-        ranges::end(lhs),
-        ranges::begin(rhs),
-        ranges::end(rhs),
-        dst
+        ranges::begin(l), ranges::end(l), ranges::begin(r), ranges::end(r), dst
     );
 }
 
-template<typename Range0, typename Range1, typename OutIter, typename Compare>
-bool merge(Range0 const& lhs, Range1 const& rhs, OutIter dst, Compare comp) {
+template<typename RangeL, typename RangeR, typename OutIter, typename Compare>
+bool merge(RangeL const& l, RangeR const& r, OutIter dst, Compare comp) {
     return std::merge(
-        ranges::begin(lhs),
-        ranges::end(lhs),
-        ranges::begin(rhs),
-        ranges::end(rhs),
+        ranges::begin(l),
+        ranges::end(l),
+        ranges::begin(r),
+        ranges::end(r),
         dst,
         comp
     );
@@ -161,26 +154,17 @@ std::pair<Iterator, Iterator> minmax_element(Range const& src, Compare comp) {
     return std::minmax_element(ranges::begin(src), ranges::end(src), comp);
 }
 
-template<typename Range0, typename Range1>
-bool lexicographical_compare(Range0 const& lhs, Range1 const& rhs) {
+template<typename RangeL, typename RangeR>
+bool lexicographical_compare(RangeL const& l, RangeR const& r) {
     return std::lexicographical_compare(
-        ranges::begin(lhs),
-        ranges::end(lhs),
-        ranges::begin(rhs),
-        ranges::end(rhs)
+        ranges::begin(l), ranges::end(l), ranges::begin(r), ranges::end(r)
     );
 }
 
-template<typename Range0, typename Range1, typename Compare>
-bool lexicographical_compare(
-    Range0 const& lhs, Range1 const& rhs, Compare comp
-) {
+template<typename RangeL, typename RangeR, typename Compare>
+bool lexicographical_compare(RangeL const& l, RangeR const& r, Compare comp) {
     return std::lexicographical_compare(
-        ranges::begin(lhs),
-        ranges::end(lhs),
-        ranges::begin(rhs),
-        ranges::end(rhs),
-        comp
+        ranges::begin(l), ranges::end(l), ranges::begin(r), ranges::end(r), comp
     );
 }
 

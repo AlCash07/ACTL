@@ -27,13 +27,13 @@ TEST_CASE("general position") {
     CHECK(1u == res.size());
 }
 
-template<ac::index N, typename T, typename K1, typename K2>
-bool equal_lines(line<T, N, K1> const& lhs, line<T, N, K2> const& rhs) {
-    if (lhs.kind() != rhs.kind())
+template<ac::index N, typename T, typename KL, typename KR>
+bool equal_lines(line<T, N, KL> const& l, line<T, N, KR> const& r) {
+    if (l.kind() != r.kind())
         return false;
-    bool ok = lhs.begin == rhs.begin && lhs.vector == rhs.vector;
-    if (end(lhs.kind()) == begin(lhs.kind())) {
-        if (lhs.begin == rhs.end() && lhs.vector == -rhs.vector)
+    bool ok = l.begin == r.begin && l.vector == r.vector;
+    if (end(l.kind()) == begin(l.kind())) {
+        if (l.begin == r.end() && l.vector == -r.vector)
             ok = true;
     }
     return ok;

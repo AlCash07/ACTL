@@ -15,9 +15,9 @@ namespace scalar {
 struct bit_or_f : scalar_operation<bit_or_f, 2> {
     using operation_category = bitwise_operation_tag;
 
-    template<typename T, typename U>
-    static constexpr auto eval_scalar(T lhs, U rhs) {
-        return lhs | rhs;
+    template<typename L, typename R>
+    static constexpr auto eval_scalar(L l, R r) {
+        return l | r;
     }
 };
 inline constexpr bit_or_f bit_or;
@@ -41,16 +41,16 @@ struct identity_element<bit_or_f, T> {
     }
 };
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator|(T&& lhs, U&& rhs) {
-    return bit_or(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator|(L&& l, R&& r) {
+    return bit_or(pass<L>(l), pass<R>(r));
 }
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr decltype(auto) operator|=(T&& lhs, U&& rhs) {
-    return bit_or(inout{std::forward<T>(lhs)}, pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr decltype(auto) operator|=(L&& l, R&& r) {
+    return bit_or(inout{std::forward<L>(l)}, pass<R>(r));
 }
 
 } // namespace ac

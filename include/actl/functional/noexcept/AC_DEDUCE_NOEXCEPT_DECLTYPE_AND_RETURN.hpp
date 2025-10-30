@@ -10,14 +10,14 @@
 /// the function and deducing the `noexcept` specification and return type from
 /// it. For example, the following operator @code
 /// template<typename T>
-/// auto operator > (T lhs, T rhs) noexcept(noexcept(rhs < lhs))
-///     -> decltype(rhs < lhs) {
-///     return rhs < lhs;
+/// auto operator > (T l, T r) noexcept(noexcept(r < l))
+///     -> decltype(r < l) {
+///     return r < l;
 /// } @endcode
 /// can be rewritten as @code
 /// template<typename T>
-/// auto operator > (T lhs, T rhs)
-///     AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(rhs < lhs)
+/// auto operator > (T l, T r)
+///     AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(r < l)
 /// @endcode
 /// This macro is different from #AC_DEDUCE_NOEXCEPT_AND_RETURN, because
 /// it correctly disables a function when the expression is ill-formed (SFINAE)

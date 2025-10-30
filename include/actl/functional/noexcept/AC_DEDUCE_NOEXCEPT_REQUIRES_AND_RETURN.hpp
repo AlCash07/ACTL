@@ -10,14 +10,14 @@
 /// expression from the function and deducing the `noexcept` specification and
 /// type requirements from it. For example, the following operator @code
 /// template<typename T>
-/// bool operator > (T lhs, T rhs) noexcept(noexcept(rhs < lhs))
-///     requires requires { rhs < lhs; } {
-///     return rhs < lhs;
+/// bool operator > (T l, T r) noexcept(noexcept(r < l))
+///     requires requires { r < l; } {
+///     return r < l;
 /// } @endcode
 /// can be rewritten as @code
 /// template<typename T>
-/// bool operator > (T lhs, T rhs)
-///     AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(rhs < lhs)
+/// bool operator > (T l, T r)
+///     AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(r < l)
 /// @endcode
 /// Unlike #AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN, this macro requires
 /// return type specification, which can make the declaration more clear.

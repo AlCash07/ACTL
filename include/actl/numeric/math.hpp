@@ -46,14 +46,14 @@ struct math_operation : scalar_operation<Op, Arity> {
     };                                           \
     constexpr name op;
 
-#define MATH_OP2(name, op)                                \
-    struct name : math_operation<name, 2> {               \
-        template<typename T, typename U>                  \
-        static constexpr auto eval_scalar(T lhs, U rhs) { \
-            using std::op;                                \
-            return op(lhs, rhs);                          \
-        }                                                 \
-    };                                                    \
+#define MATH_OP2(name, op)                            \
+    struct name : math_operation<name, 2> {           \
+        template<typename L, typename R>              \
+        static constexpr auto eval_scalar(L l, R r) { \
+            using std::op;                            \
+            return op(l, r);                          \
+        }                                             \
+    };                                                \
     constexpr name op;
 
 MATH_OP1(cos_t, cos)

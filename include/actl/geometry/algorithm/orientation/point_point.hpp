@@ -11,34 +11,34 @@
 
 namespace ac {
 
-template<typename T0, typename T1>
+template<typename TL, typename TR>
 constexpr orientation2d orientation(
-    Policy auto const& policy, point<T0> const& lhs, point<T1> const& rhs
+    Policy auto const& policy, point<TL> const& l, point<TR> const& r
 ) {
-    return static_cast<orientation2d>(sgn(policy, area(policy, rhs, lhs)));
+    return static_cast<orientation2d>(sgn(policy, area(policy, r, l)));
 }
 
-template<typename T0, typename T1, typename T2>
+template<typename TL, typename TR, typename TO>
 constexpr orientation2d orientation(
     Policy auto const& policy,
-    point<T0> const& lhs,
-    point<T1> const& rhs,
-    point<T2> const& origin
+    point<TL> const& l,
+    point<TR> const& r,
+    point<TO> const& origin
 ) {
-    return orientation(policy, lhs - origin, rhs - origin);
+    return orientation(policy, l - origin, r - origin);
 }
 
-template<index N, typename T0, typename T1>
+template<index N, typename TL, typename TR>
 enum orientation orientation(
-    Policy auto const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs
+    Policy auto const& policy, point<TL, N> const& l, point<TR, N> const& r
 ) {
     index i = 0;
-    for (; i < N && equal(policy, lhs[i], 0); ++i) {
-        if (!equal(policy, rhs[i], 0))
+    for (; i < N && equal(policy, l[i], 0); ++i) {
+        if (!equal(policy, r[i], 0))
             return orientation::non_collinear;
     }
     for (index j = i + 1; j < N; ++j) {
-        if (!collinear(policy, point{lhs[i], lhs[j]}, point{rhs[i], rhs[j]}))
+        if (!collinear(policy, point{l[i], l[j]}, point{r[i], r[j]}))
             return orientation::non_collinear;
     }
     return orientation::collinear;

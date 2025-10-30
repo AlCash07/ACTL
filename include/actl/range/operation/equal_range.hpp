@@ -16,22 +16,22 @@ namespace ac {
 struct equal_range_f {
     static constexpr size_t inner_count = 1;
 
-    template<typename EqualOp, typename T, typename U>
-    static bool evaluate(EqualOp const& op, T const& lhs, U const& rhs) {
+    template<typename EqualOp, typename L, typename R>
+    static bool evaluate(EqualOp const& op, L const& l, R const& r) {
         return std::equal(
-            ranges::begin(lhs),
-            ranges::end(lhs),
-            ranges::begin(rhs),
-            ranges::end(rhs),
+            ranges::begin(l),
+            ranges::end(l),
+            ranges::begin(r),
+            ranges::end(r),
             op
         );
     }
 };
 inline constexpr operation_composer<equal_range_f> equal_range;
 
-template<Range T, Range U>
-struct overload<equal_f, T, U> {
-    static constexpr auto formula = equal_range(resolve_nested<T, U>(equal));
+template<Range L, Range R>
+struct overload<equal_f, L, R> {
+    static constexpr auto formula = equal_range(resolve_nested<L, R>(equal));
 };
 
 } // namespace ac

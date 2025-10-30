@@ -12,29 +12,29 @@
 
 namespace ac {
 
-template<typename T, typename U, typename OutIter>
-    requires geometry::reverse_order<T, U>
+template<typename L, typename R, typename OutIter>
+    requires geometry::reverse_order<L, R>
 OutIter intersect(
-    Policy auto const& policy, T const& lhs, U const& rhs, OutIter dst
+    Policy auto const& policy, L const& l, R const& r, OutIter dst
 ) {
-    return intersect(policy, rhs, lhs, dst);
+    return intersect(policy, r, l, dst);
 }
 
-template<index N, typename T, typename K, typename U, typename OutIter>
+template<index N, typename T, typename K, typename R, typename OutIter>
 OutIter intersect(
-    Policy auto const& policy, line<T, N, K> const& l, U const& x, OutIter dst
+    Policy auto const& policy, line<T, N, K> const& l, R const& r, OutIter dst
 ) {
     return intersect(
         line_scalar_policy{policy},
         l,
-        x,
+        r,
         detail::scalar_to_point_adaptor{l, dst}
     );
 }
 
-template<typename T, typename U, typename OutIter>
-OutIter intersect(T const& lhs, U const& rhs, OutIter dst) {
-    return intersect(geometry_policy, lhs, rhs, dst);
+template<typename L, typename R, typename OutIter>
+OutIter intersect(L const& l, R const& r, OutIter dst) {
+    return intersect(geometry_policy, l, r, dst);
 }
 
 } // namespace ac

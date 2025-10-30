@@ -18,9 +18,9 @@ struct min_f : scalar_operation<min_f, 2> {
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 
-    template<typename T, typename U>
-    static constexpr auto eval_scalar(T lhs, U rhs) {
-        return eval(select(less(rhs, lhs), rhs, lhs));
+    template<typename L, typename R>
+    static constexpr auto eval_scalar(L l, R r) {
+        return eval(select(less(r, l), r, l));
     }
 };
 inline constexpr min_f min;

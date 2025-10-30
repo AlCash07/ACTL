@@ -10,17 +10,17 @@
 
 namespace ac {
 
-template<typename T, typename U>
-    requires(is_dynamic_range_v<T> && is_dynamic_range_v<U>)
-constexpr bool equal_sequences(T const& lhs, U const& rhs) noexcept {
-    static_assert(RandomAccessRange<T>);
-    static_assert(RandomAccessRange<U>);
-    static_assert(noexcept(lhs.size(), lhs[0], rhs.size(), rhs[0]));
-    auto n = lhs.size();
-    if (rhs.size() != n)
+template<typename L, typename R>
+    requires(is_dynamic_range_v<L> && is_dynamic_range_v<R>)
+constexpr bool equal_sequences(L const& l, R const& r) noexcept {
+    static_assert(RandomAccessRange<L>);
+    static_assert(RandomAccessRange<R>);
+    static_assert(noexcept(l.size(), l[0], r.size(), r[0]));
+    auto n = l.size();
+    if (r.size() != n)
         return false;
     for (decltype(n) i = 0; i != n; ++i)
-        if (lhs[i] != rhs[i])
+        if (l[i] != r[i])
             return false;
     return true;
 }

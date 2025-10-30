@@ -10,15 +10,15 @@
 
 namespace ac {
 
-template<typename T, typename U>
-    requires geometry::reverse_order<T, U>
-bool crosses(Policy auto const& policy, T const& lhs, U const& rhs) {
-    return crosses(policy, rhs, lhs);
+template<typename L, typename R>
+    requires geometry::reverse_order<L, R>
+bool crosses(Policy auto const& policy, L const& l, R const& r) {
+    return crosses(policy, r, l);
 }
 
-template<typename T, typename U>
-bool crosses(T const& lhs, U const& rhs) {
-    return crosses(geometry_policy, rhs, lhs);
+template<typename L, typename R>
+bool crosses(L const& l, R const& r) {
+    return crosses(geometry_policy, r, l);
 }
 
 } // namespace ac

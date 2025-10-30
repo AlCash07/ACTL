@@ -10,15 +10,15 @@
 
 namespace ac {
 
-template<typename T, typename U>
-    requires geometry::reverse_order<T, U>
-auto distance(Policy auto const& policy, T const& lhs, U const& rhs) {
-    return distance(policy, rhs, lhs);
+template<typename L, typename R>
+    requires geometry::reverse_order<L, R>
+auto distance(Policy auto const& policy, L const& l, R const& r) {
+    return distance(policy, r, l);
 }
 
-template<typename T, typename U>
-auto distance(T const& lhs, U const& rhs) {
-    return distance(geometry_policy, rhs, lhs);
+template<typename L, typename R>
+auto distance(L const& l, R const& r) {
+    return distance(geometry_policy, r, l);
 }
 
 } // namespace ac

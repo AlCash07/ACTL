@@ -25,11 +25,9 @@ public:
     }
 
     friend constexpr auto perform(
-        ComparisonOperation auto op,
-        square_root const& lhs,
-        square_root const& rhs
+        ComparisonOperation auto op, square_root const& l, square_root const& r
     ) {
-        return op(lhs.m_sqr, rhs.m_sqr);
+        return op(l.m_sqr, r.m_sqr);
     }
 
 private:

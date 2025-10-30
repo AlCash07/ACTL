@@ -12,9 +12,9 @@
 
 namespace ac {
 
-template<index N, typename T0, typename T1>
+template<index N, typename TL, typename TR>
 bool crosses(
-    Policy auto const& policy, plane<T0, N> const& lhs, plane<T1, N> const& rhs
+    Policy auto const& policy, plane<TL, N> const& lhs, plane<TR, N> const& rhs
 ) {
     AC_ASSERT(!degenerate(policy, lhs) && !degenerate(policy, rhs));
     if (!collinear(policy, lhs.normal, rhs.normal))

@@ -10,9 +10,9 @@ namespace ac {
 
 // TODO: remove when std::array operator== is constexpr.
 template<typename Array>
-constexpr bool equal_arrays(Array const& lhs, Array const& rhs) noexcept {
-    for (size_t i = 0; i != lhs.size(); ++i)
-        if (lhs[i] != rhs[i])
+constexpr bool equal_arrays(Array const& l, Array const& r) noexcept {
+    for (size_t i = 0; i != l.size(); ++i)
+        if (l[i] != r[i])
             return false;
     return true;
 }

@@ -26,7 +26,7 @@ constexpr auto apply_policy(scalar::equal_f, absolute_error<E> const& policy) {
 
 template<typename E>
 constexpr auto apply_policy(scalar::less_f, absolute_error<E> const& policy) {
-    return policy.epsilon() < rhs_ - lhs_;
+    return policy.epsilon() < r_ - l_;
 }
 
 } // namespace ac

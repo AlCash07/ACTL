@@ -20,8 +20,8 @@ template<typename Point>
 auto nearest(Policy auto const& policy, span<Point> points, span<Point> tmp) {
     using T = decltype(distance(policy, points[0], points[0]));
     using Pair = std::pair<T, std::pair<Point, Point>>;
-    auto y_comp = [&policy](Point const& lhs, Point const& rhs) {
-        return less(policy, lhs.y(), rhs.y());
+    auto y_comp = [&policy](Point const& l, Point const& r) {
+        return less(policy, l.y(), r.y());
     };
     index const n = points.size();
     if (n <= 3) {
@@ -63,11 +63,9 @@ auto nearest(Policy auto const& policy, span<Point> points, span<Point> tmp) {
 } // namespace detail
 
 /// Minimum distance between two different points from the set : O(N log N).
-template <
-    typename T> requires (is_multi_point_v<T> && geometry_traits<T>::dimension == 2> =
-        0>
-auto nearest(Policy auto const& policy, T& points)
-{
+template<typename T>
+    requires(is_multi_point_v<T> && geometry_traits<T>::dimension == 2)
+auto nearest(Policy auto const& policy, T& points) {
     AC_ASSERT(points.size() > 1);
     sort(points, less(policy));
     for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j) {

@@ -8,6 +8,6 @@
 
 /// Concatenates arguments after they have been expanded.
 /// Analog of BOOST_PP_CAT.
-#define AC_CONCAT(lhs, rhs) AC_CONCAT_IMPL(lhs, rhs)
+#define AC_CONCAT(l, r) AC_CONCAT_IMPL(l, r)
 
-#define AC_CONCAT_IMPL(lhs, rhs) lhs##rhs
+#define AC_CONCAT_IMPL(l, r) l##r

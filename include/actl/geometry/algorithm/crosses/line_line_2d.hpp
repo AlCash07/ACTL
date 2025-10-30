@@ -34,22 +34,22 @@ public:
 
 } // namespace detail
 
-template<typename T0, typename K0, typename T1, typename K1>
+template<typename TL, typename KL, typename TR, typename KR>
 bool crosses(
     Policy auto const& policy,
-    line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs
+    line<TL, 2, KL> const& l,
+    line<TR, 2, KR> const& r
 ) {
-    return intersect(policy, lhs, rhs, detail::flag_output_iterator{}).flag;
+    return intersect(policy, l, r, detail::flag_output_iterator{}).flag;
 }
 
-template<typename P class T0, typename K0, typename T1, typename K1>
+template<typename P, class TL, typename KL, typename TR, typename KR>
 bool crosses(
     general_position_policy<P> gpp,
-    line<T0, 2, K0> const& lhs,
-    line<T1, 2, K1> const& rhs
+    line<TL, 2, KL> const& l,
+    line<TR, 2, KR> const& r
 ) {
-    return crosses(line_scalar_policy{gpp.policy}, lhs, rhs);
+    return crosses(line_scalar_policy{gpp.policy}, l, r);
 }
 
 } // namespace ac

@@ -10,13 +10,13 @@
 
 namespace ac {
 
-template<typename T, typename U>
-    requires geometry::reverse_order<T, U>
-auto area(Policy auto const& policy, T const& lhs, U const& rhs) {
-    if constexpr (geometry_traits<T>::dimension == 2) {
-        return -area(policy, rhs, lhs);
+template<typename L, typename R>
+    requires geometry::reverse_order<L, R>
+auto area(Policy auto const& policy, L const& l, R const& r) {
+    if constexpr (geometry_traits<L>::dimension == 2) {
+        return -area(policy, r, l);
     } else {
-        return area(policy, rhs, lhs);
+        return area(policy, r, l);
     }
 }
 

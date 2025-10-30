@@ -10,13 +10,13 @@
 /// the function and deducing the `noexcept` specification from it.
 /// For example, the following operator @code
 /// template<typename T>
-/// bool operator > (T lhs, T rhs) noexcept(noexcept(rhs < lhs)) {
-///     return rhs < lhs;
+/// bool operator > (T l, T r) noexcept(noexcept(r < l)) {
+///     return r < l;
 /// } @endcode
 /// can be rewritten as @code
 /// template<typename T>
-/// bool operator > (T lhs, T rhs)
-///     AC_DEDUCE_NOEXCEPT_AND_RETURN(rhs < lhs)
+/// bool operator > (T l, T r)
+///     AC_DEDUCE_NOEXCEPT_AND_RETURN(r < l)
 /// @endcode
 #define AC_DEDUCE_NOEXCEPT_AND_RETURN(...) \
     noexcept(noexcept(__VA_ARGS__)) {      \

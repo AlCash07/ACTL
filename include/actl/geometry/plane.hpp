@@ -29,13 +29,12 @@ public:
         : plane{normal, dot(cast_before<Mul, T>{}, normal, p)} {}
 
     template<typename T1>
-    explicit constexpr plane(plane<T1, N> const& rhs)
-        : plane{rhs.normal, rhs.d} {}
+    explicit constexpr plane(plane<T1, N> const& r) : plane{r.normal, r.d} {}
 
-    friend void swap(plane& lhs, plane& rhs) {
+    friend void swap(plane& l, plane& r) {
         using std::swap;
-        swap(lhs.normal, rhs.normal);
-        swap(lhs.d, rhs.d);
+        swap(l.normal, r.normal);
+        swap(l.d, r.d);
     }
 
     // Oriented distance from @p point to the plane times the norm of normal.

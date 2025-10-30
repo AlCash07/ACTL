@@ -15,9 +15,9 @@ namespace scalar {
 struct div_f : scalar_operation<div_f, 2> {
     using operation_category = multiplicative_operation_tag;
 
-    template<typename T, typename U>
-    static constexpr auto eval_scalar(T lhs, U rhs) {
-        return lhs / rhs;
+    template<typename L, typename R>
+    static constexpr auto eval_scalar(L l, R r) {
+        return l / r;
     }
 };
 inline constexpr div_f div;
@@ -31,16 +31,16 @@ struct div_f : operation<div_f> {
 };
 inline constexpr div_f div;
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator/(T&& lhs, U&& rhs) {
-    return div(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator/(L&& l, R&& r) {
+    return div(pass<L>(l), pass<R>(r));
 }
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr decltype(auto) operator/=(T&& lhs, U&& rhs) {
-    return div(inout{std::forward<T>(lhs)}, pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr decltype(auto) operator/=(L&& l, R&& r) {
+    return div(inout{std::forward<L>(l)}, pass<R>(r));
 }
 
 } // namespace ac

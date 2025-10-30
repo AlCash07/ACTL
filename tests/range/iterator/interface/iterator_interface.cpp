@@ -41,16 +41,12 @@ public:
         return *this;
     }
 
-    friend constexpr bool operator==(
-        int_iterator lhs, int_iterator rhs
-    ) noexcept {
-        return lhs.m_value == rhs.m_value;
+    friend constexpr bool operator==(int_iterator l, int_iterator r) noexcept {
+        return l.m_value == r.m_value;
     }
 
-    friend constexpr int operator-(
-        int_iterator lhs, int_iterator rhs
-    ) noexcept {
-        return lhs.m_value - rhs.m_value;
+    friend constexpr int operator-(int_iterator l, int_iterator r) noexcept {
+        return l.m_value - r.m_value;
     }
 
 private:

@@ -20,10 +20,10 @@ struct not_equal_f : operation<not_equal_f> {
 };
 inline constexpr not_equal_f not_equal;
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator!=(T&& lhs, U&& rhs) {
-    return not_equal(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator!=(L&& l, R&& r) {
+    return not_equal(pass<L>(l), pass<R>(r));
 }
 
 } // namespace ac

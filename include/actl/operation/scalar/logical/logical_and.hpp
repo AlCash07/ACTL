@@ -15,8 +15,8 @@ namespace scalar {
 struct logical_and_f : scalar_operation<logical_and_f, 2> {
     using operation_category = logical_operation_tag;
 
-    static constexpr bool eval_scalar(bool lhs, bool rhs) {
-        return lhs && rhs;
+    static constexpr bool eval_scalar(bool l, bool r) {
+        return l && r;
     }
 };
 inline constexpr logical_and_f logical_and;
@@ -40,10 +40,10 @@ struct identity_element<logical_and_f, T> {
     }
 };
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator&&(T&& lhs, U&& rhs) {
-    return logical_and(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator&&(L&& l, R&& r) {
+    return logical_and(pass<L>(l), pass<R>(r));
 }
 
 } // namespace ac

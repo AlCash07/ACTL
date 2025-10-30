@@ -10,17 +10,17 @@
 
 namespace ac {
 
-template<index N, typename T0, typename T1>
+template<index N, typename TL, typename TR>
 auto bisector(
-    Policy auto const& policy, point<T0, N> const& lhs, point<T1, N> const& rhs
+    Policy auto const& policy, point<TL, N> const& l, point<TR, N> const& r
 ) {
-    return product(policy, lhs, norm(policy, rhs)) +
-           product(policy, rhs, norm(policy, lhs));
+    return product(policy, l, norm(policy, r)) +
+           product(policy, r, norm(policy, l));
 }
 
-template<index N, typename T0, typename T1>
-auto bisector(point<T0, N> const& lhs, point<T1, N> const& rhs) {
-    return bisector(geometry_policy, lhs, rhs);
+template<index N, typename TL, typename TR>
+auto bisector(point<TL, N> const& l, point<TR, N> const& r) {
+    return bisector(geometry_policy, l, r);
 }
 
 } // namespace ac

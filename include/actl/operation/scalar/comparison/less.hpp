@@ -15,9 +15,9 @@ namespace scalar {
 struct less_f : scalar_operation<less_f, 2> {
     using operation_category = ordering_operation_tag;
 
-    template<typename T, typename U>
-    static constexpr bool eval_scalar(T lhs, U rhs) {
-        return lhs < rhs;
+    template<typename L, typename R>
+    static constexpr bool eval_scalar(L l, R r) {
+        return l < r;
     }
 };
 inline constexpr less_f less;
@@ -31,10 +31,10 @@ struct less_f : operation<less_f> {
 };
 inline constexpr less_f less;
 
-template<typename T, typename U>
-    requires EnableOperators<T, U>
-constexpr auto operator<(T&& lhs, U&& rhs) {
-    return less(pass<T>(lhs), pass<U>(rhs));
+template<typename L, typename R>
+    requires EnableOperators<L, R>
+constexpr auto operator<(L&& l, R&& r) {
+    return less(pass<L>(l), pass<R>(r));
 }
 
 } // namespace ac

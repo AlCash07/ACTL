@@ -58,12 +58,12 @@ public:
     }
 
     friend std::iter_difference_t<Iter> operator-(
-        cyclic_iterator const& lhs, cyclic_iterator const& rhs
+        cyclic_iterator const& l, cyclic_iterator const& r
     ) {
-        auto dist = lhs.base() - rhs.base();
+        auto dist = l.base() - r.base();
         return dist >= 0 ? dist
                          : dist + static_cast<std::iter_difference_t<Iter>>(
-                                      ranges::size(*lhs.m_range)
+                                      ranges::size(*l.m_range)
                                   );
     }
 
