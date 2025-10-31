@@ -11,8 +11,8 @@
 namespace ac {
 
 template<index N, typename T, typename U>
-decltype(auto) project(point<T, N> const& src, U const& dst) {
-    return project(geometry_policy, src, dst);
+decltype(auto) project(point<T, N> const& p, U const& onto) {
+    return project(geometry_policy, p, onto);
 }
 
 } // namespace ac

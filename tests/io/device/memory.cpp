@@ -13,12 +13,12 @@ TEST_CASE("memory input") {
     CHECK('a' == id.get());
     CHECK('b' == id.get());
     id.move(-1);
-    char dst[9];
-    CHECK(3l == id.read({dst, 3}));
-    CHECK("bcd"sv == std::string(dst, dst + 3));
-    CHECK(1l == id.read({dst, 3}));
-    CHECK("e"sv == std::string(dst, dst + 1));
-    CHECK(0l == id.read({dst, 3}));
+    char output[9];
+    CHECK(3l == id.read({output, 3}));
+    CHECK("bcd"sv == std::string(output, output + 3));
+    CHECK(1l == id.read({output, 3}));
+    CHECK("e"sv == std::string(output, output + 1));
+    CHECK(0l == id.read({output, 3}));
     CHECK('\0' == id.get());
 }
 

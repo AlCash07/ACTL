@@ -11,13 +11,13 @@
 namespace ac {
 
 template<index N, typename T, typename U>
-auto reflect(Policy auto const& policy, point<T, N> const& src, U const& dst) {
-    return product(policy, 2, project(policy, src, dst)) - src;
+auto reflect(Policy auto const& policy, point<T, N> const& p, U const& across) {
+    return product(policy, 2, project(policy, p, across)) - p;
 }
 
 template<index N, typename T, typename U>
-auto reflect(point<T, N> const& src, U const& dst) {
-    return reflect(geometry_policy, src, dst);
+auto reflect(point<T, N> const& p, U const& across) {
+    return reflect(geometry_policy, p, across);
 }
 
 } // namespace ac

@@ -44,8 +44,8 @@ struct edge_vertices<Dir, V, one_vertex> {
         );
     }
 
-    V other(V src) const {
-        return src ^ x;
+    V other(V t) const {
+        return t ^ x;
     }
 };
 
@@ -55,11 +55,11 @@ struct edge_vertices<Dir, V, two_vertices> {
 
     edge_vertices(V u, V v) : u(u), v(v) {}
 
-    V other(V src) const {
+    V other(V t) const {
         if constexpr (std::is_integral_v<V>)
-            return src ^ u ^ v;
+            return t ^ u ^ v;
         else
-            return src == u ? v : u;
+            return t == u ? v : u;
     }
 
     constexpr auto key() const {

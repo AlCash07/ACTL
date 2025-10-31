@@ -84,8 +84,8 @@ public:
 
     // Structured binding support.
     template<size_t I>
-    friend constexpr auto get(semi_static_array const& src) noexcept {
-        return src[size_constant<I>{}];
+    friend constexpr auto get(semi_static_array const& x) noexcept {
+        return x[size_constant<I>{}];
     }
 
     friend constexpr void swap(

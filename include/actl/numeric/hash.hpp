@@ -94,8 +94,8 @@ struct hash_function<void> {
     }
 };
 
-template<typename T, typename To>
-struct rebind<hash_function<T>, To> {
+template<typename T, typename Target>
+struct rebind<hash_function<T>, Target> {
     using type = hash_function<>;
 };
 

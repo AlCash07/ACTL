@@ -18,7 +18,7 @@ namespace ac {
 // vertices.
 template<typename VertexOutIter, typename VertexStateMap>
 struct inorder_printer {
-    VertexOutIter dst;
+    VertexOutIter output;
     VertexStateMap state;
 
     using vertex = output_type_t<VertexOutIter>;
@@ -40,55 +40,55 @@ struct inorder_printer {
         vertex u = e.source();
         decltype(auto) current = get(state, u);
         if (current > 0)
-            *dst++ = u;
+            *output++ = u;
         if (current < 2)
             put(state, u, current + 1);
     }
 
     void operator()(on_vertex_finish, vertex u) {
         if (get(state, u) < 2)
-            *dst++ = u;
+            *output++ = u;
     }
 };
 
 template<typename Event, typename VertexOutIter>
 struct vertex_printer {
-    VertexOutIter dst;
+    VertexOutIter output;
 
     void operator()(Event, output_type_t<VertexOutIter> u) {
-        *dst++ = u;
+        *output++ = u;
     }
 };
 
 template<typename Graph, typename VertexOutIter>
-void inorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
+void inorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter output) {
     auto state = make_default_vertex_map<char>(graph);
-    depth_first_search{
-        inorder_printer<VertexOutIter, decltype(state)>{dst, std::move(state)}
-    }(graph, s);
+    depth_first_search{inorder_printer<VertexOutIter, decltype(state)>{
+        output, std::move(state)
+    }}(graph, s);
 }
 
 template<typename Graph, typename VertexOutIter>
-void postorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
+void postorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter output) {
     depth_first_search{
-        vertex_printer<on_vertex_finish, VertexOutIter>{dst},
+        vertex_printer<on_vertex_finish, VertexOutIter>{output},
         make_default_discovered_flag(graph)
     }(graph, s);
 }
 
 template<typename Graph, typename VertexOutIter>
-void preorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter dst) {
+void preorder(Graph const& graph, vertex_t<Graph> s, VertexOutIter output) {
     depth_first_search{
-        vertex_printer<on_vertex_start, VertexOutIter>{dst},
+        vertex_printer<on_vertex_start, VertexOutIter>{output},
         make_default_discovered_flag(graph)
     }(graph, s);
 }
 
 /// Outputs topological sort of the DAG in reverse order.
 template<typename Graph, typename VertexOutIter>
-void topological_sort(Graph const& graph, VertexOutIter dst) {
+void topological_sort(Graph const& graph, VertexOutIter output) {
     depth_first_search{
-        vertex_printer<on_vertex_finish, VertexOutIter>{dst},
+        vertex_printer<on_vertex_finish, VertexOutIter>{output},
         make_default_discovered_flag(graph)
     }(graph);
 }

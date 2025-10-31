@@ -10,74 +10,77 @@
 
 namespace ac {
 
-template<typename Dst, typename Src>
+template<typename Target, typename Source>
 struct copy_reference {
-    using type = Dst;
+    using type = Target;
 };
-template<typename Dst, typename Src>
-using copy_reference_t = typename copy_reference<Dst, Src>::type;
+template<typename Target, typename Source>
+using copy_reference_t = typename copy_reference<Target, Source>::type;
 
-template<typename Dst, typename Src>
+template<typename Target, typename Source>
 struct copy_const {
-    using type = Dst;
+    using type = Target;
 };
-template<typename Dst, typename Src>
-using copy_const_t = typename copy_const<Dst, Src>::type;
+template<typename Target, typename Source>
+using copy_const_t = typename copy_const<Target, Source>::type;
 
-template<typename Dst, typename Src>
+template<typename Target, typename Source>
 struct copy_volatile {
-    using type = Dst;
+    using type = Target;
 };
-template<typename Dst, typename Src>
-using copy_volatile_t = typename copy_volatile<Dst, Src>::type;
+template<typename Target, typename Source>
+using copy_volatile_t = typename copy_volatile<Target, Source>::type;
 
-template<typename Dst, typename Src>
+template<typename Target, typename Source>
 struct copy_cv {
-    using type = copy_const_t<copy_volatile_t<Dst, Src>, Src>;
+    using type = copy_const_t<copy_volatile_t<Target, Source>, Source>;
 };
-template<typename Dst, typename Src>
-using copy_cv_t = typename copy_cv<Dst, Src>::type;
+template<typename Target, typename Source>
+using copy_cv_t = typename copy_cv<Target, Source>::type;
 
-template<typename Dst, typename Src>
+template<typename Target, typename Source>
 struct copy_cvref {
     using type = copy_reference_t<
-        copy_cv_t<std::remove_reference_t<Dst>, std::remove_reference_t<Src>>,
-        Src>;
+        copy_cv_t<
+            std::remove_reference_t<Target>,
+            std::remove_reference_t<Source>>,
+        Source>;
 };
-template<typename Dst, typename Src>
-using copy_cvref_t = typename copy_cvref<Dst, Src>::type;
+template<typename Target, typename Source>
+using copy_cvref_t = typename copy_cvref<Target, Source>::type;
 
 /* implementation */
 
-template<typename Dst, typename Src>
-    requires(!std::is_reference_v<Dst>)
-struct copy_reference<Dst, Src&> {
-    using type = Dst&;
+template<typename Target, typename Source>
+    requires(!std::is_reference_v<Target>)
+struct copy_reference<Target, Source&> {
+    using type = Target&;
 };
-template<typename Dst, typename Src>
-    requires(!std::is_reference_v<Dst>)
-struct copy_reference<Dst, Src&&> {
-    using type = Dst&&;
+template<typename Target, typename Source>
+    requires(!std::is_reference_v<Target>)
+struct copy_reference<Target, Source&&> {
+    using type = Target&&;
 };
-template<typename Dst, typename Src>
-struct copy_reference<Dst&, Src> : copy_reference<Dst, Src> {};
-template<typename Dst, typename Src>
-struct copy_reference<Dst&&, Src> : copy_reference<Dst, Src> {};
+template<typename Target, typename Source>
+struct copy_reference<Target&, Source> : copy_reference<Target, Source> {};
+template<typename Target, typename Source>
+struct copy_reference<Target&&, Source> : copy_reference<Target, Source> {};
 
-template<typename Dst, typename Src>
-    requires(!std::is_const_v<Dst>)
-struct copy_const<Dst, Src const> {
-    using type = Dst const;
+template<typename Target, typename Source>
+    requires(!std::is_const_v<Target>)
+struct copy_const<Target, Source const> {
+    using type = Target const;
 };
-template<typename Dst, typename Src>
-struct copy_const<Dst const, Src> : copy_const<Dst, Src> {};
+template<typename Target, typename Source>
+struct copy_const<Target const, Source> : copy_const<Target, Source> {};
 
-template<typename Dst, typename Src>
-    requires(!std::is_volatile_v<Dst>)
-struct copy_volatile<Dst, Src volatile> {
-    using type = Dst volatile;
+template<typename Target, typename Source>
+    requires(!std::is_volatile_v<Target>)
+struct copy_volatile<Target, Source volatile> {
+    using type = Target volatile;
 };
-template<typename Dst, typename Src>
-struct copy_volatile<Dst volatile, Src> : copy_volatile<Dst, Src> {};
+template<typename Target, typename Source>
+struct copy_volatile<Target volatile, Source>
+    : copy_volatile<Target, Source> {};
 
 } // namespace ac

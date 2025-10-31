@@ -14,32 +14,35 @@
 
 namespace ac {
 
-template<typename To, typename... From>
+template<typename Target, typename... Args>
 struct range_initialization : std::true_type {
     // List initialization is intentionally used here instead of construction
     // to avoid accidental calls to constructors such as std::vector(size_t n).
-    static constexpr To convert(From&&... xs) AC_DEDUCE_NOEXCEPT_AND_RETURN(To{
-        ac::convert_to<range_value_t<To>>(std::forward<From>(xs))...
-    })
+    static constexpr Target convert(Args&&... args)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(Target{
+            ac::convert_to<range_value_t<Target>>(std::forward<Args>(args))...
+        })
 };
 
 template<typename T, typename>
 using repeat_t = T;
 
-template<typename To, typename... From>
+template<typename Target, typename... Args>
 constexpr bool can_initialize_range() noexcept {
     // We check for StrictRange, because we don't want to
     // miss additional type checking enabled by the tuple.
-    if constexpr (StrictRange<To>)
-        return static_sizes_match(static_size_v<To>, sizeof...(From)) &&
-               (... && can_convert_to_v<range_value_t<To>, From>)&& //
-               can_list_initialize_v<To, repeat_t<range_value_t<To>, From>...>;
+    if constexpr (StrictRange<Target>)
+        return static_sizes_match(static_size_v<Target>, sizeof...(Args)) &&
+               (... && can_convert_to_v<range_value_t<Target>, Args>)&& //
+               can_list_initialize_v<
+                   Target,
+                   repeat_t<range_value_t<Target>, Args>...>;
     else
         return false;
 }
 
-template<typename To, typename... From>
-    requires(can_initialize_range<To, From...>())
-struct conversion<To, From...> : range_initialization<To, From...> {};
+template<typename Target, typename... Args>
+    requires(can_initialize_range<Target, Args...>())
+struct conversion<Target, Args...> : range_initialization<Target, Args...> {};
 
 } // namespace ac

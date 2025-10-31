@@ -13,9 +13,9 @@ namespace ac {
 
 template<index N, typename T0, typename T1>
 auto& project(
-    Policy auto const& policy, point<T0, N> const&, point<T1, N> const& dst
+    Policy auto const& policy, point<T0, N> const&, point<T1, N> const& onto
 ) {
-    return dst;
+    return onto;
 }
 
 } // namespace ac

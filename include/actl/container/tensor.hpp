@@ -117,10 +117,10 @@ class tensor_data : public tensor_container<Data> {
 public:
     tensor_data(size_t size) : base_t{size} {}
 
-    template<typename InRange>
-    tensor_data(size_t size, InRange data) : base_t{size} {
-        AC_ASSERT(size == ranges::size(data));
-        std::copy_n(ranges::begin(data), size, this->data());
+    template<typename SourceRange>
+    tensor_data(size_t size, SourceRange source) : base_t{size} {
+        AC_ASSERT(size == ranges::size(source));
+        std::copy_n(ranges::begin(source), size, this->data());
     }
 
     tensor_data(size_t size, T const& value) : base_t{size} {

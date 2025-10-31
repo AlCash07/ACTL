@@ -10,12 +10,13 @@
 
 namespace ac {
 
-template<typename L, typename R>
+template<typename Target, typename Source>
 concept TriviallyAssignableFrom =
-    std::assignable_from<L, R> && std::is_trivially_assignable_v<L, R>;
+    std::assignable_from<Target, Source> &&
+    std::is_trivially_assignable_v<Target, Source>;
 
-template<typename L, typename R>
-concept NothrowAssignableFrom =
-    std::assignable_from<L, R> && std::is_nothrow_assignable_v<L, R>;
+template<typename Target, typename Source>
+concept NothrowAssignableFrom = std::assignable_from<Target, Source> &&
+                                std::is_nothrow_assignable_v<Target, Source>;
 
 } // namespace ac

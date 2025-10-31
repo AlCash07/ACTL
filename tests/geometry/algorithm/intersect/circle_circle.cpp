@@ -11,15 +11,15 @@ TEST_CASE("default") {
     circle<int> c0{{0, 0}, 17};
     using vpi = std::vector<point<int>>;
     std::vector<point<double>> res;
-    auto dst = std::back_inserter(res);
-    intersect(c0, circle<int>{{6, 0}, 10}, dst);
+    auto output = std::back_inserter(res);
+    intersect(c0, circle<int>{{6, 0}, 10}, output);
     CHECK(res.empty());
-    intersect(c0, circle<int>{{28, 0}, 10}, dst);
+    intersect(c0, circle<int>{{28, 0}, 10}, output);
     CHECK(res.empty());
-    intersect(c0, circle<int>{{27, 0}, 10}, dst);
+    intersect(c0, circle<int>{{27, 0}, 10}, output);
     CHECK_NEAR(vpi{{17, 0}}, res, 1e-12);
     res = {};
-    intersect(c0, circle<int>{{21, 0}, 10}, dst);
+    intersect(c0, circle<int>{{21, 0}, 10}, output);
     sort(res);
     CHECK_NEAR(vpi{{15, -8}, {15, 8}}, res, 1e-12);
 }

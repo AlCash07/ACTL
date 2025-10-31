@@ -151,17 +151,17 @@ static_assert(std::is_same_v<
               ac::as_free_function_t<decltype(&M::fn_va_c_rref_noexcept)>>);
 
 /* as_member_of_t */
-struct Dst {};
-static_assert(std::is_same_v<int Dst::*, ac::as_member_of_t<int, Dst>>);
+struct Target {};
+static_assert(std::is_same_v<int Target::*, ac::as_member_of_t<int, Target>>);
 static_assert(std::is_same_v<
-              void (Dst::*)(int),
-              ac::as_member_of_t<void(int), Dst>>);
+              void (Target::*)(int),
+              ac::as_member_of_t<void(int), Target>>);
 static_assert(std::is_same_v<
-              void (Dst::*)(...) noexcept,
-              ac::as_member_of_t<void(...) noexcept, Dst>>);
+              void (Target::*)(...) noexcept,
+              ac::as_member_of_t<void(...) noexcept, Target>>);
 static_assert(std::is_same_v<
-              int (Dst::*)(),
-              ac::as_member_of_t<decltype(&M::fn), Dst>>);
+              int (Target::*)(),
+              ac::as_member_of_t<decltype(&M::fn), Target>>);
 static_assert(std::is_same_v<
-              int (Dst::*)(...) const & noexcept,
-              ac::as_member_of_t<decltype(&M::fn_va_c_lref_noexcept), Dst>>);
+              int (Target::*)(...) const & noexcept,
+              ac::as_member_of_t<decltype(&M::fn_va_c_lref_noexcept), Target>>);

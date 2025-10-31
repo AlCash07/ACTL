@@ -53,12 +53,12 @@ void test_static_array_constructors() {
 }
 
 template<typename Array, typename D>
-constexpr Array fill_dynamic_values(Array src, D dynamic) noexcept {
+constexpr Array fill_dynamic_values(Array array, D dynamic) noexcept {
     size_t d = 0;
-    for (size_t i = 0; i < src.size(); ++i)
-        if (src[i] == ac::dynamic_extent<typename Array::value_type>)
-            src[i] = dynamic[d++];
-    return src;
+    for (size_t i = 0; i < array.size(); ++i)
+        if (array[i] == ac::dynamic_extent<typename Array::value_type>)
+            array[i] = dynamic[d++];
+    return array;
 }
 
 template<typename T, T... StaticValues, T... DynamicValues, size_t... Is>

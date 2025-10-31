@@ -21,26 +21,28 @@ constexpr decltype(auto) adl_get(Tuple auto const& x) noexcept {
     return get<I>(x);
 }
 
-template<typename To, typename From, typename S = tuple_indices_t<From>>
+template<typename Target, typename Source, typename I = tuple_indices_t<Source>>
 struct from_tuple;
 
-template<typename To, typename From, size_t... Is>
-struct from_tuple<To, From, std::index_sequence<Is...>> {
-    static constexpr bool value =
-        can_convert_to_v<To, decltype(adl_get<Is>(std::declval<From>()))...>;
+template<typename Target, typename Source, size_t... Is>
+struct from_tuple<Target, Source, std::index_sequence<Is...>> {
+    static constexpr bool value = can_convert_to_v<
+        Target,
+        decltype(adl_get<Is>(std::declval<Source>()))...>;
 
-    static constexpr To convert(From&& x) AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        convert_to<To>(adl_get<Is>(std::forward<From>(x))...)
-    )
+    static constexpr Target convert(Source&& source)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(
+            convert_to<Target>(adl_get<Is>(std::forward<Source>(source))...)
+        )
 };
 
 } // namespace detail
 
-template<typename To, typename From>
+template<typename Target, typename Source>
     requires(
-        !can_convert_as_ranges<To, From>() && Tuple<From> &&
-        !StrictRange<From> && (Tuple<To> || Range<To>)
+        !can_convert_as_ranges<Target, Source>() && Tuple<Source> &&
+        !StrictRange<Source> && (Tuple<Target> || Range<Target>)
     )
-struct conversion<To, From> : detail::from_tuple<To, From> {};
+struct conversion<Target, Source> : detail::from_tuple<Target, Source> {};
 
 } // namespace ac

@@ -33,7 +33,7 @@ inline constexpr bool is_inout_v =
 /// ```
 /// sort_range(x);
 /// ```
-/// Using ac::inout wrapper, we can provide two clearly differentiated
+/// Using ac::inout wrapper, we can provide two obviously differentiated
 /// overloads, with `[[nodiscard]]` as another measure to prevent incorrect use:
 /// ```
 /// template<typename Range>
@@ -55,17 +55,17 @@ public:
         AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<T>{std::forward<Arg>(arg)}) {}
 
     /// See analogous ac::out constructor.
-    template<typename U>
-        requires(std::is_convertible_v<U, T>)
-    constexpr inout(inout<U>&& src)
-        AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<T>{*src}) {}
+    template<typename Source>
+        requires(std::is_convertible_v<Source, T>)
+    constexpr inout(inout<Source>&& source)
+        AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<T>{*source}) {}
 
     /// Analogous to `ac::out<T>::operator=`.
     /// Overridden to change the return type from ac::out& to ac::inout&.
-    template<typename Src>
-    constexpr inout& operator=(Src&& src)
+    template<typename Source>
+    constexpr inout& operator=(Source&& source)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-            this->out<T>::operator=(std::forward<Src>(src)), *this
+            this->out<T>::operator=(std::forward<Source>(source)), *this
         )
 };
 

@@ -13,55 +13,57 @@
 
 namespace ac {
 
-template<typename To, typename From>
+template<typename Target, typename Source>
 struct range_construction_from_iterators {
-    using from_iter = range_iterator_t<From const>;
+    using source_iter = range_iterator_t<Source const>;
 
     static constexpr bool value =
-        std::is_constructible_v<To, from_iter, from_iter>;
+        std::is_constructible_v<Target, source_iter, source_iter>;
 
-    static constexpr To convert(From const& x)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(To{ranges::begin(x), ranges::end(x)})
+    static constexpr Target convert(Source const& source)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(Target{
+            ranges::begin(source), ranges::end(source)
+        })
 };
 
-template<typename To, typename From>
+template<typename Target, typename Source>
 struct range_construct_and_copy {
-    static constexpr bool value = static_size_v<To> != dynamic_size &&
-                                  std::is_default_constructible_v<To> &&
+    static constexpr bool value = static_size_v<Target> != dynamic_size &&
+                                  std::is_default_constructible_v<Target> &&
                                   std::is_assignable_v<
-                                      range_reference_t<To>,
-                                      range_reference_t<From const>>;
+                                      range_reference_t<Target>,
+                                      range_reference_t<Source const>>;
 
-    static constexpr To convert(From const& x) noexcept(
-        std::is_nothrow_default_constructible_v<To>&& noexcept(
-            ranges::copy(std::declval<To>(), x)
+    static constexpr Target convert(Source const& source) noexcept(
+        std::is_nothrow_default_constructible_v<Target>&& noexcept(
+            ranges::copy(std::declval<Target>(), source)
         )
     ) {
-        To result{};
-        ranges::copy(result, x);
-        return result;
+        Target output{};
+        ranges::copy(output, source);
+        return output;
     }
 };
 
-template<typename To, typename From>
+template<typename Target, typename Source>
 struct ranges_conversion
     : std::conditional_t<
-          range_construction_from_iterators<To, From>::value,
-          range_construction_from_iterators<To, From>,
-          range_construct_and_copy<To, From>> {};
+          range_construction_from_iterators<Target, Source>::value,
+          range_construction_from_iterators<Target, Source>,
+          range_construct_and_copy<Target, Source>> {};
 
-template<typename To, typename From>
+template<typename Target, typename Source>
 constexpr bool can_convert_as_ranges() noexcept {
     // We check for StrictRange, because we don't want to
     // miss additional type checking enabled by the tuple.
-    if constexpr (StrictRange<To> && StrictRange<From> && have_matching_static_sizes_v<To, From>)
-        return ranges_conversion<To, From>::value;
+    if constexpr (StrictRange<Target> && StrictRange<Source> && have_matching_static_sizes_v<Target, Source>)
+        return ranges_conversion<Target, Source>::value;
     else
         return false;
 }
 
-template<typename To, typename From>
-    requires(can_convert_as_ranges<To, From>())
-struct conversion<To, From> : ranges_conversion<To, From> {};
+template<typename Target, typename Source>
+    requires(can_convert_as_ranges<Target, Source>())
+struct conversion<Target, Source> : ranges_conversion<Target, Source> {};
 
 } // namespace ac

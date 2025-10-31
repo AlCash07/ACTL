@@ -12,22 +12,23 @@
 
 namespace ac {
 
-template<auto To, typename From>
-struct conversion<constant<To>, From> {
-    static constexpr bool value = std::is_constructible_v<decltype(To), From>;
+template<auto Target, typename Source>
+struct conversion<constant<Target>, Source> {
+    static constexpr bool value =
+        std::is_constructible_v<decltype(Target), Source>;
 
-    static constexpr constant<To> convert(From&& x
+    static constexpr constant<Target> convert(Source&& source
     ) noexcept(AC_ASSERT_IS_NOEXCEPT()) {
-        AC_ASSERT(x == To);
+        AC_ASSERT(source == Target);
         return {};
     }
 };
 
-template<auto To, auto From>
-struct conversion<constant<To>, constant<From>> {
-    static constexpr bool value = To == From;
+template<auto Target, auto Source>
+struct conversion<constant<Target>, constant<Source>> {
+    static constexpr bool value = Target == Source;
 
-    static constexpr constant<To> convert(constant<From>) noexcept {
+    static constexpr constant<Target> convert(constant<Source>) noexcept {
         return {};
     }
 };

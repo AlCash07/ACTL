@@ -15,13 +15,13 @@
 namespace ac {
 
 template<typename Range, typename Function>
-Function for_each(Range& dst, Function f) {
-    return std::for_each(ranges::begin(dst), ranges::end(dst), f);
+Function for_each(Range& range, Function f) {
+    return std::for_each(ranges::begin(range), ranges::end(range), f);
 }
 
 template<typename Range, typename T>
-range_difference_t<Range> count(Range const& src, T const& value) {
-    return std::count(ranges::begin(src), ranges::end(src), value);
+range_difference_t<Range> count(Range const& range, T const& value) {
+    return std::count(ranges::begin(range), ranges::end(range), value);
 }
 
 template<typename RangeL, typename RangeR>
@@ -34,124 +34,132 @@ std::pair<range_iterator_t<RangeL>, range_iterator_t<RangeR>> mismatch(
 }
 
 template<typename Range, typename T>
-void fill(Range& dst, T const& value) {
-    std::fill(ranges::begin(dst), ranges::end(dst), value);
+void fill(Range& target, T const& value) {
+    std::fill(ranges::begin(target), ranges::end(target), value);
 }
 
 template<typename Range, typename Generator>
-void generate(Range& dst, Generator gen) {
-    std::generate(ranges::begin(dst), ranges::end(dst), gen);
+void generate(Range& target, Generator gen) {
+    std::generate(ranges::begin(target), ranges::end(target), gen);
 }
 
 template<typename Range>
-range_iterator_t<Range> unique(Range& dst) {
-    return std::unique(ranges::begin(dst), ranges::end(dst));
+range_iterator_t<Range> unique(Range& range) {
+    return std::unique(ranges::begin(range), ranges::end(range));
 }
 
 template<typename Range, typename BinaryPredicate>
-range_iterator_t<Range> unique(Range& dst, BinaryPredicate pred) {
-    return std::unique(ranges::begin(dst), ranges::end(dst), pred);
+range_iterator_t<Range> unique(Range& range, BinaryPredicate pred) {
+    return std::unique(ranges::begin(range), ranges::end(range), pred);
 }
 
 template<typename Range>
-void reverse(Range& dst) {
-    std::reverse(ranges::begin(dst), ranges::end(dst));
+void reverse(Range& range) {
+    std::reverse(ranges::begin(range), ranges::end(range));
 }
 
 template<typename Range, typename UniformRandomNumberGenerator>
-void shuffle(Range& dst, UniformRandomNumberGenerator&& g) {
-    std::shuffle(ranges::begin(dst), ranges::end(dst), g);
+void shuffle(Range& range, UniformRandomNumberGenerator&& g) {
+    std::shuffle(ranges::begin(range), ranges::end(range), g);
 }
 
 template<typename Range, typename Predicate>
-range_iterator_t<Range> partition(Range& dst, Predicate pred) {
-    return std::partition(ranges::begin(dst), ranges::end(dst), pred);
+range_iterator_t<Range> partition(Range& range, Predicate pred) {
+    return std::partition(ranges::begin(range), ranges::end(range), pred);
 }
 
 template<typename Range>
-void sort(Range&& dst) {
-    std::sort(ranges::begin(dst), ranges::end(dst));
+void sort(Range&& range) {
+    std::sort(ranges::begin(range), ranges::end(range));
 }
 
 template<typename Range, typename Compare>
-void sort(Range&& dst, Compare comp) {
-    std::sort(ranges::begin(dst), ranges::end(dst), comp);
+void sort(Range&& range, Compare comp) {
+    std::sort(ranges::begin(range), ranges::end(range), comp);
 }
 
 template<typename Range, typename T>
-range_iterator_t<Range const> lower_bound(Range const& src, T const& value) {
-    return std::lower_bound(ranges::begin(src), ranges::end(src), value);
+range_iterator_t<Range const> lower_bound(Range const& range, T const& value) {
+    return std::lower_bound(ranges::begin(range), ranges::end(range), value);
 }
 
 template<typename Range, typename T, typename Compare>
 range_iterator_t<Range const> lower_bound(
-    Range const& src, T const& value, Compare comp
+    Range const& range, T const& value, Compare comp
 ) {
-    return std::lower_bound(ranges::begin(src), ranges::end(src), value, comp);
+    return std::lower_bound(
+        ranges::begin(range), ranges::end(range), value, comp
+    );
 }
 
 template<typename Range, typename T>
-range_iterator_t<Range const> upper_bound(Range const& src, T const& value) {
-    return std::upper_bound(ranges::begin(src), ranges::end(src), value);
+range_iterator_t<Range const> upper_bound(Range const& range, T const& value) {
+    return std::upper_bound(ranges::begin(range), ranges::end(range), value);
 }
 
 template<typename Range, typename T, typename Compare>
 range_iterator_t<Range const> upper_bound(
-    Range const& src, T const& value, Compare comp
+    Range const& range, T const& value, Compare comp
 ) {
-    return std::upper_bound(ranges::begin(src), ranges::end(src), value, comp);
-}
-
-template<typename RangeL, typename RangeR, typename OutIter>
-bool merge(RangeL const& l, RangeR const& r, OutIter dst) {
-    return std::merge(
-        ranges::begin(l), ranges::end(l), ranges::begin(r), ranges::end(r), dst
+    return std::upper_bound(
+        ranges::begin(range), ranges::end(range), value, comp
     );
 }
 
-template<typename RangeL, typename RangeR, typename OutIter, typename Compare>
-bool merge(RangeL const& l, RangeR const& r, OutIter dst, Compare comp) {
+template<typename RangeL, typename RangeR, typename OutIter>
+bool merge(RangeL const& l, RangeR const& r, OutIter output) {
     return std::merge(
         ranges::begin(l),
         ranges::end(l),
         ranges::begin(r),
         ranges::end(r),
-        dst,
+        output
+    );
+}
+
+template<typename RangeL, typename RangeR, typename OutIter, typename Compare>
+bool merge(RangeL const& l, RangeR const& r, OutIter output, Compare comp) {
+    return std::merge(
+        ranges::begin(l),
+        ranges::end(l),
+        ranges::begin(r),
+        ranges::end(r),
+        output,
         comp
     );
 }
 
 template<typename Range>
-range_iterator_t<Range const> min_element(Range const& src) {
-    return std::min_element(ranges::begin(src), ranges::end(src));
+range_iterator_t<Range const> min_element(Range const& range) {
+    return std::min_element(ranges::begin(range), ranges::end(range));
 }
 
 template<typename Range, typename Compare>
-range_iterator_t<Range const> min_element(Range const& src, Compare comp) {
-    return std::min_element(ranges::begin(src), ranges::end(src), comp);
+range_iterator_t<Range const> min_element(Range const& range, Compare comp) {
+    return std::min_element(ranges::begin(range), ranges::end(range), comp);
 }
 
 template<typename Range>
-range_iterator_t<Range const> max_element(Range const& src) {
-    return std::max_element(ranges::begin(src), ranges::end(src));
+range_iterator_t<Range const> max_element(Range const& range) {
+    return std::max_element(ranges::begin(range), ranges::end(range));
 }
 
 template<typename Range, typename Compare>
-range_iterator_t<Range const> max_element(Range const& src, Compare comp) {
-    return std::max_element(ranges::begin(src), ranges::end(src), comp);
+range_iterator_t<Range const> max_element(Range const& range, Compare comp) {
+    return std::max_element(ranges::begin(range), ranges::end(range), comp);
 }
 
 template<typename Range, typename Iterator = range_iterator_t<Range const>>
-std::pair<Iterator, Iterator> minmax_element(Range const& src) {
-    return std::minmax_element(ranges::begin(src), ranges::end(src));
+std::pair<Iterator, Iterator> minmax_element(Range const& range) {
+    return std::minmax_element(ranges::begin(range), ranges::end(range));
 }
 
 template<
     typename Range,
     typename Compare,
     typename Iterator = range_iterator_t<Range const>>
-std::pair<Iterator, Iterator> minmax_element(Range const& src, Compare comp) {
-    return std::minmax_element(ranges::begin(src), ranges::end(src), comp);
+std::pair<Iterator, Iterator> minmax_element(Range const& range, Compare comp) {
+    return std::minmax_element(ranges::begin(range), ranges::end(range), comp);
 }
 
 template<typename RangeL, typename RangeR>
@@ -169,13 +177,15 @@ bool lexicographical_compare(RangeL const& l, RangeR const& r, Compare comp) {
 }
 
 template<typename Range>
-bool next_permutation(Range& dst) {
-    return std::next_permutation(ranges::begin(dst), ranges::end(dst));
+bool next_permutation(Range& range) {
+    return std::next_permutation(ranges::begin(range), ranges::end(range));
 }
 
 template<typename Range, typename Compare>
-bool next_permutation(Range& dst, Compare comp) {
-    return std::next_permutation(ranges::begin(dst), ranges::end(dst), comp);
+bool next_permutation(Range& range, Compare comp) {
+    return std::next_permutation(
+        ranges::begin(range), ranges::end(range), comp
+    );
 }
 
 } // namespace ac

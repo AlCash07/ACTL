@@ -19,17 +19,17 @@ template<typename T, T StaticExtent>
 using extent_holder_t = std::
     conditional_t<StaticExtent == dynamic_extent<T>, T, constant<StaticExtent>>;
 
-template<typename T, typename Dst>
+template<typename T, typename Target>
 struct static_extent {
-    static constexpr auto value = dynamic_extent<deduce_t<Dst, T>>;
+    static constexpr auto value = dynamic_extent<deduce_t<Target, T>>;
 };
 
-template<auto N, typename Dst>
-struct static_extent<constant<N>, Dst> {
-    static constexpr auto value = deduce_t<Dst, decltype(N)>{N};
+template<auto N, typename Target>
+struct static_extent<constant<N>, Target> {
+    static constexpr auto value = deduce_t<Target, decltype(N)>{N};
 };
 
-template<typename T, typename Dst = use_default>
-inline constexpr auto static_extent_v = static_extent<T, Dst>::value;
+template<typename T, typename Target = use_default>
+inline constexpr auto static_extent_v = static_extent<T, Target>::value;
 
 } // namespace ac

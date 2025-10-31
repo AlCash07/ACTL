@@ -63,9 +63,10 @@ public:
         return 1;
     }
 
-    size_t write(cspan<Char> src) {
-        size_t count = std::min(src.size(), static_cast<size_t>(end() - m_ptr));
-        std::memcpy(m_ptr, src.data(), count * sizeof(Char));
+    size_t write(cspan<Char> chars) {
+        size_t count =
+            std::min(chars.size(), static_cast<size_t>(end() - m_ptr));
+        std::memcpy(m_ptr, chars.data(), count * sizeof(Char));
         m_ptr += count;
         return count;
     }
@@ -103,9 +104,10 @@ public:
         return c;
     }
 
-    size_t read(span<Char> dst) {
-        size_t count = std::min(dst.size(), static_cast<size_t>(end() - m_ptr));
-        std::memcpy(dst.data(), m_ptr, count);
+    size_t read(span<Char> chars) {
+        size_t count =
+            std::min(chars.size(), static_cast<size_t>(end() - m_ptr));
+        std::memcpy(chars.data(), m_ptr, count);
         m_ptr += count;
         return count;
     }

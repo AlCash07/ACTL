@@ -23,14 +23,14 @@ bool parsed_available_data(Device auto& id, Parser& parser) {
 
 template<typename T, typename Parser>
 struct parser_executor {
-    T& dst;
+    T& output;
     Parser parser;
 
     bool operator()(Device auto& id) {
         while (parsed_available_data(id, parser)) {}
         bool ok = parser.ready();
         if (ok)
-            dst = parser.value();
+            output = parser.value();
         return ok;
     }
 };

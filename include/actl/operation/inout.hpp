@@ -28,12 +28,12 @@ constexpr T const& remove_inout(T const& x) {
 }
 
 template<typename T, typename... Ts>
-constexpr auto& find_dst(T&, Ts&... xs) {
-    return find_dst(xs...);
+constexpr auto& find_target(T&, Ts&... xs) {
+    return find_target(xs...);
 }
 
 template<typename T, typename... Ts>
-constexpr T& find_dst(inout<T>& x, Ts&...) {
+constexpr T& find_target(inout<T>& x, Ts&...) {
     return *x;
 }
 

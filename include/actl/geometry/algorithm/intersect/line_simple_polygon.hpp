@@ -22,7 +22,7 @@ OutIter intersect(
     line_scalar_policy<P> lsp,
     line<T, 2, K> const& l,
     simple_polygon<U> const& poly,
-    OutIter dst
+    OutIter output
 ) {
     auto& policy = lsp.policy;
     // TODO: fix the case when polygon touches the line.
@@ -45,15 +45,15 @@ OutIter intersect(
             else
                 ok = next_sgn != prev_sgn;
             if (ok && between_endpoints(policy, *iter, l))
-                *dst++ = project(lsp, *iter, l);
+                *output++ = project(lsp, *iter, l);
         } else if (next_sgn == -iter_sgn) {
-            dst = intersect(lsp, l, make_line(*iter, iter[1]), dst);
+            output = intersect(lsp, l, make_line(*iter, iter[1]), output);
         }
         prev_sgn = iter_sgn;
         iter_sgn = next_sgn;
         ++iter;
     }
-    return dst;
+    return output;
 }
 
 } // namespace ac

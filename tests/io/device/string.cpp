@@ -13,13 +13,13 @@ TEST_CASE("input") {
     CHECK('a' == id.get());
     CHECK('b' == id.get());
     id.move(-1);
-    char dst[9];
-    CHECK(4ul == id.read({dst, 5}));
-    CHECK("bcde"sv == std::string(dst, dst + 4));
+    char output[9];
+    CHECK(4ul == id.read({output, 5}));
+    CHECK("bcde"sv == std::string(output, output + 4));
     s += 'f';
-    CHECK(1ul == id.read({dst, 3}));
-    CHECK("f"sv == std::string(dst, dst + 1));
-    CHECK(0ul == id.read({dst, 3}));
+    CHECK(1ul == id.read({output, 3}));
+    CHECK("f"sv == std::string(output, output + 1));
+    CHECK(0ul == id.read({output, 3}));
     CHECK('\0' == id.get());
 }
 

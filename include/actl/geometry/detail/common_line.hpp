@@ -48,7 +48,7 @@ OutIter common_line(
     Policy auto const& policy,
     line<TL, N, KL> const& l,
     line<TR, N, KR> const& r,
-    OutIter dst
+    OutIter output
 ) {
     using point_t = point<geometry::scalar_t<TL, TR>, N>;
     auto get_point = [&policy](auto const& l, bool start) {
@@ -61,9 +61,9 @@ OutIter common_line(
     auto lb =
         max_endpoint(policy, get_point(l, false), get_point(r, false), false);
     if (endpoint_test(policy, la.second, la.first, lb.first)) {
-        *dst++ = make_any_line(la.first, la.second, lb.first, lb.second);
+        *output++ = make_any_line(la.first, la.second, lb.first, lb.second);
     }
-    return dst;
+    return output;
 }
 
 } // namespace ac::detail

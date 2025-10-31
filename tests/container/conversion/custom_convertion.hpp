@@ -21,18 +21,19 @@ struct converted {
     }
 };
 
-template<typename To, typename From>
-struct conversion<converted<To>, converted<From>> {
-    static constexpr bool value = can_convert_to_v<To, From>;
+template<typename Target, typename Source>
+struct conversion<converted<Target>, converted<Source>> {
+    static constexpr bool value = can_convert_to_v<Target, Source>;
 
-    static constexpr converted<To> convert(converted<From> x) noexcept {
-        return converted<To>{x.value};
+    static constexpr converted<Target> convert(converted<Source> source
+    ) noexcept {
+        return converted<Target>{source.value};
     }
 };
 
-template<typename To, typename From>
-struct conversion<converted<To>, converted<From> const&>
-    : conversion<converted<To>, converted<From>> {};
+template<typename Target, typename Source>
+struct conversion<converted<Target>, converted<Source> const&>
+    : conversion<converted<Target>, converted<Source>> {};
 
 static_assert(!std::is_constructible_v<converted<int>, converted<char>>);
 static_assert(can_convert_to_v<converted<int>, converted<char>>);

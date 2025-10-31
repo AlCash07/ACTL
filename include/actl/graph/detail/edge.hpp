@@ -10,11 +10,11 @@
 
 namespace ac::detail {
 
-template<typename V, typename B, bool CompareSrc = false>
+template<typename V, typename B, bool CompareSource = false>
 class edge {
 public:
     using vertex = V;
-    using id_type = std::conditional_t<CompareSrc, std::pair<V, B>, B>;
+    using id_type = std::conditional_t<CompareSource, std::pair<V, B>, B>;
 
     explicit constexpr edge() = default;
 
@@ -33,7 +33,7 @@ public:
     }
 
     constexpr id_type id() const {
-        if constexpr (CompareSrc) {
+        if constexpr (CompareSource) {
             return std::pair{m_u, m_b};
         } else {
             return m_b;

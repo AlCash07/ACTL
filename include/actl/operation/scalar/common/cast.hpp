@@ -10,13 +10,13 @@
 
 namespace ac {
 
-template<typename To>
-struct cast_f : scalar_operation<cast_f<To>, 1> {
+template<typename Target>
+struct cast_f : scalar_operation<cast_f<Target>, 1> {
     using operation_category = scalar_operation_tag;
 
     template<typename T>
-    static constexpr To eval_scalar(T x) {
-        return static_cast<To>(x);
+    static constexpr Target eval_scalar(T x) {
+        return static_cast<Target>(x);
     }
 };
 template<typename T>

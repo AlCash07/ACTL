@@ -13,10 +13,10 @@
 
 namespace ac {
 
-template<typename C, typename To>
+template<typename C, typename Target>
 using rebind_container_t = std::conditional_t<
-    std::is_same_v<C, none> || std::is_same_v<To, none>,
+    std::is_same_v<C, none> || std::is_same_v<Target, none>,
     dummy_container,
-    rebind_t<C, To>>;
+    rebind_t<C, Target>>;
 
 } // namespace ac

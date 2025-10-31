@@ -39,9 +39,9 @@ public:
         return 1;
     }
 
-    size_t write(cspan<Char> src) {
-        m_s.append(src.data(), src.size());
-        return src.size();
+    size_t write(cspan<Char> chars) {
+        m_s.append(chars.data(), chars.size());
+        return chars.size();
     }
 
     void flush() {}
@@ -80,10 +80,10 @@ public:
         return c;
     }
 
-    size_t read(span<Char> dst) {
+    size_t read(span<Char> chars) {
         size_t count =
-            std::min(dst.size(), static_cast<size_t>(m_s.size() - m_pos));
-        std::memcpy(dst.data(), m_s.data() + m_pos, count);
+            std::min(chars.size(), static_cast<size_t>(m_s.size() - m_pos));
+        std::memcpy(chars.data(), m_s.data() + m_pos, count);
         m_pos += count;
         return count;
     }

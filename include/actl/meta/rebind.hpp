@@ -16,65 +16,69 @@
 
 namespace ac {
 
-template<typename T, typename To>
+template<typename T, typename Target>
 struct rebind;
 
 namespace detail {
 
-template<typename T, typename To, bool = true>
-struct rebind2 : rebind<T, To> {};
+template<typename T, typename Target, bool = true>
+struct rebind2 : rebind<T, Target> {};
 
-template<typename T, typename To>
-struct rebind2<T, To, false> {
+template<typename T, typename Target>
+struct rebind2<T, Target, false> {
     using type = T;
 };
 
-template<typename T, typename To, typename From>
+template<typename T, typename Target, typename Source>
 struct rebind1
-    : rebind2<T, To, std::is_same_v<typename template_type<T>::type, From>> {};
+    : rebind2<
+          T,
+          Target,
+          std::is_same_v<typename template_type<T>::type, Source>> {};
 
-template<typename To, typename From>
-struct rebind1<From, To, From> {
-    using type = To;
+template<typename Target, typename Source>
+struct rebind1<Source, Target, Source> {
+    using type = Target;
 };
 
-template<typename T, typename To>
+template<typename T, typename Target>
 struct rebind0 {
     using type = T;
 };
 
 template<
-    template<typename...> typename C,
+    template<typename...>
+    typename C,
     typename T0,
     typename... Ts,
-    typename To>
-struct rebind0<C<T0, Ts...>, To> {
-    using type = C<To, typename rebind1<Ts, To, T0>::type...>;
+    typename Target>
+struct rebind0<C<T0, Ts...>, Target> {
+    using type = C<Target, typename rebind1<Ts, Target, T0>::type...>;
 };
 
 } // namespace detail
 
-template<typename T, size_t N, typename To>
-struct rebind<T[N], To> {
-    using type = To[N];
+template<typename T, size_t N, typename Target>
+struct rebind<T[N], Target> {
+    using type = Target[N];
 };
 
 // Transparent operator function objects support.
 // TODO: switch completely to ACTL operations.
-template<typename T, typename To>
-struct rebind<std::less<T>, To> {
+template<typename T, typename Target>
+struct rebind<std::less<T>, Target> {
     using type = std::less<>;
 };
 
-template<typename T, typename To>
-struct rebind<std::equal_to<T>, To> {
+template<typename T, typename Target>
+struct rebind<std::equal_to<T>, Target> {
     using type = std::equal_to<>;
 };
 
-template<typename T, typename To>
-struct rebind : detail::rebind0<T, To> {};
+template<typename T, typename Target>
+struct rebind : detail::rebind0<T, Target> {};
 
-template<typename T, typename To>
-using rebind_t = typename rebind<T, To>::type;
+template<typename T, typename Target>
+using rebind_t = typename rebind<T, Target>::type;
 
 } // namespace ac

@@ -18,7 +18,7 @@ OutIter intersect(
     Policy auto const& policy,
     circle<TL> const& lhs,
     circle<TR> const& rhs,
-    OutIter dst
+    OutIter output
 ) {
     auto centers_vector = rhs.center - lhs.center;
     auto centers_dist2 = dot(policy, centers_vector);
@@ -27,14 +27,14 @@ OutIter intersect(
     int sgn1 =
         cmp3way(policy, sqr(policy, lhs.radius + rhs.radius), centers_dist2);
     if (sgn0 < 0 || sgn1 < 0)
-        return dst;
+        return output;
     auto lradius2 = sqr(policy, lhs.radius);
     auto rradius2 = sqr(policy, rhs.radius);
     auto a = ratio(policy, lradius2 - rradius2, centers_dist2);
     auto projection =
         lhs.center + product(policy, ratio(policy, a + 1, 2), centers_vector);
     if (sgn0 == 0 || sgn1 == 0) {
-        *dst++ = projection;
+        *output++ = projection;
     } else {
         auto b = ratio(policy, lradius2 + rradius2, centers_dist2);
         auto offset = ratio(
@@ -42,10 +42,10 @@ OutIter intersect(
         );
         auto offset_vector =
             product(policy, offset, perpendicular(centers_vector));
-        *dst++ = projection - offset_vector;
-        *dst++ = projection + offset_vector;
+        *output++ = projection - offset_vector;
+        *output++ = projection + offset_vector;
     }
-    return dst;
+    return output;
 }
 
 template<typename TL, typename TR, typename OutIter>
@@ -53,12 +53,12 @@ OutIter intersect(
     polar_angle_policy<P> pap,
     circle<TL> const& l,
     circle<TR> const& r,
-    OutIter dst
+    OutIter output
 ) {
     auto centers_vector = r.center - l.center;
     auto centers_angle = angle(pap.policy, centers_vector);
     // TODO: implement using cosine theorem.
-    return dst;
+    return output;
 }
 
 } // namespace ac

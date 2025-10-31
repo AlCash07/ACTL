@@ -97,18 +97,18 @@ struct expression_helper<expression<Op, Ts...>, std::index_sequence<Is...>> {
     }
 
     template<typename T>
-    static constexpr void assign_impl(T& dst, Expr const& e) {
-        e.operation().evaluate_to(dst, std::get<Is + 1>(e.args)...);
+    static constexpr void assign_impl(T& target, Expr const& e) {
+        e.operation().evaluate_to(target, std::get<Is + 1>(e.args)...);
     }
 };
 
 template<typename T, typename... Ts>
-constexpr void assign(out<T>& dst, expression<Ts...> const& e) {
+constexpr void assign(out<T>& target, expression<Ts...> const& e) {
     using helper = expression_helper<expression<Ts...>>;
     if constexpr (helper::is_resolved)
-        helper::assign_impl(dst.x, e);
+        helper::assign_impl(target.x, e);
     else
-        assign(dst, helper::resolve_expr(e));
+        assign(target, helper::resolve_expr(e));
 }
 
 } // namespace ac

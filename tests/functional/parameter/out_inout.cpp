@@ -14,8 +14,8 @@ int add_ints(int l, int r) {
     return l + r;
 }
 
-int& add_ints(out<int&> dst, int l, int r) {
-    return *dst = l + r;
+int& add_ints(out<int&> output, int l, int r) {
+    return *output = l + r;
 }
 
 int& add_ints(inout<int&> l, int r) {
@@ -40,10 +40,10 @@ TEST_CASE("Output parameter wrappers example") {
 }
 
 TEST_CASE("assignment") {
-    int dst{};
+    int output{};
     /* out */ {
-        CHECK(5 == *(out{dst} = 5));
-        CHECK(5 == dst);
+        CHECK(5 == *(out{output} = 5));
+        CHECK(5 == output);
         static_assert(std::is_same_v<
                       out<int&>&,
                       decltype(out{std::declval<int&>()} = 5)>);
@@ -51,8 +51,8 @@ TEST_CASE("assignment") {
         static_assert(!std::is_assignable_v<out<int>, void*>);
     }
     /* inout */ {
-        CHECK(3 == *(inout{dst} = 3));
-        CHECK(3 == dst);
+        CHECK(3 == *(inout{output} = 3));
+        CHECK(3 == output);
         static_assert(std::is_same_v<
                       inout<int&>&,
                       decltype(inout{std::declval<int&>()} = 3)>);

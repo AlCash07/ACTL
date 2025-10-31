@@ -22,9 +22,11 @@ struct line_buffered_reader<file<Mode, Char>, true>
 
     using base_t::base_t;
 
-    size_t read(span<Char> dst) {
-        if (std::fgets(dst.data(), static_cast<int>(dst.size()), this->get()))
-            return std::strlen(dst.data());
+    size_t read(span<Char> chars) {
+        if (std::fgets(
+                chars.data(), static_cast<int>(chars.size()), this->get()
+            ))
+            return std::strlen(chars.data());
         else
             return 0;
     }
@@ -39,15 +41,15 @@ template<typename Device>
 struct line_buffered<Device, true> : line_buffered<Device, false> {
     using line_buffered<Device, false>::line_buffered;
 
-    size_t write(span<char_t<Device> const> src) {
-        auto const* last = src.end();
-        while (last != src.data() && last[-1] != '\n')
+    size_t write(span<char_t<Device> const> chars) {
+        auto const* last = chars.end();
+        while (last != chars.data() && last[-1] != '\n')
             --last;
-        if (last != src.data()) {
-            Device::write({src.data(), last});
+        if (last != chars.data()) {
+            Device::write({chars.data(), last});
             Device::flush();
         }
-        Device::write({last, src.end()});
+        Device::write({last, chars.end()});
     }
 };
 

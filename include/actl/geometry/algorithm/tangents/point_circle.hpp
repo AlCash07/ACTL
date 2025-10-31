@@ -19,22 +19,22 @@ OutIter tangents(
     Policy auto const& policy,
     point<T0> const& p,
     circle<T1> const& c,
-    OutIter dst
+    OutIter output
 ) {
     switch (within(policy, p, c)) {
         case within::outside: {
             auto dist = sqrt(
                 policy, sqr(norm(policy, c.center - p)) - sqr(policy, c.radius)
             );
-            intersect(policy, make_circle(p, dist), c, dst);
+            intersect(policy, make_circle(p, dist), c, output);
             break;
         }
         case within::border:
-            *dst++ = p;
+            *output++ = p;
         case within::inside:
             break;
     }
-    return dst;
+    return output;
 }
 
 template<typename P, typename T0, typename T1, typename OutIter>
@@ -42,7 +42,7 @@ OutIter tangents(
     polar_angle_policy<P> pap,
     point<T0> const& p,
     circle<T1> const& c,
-    OutIter dst
+    OutIter output
 ) {
     auto& policy = pap.policy;
     auto center_vector = c.center - p;
@@ -50,16 +50,16 @@ OutIter tangents(
         case within::outside: {
             auto center_angle = angle(policy, center_vector);
             auto offset = atan2(c.radius, norm(policy, center_vector));
-            *dst++ = center_angle - offset;
-            *dst++ = center_angle + offset;
+            *output++ = center_angle - offset;
+            *output++ = center_angle + offset;
             break;
         }
         case within::border:
-            *dst++ = angle(policy, perpendicular(center_vector));
+            *output++ = angle(policy, perpendicular(center_vector));
         case within::inside:
             break;
     }
-    return dst;
+    return output;
 }
 
 } // namespace ac

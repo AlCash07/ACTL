@@ -10,13 +10,13 @@
 
 namespace ac {
 
-// C++20 version requires std::is_trivially_constructible_v<To>.
-template<typename To, typename From>
-    requires(sizeof(To) == sizeof(From) && std::is_default_constructible_v<To> && std::is_trivially_copyable_v<To> && std::is_trivially_copyable_v<From>)
-To bit_cast(From const& src) noexcept {
-    To dst;
-    std::memcpy(&dst, &src, sizeof(To));
-    return dst;
+// C++20 version requires std::is_trivially_constructible_v<Target>.
+template<typename Target, typename Source>
+    requires(sizeof(Target) == sizeof(Source) && std::is_default_constructible_v<Target> && std::is_trivially_copyable_v<Target> && std::is_trivially_copyable_v<Source>)
+Target bit_cast(Source const& source) noexcept {
+    Target output;
+    std::memcpy(&output, &source, sizeof(Target));
+    return output;
 }
 
 } // namespace ac

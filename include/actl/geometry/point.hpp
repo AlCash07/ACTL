@@ -104,18 +104,20 @@ struct range_properties<point<T, N>> : default_range_properties {};
 namespace detail {
 
 template<typename T, index N, typename Operation, typename... Points>
-constexpr auto& apply(Operation op, point<T, N>& dst, Points const&... points) {
+constexpr auto& apply(
+    Operation op, point<T, N>& output, Points const&... points
+) {
     for (index i = 0; i < N; ++i)
-        op(dst[i], points[i]...);
-    return dst;
+        op(output[i], points[i]...);
+    return output;
 }
 
 template<index N, typename Operation, typename... Points>
 constexpr auto apply(Operation op, Points const&... points) {
-    point<decltype(op(points[0]...)), N> dst;
+    point<decltype(op(points[0]...)), N> output;
     for (index i = 0; i < N; ++i)
-        dst[i] = op(points[i]...);
-    return dst;
+        output[i] = op(points[i]...);
+    return output;
 }
 
 } // namespace detail
@@ -124,12 +126,12 @@ constexpr auto apply(Operation op, Points const&... points) {
 
 template<index N, typename TL, typename TR = TL>
 constexpr auto& operator+=(point<TL, N>& l, point<TR, N> const& r) {
-    return detail::apply([](TL& l, TR const& src) { l += src; }, l, r);
+    return detail::apply([](TL& l, TR const& x) { l += x; }, l, r);
 }
 
 template<index N, typename TL, typename TR = TL>
 constexpr auto& operator-=(point<TL, N>& l, point<TR, N> const& r) {
-    return detail::apply([](TL& l, TR const& src) { l -= src; }, l, r);
+    return detail::apply([](TL& l, TR const& x) { l -= x; }, l, r);
 }
 
 template<index N, typename TL, typename TR>
@@ -143,8 +145,8 @@ constexpr auto& operator/=(point<TL, N>& l, TR const& factor) {
 }
 
 template<index N, typename T>
-constexpr auto operator-(point<T, N> const& src) {
-    return detail::apply<N>(std::negate<T>{}, src);
+constexpr auto operator-(point<T, N> const& p) {
+    return detail::apply<N>(std::negate<T>{}, p);
 }
 
 template<index N, typename TL, typename TR>
@@ -302,10 +304,10 @@ constexpr bool y_compare(
     return v < 0 || (v == 0 && less(policy, l[0], r[0]));
 }
 
-/// Point @p src rotated by pi/2 counter-clockwise.
+/// Point @p p rotated by pi/2 counter-clockwise.
 template<typename T>
-constexpr point<T> perpendicular(point<T> const& src) {
-    return point{-src[1], src[0]};
+constexpr point<T> perpendicular(point<T> const& p) {
+    return point{-p[1], p[0]};
 }
 
 /// 3-dimensional point specialization.

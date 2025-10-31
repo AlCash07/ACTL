@@ -75,8 +75,10 @@ public:
         return c == EOF ? Char{} : static_cast<Char>(c);
     }
 
-    size_t read(span<Char> dst) {
-        return std::fread(dst.data(), sizeof(Char), dst.size(), this->m_file);
+    size_t read(span<Char> chars) {
+        return std::fread(
+            chars.data(), sizeof(Char), chars.size(), this->m_file
+        );
     }
 
     void move(index offset) {
@@ -102,8 +104,10 @@ public:
         return std::fputc(static_cast<int>(c), this->m_file) != EOF ? 1 : 0;
     }
 
-    size_t write(span<Char const> src) {
-        return std::fwrite(src.data(), sizeof(Char), src.size(), this->m_file);
+    size_t write(span<Char const> chars) {
+        return std::fwrite(
+            chars.data(), sizeof(Char), chars.size(), this->m_file
+        );
     }
 
     void flush() {

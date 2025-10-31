@@ -56,28 +56,28 @@ public:
         return c;
     }
 
-    size_t read(span<Char> dst) {
-        Char* dstPtr = dst.data();
-        size_t count = dst.size();
+    size_t read(span<Char> chars) {
+        Char* charsPtr = chars.data();
+        size_t count = chars.size();
         size_t available = static_cast<size_t>(m_end - m_ptr);
         if (count < available) {
-            std::copy_n(m_ptr, count, dstPtr);
+            std::copy_n(m_ptr, count, charsPtr);
             m_ptr += count;
             return count;
         }
         size_t res = available;
-        dstPtr = std::copy_n(m_ptr, available, dstPtr);
+        charsPtr = std::copy_n(m_ptr, available, charsPtr);
         count -= available;
         size_t remainder = count % ranges::size(base_t::m_buf);
         if (remainder < count) {
-            res += Device::read({dstPtr, count - remainder});
-            dstPtr += count - remainder;
+            res += Device::read({charsPtr, count - remainder});
+            charsPtr += count - remainder;
         }
         underflow();
         min(inout{remainder}, m_end - m_ptr);
         if (0 < remainder) {
             res += remainder;
-            std::copy_n(m_ptr, remainder, dstPtr);
+            std::copy_n(m_ptr, remainder, charsPtr);
             move(remainder);
         }
         return res;
@@ -122,7 +122,7 @@ protected:
 public:
     using base_t::base_t;
 
-    span<Char> output_buffer() const {
+    span<Char> chars_buffer() const {
         return {m_ptr, ranges::end(m_buf)};
     }
 
@@ -132,29 +132,29 @@ public:
         return 1;
     }
 
-    size_t write(span<Char const> src) {
-        Char const* srcPtr = src.data();
-        size_t count = src.size();
+    size_t write(span<Char const> chars) {
+        Char const* charsPtr = chars.data();
+        size_t count = chars.size();
         size_t available = static_cast<size_t>(ranges::end(m_buf) - m_ptr);
         if (count < available) {
             if (count == 1)
-                *m_ptr++ = *srcPtr;
+                *m_ptr++ = *charsPtr;
             else
-                m_ptr = ranges::copy(m_ptr, src);
+                m_ptr = ranges::copy(m_ptr, chars);
         } else {
-            std::copy_n(srcPtr, available, m_ptr);
+            std::copy_n(charsPtr, available, m_ptr);
             Device::write(m_buf);
-            srcPtr += available;
+            charsPtr += available;
             count -= available;
             size_t remainder = count % ranges::size(m_buf);
             if (remainder < count) {
-                Device::write({srcPtr, count - remainder});
-                srcPtr += count - remainder;
+                Device::write({charsPtr, count - remainder});
+                charsPtr += count - remainder;
             }
             if (0 < remainder)
-                m_ptr = std::copy_n(srcPtr, remainder, ranges::data(m_buf));
+                m_ptr = std::copy_n(charsPtr, remainder, ranges::data(m_buf));
         }
-        return src.size();
+        return chars.size();
     }
 
     void move(index offset) {

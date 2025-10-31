@@ -55,8 +55,8 @@ struct scalar_operation : operation<Op> {
     }
 
     template<typename T, typename... Ts>
-    constexpr void evaluate_to(T& dst, Ts const&... xs) const {
-        dst = evaluate(xs...);
+    constexpr void evaluate_to(T& target, Ts const&... xs) const {
+        target = evaluate(xs...);
     }
 };
 

@@ -32,9 +32,9 @@ struct operation {
             1 == (... + is_inout_v<Ts>), "single inout argument expected"
         );
         auto&& op = resolve_overload<Ts...>(default_context{}, derived());
-        auto& dst = find_dst(xs...);
-        op.evaluate_to(dst, remove_inout(xs)...);
-        return dst;
+        auto& target = find_target(xs...);
+        op.evaluate_to(target, remove_inout(xs)...);
+        return target;
     }
 
     template<typename... Ts>

@@ -13,14 +13,14 @@ namespace ac {
 template<typename L, typename R, typename OutIter>
     requires geometry::reverse_order<L, R>
 OutIter tangents(
-    Policy auto const& policy, L const& l, R const& r, OutIter dst
+    Policy auto const& policy, L const& l, R const& r, OutIter output
 ) {
-    return tangents(policy, r, l, dst);
+    return tangents(policy, r, l, output);
 }
 
 template<typename L, typename R, typename OutIter>
-OutIter tangents(L const& l, R const& r, OutIter dst) {
-    return tangents(geometry_policy, l, r, dst);
+OutIter tangents(L const& l, R const& r, OutIter output) {
+    return tangents(geometry_policy, l, r, output);
 }
 
 } // namespace ac

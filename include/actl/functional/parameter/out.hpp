@@ -34,11 +34,11 @@ inline constexpr bool is_out_v = detail::is_out<std::remove_cvref_t<T>>::value;
 /// ```
 /// copy_range(x, y);
 /// ```
-/// Using ac::out wrapper, we can make it clear
+/// Using ac::out wrapper, we can make it obvious
 /// without any extra documentation:
 /// ```
 /// template<typename Range>
-/// void copy_range(out<Range&> dst, Range const& src) { ... }
+/// void copy_range(out<Range&> target, Range const& source) { ... }
 ///
 /// copy_range(out{x}, y);
 /// ```
@@ -61,10 +61,11 @@ public:
     /// if the wrapped types are implicitly convertible.
     /// For example, `ac::out<std::vector<int>&>` argument can be passed
     /// where `ac::out<std::span<int>>` parameter is expected.
-    template<typename U>
-        requires(std::is_convertible_v<U, T>)
-    constexpr out(out<U>&& src) noexcept(std::is_nothrow_constructible_v<T, U>)
-        : x{*src} {}
+    template<typename Source>
+        requires(std::is_convertible_v<Source, T>)
+    constexpr out(out<Source>&& source
+    ) noexcept(std::is_nothrow_constructible_v<T, Source>)
+        : x{*source} {}
 
     /// Accesses the wrapped value.
     /// @note operator* is used for consistency with `std::optional`.
@@ -94,22 +95,25 @@ public:
     /// For example, if a third-party `Container` doesn't support
     /// assignment from a range like
     /// ```
-    /// dstContainer = srcRange;
+    /// targetContainer = sourceRange;
     /// ```
     /// we can still achieve a similar syntax
     /// ```
-    /// ac::out{dstContainer} = srcRange;
+    /// ac::out{targetContainer} = sourceRange;
     /// ```
     /// by implementing the `assign` function
-    /// in the same namespace as Container:
+    /// in the same namespace as `Container`:
     /// ```
-    /// template<typename InRange>
-    /// void assign(ac::out<Container&> dst, InRange const& src) { ... }
+    /// template<typename SourceRange>
+    /// void assign(ac::out<Container&> target, SourceRange const& source) {
+    ///     ...
+    /// }
     /// ```
-    template<typename Src>
-    constexpr out& operator=(Src&& src) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-        assign(*this, std::forward<Src>(src)), *this
-    )
+    template<typename Source>
+    constexpr out& operator=(Source&& source)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
+            assign(*this, std::forward<Source>(source)), *this
+        )
 
     // TODO: struct enable_operators;
 
@@ -125,8 +129,9 @@ template<typename T>
 struct is_out<out<T>> : std::true_type {};
 } // namespace detail
 
-template<typename Dst, typename Src>
-constexpr Dst assign(out<Dst>& dst, Src&& src)
-    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(*dst = std::forward<Src>(src))
+template<typename Target, typename Source>
+constexpr Target assign(
+    out<Target>& target, Source&& source
+) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(*target = std::forward<Source>(source))
 
 } // namespace ac

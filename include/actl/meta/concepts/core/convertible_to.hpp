@@ -10,19 +10,20 @@
 
 namespace ac {
 
-template<typename From, typename To>
+template<typename Source, typename Target>
 concept NothrowExplicitlyConvertibleTo = requires {
-    { static_cast<To>(std::declval<From>()) } noexcept;
+    { static_cast<Target>(std::declval<Source>()) } noexcept;
 };
 
-template<typename From, typename To>
-concept NothrowConvertibleTo =
-    std::convertible_to<From, To> && std::is_nothrow_convertible_v<From, To> &&
-    NothrowExplicitlyConvertibleTo<From, To>;
+template<typename Source, typename Target>
+concept NothrowConvertibleTo = std::convertible_to<Source, Target> &&
+                               std::is_nothrow_convertible_v<Source, Target> &&
+                               NothrowExplicitlyConvertibleTo<Source, Target>;
 
-template<typename From, typename To>
+template<typename Source, typename Target>
 concept MayThrowConvertibleTo =
-    std::convertible_to<From, To> && !std::is_nothrow_convertible_v<From, To> &&
-    !NothrowExplicitlyConvertibleTo<From, To>;
+    std::convertible_to<Source, Target> &&
+    !std::is_nothrow_convertible_v<Source, Target> &&
+    !NothrowExplicitlyConvertibleTo<Source, Target>;
 
 } // namespace ac

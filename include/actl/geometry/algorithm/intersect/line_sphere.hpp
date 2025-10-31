@@ -24,7 +24,7 @@ OutIter intersect(
     line_scalar_policy<P> lsp,
     line<T0, N, K> const& l,
     sphere<T1, N> const& s,
-    OutIter dst
+    OutIter output
 ) {
     auto& policy = lsp.policy;
     auto vdot = dot(policy, l.vector);
@@ -32,21 +32,21 @@ OutIter intersect(
                  sqr(policy, area(policy, s.center, l));
     int delta_sgn = sgn(policy, delta);
     if (delta_sgn < 0)
-        return dst;
+        return output;
     auto projection = dot(policy, s.center - l.begin, l.vector);
-    auto output = [&](auto const& x) {
+    auto check = [&](auto const& x) {
         if (detail::line_test(policy, l.kind(), x, vdot)) {
-            *dst++ = ratio(policy, x, vdot);
+            *output++ = ratio(policy, x, vdot);
         }
     };
     if (delta_sgn == 0) {
-        output(projection);
+        check(projection);
     } else {
         auto offset = sqrt(policy, delta);
-        output(projection - offset);
-        output(projection + offset);
+        check(projection - offset);
+        check(projection + offset);
     }
-    return dst;
+    return output;
 }
 
 } // namespace ac

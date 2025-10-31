@@ -29,7 +29,7 @@ static_assert(!ac::can_convert_to_v<tuple_ic, std::tuple<S, my_char>>);
 static_assert(!ac::can_convert_to_v<int, std::tuple<int>>);
 // different number of elements
 static_assert(!ac::can_convert_to_v<std::tuple<my_int>, tuple_ic>);
-// incompatible src type
+// incompatible source type
 static_assert(!ac::can_convert_to_v<tuple_ic, S>);
 
 TEST_CASE("tuple to vector") {

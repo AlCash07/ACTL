@@ -11,8 +11,8 @@
 namespace ac {
 
 template<index N, typename T, typename U>
-auto reflect(point<T, N> const& src, U const& dst) {
-    return reflect(geometry_policy, src, dst);
+auto reflect(point<T, N> const& p, U const& across) {
+    return reflect(geometry_policy, p, across);
 }
 
 } // namespace ac

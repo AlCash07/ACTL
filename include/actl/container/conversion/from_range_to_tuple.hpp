@@ -14,42 +14,47 @@ namespace ac {
 
 namespace detail {
 
-template<typename S, typename To, typename From>
+template<typename S, typename Target, typename Source>
 struct range_to_tuple_impl;
 
-template<size_t... Is, typename To, typename From>
-struct range_to_tuple_impl<std::index_sequence<Is...>, To, From> {
-    using from_ref = range_reference_t<From>;
+template<size_t... Is, typename Target, typename Source>
+struct range_to_tuple_impl<std::index_sequence<Is...>, Target, Source> {
+    using source_ref = range_reference_t<Source>;
 
     static constexpr bool value =
-        (static_size_v<From> == dynamic_size ||
-         static_size_v<From> == std::tuple_size_v<To>) //
-        &&(... && can_convert_to_v<std::tuple_element_t<Is, To>, from_ref>);
+        (static_size_v<Source> == dynamic_size ||
+         static_size_v<Source> == std::tuple_size_v<Target>) //
+        &&(... &&
+           can_convert_to_v<std::tuple_element_t<Is, Target>, source_ref>);
 
-    static constexpr To convert(From&& x) noexcept(AC_ASSERT_IS_NOEXCEPT(
-    ) && noexcept(To{convert_to<std::tuple_element_t<Is, To>>(x[Is])...})) {
-        AC_ASSERT(std::tuple_size_v<To> == x.size());
-        return To{convert_to<std::tuple_element_t<Is, To>>(x[Is])...};
+    static constexpr Target convert(Source&& source
+    ) noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(Target{
+        convert_to<std::tuple_element_t<Is, Target>>(source[Is])...
+    })) {
+        AC_ASSERT(std::tuple_size_v<Target> == source.size());
+        return Target{convert_to<std::tuple_element_t<Is, Target>>(source[Is]
+        )...};
     }
 };
 
-template<typename To, typename From>
-using range_to_tuple = range_to_tuple_impl<tuple_indices_t<To>, To, From>;
+template<typename Target, typename Source>
+using range_to_tuple =
+    range_to_tuple_impl<tuple_indices_t<Target>, Target, Source>;
 
-template<typename To, typename From>
+template<typename Target, typename Source>
 static constexpr bool range_to_tuple_test() {
-    if constexpr (Tuple<To> && StrictRange<From>)
-        return range_to_tuple<To, From>::value;
+    if constexpr (Tuple<Target> && StrictRange<Source>)
+        return range_to_tuple<Target, Source>::value;
     return false;
 }
 
 } // namespace detail
 
-template<typename To, typename From>
+template<typename Target, typename Source>
     requires(
-        !can_convert_as_ranges<To, From>() &&
-        detail::range_to_tuple_test<To, From>()
+        !can_convert_as_ranges<Target, Source>() &&
+        detail::range_to_tuple_test<Target, Source>()
     )
-struct conversion<To, From> : detail::range_to_tuple<To, From> {};
+struct conversion<Target, Source> : detail::range_to_tuple<Target, Source> {};
 
 } // namespace ac

@@ -13,27 +13,27 @@
 
 namespace ac::ranges {
 
-template<std::input_or_output_iterator OutIter, Range SrcRange>
-constexpr OutIter copy(OutIter dst, SrcRange const& src) noexcept(
-    is_nothrow_iterable_v<SrcRange const>&& noexcept(
-        ++dst, *dst = *ranges::begin(src)
+template<std::input_or_output_iterator OutIter, Range SourceRange>
+constexpr OutIter copy(OutIter target, SourceRange const& source) noexcept(
+    is_nothrow_iterable_v<SourceRange const>&& noexcept(
+        ++target, *target = *ranges::begin(source)
     )
 ) {
-    auto first = ranges::begin(src);
-    auto last = ranges::end(src);
-    for (; first != last; ++first, (void)++dst)
-        *dst = *first;
-    return dst;
+    auto first = ranges::begin(source);
+    auto last = ranges::end(source);
+    for (; first != last; ++first, (void)++target)
+        *target = *first;
+    return target;
 }
 
-template<Range DstRange, Range SrcRange>
-    requires have_matching_static_sizes_v<DstRange, SrcRange>
-constexpr void copy(DstRange&& dst, SrcRange const& src) noexcept(
-    AC_ASSERT_IS_NOEXCEPT() && noexcept(copy(ranges::begin(dst), src))
+template<Range TargetRange, Range SourceRange>
+    requires have_matching_static_sizes_v<TargetRange, SourceRange>
+constexpr void copy(TargetRange&& target, SourceRange const& source) noexcept(
+    AC_ASSERT_IS_NOEXCEPT() && noexcept(copy(ranges::begin(target), source))
 ) {
     // TODO: refactor this for the case when size computation isn't cheap.
-    AC_ASSERT(ranges::size(dst) == ranges::size(src));
-    copy(ranges::begin(dst), src);
+    AC_ASSERT(ranges::size(target) == ranges::size(source));
+    copy(ranges::begin(target), source);
 }
 
 } // namespace ac::ranges

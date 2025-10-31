@@ -22,9 +22,9 @@ struct template_type<std::array<T, N>> {
     using type = T;
 };
 
-template<typename T, size_t N, typename To>
-struct rebind<std::array<T, N>, To> {
-    using type = std::array<To, N>;
+template<typename T, size_t N, typename Target>
+struct rebind<std::array<T, N>, Target> {
+    using type = std::array<Target, N>;
 };
 
 } // namespace ac

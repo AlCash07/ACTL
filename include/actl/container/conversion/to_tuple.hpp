@@ -14,23 +14,25 @@ namespace ac {
 
 namespace detail {
 
-template<typename S, typename To, typename... Args>
+template<typename S, typename Target, typename... Args>
 struct to_tuple_impl;
 
-template<size_t... Is, typename To, typename... Args>
-struct to_tuple_impl<std::index_sequence<Is...>, To, Args...> {
+template<size_t... Is, typename Target, typename... Args>
+struct to_tuple_impl<std::index_sequence<Is...>, Target, Args...> {
     static constexpr bool value =
-        (... && can_convert_to_v<std::tuple_element_t<Is, To>, Args>);
+        (... && can_convert_to_v<std::tuple_element_t<Is, Target>, Args>);
 
-    static constexpr To convert(Args&&... xs) AC_DEDUCE_NOEXCEPT_AND_RETURN(To{
-        convert_to<std::tuple_element_t<Is, To>>(std::forward<Args>(xs))...
+    static constexpr Target convert(Args&&... args
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(Target{
+        convert_to<std::tuple_element_t<Is, Target>>(std::forward<Args>(args)
+        )...
     })
 };
 
-template<typename To, typename... Args>
-using to_tuple = to_tuple_impl<tuple_indices_t<To>, To, Args...>;
+template<typename Target, typename... Args>
+using to_tuple = to_tuple_impl<tuple_indices_t<Target>, Target, Args...>;
 
-template<typename To, typename... Args>
+template<typename Target, typename... Args>
 static constexpr bool can_initialize_tuple() {
     // Avoid conflicts with from_tuple specialization.
     if constexpr (sizeof...(Args) == 1 && (... && Tuple<Args>))
@@ -38,16 +40,16 @@ static constexpr bool can_initialize_tuple() {
     // Arrays and tuples may allow to specify not all their elements but only
     // some of the first ones.
     // Our conversions intentionnally forbid this to prevent mistakes.
-    if constexpr (Tuple<To> && !StrictRange<To>)
-        if constexpr (std::tuple_size_v<To> == sizeof...(Args))
-            return to_tuple<To, Args...>::value;
+    if constexpr (Tuple<Target> && !StrictRange<Target>)
+        if constexpr (std::tuple_size_v<Target> == sizeof...(Args))
+            return to_tuple<Target, Args...>::value;
     return false;
 }
 
 } // namespace detail
 
-template<typename To, typename... Args>
-    requires(detail::can_initialize_tuple<To, Args...>())
-struct conversion<To, Args...> : detail::to_tuple<To, Args...> {};
+template<typename Target, typename... Args>
+    requires(detail::can_initialize_tuple<Target, Args...>())
+struct conversion<Target, Args...> : detail::to_tuple<Target, Args...> {};
 
 } // namespace ac

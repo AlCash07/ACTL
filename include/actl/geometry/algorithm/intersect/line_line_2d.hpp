@@ -49,19 +49,19 @@ OutIter intersect(
     line_scalar_policy<P> lsp,
     line<TL, 2, KL> const& lhs,
     line<TR, 2, KR> const& rhs,
-    OutIter dst
+    OutIter output
 ) {
     auto& policy = lsp.policy;
     auto tarea = area(policy, rhs.vector, lhs.vector);
     if (equal(policy, tarea, 0))
-        return dst;
+        return output;
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
     auto rarea = area(policy, v, lhs.vector);
     if (!detail::cross_test(policy, lhs, rhs, tarea, larea, rarea))
-        return dst;
-    *dst++ = ratio(policy, larea, tarea);
-    return dst;
+        return output;
+    *output++ = ratio(policy, larea, tarea);
+    return output;
 }
 
 template<typename TL, typename KL, typename TR, typename KR, typename OutIter>
@@ -69,13 +69,13 @@ OutIter intersect(
     general_position_policy<P> gpp,
     line<TL, 2, KL> const& l,
     line<TR, 2, KR> const& r,
-    OutIter dst
+    OutIter output
 ) {
     return intersect(
         line_scalar_policy{gpp.policy},
         l,
         r,
-        detail::scalar_to_point_adaptor{l, dst}
+        detail::scalar_to_point_adaptor{l, output}
     );
 }
 
@@ -84,22 +84,23 @@ OutIter intersect(
     Policy auto const& policy,
     line<TL, 2, KL> const& lhs,
     line<TR, 2, KR> const& rhs,
-    OutIter dst
+    OutIter output
 ) {
     auto tarea = area(policy, rhs.vector, lhs.vector);
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
     if (equal(policy, tarea, 0)) {
         if (!equal(policy, larea, 0))
-            return dst;
-        return detail::common_line(policy, lhs, rhs, dst);
+            return output;
+        return detail::common_line(policy, lhs, rhs, output);
     }
     auto rarea = area(policy, v, lhs.vector);
     if (!detail::cross_test(policy, lhs, rhs, tarea, larea, rarea))
-        return dst;
+        return output;
     auto p = lhs(policy, ratio(policy, larea, tarea));
-    *dst++ = make_any_line(p, decltype(p){}, line_kind::closed_segment, true);
-    return dst;
+    *output++ =
+        make_any_line(p, decltype(p){}, line_kind::closed_segment, true);
+    return output;
 }
 
 } // namespace ac
