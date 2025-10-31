@@ -13,13 +13,14 @@
 namespace ac {
 
 /// Iterator that applies given function after dereferencing the base iterator.
-template<typename Iter, typename Fn, typename Value = use_default>
+template<typename Iter, typename Function, typename Value = use_default>
 class transform_iterator
-    : public iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter> {
-    using base_t = iterator_adaptor<transform_iterator<Iter, Fn, Value>, Iter>;
+    : public iterator_adaptor<transform_iterator<Iter, Function, Value>, Iter> {
+    using base_t =
+        iterator_adaptor<transform_iterator<Iter, Function, Value>, Iter>;
 
 public:
-    using value_type = deduce_t<Value, std::remove_cvref_t<return_t<Fn>>>;
+    using value_type = deduce_t<Value, std::remove_cvref_t<return_t<Function>>>;
 
     transform_iterator() = default;
 
@@ -30,7 +31,7 @@ public:
     auto operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(m_fn(*this->base()))
 
 private:
-    Fn m_fn;
+    Function m_fn;
 };
 
 } // namespace ac

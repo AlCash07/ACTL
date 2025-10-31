@@ -33,9 +33,9 @@ using assemble_function_t = typename assemble_function<
     AcceptsVArgs,
     IsNoexcept>::type;
 
-template<typename Fn>
+template<typename Function>
 struct as_free_function {
-    using traits = function_traits<Fn>;
+    using traits = function_traits<Function>;
     using type = assemble_function_t<
         function_category::free,
         typename traits::return_type,
@@ -43,8 +43,8 @@ struct as_free_function {
         traits::accepts_variadic_arguments,
         traits::is_noexcept>;
 };
-/// Free function with the same parameters and return type as Fn.
-template<typename Fn>
-using as_free_function_t = typename as_free_function<Fn>::type;
+/// Free function with the same parameters and return type as Function.
+template<typename Function>
+using as_free_function_t = typename as_free_function<Function>::type;
 
 } // namespace ac

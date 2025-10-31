@@ -32,4 +32,12 @@ static_assert(ac::FunctionObject<Callable>);
 // TODO: make this test pass
 // static_assert(!ac::FunctionObject<const Callable>);
 
+static_assert(!ac::FreeFunction<int&>);
+static_assert(!ac::MemberFunction<int&>);
+static_assert(!ac::FunctionObject<int&>);
+
+static_assert(!ac::FreeFunction<void>);
+static_assert(!ac::MemberFunction<void>);
+static_assert(!ac::FunctionObject<void>);
+
 } // namespace

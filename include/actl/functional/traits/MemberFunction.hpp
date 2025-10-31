@@ -21,8 +21,8 @@ concept MemberFunction =
 /* Implementation */
 
 // Type qualifiers don't matter for a member function.
-template<MemberFunction Fn>
-struct function_traits<Fn const> : function_traits<Fn> {};
+template<MemberFunction Function>
+struct function_traits<Function const> : function_traits<Function> {};
 
 // We define all possible member function traits using a chain of macros,
 // which enumerate separate properties in the following order:

@@ -13,35 +13,36 @@ namespace ac {
 
 /// Checks if the function accepts variadic arguments, see
 /// https://en.cppreference.com/w/cpp/language/variadic_arguments.html
-template<typename Fn>
+template<typename Function>
 inline constexpr bool accepts_variadic_arguments_v =
-    function_traits<Fn>::accepts_variadic_arguments;
+    function_traits<Function>::accepts_variadic_arguments;
 
-template<typename Fn>
+template<typename Function>
 struct add_variadic_arguments {
-    using traits = function_traits<Fn>;
+    using traits = function_traits<Function>;
     using type = assemble_function_t<
         traits::category,
         typename traits::return_type,
-        unique_parameters_t<Fn>,
+        unique_parameters_t<Function>,
         true,
         traits::is_noexcept>;
 };
-template<typename Fn>
-using add_variadic_arguments_t = typename add_variadic_arguments<Fn>::type;
+template<typename Function>
+using add_variadic_arguments_t =
+    typename add_variadic_arguments<Function>::type;
 
-template<typename Fn>
+template<typename Function>
 struct remove_variadic_arguments {
-    using traits = function_traits<Fn>;
+    using traits = function_traits<Function>;
     using type = assemble_function_t<
         traits::category,
         typename traits::return_type,
-        unique_parameters_t<Fn>,
+        unique_parameters_t<Function>,
         false,
         traits::is_noexcept>;
 };
-template<typename Fn>
+template<typename Function>
 using remove_variadic_arguments_t =
-    typename remove_variadic_arguments<Fn>::type;
+    typename remove_variadic_arguments<Function>::type;
 
 } // namespace ac

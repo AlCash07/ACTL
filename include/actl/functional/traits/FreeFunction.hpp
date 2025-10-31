@@ -20,10 +20,10 @@ concept FreeFunction = function_traits<T>::category == function_category::free;
 /* Implementation */
 
 // Type qualifiers and pointer don't matter for a free function.
-template<FreeFunction Fn>
-struct function_traits<Fn const> : function_traits<Fn> {};
-template<FreeFunction Fn>
-struct function_traits<Fn*> : function_traits<Fn> {};
+template<FreeFunction Function>
+struct function_traits<Function const> : function_traits<Function> {};
+template<FreeFunction Function>
+struct function_traits<Function*> : function_traits<Function> {};
 
 #define AC_FF_VARGS() \
     AC_FF_NOEXCEPT()  \

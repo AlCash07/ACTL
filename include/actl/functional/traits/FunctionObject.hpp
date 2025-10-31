@@ -16,18 +16,19 @@ namespace ac {
 template<typename T>
 concept FunctionObject = requires(T) {
     &T::operator();
-    // TODO: investigate whether type qualifiers on Fn can make it
+    // TODO: investigate whether type qualifiers on T can make it
     // impossible to call `operator()`, and, on the other hand, may
     // disambiguate it.
 };
 
 /* Implementation */
 
-template<FunctionObject Fn>
-struct function_traits<Fn> {
+template<FunctionObject Function>
+struct function_traits<Function> {
 private:
     using member_traits =
-        function_traits<decltype(&std::remove_reference_t<Fn>::operator())>;
+        function_traits<decltype(&std::remove_reference_t<Function>::operator()
+        )>;
     using all_parameters = typename member_traits::parameters_type;
 
 public:

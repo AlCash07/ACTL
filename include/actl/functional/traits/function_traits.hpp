@@ -17,19 +17,21 @@ namespace ac {
 
 enum class function_category { free, member, object };
 
-/// If @p Fn is a function, then the following members are specified:
+/// If @p T is a function, then the following members are specified:
 /// - category as ac::function_category;
 /// - return_type;
 /// - parameters_type as ac::type_list;
 /// - accepts_variadic_arguments as a `bool`;
 /// - is_noexcept as a `bool`.
-template<typename Fn>
+template<typename T>
 struct function_traits;
 
 // Reference qualifier doesn't matter for a function.
-template<typename Fn>
-struct function_traits<Fn&> : function_traits<Fn> {};
-template<typename Fn>
-struct function_traits<Fn&&> : function_traits<Fn> {};
+template<typename Function>
+    requires requires { function_traits<Function>::category; }
+struct function_traits<Function&> : function_traits<Function> {};
+template<typename Function>
+    requires requires { function_traits<Function>::category; }
+struct function_traits<Function&&> : function_traits<Function> {};
 
 } // namespace ac

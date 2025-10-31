@@ -10,19 +10,19 @@
 
 namespace ac {
 
-template<typename Fn>
-using return_t = typename function_traits<Fn>::return_type;
+template<typename Function>
+using return_t = typename function_traits<Function>::return_type;
 
-template<typename Fn>
-inline constexpr bool returns_void_v = std::is_same_v<return_t<Fn>, void>;
+template<typename Function>
+inline constexpr bool returns_void_v = std::is_same_v<return_t<Function>, void>;
 
-template<typename Fn, typename ReturnType>
+template<typename Function, typename ReturnType>
 struct with_return_type {
-    using traits = function_traits<Fn>;
+    using traits = function_traits<Function>;
     using type = assemble_function_t<
         traits::category,
         ReturnType,
-        unique_parameters_t<Fn>,
+        unique_parameters_t<Function>,
         traits::accepts_variadic_arguments,
         traits::is_noexcept>;
 };
