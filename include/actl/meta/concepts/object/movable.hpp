@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <actl/meta/concepts/core/assignable_from.hpp>
-#include <actl/meta/concepts/core/move_constructible.hpp>
-#include <actl/meta/concepts/core/swappable.hpp>
+#include <actl/meta/concepts/core/AssignableFrom.hpp>
+#include <actl/meta/concepts/core/MoveConstructible.hpp>
+#include <actl/meta/concepts/core/Swappable.hpp>
 
 namespace ac {
 

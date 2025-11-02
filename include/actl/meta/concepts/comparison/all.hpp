@@ -6,4 +6,4 @@
 
 #pragma once
 
-#include <actl/meta/concepts/comparison/equality_comparable.hpp>
+#include <actl/meta/concepts/comparison/EqualityComparable.hpp>

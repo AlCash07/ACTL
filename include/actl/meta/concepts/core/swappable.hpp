@@ -11,17 +11,17 @@
 namespace ac {
 
 template<typename T>
-concept NothrowSwappable = std::swappable<T> && requires(T& a, T& b) {
-    { std::ranges::swap(a, b) } noexcept;
+concept NothrowSwappable = std::swappable<T> && requires(T& l, T& r) {
+    { std::ranges::swap(l, r) } noexcept;
 };
 
-template<typename T, typename U>
+template<typename L, typename R>
 concept NothrowSwappableWith =
-    std::swappable_with<T, U> && requires(T&& t, U&& u) {
-        { std::ranges::swap(std::forward<T>(t), std::forward<T>(t)) } noexcept;
-        { std::ranges::swap(std::forward<U>(u), std::forward<U>(u)) } noexcept;
-        { std::ranges::swap(std::forward<T>(t), std::forward<U>(u)) } noexcept;
-        { std::ranges::swap(std::forward<U>(u), std::forward<T>(t)) } noexcept;
+    std::swappable_with<L, R> && requires(L&& l, R&& r) {
+        { std::ranges::swap(std::forward<L>(l), std::forward<L>(l)) } noexcept;
+        { std::ranges::swap(std::forward<R>(r), std::forward<R>(r)) } noexcept;
+        { std::ranges::swap(std::forward<L>(l), std::forward<R>(r)) } noexcept;
+        { std::ranges::swap(std::forward<R>(r), std::forward<L>(l)) } noexcept;
     };
 
 } // namespace ac

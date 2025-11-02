@@ -5,10 +5,10 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/array/semi_static_array.hpp>
-#include <actl/meta/concepts/object/regular.hpp>
+#include <actl/meta/concepts/object/Regular.hpp>
 #include <actl/meta/constant_literals.hpp>
+#include <actl_test/base/Regular.hpp>
 #include <actl_test/base/equal_same_type.hpp>
-#include <actl_test/base/regular.hpp>
 
 using namespace ac::constant_literals;
 
@@ -16,7 +16,7 @@ namespace {
 
 template<typename SemiStaticArray>
 void test_semi_static_array_type_traits() {
-    static_assert(ac::TriviallySemiregular<SemiStaticArray>);
+    static_assert(ac::TriviallySemiRegular<SemiStaticArray>);
     static_assert(ac::NothrowRegular<SemiStaticArray>);
     static_assert(std::is_standard_layout_v<SemiStaticArray>);
     static_assert(

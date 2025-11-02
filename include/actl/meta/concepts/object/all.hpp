@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/concepts/object/copyable.hpp>
-#include <actl/meta/concepts/object/movable.hpp>
-#include <actl/meta/concepts/object/regular.hpp>
-#include <actl/meta/concepts/object/semiregular.hpp>
+#include <actl/meta/concepts/object/Copyable.hpp>
+#include <actl/meta/concepts/object/Movable.hpp>
+#include <actl/meta/concepts/object/Regular.hpp>
+#include <actl/meta/concepts/object/SemiRegular.hpp>

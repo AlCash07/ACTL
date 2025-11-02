@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <actl/meta/concepts/core/assignable_from.hpp>
-#include <actl/meta/concepts/core/constructible_from.hpp>
-#include <actl/meta/concepts/core/convertible_to.hpp>
-#include <actl/meta/concepts/core/copy_constructible.hpp>
-#include <actl/meta/concepts/core/default_initializable.hpp>
-#include <actl/meta/concepts/core/move_constructible.hpp>
-#include <actl/meta/concepts/core/swappable.hpp>
+#include <actl/meta/concepts/core/AssignableFrom.hpp>
+#include <actl/meta/concepts/core/ConstructibleFrom.hpp>
+#include <actl/meta/concepts/core/ConvertibleTo.hpp>
+#include <actl/meta/concepts/core/CopyConstructible.hpp>
+#include <actl/meta/concepts/core/DefaultInitializable.hpp>
+#include <actl/meta/concepts/core/MoveConstructible.hpp>
+#include <actl/meta/concepts/core/Swappable.hpp>

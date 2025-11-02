@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/meta/concepts/core/default_initializable.hpp>
-#include <actl/meta/concepts/object/copyable.hpp>
+#include <actl/meta/concepts/core/DefaultInitializable.hpp>
+#include <actl/meta/concepts/object/Copyable.hpp>
 
 namespace ac {
 
 template<typename T>
-concept TriviallySemiregular =
+concept TriviallySemiRegular =
     std::semiregular<T> && TriviallyCopyable<T> &&
     TriviallyDefaultInitializable<T> &&
     // Trivial type is defined as trivially copyable and default constructible
@@ -21,7 +21,7 @@ concept TriviallySemiregular =
     std::is_trivial_v<T>;
 
 template<typename T>
-concept NothrowSemiregular =
+concept NothrowSemiRegular =
     std::semiregular<T> && NothrowCopyable<T> && NothrowDefaultInitializable<T>;
 
 } // namespace ac

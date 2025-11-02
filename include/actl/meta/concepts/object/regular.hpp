@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <actl/meta/concepts/comparison/equality_comparable.hpp>
-#include <actl/meta/concepts/object/semiregular.hpp>
+#include <actl/meta/concepts/comparison/EqualityComparable.hpp>
+#include <actl/meta/concepts/object/SemiRegular.hpp>
 
 namespace ac {
 
 template<typename T>
-concept NothrowRegular = NothrowSemiregular<T> && NothrowEqualityComparable<T>;
+concept NothrowRegular = NothrowSemiRegular<T> && NothrowEqualityComparable<T>;
 
 } // namespace ac
