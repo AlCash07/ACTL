@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/meta/Reference.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/range/interface/contiguous_range_interface.hpp>
 #include <actl/range/traits/concepts.hpp>
@@ -88,5 +89,8 @@ struct is_span : std::false_type {};
 
 template<typename T, size_t N>
 struct is_span<span<T, N>, T> : std::true_type {};
+
+template<typename T, size_t N>
+struct is_reference<span<T, N>> : std::true_type {};
 
 } // namespace ac

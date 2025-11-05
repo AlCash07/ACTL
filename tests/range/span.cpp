@@ -29,3 +29,7 @@ TEST_CASE("span from const vector") {
     CHECK(v.data() == s.data());
     CHECK(N == s.size());
 }
+
+static_assert(ac::Reference<ac::span<int>>);
+static_assert(ac::Reference<ac::span<int const>>);
+static_assert(ac::Reference<ac::span<int, 2>>);
