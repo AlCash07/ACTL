@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN.hpp>
+#include <actl/meta/Reference.hpp>
 #include <memory> // for std::addressof
 #include <type_traits>
 #include <utility> // for std::forward
@@ -24,33 +25,33 @@ struct is_out : std::false_type {};
 template<typename T>
 inline constexpr bool is_out_v = detail::is_out<std::remove_cvref_t<T>>::value;
 
-/// Thin wrapper over a reference-like type
+/// Thin wrapper over a Reference type
 /// to specify an output-only function parameter.
 ///
 /// Improves code clarity by making variable modifications clearly visible
 /// at both the function definition and all the call sites.
 /// For example, in operations similar to copy it's not immediately clear
 /// which of the arguments we're copying to:
-/// ```
+/// @code
 /// copy_range(x, y);
-/// ```
+/// @endcode
 /// Using ac::out wrapper, we can make it obvious
 /// without any extra documentation:
-/// ```
+/// @code
 /// template<typename Range>
 /// void copy_range(out<Range&> target, Range const& source) { ... }
 ///
 /// copy_range(out{x}, y);
-/// ```
-template<typename T>
+/// @endcode
+template<Reference Ref>
 class out {
 public:
     /// Constructor from an arbitrary type convertible to the wrapped type.
     template<typename Arg>
-        requires(std::is_constructible_v<T, Arg &&> && !is_out_v<Arg>)
-    explicit constexpr out(Arg&& arg
-    ) noexcept(std::is_nothrow_constructible_v<T, Arg&&>)
-        : x{std::forward<Arg>(arg)} {}
+        requires(std::is_constructible_v<Ref, Arg &&> && !is_out_v<Arg>)
+    explicit constexpr out(Arg&& arg) //
+        noexcept(std::is_nothrow_constructible_v<Ref, Arg&&>)
+        : m_ref{std::forward<Arg>(arg)} {}
 
     /// Function arguments in C++ can undergo an implicit conversion
     /// to match the parameter types.
@@ -62,22 +63,22 @@ public:
     /// For example, `ac::out<std::vector<int>&>` argument can be passed
     /// where `ac::out<std::span<int>>` parameter is expected.
     template<typename Source>
-        requires(std::is_convertible_v<Source, T>)
-    constexpr out(out<Source>&& source
-    ) noexcept(std::is_nothrow_constructible_v<T, Source>)
-        : x{*source} {}
+        requires(std::is_convertible_v<Source, Ref>)
+    constexpr out(out<Source>&& source) //
+        noexcept(std::is_nothrow_constructible_v<Ref, Source>)
+        : m_ref{*source} {}
 
     /// Accesses the wrapped value.
     /// @note operator* is used for consistency with `std::optional`.
     /// Simple operator like this is even more appropriate here than in
     /// `std::optional`, because `std::optional` might not contain a value,
     /// but here it's always available.
-    constexpr T operator*() const noexcept {
-        return x;
+    constexpr Ref operator*() const noexcept {
+        return m_ref;
     }
 
     /// Implicit conversion to the wrapped type.
-    constexpr operator T() const noexcept {
+    constexpr operator Ref() const noexcept {
         return **this;
     }
 
@@ -85,8 +86,8 @@ public:
     /// as `out->member`.
     /// @note It would be better to support `out.member` syntax,
     /// but C++ doesn't allow to overload `operator.` yet.
-    constexpr std::remove_reference_t<T>* operator->() noexcept {
-        return std::addressof(x);
+    constexpr std::remove_reference_t<Ref>* operator->() noexcept {
+        return std::addressof(m_ref);
     }
 
     /// operator= enables assignment extension by overloading
@@ -94,21 +95,21 @@ public:
     ///
     /// For example, if a third-party `Container` doesn't support
     /// assignment from a range like
-    /// ```
+    /// @code
     /// targetContainer = sourceRange;
-    /// ```
+    /// @endcode
     /// we can still achieve a similar syntax
-    /// ```
+    /// @code
     /// ac::out{targetContainer} = sourceRange;
-    /// ```
+    /// @endcode
     /// by implementing the `assign` function
     /// in the same namespace as `Container`:
-    /// ```
+    /// @code
     /// template<typename SourceRange>
     /// void assign(ac::out<Container&> target, SourceRange const& source) {
     ///     ...
     /// }
-    /// ```
+    /// @endcode
     template<typename Source>
     constexpr out& operator=(Source&& source)
         AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
@@ -118,15 +119,15 @@ public:
     // TODO: struct enable_operators;
 
 private:
-    T x;
+    Ref m_ref;
 };
 
-template<typename T>
-out(T&&) -> out<T>;
+template<Reference Ref>
+out(Ref&&) -> out<Ref>;
 
 namespace detail {
-template<typename T>
-struct is_out<out<T>> : std::true_type {};
+template<Reference Ref>
+struct is_out<out<Ref>> : std::true_type {};
 } // namespace detail
 
 template<typename Target, typename Source>

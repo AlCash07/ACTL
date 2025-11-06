@@ -27,7 +27,7 @@ TEST_CASE("free function traits") {
     test_void_free_function_traits<fn_va, true, false>();
     test_void_free_function_traits<fn_va_noexcept, true, true>();
     // const qualifier is ignored in a function parameter
-    test_void_free_function_traits<void(const int), false, false>();
+    test_void_free_function_traits<void(int const), false, false>();
     // qualifiers don't matter for a free function
     test_void_free_function_traits<fn*, false, false>();
     test_void_free_function_traits<fn_noexcept&, false, true>();
