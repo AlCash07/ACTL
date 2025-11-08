@@ -29,6 +29,7 @@ High-level thematic libraries:
 .. toctree::
    :maxdepth: 1
 
+   actl/range
    actl/string
 
 Design

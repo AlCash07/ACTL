@@ -2,8 +2,6 @@
 preprocessor
 ********************************
 
-Preprocessing utilities
-
 .. ac-include:: actl/preprocessor/AC_UNPARENTHESIZED.hpp
 .. doxygendefine:: AC_UNPARENTHESIZED
 

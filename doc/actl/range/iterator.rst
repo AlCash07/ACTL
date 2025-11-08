@@ -1,9 +1,9 @@
 ********************************
-platform introspection
+iterator
 ********************************
 
 .. toctree::
    :glob:
    :maxdepth: 1
 
-   platform/*
+   iterator/*

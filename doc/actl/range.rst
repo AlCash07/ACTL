@@ -1,9 +1,9 @@
 ********************************
-platform introspection
+range
 ********************************
 
 .. toctree::
    :glob:
    :maxdepth: 1
 
-   platform/*
+   range/*

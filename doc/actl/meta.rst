@@ -1,8 +1,6 @@
 ********************************
-meta
+meta-programming
 ********************************
-
-meta library provides utilities for meta-programming:
 
 .. toctree::
    :glob:
