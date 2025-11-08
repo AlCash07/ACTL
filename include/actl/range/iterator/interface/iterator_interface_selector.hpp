@@ -1,7 +1,3 @@
-// Iterator interface is designed to produce complete iterator interface from a
-// set of core functions. Adopted from boost (with simplifications):
-// http://www.boost.org/doc/libs/latest/libs/iterator/doc/iterator_interface.html
-//
 // Copyright 2017 Oleksandr Bacherikov.
 //
 // Distributed under the Boost Software License, Version 1.0
@@ -15,38 +11,44 @@
 
 namespace ac {
 
-template<typename Iter, typename Category>
-struct iterator_interface_selector {
-    using type = basic_iterator_interface<Iter>;
-};
+template<typename DerivedIterator, typename Category>
+struct iterator_interface_selector;
 
-template<typename Iter>
-struct iterator_interface_selector<Iter, std::input_iterator_tag> {
-    using type = input_iterator_interface<Iter>;
-};
-
-template<typename Iter>
-struct iterator_interface_selector<Iter, std::forward_iterator_tag> {
-    using type = forward_iterator_interface<Iter>;
-};
-
-template<typename Iter>
-struct iterator_interface_selector<Iter, std::bidirectional_iterator_tag> {
-    using type = bidirectional_iterator_interface<Iter>;
-};
-
-template<typename Iter>
-struct iterator_interface_selector<Iter, std::random_access_iterator_tag> {
-    using type = random_access_iterator_interface<Iter>;
-};
-
-template<typename Iter>
-struct iterator_interface_selector<Iter, std::output_iterator_tag> {
-    using type = output_iterator_interface<Iter>;
-};
-
-template<typename Iter, typename Category>
+/// When the iterator category isn't fixed
+/// but instead deduced by some expression,
+/// the following selector can be used to select
+/// the correct iterator_interface template.
+template<typename DerivedIterator, typename Category>
 using iterator_interface_selector_t =
-    typename iterator_interface_selector<Iter, Category>::type;
+    typename iterator_interface_selector<DerivedIterator, Category>::type;
+
+template<typename DerivedIterator>
+struct iterator_interface_selector<DerivedIterator, std::output_iterator_tag> {
+    using type = output_iterator_interface<DerivedIterator>;
+};
+
+template<typename DerivedIterator>
+struct iterator_interface_selector<DerivedIterator, std::input_iterator_tag> {
+    using type = input_iterator_interface<DerivedIterator>;
+};
+
+template<typename DerivedIterator>
+struct iterator_interface_selector<DerivedIterator, std::forward_iterator_tag> {
+    using type = forward_iterator_interface<DerivedIterator>;
+};
+
+template<typename DerivedIterator>
+struct iterator_interface_selector<
+    DerivedIterator,
+    std::bidirectional_iterator_tag> {
+    using type = bidirectional_iterator_interface<DerivedIterator>;
+};
+
+template<typename DerivedIterator>
+struct iterator_interface_selector<
+    DerivedIterator,
+    std::random_access_iterator_tag> {
+    using type = random_access_iterator_interface<DerivedIterator>;
+};
 
 } // namespace ac

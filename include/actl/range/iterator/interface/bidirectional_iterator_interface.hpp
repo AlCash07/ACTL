@@ -10,19 +10,21 @@
 
 namespace ac {
 
-// https://en.cppreference.com/w/cpp/iterator/bidirectional_iterator
-template<typename Iter>
+/// Avoids boilerplate needed to satisfy full requirements of
+/// <a href="https://en.cppreference.com/w/cpp/iterator/bidirectional_iterator">
+/// std::bidirectional_iterator</a>.
+template<typename DerivedIterator>
 class bidirectional_iterator_interface
-    : public forward_iterator_interface<Iter> {
+    : public forward_iterator_interface<DerivedIterator> {
 public:
     using iterator_category = std::bidirectional_iterator_tag;
 
     // Post-decrement is a free function here so that it's not hidden by the
     // pre-decrement operator--() defined by the derived iterator.
-    friend constexpr Iter operator--(Iter& iter, int) noexcept(
-        noexcept(Iter{iter}, --iter)
-    ) {
-        Iter iter_copy = iter;
+    friend constexpr DerivedIterator operator--(
+        DerivedIterator& iter, int
+    ) noexcept(noexcept(DerivedIterator{iter}, --iter)) {
+        DerivedIterator iter_copy = iter;
         --iter;
         return iter_copy;
     }

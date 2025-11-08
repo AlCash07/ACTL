@@ -10,9 +10,12 @@
 
 namespace ac {
 
-// https://en.cppreference.com/w/cpp/iterator/output_iterator.html
-template<typename Iter>
-class output_iterator_interface : public basic_iterator_interface<Iter> {
+/// Avoids boilerplate needed to satisfy full requirements of
+/// <a href="https://en.cppreference.com/w/cpp/iterator/output_iterator">
+/// std::output_iterator</a>.
+template<typename DerivedIterator>
+class output_iterator_interface
+    : public basic_iterator_interface<DerivedIterator> {
 public:
     using iterator_category = std::output_iterator_tag;
 };

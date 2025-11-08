@@ -11,17 +11,20 @@
 
 namespace ac {
 
-// https://en.cppreference.com/w/cpp/iterator/forward_iterator
-template<typename Iter>
-class forward_iterator_interface : public input_iterator_interface<Iter> {
+/// Avoids boilerplate needed to satisfy full requirements of
+/// <a href="https://en.cppreference.com/w/cpp/iterator/forward_iterator">
+/// std::forward_iterator</a>.
+template<typename DerivedIterator>
+class forward_iterator_interface
+    : public input_iterator_interface<DerivedIterator> {
 public:
     using iterator_category = std::forward_iterator_tag;
 
     // operator== is defined here to support defining it as = default
-    // in the derived Iter.
+    // in the derived DerivedIterator.
     //
     // The parameters are constrained here to make sure this operator
-    // doesn't get used by mistake for the instances of the derived Iter
+    // doesn't get used by mistake for the instances of the DerivedIterator
     // after an implicit conversion to the base class.
     template<std::same_as<forward_iterator_interface> fii>
     friend constexpr constant<true> operator==(fii, fii) noexcept {

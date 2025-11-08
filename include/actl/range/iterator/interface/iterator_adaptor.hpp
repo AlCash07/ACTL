@@ -16,70 +16,72 @@
 namespace ac {
 
 template<
-    typename Derived,
-    typename Iter,
-    typename Category = iter_category_t<Iter>>
+    typename DerivedIterator,
+    typename AdaptedIterator,
+    typename Category = iter_category_t<AdaptedIterator>>
 class iterator_adaptor
-    : public iterator_interface_selector_t<Derived, Category> {
-    using base_t = iterator_interface_selector_t<Derived, Category>;
+    : public iterator_interface_selector_t<DerivedIterator, Category> {
+    using base_t = iterator_interface_selector_t<DerivedIterator, Category>;
 
 protected:
-    constexpr Iter& base_ref() noexcept {
+    constexpr AdaptedIterator& base_ref() noexcept {
         return m_base;
     }
 
 public:
-    // These are the default aliases that can be overwritten in the Derived
-    // iterator when needed.
-    using value_type = std::iter_value_t<Iter>;
-    using difference_type = std::iter_difference_t<Iter>;
+    // These are the default aliases that can be overwritten in the
+    // DerivedIterator iterator when needed.
+    using value_type = std::iter_value_t<AdaptedIterator>;
+    using difference_type = std::iter_difference_t<AdaptedIterator>;
 
     // Default constructor is useful because
     // std::sentinel_for requires std::semiregular.
-    template<typename I = Iter>
-        requires std::is_default_constructible_v<I>
+    template<typename Iter = AdaptedIterator>
+        requires std::is_default_constructible_v<Iter>
     constexpr iterator_adaptor(
-    ) noexcept(std::is_nothrow_default_constructible_v<Iter>)
+    ) noexcept(std::is_nothrow_default_constructible_v<AdaptedIterator>)
         : m_base{Iter{}} {}
 
-    explicit constexpr iterator_adaptor(Iter const& iter
-    ) noexcept(noexcept(Iter{iter}))
+    explicit constexpr iterator_adaptor(AdaptedIterator const& iter
+    ) noexcept(noexcept(AdaptedIterator{iter}))
         : m_base{iter} {}
 
-    constexpr Iter const& base() const noexcept {
+    constexpr AdaptedIterator const& base() const noexcept {
         return m_base;
     }
 
     constexpr decltype(auto) operator*() const
         AC_DEDUCE_NOEXCEPT_AND_RETURN(*base())
 
-    constexpr Derived& operator++()
+    constexpr DerivedIterator& operator++()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), base_t::derived())
 
     template<typename C = Category>
         requires std::is_base_of_v<std::bidirectional_iterator_tag, C>
-    constexpr Derived& operator--()
+    constexpr DerivedIterator& operator--()
         AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
 
     template<typename Difference>
     // AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN didn't work for some reason.
-        requires requires(Iter& iter, Difference n) { iter += n; }
-    constexpr Derived& operator+=(Difference n)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += n, base_t::derived())
+        requires requires(AdaptedIterator& iter, Difference offset) {
+            iter += offset;
+        }
+    constexpr DerivedIterator& operator+=(Difference offset)
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += offset, base_t::derived())
 
     // TODO: make this a hidden friend.
-    template<typename Derived1, typename Iter1, typename Category1>
+    template<typename DerivedIter1, typename AdaptedIter1, typename Category1>
     constexpr auto operator==(
-        iterator_adaptor<Derived1, Iter1, Category1> const& that
+        iterator_adaptor<DerivedIter1, AdaptedIter1, Category1> const& that
     ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->base() == that.base())
 
-    template<typename Derived1, typename Iter1, typename Types1>
+    template<typename DerivedIter1, typename AdaptedIter1, typename Category1>
     constexpr auto operator-(
-        iterator_adaptor<Derived1, Iter1, Types1> const& that
+        iterator_adaptor<DerivedIter1, AdaptedIter1, Category1> const& that
     ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->base() - that.base())
 
 private:
-    Iter m_base;
+    AdaptedIterator m_base;
 };
 
 } // namespace ac

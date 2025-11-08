@@ -21,6 +21,7 @@ constexpr T* arrow_operator(T& x) noexcept {
 constexpr void arrow_operator(void) noexcept {}
 
 template<typename T>
+    requires std::is_object_v<T>
 class arrow_proxy {
 public:
     template<typename Arg>
