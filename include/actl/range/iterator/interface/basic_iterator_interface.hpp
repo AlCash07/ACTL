@@ -41,15 +41,29 @@ public:
 
     // Post-increment is a free function here so that it's not hidden by the
     // pre-increment operator++() defined by the derived iterator.
-    // TODO: std::input_or_output_iterator doesn't require the return type here
-    // to be exactly Iter
-    // https://en.cppreference.com/w/cpp/iterator/weakly_incrementable
-    friend constexpr Iter operator++(Iter& iter, int) noexcept(
+    //
+    // It has to be a template instead of a regular function taking `Iter&`
+    // parameter to provide implementations with different return types
+    // depending if the type is copyable.
+    // We cannot simply check `std::copyable<Iter>`, because Iter
+    // is not fully formed here, because it's a derived class.
+    template<std::same_as<Iter> IterT>
+    friend constexpr Iter operator++(IterT& iter, int) noexcept(
         noexcept(Iter{iter}, ++iter)
     ) {
         Iter iter_copy = iter;
         ++iter;
         return iter_copy;
+    }
+
+    // Post-increment implementation for non-copyable types
+    // such as input iterators following the standard proposal
+    // https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html#changes-since-r1
+    template<std::same_as<Iter> IterT>
+        requires(!std::copyable<IterT>)
+    friend constexpr void operator++(IterT& iter, int) noexcept(noexcept(++iter)
+    ) {
+        ++iter;
     }
 };
 

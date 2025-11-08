@@ -10,6 +10,7 @@
 
 namespace ac {
 
+// https://en.cppreference.com/w/cpp/iterator/output_iterator.html
 template<typename Iter>
 class output_iterator_interface : public basic_iterator_interface<Iter> {
 public:

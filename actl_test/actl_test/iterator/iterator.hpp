@@ -9,7 +9,7 @@
 #include <actl/range/iterator/traits/category.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <actl/utility/none.hpp>
-#include <actl_test/base/Regular.hpp>
+#include <actl_test/base/regular.hpp>
 #include <actl_test/operation/relational_operators.hpp>
 #include <iterator>
 
@@ -21,6 +21,7 @@ void test_iterator(Iterator iter, Category) {
     static_assert(!std::is_const_v<std::iter_value_t<Iterator>>);
     static_assert(std::is_same_v<Iterator&, decltype(++iter)>);
     CHECK(std::addressof(++iter) == std::addressof(iter));
+    iter++;
 }
 
 // https://en.cppreference.com/w/cpp/iterator/input_iterator
