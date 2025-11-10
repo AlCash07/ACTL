@@ -50,24 +50,24 @@ struct range_properties<iterator_range<Iter, Super>> : range_properties<Super> {
 };
 
 template<typename SuperRange = none, typename Iterator>
-auto make_range(Iterator first, Iterator last) {
+constexpr auto make_range(Iterator first, Iterator last) {
     return iterator_range<Iterator, SuperRange>{first, last};
 }
 
 template<typename SuperRange = none, typename Iterator, typename Int>
-auto make_range(Iterator first, Int n) {
+constexpr auto make_range(Iterator first, Int n) {
     return iterator_range<Iterator, SuperRange>{first, std::next(first, n)};
 }
 
 template<typename Container>
-auto make_range(Container&& cont) {
+constexpr auto make_range(Container&& cont) {
     return make_range<std::remove_reference_t<Container>>(
         ranges::begin(cont), ranges::end(cont)
     );
 }
 
 template<typename Container>
-auto make_crange(Container const& cont) {
+constexpr auto make_crange(Container const& cont) {
     return make_range(cont);
 }
 
