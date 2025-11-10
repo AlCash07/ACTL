@@ -31,13 +31,15 @@ struct begin_f {
     }
 
     template<has_member_begin R>
-    constexpr auto operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.begin())
+    constexpr auto operator()(R&& range) const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        range.begin()
+    )
 
     template<typename R>
         requires(!has_member_begin<R> && has_non_member_begin<R>)
-    constexpr auto operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(begin(range))
+    constexpr auto operator()(R&& range) const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        begin(range)
+    )
 };
 
 } // namespace impl

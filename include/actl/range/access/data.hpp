@@ -31,13 +31,15 @@ struct data_f {
     }
 
     template<has_member_data R>
-    constexpr auto operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.data())
+    constexpr auto operator()(R&& range) const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        range.data()
+    )
 
     template<typename R>
         requires(!has_member_data<R> && has_non_member_data<R>)
-    constexpr auto operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(data(range))
+    constexpr auto operator()(R&& range) const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        data(range)
+    )
 };
 
 } // namespace impl

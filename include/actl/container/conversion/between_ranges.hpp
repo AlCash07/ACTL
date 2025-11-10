@@ -21,9 +21,9 @@ struct range_construction_from_iterators {
         std::is_constructible_v<Target, source_iter, source_iter>;
 
     static constexpr Target convert(Source const& source)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(Target{
-            ranges::begin(source), ranges::end(source)
-        })
+        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+            Target{ranges::begin(source), ranges::end(source)}
+        )
 };
 
 template<typename Target, typename Source>

@@ -46,7 +46,9 @@ public:
 
     constexpr friend bool operator==(
         integer_iterator const& l, integer_iterator const& r
-    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(l.m_value == r.m_value)
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        l.m_value == r.m_value
+    )
 
     template<typename Difference>
     constexpr auto operator+=(Difference offset)

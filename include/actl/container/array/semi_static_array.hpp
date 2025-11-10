@@ -147,10 +147,11 @@ template<typename T, T... Values, typename... Args>
         (... && can_convert_to_v<T, Args>)
     )
 struct conversion<semi_static_array<T, Values...>, Args...> : std::true_type {
-    static constexpr auto convert(Args&&... args)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(semi_static_array<T, Values...>{
-            convert_to<T>(std::forward<Args>(args))...
-        })
+    static constexpr auto convert(Args&&... args
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        semi_static_array<T, Values...>{convert_to<T>(std::forward<Args>(args)
+        )...}
+    )
 };
 
 } // namespace ac

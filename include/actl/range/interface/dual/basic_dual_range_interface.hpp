@@ -13,15 +13,21 @@ namespace ac {
 template<typename Derived>
 class basic_non_const_range_interface {
 public:
-    constexpr auto cbegin() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin())
+    constexpr auto cbegin() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        derived().begin()
+    )
 
-    constexpr auto cend() const AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().end())
+    constexpr auto cend() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        derived().end()
+    )
 
-    constexpr auto empty()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin() == derived().end())
+    constexpr auto empty() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        derived().begin() == derived().end()
+    )
 
-    explicit constexpr operator bool() AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())
+    explicit constexpr operator bool() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        !empty()
+    )
 
     constexpr decltype(auto) front(
     ) noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin())) {

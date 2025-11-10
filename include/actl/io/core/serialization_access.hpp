@@ -18,11 +18,15 @@ struct serialization_access {
 
     template<typename T, typename... Ts>
     static bool write_final(T const& x, Ts&... args)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(x.write_final(args...))
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+            x.write_final(args...)
+        )
 
     template<typename T, typename... Ts>
     static bool read(T& x, Ts&&... args)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(x.read_final(args...))
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+            x.read_final(args...)
+        )
 };
 
 template<typename T>
@@ -30,13 +34,14 @@ concept IO_Tuple = serialization_access::is_io_tuple_v<T>;
 
 template<typename T>
 bool write_final(Device auto& od, Format auto& fmt, T const& x)
-    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
+    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
         serialization_access::write_final(x, od, fmt)
     )
 
 template<typename T>
-bool read_final(
-    Device auto& id, Format auto& fmt, T& x
-) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(serialization_access::read(x, id, fmt))
+bool read_final(Device auto& id, Format auto& fmt, T& x)
+    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+        serialization_access::read(x, id, fmt)
+    )
 
 } // namespace ac::io

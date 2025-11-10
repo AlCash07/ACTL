@@ -18,10 +18,11 @@ template<typename Target, typename... Args>
 struct range_initialization : std::true_type {
     // List initialization is intentionally used here instead of construction
     // to avoid accidental calls to constructors such as std::vector(size_t n).
-    static constexpr Target convert(Args&&... args)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(Target{
-            ac::convert_to<range_value_t<Target>>(std::forward<Args>(args))...
-        })
+    static constexpr Target convert(Args&&... args
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        Target{ac::convert_to<range_value_t<Target>>(std::forward<Args>(args)
+        )...}
+    )
 };
 
 template<typename T, typename>

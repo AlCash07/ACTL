@@ -50,16 +50,21 @@ public:
         return m_base;
     }
 
-    constexpr decltype(auto) operator*() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(*base())
+    constexpr decltype(auto) operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        *base()
+    )
 
-    constexpr DerivedIterator& operator++()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(++base_ref(), base_t::derived())
+    constexpr DerivedIterator& operator++() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        ++base_ref(),
+        base_t::derived()
+    )
 
     template<typename C = Category>
         requires std::is_base_of_v<std::bidirectional_iterator_tag, C>
-    constexpr DerivedIterator& operator--()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(--base_ref(), base_t::derived())
+    constexpr DerivedIterator& operator--() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        --base_ref(),
+        base_t::derived()
+    )
 
     template<typename Difference>
     // AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN didn't work for some reason.
@@ -67,18 +72,25 @@ public:
             iter += offset;
         }
     constexpr DerivedIterator& operator+=(Difference offset)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(base_ref() += offset, base_t::derived())
+        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+            base_ref() += offset,
+            base_t::derived()
+        )
 
     // TODO: make this a hidden friend.
     template<typename DerivedIter1, typename AdaptedIter1, typename Category1>
     constexpr auto operator==(
         iterator_adaptor<DerivedIter1, AdaptedIter1, Category1> const& that
-    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->base() == that.base())
+    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //
+        this->base() == that.base()
+    )
 
     template<typename DerivedIter1, typename AdaptedIter1, typename Category1>
     constexpr auto operator-(
         iterator_adaptor<DerivedIter1, AdaptedIter1, Category1> const& that
-    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(this->base() - that.base())
+    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //
+        this->base() - that.base()
+    )
 
 private:
     AdaptedIterator m_base;

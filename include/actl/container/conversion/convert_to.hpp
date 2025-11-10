@@ -18,14 +18,16 @@ struct conversion : std::false_type {};
 template<typename Target>
     requires(std::is_default_constructible_v<Target>)
 struct conversion<Target> : std::true_type {
-    static constexpr Target convert() AC_DEDUCE_NOEXCEPT_AND_RETURN(Target{})
+    static constexpr Target convert() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        Target{}
+    )
 };
 
 template<typename Target, typename Source>
     requires(std::is_arithmetic_v<Target> && std::is_convertible_v<Source, Target>)
 struct conversion<Target, Source> : std::true_type {
     static constexpr Target convert(Source&& source)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
             static_cast<Target>(std::forward<Source>(source))
         )
 };
@@ -34,7 +36,7 @@ template<typename Target, typename... Args>
 inline constexpr bool can_convert_to_v = conversion<Target, Args...>::value;
 
 template<typename Target, typename... Args>
-constexpr Target convert_to(Args&&... args) AC_DEDUCE_NOEXCEPT_AND_RETURN(
+constexpr Target convert_to(Args&&... args) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
     conversion<Target, Args...>::convert(std::forward<Args>(args)...)
 )
 

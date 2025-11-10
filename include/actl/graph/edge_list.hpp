@@ -131,8 +131,7 @@ public:
     using base_t::base_t;
 
     template<typename E>
-    class edge_iterator
-        : public forward_iterator_interface<edge_iterator<E>> {
+    class edge_iterator : public forward_iterator_interface<edge_iterator<E>> {
     public:
         using value_type = E;
         using difference_type = std::ptrdiff_t;
@@ -151,7 +150,9 @@ public:
         }
 
         friend bool operator==(edge_iterator const& l, edge_iterator const& r)
-            AC_DEDUCE_NOEXCEPT_AND_RETURN(l.m_id == r.m_id)
+            AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+                l.m_id == r.m_id
+            )
 
     private:
         friend class edge_list_impl;

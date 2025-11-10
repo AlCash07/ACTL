@@ -29,13 +29,15 @@ struct end_f {
     }
 
     template<has_member_end R>
-    constexpr auto operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.end())
+    constexpr auto operator()(R&& range) const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        range.end()
+    )
 
     template<typename R>
         requires(!has_member_end<R> && has_non_member_end<R>)
-    constexpr auto operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(end(range))
+    constexpr auto operator()(R&& range) const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        end(range)
+    )
 };
 
 } // namespace impl

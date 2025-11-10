@@ -51,7 +51,9 @@ public:
 
     friend bool operator==(
         adj_list_out_edge_iter const& l, adj_list_out_edge_iter const& r
-    ) AC_DEDUCE_NOEXCEPT_AND_RETURN(l.m_iter == r.m_iter)
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        l.m_iter == r.m_iter
+    )
 };
 
 template<typename G>
@@ -117,10 +119,9 @@ public:
 
     friend bool operator==(
         adj_list_edge_iter const& l, adj_list_edge_iter const& r
+    ) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        l.m_u == r.m_u && (l.is_end() || l.m_iter == r.m_iter)
     )
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(
-            l.m_u == r.m_u && (l.is_end() || l.m_iter == r.m_iter)
-        )
 };
 
 template<typename G, typename = typename G::edge_selector>

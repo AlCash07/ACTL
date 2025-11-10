@@ -56,8 +56,9 @@ template<std::invocable Function>
 struct lazy {
     /// Function result can be constructed from ac::lazy
     /// thanks to this conversion operator.
-    operator std::invoke_result_t<Function>()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(function())
+    operator std::invoke_result_t<Function>() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        function()
+    )
 
     AC_NO_UNIQUE_ADDRESS Function function;
 };

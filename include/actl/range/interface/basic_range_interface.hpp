@@ -18,11 +18,13 @@ namespace ac {
 template<typename Derived>
 class basic_range_interface {
 public:
-    constexpr auto empty() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().begin() == derived().end())
+    constexpr auto empty() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        derived().begin() == derived().end()
+    )
 
-    explicit constexpr operator bool() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(!empty())
+    explicit constexpr operator bool() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        !empty()
+    )
 
     // decltype(auto) because a reference can be returned here.
     constexpr decltype(auto) front() const

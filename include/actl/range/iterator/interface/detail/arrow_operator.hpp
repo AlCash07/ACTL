@@ -41,9 +41,8 @@ private:
 // produce an lvalue to which a pointer can be formed. We do that by
 // returning a proxy object containing an instance of the reference object.
 template<typename Ref>
-constexpr auto arrow_operator(Ref&& ref)
-    AC_DEDUCE_NOEXCEPT_AND_RETURN(arrow_proxy<std::remove_cvref_t<Ref>>{
-        std::forward<Ref>(ref)
-    })
+constexpr auto arrow_operator(Ref&& ref) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+    arrow_proxy<std::remove_cvref_t<Ref>>{std::forward<Ref>(ref)}
+)
 
 } // namespace ac::detail

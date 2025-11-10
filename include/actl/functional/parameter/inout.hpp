@@ -64,8 +64,9 @@ public:
     /// Overridden to change the return type from ac::out& to ac::inout&.
     template<typename Source>
     constexpr inout& operator=(Source&& source)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-            this->out<Ref>::operator=(std::forward<Source>(source)), *this
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+            this->out<Ref>::operator=(std::forward<Source>(source)),
+            *this
         )
 };
 

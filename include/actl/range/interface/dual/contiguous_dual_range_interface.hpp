@@ -20,10 +20,13 @@ class contiguous_non_const_range_interface
     }
 
 public:
-    constexpr auto begin() AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
+    constexpr auto begin() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        derived().data()
+    )
 
-    constexpr auto end()
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(begin() + derived().size())
+    constexpr auto end() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        begin() + derived().size()
+    )
 };
 
 template<typename Derived>

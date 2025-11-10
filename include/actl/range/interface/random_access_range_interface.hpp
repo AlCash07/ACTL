@@ -23,7 +23,7 @@ public:
         return this->derived().begin()[i];
     }
 
-    constexpr auto size() const AC_DEDUCE_NOEXCEPT_AND_RETURN(
+    constexpr auto size() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
         to_unsigned(this->derived().end() - this->derived().begin())
     )
 };

@@ -10,8 +10,9 @@
 
 // Note that we can specify return type different from the wrapped function.
 template<typename T>
-constexpr int is_int_wrapped(T x)
-    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(ac::is_int(x))
+constexpr int is_int_wrapped(T x) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+    ac::is_int(x)
+)
 
 static_assert(noexcept(is_int_wrapped(0)));
 static_assert(std::is_same_v<int, decltype(is_int_wrapped(0))>);

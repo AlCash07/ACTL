@@ -19,10 +19,13 @@ class contiguous_range_interface
     }
 
 public:
-    constexpr auto begin() const AC_DEDUCE_NOEXCEPT_AND_RETURN(derived().data())
+    constexpr auto begin() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        derived().data()
+    )
 
-    constexpr auto end() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(begin() + derived().size())
+    constexpr auto end() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        begin() + derived().size()
+    )
 };
 
 } // namespace ac

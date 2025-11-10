@@ -31,7 +31,7 @@ struct from_tuple<Target, Source, std::index_sequence<Is...>> {
         decltype(adl_get<Is>(std::declval<Source>()))...>;
 
     static constexpr Target convert(Source&& source)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(
+        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
             convert_to<Target>(adl_get<Is>(std::forward<Source>(source))...)
         )
 };

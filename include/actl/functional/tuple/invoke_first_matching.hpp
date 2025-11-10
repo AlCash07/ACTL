@@ -33,7 +33,7 @@ constexpr decltype(auto) invoke_first_matching(
     T&& tuple_to_invoke, Args&&... args
 )
     // TODO: use std::invoke when it's constexpr.
-    AC_DEDUCE_NOEXCEPT_AND_RETURN(
+    AC_DEDUCE_NOEXCEPT_AND_RETURN( //
         std::get<
             detail::find_first_matching<0, std::remove_cvref_t<T>, Args...>(
             )>(std::forward<T>(tuple_to_invoke))(std::forward<Args>(args)...)

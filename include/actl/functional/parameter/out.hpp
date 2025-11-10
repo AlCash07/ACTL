@@ -112,8 +112,9 @@ public:
     /// @endcode
     template<typename Source>
     constexpr out& operator=(Source&& source)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-            assign(*this, std::forward<Source>(source)), *this
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+            assign(*this, std::forward<Source>(source)),
+            *this
         )
 
     // TODO: struct enable_operators;

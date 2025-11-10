@@ -21,8 +21,9 @@ class input_iterator_interface
 public:
     using iterator_category = std::input_iterator_tag;
 
-    constexpr auto operator->() const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(detail::arrow_operator(*derived()))
+    constexpr auto operator->() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        detail::arrow_operator(*derived())
+    )
 
 protected:
     constexpr DerivedIterator const& derived() const noexcept {

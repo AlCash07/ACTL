@@ -28,7 +28,9 @@ public:
     transform_iterator(Iter const& iter, Ts&&... args)
         : base_t{iter}, m_fn{std::forward<Ts>(args)...} {}
 
-    auto operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN(m_fn(*this->base()))
+    auto operator*() const AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        m_fn(*this->base())
+    )
 
 private:
     Function m_fn;

@@ -21,16 +21,17 @@ template<typename T, typename... Args>
     requires std::is_invocable_v<T, Args...>
 constexpr auto invoke_if_can(T&& callable, Args&... args)
     // TODO: use std::invoke when it's constexpr.
-    AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN(std::forward<T>(callable)(args...))
+    AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //
+        std::forward<T>(callable)(args...)
+    )
 
 template<size_t... Is, Tuple T, typename... Args>
 constexpr void invoke_all_matching_impl(
     std::index_sequence<Is...>, T&& tuple_to_invoke, Args&... args
+) AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+    (...,
+     invoke_if_can(std::get<Is>(std::forward<T>(tuple_to_invoke)), args...))
 )
-    AC_DEDUCE_NOEXCEPT_AND_RETURN(
-        (...,
-         invoke_if_can(std::get<Is>(std::forward<T>(tuple_to_invoke)), args...))
-    )
 
 } // namespace detail
 
@@ -39,8 +40,10 @@ constexpr void invoke_all_matching_impl(
 /// because they may be shared between multiple invocations.
 template<Tuple T, typename... Args>
 constexpr void invoke_all_matching(T&& tuple_to_invoke, Args&&... args)
-    AC_DEDUCE_NOEXCEPT_AND_RETURN(detail::invoke_all_matching_impl(
-        tuple_indices_t<T>{}, std::forward<T>(tuple_to_invoke), args...
-    ))
+    AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        detail::invoke_all_matching_impl(
+            tuple_indices_t<T>{}, std::forward<T>(tuple_to_invoke), args...
+        )
+    )
 
 } // namespace ac

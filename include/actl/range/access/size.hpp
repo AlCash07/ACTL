@@ -35,12 +35,16 @@ struct size_f {
     template<HasDynamicSize R>
         requires has_member_size<R>
     constexpr decltype(auto) operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(range.size())
+        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+            range.size()
+        )
 
     template<HasDynamicSize R>
         requires(!has_member_size<R> && has_non_member_size<R>)
     constexpr decltype(auto) operator()(R&& range) const
-        AC_DEDUCE_NOEXCEPT_AND_RETURN(size(range))
+        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+            size(range)
+        )
 };
 
 } // namespace impl
