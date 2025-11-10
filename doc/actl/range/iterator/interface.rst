@@ -4,18 +4,27 @@ iterator interface
 
 Writing iterators is necessary to implement custom ranges
 to take advantage of their ease of use and composability.
-However, satisfying all the standard requirements is
+However, satisfying all the standard iterator requirements is
 too tedious and error-prone, there's a good example in the
 `std::iterator_interface <https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html#the-story-for-everyday-users-writing-stl-iterators-is-not-great>`_
 proposal.
 
-To address this problem, we provided utilities that are similar to the proposed
+To address this problem, we provide utilities that are similar to the proposed
 `std::iterator_interface <https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html>`_,
 which is based on
 `Boost.STLInterfaces <https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html>`_,
 but with multiple improvements over both of them listed in the #Design section.
 
-Specifically, they allow to manually specify only a couple of nested types
+Examples of using them include:
+
+- `linked list iterators <https://github.com/AlCash07/ACTL/blob/main/include/actl/range/iterator/linked_list_iterator.hpp>`_
+  for forward and bidirectional iterators;
+- `integer_iterator <https://github.com/AlCash07/ACTL/blob/main/include/actl/range/iterator/integer_iterator.hpp>`_
+  for random access iterator;
+- `filtered_range iterator <https://github.com/AlCash07/ACTL/blob/main/include/actl/range/iterator/integer_iterator.hpp>`_
+  for ac::iterator_adaptor usage.
+
+Specifically, it's enough to manually specify only a couple of nested types
 and implement the following core operations,
 and the rest will be correctly derived from them.
 
@@ -193,9 +202,9 @@ surfaced multiple usabiliy improvements that we implemented:
 
       using base_type = std::iterator_interface<std::forward_iterator_tag, T>;
       using base_type::operator++;
-    
+
    and this for bidirectional iterators
-   
+
    .. code::
 
       using base_type::operator--;
@@ -204,8 +213,8 @@ surfaced multiple usabiliy improvements that we implemented:
    `Boost.STLInterfaces <https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html#boost_stlinterfaces.tutorial___iterator_interface_.an_important_note_about__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code__and__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code_>`_
    discussing this problem, which we don't have to worry about.
 
-6. `operator==(...) = default;` definition is supported for
-   forward and bidirectional iterators
+6. `operator==(T const&) = default;` definition is supported
+   for forward and bidirectional iterators
    intead of forcing users to manually implement it.
 
 7. `DifferenceType` is a template parameter in all the operations where it's used.

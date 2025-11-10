@@ -9,4 +9,4 @@ because competitive programming was the original inspiration,
 but the content has much wider applicability.
 
 [Documentation](https://alcash07.github.io/ACTL/)
-is very important for accessibility, please check it out.
+is one of our top priorities, please check it out.

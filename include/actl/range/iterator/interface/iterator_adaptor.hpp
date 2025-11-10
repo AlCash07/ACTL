@@ -1,7 +1,3 @@
-// Iterator adaptor is designed to simplify creation of similar iterators.
-// Adopted from boost:
-// http://www.boost.org/doc/libs/latest/libs/iterator/doc/iterator_adaptor.html
-//
 // Copyright 2017 Oleksandr Bacherikov.
 //
 // Distributed under the Boost Software License, Version 1.0
@@ -15,6 +11,18 @@
 
 namespace ac {
 
+/// iterator_adaptor helps to implement a new DerivedIterator that
+/// needs to reuse most of the existing AdaptedIterator implementation
+/// while overriding only a couple of operations.
+///
+/// Operations should be overridden in DerivedIterator by
+/// accessing the AdaptedIterator via `base()` and `base_ref()` methods
+/// for const and non-const access respectively.
+///
+/// For example, see filtered_range iterator.
+///
+/// @note The idea is adopted from Boost:
+/// http://www.boost.org/doc/libs/latest/libs/iterator/doc/iterator_adaptor.html
 template<
     typename DerivedIterator,
     typename AdaptedIterator,
@@ -38,12 +46,12 @@ public:
     // std::sentinel_for requires std::semiregular.
     template<typename Iter = AdaptedIterator>
         requires std::is_default_constructible_v<Iter>
-    constexpr iterator_adaptor(
-    ) noexcept(std::is_nothrow_default_constructible_v<AdaptedIterator>)
+    constexpr iterator_adaptor() //
+        noexcept(std::is_nothrow_default_constructible_v<AdaptedIterator>)
         : m_base{Iter{}} {}
 
-    explicit constexpr iterator_adaptor(AdaptedIterator const& iter
-    ) noexcept(noexcept(AdaptedIterator{iter}))
+    explicit constexpr iterator_adaptor(AdaptedIterator const& iter) //
+        noexcept(noexcept(AdaptedIterator{iter}))
         : m_base{iter} {}
 
     constexpr AdaptedIterator const& base() const noexcept {
@@ -59,33 +67,32 @@ public:
         base_t::derived()
     )
 
-    template<typename C = Category>
-        requires std::is_base_of_v<std::bidirectional_iterator_tag, C>
-    constexpr DerivedIterator& operator--() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
-        --base_ref(),
-        base_t::derived()
-    )
-
-    template<typename Difference>
-    // AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN didn't work for some reason.
-        requires requires(AdaptedIterator& iter, Difference offset) {
-            iter += offset;
-        }
-    constexpr DerivedIterator& operator+=(Difference offset)
-        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
-            base_ref() += offset,
-            base_t::derived()
-        )
-
     // TODO: make this a hidden friend.
     template<typename DerivedIter1, typename AdaptedIter1, typename Category1>
+        requires std::is_base_of_v<std::forward_iterator_tag, Category>
     constexpr auto operator==(
         iterator_adaptor<DerivedIter1, AdaptedIter1, Category1> const& that
     ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //
         this->base() == that.base()
     )
 
+    template<typename C = Category>
+        requires std::is_base_of_v<std::bidirectional_iterator_tag, Category>
+    constexpr DerivedIterator& operator--() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+        --base_ref(),
+        base_t::derived()
+    )
+
+    template<typename Difference>
+        requires std::is_base_of_v<std::random_access_iterator_tag, Category>
+    constexpr auto operator+=(Difference offset)
+        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //
+            base_ref() += offset,
+            base_t::derived()
+        )
+
     template<typename DerivedIter1, typename AdaptedIter1, typename Category1>
+        requires std::is_base_of_v<std::random_access_iterator_tag, Category>
     constexpr auto operator-(
         iterator_adaptor<DerivedIter1, AdaptedIter1, Category1> const& that
     ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //

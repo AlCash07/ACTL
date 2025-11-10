@@ -16,7 +16,7 @@ struct iterator_interface_selector;
 
 /// When the iterator category isn't fixed
 /// but instead deduced by some expression,
-/// the following selector can be used to select
+/// this selector can be used to select
 /// the correct iterator_interface template.
 template<typename DerivedIterator, typename Category>
 using iterator_interface_selector_t =
