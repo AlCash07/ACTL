@@ -11,7 +11,7 @@ because competitive programming was the original inspiration,
 but the content has much wider applicability.
 
 Contents
-================================
+========
 
 Low-level supplementary libraries useful in various contexts:
 
@@ -33,7 +33,7 @@ High-level thematic libraries:
    actl/string
 
 Design
-================================
+======
 
 The main guiding design principles for the library are:
 
@@ -54,7 +54,7 @@ and widely used across the library:
    actl/meta/constant
 
 Contributing
-================================
+============
 
 .. toctree::
    :glob:

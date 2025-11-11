@@ -6,14 +6,17 @@ Writing iterators is necessary to implement custom ranges
 to take advantage of their ease of use and composability.
 However, satisfying all the standard iterator requirements is
 too tedious and error-prone, there's a good example in the
-`std::iterator_interface <https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html#the-story-for-everyday-users-writing-stl-iterators-is-not-great>`_
+`std::iterator_interface
+<https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html#the-story-for-everyday-users-writing-stl-iterators-is-not-great>`_
 proposal.
 
 To address this problem, we provide utilities that are similar to the proposed
-`std::iterator_interface <https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html>`_,
+`std::iterator_interface
+<https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html>`_,
 which is based on
-`Boost.STLInterfaces <https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html>`_,
-but with multiple improvements over both of them listed in the #Design section.
+`Boost.STLInterfaces
+<https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html>`_,
+but with multiple improvements over both of them listed in the `Design`_ section.
 
 Examples of using them include:
 
@@ -100,7 +103,7 @@ Reference
 .. ac-tests:: tests/range/iterator/interface/
 
 Design
-=========
+======
 
 Practical experience with using `std::iterator_interface`
 surfaced multiple usabiliy improvements that we implemented:
@@ -210,7 +213,8 @@ surfaced multiple usabiliy improvements that we implemented:
       using base_type::operator--;
 
    There's a whole section in
-   `Boost.STLInterfaces <https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html#boost_stlinterfaces.tutorial___iterator_interface_.an_important_note_about__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code__and__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code_>`_
+   `Boost.STLInterfaces
+   <https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html#boost_stlinterfaces.tutorial___iterator_interface_.an_important_note_about__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code__and__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code_>`_
    discussing this problem, which we don't have to worry about.
 
 6. `operator==(T const&) = default;` definition is supported

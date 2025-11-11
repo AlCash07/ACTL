@@ -19,11 +19,13 @@ namespace ac {
 ///
 /// 1. Simpler and more efficient code when the function result is used
 /// conditionally, for example, when inserting an element into a map
-/// only if it doesn't already exist: @code
+/// only if it doesn't already exist:
+/// @code
 /// auto iter = map.try_emplace(key, ac::lazy{computeValue}).first;
 /// @endcode
 /// The shortest alternative looks like this,
-/// and does an extra pass over the map: @code
+/// and does an extra pass over the map:
+/// @code
 /// auto iter = map.find(key);
 /// if (iter == map.end())
 ///     iter = map.emplace(key, computeValue()).first;
@@ -36,7 +38,8 @@ namespace ac {
 ///
 /// For example, the first line here results
 /// in the extra move constructor of the result,
-/// while the second doesn't: @code
+/// while the second doesn't:
+/// @code
 /// std::optional optional1{computeValue()};
 /// std::optional optional2{ac::lazy{computeValue}};
 /// @endcode

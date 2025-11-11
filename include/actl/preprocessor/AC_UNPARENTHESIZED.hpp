@@ -12,6 +12,8 @@
 /// but commas can sometimes be needed inside an argument as well.
 ///
 /// The solution is to wrap such an argument into extra parenthesis like
-/// @code MACRO((foo, bar)) @endcode
+/// @code
+/// MACRO((foo, bar))
+/// @endcode
 /// and use #AC_UNPARENTHESIZED in the final macro expansion.
 #define AC_UNPARENTHESIZED(...) __VA_ARGS__

@@ -12,7 +12,8 @@
 ///
 /// Typically used for simple functions after observing
 /// that the compiler doesn't inline them as expected.
-/// For example, @code
+/// For example,
+/// @code
 /// AC_ALWAYS_INLINE int squared(int x) { return x * x; }
 /// @endcode
 ///

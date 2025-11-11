@@ -36,6 +36,7 @@ constexpr void invoke_all_matching_impl(
 } // namespace detail
 
 /// Invokes in order all the tuple elements that are invocable with @p args.
+///
 /// @note @p args aren't forwarded to the invocations but passed by reference,
 /// because they may be shared between multiple invocations.
 template<Tuple T, typename... Args>

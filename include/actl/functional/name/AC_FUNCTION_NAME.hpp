@@ -13,7 +13,8 @@
 /// @code
 /// void my_function() {
 ///     static_assert(AC_FUNCTION_NAME == "my_function"sv);
-/// } @endcode
+/// }
+/// @endcode
 #define AC_FUNCTION_NAME __func__
 
 // TODO: implement AC_FUNCTION_FULL_NAME

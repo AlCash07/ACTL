@@ -7,9 +7,8 @@ For traits specific to member functions, see :doc:`1_member_traits`.
 
 This is a complete analog of `Boost.CallableTraits
 <https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html>`_
+(excluding some niche features listed in the `Design`_ section)
 implemented with much less code, so expect reduced compilation times!
-The only feature not supported is `transaction_safe` from Transactional Memory TS,
-because it's still experimental for a long time without notable progress.
 
 Reference
 =========
@@ -36,7 +35,8 @@ including their const and reference-qualified versions:
 .. note::
 
   Some libraries support
-  `pointers to data members <https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_data_members>`_
+  `pointers to data members
+  <https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_data_members>`_
   similarly to pointers to member functions.
   Data members are obviously not functions,
   but they are indeed related and this makes sense, for example, for
@@ -163,3 +163,12 @@ This is confirmed by
 
 It's not clear why such types exist if they cannot be used in a declaration.
 For this reason, we don't support them.
+
+`transaction_safe`
+------------------
+
+`transaction_safe <https://en.cppreference.com/w/cpp/keyword/transaction_safe.html>`_
+keyword from Transactional Memory TS isn't supported,
+because it's still experimental for a long time without notable progress.
+
+We prefer not to add extra complexity to the library to support non-standard extensions.

@@ -17,6 +17,7 @@ struct is_inout : std::false_type {};
 } // namespace detail
 
 /// Checks whether T is a (possibly cvref-qualified) ac::inout wrapper.
+///
 /// @note If the program adds specializations for ac::is_inout_v,
 /// the behavior is undefined.
 template<typename T>

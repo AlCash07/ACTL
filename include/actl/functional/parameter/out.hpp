@@ -20,6 +20,7 @@ struct is_out : std::false_type {};
 } // namespace detail
 
 /// Checks whether T is a (possibly cvref-qualified) ac::out wrapper.
+///
 /// @note If the program adds specializations for ac::is_inout_v,
 /// the behavior is undefined.
 template<typename T>
@@ -69,6 +70,7 @@ public:
         : m_ref{*source} {}
 
     /// Accesses the wrapped value.
+    ///
     /// @note operator* is used for consistency with `std::optional`.
     /// Simple operator like this is even more appropriate here than in
     /// `std::optional`, because `std::optional` might not contain a value,
@@ -84,6 +86,7 @@ public:
 
     /// Provides direct access to the members of the wrapped type
     /// as `out->member`.
+    ///
     /// @note It would be better to support `out.member` syntax,
     /// but C++ doesn't allow to overload `operator.` yet.
     constexpr std::remove_reference_t<Ref>* operator->() noexcept {

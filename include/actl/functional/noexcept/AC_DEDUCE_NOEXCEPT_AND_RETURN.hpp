@@ -8,12 +8,15 @@
 
 /// Macro that avoids code duplication by returning the given expression from
 /// the function and deducing the `noexcept` specification from it.
-/// For example, the following operator @code
+/// For example, the following operator
+/// @code
 /// template<typename T>
 /// bool operator > (T l, T r) noexcept(noexcept(r < l)) {
 ///     return r < l;
-/// } @endcode
-/// can be rewritten as @code
+/// }
+/// @endcode
+/// can be rewritten as
+/// @code
 /// template<typename T>
 /// bool operator > (T l, T r)
 ///     AC_DEDUCE_NOEXCEPT_AND_RETURN(r < l)
