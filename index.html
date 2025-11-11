@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>ACTL documentation &#8212; ACTL  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="_static/documentation_options.js?v=7f41d439"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="constant" href="actl/meta/constant.html" />
+    <link rel="next" title="functional" href="actl/functional.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -52,17 +52,18 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="actl/meta/constant.html">constant</a></li>
-</ul>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="actl/functional.html">functional</a></li>
-<li class="toctree-l1"><a class="reference internal" href="actl/meta.html">meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actl/meta.html">meta-programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/memory.html">memory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="actl/platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actl/platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/preprocessor.html">preprocessor</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="actl/range.html">range</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="actl/meta/constant.html">constant</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing/Running%20tests.html">Running tests</a></li>
@@ -82,10 +83,10 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">ACTL documentation</a><ul>
-<li><a class="reference internal" href="#design">Design</a></li>
 <li><a class="reference internal" href="#contents">Contents</a><ul>
 </ul>
 </li>
+<li><a class="reference internal" href="#design">Design</a></li>
 <li><a class="reference internal" href="#contributing">Contributing</a></li>
 </ul>
 </li>
@@ -98,7 +99,7 @@
               
                 
   <li>
-    <a href="actl/meta/constant.html" title="Next Chapter: constant"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">constant &raquo;</span>
+    <a href="actl/functional.html" title="Next Chapter: functional"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">functional &raquo;</span>
     </a>
   </li>
               
@@ -129,17 +130,17 @@
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
 <li><a class="reference internal" href="#">ACTL documentation</a><ul>
-<li><a class="reference internal" href="#design">Design</a></li>
 <li><a class="reference internal" href="#contents">Contents</a><ul>
 </ul>
 </li>
+<li><a class="reference internal" href="#design">Design</a></li>
 <li><a class="reference internal" href="#contributing">Contributing</a></li>
 </ul>
 </li>
 </ul>
 
   <li>
-    <a href="actl/meta/constant.html" title="Next Chapter: constant"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">constant &raquo;</span>
+    <a href="actl/functional.html" title="Next Chapter: functional"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">functional &raquo;</span>
     </a>
   </li>
 <form action="search.html" method="get">
@@ -155,34 +156,49 @@
       
   <section id="actl-documentation">
 <h1>ACTL documentation<a class="headerlink" href="#actl-documentation" title="Link to this heading">¶</a></h1>
-<p>ACTL started as a template library for algorithm competitions,
-but ended up providing numerous widely applicable components.</p>
-<section id="design">
-<h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
-<p>These design decisions affect a large portion of the library,
-so it’s useful to understand them:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="actl/meta/constant.html">constant</a></li>
-</ul>
-</div>
-</section>
+<p>ACTL library aims to provide accessible generic implementation
+of advanced algorithms not available in the C++ standard library,
+and also improve the ones available there if possible.</p>
+<p>ACTL stands for Algorithm Competition Template Library,
+because competitive programming was the original inspiration,
+but the content has much wider applicability.</p>
 <section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">¶</a></h2>
-<p>Sub-libraries that emerged as helper utilities and can be used in various contexts:</p>
+<p>Low-level supplementary libraries useful in various contexts:</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="actl/functional.html">functional</a></li>
-<li class="toctree-l1"><a class="reference internal" href="actl/meta.html">meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actl/meta.html">meta-programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/memory.html">memory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="actl/platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actl/platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/preprocessor.html">preprocessor</a></li>
 </ul>
 </div>
-<p>Thematic libraries focused on a specific topic:</p>
+<p>High-level thematic libraries:</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="actl/range.html">range</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/string.html">string</a></li>
+</ul>
+</div>
+</section>
+<section id="design">
+<h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
+<p>The main guiding design principles for the library are:</p>
+<ul class="simple">
+<li><p>consistency;</p></li>
+<li><p>composability;</p></li>
+<li><p>configurability;</p></li>
+<li><p>clarity;</p></li>
+<li><p>convenience.</p></li>
+</ul>
+<p>C++ standard library facilities turned out to be insufficient
+to implement more advanced algorithms following these principles,
+so the following foundational facilities were devised
+and widely used across the library:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="actl/meta/constant.html">constant</a></li>
 </ul>
 </div>
 </section>
@@ -211,7 +227,7 @@ so it’s useful to understand them:</p>
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
     </p>
   </div>
 </footer>

@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>constant_literals &#8212; ACTL  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="memory" href="../memory.html" />
-    <link rel="prev" title="Concepts" href="concepts.html" />
+    <link rel="next" title="Type qualifier traits" href="qualifiers.html" />
+    <link rel="prev" title="constant" href="constant.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -52,18 +52,19 @@
      href="../../index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="constant.html">constant</a></li>
-</ul>
-<ul class="current">
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../functional.html">functional</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../meta.html">meta</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../meta.html">meta-programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../range.html">range</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="constant.html">constant</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
@@ -84,11 +85,11 @@
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">constant_literals</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
-<li><a class="reference internal" href="#_CPPv4N2ac17constant_literalsE"><code class="docutils literal notranslate"><span class="pre">constant_literals</span></code></a><ul>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli2_cEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_c()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli3_cuEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_cu()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli4_cllEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_cll()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_cull()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17constant_literalsE"><code class="docutils literal notranslate"><span class="pre">ac::constant_literals</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli2_cEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_c()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli3_cuEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_cu()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli4_cllEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_cll()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_cull()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -105,11 +106,11 @@
               
                 
   <li>
-    <a href="concepts.html" title="Previous Chapter: Concepts"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Concepts</span>
+    <a href="constant.html" title="Previous Chapter: constant"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; constant</span>
     </a>
   </li>
   <li>
-    <a href="../memory.html" title="Next Chapter: memory"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">memory &raquo;</span>
+    <a href="qualifiers.html" title="Next Chapter: Type qualifier traits"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Type qualifier traits &raquo;</span>
     </a>
   </li>
               
@@ -141,11 +142,11 @@
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
 <li><a class="reference internal" href="#">constant_literals</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
-<li><a class="reference internal" href="#_CPPv4N2ac17constant_literalsE"><code class="docutils literal notranslate"><span class="pre">constant_literals</span></code></a><ul>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli2_cEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_c()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli3_cuEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_cu()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli4_cllEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_cll()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav"><code class="docutils literal notranslate"><span class="pre">constant_literals::operator&quot;&quot;_cull()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17constant_literalsE"><code class="docutils literal notranslate"><span class="pre">ac::constant_literals</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli2_cEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_c()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli3_cuEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_cu()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli4_cllEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_cll()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav"><code class="docutils literal notranslate"><span class="pre">operator&quot;&quot;_cull()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -156,11 +157,11 @@
 </ul>
 
   <li>
-    <a href="concepts.html" title="Previous Chapter: Concepts"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Concepts</span>
+    <a href="constant.html" title="Previous Chapter: constant"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; constant</span>
     </a>
   </li>
   <li>
-    <a href="../memory.html" title="Next Chapter: memory"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">memory &raquo;</span>
+    <a href="qualifiers.html" title="Next Chapter: Type qualifier traits"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Type qualifier traits &raquo;</span>
     </a>
   </li>
 <form action="../../search.html" method="get">
@@ -183,6 +184,7 @@ to create objects of <code class="code highlight cpp docutils literal highlight-
 <p>Similarly to the standard namespaces with literals, <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">namespace</span><span class="w"> </span><span class="nn">constant_literals</span></code>
 is an inline namespace within <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">namespace</span><span class="w"> </span><span class="nn">ac</span></code>.
 Access to its content can be gained with <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">ac</span><span class="o">::</span><span class="nn">constant_literals</span></code>.</p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/constant_literals.hpp">actl/meta/constant_literals.hpp</a>&gt;</pre>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N2ac17constant_literalsE">
 <span id="_CPPv3N2ac17constant_literalsE"></span><span id="_CPPv2N2ac17constant_literalsE"></span><span id="ac::constant_literals"></span><span class="target" id="namespaceac_1_1constant__literals"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">constant_literals</span></span></span><a class="headerlink" href="#_CPPv4N2ac17constant_literalsE" title="Link to this definition">¶</a><br /></dt>
@@ -215,8 +217,7 @@ Access to its content can be gained with <code class="code highlight cpp docutil
 </div>
 </dd></dl>
 
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/constant_literals.hpp">Source code</a></p>
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/constant_literals.cpp">Tests</a></p>
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/constant_literals.cpp">tests/meta/constant_literals.cpp</a></p>
 </section>
 <section id="design">
 <h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
@@ -239,7 +240,7 @@ for the approach explanation, in particular why it has to be so complicated.</p>
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
     </p>
   </div>
 </footer>

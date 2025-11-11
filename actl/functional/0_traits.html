@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Function traits &#8212; ACTL  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Member function traits" href="1_member_traits.html" />
+    <link rel="prev" title="functional" href="../functional.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          ACTL</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../functional.html">functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meta.html">meta-programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform introspection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../range.html">range</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20code.html">Writing code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20documentation.html">Writing documentation</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Function traits</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac12FreeFunctionE"><code class="docutils literal notranslate"><span class="pre">FreeFunction</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14MemberFunctionE"><code class="docutils literal notranslate"><span class="pre">MemberFunction</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14FunctionObjectE"><code class="docutils literal notranslate"><span class="pre">FunctionObject</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0DpEN2ac8CallableE"><code class="docutils literal notranslate"><span class="pre">Callable</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#traits">Traits</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE"><code class="docutils literal notranslate"><span class="pre">ac::function_traits</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_categoryE"><code class="docutils literal notranslate"><span class="pre">function_category</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_category4freeE"><code class="docutils literal notranslate"><span class="pre">free</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_category6memberE"><code class="docutils literal notranslate"><span class="pre">member</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_category6objectE"><code class="docutils literal notranslate"><span class="pre">object</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#return-type">Return type</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac8return_tE"><code class="docutils literal notranslate"><span class="pre">return_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14returns_void_vE"><code class="docutils literal notranslate"><span class="pre">returns_void_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac18with_return_type_tE"><code class="docutils literal notranslate"><span class="pre">with_return_type_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac12parameters_tE"><code class="docutils literal notranslate"><span class="pre">parameters_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac7arity_vE"><code class="docutils literal notranslate"><span class="pre">arity_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0_6size_tEN2ac14parameter_at_tE"><code class="docutils literal notranslate"><span class="pre">parameter_at_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac19unique_parameters_tE"><code class="docutils literal notranslate"><span class="pre">unique_parameters_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variadic-arguments">Variadic arguments</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE"><code class="docutils literal notranslate"><span class="pre">accepts_variadic_arguments_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac24add_variadic_arguments_tE"><code class="docutils literal notranslate"><span class="pre">add_variadic_arguments_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac27remove_variadic_arguments_tE"><code class="docutils literal notranslate"><span class="pre">remove_variadic_arguments_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#noexcept"><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">noexcept</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac13is_noexcept_vE"><code class="docutils literal notranslate"><span class="pre">is_noexcept_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14add_noexcept_tE"><code class="docutils literal notranslate"><span class="pre">add_noexcept_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac17remove_noexcept_tE"><code class="docutils literal notranslate"><span class="pre">remove_noexcept_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#function-type-assembly">Function type assembly</a><ul>
+<li><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE"><code class="docutils literal notranslate"><span class="pre">assemble_function_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac18as_free_function_tE"><code class="docutils literal notranslate"><span class="pre">as_free_function_t</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#design">Design</a><ul>
+<li><a class="reference internal" href="#qualified-free-functions">Qualified free functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../functional.html" title="Previous Chapter: functional"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; functional</span>
+    </a>
+  </li>
+  <li>
+    <a href="1_member_traits.html" title="Next Chapter: Member function traits"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Member functi... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Function traits</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac12FreeFunctionE"><code class="docutils literal notranslate"><span class="pre">FreeFunction</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14MemberFunctionE"><code class="docutils literal notranslate"><span class="pre">MemberFunction</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14FunctionObjectE"><code class="docutils literal notranslate"><span class="pre">FunctionObject</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0DpEN2ac8CallableE"><code class="docutils literal notranslate"><span class="pre">Callable</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#traits">Traits</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac15function_traitsE"><code class="docutils literal notranslate"><span class="pre">ac::function_traits</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_categoryE"><code class="docutils literal notranslate"><span class="pre">function_category</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_category4freeE"><code class="docutils literal notranslate"><span class="pre">free</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_category6memberE"><code class="docutils literal notranslate"><span class="pre">member</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac17function_category6objectE"><code class="docutils literal notranslate"><span class="pre">object</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#return-type">Return type</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac8return_tE"><code class="docutils literal notranslate"><span class="pre">return_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14returns_void_vE"><code class="docutils literal notranslate"><span class="pre">returns_void_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac18with_return_type_tE"><code class="docutils literal notranslate"><span class="pre">with_return_type_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac12parameters_tE"><code class="docutils literal notranslate"><span class="pre">parameters_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac7arity_vE"><code class="docutils literal notranslate"><span class="pre">arity_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0_6size_tEN2ac14parameter_at_tE"><code class="docutils literal notranslate"><span class="pre">parameter_at_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac19unique_parameters_tE"><code class="docutils literal notranslate"><span class="pre">unique_parameters_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variadic-arguments">Variadic arguments</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE"><code class="docutils literal notranslate"><span class="pre">accepts_variadic_arguments_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac24add_variadic_arguments_tE"><code class="docutils literal notranslate"><span class="pre">add_variadic_arguments_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac27remove_variadic_arguments_tE"><code class="docutils literal notranslate"><span class="pre">remove_variadic_arguments_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#noexcept"><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">noexcept</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac13is_noexcept_vE"><code class="docutils literal notranslate"><span class="pre">is_noexcept_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14add_noexcept_tE"><code class="docutils literal notranslate"><span class="pre">add_noexcept_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac17remove_noexcept_tE"><code class="docutils literal notranslate"><span class="pre">remove_noexcept_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#function-type-assembly">Function type assembly</a><ul>
+<li><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE"><code class="docutils literal notranslate"><span class="pre">assemble_function_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac18as_free_function_tE"><code class="docutils literal notranslate"><span class="pre">as_free_function_t</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#design">Design</a><ul>
+<li><a class="reference internal" href="#qualified-free-functions">Qualified free functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="../functional.html" title="Previous Chapter: functional"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; functional</span>
+    </a>
+  </li>
+  <li>
+    <a href="1_member_traits.html" title="Next Chapter: Member function traits"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Member functi... &raquo;</span>
+    </a>
+  </li>
+<form action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="function-traits">
+<h1>Function traits<a class="headerlink" href="#function-traits" title="Link to this heading">¶</a></h1>
+<p>Traits for function type inspection and assembly.
+For traits specific to member functions, see <a class="reference internal" href="1_member_traits.html"><span class="doc">Member function traits</span></a>.</p>
+<p>This is a complete analog of <a class="reference external" href="https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html">Boost.CallableTraits</a>
+implemented with much less code, so expect reduced compilation times!
+The only feature not supported is <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">transaction_safe</span></code> from Transactional Memory TS,
+because it’s still experimental for a long time without notable progress.</p>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<section id="concepts">
+<h3>Concepts<a class="headerlink" href="#concepts" title="Link to this heading">¶</a></h3>
+<p>Free functions are typically used in examples for simplicify,
+but most traits support all the following function concepts,
+including their const and reference-qualified versions:</p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/FreeFunction.hpp">actl/functional/traits/FreeFunction.hpp</a>&gt;</pre>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac12FreeFunctionE">
+<span id="_CPPv3I0EN2ac12FreeFunctionE"></span><span id="_CPPv2I0EN2ac12FreeFunctionE"></span><span class="target" id="conceptac_1_1_free_function"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FreeFunction</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac12FreeFunctionE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<p>Concept of a free function, for example, <code class="docutils literal notranslate"><span class="pre">float(int,</span> <span class="pre">int)</span></code>, which is the type of a function like this <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">float</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p>Function reference like <code class="docutils literal notranslate"><span class="pre">float(&amp;)(int,</span> <span class="pre">int)</span></code> and <a class="reference external" href="https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_functions">function pointer</a> like <code class="docutils literal notranslate"><span class="pre">float(*)(int,</span> <span class="pre">int)</span></code> also satisfy the concept, because they also support function call syntax.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s impossible to declare a variable of a function type, it has to be either a reference or a pointer. </p>
+</div>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/MemberFunction.hpp">actl/functional/traits/MemberFunction.hpp</a>&gt;</pre>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac14MemberFunctionE">
+<span id="_CPPv3I0EN2ac14MemberFunctionE"></span><span id="_CPPv2I0EN2ac14MemberFunctionE"></span><span class="target" id="conceptac_1_1_member_function"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemberFunction</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac14MemberFunctionE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<p>Concept of a class member function pointer, often called a method.</p>
+<p>For example, for the following class <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Class</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">member</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+ the member function type can be acquired by <code class="docutils literal notranslate"><span class="pre">decltype(&amp;Class::member)</span></code>, which is <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">(Class::*)(int)</span> <span class="pre">const</span></code>.</p>
+<p>Important properties of a member function:<ul class="simple">
+<li><p>Its type is always a pointer, there’s no corresponding value type.</p></li>
+<li><p>The first parameter is always the enclosing class.</p></li>
+<li><p>To support function call syntax it has to be wrapped into <code class="docutils literal notranslate"><span class="pre">std::mem_fn</span></code>, otherwise the following call syntax has to be used <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">member</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Class</span><span class="o">::</span><span class="n">member</span><span class="p">;</span>
+<span class="n">Class</span><span class="w"> </span><span class="n">instance</span><span class="p">;</span>
+<span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="o">*</span><span class="n">member</span><span class="p">)(</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/FunctionObject.hpp">actl/functional/traits/FunctionObject.hpp</a>&gt;</pre>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac14FunctionObjectE">
+<span id="_CPPv3I0EN2ac14FunctionObjectE"></span><span id="_CPPv2I0EN2ac14FunctionObjectE"></span><span class="target" id="conceptac_1_1_function_object"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FunctionObject</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac14FunctionObjectE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<p>Concept of a function object, that is a type with a non-overloaded <code class="docutils literal notranslate"><span class="pre">operator()</span></code>, for example <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">plus</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">operator</span><span class="p">()(</span><span class="n">T</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+ Non-template lambdas are also function objects. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/Callable.hpp">actl/functional/traits/Callable.hpp</a>&gt;</pre>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN2ac8CallableE">
+<span id="_CPPv3I0DpEN2ac8CallableE"></span><span id="_CPPv2I0DpEN2ac8CallableE"></span><span class="target" id="conceptac_1_1_callable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Callable</span></span></span><a class="headerlink" href="#_CPPv4I0DpEN2ac8CallableE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<p>Concept of a type that can be called as a function with the given Args, that is as <code class="docutils literal notranslate"><span class="pre">fn(args...)</span></code>.</p>
+<p>Not all the types that are considered to be functions satisfy this concept. In particular, member functions are called using special syntax <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="o">*</span><span class="n">member</span><span class="p">)(</span><span class="n">args</span><span class="p">...);</span>
+</pre></div>
+</div>
+</p>
+<p>C++ provides <code class="docutils literal notranslate"><span class="pre">std::invoke</span></code> as a unified way to call all the functions. However, we highly recommend not to use it and instead wrap member functions into <code class="docutils literal notranslate"><span class="pre">std::mem_fn</span></code> when they need to be called in a unified way. That’s because <code class="docutils literal notranslate"><span class="pre">std::invoke</span></code> adds 1 or 2 nested function calls for every function (not just member functions that are rarely called this way), which in debug mode require more manual actions to step into, and overall decrease performance if not inlined. This problem isn’t as critical because it’s specific to debug builds. But there’s a simple <code class="docutils literal notranslate"><span class="pre">std::mem_fn</span></code> solution to avoid it completely. </p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some libraries support
+<a class="reference external" href="https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_data_members">pointers to data members</a>
+similarly to pointers to member functions.
+Data members are obviously not functions,
+but they are indeed related and this makes sense, for example, for
+<a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/mem_fn.html">std::mem_fn</a>.
+However, the result of applying a pointer to data member
+to a class object inherits the qualifiers of this object.
+So, it defines not a single function, but an overload set,
+which is not supported by the library as of now.</p>
+</div>
+</section>
+<section id="traits">
+<h3>Traits<a class="headerlink" href="#traits" title="Link to this heading">¶</a></h3>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/function_traits.hpp">actl/functional/traits/function_traits.hpp</a>&gt;</pre>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac15function_traitsE">
+<span id="_CPPv3I0EN2ac15function_traitsE"></span><span id="_CPPv2I0EN2ac15function_traitsE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structac_1_1function__traits"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">function_traits</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac15function_traitsE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">T</span></code> is a function, then the following members are specified:<ul class="simple">
+<li><p>category as <a class="reference internal" href="#namespaceac_1a5563c54c3d67891cc2fbab146364e2cb"><span class="std std-ref">ac::function_category</span></a>;</p></li>
+<li><p>return_type;</p></li>
+<li><p><a class="reference internal" href="#structac_1_1function__traits"><span class="std std-ref">parameters_type</span></a> as ac::type_list;</p></li>
+<li><p>accepts_variadic_arguments as a <code class="docutils literal notranslate"><span class="pre">bool</span></code>;</p></li>
+<li><p>is_noexcept as a <code class="docutils literal notranslate"><span class="pre">bool</span></code>. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N2ac17function_categoryE">
+<span id="_CPPv3N2ac17function_categoryE"></span><span id="_CPPv2N2ac17function_categoryE"></span><span class="target" id="namespaceac_1a5563c54c3d67891cc2fbab146364e2cb"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">function_category</span></span></span><a class="headerlink" href="#_CPPv4N2ac17function_categoryE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N2ac17function_category4freeE">
+<span id="_CPPv3N2ac17function_category4freeE"></span><span id="_CPPv2N2ac17function_category4freeE"></span><span class="target" id="namespaceac_1a5563c54c3d67891cc2fbab146364e2cbaaa2d6e4f578eb0cfaba23beef76c2194"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">free</span></span></span><a class="headerlink" href="#_CPPv4N2ac17function_category4freeE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N2ac17function_category6memberE">
+<span id="_CPPv3N2ac17function_category6memberE"></span><span id="_CPPv2N2ac17function_category6memberE"></span><span class="target" id="namespaceac_1a5563c54c3d67891cc2fbab146364e2cbaaa08769cdcb26674c6706093503ff0a3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">member</span></span></span><a class="headerlink" href="#_CPPv4N2ac17function_category6memberE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N2ac17function_category6objectE">
+<span id="_CPPv3N2ac17function_category6objectE"></span><span id="_CPPv2N2ac17function_category6objectE"></span><span class="target" id="namespaceac_1a5563c54c3d67891cc2fbab146364e2cbaa8cfde6331bd59eb2ac96f8911c4b666"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">object</span></span></span><a class="headerlink" href="#_CPPv4N2ac17function_category6objectE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="return-type">
+<h3>Return type<a class="headerlink" href="#return-type" title="Link to this heading">¶</a></h3>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/return.hpp">actl/functional/traits/return.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac8return_tE">
+<span id="_CPPv3I0EN2ac8return_tE"></span><span id="_CPPv2I0EN2ac8return_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a77739288f7f91fe686970be20956ec48"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">return_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac8return_tE" title="ac::return_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">return_type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac8return_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac14returns_void_vE">
+<span id="_CPPv3I0EN2ac14returns_void_vE"></span><span id="_CPPv2I0EN2ac14returns_void_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aaac64552614c082086a0178eec333f9e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">returns_void_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">return_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac14returns_void_vE" title="ac::returns_void_v::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac14returns_void_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac18with_return_type_tE">
+<span id="_CPPv3I00EN2ac18with_return_type_tE"></span><span id="_CPPv2I00EN2ac18with_return_type_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReturnType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a69dfde8e42ebc64ee5460317e5d63ffe"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">with_return_type_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">with_return_type</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac18with_return_type_tE" title="ac::with_return_type_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac18with_return_type_tE" title="ac::with_return_type_t::ReturnType"><span class="n"><span class="pre">ReturnType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac18with_return_type_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Resulting type is different for different input types T:<ul class="simple">
+<li><p>If T is a function, then it’s a function with the given return type, but otherwise identical to T.</p></li>
+<li><p>If T is an ac::type_list template instantiaion, then it’s a free function with the given return type and T as its parameters list. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Example 1</p></th>
+<th class="head"><p>Example 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Fn</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">return_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">returns_void_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">false</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">with_return_type_t</span><span class="o">&lt;</span><span class="n">Fn</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/parameters.hpp">actl/functional/traits/parameters.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac12parameters_tE">
+<span id="_CPPv3I0EN2ac12parameters_tE"></span><span id="_CPPv2I0EN2ac12parameters_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a4ee7d52bcd951b48a5919c1c03121a02"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">parameters_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac12parameters_tE" title="ac::parameters_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">parameters_type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac12parameters_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Parameter types of a function as ac::type_list.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Arguments name is sometimes incorrectly used instead of parameters. Arguments are the values passed to the function when called, so they are not a property of the function itself. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac7arity_vE">
+<span id="_CPPv3I0EN2ac7arity_vE"></span><span id="_CPPv2I0EN2ac7arity_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a2da7c43c623217b9df3898603a01a1a5"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">arity_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">parameters_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac7arity_vE" title="ac::arity_v::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">length</span></span><a class="headerlink" href="#_CPPv4I0EN2ac7arity_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Arity of the function, that is its parameter count excluding the variadic arguments. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0_6size_tEN2ac14parameter_at_tE">
+<span id="_CPPv3I0_6size_tEN2ac14parameter_at_tE"></span><span id="_CPPv2I0_6size_tEN2ac14parameter_at_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a31cc00fe5d905b6fd7cb6b664980504f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">parameter_at_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">at_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">parameters_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_6size_tEN2ac14parameter_at_tE" title="ac::parameter_at_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_6size_tEN2ac14parameter_at_tE" title="ac::parameter_at_t::Index"><span class="n"><span class="pre">Index</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0_6size_tEN2ac14parameter_at_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac19unique_parameters_tE">
+<span id="_CPPv3I0EN2ac19unique_parameters_tE"></span><span id="_CPPv2I0EN2ac19unique_parameters_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1adeb32a4f5592ebd5af49d117fe1c7a73"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">unique_parameters_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">unique_parameters</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac19unique_parameters_tE" title="ac::unique_parameters_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac19unique_parameters_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Member functions with either empty or &amp; qualifier both take the class parameter by reference. To disambiguate these cases, unique parameter types contain class parameter with the same qualifiers as the member function, without the implicitly added reference. </p>
+</dd></dl>
+
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Example 1</p></th>
+<th class="head"><p>Example 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Fn</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">parameters_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ac</span><span class="o">::</span><span class="n">type_list</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ac</span><span class="o">::</span><span class="n">type_list</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*&gt;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">arity_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">2</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="mi">1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">parameter_at_t</span><span class="o">&lt;</span><span class="n">Fn</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="variadic-arguments">
+<h3>Variadic arguments<a class="headerlink" href="#variadic-arguments" title="Link to this heading">¶</a></h3>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/variadic_arguments.hpp">actl/functional/traits/variadic_arguments.hpp</a>&gt;</pre>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac28accepts_variadic_arguments_vE">
+<span id="_CPPv3I0EN2ac28accepts_variadic_arguments_vE"></span><span id="_CPPv2I0EN2ac28accepts_variadic_arguments_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aa53eab1c3c45bd4cf8ae414d08fc75b8"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">accepts_variadic_arguments_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE" title="ac::accepts_variadic_arguments_v::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">accepts_variadic_arguments</span></span><a class="headerlink" href="#_CPPv4I0EN2ac28accepts_variadic_arguments_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks if the function accepts variadic arguments, see <a class="reference external" href="https://en.cppreference.com/w/cpp/language/variadic_arguments.html">https://en.cppreference.com/w/cpp/language/variadic_arguments.html</a></p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac24add_variadic_arguments_tE">
+<span id="_CPPv3I0EN2ac24add_variadic_arguments_tE"></span><span id="_CPPv2I0EN2ac24add_variadic_arguments_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1af6dbf292b7539dc52c50917e5f552f54"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">add_variadic_arguments_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">add_variadic_arguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac24add_variadic_arguments_tE" title="ac::add_variadic_arguments_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac24add_variadic_arguments_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac27remove_variadic_arguments_tE">
+<span id="_CPPv3I0EN2ac27remove_variadic_arguments_tE"></span><span id="_CPPv2I0EN2ac27remove_variadic_arguments_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a68429768d4b318ca5f7fdaa3bc83f4e6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">remove_variadic_arguments_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">remove_variadic_arguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac27remove_variadic_arguments_tE" title="ac::remove_variadic_arguments_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac27remove_variadic_arguments_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Example 1</p></th>
+<th class="head"><p>Example 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">accepts_variadic_arguments_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">false</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_variadic_arguments_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_variadic_arguments_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="noexcept">
+<h3><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">noexcept</span></code><a class="headerlink" href="#noexcept" title="Link to this heading">¶</a></h3>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/noexcept.hpp">actl/functional/traits/noexcept.hpp</a>&gt;</pre>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac13is_noexcept_vE">
+<span id="_CPPv3I0EN2ac13is_noexcept_vE"></span><span id="_CPPv2I0EN2ac13is_noexcept_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a78eaea10d28fd1affc9faf7ba2075bca"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_noexcept_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">function_traits</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac13is_noexcept_vE" title="ac::is_noexcept_v::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_noexcept</span></span><a class="headerlink" href="#_CPPv4I0EN2ac13is_noexcept_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks if the function is noexcept, see <a class="reference external" href="https://en.cppreference.com/w/cpp/language/noexcept_spec.html">https://en.cppreference.com/w/cpp/language/noexcept_spec.html</a></p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac14add_noexcept_tE">
+<span id="_CPPv3I0EN2ac14add_noexcept_tE"></span><span id="_CPPv2I0EN2ac14add_noexcept_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ab1bb87b60dbdf746f63d99c2378238fe"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">add_noexcept_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">add_noexcept</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac14add_noexcept_tE" title="ac::add_noexcept_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac14add_noexcept_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac17remove_noexcept_tE">
+<span id="_CPPv3I0EN2ac17remove_noexcept_tE"></span><span id="_CPPv2I0EN2ac17remove_noexcept_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a7ad9dc9aff7045c62691221ec3630ff1"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">remove_noexcept_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">remove_noexcept</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac17remove_noexcept_tE" title="ac::remove_noexcept_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac17remove_noexcept_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Example 1</p></th>
+<th class="head"><p>Example 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_noexcept_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">true</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="nb">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_noexcept_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"> </span><span class="k">noexcept</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_noexcept_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">float</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="function-type-assembly">
+<h3>Function type assembly<a class="headerlink" href="#function-type-assembly" title="Link to this heading">¶</a></h3>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/assemble_function.hpp">actl/functional/traits/assemble_function.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE">
+<span id="_CPPv3I_17function_category00_b_bEN2ac19assemble_function_tE"></span><span id="_CPPv2I_17function_category00_b_bEN2ac19assemble_function_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N2ac17function_categoryE" title="ac::function_category"><span class="n"><span class="pre">function_category</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Category</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Return</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ParametersList</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AcceptsVArgs</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsNoexcept</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a0e98ebce27119af76f6ca6158c9e85d3"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">assemble_function_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">assemble_function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE" title="ac::assemble_function_t::Category"><span class="n"><span class="pre">Category</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE" title="ac::assemble_function_t::Return"><span class="n"><span class="pre">Return</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE" title="ac::assemble_function_t::ParametersList"><span class="n"><span class="pre">ParametersList</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE" title="ac::assemble_function_t::AcceptsVArgs"><span class="n"><span class="pre">AcceptsVArgs</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE" title="ac::assemble_function_t::IsNoexcept"><span class="n"><span class="pre">IsNoexcept</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Assembles a function type with the given properties. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac18as_free_function_tE">
+<span id="_CPPv3I0EN2ac18as_free_function_tE"></span><span id="_CPPv2I0EN2ac18as_free_function_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Function</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ad1bfd28b657c55d24ad267f00b834b88"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">as_free_function_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">as_free_function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac18as_free_function_tE" title="ac::as_free_function_t::Function"><span class="n"><span class="pre">Function</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac18as_free_function_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Free function with the same parameters and return type as Function. </p>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/traits/">tests/functional/traits/</a></p>
+</section>
+</section>
+<section id="design">
+<h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
+<p>The following <a class="reference external" href="https://functionalcpp.wordpress.com/2013/08/05/function-traits/">reference</a>
+was used at first, but it was heavily expanded.</p>
+<section id="qualified-free-functions">
+<h3>Qualified free functions<a class="headerlink" href="#qualified-free-functions" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html">Boost.CallableTraits</a>
+supports qualified free function types like</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Return</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="o">&amp;</span>
+</pre></div>
+</div>
+<p>These types indeed exist in C++, but declaring a function like
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">void</span><span class="w"> </span><span class="nf">f</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{}</span></code> results in a compilation error.
+This is confirmed by
+<a class="reference external" href="https://en.cppreference.com/w/cpp/language/function">cppreference</a>:</p>
+<blockquote>
+<div><p>cv    -       const/volatile qualification, only allowed in non-static member function declarations</p>
+<p>ref   -       (since C++11) ref-qualification, only allowed in non-static member function declarations</p>
+</div></blockquote>
+<p>It’s not clear why such types exist if they cannot be used in a declaration.
+For this reason, we don’t support them.</p>
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

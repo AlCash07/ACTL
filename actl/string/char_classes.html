@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Character classification &#8212; ACTL  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -53,17 +53,18 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
-</ul>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../functional.html">functional</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meta.html">meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meta.html">meta-programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
 </ul>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../range.html">range</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
@@ -85,12 +86,12 @@
 <li><a class="reference internal" href="#">Character classification</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
 <li><a class="reference internal" href="#_CPPv42ac"><code class="docutils literal notranslate"><span class="pre">ac</span></code></a><ul>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_digitEc"><code class="docutils literal notranslate"><span class="pre">ac::is_digit()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_lowerEc"><code class="docutils literal notranslate"><span class="pre">ac::is_lower()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_upperEc"><code class="docutils literal notranslate"><span class="pre">ac::is_upper()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_alphaEc"><code class="docutils literal notranslate"><span class="pre">ac::is_alpha()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac15is_alphanumericEc"><code class="docutils literal notranslate"><span class="pre">ac::is_alphanumeric()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_spaceEc"><code class="docutils literal notranslate"><span class="pre">ac::is_space()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_digitEc"><code class="docutils literal notranslate"><span class="pre">is_digit()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_lowerEc"><code class="docutils literal notranslate"><span class="pre">is_lower()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_upperEc"><code class="docutils literal notranslate"><span class="pre">is_upper()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_alphaEc"><code class="docutils literal notranslate"><span class="pre">is_alpha()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac15is_alphanumericEc"><code class="docutils literal notranslate"><span class="pre">is_alphanumeric()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_spaceEc"><code class="docutils literal notranslate"><span class="pre">is_space()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -143,12 +144,12 @@
 <li><a class="reference internal" href="#">Character classification</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
 <li><a class="reference internal" href="#_CPPv42ac"><code class="docutils literal notranslate"><span class="pre">ac</span></code></a><ul>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_digitEc"><code class="docutils literal notranslate"><span class="pre">ac::is_digit()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_lowerEc"><code class="docutils literal notranslate"><span class="pre">ac::is_lower()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_upperEc"><code class="docutils literal notranslate"><span class="pre">ac::is_upper()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_alphaEc"><code class="docutils literal notranslate"><span class="pre">ac::is_alpha()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac15is_alphanumericEc"><code class="docutils literal notranslate"><span class="pre">ac::is_alphanumeric()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac8is_spaceEc"><code class="docutils literal notranslate"><span class="pre">ac::is_space()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_digitEc"><code class="docutils literal notranslate"><span class="pre">is_digit()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_lowerEc"><code class="docutils literal notranslate"><span class="pre">is_lower()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_upperEc"><code class="docutils literal notranslate"><span class="pre">is_upper()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_alphaEc"><code class="docutils literal notranslate"><span class="pre">is_alpha()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac15is_alphanumericEc"><code class="docutils literal notranslate"><span class="pre">is_alphanumeric()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac8is_spaceEc"><code class="docutils literal notranslate"><span class="pre">is_space()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -190,9 +191,10 @@ because they don’t account for the locale and can be efficiently inlined.</p><
 </ul>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/string/char_classes.hpp">actl/string/char_classes.hpp</a>&gt;</pre>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv42ac">
-<span id="_CPPv32ac"></span><span id="_CPPv22ac"></span><span id="ac"></span><span class="target" id="namespaceac"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ac</span></span></span><a class="headerlink" href="#_CPPv42ac" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv32ac"></span><span id="_CPPv22ac"></span><span id="ac"></span><span class="target" id="namespaceac"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ac</span></span></span><br /></dt>
 <dd><div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="cpp function">
@@ -242,8 +244,7 @@ because they don’t account for the locale and can be efficiently inlined.</p><
 </div>
 </dd></dl>
 
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/string/char_classes.hpp">Source code</a></p>
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/string/char_classes.cpp">Tests</a></p>
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/string/char_classes.cpp">tests/string/char_classes.cpp</a></p>
 </section>
 </section>
 
@@ -260,7 +261,7 @@ because they don’t account for the locale and can be efficiently inlined.</p><
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
     </p>
   </div>
 </footer>

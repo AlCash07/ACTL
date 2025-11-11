@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>iterator interface &#8212; ACTL  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="string" href="../../string.html" />
+    <link rel="prev" title="iterator" href="../iterator.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          ACTL</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../functional.html">functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../meta.html">meta-programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platform.html">platform introspection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../preprocessor.html">preprocessor</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../range.html">range</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../meta/constant.html">constant</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/Running%20tests.html">Running tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/Writing%20code.html">Writing code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/Writing%20documentation.html">Writing documentation</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">iterator interface</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac24basic_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::basic_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac25output_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::output_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac24input_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::input_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac26forward_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::forward_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac32bidirectional_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::bidirectional_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac32random_access_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::random_access_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac29iterator_interface_selector_tE"><code class="docutils literal notranslate"><span class="pre">iterator_interface_selector_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I000EN2ac16iterator_adaptorE"><code class="docutils literal notranslate"><span class="pre">ac::iterator_adaptor</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#design">Design</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../iterator.html" title="Previous Chapter: iterator"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; iterator</span>
+    </a>
+  </li>
+  <li>
+    <a href="../../string.html" title="Next Chapter: string"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">string &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">iterator interface</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac24basic_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::basic_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac25output_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::output_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac24input_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::input_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac26forward_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::forward_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac32bidirectional_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::bidirectional_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac32random_access_iterator_interfaceE"><code class="docutils literal notranslate"><span class="pre">ac::random_access_iterator_interface</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac29iterator_interface_selector_tE"><code class="docutils literal notranslate"><span class="pre">iterator_interface_selector_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I000EN2ac16iterator_adaptorE"><code class="docutils literal notranslate"><span class="pre">ac::iterator_adaptor</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#design">Design</a></li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="../iterator.html" title="Previous Chapter: iterator"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; iterator</span>
+    </a>
+  </li>
+  <li>
+    <a href="../../string.html" title="Next Chapter: string"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">string &raquo;</span>
+    </a>
+  </li>
+<form action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="iterator-interface">
+<h1>iterator interface<a class="headerlink" href="#iterator-interface" title="Link to this heading">¶</a></h1>
+<p>Writing iterators is necessary to implement custom ranges
+to take advantage of their ease of use and composability.
+However, satisfying all the standard iterator requirements is
+too tedious and error-prone, there’s a good example in the
+<a class="reference external" href="https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html#the-story-for-everyday-users-writing-stl-iterators-is-not-great">std::iterator_interface</a>
+proposal.</p>
+<p>To address this problem, we provide utilities that are similar to the proposed
+<a class="reference external" href="https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html">std::iterator_interface</a>,
+which is based on
+<a class="reference external" href="https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html">Boost.STLInterfaces</a>,
+but with multiple improvements over both of them listed in the #Design section.</p>
+<p>Examples of using them include:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/include/actl/range/iterator/linked_list_iterator.hpp">linked list iterators</a>
+for forward and bidirectional iterators;</p></li>
+<li><p><a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/include/actl/range/iterator/integer_iterator.hpp">integer_iterator</a>
+for random access iterator;</p></li>
+<li><p><a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/include/actl/range/iterator/integer_iterator.hpp">filtered_range iterator</a>
+for ac::iterator_adaptor usage.</p></li>
+</ul>
+<p>Specifically, it’s enough to manually specify only a couple of nested types
+and implement the following core operations,
+and the rest will be correctly derived from them.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operation</p></th>
+<th class="head"><p>Return Type</p></th>
+<th class="head"><p>Semantics</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">*</span><span class="n">i</span></code></p></td>
+<td><p>reference</p></td>
+<td><p>Returns dereferenced <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span></code></p></td>
+<td><p>Convertible to <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">bool</span></code></p></td>
+<td><p>Returns true if and only if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">j</span></code> refererence the same value</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">j</span></code></p></td>
+<td><p>Convertible to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">difference_type</span></code></p></td>
+<td><p>Returns offset between <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">j</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">++</span><span class="n">i</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Iterator</span><span class="o">&amp;</span></code></p></td>
+<td><p>Increments <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">--</span><span class="n">i</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Iterator</span><span class="o">&amp;</span></code></p></td>
+<td><p>Decrements <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">offset</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Iterator</span><span class="o">&amp;</span></code></p></td>
+<td><p>Increments <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span></code> <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">offset</span></code> times, decrements if <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>It’s never necessary to implement all of them,
+here’s the requirements for each iterator concept:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Concept</p></th>
+<th class="head"><p>Operations</p></th>
+<th class="head"><p>Nested types</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/output_iterator">std::output_iterator</a></p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">*</span><span class="n">i</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">++</span><span class="n">i</span></code></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">value_type</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/input_iterator">std::input_iterator</a></p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">*</span><span class="n">i</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">++</span><span class="n">i</span></code></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">value_type</div>
+<div class="line">difference_type</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/forward_iterator">std::forward_iterator</a></p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">*</span><span class="n">i</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">++</span><span class="n">i</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span></code></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">value_type</div>
+<div class="line">difference_type</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/bidirectional_iterator">std::bidirectional_iterator</a></p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">*</span><span class="n">i</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">++</span><span class="n">i</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">--</span><span class="n">i</span></code></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">value_type</div>
+<div class="line">difference_type</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">std::random_access_iterator</a></p></td>
+<td><div class="line-block">
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="o">*</span><span class="n">i</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">offset</span></code></div>
+<div class="line"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">j</span></code></div>
+</div>
+</td>
+<td><p>value_type</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If some of the derived operations don’t have
+the most efficient implementations,
+it’s always possible to manually override them.</p>
+</div>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/basic_iterator_interface.hpp">actl/range/iterator/interface/basic_iterator_interface.hpp</a>&gt;</pre>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac24basic_iterator_interfaceE">
+<span id="_CPPv3I0EN2ac24basic_iterator_interfaceE"></span><span id="_CPPv2I0EN2ac24basic_iterator_interfaceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1basic__iterator__interface"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basic_iterator_interface</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac24basic_iterator_interfaceE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Avoids boilerplate needed to satisfy full requirements of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/input_or_output_iterator">std::input_or_output_iterator</a>. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/output_iterator_interface.hpp">actl/range/iterator/interface/output_iterator_interface.hpp</a>&gt;</pre>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac25output_iterator_interfaceE">
+<span id="_CPPv3I0EN2ac25output_iterator_interfaceE"></span><span id="_CPPv2I0EN2ac25output_iterator_interfaceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1output__iterator__interface"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">output_iterator_interface</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac24basic_iterator_interfaceE" title="ac::basic_iterator_interface"><span class="n"><span class="pre">basic_iterator_interface</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac25output_iterator_interfaceE" title="ac::output_iterator_interface::DerivedIterator"><span class="n"><span class="pre">DerivedIterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac25output_iterator_interfaceE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Avoids boilerplate needed to satisfy full requirements of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/output_iterator">std::output_iterator</a>. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/input_iterator_interface.hpp">actl/range/iterator/interface/input_iterator_interface.hpp</a>&gt;</pre>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac24input_iterator_interfaceE">
+<span id="_CPPv3I0EN2ac24input_iterator_interfaceE"></span><span id="_CPPv2I0EN2ac24input_iterator_interfaceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1input__iterator__interface"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input_iterator_interface</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac24basic_iterator_interfaceE" title="ac::basic_iterator_interface"><span class="n"><span class="pre">basic_iterator_interface</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac24input_iterator_interfaceE" title="ac::input_iterator_interface::DerivedIterator"><span class="n"><span class="pre">DerivedIterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac24input_iterator_interfaceE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Avoids boilerplate needed to satisfy full requirements of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/input_iterator">std::input_iterator</a>. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/forward_iterator_interface.hpp">actl/range/iterator/interface/forward_iterator_interface.hpp</a>&gt;</pre>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac26forward_iterator_interfaceE">
+<span id="_CPPv3I0EN2ac26forward_iterator_interfaceE"></span><span id="_CPPv2I0EN2ac26forward_iterator_interfaceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1forward__iterator__interface"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">forward_iterator_interface</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac24input_iterator_interfaceE" title="ac::input_iterator_interface"><span class="n"><span class="pre">input_iterator_interface</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac26forward_iterator_interfaceE" title="ac::forward_iterator_interface::DerivedIterator"><span class="n"><span class="pre">DerivedIterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac26forward_iterator_interfaceE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Avoids boilerplate needed to satisfy full requirements of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/forward_iterator">std::forward_iterator</a>. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/bidirectional_iterator_interface.hpp">actl/range/iterator/interface/bidirectional_iterator_interface.hpp</a>&gt;</pre>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac32bidirectional_iterator_interfaceE">
+<span id="_CPPv3I0EN2ac32bidirectional_iterator_interfaceE"></span><span id="_CPPv2I0EN2ac32bidirectional_iterator_interfaceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1bidirectional__iterator__interface"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bidirectional_iterator_interface</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac26forward_iterator_interfaceE" title="ac::forward_iterator_interface"><span class="n"><span class="pre">forward_iterator_interface</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac32bidirectional_iterator_interfaceE" title="ac::bidirectional_iterator_interface::DerivedIterator"><span class="n"><span class="pre">DerivedIterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac32bidirectional_iterator_interfaceE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Avoids boilerplate needed to satisfy full requirements of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/bidirectional_iterator">std::bidirectional_iterator</a>. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/random_access_iterator_interface.hpp">actl/range/iterator/interface/random_access_iterator_interface.hpp</a>&gt;</pre>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac32random_access_iterator_interfaceE">
+<span id="_CPPv3I0EN2ac32random_access_iterator_interfaceE"></span><span id="_CPPv2I0EN2ac32random_access_iterator_interfaceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1random__access__iterator__interface"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">random_access_iterator_interface</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac32bidirectional_iterator_interfaceE" title="ac::bidirectional_iterator_interface"><span class="n"><span class="pre">bidirectional_iterator_interface</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac32random_access_iterator_interfaceE" title="ac::random_access_iterator_interface::DerivedIterator"><span class="n"><span class="pre">DerivedIterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac32random_access_iterator_interfaceE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Avoids boilerplate needed to satisfy full requirements of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">std::random_access_iterator</a>. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/iterator_interface_selector.hpp">actl/range/iterator/interface/iterator_interface_selector.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac29iterator_interface_selector_tE">
+<span id="_CPPv3I00EN2ac29iterator_interface_selector_tE"></span><span id="_CPPv2I00EN2ac29iterator_interface_selector_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Category</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aeab98d5d02a1b904158492b3a23e2019"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">iterator_interface_selector_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">iterator_interface_selector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac29iterator_interface_selector_tE" title="ac::iterator_interface_selector_t::DerivedIterator"><span class="n"><span class="pre">DerivedIterator</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac29iterator_interface_selector_tE" title="ac::iterator_interface_selector_t::Category"><span class="n"><span class="pre">Category</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac29iterator_interface_selector_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>When the iterator category isn’t fixed but instead deduced by some expression, this selector can be used to select the correct iterator_interface template. </p>
+</dd></dl>
+
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/range/iterator/interface/iterator_adaptor.hpp">actl/range/iterator/interface/iterator_adaptor.hpp</a>&gt;</pre>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN2ac16iterator_adaptorE">
+<span id="_CPPv3I000EN2ac16iterator_adaptorE"></span><span id="_CPPv2I000EN2ac16iterator_adaptorE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DerivedIterator</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AdaptedIterator</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Category</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">iter_category_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN2ac16iterator_adaptorE" title="ac::iterator_adaptor::AdaptedIterator"><span class="n"><span class="pre">AdaptedIterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1iterator__adaptor"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iterator_adaptor</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac29iterator_interface_selector_tE" title="ac::iterator_interface_selector_t"><span class="n"><span class="pre">iterator_interface_selector_t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN2ac16iterator_adaptorE" title="ac::iterator_adaptor::DerivedIterator"><span class="n"><span class="pre">DerivedIterator</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">iter_category_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN2ac16iterator_adaptorE" title="ac::iterator_adaptor::AdaptedIterator"><span class="n"><span class="pre">AdaptedIterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I000EN2ac16iterator_adaptorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#classac_1_1iterator__adaptor"><span class="std std-ref">iterator_adaptor</span></a> helps to implement a new DerivedIterator that needs to reuse most of the existing AdaptedIterator implementation while overriding only a couple of operations.</p>
+<p>Operations should be overridden in DerivedIterator by accessing the AdaptedIterator via <code class="docutils literal notranslate"><span class="pre">base()</span></code> and <code class="docutils literal notranslate"><span class="pre">base_ref()</span></code> methods for const and non-const access respectively.</p>
+<p>For example, see filtered_range iterator.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The idea is adopted from Boost: <a class="reference external" href="http://www.boost.org/doc/libs/latest/libs/iterator/doc/iterator_adaptor.html">http://www.boost.org/doc/libs/latest/libs/iterator/doc/iterator_adaptor.html</a></p>
+</div>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/range/iterator/interface/">tests/range/iterator/interface/</a></p>
+</section>
+<section id="design">
+<h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
+<p>Practical experience with using <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span></code>
+surfaced multiple usabiliy improvements that we implemented:</p>
+<ol class="arabic">
+<li><p>Hierarchy of interfaces instead of a single <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span></code>.</p>
+<p>We consider this important becuase:</p>
+<ul class="simple">
+<li><p>Iterator concepts form a natural hierarchy, which we can just follow here.</p></li>
+<li><p>It’s easier to see which operations exactly are added for each concept
+compared to reading a huge combined single list
+with all the conditionally enabled operations.</p></li>
+<li><p>Doxygen is unable to determince which of the conditionally enabled
+operations are actually relevant for a particular iterator,
+for example, a forward iterator.
+Deriving from a class in the hierarchy with just the relevant operations
+solves this problem.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>we still provide <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ac</span><span class="o">::</span><span class="n">iterator_interface_selector_t</span></code>
+as a single class entry point when it’s necessary.</p>
+</div>
+</li>
+<li><p>Named nested types instead of template parameters.</p>
+<ul>
+<li><p>Just compare the clarity between our implementation and the standard proposal:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">repeated_chars_iterator</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">ac</span><span class="o">::</span><span class="n">random_access_iterator_interface</span><span class="o">&lt;</span><span class="n">repeated_chars_iterator</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">value_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">char</span><span class="p">;</span>
+<span class="w">    </span><span class="p">...</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">repeated_chars_iterator</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span><span class="o">&lt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">random_access_iterator_tag</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">char</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">char</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+</pre></div>
+</div>
+<p>How would a reader guess what these two <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">char</span></code> template parameters mean
+without navigating to the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span></code> declaration?
+In our case, it’s obvious by just looking at the code
+(and there’s no need to manually specify the second <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">char</span></code> as a <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">reference</span></code>).</p>
+</li>
+<li><p>Even more noticeable, see how many unnecessary type specifications
+we avoid when a custom <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">difference_type</span></code> is needed:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">my_forward_iterator</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">ac</span><span class="o">::</span><span class="n">forward_iterator_interface</span><span class="o">&lt;</span><span class="n">my_forward_iterator</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">value_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">char</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">difference_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span>
+<span class="w">    </span><span class="p">...</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">my_forward_iterator</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span><span class="o">&lt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">random_access_iterator_tag</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">char</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">char</span><span class="o">&amp;</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">int</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ac</span><span class="o">::</span><span class="n">basic_iterator_interface</span></code> constructor provides clear error messages
+when the necessary nested types are not specified.</p>
+</div>
+</li>
+<li><p>There’s no <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">proxy_iterator_interface</span></code>.</p>
+<p>We can automatically detect if the reference type is not a built-in reference,
+so there seems to be no benefit in forcing the user to know
+about a different interface type for this.</p>
+</li>
+<li><p>Separate <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ac</span><span class="o">::</span><span class="n">iterator_adaptor</span></code> class instead of
+merging it into <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span></code>.</p>
+<p>Adapting an iterator requires exposing all of its core operations
+and allowing to override the necessary ones.
+Which is conceptually quite different from
+providing all the core operations needed by the iterator interface.
+For this reason, we consider it confusing to provide
+all of this functionality in a single <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span></code> class.</p>
+</li>
+<li><p>Post-increment and post-decrement are implemented
+as friend functions instead of methods.</p>
+<p>As a result, the user code doesn’t have to include
+this confusing code for forward iterators</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">base_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">iterator_interface</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">forward_iterator_tag</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="n">base_type</span><span class="o">::</span><span class="k">operator</span><span class="o">++</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>and this for bidirectional iterators</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">base_type</span><span class="o">::</span><span class="k">operator</span><span class="o">--</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>There’s a whole section in
+<a class="reference external" href="https://www.boost.org/doc/libs/latest/doc/html/boost_stlinterfaces/tutorial___iterator_interface_.html#boost_stlinterfaces.tutorial___iterator_interface_.an_important_note_about__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code__and__code__phrase_role__keyword__operator__phrase__phrase_role__special________phrase___code_">Boost.STLInterfaces</a>
+discussing this problem, which we don’t have to worry about.</p>
+</li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span></code> definition is supported
+for forward and bidirectional iterators
+intead of forcing users to manually implement it.</p></li>
+<li><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">DifferenceType</span></code> is a template parameter in all the operations where it’s used.</p>
+<p>This allows to support cases like aligned iterators,
+where the alignment can change if the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">DifferenceType</span></code>
+isn’t guaranteed to be a multiple of alignment.</p>
+</li>
+</ol>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

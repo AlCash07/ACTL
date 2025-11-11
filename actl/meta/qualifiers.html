@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Type qualifier traits &#8212; ACTL  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="memory" href="../memory.html" />
+    <link rel="prev" title="constant_literals" href="constant_literals.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          ACTL</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../functional.html">functional</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../meta.html">meta-programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform introspection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../range.html">range</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="constant.html">constant</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20code.html">Writing code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20documentation.html">Writing documentation</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Type qualifier traits</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#detection-traits">Detection traits</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac7is_cv_vE"><code class="docutils literal notranslate"><span class="pre">is_cv_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac16has_qualifiers_vE"><code class="docutils literal notranslate"><span class="pre">has_qualifiers_v</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qualifiers-copy-between-types">Qualifiers copy between types</a><ul>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac12copy_const_tE"><code class="docutils literal notranslate"><span class="pre">copy_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac15copy_volatile_tE"><code class="docutils literal notranslate"><span class="pre">copy_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac9copy_cv_tE"><code class="docutils literal notranslate"><span class="pre">copy_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac16copy_reference_tE"><code class="docutils literal notranslate"><span class="pre">copy_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac12copy_cvref_tE"><code class="docutils literal notranslate"><span class="pre">copy_cvref_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inner-qualifiers-modification">Inner qualifiers modification</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac17add_inner_const_tE"><code class="docutils literal notranslate"><span class="pre">add_inner_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac20remove_inner_const_tE"><code class="docutils literal notranslate"><span class="pre">remove_inner_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac20add_inner_volatile_tE"><code class="docutils literal notranslate"><span class="pre">add_inner_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac23remove_inner_volatile_tE"><code class="docutils literal notranslate"><span class="pre">remove_inner_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14add_inner_cv_tE"><code class="docutils literal notranslate"><span class="pre">add_inner_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac17remove_inner_cv_tE"><code class="docutils literal notranslate"><span class="pre">remove_inner_cv_t</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="constant_literals.html" title="Previous Chapter: constant_literals"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; constant_literals</span>
+    </a>
+  </li>
+  <li>
+    <a href="../memory.html" title="Next Chapter: memory"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">memory &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Type qualifier traits</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#detection-traits">Detection traits</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac7is_cv_vE"><code class="docutils literal notranslate"><span class="pre">is_cv_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac16has_qualifiers_vE"><code class="docutils literal notranslate"><span class="pre">has_qualifiers_v</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qualifiers-copy-between-types">Qualifiers copy between types</a><ul>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac12copy_const_tE"><code class="docutils literal notranslate"><span class="pre">copy_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac15copy_volatile_tE"><code class="docutils literal notranslate"><span class="pre">copy_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac9copy_cv_tE"><code class="docutils literal notranslate"><span class="pre">copy_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac16copy_reference_tE"><code class="docutils literal notranslate"><span class="pre">copy_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac12copy_cvref_tE"><code class="docutils literal notranslate"><span class="pre">copy_cvref_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inner-qualifiers-modification">Inner qualifiers modification</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac17add_inner_const_tE"><code class="docutils literal notranslate"><span class="pre">add_inner_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac20remove_inner_const_tE"><code class="docutils literal notranslate"><span class="pre">remove_inner_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac20add_inner_volatile_tE"><code class="docutils literal notranslate"><span class="pre">add_inner_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac23remove_inner_volatile_tE"><code class="docutils literal notranslate"><span class="pre">remove_inner_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac14add_inner_cv_tE"><code class="docutils literal notranslate"><span class="pre">add_inner_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac17remove_inner_cv_tE"><code class="docutils literal notranslate"><span class="pre">remove_inner_cv_t</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="constant_literals.html" title="Previous Chapter: constant_literals"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; constant_literals</span>
+    </a>
+  </li>
+  <li>
+    <a href="../memory.html" title="Next Chapter: memory"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">memory &raquo;</span>
+    </a>
+  </li>
+<form action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="type-qualifier-traits">
+<h1>Type qualifier traits<a class="headerlink" href="#type-qualifier-traits" title="Link to this heading">¶</a></h1>
+<p>Traits related to cv (<code class="code highlight cpp docutils literal highlight-cpp"><span class="k">const</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">volatile</span></code>)
+<a class="reference external" href="https://en.cppreference.com/w/cpp/language/cv.html">type qualifiers</a>,
+as well as <a class="reference external" href="https://en.cppreference.com/w/cpp/language/reference.html">reference declaration</a>.</p>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<section id="detection-traits">
+<h3>Detection traits<a class="headerlink" href="#detection-traits" title="Link to this heading">¶</a></h3>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/qualifiers/detection.hpp">actl/meta/qualifiers/detection.hpp</a>&gt;</pre>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac7is_cv_vE">
+<span id="_CPPv3I0EN2ac7is_cv_vE"></span><span id="_CPPv2I0EN2ac7is_cv_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a20fad65e81b3efe75a01309268b52716"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_cv_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_const_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac7is_cv_vE" title="ac::is_cv_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_volatile_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac7is_cv_vE" title="ac::is_cv_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac7is_cv_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks if the type has both <code class="docutils literal notranslate"><span class="pre">const</span></code> and <code class="docutils literal notranslate"><span class="pre">volatile</span></code> qualifiers. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac16has_qualifiers_vE">
+<span id="_CPPv3I0EN2ac16has_qualifiers_vE"></span><span id="_CPPv2I0EN2ac16has_qualifiers_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a65d3ed9047f876edfe2292e4b4ea4f60"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">has_qualifiers_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_reference_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac16has_qualifiers_vE" title="ac::has_qualifiers_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">||</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_const_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac16has_qualifiers_vE" title="ac::has_qualifiers_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">||</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_volatile_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac16has_qualifiers_vE" title="ac::has_qualifiers_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac16has_qualifiers_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks if the type has any of <code class="docutils literal notranslate"><span class="pre">const</span></code>, <code class="docutils literal notranslate"><span class="pre">volatile</span></code> or reference qualifiers. </p>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/qualifiers/detection.cpp">tests/meta/qualifiers/detection.cpp</a></p>
+</section>
+<section id="qualifiers-copy-between-types">
+<h3>Qualifiers copy between types<a class="headerlink" href="#qualifiers-copy-between-types" title="Link to this heading">¶</a></h3>
+<p>Traits that replace type qualifiers with the ones from the source type.</p>
+<p>Table below shows the effect of different source types
+on the following destination types: <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code>, <code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code>.</p>
+<p>It’s important to understand the behavior of a referenced type qualifiers.
+Unless <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">ac</span><span class="o">::</span><span class="n">copy_cvref_t</span></code> is used:</p>
+<ul class="simple">
+<li><p>Referenced type qualifiers of a source type don’t affect the result.</p></li>
+<li><p>Referenced type qualifiers of a destination type are not changed.</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Expression</p></th>
+<th class="head"><p>unqualified</p></th>
+<th class="head"><p>cv-qualified</p></th>
+<th class="head"><p>l-value ref</p></th>
+<th class="head"><p>r-value ref</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Source type S</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">char</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">char</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">char</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">char</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_const_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_const_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_const_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_volatile_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_volatile_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_volatile_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_cv_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_cv_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_cv_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_reference_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_reference_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_reference_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_cvref_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_cvref_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">copy_cvref_t</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">&gt;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;&amp;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="https://www.boost.org/doc/libs/latest/libs/type_traits/doc/html/index.html">Boost.TypeTraits</a>,
+for example,
+<a class="reference external" href="https://www.boost.org/doc/libs/latest/libs/type_traits/doc/html/boost_typetraits/reference/copy_reference.html">boost::copy_reference</a>,
+don’t remove existing qualifiers and only add new ones.
+Our copy is different and instead fully replaces qualifiers,
+because this behavior is consistent with data copy.</p>
+</div>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/qualifiers/copy.hpp">actl/meta/qualifiers/copy.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac12copy_const_tE">
+<span id="_CPPv3I00EN2ac12copy_const_tE"></span><span id="_CPPv2I00EN2ac12copy_const_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Target</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Source</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a38ad5d4518de7d3965a034abe7aec58b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_const_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">copy_const</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_const_tE" title="ac::copy_const_t::Target"><span class="n"><span class="pre">Target</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_const_tE" title="ac::copy_const_t::Source"><span class="n"><span class="pre">Source</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac12copy_const_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac15copy_volatile_tE">
+<span id="_CPPv3I00EN2ac15copy_volatile_tE"></span><span id="_CPPv2I00EN2ac15copy_volatile_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Target</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Source</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ac60b4dfface47489eff45f9befa4dd61"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_volatile_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">copy_volatile</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac15copy_volatile_tE" title="ac::copy_volatile_t::Target"><span class="n"><span class="pre">Target</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac15copy_volatile_tE" title="ac::copy_volatile_t::Source"><span class="n"><span class="pre">Source</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac15copy_volatile_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac9copy_cv_tE">
+<span id="_CPPv3I00EN2ac9copy_cv_tE"></span><span id="_CPPv2I00EN2ac9copy_cv_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Target</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Source</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aa939fa0580dc471ba8d4c7c658c8f755"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_cv_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">copy_cv</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac9copy_cv_tE" title="ac::copy_cv_t::Target"><span class="n"><span class="pre">Target</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac9copy_cv_tE" title="ac::copy_cv_t::Source"><span class="n"><span class="pre">Source</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac9copy_cv_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac16copy_reference_tE">
+<span id="_CPPv3I00EN2ac16copy_reference_tE"></span><span id="_CPPv2I00EN2ac16copy_reference_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Target</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Source</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1adb9739cda3b71b990892ee4ddfe68c7f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_reference_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">copy_reference</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac16copy_reference_tE" title="ac::copy_reference_t::Target"><span class="n"><span class="pre">Target</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac16copy_reference_tE" title="ac::copy_reference_t::Source"><span class="n"><span class="pre">Source</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac16copy_reference_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac12copy_cvref_tE">
+<span id="_CPPv3I00EN2ac12copy_cvref_tE"></span><span id="_CPPv2I00EN2ac12copy_cvref_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Target</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Source</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a0d91ebed68494ed6c4742ed81d14592e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_cvref_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">copy_cvref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_cvref_tE" title="ac::copy_cvref_t::Target"><span class="n"><span class="pre">Target</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_cvref_tE" title="ac::copy_cvref_t::Source"><span class="n"><span class="pre">Source</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac12copy_cvref_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/qualifiers/copy.cpp">tests/meta/qualifiers/copy.cpp</a></p>
+</section>
+<section id="inner-qualifiers-modification">
+<h3>Inner qualifiers modification<a class="headerlink" href="#inner-qualifiers-modification" title="Link to this heading">¶</a></h3>
+<p>Traits that add or remove type qualifiers.
+If the type is a reference, then the referenced type is modified.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Non-reference</p></th>
+<th class="head"><p>Reference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_inner_const_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_inner_volatile_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_inner_cv_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Non-reference</p></th>
+<th class="head"><p>Reference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_inner_const_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_inner_volatile_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_inner_cv_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="o">&amp;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/qualifiers/inner.hpp">actl/meta/qualifiers/inner.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac17add_inner_const_tE">
+<span id="_CPPv3I0EN2ac17add_inner_const_tE"></span><span id="_CPPv2I0EN2ac17add_inner_const_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a7c6d15ebe8555f2e84f773f05f4e45c5"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">add_inner_const_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">add_inner_const</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac17add_inner_const_tE" title="ac::add_inner_const_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac17add_inner_const_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac20remove_inner_const_tE">
+<span id="_CPPv3I0EN2ac20remove_inner_const_tE"></span><span id="_CPPv2I0EN2ac20remove_inner_const_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a98dbb3dc286a5dd16550852bb0579079"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">remove_inner_const_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">remove_inner_const</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac20remove_inner_const_tE" title="ac::remove_inner_const_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac20remove_inner_const_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac20add_inner_volatile_tE">
+<span id="_CPPv3I0EN2ac20add_inner_volatile_tE"></span><span id="_CPPv2I0EN2ac20add_inner_volatile_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1afdf240a31c2abd2006f8e2aad5a1f0df"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">add_inner_volatile_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">add_inner_volatile</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac20add_inner_volatile_tE" title="ac::add_inner_volatile_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac20add_inner_volatile_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac23remove_inner_volatile_tE">
+<span id="_CPPv3I0EN2ac23remove_inner_volatile_tE"></span><span id="_CPPv2I0EN2ac23remove_inner_volatile_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a0f6110f0bd9cfcc4b8575ec5b38b9541"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">remove_inner_volatile_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">remove_inner_volatile</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac23remove_inner_volatile_tE" title="ac::remove_inner_volatile_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac23remove_inner_volatile_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac14add_inner_cv_tE">
+<span id="_CPPv3I0EN2ac14add_inner_cv_tE"></span><span id="_CPPv2I0EN2ac14add_inner_cv_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a171c9dc0ad1e5d1295423288a0db6dfc"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">add_inner_cv_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">add_inner_cv</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac14add_inner_cv_tE" title="ac::add_inner_cv_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac14add_inner_cv_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac17remove_inner_cv_tE">
+<span id="_CPPv3I0EN2ac17remove_inner_cv_tE"></span><span id="_CPPv2I0EN2ac17remove_inner_cv_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a34a89afb2aac33037abe15cab56d7001"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">remove_inner_cv_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">remove_inner_cv</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac17remove_inner_cv_tE" title="ac::remove_inner_cv_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac17remove_inner_cv_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/qualifiers/inner.cpp">tests/meta/qualifiers/inner.cpp</a></p>
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

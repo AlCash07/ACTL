@@ -5,16 +5,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>out/inout parameters &#8212; ACTL  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <title>out and inout parameter wrappers &#8212; ACTL  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="overloaded" href="overloaded.html" />
-    <link rel="prev" title="noexcept specifier" href="noexcept.html" />
+    <link rel="next" title="Function traits" href="traits.html" />
+    <link rel="prev" title="overloaded" href="overloaded.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -52,10 +52,7 @@
      href="../../index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
-</ul>
-<ul class="current">
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../functional.html">functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meta.html">meta</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
@@ -64,6 +61,9 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
@@ -82,19 +82,19 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">out/inout parameters</a><ul>
-<li><a class="reference internal" href="#difference-between-out-and-inout-parameters">Difference between out and inout parameters</a></li>
+<li><a class="reference internal" href="#"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span></code> parameter wrappers</a><ul>
+<li><a class="reference internal" href="#difference-between-out-and-inout-parameters">Difference between <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span></code> parameters</a></li>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3outE"><code class="docutils literal notranslate"><span class="pre">out</span></code></a><ul>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3Arg"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4NK2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">out::operator*()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4NK2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">out::operator</span> <span class="pre">T()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac3outptEv"><code class="docutils literal notranslate"><span class="pre">out::operator-&gt;()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3outaSER3outRR3Src"><code class="docutils literal notranslate"><span class="pre">out::operator=()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3outE"><code class="docutils literal notranslate"><span class="pre">ac::out</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3Arg"><code class="docutils literal notranslate"><span class="pre">out()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE"><code class="docutils literal notranslate"><span class="pre">out()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">operator*()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">T()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac3outptEv"><code class="docutils literal notranslate"><span class="pre">operator-&gt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3outaSER3outRR3Src"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE"><code class="docutils literal notranslate"><span class="pre">inout</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE"><code class="docutils literal notranslate"><span class="pre">ac::inout</span></code></a></li>
 <li><a class="reference internal" href="#detection-traits">Detection traits</a><ul>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac8is_out_vE"><code class="docutils literal notranslate"><span class="pre">is_out_v</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac10is_inout_vE"><code class="docutils literal notranslate"><span class="pre">is_inout_v</span></code></a></li>
@@ -114,11 +114,11 @@
               
                 
   <li>
-    <a href="noexcept.html" title="Previous Chapter: noexcept specifier"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; noexcept specifier</span>
+    <a href="overloaded.html" title="Previous Chapter: overloaded"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; overloaded</span>
     </a>
   </li>
   <li>
-    <a href="overloaded.html" title="Next Chapter: overloaded"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">overloaded &raquo;</span>
+    <a href="traits.html" title="Next Chapter: Function traits"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Function traits &raquo;</span>
     </a>
   </li>
               
@@ -148,19 +148,19 @@
   <div class="row">
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
-<li><a class="reference internal" href="#">out/inout parameters</a><ul>
-<li><a class="reference internal" href="#difference-between-out-and-inout-parameters">Difference between out and inout parameters</a></li>
+<li><a class="reference internal" href="#"><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span></code> parameter wrappers</a><ul>
+<li><a class="reference internal" href="#difference-between-out-and-inout-parameters">Difference between <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span></code> parameters</a></li>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3outE"><code class="docutils literal notranslate"><span class="pre">out</span></code></a><ul>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3Arg"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE"><code class="docutils literal notranslate"><span class="pre">out::out()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4NK2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">out::operator*()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4NK2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">out::operator</span> <span class="pre">T()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4N2ac3outptEv"><code class="docutils literal notranslate"><span class="pre">out::operator-&gt;()</span></code></a></li>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac3outaSER3outRR3Src"><code class="docutils literal notranslate"><span class="pre">out::operator=()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3outE"><code class="docutils literal notranslate"><span class="pre">ac::out</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3Arg"><code class="docutils literal notranslate"><span class="pre">out()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3out3outERR3outI1UE"><code class="docutils literal notranslate"><span class="pre">out()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outmlEv"><code class="docutils literal notranslate"><span class="pre">operator*()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK2ac3outcv1TEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">T()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N2ac3outptEv"><code class="docutils literal notranslate"><span class="pre">operator-&gt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac3outaSER3outRR3Src"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE"><code class="docutils literal notranslate"><span class="pre">inout</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE"><code class="docutils literal notranslate"><span class="pre">ac::inout</span></code></a></li>
 <li><a class="reference internal" href="#detection-traits">Detection traits</a><ul>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac8is_out_vE"><code class="docutils literal notranslate"><span class="pre">is_out_v</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac10is_inout_vE"><code class="docutils literal notranslate"><span class="pre">is_inout_v</span></code></a></li>
@@ -174,11 +174,11 @@
 </ul>
 
   <li>
-    <a href="noexcept.html" title="Previous Chapter: noexcept specifier"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; noexcept specifier</span>
+    <a href="overloaded.html" title="Previous Chapter: overloaded"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; overloaded</span>
     </a>
   </li>
   <li>
-    <a href="overloaded.html" title="Next Chapter: overloaded"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">overloaded &raquo;</span>
+    <a href="traits.html" title="Next Chapter: Function traits"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Function traits &raquo;</span>
     </a>
   </li>
 <form action="../../search.html" method="get">
@@ -192,10 +192,10 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <section id="out-inout-parameters">
-<h1>out/inout parameters<a class="headerlink" href="#out-inout-parameters" title="Link to this heading">¶</a></h1>
+  <section id="out-and-inout-parameter-wrappers">
+<h1><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span></code> parameter wrappers<a class="headerlink" href="#out-and-inout-parameter-wrappers" title="Link to this heading">¶</a></h1>
 <p>One of the most important aspects of understanding the code behavior
-is to clearly see which values can change and at which point.</p>
+is to clearly see which values can change and when exactly.</p>
 <p>Modern C++ strongly encourages returning by value over output parameters.
 Structured binding and types like <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">optional</span></code> are the signs of that.
 However, output parameters are still useful in some cases,
@@ -210,7 +210,7 @@ represents the output range of this algorithm?</p>
 </pre></div>
 </div>
 <section id="difference-between-out-and-inout-parameters">
-<h2>Difference between out and inout parameters<a class="headerlink" href="#difference-between-out-and-inout-parameters" title="Link to this heading">¶</a></h2>
+<h2>Difference between <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span></code> parameters<a class="headerlink" href="#difference-between-out-and-inout-parameters" title="Link to this heading">¶</a></h2>
 <p><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ac::inout</span></code></a> shouldn’t be used just because
 we read something from the parameter.
 It should be used only if we read the referenced data.</p>
@@ -222,15 +222,15 @@ if we don’t read to referenced memory itself.</p>
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/parameter/out.hpp">actl/functional/parameter/out.hpp</a>&gt;</pre>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac3outE">
 <span id="_CPPv3I0EN2ac3outE"></span><span id="_CPPv2I0EN2ac3outE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1out"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac3outE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Thin wrapper over a reference-like or a pointer-like type to specify an output-only function parameter.</p>
-<p>It helps to simplify reasoning about the code behavior by making potential variable modifications clearly visible at both the function definition and all the call sites.</p>
-<p>For example, in operations similar to copy it’s not immediately clear which of the arguments we’re copying to: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">copy_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<dd><p>Thin wrapper over a reference-like type to specify an output-only function parameter.</p>
+<p>Improves code clarity by making variable modifications clearly visible at both the function definition and all the call sites. For example, in operations similar to copy it’s not immediately clear which of the arguments we’re copying to: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">copy_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
 </pre></div>
 </div>
- Using <a class="reference internal" href="#classac_1_1out"><span class="std std-ref">ac::out</span></a> wrapper, we can make it obvious without any extra documentation: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Range</span><span class="o">&gt;</span>
+ Using <a class="reference internal" href="#classac_1_1out"><span class="std std-ref">ac::out</span></a> wrapper, we can make it clear without any extra documentation: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Range</span><span class="o">&gt;</span>
 <span class="kt">void</span><span class="w"> </span><span class="n">copy_range</span><span class="p">(</span><span class="n">out</span><span class="o">&lt;</span><span class="n">Range</span><span class="o">&amp;&gt;</span><span class="w"> </span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
 
 <span class="n">copy_range</span><span class="p">(</span><span class="n">out</span><span class="p">{</span><span class="n">x</span><span class="p">},</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
@@ -298,12 +298,12 @@ if we don’t read to referenced memory itself.</p>
 </div>
 </dd></dl>
 
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/parameter/inout.hpp">actl/functional/parameter/inout.hpp</a>&gt;</pre>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac5inoutE">
-<span id="_CPPv3I0EN2ac5inoutE"></span><span id="_CPPv2I0EN2ac5inoutE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1inout"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inout</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out"><span class="n"><span class="pre">out</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac5inoutE" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Thin wrapper over a reference-like or a pointer-like type to specify an input-output function parameter.</p>
-<p>It helps to simplify reasoning about the code behavior by making potential variable modifications clearly visible at both the function definition and all the call sites.</p>
-<p>For example, in operations similar to sort it’s not immediately clear if we modify the argument in-place or return a new value: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">sort_range</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span id="_CPPv3I0EN2ac5inoutE"></span><span id="_CPPv2I0EN2ac5inoutE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classac_1_1inout"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inout</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN2ac3outE" title="ac::out"><span class="n"><span class="pre">out</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac5inoutE" title="ac::inout::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac5inoutE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Thin wrapper over a reference-like type to specify an input-output function parameter.</p>
+<p>Improves code clarity by making variable modifications clearly visible at both the function definition and all the call sites. For example, in operations similar to sort it’s not immediately clear if we modify the argument in-place or return a new value: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">sort_range</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 </pre></div>
 </div>
  Using <a class="reference internal" href="#classac_1_1inout"><span class="std std-ref">ac::inout</span></a> wrapper, we can provide two clearly differentiated overloads, with <code class="docutils literal notranslate"><span class="pre">[[nodiscard]]</span></code> as another measure to prevent incorrect use: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Range</span><span class="o">&gt;</span>
@@ -324,7 +324,7 @@ if we don’t read to referenced memory itself.</p>
 <h3>Detection traits<a class="headerlink" href="#detection-traits" title="Link to this heading">¶</a></h3>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac8is_out_vE">
-<span id="_CPPv3I0EN2ac8is_out_vE"></span><span id="_CPPv2I0EN2ac8is_out_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aea98923bae18dc09f5306bb346df1f50"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_out_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_out</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_cvref_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac8is_out_vE" title="ac::is_out_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><a class="headerlink" href="#_CPPv4I0EN2ac8is_out_vE" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN2ac8is_out_vE"></span><span id="_CPPv2I0EN2ac8is_out_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aea98923bae18dc09f5306bb346df1f50"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_out_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_out</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_cvref_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac8is_out_vE" title="ac::is_out_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><a class="headerlink" href="#_CPPv4I0EN2ac8is_out_vE" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Checks whether T is a (possibly cvref-qualified) <a class="reference internal" href="#classac_1_1out"><span class="std std-ref">ac::out</span></a> wrapper. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -334,7 +334,7 @@ if we don’t read to referenced memory itself.</p>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac10is_inout_vE">
-<span id="_CPPv3I0EN2ac10is_inout_vE"></span><span id="_CPPv2I0EN2ac10is_inout_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a7cea51402fe25bdcae41277ebcf1939e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../string/char_classes.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_inout_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_inout</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_cvref_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac10is_inout_vE" title="ac::is_inout_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><a class="headerlink" href="#_CPPv4I0EN2ac10is_inout_vE" title="Link to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN2ac10is_inout_vE"></span><span id="_CPPv2I0EN2ac10is_inout_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a7cea51402fe25bdcae41277ebcf1939e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_inout_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_inout</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_cvref_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac10is_inout_vE" title="ac::is_inout_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><a class="headerlink" href="#_CPPv4I0EN2ac10is_inout_vE" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Checks whether T is a (possibly cvref-qualified) <a class="reference internal" href="#classac_1_1inout"><span class="std std-ref">ac::inout</span></a> wrapper. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -342,13 +342,12 @@ if we don’t read to referenced memory itself.</p>
 </div>
 </dd></dl>
 
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/parameter">Source code</a></p>
-<p><a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/parameter/out_inout.cpp">Tests</a></p>
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/parameter/out_inout.cpp">tests/functional/parameter/out_inout.cpp</a></p>
 </section>
 </section>
 <section id="design">
 <h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
-<p>out/inout wrappers are designed to be as simple as possible,
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">out</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">inout</span></code> wrappers are designed to be as simple as possible,
 so they don’t enforce any guarantees about the parameters
 being actually written to.
 There are more advanced designs available with such guarantees,
@@ -356,7 +355,7 @@ for example the one from this article about the
 <a class="reference external" href="https://www.foonathan.net/2016/10/output-parameter">output parameter</a>.
 But the added benefits don’t seem to be worth the extra complexity.
 Especially considering that returning by value should be strongly preferred
-over output parameters, so the latter are left to handle not single object,
+over output parameters, so the latter are left to handle not a single object,
 but ranges and the like.</p>
 <p>Google C++ style guide recognized the problem of output parameters,
 but the proposed solution to use pointers was clearly misguided:</p>
@@ -381,7 +380,7 @@ But there’s no alternative provided, which we’re addressing here.</p>
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
     </p>
   </div>
 </footer>

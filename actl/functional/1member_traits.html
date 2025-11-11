@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Member function traits &#8212; ACTL  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="out and inout parameter wrappers" href="2parameter.html" />
+    <link rel="prev" title="Function traits" href="0traits.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          ACTL</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../functional.html">functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meta.html">meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../meta/constant.html">constant</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20code.html">Writing code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20documentation.html">Writing documentation</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Member function traits</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac17class_parameter_tE"><code class="docutils literal notranslate"><span class="pre">class_parameter_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac10class_of_tE"><code class="docutils literal notranslate"><span class="pre">class_of_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac14as_member_of_tE"><code class="docutils literal notranslate"><span class="pre">as_member_of_t</span></code></a></li>
+<li><a class="reference internal" href="#member-qualifier-traits">Member qualifier traits</a><ul>
+<li><a class="reference internal" href="#_CPPv42ac"><code class="docutils literal notranslate"><span class="pre">ac</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac18add_member_const_tE"><code class="docutils literal notranslate"><span class="pre">add_member_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21remove_member_const_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21add_member_volatile_tE"><code class="docutils literal notranslate"><span class="pre">add_member_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac24remove_member_volatile_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac15add_member_cv_tE"><code class="docutils literal notranslate"><span class="pre">add_member_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac18remove_member_cv_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac25remove_member_reference_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE"><code class="docutils literal notranslate"><span class="pre">add_member_lvalue_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE"><code class="docutils literal notranslate"><span class="pre">add_member_rvalue_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac23has_member_qualifiers_vE"><code class="docutils literal notranslate"><span class="pre">has_member_qualifiers_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac17is_const_member_vE"><code class="docutils literal notranslate"><span class="pre">is_const_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac20is_volatile_member_vE"><code class="docutils literal notranslate"><span class="pre">is_volatile_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac14is_cv_member_vE"><code class="docutils literal notranslate"><span class="pre">is_cv_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21is_reference_member_vE"><code class="docutils literal notranslate"><span class="pre">is_reference_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE"><code class="docutils literal notranslate"><span class="pre">is_lvalue_reference_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE"><code class="docutils literal notranslate"><span class="pre">is_rvalue_reference_member_v</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="0traits.html" title="Previous Chapter: Function traits"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Function traits</span>
+    </a>
+  </li>
+  <li>
+    <a href="2parameter.html" title="Next Chapter: out and inout parameter wrappers"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">out and inout... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Member function traits</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac17class_parameter_tE"><code class="docutils literal notranslate"><span class="pre">class_parameter_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac10class_of_tE"><code class="docutils literal notranslate"><span class="pre">class_of_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I00EN2ac14as_member_of_tE"><code class="docutils literal notranslate"><span class="pre">as_member_of_t</span></code></a></li>
+<li><a class="reference internal" href="#member-qualifier-traits">Member qualifier traits</a><ul>
+<li><a class="reference internal" href="#_CPPv42ac"><code class="docutils literal notranslate"><span class="pre">ac</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac18add_member_const_tE"><code class="docutils literal notranslate"><span class="pre">add_member_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21remove_member_const_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_const_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21add_member_volatile_tE"><code class="docutils literal notranslate"><span class="pre">add_member_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac24remove_member_volatile_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_volatile_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac15add_member_cv_tE"><code class="docutils literal notranslate"><span class="pre">add_member_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac18remove_member_cv_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_cv_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac25remove_member_reference_tE"><code class="docutils literal notranslate"><span class="pre">remove_member_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE"><code class="docutils literal notranslate"><span class="pre">add_member_lvalue_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE"><code class="docutils literal notranslate"><span class="pre">add_member_rvalue_reference_t</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac23has_member_qualifiers_vE"><code class="docutils literal notranslate"><span class="pre">has_member_qualifiers_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac17is_const_member_vE"><code class="docutils literal notranslate"><span class="pre">is_const_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac20is_volatile_member_vE"><code class="docutils literal notranslate"><span class="pre">is_volatile_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac14is_cv_member_vE"><code class="docutils literal notranslate"><span class="pre">is_cv_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21is_reference_member_vE"><code class="docutils literal notranslate"><span class="pre">is_reference_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE"><code class="docutils literal notranslate"><span class="pre">is_lvalue_reference_member_v</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE"><code class="docutils literal notranslate"><span class="pre">is_rvalue_reference_member_v</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="0traits.html" title="Previous Chapter: Function traits"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Function traits</span>
+    </a>
+  </li>
+  <li>
+    <a href="2parameter.html" title="Next Chapter: out and inout parameter wrappers"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">out and inout... &raquo;</span>
+    </a>
+  </li>
+<form action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="member-function-traits">
+<h1>Member function traits<a class="headerlink" href="#member-function-traits" title="Link to this heading">¶</a></h1>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/member_traits.hpp">actl/functional/traits/member_traits.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac17class_parameter_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac17class_parameter_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac17class_parameter_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1afa52771831de0701bb6e70aacb23bd7c"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">class_parameter_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">at_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac12parameters_tE" title="ac::parameters_t"><span class="n"><span class="pre">parameters_t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac17class_parameter_tE" title="ac::class_parameter_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac17class_parameter_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Class parameter of the member function including qualifiers. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac10class_of_tE">
+<span id="_CPPv3I0EN2ac10class_of_tE"></span><span id="_CPPv2I0EN2ac10class_of_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a4de69d80be809ab92908f89e0fa86204"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">class_of_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">class_of</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac10class_of_tE" title="ac::class_of_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac10class_of_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Class corresponding to a member function or member data pointer excluding qualifiers. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN2ac14as_member_of_tE">
+<span id="_CPPv3I00EN2ac14as_member_of_tE"></span><span id="_CPPv2I00EN2ac14as_member_of_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Class</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ab2218f9fe7e5217af03a5ecfb3d18ab0"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">as_member_of_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">as_member_of</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac14as_member_of_tE" title="ac::as_member_of_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac14as_member_of_tE" title="ac::as_member_of_t::Class"><span class="n"><span class="pre">Class</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac14as_member_of_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Resulting type is different for different input types T:<ul class="simple">
+<li><p>If T is a free function, then it’s a member function of Class with the same parameters and return type.</p></li>
+<li><p>If T is a member function, then it’s a member function of Class with the same member qualifiers, parameters and return type.</p></li>
+<li><p>Otherwise, it’s a member data pointer <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">Class::*</span></code>. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/traits/MemberFunction.cpp">tests/functional/traits/MemberFunction.cpp</a></p>
+<section id="member-qualifier-traits">
+<h3>Member qualifier traits<a class="headerlink" href="#member-qualifier-traits" title="Link to this heading">¶</a></h3>
+<p>For each member function qualifier, the following traits are provided:</p>
+<ul class="simple">
+<li><p>Detection of the qualifier presence.</p></li>
+<li><p>Addition of a qualifier (doesn’t change the type if already present).</p></li>
+<li><p>Removal of a qualifier (doesn’t change the type if not present).</p></li>
+</ul>
+<p>Table with the full list:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Qualifier</p></th>
+<th class="head"><p>Detection</p></th>
+<th class="head"><p>Addition</p></th>
+<th class="head"><p>Removal</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>const</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_const_member_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_const_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_const_t</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>volatile</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_volatile_member_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_volatile_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_volatile_t</span></code></p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">const</div>
+<div class="line">volatile</div>
+</div>
+</td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_cv_member_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_cv_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_cv_t</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>&amp;</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_lvalue_reference_member_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_lvalue_reference_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_reference_t</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>&amp;&amp;</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">is_rvalue_reference_member_v</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_rvalue_reference_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_reference_t</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Addition traits change the member function type in the following way,
+and removal traits do an inverse operation.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Non-reference</p></th>
+<th class="head"><p>Reference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_const_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_volatile_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_cv_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_lvalue_reference_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="o">&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_rvalue_reference_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="o">&amp;&amp;</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="o">&amp;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">add_member_rvalue_reference_t</span></code> doesn’t change the l-value reference because of the C++
+<a class="reference external" href="https://stackoverflow.com/questions/13725747/what-are-the-reference-collapsing-rules-and-how-are-they-utilized-by-the-c-st">reference collapsing rules</a>.</p>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trait name</p></th>
+<th class="head"><p>Non-reference</p></th>
+<th class="head"><p>Reference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input type</p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_const_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">volatile</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_volatile_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_cv_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="o">&amp;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">remove_member_reference_t</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+<td><p><code class="code highlight cpp docutils literal highlight-cpp"><span class="kt">int</span><span class="p">(</span><span class="n">Class</span><span class="o">::*</span><span class="p">)()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/functional/traits/member_qualifiers.hpp">actl/functional/traits/member_qualifiers.hpp</a>&gt;</pre>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv42ac">
+<span id="_CPPv32ac"></span><span id="_CPPv22ac"></span><span id="ac"></span><span class="target" id="namespaceac"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ac</span></span></span><a class="headerlink" href="#_CPPv42ac" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac18add_member_const_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac18add_member_const_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac18add_member_const_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ad72e81823eb45448b0e8f43c1a084be9"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_member_const_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac18add_member_const_tE" title="ac::add_member_const_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">add_inner_const</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac18add_member_const_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac21remove_member_const_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac21remove_member_const_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac21remove_member_const_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a52c40853940391f75953e9bc550cbaae"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_member_const_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21remove_member_const_tE" title="ac::remove_member_const_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">remove_inner_const</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac21remove_member_const_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac21add_member_volatile_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac21add_member_volatile_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac21add_member_volatile_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a009887c00357a70d4deb06cc9c9abd7f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_member_volatile_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21add_member_volatile_tE" title="ac::add_member_volatile_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">add_inner_volatile</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac21add_member_volatile_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac24remove_member_volatile_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac24remove_member_volatile_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac24remove_member_volatile_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a2e3598b30ce2c64d938b7257acf52d86"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_member_volatile_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac24remove_member_volatile_tE" title="ac::remove_member_volatile_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">remove_inner_volatile</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac24remove_member_volatile_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac15add_member_cv_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac15add_member_cv_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac15add_member_cv_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1aba81ebd6215a8d687bcd2ee5370c835f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_member_cv_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac15add_member_cv_tE" title="ac::add_member_cv_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">add_inner_cv</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac15add_member_cv_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac18remove_member_cv_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac18remove_member_cv_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac18remove_member_cv_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ab4e67560e822e491c1dcde2cf1d0079c"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_member_cv_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac18remove_member_cv_tE" title="ac::remove_member_cv_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">remove_inner_cv</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac18remove_member_cv_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac25remove_member_reference_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac25remove_member_reference_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac25remove_member_reference_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ae38aec3b0ff7726e9998690f3374e0d7"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_member_reference_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac25remove_member_reference_tE" title="ac::remove_member_reference_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_reference</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac25remove_member_reference_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a46e32138aaf51233b2875ee98c0df1c0"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_member_lvalue_reference_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE" title="ac::add_member_lvalue_reference_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">add_lvalue_reference</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE">
+<span id="_CPPv3I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE"></span><span id="_CPPv2I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a377a4eab9cfdce1b0d829a47e4d541f3"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_member_rvalue_reference_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">modify_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE" title="ac::add_member_rvalue_reference_t::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">add_rvalue_reference</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac23has_member_qualifiers_vE">
+<span id="_CPPv3I_14MemberFunctionEN2ac23has_member_qualifiers_vE"></span><span id="_CPPv2I_14MemberFunctionEN2ac23has_member_qualifiers_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ab7b478c59e5da76d2668f4f9767d7568"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_member_qualifiers_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../meta/qualifiers.html#_CPPv4I0EN2ac16has_qualifiers_vE" title="ac::has_qualifiers_v"><span class="n"><span class="pre">has_qualifiers_v</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">at_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac19unique_parameters_tE" title="ac::unique_parameters_t"><span class="n"><span class="pre">unique_parameters_t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac23has_member_qualifiers_vE" title="ac::has_member_qualifiers_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac23has_member_qualifiers_vE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks if a member function has any of <code class="docutils literal notranslate"><span class="pre">const</span></code>, <code class="docutils literal notranslate"><span class="pre">volatile</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> or <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> qualifiers.</p>
+<p><code class="docutils literal notranslate"><span class="pre">false</span></code> only for functions like <code class="docutils literal notranslate"><span class="pre">void(Class::*)(int)</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac17is_const_member_vE">
+<span id="_CPPv3I_14MemberFunctionEN2ac17is_const_member_vE"></span><span id="_CPPv2I_14MemberFunctionEN2ac17is_const_member_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ad79353b3182b606e1e93db81fd7e5836"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_const_member_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_const_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_reference_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac17is_const_member_vE" title="ac::is_const_member_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac17is_const_member_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac20is_volatile_member_vE">
+<span id="_CPPv3I_14MemberFunctionEN2ac20is_volatile_member_vE"></span><span id="_CPPv2I_14MemberFunctionEN2ac20is_volatile_member_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1afd6155092d58a49f0e14bc37ea6d9c2a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_volatile_member_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_volatile_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">remove_reference_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac20is_volatile_member_vE" title="ac::is_volatile_member_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac20is_volatile_member_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac14is_cv_member_vE">
+<span id="_CPPv3I_14MemberFunctionEN2ac14is_cv_member_vE"></span><span id="_CPPv2I_14MemberFunctionEN2ac14is_cv_member_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a38f19f9b42c5f5ccaed2f47b79f89647"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_cv_member_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac17is_const_member_vE" title="ac::is_const_member_v"><span class="n"><span class="pre">is_const_member_v</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac14is_cv_member_vE" title="ac::is_cv_member_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac20is_volatile_member_vE" title="ac::is_volatile_member_v"><span class="n"><span class="pre">is_volatile_member_v</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac14is_cv_member_vE" title="ac::is_cv_member_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac14is_cv_member_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac21is_reference_member_vE">
+<span id="_CPPv3I_14MemberFunctionEN2ac21is_reference_member_vE"></span><span id="_CPPv2I_14MemberFunctionEN2ac21is_reference_member_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a9689f98621eab0f48df9305831ad562e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_reference_member_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_reference_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac21is_reference_member_vE" title="ac::is_reference_member_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac21is_reference_member_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE">
+<span id="_CPPv3I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE"></span><span id="_CPPv2I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1ad8d296574f11e5cc61c276972c8924c7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_lvalue_reference_member_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_lvalue_reference_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE" title="ac::is_lvalue_reference_member_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE">
+<span id="_CPPv3I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE"></span><span id="_CPPv2I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="0traits.html#_CPPv4I0EN2ac14MemberFunctionE" title="ac::MemberFunction"><span class="n"><span class="pre">MemberFunction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MF</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a658294546650635979074629d2297a1b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_rvalue_reference_member_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_rvalue_reference_v</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_class_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE" title="ac::is_rvalue_reference_member_v::MF"><span class="n"><span class="pre">MF</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/functional/traits/member_qualifiers.cpp">tests/functional/traits/member_qualifiers.cpp</a></p>
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; ACTL  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="_static/documentation_options.js?v=7f41d439"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
@@ -50,17 +50,18 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="actl/meta/constant.html">constant</a></li>
-</ul>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="actl/functional.html">functional</a></li>
-<li class="toctree-l1"><a class="reference internal" href="actl/meta.html">meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actl/meta.html">meta-programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/memory.html">memory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="actl/platform.html">platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actl/platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/preprocessor.html">preprocessor</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="actl/range.html">range</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actl/string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="actl/meta/constant.html">constant</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing/Running%20tests.html">Running tests</a></li>
@@ -133,15 +134,51 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="actl/string/char_classes.html#_CPPv42ac">ac (C++ type)</a>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv42ac">ac (C++ type)</a>, <a href="actl/string/char_classes.html#_CPPv42ac">[1]</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac28accepts_variadic_arguments_vE">ac::accepts_variadic_arguments_v (C++ member)</a>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac28accepts_variadic_arguments_vE">ac::accepts_variadic_arguments_v (C++ member)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac7arity_vE">ac::arity_v (C++ member)</a>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac17add_inner_const_tE">ac::add_inner_const_t (C++ type)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac14add_inner_cv_tE">ac::add_inner_cv_t (C++ type)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac20add_inner_volatile_tE">ac::add_inner_volatile_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac18add_member_const_tE">ac::add_member_const_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac15add_member_cv_tE">ac::add_member_cv_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac29add_member_lvalue_reference_tE">ac::add_member_lvalue_reference_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac29add_member_rvalue_reference_tE">ac::add_member_rvalue_reference_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac21add_member_volatile_tE">ac::add_member_volatile_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac14add_noexcept_tE">ac::add_noexcept_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac24add_variadic_arguments_tE">ac::add_variadic_arguments_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac7arity_vE">ac::arity_v (C++ member)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac18as_free_function_tE">ac::as_free_function_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I00EN2ac14as_member_of_tE">ac::as_member_of_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE">ac::assemble_function_t (C++ type)</a>
+</li>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I0EN2ac24basic_iterator_interfaceE">ac::basic_iterator_interface (C++ class)</a>
+</li>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I0EN2ac32bidirectional_iterator_interfaceE">ac::bidirectional_iterator_interface (C++ class)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_bEN2ac6bool_cE">ac::bool_c (C++ member)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_bEN2ac13bool_constantE">ac::bool_constant (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0DpEN2ac8CallableE">ac::Callable (C++ concept)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I0EN2ac10class_of_tE">ac::class_of_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac17class_parameter_tE">ac::class_parameter_t (C++ type)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_DaEN2ac8constantE">ac::constant (C++ struct)</a>
 </li>
@@ -155,11 +192,39 @@
 </li>
       <li><a href="actl/meta/constant_literals.html#_CPPv4I_DpcEN2ac17constant_literalsli5_cullEDav">ac::constant_literals::operator&#34;&#34;_cull (C++ function)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac12FreeFunctionE">ac::FreeFunction (C++ concept)</a>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I00EN2ac12copy_const_tE">ac::copy_const_t (C++ type)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac14FunctionObjectE">ac::FunctionObject (C++ concept)</a>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I00EN2ac9copy_cv_tE">ac::copy_cv_t (C++ type)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4I0EN2ac5inoutE">ac::inout (C++ class)</a>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I00EN2ac12copy_cvref_tE">ac::copy_cvref_t (C++ type)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I00EN2ac16copy_reference_tE">ac::copy_reference_t (C++ type)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I00EN2ac15copy_volatile_tE">ac::copy_volatile_t (C++ type)</a>
+</li>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I0EN2ac26forward_iterator_interfaceE">ac::forward_iterator_interface (C++ class)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac12FreeFunctionE">ac::FreeFunction (C++ concept)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4N2ac17function_categoryE">ac::function_category (C++ enum)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4N2ac17function_category4freeE">ac::function_category::free (C++ enumerator)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4N2ac17function_category6memberE">ac::function_category::member (C++ enumerator)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4N2ac17function_category6objectE">ac::function_category::object (C++ enumerator)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac15function_traitsE">ac::function_traits (C++ struct)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac14FunctionObjectE">ac::FunctionObject (C++ concept)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac23has_member_qualifiers_vE">ac::has_member_qualifiers_v (C++ member)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac16has_qualifiers_vE">ac::has_qualifiers_v (C++ member)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4I_9ReferenceEN2ac5inoutE">ac::inout (C++ class)</a>
+</li>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I0EN2ac24input_iterator_interfaceE">ac::input_iterator_interface (C++ class)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_iEN2ac5int_cE">ac::int_c (C++ member)</a>
 </li>
@@ -173,103 +238,153 @@
 </li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac15is_alphanumericEc">ac::is_alphanumeric (C++ function)</a>
 </li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac17is_const_member_vE">ac::is_const_member_v (C++ member)</a>
+</li>
       <li><a href="actl/meta/constant.html#_CPPv4I0EN2ac11is_constantE">ac::is_constant (C++ struct)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I0EN2ac13is_constant_vE">ac::is_constant_v (C++ member)</a>
 </li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac14is_cv_member_vE">ac::is_cv_member_v (C++ member)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac7is_cv_vE">ac::is_cv_v (C++ member)</a>
+</li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac8is_digitEc">ac::is_digit (C++ function)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4I0EN2ac10is_inout_vE">ac::is_inout_v (C++ member)</a>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4I0EN2ac10is_inout_vE">ac::is_inout_v (C++ member)</a>
 </li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac8is_lowerEc">ac::is_lower (C++ function)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac13is_noexcept_vE">ac::is_noexcept_v (C++ member)</a>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac28is_lvalue_reference_member_vE">ac::is_lvalue_reference_member_v (C++ member)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4I0EN2ac8is_out_vE">ac::is_out_v (C++ member)</a>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac13is_noexcept_vE">ac::is_noexcept_v (C++ member)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4I0EN2ac8is_out_vE">ac::is_out_v (C++ member)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac21is_reference_member_vE">ac::is_reference_member_v (C++ member)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac28is_rvalue_reference_member_vE">ac::is_rvalue_reference_member_v (C++ member)</a>
 </li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac8is_spaceEc">ac::is_space (C++ function)</a>
 </li>
       <li><a href="actl/string/char_classes.html#_CPPv4N2ac8is_upperEc">ac::is_upper (C++ function)</a>
 </li>
-      <li><a href="actl/functional/lazy.html#_CPPv4I_NSt9invocableEEN2ac4lazyE">ac::lazy (C++ struct)</a>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac20is_volatile_member_vE">ac::is_volatile_member_v (C++ member)</a>
 </li>
-      <li><a href="actl/functional/lazy.html#_CPPv4N2ac4lazycvNSt15invoke_result_tI8FunctionEEEv">ac::lazy::operator std::invoke_result_t&lt;Function&gt; (C++ function)</a>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I000EN2ac16iterator_adaptorE">ac::iterator_adaptor (C++ class)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac21MayThrowConvertibleToE">ac::MayThrowConvertibleTo (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac16MayThrowCopyableE">ac::MayThrowCopyable (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac25MayThrowCopyConstructibleE">ac::MayThrowCopyConstructible (C++ concept)</a>
-</li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac14MemberFunctionE">ac::MemberFunction (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac21NothrowAssignableFromE">ac::NothrowAssignableFrom (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0DpEN2ac24NothrowConstructibleFromE">ac::NothrowConstructibleFrom (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac20NothrowConvertibleToE">ac::NothrowConvertibleTo (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac15NothrowCopyableE">ac::NothrowCopyable (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac24NothrowCopyConstructibleE">ac::NothrowCopyConstructible (C++ concept)</a>
-</li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac27NothrowDefaultInitializableE">ac::NothrowDefaultInitializable (C++ concept)</a>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I00EN2ac29iterator_interface_selector_tE">ac::iterator_interface_selector_t (C++ type)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac25NothrowEqualityComparableE">ac::NothrowEqualityComparable (C++ concept)</a>
+      <li><a href="actl/functional/3_lazy.html#_CPPv4I_8CallableEN2ac4lazyE">ac::lazy (C++ struct)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac30NothrowExplicitlyConvertibleToE">ac::NothrowExplicitlyConvertibleTo (C++ concept)</a>
+      <li><a href="actl/functional/3_lazy.html#_CPPv4N2ac4lazycvDTcl8functionEEEv">ac::lazy::operator decltype(function()) (C++ function)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac14NothrowMovableE">ac::NothrowMovable (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I00EN2ac21MayThrowConvertibleToE">ac::MayThrowConvertibleTo (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac24NothrowMoveConstructibleE">ac::NothrowMoveConstructible (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac16MayThrowCopyableE">ac::MayThrowCopyable (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac14NothrowRegularE">ac::NothrowRegular (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac25MayThrowCopyConstructibleE">ac::MayThrowCopyConstructible (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac18NothrowSemiregularE">ac::NothrowSemiregular (C++ concept)</a>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac14MemberFunctionE">ac::MemberFunction (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac16NothrowSwappableE">ac::NothrowSwappable (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I00EN2ac21NothrowAssignableFromE">ac::NothrowAssignableFrom (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac20NothrowSwappableWithE">ac::NothrowSwappableWith (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0DpEN2ac24NothrowConstructibleFromE">ac::NothrowConstructibleFrom (C++ concept)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4I0EN2ac3outE">ac::out (C++ class)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I00EN2ac20NothrowConvertibleToE">ac::NothrowConvertibleTo (C++ concept)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4NK2ac3outcv1TEv">ac::out::operator T (C++ function)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac15NothrowCopyableE">ac::NothrowCopyable (C++ concept)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4NK2ac3outmlEv">ac::out::operator* (C++ function)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac24NothrowCopyConstructibleE">ac::NothrowCopyConstructible (C++ concept)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4N2ac3outptEv">ac::out::operator-&gt; (C++ function)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac27NothrowDefaultInitializableE">ac::NothrowDefaultInitializable (C++ concept)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4I0EN2ac3outaSER3outRR3Src">ac::out::operator= (C++ function)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac25NothrowEqualityComparableE">ac::NothrowEqualityComparable (C++ concept)</a>
 </li>
-      <li><a href="actl/functional/out_inout.html#_CPPv4I0EN2ac3out3outERR3Arg">ac::out::out (C++ function)</a>, <a href="actl/functional/out_inout.html#_CPPv4I0EN2ac3out3outERR3outI1UE">[1]</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I00EN2ac30NothrowExplicitlyConvertibleToE">ac::NothrowExplicitlyConvertibleTo (C++ concept)</a>
+</li>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac14NothrowMovableE">ac::NothrowMovable (C++ concept)</a>
+</li>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac24NothrowMoveConstructibleE">ac::NothrowMoveConstructible (C++ concept)</a>
+</li>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac14NothrowRegularE">ac::NothrowRegular (C++ concept)</a>
+</li>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac18NothrowSemiRegularE">ac::NothrowSemiRegular (C++ concept)</a>
+</li>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac16NothrowSwappableE">ac::NothrowSwappable (C++ concept)</a>
+</li>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I00EN2ac20NothrowSwappableWithE">ac::NothrowSwappableWith (C++ concept)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4I_9ReferenceEN2ac3outE">ac::out (C++ class)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4NK2ac3outcv3RefEv">ac::out::operator Ref (C++ function)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4NK2ac3outmlEv">ac::out::operator* (C++ function)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4N2ac3outptEv">ac::out::operator-&gt; (C++ function)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4I0EN2ac3outaSER3outRR6Source">ac::out::operator= (C++ function)</a>
+</li>
+      <li><a href="actl/functional/2_parameter.html#_CPPv4I0EN2ac3out3outERR3Arg">ac::out::out (C++ function)</a>, <a href="actl/functional/2_parameter.html#_CPPv4I0EN2ac3out3outERR3outI6SourceE">[1]</a>
+</li>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I0EN2ac25output_iterator_interfaceE">ac::output_iterator_interface (C++ class)</a>
 </li>
       <li><a href="actl/functional/overloaded.html#_CPPv4IDpEN2ac10overloadedE">ac::overloaded (C++ struct)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I_6size_t0EN2ac14parameter_at_tE">ac::parameter_at_t (C++ type)</a>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0_6size_tEN2ac14parameter_at_tE">ac::parameter_at_t (C++ type)</a>
 </li>
-      <li><a href="actl/functional/traits.html#_CPPv4I0EN2ac8return_tE">ac::return_t (C++ type)</a>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac12parameters_tE">ac::parameters_t (C++ type)</a>
+</li>
+      <li><a href="actl/range/iterator/interface.html#_CPPv4I0EN2ac32random_access_iterator_interfaceE">ac::random_access_iterator_interface (C++ class)</a>
+</li>
+      <li><a href="actl/meta/Reference.html#_CPPv4I0EN2ac9ReferenceE">ac::Reference (C++ concept)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac20remove_inner_const_tE">ac::remove_inner_const_t (C++ type)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac17remove_inner_cv_tE">ac::remove_inner_cv_t (C++ type)</a>
+</li>
+      <li><a href="actl/meta/qualifiers.html#_CPPv4I0EN2ac23remove_inner_volatile_tE">ac::remove_inner_volatile_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac21remove_member_const_tE">ac::remove_member_const_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac18remove_member_cv_tE">ac::remove_member_cv_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac25remove_member_reference_tE">ac::remove_member_reference_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/1_member_traits.html#_CPPv4I_14MemberFunctionEN2ac24remove_member_volatile_tE">ac::remove_member_volatile_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac17remove_noexcept_tE">ac::remove_noexcept_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac27remove_variadic_arguments_tE">ac::remove_variadic_arguments_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac8return_tE">ac::return_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac14returns_void_vE">ac::returns_void_v (C++ member)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_6size_tEN2ac6size_cE">ac::size_c (C++ member)</a>
 </li>
       <li><a href="actl/meta/constant.html#_CPPv4I_6size_tEN2ac13size_constantE">ac::size_constant (C++ type)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I00EN2ac23TriviallyAssignableFromE">ac::TriviallyAssignableFrom (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I00EN2ac23TriviallyAssignableFromE">ac::TriviallyAssignableFrom (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0DpEN2ac26TriviallyConstructibleFromE">ac::TriviallyConstructibleFrom (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0DpEN2ac26TriviallyConstructibleFromE">ac::TriviallyConstructibleFrom (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac17TriviallyCopyableE">ac::TriviallyCopyable (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac17TriviallyCopyableE">ac::TriviallyCopyable (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac26TriviallyCopyConstructibleE">ac::TriviallyCopyConstructible (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac26TriviallyCopyConstructibleE">ac::TriviallyCopyConstructible (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac29TriviallyDefaultInitializableE">ac::TriviallyDefaultInitializable (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac29TriviallyDefaultInitializableE">ac::TriviallyDefaultInitializable (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac16TriviallyMovableE">ac::TriviallyMovable (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac16TriviallyMovableE">ac::TriviallyMovable (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac26TriviallyMoveConstructibleE">ac::TriviallyMoveConstructible (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac26TriviallyMoveConstructibleE">ac::TriviallyMoveConstructible (C++ concept)</a>
 </li>
-      <li><a href="actl/meta/concepts.html#_CPPv4I0EN2ac20TriviallySemiregularE">ac::TriviallySemiregular (C++ concept)</a>
+      <li><a href="actl/meta/Concepts.html#_CPPv4I0EN2ac20TriviallySemiRegularE">ac::TriviallySemiRegular (C++ concept)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I0EN2ac19unique_parameters_tE">ac::unique_parameters_t (C++ type)</a>
+</li>
+      <li><a href="actl/functional/0_traits.html#_CPPv4I00EN2ac18with_return_type_tE">ac::with_return_type_t (C++ type)</a>
 </li>
       <li><a href="actl/functional/inlining.html#c.AC_ALWAYS_INLINE">AC_ALWAYS_INLINE (C macro)</a>
 </li>
@@ -318,7 +433,7 @@
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
     </p>
   </div>
 </footer>
