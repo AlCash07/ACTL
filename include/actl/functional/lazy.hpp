@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
+#include <actl/functional/traits/Callable.hpp>
 #include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
-#include <concepts>
 
 namespace ac {
 
@@ -52,18 +52,18 @@ namespace ac {
 /// @note This is the simplest possible implementation,
 /// so it doesn't perform any result caching
 /// for the case where it can be used multiple times.
-template<std::invocable Function>
+template<Callable Function>
 struct lazy {
+    AC_NO_UNIQUE_ADDRESS Function function;
+
     /// Function result can be constructed from ac::lazy
     /// thanks to this conversion operator.
-    operator std::invoke_result_t<Function>() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+    operator decltype(function())() AC_DEDUCE_NOEXCEPT_AND_RETURN( //
         function()
     )
-
-    AC_NO_UNIQUE_ADDRESS Function function;
 };
 
-template<std::invocable Function>
+template<Callable Function>
 lazy(Function&&) -> lazy<Function>;
 
 } // namespace ac

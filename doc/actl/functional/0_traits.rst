@@ -30,6 +30,9 @@ including their const and reference-qualified versions:
 .. ac-include:: actl/functional/traits/FunctionObject.hpp
 .. doxygenconcept:: ac::FunctionObject
 
+.. ac-include:: actl/functional/traits/Callable.hpp
+.. doxygenconcept:: ac::Callable
+
 .. note::
 
   Some libraries support

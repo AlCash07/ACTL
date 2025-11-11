@@ -10,10 +10,20 @@
 
 namespace ac {
 
-/// Concept of a free function, for example, `float(int, int)`, including a free
+/// Concept of a free function, for example,
+/// `float(int, int)`, which is the type of a function like this
+/// @code
+/// float divide(int x, int y);
+/// @endcode
+///
+/// Function reference like `float(&)(int, int)` and
 /// <a
 /// href="https://en.cppreference.com/w/cpp/language/pointer.html#Pointers_to_functions">
-/// function pointer</a>.
+/// function pointer</a> like `float(*)(int, int)`
+/// also satisfy the concept, because they also support function call syntax.
+///
+/// @note It's impossible to declare a variable of a function type,
+/// it has to be either a reference or a pointer.
 template<typename T>
 concept FreeFunction = function_traits<T>::category == function_category::free;
 

@@ -11,9 +11,27 @@
 
 namespace ac {
 
-/// Concept of a class member function, often called a method.
+/// Concept of a class member function pointer, often called a method.
 ///
-/// Its first parameter is the enclosing class.
+/// For example, for the following class
+/// @code
+/// class Class {
+///     bool member(int) const;
+/// };
+/// @endcode
+/// the member function type can be acquired by `decltype(&Class::member)`,
+/// which is `bool (Class::*)(int) const`.
+///
+/// Important properties of a member function:
+/// - Its type is always a pointer, there's no corresponding value type.
+/// - The first parameter is always the enclosing class.
+/// - To support function call syntax it has to be wrapped into `std::mem_fn`,
+///   otherwise the following call syntax has to be used
+///   @code
+///   auto member = &Class::member;
+///   Class instance;
+///   (instance.*member)(1);
+///   @endcode
 template<typename T>
 concept MemberFunction =
     function_traits<T>::category == function_category::member;

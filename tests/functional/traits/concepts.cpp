@@ -20,10 +20,14 @@ using free_function_t = bool(const Callable&, int);
 static_assert(ac::FreeFunction<free_function_t>);
 static_assert(!ac::MemberFunction<free_function_t>);
 static_assert(!ac::FunctionObject<free_function_t>);
+/* free function pointer and reference */
+static_assert(ac::FreeFunction<free_function_t*>);
+static_assert(ac::FreeFunction<free_function_t&>);
 
 using member_function_t = decltype(&Callable::member_function);
 static_assert(!ac::FreeFunction<member_function_t>);
 static_assert(ac::MemberFunction<member_function_t>);
+static_assert(ac::MemberFunction<member_function_t&>);
 static_assert(!ac::FunctionObject<member_function_t>);
 
 static_assert(!ac::FreeFunction<Callable>);

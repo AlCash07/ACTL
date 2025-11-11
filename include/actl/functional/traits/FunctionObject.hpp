@@ -12,7 +12,16 @@
 namespace ac {
 
 /// Concept of a function object, that is a type with
-/// a non-overloaded `operator()`.
+/// a non-overloaded `operator()`, for example
+/// @code
+/// template<typename T>
+/// struct plus {
+///     constexpr T operator()(T const& l, T const& r) const {
+///         return l + r;
+///     }
+/// };
+/// @endcode
+/// Non-template lambdas are also function objects.
 template<typename T>
 concept FunctionObject = requires(T) {
     &T::operator();
