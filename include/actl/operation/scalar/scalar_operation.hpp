@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/strict_common_type.hpp>
-#include <actl/operation/operation.hpp>
+#include <actl/operation/core/operation.hpp>
 #include <actl/operation/scalar/enable_operators.hpp>
 #include <actl/operation/scalar/scalar_expression.hpp>
 

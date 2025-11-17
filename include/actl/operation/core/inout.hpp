@@ -11,9 +11,6 @@
 
 namespace ac {
 
-template<typename... Ts>
-inline constexpr bool is_any_inout_v = (... || is_inout_v<Ts>);
-
 template<typename T>
 struct raw<inout<T>> : raw<T> {};
 
