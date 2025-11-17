@@ -28,7 +28,7 @@ constexpr auto pass_arguments_impl(
     std::index_sequence<Is...>, OE const& oe, Args const&... args
 ) {
     return expression{
-        oe.operation(), pass_arguments(std::get<Is + 1>(oe.args), args...)...
+        oe.operation, pass_arguments(std::get<Is>(oe.arguments), args...)...
     };
 }
 

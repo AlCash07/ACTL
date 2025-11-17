@@ -31,9 +31,9 @@ struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...> {
     static constexpr auto resolve(Context context, OE&& oe) {
         return make_expression(
             context,
-            static_cast<OE&&>(oe).operation(),
+            static_cast<OE&&>(oe).operation,
             resolve_overload<Ts...>(
-                context, std::get<Is + 1>(static_cast<OE&&>(oe).args)
+                context, std::get<Is>(static_cast<OE&&>(oe).arguments)
             )...
         );
     }

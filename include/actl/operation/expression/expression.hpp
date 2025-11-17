@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/functional/parameter/out.hpp>
+#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
 #include <actl/operation/expression/argument_traits.hpp>
 #include <actl/operation/expression/result_type.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
@@ -17,36 +18,38 @@ namespace ac {
 template<typename Result>
 struct can_convert_expression_implicitly : std::false_type {};
 
-template<typename Derived, bool HasConversion = false>
-struct expression_conversion {};
-
 template<typename Derived, bool IsOperation = false>
 struct operation_expression {};
 
 template<typename Operation, typename... Args>
 struct expression
-    : expression_conversion<
-          expression<Operation, Args...>,
-          can_convert_expression_implicitly<
-              resolved_result_type_t<Operation, Args...>>::value>
-    , operation_expression<
+    : operation_expression<
           expression<Operation, Args...>,
           std::is_same_v<
               operation_tag,
               resolved_result_type_t<Operation, Args...>>> {
     static constexpr size_t argument_count = sizeof...(Args);
 
-    std::tuple<Operation, Args...> args;
+    AC_NO_UNIQUE_ADDRESS Operation operation;
+    // TODO: avoid std::tuple because of slow compilation time
+    // and move constructor never being trivial caused by a wording defect.
+    AC_NO_UNIQUE_ADDRESS std::tuple<Args...> arguments;
 
-    template<typename... Ts>
-    constexpr expression(Ts&&... args) : args{std::forward<Ts>(args)...} {}
+    expression() = default;
 
-    constexpr auto& operation() const& {
-        return std::get<0>(args);
-    }
+    template<typename Op, typename... Ts>
+        requires(std::is_constructible_v<Operation, Op &&> &&
+                 sizeof...(Ts) == argument_count &&
+                 (... && std::is_constructible_v<Args, Ts>))
+    constexpr expression(Op&& op, Ts&&... args)
+        : operation{std::forward<Op>(op)}
+        , arguments{std::forward<Ts>(args)...} {}
 
-    constexpr auto&& operation() && {
-        return std::get<0>(std::move(args));
+    constexpr operator resolved_result_type_t<Operation, Args...>() const
+        requires(can_convert_expression_implicitly<
+                 resolved_result_type_t<Operation, Args...>>::value)
+    {
+        return eval(*this);
     }
 
     struct enable_operators;
@@ -74,13 +77,6 @@ struct expression_result_type<expression<Ts...>> {
     using type = resolved_result_type_t<Ts...>;
 };
 
-template<typename Expr>
-struct expression_conversion<Expr, true> {
-    constexpr operator typename expression_result_type<Expr>::type() const {
-        return eval(static_cast<Expr const&>(*this));
-    }
-};
-
 template<typename Expr, typename S = argument_indices<Expr>>
 struct expression_helper;
 
@@ -95,14 +91,14 @@ struct expression_helper<
 
     static constexpr auto resolve_expr(Expr const& expr) {
         return expression{
-            resolve_overload<Args...>(default_context{}, expr.operation()),
-            std::get<Is + 1>(expr.args)...
+            resolve_overload<Args...>(default_context{}, expr.operation),
+            std::get<Is>(expr.arguments)...
         };
     }
 
     template<typename Target>
     static constexpr void assign_impl(Target& target, Expr const& expr) {
-        expr.operation().evaluate_to(target, std::get<Is + 1>(expr.args)...);
+        expr.operation.evaluate_to(target, std::get<Is>(expr.arguments)...);
     }
 };
 

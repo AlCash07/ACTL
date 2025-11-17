@@ -18,18 +18,19 @@ constexpr T eval(T x) {
 }
 
 template<typename Expr, size_t... Is>
-constexpr decltype(auto) eval_impl(Expr const& e, std::index_sequence<Is...>) {
-    return e.operation().evaluate(std::get<Is + 1>(e.args)...);
+constexpr decltype(auto)
+eval_impl(Expr const& expr, std::index_sequence<Is...>) {
+    return expr.operation.evaluate(std::get<Is>(expr.arguments)...);
 }
 
 template<typename Expr>
     requires is_expression_v<Expr>
-constexpr decltype(auto) eval(Expr const& e) {
+constexpr decltype(auto) eval(Expr const& expr) {
     using helper = expression_helper<Expr>;
     if constexpr (helper::is_resolved)
-        return eval_impl(e, argument_indices<Expr>{});
+        return eval_impl(expr, argument_indices<Expr>{});
     else
-        return eval(helper::resolve_expr(e));
+        return eval(helper::resolve_expr(expr));
 }
 
 template<typename T>
