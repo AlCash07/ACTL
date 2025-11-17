@@ -23,7 +23,7 @@ inline constexpr logical_or_f logical_or;
 
 } // namespace scalar
 
-struct logical_or_f : operation<logical_or_f> {
+struct logical_or_f : operation_base<logical_or_f> {
     using operation_category = logical_operation_tag;
 
     static constexpr bool is_associative = true;

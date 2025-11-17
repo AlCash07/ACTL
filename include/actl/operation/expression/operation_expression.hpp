@@ -33,10 +33,10 @@ constexpr auto pass_arguments_impl(
 }
 
 template<typename Derived>
-struct operation;
+struct operation_base;
 
 template<typename Derived>
-struct operation_expression<Derived, true> : operation<Derived> {
+struct operation_expression<Derived, true> : operation_base<Derived> {
     template<typename... Args>
     using result_type = typename expression_result_type<decltype(pass_arguments(
         std::declval<Derived>(), std::declval<Args>()...

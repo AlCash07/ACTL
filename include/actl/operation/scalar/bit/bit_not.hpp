@@ -24,7 +24,7 @@ inline constexpr bit_not_f bit_not;
 
 } // namespace scalar
 
-struct bit_not_f : operation<bit_not_f> {
+struct bit_not_f : operation_base<bit_not_f> {
     using operation_category = bitwise_operation_tag;
 
     static constexpr auto formula = scalar::bit_not;

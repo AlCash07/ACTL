@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/strict_common_type.hpp>
-#include <actl/operation/operation/operation.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 #include <actl/operation/scalar/enable_operators.hpp>
 #include <actl/operation/scalar/scalar_expression.hpp>
 
@@ -31,7 +31,7 @@ struct logical_operation_tag : scalar_operation_tag {};
 // clang-format on
 
 template<typename Op, size_t Arity>
-struct scalar_operation : operation<Op> {
+struct scalar_operation : operation_base<Op> {
     template<typename T>
     static constexpr T convert(T x) {
         return x;

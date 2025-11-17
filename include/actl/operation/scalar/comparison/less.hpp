@@ -24,7 +24,7 @@ inline constexpr less_f less;
 
 } // namespace scalar
 
-struct less_f : operation<less_f> {
+struct less_f : operation_base<less_f> {
     using operation_category = ordering_operation_tag;
 
     static constexpr auto formula = scalar::less;

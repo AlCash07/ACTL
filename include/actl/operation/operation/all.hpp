@@ -7,4 +7,4 @@
 #pragma once
 
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/operation/operation.hpp>
+#include <actl/operation/operation/operation_base.hpp>

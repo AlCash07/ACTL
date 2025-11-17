@@ -11,7 +11,7 @@
 
 namespace ac {
 
-struct greater_f : operation<greater_f> {
+struct greater_f : operation_base<greater_f> {
     using operation_category = ordering_operation_tag;
 
     static constexpr auto formula = r_ < l_;

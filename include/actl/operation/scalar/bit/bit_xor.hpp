@@ -24,7 +24,7 @@ inline constexpr bit_xor_f bit_xor;
 
 } // namespace scalar
 
-struct bit_xor_f : operation<bit_xor_f> {
+struct bit_xor_f : operation_base<bit_xor_f> {
     using operation_category = bitwise_operation_tag;
 
     static constexpr bool is_associative = true;

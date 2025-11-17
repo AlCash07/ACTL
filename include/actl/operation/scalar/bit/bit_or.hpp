@@ -24,7 +24,7 @@ inline constexpr bit_or_f bit_or;
 
 } // namespace scalar
 
-struct bit_or_f : operation<bit_or_f> {
+struct bit_or_f : operation_base<bit_or_f> {
     using operation_category = bitwise_operation_tag;
 
     static constexpr bool is_associative = true;

@@ -23,7 +23,7 @@ inline constexpr logical_not_f logical_not;
 
 } // namespace scalar
 
-struct logical_not_f : operation<logical_not_f> {
+struct logical_not_f : operation_base<logical_not_f> {
     using operation_category = logical_operation_tag;
 
     static constexpr auto formula = scalar::logical_not;

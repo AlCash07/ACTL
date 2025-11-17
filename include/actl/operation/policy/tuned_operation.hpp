@@ -11,7 +11,7 @@
 namespace ac {
 
 template<typename Op, typename Policy>
-struct tuned_operation : operation<tuned_operation<Op, Policy>> {
+struct tuned_operation : operation_base<tuned_operation<Op, Policy>> {
     // [[no_unique_address]]
     Op operation;
     Policy policy;

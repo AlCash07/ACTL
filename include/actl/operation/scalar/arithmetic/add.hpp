@@ -24,7 +24,7 @@ inline constexpr add_f add;
 
 } // namespace scalar
 
-struct add_f : operation<add_f> {
+struct add_f : operation_base<add_f> {
     using operation_category = additive_operation_tag;
 
     static constexpr bool is_associative = true;

@@ -24,7 +24,7 @@ inline constexpr mul_f mul;
 
 } // namespace scalar
 
-struct mul_f : operation<mul_f> {
+struct mul_f : operation_base<mul_f> {
     using operation_category = multiplicative_operation_tag;
 
     static constexpr bool is_associative = true;

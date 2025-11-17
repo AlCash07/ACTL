@@ -24,7 +24,7 @@ inline constexpr equal_f equal;
 
 } // namespace scalar
 
-struct equal_f : operation<equal_f> {
+struct equal_f : operation_base<equal_f> {
     using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;

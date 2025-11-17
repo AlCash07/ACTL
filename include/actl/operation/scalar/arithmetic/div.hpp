@@ -24,7 +24,7 @@ inline constexpr div_f div;
 
 } // namespace scalar
 
-struct div_f : operation<div_f> {
+struct div_f : operation_base<div_f> {
     using operation_category = multiplicative_operation_tag;
 
     static constexpr auto formula = scalar::div;

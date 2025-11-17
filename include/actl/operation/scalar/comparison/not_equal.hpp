@@ -11,7 +11,7 @@
 
 namespace ac {
 
-struct not_equal_f : operation<not_equal_f> {
+struct not_equal_f : operation_base<not_equal_f> {
     using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;

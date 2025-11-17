@@ -24,7 +24,7 @@ inline constexpr sub_f sub;
 
 } // namespace scalar
 
-struct sub_f : operation<sub_f> {
+struct sub_f : operation_base<sub_f> {
     using operation_category = additive_operation_tag;
 
     static constexpr auto formula = scalar::sub;

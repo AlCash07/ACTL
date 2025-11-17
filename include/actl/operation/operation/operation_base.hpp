@@ -13,20 +13,24 @@
 
 namespace ac {
 
-template<typename Derived>
-struct operation {
+/// Base class for user-defined operations.
+///
+/// Uses CRTP idiom https://en.cppreference.com/w/cpp/language/crtp.html
+/// to provide function call operator implementation, which:
+/// - Creates an expression without evaluating it by default.
+/// - If one of the arguments is inout then
+///   evaluates the expression into it.
+template<typename DerivedOperation>
+struct operation_base {
     using operation_category = operation_tag;
 
-    constexpr Derived const& derived() const& noexcept {
-        return static_cast<Derived const&>(*this);
+    constexpr DerivedOperation const& derived() const& noexcept {
+        return static_cast<DerivedOperation const&>(*this);
     }
-    constexpr Derived&& derived() && noexcept {
-        return static_cast<Derived&&>(*this);
+    constexpr DerivedOperation&& derived() && noexcept {
+        return static_cast<DerivedOperation&&>(*this);
     }
 
-    // Passing arguments to an operation by default
-    // doesn't evaluate it but only creates an expression.
-    // That's unless one of the arguments is inout.
     template<typename... Args>
     constexpr auto operator()(Args&&... args) const& {
         return expression{derived(), std::forward<Args>(args)...};

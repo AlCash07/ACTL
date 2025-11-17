@@ -24,7 +24,7 @@ inline constexpr neg_f neg;
 
 } // namespace scalar
 
-struct neg_f : operation<neg_f> {
+struct neg_f : operation_base<neg_f> {
     using operation_category = additive_operation_tag;
 
     static constexpr auto formula = scalar::neg;

@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/operation/operation/operation.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
 template<typename OuterOp, typename... InnerOps>
 struct composite_operation
-    : operation<composite_operation<OuterOp, InnerOps...>>
+    : operation_base<composite_operation<OuterOp, InnerOps...>>
     , private std::tuple<InnerOps...> {
     template<typename... Ts>
     explicit constexpr composite_operation(Ts&&... xs)
