@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/operation/core/all.hpp>
 #include <actl/operation/fold/all.hpp>
+#include <actl/operation/operation/all.hpp>
 #include <actl/operation/policy/common/all.hpp>
 #include <actl/operation/scalar/all.hpp>
 #include <actl/operation/tuple/all.hpp>

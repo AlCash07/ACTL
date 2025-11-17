@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/core/composite_operation.hpp>
+#include <actl/operation/operation/composite_operation.hpp>
 #include <actl/operation/scalar/arithmetic/add.hpp>
 #include <actl/operation/scalar/common/cast.hpp>
 #include <actl/operation/scalar/common/select.hpp>

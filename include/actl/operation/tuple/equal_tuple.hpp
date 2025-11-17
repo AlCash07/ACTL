@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/core/composite_operation.hpp>
+#include <actl/operation/operation/composite_operation.hpp>
 #include <actl/operation/scalar/comparison/equal.hpp>
 #include <actl/operation/tuple/resolver.hpp>
 

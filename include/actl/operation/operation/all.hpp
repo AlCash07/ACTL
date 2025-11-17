@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/operation/core/composite_operation.hpp>
-#include <actl/operation/core/operation.hpp>
+#include <actl/operation/operation/composite_operation.hpp>
+#include <actl/operation/operation/operation.hpp>

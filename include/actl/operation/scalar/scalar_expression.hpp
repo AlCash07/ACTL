@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/constant.hpp>
-#include <actl/operation/core/expression.hpp>
+#include <actl/operation/expression/expression.hpp>
 
 namespace ac {
 

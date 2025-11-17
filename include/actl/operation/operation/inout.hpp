@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/parameter/inout.hpp>
-#include <actl/operation/core/argument_traits.hpp>
+#include <actl/operation/expression/argument_traits.hpp>
 
 namespace ac {
 

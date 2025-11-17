@@ -6,20 +6,20 @@
 
 #pragma once
 
-#include <actl/operation/core/operation_traits.hpp>
+#include <actl/operation/operation/operation_traits.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
 
 namespace ac {
 
-template<typename Op, typename... Ts>
+template<typename Op, typename... Args>
 struct result_type {
-    using type = typename Op::template result_type<Ts...>;
+    using type = typename Op::template result_type<Args...>;
 };
 
-template<typename Op, typename... Ts>
-    requires requires(Op op, Ts... xs) { op.evaluate(xs...); }
-struct result_type<Op, Ts...> {
-    using type = decltype(std::declval<Op>().evaluate(std::declval<Ts>()...));
+template<typename Op, typename... Args>
+    requires requires(Op op, Args... args) { op.evaluate(args...); }
+struct result_type<Op, Args...> {
+    using type = decltype(std::declval<Op>().evaluate(std::declval<Args>()...));
 };
 
 template<typename T>
@@ -27,15 +27,15 @@ struct expression_result_type {
     using type = T;
 };
 
-template<bool, typename Op, typename... Ts>
-struct resolved_result_type1 : result_type<std::remove_cvref_t<Op>, Ts...> {};
+template<bool, typename Op, typename... Args>
+struct resolved_result_type1 : result_type<std::remove_cvref_t<Op>, Args...> {};
 
-template<typename Op, typename... Ts>
-struct resolved_result_type1<false, Op, Ts...>
+template<typename Op, typename... Args>
+struct resolved_result_type1<false, Op, Args...>
     : expression_result_type<
           decltype(resolve_overload<
-                   Ts...>(default_context{}, std::declval<Op>())(
-              std::declval<Ts>()...
+                   Args...>(default_context{}, std::declval<Op>())(
+              std::declval<Args>()...
           ))> {};
 
 template<bool, typename... Ts>

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/core/inout.hpp>
+#include <actl/operation/operation/inout.hpp>
 #include <actl/operation/overload/resolve_expression.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
 #include <actl/operation/policy/resolve_overload.hpp>
