@@ -6,8 +6,9 @@
 
 #pragma once
 
-#include <actl/meta/constant.hpp>
-#include <actl/operation/expression/operation_expression.hpp>
+#include <actl/functional/parameter/out.hpp>
+#include <actl/operation/expression/expression_storage.hpp>
+#include <actl/operation/overload/resolve_overload.hpp>
 
 namespace ac {
 
@@ -25,12 +26,13 @@ constexpr decltype(auto) eval(
     return op.evaluate(std::get<Is>(expr.arguments)...);
 }
 
-template<typename T>
-inline constexpr bool is_scalar_expression_v =
-    std::is_scalar_v<unwrap_constant_t<decltype(eval(std::declval<T>()))>>;
-
-template<typename T>
-    requires is_scalar_expression_v<T>
-struct can_convert_expression_implicitly<T> : std::true_type {};
+template<typename Target, Operation Op, size_t... Is, typename... Args>
+constexpr void assign(
+    out<Target>& target,
+    expression_storage<Op, std::index_sequence<Is...>, Args...> const& expr
+) {
+    auto&& op = resolve_overload<Args...>(default_context{}, expr.operation);
+    op.evaluate_to(target, std::get<Is>(expr.arguments)...);
+}
 
 } // namespace ac

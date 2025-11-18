@@ -1,4 +1,4 @@
-// Copyright 2025 Oleksandr Bacherikov.
+// Copyright 2020 Oleksandr Bacherikov.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at
@@ -57,5 +57,12 @@ public:
 template<Operation Op, typename... Args>
 using expression_storage_t =
     expression_storage<Op, std::index_sequence_for<Args...>, Args...>;
+
+template<typename T>
+struct is_expression : std::false_type {};
+
+template<typename T>
+inline constexpr bool is_expression_v =
+    is_expression<std::remove_cvref_t<T>>::value;
 
 } // namespace ac
