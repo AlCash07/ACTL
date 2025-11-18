@@ -19,8 +19,11 @@ template<typename Result>
 struct can_convert_expression_implicitly : std::false_type {};
 
 template<typename Operation, typename... Args>
-struct expression : expression_storage<Operation, Args...> {
-    using expression_storage<Operation, Args...>::expression_storage;
+class expression : public expression_storage_t<Operation, Args...> {
+    using base_t = expression_storage_t<Operation, Args...>;
+
+public:
+    using base_t::base_t;
 
     constexpr operator resolved_result_type_t<Operation, Args...>() const
         requires(can_convert_expression_implicitly<
@@ -45,47 +48,19 @@ template<typename T>
 inline constexpr bool is_expression_v =
     is_expression<std::remove_cvref_t<T>>::value;
 
-template<typename Expr>
-using argument_indices =
-    std::make_index_sequence<std::remove_cvref_t<Expr>::argument_count>;
-
 template<typename... Ts>
 struct expression_result_type<expression<Ts...>> {
     using type = resolved_result_type_t<Ts...>;
 };
 
-template<typename Expr, typename S = argument_indices<Expr>>
-struct expression_helper;
-
-template<typename Operation, typename... Args, size_t... Is>
-struct expression_helper<
-    expression<Operation, Args...>,
-    std::index_sequence<Is...>> {
-    using Expr = expression<Operation, Args...>;
-
-    static constexpr bool is_resolved =
-        is_overload_resolved_v<default_context, Operation, Args...>;
-
-    static constexpr auto resolve_expr(Expr const& expr) {
-        return expression{
-            resolve_overload<Args...>(default_context{}, expr.operation),
-            std::get<Is>(expr.arguments)...
-        };
-    }
-
-    template<typename Target>
-    static constexpr void assign_impl(Target& target, Expr const& expr) {
-        expr.operation.evaluate_to(target, std::get<Is>(expr.arguments)...);
-    }
-};
-
-template<typename T, typename... Ts>
-constexpr void assign(out<T>& target, expression<Ts...> const& expr) {
-    using helper = expression_helper<expression<Ts...>>;
-    if constexpr (helper::is_resolved)
-        helper::assign_impl(*target, expr);
-    else
-        assign(target, helper::resolve_expr(expr));
+template<typename Target, typename Operation, size_t... Is, typename... Args>
+constexpr void assign(
+    out<Target>& target,
+    expression_storage<Operation, std::index_sequence<Is...>, Args...> const&
+        expr
+) {
+    auto&& op = resolve_overload<Args...>(default_context{}, expr.operation);
+    op.evaluate_to(target, std::get<Is>(expr.arguments)...);
 }
 
 } // namespace ac

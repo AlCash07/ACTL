@@ -48,7 +48,7 @@ template<typename Context, typename Op, typename... Us, typename... Ts>
     )
 struct overload_resolver<Context, expression<Op, Us...>, Ts...>
     : detail::expression_overload<
-          argument_indices<expression<Op, Us...>>,
+          std::index_sequence_for<Us...>,
           Context,
           expression<Op, Us...>,
           Ts...> {};

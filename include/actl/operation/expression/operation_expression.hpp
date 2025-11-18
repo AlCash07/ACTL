@@ -10,26 +10,34 @@
 
 namespace ac {
 
-template<typename Op, typename... Args>
+template<typename Op, typename... PassedArgs>
+    requires(!is_expression_v<Op>)
 constexpr decltype(auto) pass_arguments(
-    Op const& op, [[maybe_unused]] Args const&... args
+    Op const& op, [[maybe_unused]] PassedArgs const&... args
 ) {
     if constexpr (Operation<Op>)
-        if constexpr (is_expression_v<Op>)
-            return pass_arguments_impl(argument_indices<Op>{}, op, args...);
-        else
-            return op(args...);
+        return op(args...);
     else
         return op;
 }
 
-template<size_t... Is, typename OE, typename... Args>
-constexpr auto pass_arguments_impl(
-    std::index_sequence<Is...>, OE const& oe, Args const&... args
+template<
+    typename Operation,
+    size_t... Is,
+    typename... Args,
+    typename... PassedArgs>
+constexpr decltype(auto) pass_arguments(
+    expression_storage<Operation, std::index_sequence<Is...>, Args...> const&
+        expr,
+    [[maybe_unused]] PassedArgs const&... args
 ) {
-    return expression{
-        oe.operation, pass_arguments(std::get<Is>(oe.arguments), args...)...
-    };
+    if constexpr (ac::Operation<expression<Operation, Args...>>)
+        return expression{
+            expr.operation,
+            pass_arguments(std::get<Is>(expr.arguments), args...)...
+        };
+    else
+        return expr;
 }
 
 template<typename Derived>
@@ -37,15 +45,18 @@ struct operation_base;
 
 template<typename Operation, typename... Args>
     requires(... || ac::Operation<std::remove_cvref_t<Args>>)
-struct expression<Operation, Args...>
-    : expression_storage<Operation, Args...>
-    , operation_base<expression<Operation, Args...>> {
+class expression<Operation, Args...>
+    : public expression_storage_t<Operation, Args...>
+    , public operation_base<expression<Operation, Args...>> {
+    using base_t = expression_storage_t<Operation, Args...>;
+
+public:
     template<typename... Ts>
     using result_type = typename expression_result_type<decltype(pass_arguments(
         std::declval<expression>(), std::declval<Ts>()...
     ))>::type;
 
-    using expression_storage<Operation, Args...>::expression_storage;
+    using base_t::base_t;
 
     template<typename... Ts>
     constexpr auto evaluate(Ts const&... args) const {
