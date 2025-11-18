@@ -12,7 +12,7 @@
 
 namespace ac {
 
-template<typename Operation, typename T>
+template<Operation Op, typename T>
 struct identity_element;
 
 // TODO: we shouldn't need this.

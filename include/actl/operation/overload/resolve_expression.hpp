@@ -12,10 +12,10 @@ namespace ac {
 
 namespace detail {
 
-template<typename S, typename Context, typename Op, typename... Ts>
+template<typename S, typename Context, Operation Op, typename... Ts>
 struct expression_overload;
 
-template<size_t... Is, typename Context, typename Op, typename... Ts>
+template<size_t... Is, typename Context, Operation Op, typename... Ts>
 struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...> {
     template<typename Op1, typename... Us>
     static constexpr auto make_expression(
@@ -41,7 +41,7 @@ struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...> {
 
 } // namespace detail
 
-template<typename Context, typename Op, typename... Us, typename... Ts>
+template<typename Context, Operation Op, typename... Us, typename... Ts>
     requires(
         !(is_overload_resolved_v<Context, Op, Us...> &&
           (... && is_overload_resolved_v<Context, Us, Ts...>))

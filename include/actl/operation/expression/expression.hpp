@@ -18,16 +18,16 @@ namespace ac {
 template<typename Result>
 struct can_convert_expression_implicitly : std::false_type {};
 
-template<typename Operation, typename... Args>
-class expression : public expression_storage_t<Operation, Args...> {
-    using base_t = expression_storage_t<Operation, Args...>;
+template<Operation Op, typename... Args>
+class expression : public expression_storage_t<Op, Args...> {
+    using base_t = expression_storage_t<Op, Args...>;
 
 public:
     using base_t::base_t;
 
-    constexpr operator resolved_result_type_t<Operation, Args...>() const
+    constexpr operator resolved_result_type_t<Op, Args...>() const
         requires(can_convert_expression_implicitly<
-                 resolved_result_type_t<Operation, Args...>>::value)
+                 resolved_result_type_t<Op, Args...>>::value)
     {
         return eval(*this);
     }
@@ -53,11 +53,10 @@ struct expression_result_type<expression<Ts...>> {
     using type = resolved_result_type_t<Ts...>;
 };
 
-template<typename Target, typename Operation, size_t... Is, typename... Args>
+template<typename Target, Operation Op, size_t... Is, typename... Args>
 constexpr void assign(
     out<Target>& target,
-    expression_storage<Operation, std::index_sequence<Is...>, Args...> const&
-        expr
+    expression_storage<Op, std::index_sequence<Is...>, Args...> const& expr
 ) {
     auto&& op = resolve_overload<Args...>(default_context{}, expr.operation);
     op.evaluate_to(target, std::get<Is>(expr.arguments)...);

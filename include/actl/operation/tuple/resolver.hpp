@@ -18,7 +18,7 @@ template<size_t... Is, typename T, typename U>
 struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
     static_assert(std::tuple_size_v<T> == std::tuple_size_v<U>);
 
-    template<typename Composer, typename Op>
+    template<typename Composer, Operation Op>
     static constexpr auto resolve_tuple(Composer composer, Op const& op) {
         return composer(resolve_overload<
                         std::tuple_element_t<Is, T>,

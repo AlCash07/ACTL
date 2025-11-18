@@ -11,12 +11,12 @@
 
 namespace ac {
 
-template<typename Op, typename... Args>
+template<Operation Op, typename... Args>
 struct result_type {
     using type = typename Op::template result_type<Args...>;
 };
 
-template<typename Op, typename... Args>
+template<Operation Op, typename... Args>
     requires requires(Op op, Args... args) { op.evaluate(args...); }
 struct result_type<Op, Args...> {
     using type = decltype(std::declval<Op>().evaluate(std::declval<Args>()...));
@@ -27,10 +27,10 @@ struct expression_result_type {
     using type = T;
 };
 
-template<bool, typename Op, typename... Args>
+template<bool, Operation Op, typename... Args>
 struct resolved_result_type1 : result_type<std::remove_cvref_t<Op>, Args...> {};
 
-template<typename Op, typename... Args>
+template<Operation Op, typename... Args>
 struct resolved_result_type1<false, Op, Args...>
     : expression_result_type<
           decltype(resolve_overload<

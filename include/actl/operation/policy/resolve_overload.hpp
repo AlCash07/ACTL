@@ -16,7 +16,7 @@ struct policy_context : Base {
     P const& policy;
 };
 
-template<typename Base, typename Policy, typename Op, typename... Ts>
+template<typename Base, typename Policy, Operation Op, typename... Ts>
     requires can_apply_policy_v<Op, Policy>
 struct context_overload<policy_context<Base, Policy>, Op, Ts...> {
     template<typename Op1>
@@ -29,7 +29,7 @@ struct context_overload<policy_context<Base, Policy>, Op, Ts...> {
     }
 };
 
-template<typename Context, typename Op, typename Policy, typename... Ts>
+template<typename Context, Operation Op, typename Policy, typename... Ts>
 struct overload_resolver<Context, tuned_operation<Op, Policy>, Ts...> {
     static constexpr decltype(auto) resolve(
         Context context, tuned_operation<Op, Policy> const& op

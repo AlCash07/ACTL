@@ -17,10 +17,9 @@ constexpr T eval(T x) {
     return x;
 }
 
-template<typename Operation, size_t... Is, typename... Args>
+template<Operation Op, size_t... Is, typename... Args>
 constexpr decltype(auto) eval(
-    expression_storage<Operation, std::index_sequence<Is...>, Args...> const&
-        expr
+    expression_storage<Op, std::index_sequence<Is...>, Args...> const& expr
 ) {
     auto&& op = resolve_overload<Args...>(default_context{}, expr.operation);
     return op.evaluate(std::get<Is>(expr.arguments)...);

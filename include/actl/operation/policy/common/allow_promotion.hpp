@@ -28,7 +28,7 @@ struct Promotion {
         return op.evaluate(condition, cast<CT>(l), cast<CT>(r));
     }
 
-    template<typename Op, typename... Ts>
+    template<Operation Op, typename... Ts>
     static constexpr auto evaluate(Op const& op, Ts const&... xs) {
         using CT = std::common_type_t<decltype(eval(xs))...>;
         return op.evaluate(cast<CT>(xs)...);

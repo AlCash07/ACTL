@@ -38,7 +38,7 @@ constexpr decltype(auto) resolve_overload(Context context, Op&& op) {
     );
 }
 
-template<typename... Ts, typename Op>
+template<typename... Ts, Operation Op>
 constexpr decltype(auto) resolve_nested(Op const& op) {
     constexpr auto max_depth = max_nesting_depth_v<Ts...>;
     return resolve_overload<
@@ -51,7 +51,7 @@ template<typename... Ts>
 inline constexpr bool is_overload_resolved_v =
     requires { typename overload_resolver<raw_t<Ts>...>::is_resolved; };
 
-template<typename Context, typename Op, typename... Ts>
+template<typename Context, Operation Op, typename... Ts>
     requires requires { overload<Op, Ts...>::formula; }
 struct overload_resolver<Context, Op, Ts...> {
     template<typename Op1>

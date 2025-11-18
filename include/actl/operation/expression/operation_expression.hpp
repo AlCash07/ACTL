@@ -21,17 +21,12 @@ constexpr decltype(auto) pass_arguments(
         return op;
 }
 
-template<
-    typename Operation,
-    size_t... Is,
-    typename... Args,
-    typename... PassedArgs>
+template<Operation Op, size_t... Is, typename... Args, typename... PassedArgs>
 constexpr decltype(auto) pass_arguments(
-    expression_storage<Operation, std::index_sequence<Is...>, Args...> const&
-        expr,
+    expression_storage<Op, std::index_sequence<Is...>, Args...> const& expr,
     [[maybe_unused]] PassedArgs const&... args
 ) {
-    if constexpr (ac::Operation<expression<Operation, Args...>>)
+    if constexpr (ac::Operation<expression<Op, Args...>>)
         return expression{
             expr.operation,
             pass_arguments(std::get<Is>(expr.arguments), args...)...
@@ -43,12 +38,12 @@ constexpr decltype(auto) pass_arguments(
 template<typename Derived>
 struct operation_base;
 
-template<typename Operation, typename... Args>
+template<Operation Op, typename... Args>
     requires(... || ac::Operation<std::remove_cvref_t<Args>>)
-class expression<Operation, Args...>
-    : public expression_storage_t<Operation, Args...>
-    , public operation_base<expression<Operation, Args...>> {
-    using base_t = expression_storage_t<Operation, Args...>;
+class expression<Op, Args...>
+    : public expression_storage_t<Op, Args...>
+    , public operation_base<expression<Op, Args...>> {
+    using base_t = expression_storage_t<Op, Args...>;
 
 public:
     template<typename... Ts>

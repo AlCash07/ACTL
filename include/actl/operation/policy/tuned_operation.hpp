@@ -10,14 +10,14 @@
 
 namespace ac {
 
-template<typename Op, typename Policy>
+template<Operation Op, typename Policy>
 struct tuned_operation : operation_base<tuned_operation<Op, Policy>> {
     // [[no_unique_address]]
     Op operation;
     Policy policy;
 };
 
-template<typename Op, Policy P>
+template<Operation Op, Policy P>
     requires Operation<std::remove_cvref_t<Op>>
 constexpr auto operator|(Op&& op, P&& policy) {
     return tuned_operation<value_if_small<Op>, value_if_small<P>>{
