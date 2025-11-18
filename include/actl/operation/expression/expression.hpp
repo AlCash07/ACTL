@@ -7,43 +7,20 @@
 #pragma once
 
 #include <actl/functional/parameter/out.hpp>
-#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
 #include <actl/operation/expression/argument_traits.hpp>
+#include <actl/operation/expression/expression_storage.hpp>
 #include <actl/operation/expression/result_type.hpp>
+#include <actl/operation/operation/Operation.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
-#include <tuple>
 
 namespace ac {
 
 template<typename Result>
 struct can_convert_expression_implicitly : std::false_type {};
 
-template<typename Derived, bool IsOperation = false>
-struct operation_expression {};
-
 template<typename Operation, typename... Args>
-struct expression
-    : operation_expression<
-          expression<Operation, Args...>,
-          std::is_same_v<
-              operation_tag,
-              resolved_result_type_t<Operation, Args...>>> {
-    static constexpr size_t argument_count = sizeof...(Args);
-
-    AC_NO_UNIQUE_ADDRESS Operation operation;
-    // TODO: avoid std::tuple because of slow compilation time
-    // and move constructor never being trivial caused by a wording defect.
-    AC_NO_UNIQUE_ADDRESS std::tuple<Args...> arguments;
-
-    expression() = default;
-
-    template<typename Op, typename... Ts>
-        requires(std::is_constructible_v<Operation, Op &&> &&
-                 sizeof...(Ts) == argument_count &&
-                 (... && std::is_constructible_v<Args, Ts>))
-    constexpr expression(Op&& op, Ts&&... args)
-        : operation{std::forward<Op>(op)}
-        , arguments{std::forward<Ts>(args)...} {}
+struct expression : expression_storage<Operation, Args...> {
+    using expression_storage<Operation, Args...>::expression_storage;
 
     constexpr operator resolved_result_type_t<Operation, Args...>() const
         requires(can_convert_expression_implicitly<

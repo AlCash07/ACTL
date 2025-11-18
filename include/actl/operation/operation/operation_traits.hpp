@@ -12,8 +12,6 @@
 
 namespace ac {
 
-struct operation_tag {};
-
 template<typename Operation, typename T>
 struct identity_element;
 

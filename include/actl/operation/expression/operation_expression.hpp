@@ -35,21 +35,26 @@ constexpr auto pass_arguments_impl(
 template<typename Derived>
 struct operation_base;
 
-template<typename Derived>
-struct operation_expression<Derived, true> : operation_base<Derived> {
-    template<typename... Args>
+template<typename Operation, typename... Args>
+    requires(... || ac::Operation<std::remove_cvref_t<Args>>)
+struct expression<Operation, Args...>
+    : expression_storage<Operation, Args...>
+    , operation_base<expression<Operation, Args...>> {
+    template<typename... Ts>
     using result_type = typename expression_result_type<decltype(pass_arguments(
-        std::declval<Derived>(), std::declval<Args>()...
+        std::declval<expression>(), std::declval<Ts>()...
     ))>::type;
 
-    template<typename... Args>
-    constexpr auto evaluate(Args const&... args) const {
-        return eval(pass_arguments(this->derived(), args...));
+    using expression_storage<Operation, Args...>::expression_storage;
+
+    template<typename... Ts>
+    constexpr auto evaluate(Ts const&... args) const {
+        return eval(pass_arguments(*this, args...));
     }
 
-    template<typename T, typename... Args>
-    constexpr void evaluate_to(T& target, Args const&... args) const {
-        assign(out{target}, pass_arguments(this->derived(), args...));
+    template<typename T, typename... Ts>
+    constexpr void evaluate_to(T& target, Ts const&... args) const {
+        assign(out{target}, pass_arguments(*this, args...));
     }
 };
 

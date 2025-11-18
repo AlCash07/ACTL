@@ -14,7 +14,7 @@
 namespace ac {
 
 // clang-format off
-struct scalar_operation_tag : operation_tag {};
+struct scalar_operation_tag {};
 
 struct arithmetic_operation_tag     : scalar_operation_tag {};
 struct additive_operation_tag       : arithmetic_operation_tag {};

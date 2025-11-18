@@ -38,24 +38,10 @@ struct resolved_result_type1<false, Op, Args...>
               std::declval<Args>()...
           ))> {};
 
-template<bool, typename... Ts>
-struct resolved_result_type0
-    : resolved_result_type1<
-          is_overload_resolved_v<default_context, Ts...>,
-          Ts...> {};
-
 template<typename... Ts>
-struct resolved_result_type0<true, Ts...> {
-    using type = operation_tag;
-};
-
-template<typename... Ts>
-inline constexpr bool has_operation_arg_v =
-    1 < (... + int{Operation<std::remove_cvref_t<Ts>>});
-
-template<typename... Ts>
-using resolved_result_type =
-    resolved_result_type0<has_operation_arg_v<Ts...>, Ts...>;
+using resolved_result_type = resolved_result_type1<
+    is_overload_resolved_v<default_context, Ts...>,
+    Ts...>;
 
 template<typename... Ts>
 using resolved_result_type_t = typename resolved_result_type<Ts...>::type;
