@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/parameter/out.hpp>
-#include <actl/operation/expression/expression_storage.hpp>
+#include <actl/operation/expression/expression_data.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
 
 namespace ac {
@@ -20,19 +20,21 @@ constexpr T eval(T x) {
 
 template<Operation Op, size_t... Is, typename... Args>
 constexpr decltype(auto) eval(
-    expression_storage<Op, std::index_sequence<Is...>, Args...> const& expr
+    expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
-    auto&& op = resolve_overload<Args...>(default_context{}, expr.operation);
-    return op.evaluate(std::get<Is>(expr.arguments)...);
+    auto&& operation =
+        resolve_overload<Args...>(default_context{}, expression.operation);
+    return operation.evaluate(std::get<Is>(expression.arguments)...);
 }
 
 template<typename Target, Operation Op, size_t... Is, typename... Args>
 constexpr void assign(
     out<Target>& target,
-    expression_storage<Op, std::index_sequence<Is...>, Args...> const& expr
+    expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
-    auto&& op = resolve_overload<Args...>(default_context{}, expr.operation);
-    op.evaluate_to(target, std::get<Is>(expr.arguments)...);
+    auto&& operation =
+        resolve_overload<Args...>(default_context{}, expression.operation);
+    operation.evaluate_to(target, std::get<Is>(expression.arguments)...);
 }
 
 } // namespace ac

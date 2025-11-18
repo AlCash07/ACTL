@@ -16,8 +16,8 @@ template<typename Result>
 struct can_convert_expression_implicitly : std::false_type {};
 
 template<Operation Op, typename... Args>
-class expression : public expression_storage_t<Op, Args...> {
-    using base_t = expression_storage_t<Op, Args...>;
+class expression : public expression_data_t<Op, Args...> {
+    using base_t = expression_data_t<Op, Args...>;
 
 public:
     using base_t::base_t;
