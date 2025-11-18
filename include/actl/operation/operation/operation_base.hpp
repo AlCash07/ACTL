@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/operation/operation/Operation.hpp>
 #include <actl/operation/operation/inout.hpp>
 #include <actl/operation/overload/resolve_expression.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
@@ -22,15 +23,6 @@ namespace ac {
 ///   evaluates the expression into it.
 template<typename DerivedOperation>
 struct operation_base {
-    using operation_category = operation_tag;
-
-    constexpr DerivedOperation const& derived() const& noexcept {
-        return static_cast<DerivedOperation const&>(*this);
-    }
-    constexpr DerivedOperation&& derived() && noexcept {
-        return static_cast<DerivedOperation&&>(*this);
-    }
-
     template<typename... Args>
     constexpr auto operator()(Args&&... args) const& {
         return expression{derived(), std::forward<Args>(args)...};
@@ -52,6 +44,13 @@ struct operation_base {
         auto& target = find_target(args...);
         op.evaluate_to(target, remove_inout(args)...);
         return target;
+    }
+
+    constexpr DerivedOperation const& derived() const& noexcept {
+        return static_cast<DerivedOperation const&>(*this);
+    }
+    constexpr DerivedOperation&& derived() && noexcept {
+        return static_cast<DerivedOperation&&>(*this);
     }
 
     struct enable_operators;

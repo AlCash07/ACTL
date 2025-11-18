@@ -7,14 +7,12 @@
 #pragma once
 
 #include <actl/meta/nesting_depth.hpp>
+#include <actl/operation/operation/Operation.hpp>
 #include <limits>
 
 namespace ac {
 
 struct operation_tag {};
-
-template<typename T>
-concept Operation = requires { typename T::operation_category; };
 
 template<typename Operation, typename T>
 struct identity_element;

@@ -42,9 +42,6 @@ struct operation_expression<Derived, true> : operation_base<Derived> {
         std::declval<Derived>(), std::declval<Args>()...
     ))>::type;
 
-    // TODO: deduce exact category here.
-    using operation_category = operation_tag;
-
     template<typename... Args>
     constexpr auto evaluate(Args const&... args) const {
         return eval(pass_arguments(this->derived(), args...));
