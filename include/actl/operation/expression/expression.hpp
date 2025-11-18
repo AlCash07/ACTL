@@ -12,9 +12,6 @@
 
 namespace ac {
 
-template<typename Result>
-struct can_convert_expression_implicitly : std::false_type {};
-
 /// Expression stores operation with its arguments for later evaluation.
 ///
 /// If some of the arguments are also operations,
@@ -23,13 +20,15 @@ struct can_convert_expression_implicitly : std::false_type {};
 template<Operation Op, typename... Args>
 class expression : public expression_data_t<Op, Args...> {
     using base_t = expression_data_t<Op, Args...>;
+    using result_t = resolved_result_type_t<Op, Args...>;
 
 public:
     using base_t::base_t;
 
-    constexpr operator resolved_result_type_t<Op, Args...>() const
-        requires(can_convert_expression_implicitly<
-                 resolved_result_type_t<Op, Args...>>::value)
+    constexpr operator result_t() const
+        // The result type should be cheap to create to do it implicitly.
+        // The exact condition should be refined later.
+        requires(is_constant_v<result_t> || std::is_scalar_v<result_t>)
     {
         return eval(*this);
     }

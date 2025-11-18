@@ -70,12 +70,4 @@ concept ComparisonOperation =
     ScalarOperation<T> &&
     std::derived_from<typename T::operation_category, comparison_operation_tag>;
 
-template<typename T>
-inline constexpr bool is_scalar_expression_v =
-    std::is_scalar_v<unwrap_constant_t<decltype(eval(std::declval<T>()))>>;
-
-template<typename T>
-    requires is_scalar_expression_v<T>
-struct can_convert_expression_implicitly<T> : std::true_type {};
-
 } // namespace ac
