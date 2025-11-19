@@ -8,7 +8,6 @@
 
 #include <actl/operation/expression/argument_traits.hpp>
 #include <actl/operation/expression/evaluate.hpp>
-#include <actl/operation/expression/result_type.hpp>
 
 namespace ac {
 
@@ -20,7 +19,8 @@ namespace ac {
 template<Operation Op, typename... Args>
 class expression : public expression_data_t<Op, Args...> {
     using base_t = expression_data_t<Op, Args...>;
-    using result_t = resolved_result_type_t<Op, Args...>;
+    using result_t =
+        decltype(eval(std::declval<expression_data_t<Op, Args...> const&>()));
 
 public:
     using base_t::base_t;
@@ -41,11 +41,6 @@ expression(Ts&&...) -> expression<value_if_small<Ts>...>;
 
 template<typename... Ts>
 struct is_expression<expression<Ts...>> : std::true_type {};
-
-template<typename... Ts>
-struct expression_result_type<expression<Ts...>> {
-    using type = resolved_result_type_t<Ts...>;
-};
 
 namespace detail {
 
@@ -87,12 +82,6 @@ class expression<Op, Args...>
     using base_t = expression_data_t<Op, Args...>;
 
 public:
-    template<typename... Ts>
-    using result_type =
-        typename expression_result_type<decltype(detail::pass_arguments(
-            std::declval<expression>(), std::declval<Ts>()...
-        ))>::type;
-
     using base_t::base_t;
 
     template<typename... Ts>

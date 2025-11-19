@@ -8,6 +8,7 @@
 
 #include <actl/operation/operation/Operation.hpp>
 #include <actl/operation/operation/inout.hpp>
+#include <actl/operation/operation/operation_traits.hpp>
 #include <actl/operation/overload/resolve_expression.hpp>
 #include <actl/operation/overload/resolve_overload.hpp>
 #include <actl/operation/policy/resolve_overload.hpp>
