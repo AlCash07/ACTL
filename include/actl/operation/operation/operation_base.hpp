@@ -24,6 +24,20 @@ namespace ac {
 ///   evaluates the expression into it.
 template<typename DerivedOperation>
 struct operation_base {
+    /// This function can be overridden inside DerivedOperation to
+    /// specify argument indices that may be unused by the operation.
+    ///
+    /// Typical use cases are operations that select one of the arguments
+    /// or implement short circuiting.
+    ///
+    /// By default, arguments that are expressions are automatically evaluated
+    /// before being passed to the operation (to simplify its implementation).
+    /// Maybe unused ones are excluded from this rule and
+    /// have to be manually evaluated by the operation.
+    static constexpr bool is_argument_maybe_unused(size_t index) noexcept {
+        return false;
+    }
+
     template<typename... Args>
     constexpr auto operator()(Args&&... args) const& {
         return expression{derived(), std::forward<Args>(args)...};

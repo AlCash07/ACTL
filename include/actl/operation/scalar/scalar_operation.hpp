@@ -44,13 +44,13 @@ struct scalar_operation : operation_base<Op> {
 
     template<typename... Ts>
     constexpr auto evaluate(Ts const&... xs) const {
-        if constexpr ((... && std::is_arithmetic_v<
-                                  unwrap_constant_t<decltype(eval(xs))>>)) {
-            using T = strict_common_type_t<decltype(eval(xs))...>;
+        if constexpr ((... &&
+                       std::is_arithmetic_v<unwrap_constant_t<decltype(xs)>>)) {
+            using T = strict_common_type_t<decltype(xs)...>;
             if constexpr (!is_constant_v<T>)
-                return this->derived().eval_scalar(convert<T>(eval(xs))...);
+                return this->derived().eval_scalar(convert<T>(xs)...);
         } else {
-            return this->derived().eval_scalar(eval(xs)...);
+            return this->derived().eval_scalar(xs...);
         }
     }
 };

@@ -17,14 +17,14 @@ struct equal_tuple_f {
 
     template<typename EqualOps, typename L, typename R, size_t... Is>
     static bool
-    eval(EqualOps const& ops, L const& l, R const& r, std::index_sequence<Is...>) {
+    evaluate_impl(EqualOps const& ops, L const& l, R const& r, std::index_sequence<Is...>) {
         using std::get;
         return (... && get<Is>(ops)(get<Is>(l), get<Is>(r)));
     }
 
     template<typename EqualOps, typename L, typename R>
     static bool evaluate(EqualOps const& ops, L const& l, R const& r) {
-        return eval(ops, l, r, tuple_indices_t<L>{});
+        return evaluate_impl(ops, l, r, tuple_indices_t<L>{});
     }
 };
 inline constexpr operation_composer<equal_tuple_f> equal_tuple;

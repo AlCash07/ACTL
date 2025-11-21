@@ -14,9 +14,22 @@ namespace ac {
 
 template<typename T>
     requires(!is_expression_v<T>)
-constexpr T eval(T x) {
-    return x;
+constexpr decltype(auto) eval(T&& x) {
+    return std::forward<T>(x);
 }
+
+namespace detail {
+
+template<typename Op, size_t ArgumentIndex, typename Args>
+constexpr decltype(auto) argument_at(const Args& args) {
+    using RawOp = std::remove_reference_t<Op>;
+    if constexpr (RawOp::is_argument_maybe_unused(ArgumentIndex))
+        return std::get<ArgumentIndex>(args);
+    else
+        return eval(std::get<ArgumentIndex>(args));
+}
+
+} // namespace detail
 
 template<Operation Op, size_t... Is, typename... Args>
 constexpr decltype(auto) eval(
@@ -24,7 +37,9 @@ constexpr decltype(auto) eval(
 ) {
     auto&& operation =
         resolve_overload<Args...>(default_context{}, expression.operation);
-    return operation.evaluate(std::get<Is>(expression.arguments)...);
+    return operation.evaluate(
+        detail::argument_at<decltype(operation), Is>(expression.arguments)...
+    );
 }
 
 template<typename Target, Operation Op, size_t... Is, typename... Args>
@@ -34,7 +49,10 @@ constexpr void assign(
 ) {
     auto&& operation =
         resolve_overload<Args...>(default_context{}, expression.operation);
-    operation.evaluate_to(out{target}, std::get<Is>(expression.arguments)...);
+    operation.evaluate_to(
+        out{target},
+        detail::argument_at<decltype(operation), Is>(expression.arguments)...
+    );
 }
 
 } // namespace ac

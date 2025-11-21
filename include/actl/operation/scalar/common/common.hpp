@@ -18,11 +18,6 @@ struct common_f : scalar_operation<common_f, 2> {
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 
-    template<typename... Ts>
-    constexpr auto evaluate(Ts const&... xs) const {
-        return eval_scalar(eval(xs)...);
-    }
-
     template<typename T>
     static constexpr T eval_scalar(T x) {
         return x;
