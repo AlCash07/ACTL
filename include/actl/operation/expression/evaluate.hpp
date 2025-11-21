@@ -34,7 +34,7 @@ constexpr void assign(
 ) {
     auto&& operation =
         resolve_overload<Args...>(default_context{}, expression.operation);
-    operation.evaluate_to(target, std::get<Is>(expression.arguments)...);
+    operation.evaluate_to(out{target}, std::get<Is>(expression.arguments)...);
 }
 
 } // namespace ac

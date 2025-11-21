@@ -43,7 +43,7 @@ struct operation_base {
         );
         auto&& op = resolve_overload<Args...>(default_context{}, derived());
         auto& target = find_target(args...);
-        op.evaluate_to(target, remove_inout(args)...);
+        op.evaluate_to(out{target}, remove_inout(args)...);
         return target;
     }
 
@@ -52,6 +52,13 @@ struct operation_base {
     }
     constexpr DerivedOperation&& derived() && noexcept {
         return static_cast<DerivedOperation&&>(*this);
+    }
+
+    template<typename Target, typename... Args>
+    constexpr void evaluate_to(out<Target&> target, Args const&... args) const
+        requires requires { *target = this->derived().evaluate(args...); }
+    {
+        *target = this->derived().evaluate(args...);
     }
 
     struct enable_operators;

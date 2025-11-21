@@ -53,11 +53,6 @@ struct scalar_operation : operation_base<Op> {
             return this->derived().eval_scalar(eval(xs)...);
         }
     }
-
-    template<typename T, typename... Ts>
-    constexpr void evaluate_to(T& target, Ts const&... xs) const {
-        target = evaluate(xs...);
-    }
 };
 
 template<typename T>

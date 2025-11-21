@@ -84,13 +84,14 @@ class expression<Op, Args...>
 public:
     using base_t::base_t;
 
-    template<typename... Ts>
-    constexpr auto evaluate(Ts const&... args) const {
+    template<typename... PassedArgs>
+    constexpr auto evaluate(PassedArgs const&... args) const {
         return eval(detail::pass_arguments(*this, args...));
     }
 
-    template<typename T, typename... Ts>
-    constexpr void evaluate_to(T& target, Ts const&... args) const {
+    template<typename Target, typename... PassedArgs>
+    constexpr void evaluate_to(out<Target&> target, PassedArgs const&... args)
+        const {
         assign(out{target}, detail::pass_arguments(*this, args...));
     }
 };
