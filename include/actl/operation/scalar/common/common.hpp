@@ -29,41 +29,9 @@ struct common_f : scalar_operation<common_f, 2> {
     }
 
     template<typename T>
-    static T eval_scalar(T x, T y) {
+    static constexpr T eval_scalar(T x, T y) {
         AC_ASSERT(x == y);
         return x;
-    }
-
-    static constexpr auto eval_scalar(none, none) {
-        return none{};
-    }
-
-    template<typename T>
-    static constexpr T eval_scalar(T x, none) {
-        return x;
-    }
-
-    template<typename U>
-    static constexpr U eval_scalar(none, U y) {
-        return y;
-    }
-
-    template<auto X>
-    static constexpr auto eval_scalar(constant<X> x, constant<X>) {
-        return x;
-    }
-
-    template<auto X>
-    static auto eval_scalar(
-        constant<X> x, [[maybe_unused]] std::integral auto y
-    ) {
-        AC_ASSERT(X == y);
-        return x;
-    }
-
-    template<auto Y>
-    static auto eval_scalar(std::integral auto x, constant<Y> y) {
-        return eval_scalar(y, x);
     }
 
     template<typename T0, typename T1, typename T2, typename... Ts>
