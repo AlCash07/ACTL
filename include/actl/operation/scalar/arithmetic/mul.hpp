@@ -12,19 +12,19 @@ namespace ac {
 
 namespace scalar {
 
-struct mul_f : scalar_operation<mul_f, 2> {
+struct Mul : operation_base<Mul> {
     using operation_category = multiplicative_operation_tag;
 
     template<typename L, typename R>
-    static constexpr auto eval_scalar(L l, R r) {
+    static constexpr auto evaluate(L l, R r) {
         return l * r;
     }
 };
-inline constexpr mul_f mul;
+inline constexpr Mul mul;
 
 } // namespace scalar
 
-struct mul_f : operation_base<mul_f> {
+struct Mul : operation_base<Mul> {
     using operation_category = multiplicative_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -32,10 +32,10 @@ struct mul_f : operation_base<mul_f> {
 
     static constexpr auto formula = scalar::mul;
 };
-inline constexpr mul_f mul;
+inline constexpr Mul mul;
 
 template<typename T>
-struct identity_element<mul_f, T> {
+struct identity_element<Mul, T> {
     static constexpr T value() {
         return T{1};
     }

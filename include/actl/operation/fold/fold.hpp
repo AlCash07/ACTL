@@ -10,10 +10,10 @@
 
 namespace ac {
 
-struct fold_f {
+struct fold_ {
     static constexpr size_t inner_count = 1;
 };
 
-inline constexpr operation_composer<fold_t> fold;
+inline constexpr operation_composer<fold_> fold;
 
 } // namespace ac

@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct select_f : scalar_operation<select_f, 3> {
+struct Select : operation_base<Select> {
     using operation_category = scalar_operation_tag;
 
     static constexpr bool is_argument_maybe_unused(size_t index) noexcept {
@@ -22,6 +22,6 @@ struct select_f : scalar_operation<select_f, 3> {
         return condition ? eval(l) : eval(r);
     }
 };
-inline constexpr select_f select;
+inline constexpr Select select;
 
 } // namespace ac

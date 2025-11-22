@@ -11,12 +11,12 @@
 
 namespace ac {
 
-struct greater_f : operation_base<greater_f> {
+struct Greater : operation_base<Greater> {
     using operation_category = ordering_operation_tag;
 
     static constexpr auto formula = r_ < l_;
 };
-inline constexpr greater_f greater;
+inline constexpr Greater greater;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

@@ -11,14 +11,14 @@
 
 namespace ac {
 
-struct not_equal_f : operation_base<not_equal_f> {
+struct NotEqual : operation_base<NotEqual> {
     using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;
 
     static constexpr auto formula = !equal;
 };
-inline constexpr not_equal_f not_equal;
+inline constexpr NotEqual not_equal;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

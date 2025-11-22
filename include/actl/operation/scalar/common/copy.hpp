@@ -10,14 +10,14 @@
 
 namespace ac {
 
-struct copy_f : scalar_operation<copy_f, 1> {
+struct Copy : operation_base<Copy> {
     using operation_category = scalar_operation_tag;
 
     template<typename T>
-    static constexpr T eval_scalar(T x) {
+    static constexpr T evaluate(T x) {
         return x;
     }
 };
-inline constexpr copy_f copy;
+inline constexpr Copy copy;
 
 } // namespace ac

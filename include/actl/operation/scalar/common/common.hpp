@@ -12,32 +12,32 @@
 
 namespace ac {
 
-struct common_f : scalar_operation<common_f, 2> {
+struct Common : operation_base<Common> {
     using operation_category = scalar_operation_tag;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 
     template<typename T>
-    static constexpr T eval_scalar(T x) {
+    static constexpr T evaluate(T x) {
         return x;
     }
 
     template<typename T>
-    static constexpr T eval_scalar(T x, T y) {
+    static constexpr T evaluate(T x, T y) {
         AC_ASSERT(x == y);
         return x;
     }
 
     template<typename T0, typename T1, typename T2, typename... Ts>
-    static constexpr auto eval_scalar(T0 x0, T1 x1, T2 x2, Ts... xs) {
-        return eval_scalar(eval_scalar(x0, x1), x2, xs...);
+    static constexpr auto evaluate(T0 x0, T1 x1, T2 x2, Ts... xs) {
+        return evaluate(evaluate(x0, x1), x2, xs...);
     }
 };
-inline constexpr common_f common;
+inline constexpr Common common;
 
 template<typename T>
-struct identity_element<common_f, T> {
+struct identity_element<Common, T> {
     static constexpr none value() {
         return none{};
     }

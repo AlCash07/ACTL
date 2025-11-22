@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <actl/meta/constant.hpp>
-#include <actl/meta/strict_common_type.hpp>
 #include <actl/operation/operation/operation_base.hpp>
 #include <actl/operation/scalar/enable_operators.hpp>
 
@@ -29,31 +27,6 @@ struct ordering_operation_tag   : comparison_operation_tag {};
 
 struct logical_operation_tag : scalar_operation_tag {};
 // clang-format on
-
-template<typename Op, size_t Arity>
-struct scalar_operation : operation_base<Op> {
-    template<typename T>
-    static constexpr T convert(T x) {
-        return x;
-    }
-
-    template<typename T, auto X>
-    static constexpr T convert(constant<X>) {
-        return T{X};
-    }
-
-    template<typename... Ts>
-    constexpr auto evaluate(Ts const&... xs) const {
-        if constexpr ((... &&
-                       std::is_arithmetic_v<unwrap_constant_t<decltype(xs)>>)) {
-            using T = strict_common_type_t<decltype(xs)...>;
-            if constexpr (!is_constant_v<T>)
-                return this->derived().eval_scalar(convert<T>(xs)...);
-        } else {
-            return this->derived().eval_scalar(xs...);
-        }
-    }
-};
 
 template<typename T>
 concept ScalarOperation =

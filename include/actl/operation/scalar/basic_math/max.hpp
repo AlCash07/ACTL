@@ -12,21 +12,21 @@
 
 namespace ac {
 
-struct max_f : scalar_operation<max_f, 2> {
+struct Max : operation_base<Max> {
     using operation_category = scalar_operation_tag;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 
     template<typename L, typename R>
-    static constexpr auto eval_scalar(L l, R r) {
+    static constexpr auto evaluate(L l, R r) {
         return eval(select(less(l, r), r, l));
     }
 };
-inline constexpr max_f max;
+inline constexpr Max max;
 
 template<typename T>
-struct identity_element<max_f, T> {
+struct identity_element<Max, T> {
     static constexpr T value() {
         return std::numeric_limits<T>::lowest();
     }

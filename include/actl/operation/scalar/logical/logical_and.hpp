@@ -12,18 +12,18 @@ namespace ac {
 
 namespace scalar {
 
-struct logical_and_f : scalar_operation<logical_and_f, 2> {
+struct LogicalAnd : operation_base<LogicalAnd> {
     using operation_category = logical_operation_tag;
 
-    static constexpr bool eval_scalar(bool l, bool r) {
+    static constexpr bool evaluate(bool l, bool r) {
         return l && r;
     }
 };
-inline constexpr logical_and_f logical_and;
+inline constexpr LogicalAnd logical_and;
 
 } // namespace scalar
 
-struct logical_and_f : operation_base<logical_and_f> {
+struct LogicalAnd : operation_base<LogicalAnd> {
     using operation_category = logical_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -31,10 +31,10 @@ struct logical_and_f : operation_base<logical_and_f> {
 
     static constexpr auto formula = scalar::logical_and;
 };
-inline constexpr logical_and_f logical_and;
+inline constexpr LogicalAnd logical_and;
 
 template<typename T>
-struct identity_element<logical_and_f, T> {
+struct identity_element<LogicalAnd, T> {
     static constexpr T value() {
         return T{true};
     }

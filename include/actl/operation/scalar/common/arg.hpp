@@ -11,7 +11,7 @@
 namespace ac {
 
 template<size_t I, size_t N>
-struct arg_f {
+struct Arg {
     template<typename T, typename... Ts>
     constexpr decltype(auto) operator()(
         [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs
@@ -20,19 +20,19 @@ struct arg_f {
         if constexpr (I == 0)
             return std::forward<T>(x);
         else
-            return arg_f<I - 1, N - 1>{}(std::forward<Ts>(xs)...);
+            return Arg<I - 1, N - 1>{}(std::forward<Ts>(xs)...);
     }
 
     struct enable_operators;
 };
 template<size_t I, size_t N>
-inline constexpr arg_f<I, N> arg;
+inline constexpr Arg<I, N> arg;
 
-inline constexpr arg_f<0, 1> x_;
-inline constexpr arg_f<0, 2> l_;
-inline constexpr arg_f<1, 2> r_;
+inline constexpr Arg<0, 1> x_;
+inline constexpr Arg<0, 2> l_;
+inline constexpr Arg<1, 2> r_;
 
 template<size_t I, size_t N>
-struct is_operation<arg_f<I, N>> : std::true_type {};
+struct is_operation<Arg<I, N>> : std::true_type {};
 
 } // namespace ac

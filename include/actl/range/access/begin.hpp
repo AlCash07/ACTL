@@ -24,7 +24,7 @@ concept has_non_member_begin = requires(T& t) {
     { begin(t) } -> std::input_or_output_iterator;
 };
 
-struct begin_f {
+struct Begin {
     template<typename T, size_t N>
     constexpr T* operator()(T (&array)[N]) const noexcept {
         return array;
@@ -47,7 +47,7 @@ struct begin_f {
 /// Replacement for std::begin with the following benefits:
 /// - support for user-specified begin function that can be found by ADL;
 /// - correct noexcept propagation in case range.begin() is available.
-inline constexpr impl::begin_f begin;
+inline constexpr impl::Begin begin;
 
 } // namespace ac::ranges
 

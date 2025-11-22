@@ -12,24 +12,24 @@ namespace ac {
 
 namespace scalar {
 
-struct div_f : scalar_operation<div_f, 2> {
+struct Div : operation_base<Div> {
     using operation_category = multiplicative_operation_tag;
 
     template<typename L, typename R>
-    static constexpr auto eval_scalar(L l, R r) {
+    static constexpr auto evaluate(L l, R r) {
         return l / r;
     }
 };
-inline constexpr div_f div;
+inline constexpr Div div;
 
 } // namespace scalar
 
-struct div_f : operation_base<div_f> {
+struct Div : operation_base<Div> {
     using operation_category = multiplicative_operation_tag;
 
     static constexpr auto formula = scalar::div;
 };
-inline constexpr div_f div;
+inline constexpr Div div;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

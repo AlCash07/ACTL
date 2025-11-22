@@ -20,12 +20,12 @@ struct absolute_error : E {
 };
 
 template<typename E>
-constexpr auto apply_policy(scalar::equal_f, absolute_error<E> const& policy) {
+constexpr auto apply_policy(scalar::Equal, absolute_error<E> const& policy) {
     return abs(sub) <= policy.epsilon();
 }
 
 template<typename E>
-constexpr auto apply_policy(scalar::less_f, absolute_error<E> const& policy) {
+constexpr auto apply_policy(scalar::Less, absolute_error<E> const& policy) {
     return policy.epsilon() < r_ - l_;
 }
 

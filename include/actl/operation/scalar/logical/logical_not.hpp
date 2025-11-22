@@ -12,23 +12,23 @@ namespace ac {
 
 namespace scalar {
 
-struct logical_not_f : scalar_operation<logical_not_f, 1> {
+struct LogicalNot : operation_base<LogicalNot> {
     using operation_category = logical_operation_tag;
 
-    static constexpr bool eval_scalar(bool x) {
+    static constexpr bool evaluate(bool x) {
         return !x;
     }
 };
-inline constexpr logical_not_f logical_not;
+inline constexpr LogicalNot logical_not;
 
 } // namespace scalar
 
-struct logical_not_f : operation_base<logical_not_f> {
+struct LogicalNot : operation_base<LogicalNot> {
     using operation_category = logical_operation_tag;
 
     static constexpr auto formula = scalar::logical_not;
 };
-inline constexpr logical_not_f logical_not;
+inline constexpr LogicalNot logical_not;
 
 template<typename T>
     requires EnableOperators<T>

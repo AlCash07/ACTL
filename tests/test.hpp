@@ -26,7 +26,7 @@ using namespace ac;
 namespace ac {
 
 template<typename T>
-struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
+struct abs_rel_error : operation_base<abs_rel_error<T>> {
     using operation_category = scalar_operation_tag;
 
     struct is_policy;
@@ -35,7 +35,7 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
 
     T eps;
 
-    bool eval_scalar(T l, T r) const {
+    bool evaluate(T l, T r) const {
         T numerator = abs(l - r);
         T denominator = max(max(std::abs(l), std::abs(r)), T{1});
         return numerator <= eps * denominator;
@@ -43,7 +43,7 @@ struct abs_rel_error : scalar_operation<abs_rel_error<T>, 2> {
 };
 
 template<typename T>
-auto apply_policy(scalar::equal_f, abs_rel_error<T> const& policy) {
+auto apply_policy(scalar::Equal, abs_rel_error<T> const& policy) {
     return policy;
 }
 

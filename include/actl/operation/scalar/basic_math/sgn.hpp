@@ -12,11 +12,11 @@
 
 namespace ac {
 
-struct sgn_f : scalar_operation<sgn_f, 1> {
+struct Sgn : operation_base<Sgn> {
     using operation_category = comparison_operation_tag;
 
     static constexpr auto formula = cmp3way(x_, 0_c);
 };
-inline constexpr sgn_f sgn;
+inline constexpr Sgn sgn;
 
 } // namespace ac

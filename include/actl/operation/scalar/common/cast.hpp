@@ -11,15 +11,15 @@
 namespace ac {
 
 template<typename Target>
-struct cast_f : scalar_operation<cast_f<Target>, 1> {
+struct Cast : operation_base<Cast<Target>> {
     using operation_category = scalar_operation_tag;
 
     template<typename T>
-    static constexpr Target eval_scalar(T x) {
+    static constexpr Target evaluate(T x) {
         return static_cast<Target>(x);
     }
 };
 template<typename T>
-inline constexpr cast_f<T> cast;
+inline constexpr Cast<T> cast;
 
 } // namespace ac

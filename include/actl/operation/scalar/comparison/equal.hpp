@@ -12,26 +12,26 @@ namespace ac {
 
 namespace scalar {
 
-struct equal_f : scalar_operation<equal_f, 2> {
+struct Equal : operation_base<Equal> {
     using operation_category = equality_operation_tag;
 
     template<typename L, typename R>
-    static constexpr bool eval_scalar(L l, R r) {
+    static constexpr bool evaluate(L l, R r) {
         return l == r;
     }
 };
-inline constexpr equal_f equal;
+inline constexpr Equal equal;
 
 } // namespace scalar
 
-struct equal_f : operation_base<equal_f> {
+struct Equal : operation_base<Equal> {
     using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;
 
     static constexpr auto formula = scalar::equal;
 };
-inline constexpr equal_f equal;
+inline constexpr Equal equal;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

@@ -14,7 +14,7 @@
 
 namespace ac {
 
-struct lexicographical_compare_range_f {
+struct LexicographicalCompareRange {
     static constexpr size_t inner_count = 1;
 
     template<typename Cmp3WayOp, typename L, typename R>
@@ -33,17 +33,17 @@ struct lexicographical_compare_range_f {
         return int{rfirst != rlast} - int{lfirst != llast};
     }
 };
-inline constexpr operation_composer<lexicographical_compare_range_f>
+inline constexpr operation_composer<LexicographicalCompareRange>
     lexicographical_compare_range;
 
 template<Range L, Range R>
-struct overload<cmp3way_f, L, R> {
+struct overload<Cmp3Way, L, R> {
     static constexpr auto formula =
         lexicographical_compare_range(resolve_nested<L, R>(cmp3way));
 };
 
 template<Range L, Range R>
-struct overload<less_f, L, R> {
+struct overload<Less, L, R> {
     static constexpr auto formula = cmp3way < 0_c;
 };
 

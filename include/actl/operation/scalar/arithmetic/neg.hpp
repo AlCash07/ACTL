@@ -12,24 +12,24 @@ namespace ac {
 
 namespace scalar {
 
-struct neg_f : scalar_operation<neg_f, 1> {
+struct Neg : operation_base<Neg> {
     using operation_category = additive_operation_tag;
 
     template<typename T>
-    static constexpr auto eval_scalar(T x) {
+    static constexpr auto evaluate(T x) {
         return -x;
     }
 };
-inline constexpr neg_f neg;
+inline constexpr Neg neg;
 
 } // namespace scalar
 
-struct neg_f : operation_base<neg_f> {
+struct Neg : operation_base<Neg> {
     using operation_category = additive_operation_tag;
 
     static constexpr auto formula = scalar::neg;
 };
-inline constexpr neg_f neg;
+inline constexpr Neg neg;
 
 template<typename T>
     requires EnableOperators<T>

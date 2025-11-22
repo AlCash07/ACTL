@@ -12,24 +12,24 @@ namespace ac {
 
 namespace scalar {
 
-struct bit_not_f : scalar_operation<bit_not_f, 1> {
+struct BitNot : operation_base<BitNot> {
     using operation_category = bitwise_operation_tag;
 
     template<typename T>
-    static constexpr auto eval_scalar(T x) {
+    static constexpr auto evaluate(T x) {
         return ~x;
     }
 };
-inline constexpr bit_not_f bit_not;
+inline constexpr BitNot bit_not;
 
 } // namespace scalar
 
-struct bit_not_f : operation_base<bit_not_f> {
+struct BitNot : operation_base<BitNot> {
     using operation_category = bitwise_operation_tag;
 
     static constexpr auto formula = scalar::bit_not;
 };
-inline constexpr bit_not_f bit_not;
+inline constexpr BitNot bit_not;
 
 template<typename T>
     requires EnableOperators<T>

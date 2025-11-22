@@ -11,12 +11,12 @@
 
 namespace ac {
 
-struct less_equal_f : operation_base<less_equal_f> {
+struct LessEqual : operation_base<LessEqual> {
     using operation_category = ordering_operation_tag;
 
     static constexpr auto formula = !greater;
 };
-inline constexpr less_equal_f less_equal;
+inline constexpr LessEqual less_equal;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

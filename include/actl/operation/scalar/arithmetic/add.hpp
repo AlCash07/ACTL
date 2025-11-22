@@ -12,19 +12,19 @@ namespace ac {
 
 namespace scalar {
 
-struct add_f : scalar_operation<add_f, 2> {
+struct Add : operation_base<Add> {
     using operation_category = additive_operation_tag;
 
     template<typename L, typename R>
-    static constexpr auto eval_scalar(L l, R r) {
+    static constexpr auto evaluate(L l, R r) {
         return l + r;
     }
 };
-inline constexpr add_f add;
+inline constexpr Add add;
 
 } // namespace scalar
 
-struct add_f : operation_base<add_f> {
+struct Add : operation_base<Add> {
     using operation_category = additive_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -32,10 +32,10 @@ struct add_f : operation_base<add_f> {
 
     static constexpr auto formula = scalar::add;
 };
-inline constexpr add_f add;
+inline constexpr Add add;
 
 template<typename T>
-struct identity_element<add_f, T> {
+struct identity_element<Add, T> {
     static constexpr T value() {
         return T{0};
     }

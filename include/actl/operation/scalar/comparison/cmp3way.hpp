@@ -13,11 +13,11 @@
 
 namespace ac {
 
-struct cmp3way_f : operation_base<cmp3way_f> {
+struct Cmp3Way : operation_base<Cmp3Way> {
     using operation_category = ordering_operation_tag;
 
     static constexpr auto formula = cast<int>(greater) - cast<int>(less);
 };
-inline constexpr cmp3way_f cmp3way;
+inline constexpr Cmp3Way cmp3way;
 
 } // namespace ac

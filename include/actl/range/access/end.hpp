@@ -22,7 +22,7 @@ concept has_non_member_end = requires(T& t) {
     { end(t) } -> std::sentinel_for<range_iterator_t<T>>;
 };
 
-struct end_f {
+struct End {
     template<typename T, size_t N>
     constexpr T* operator()(T (&array)[N]) const noexcept {
         return array + N;
@@ -45,6 +45,6 @@ struct end_f {
 /// Replacement for std::end with the following benefits:
 /// - support for user-specified end function that can be found by ADL;
 /// - correct noexcept propagation in case range.end() is available.
-inline constexpr impl::end_f end;
+inline constexpr impl::End end;
 
 } // namespace ac::ranges

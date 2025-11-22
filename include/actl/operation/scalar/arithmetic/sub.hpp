@@ -12,24 +12,24 @@ namespace ac {
 
 namespace scalar {
 
-struct sub_f : scalar_operation<sub_f, 2> {
+struct Sub : operation_base<Sub> {
     using operation_category = additive_operation_tag;
 
     template<typename L, typename R>
-    static constexpr auto eval_scalar(L l, R r) {
+    static constexpr auto evaluate(L l, R r) {
         return l - r;
     }
 };
-inline constexpr sub_f sub;
+inline constexpr Sub sub;
 
 } // namespace scalar
 
-struct sub_f : operation_base<sub_f> {
+struct Sub : operation_base<Sub> {
     using operation_category = additive_operation_tag;
 
     static constexpr auto formula = scalar::sub;
 };
-inline constexpr sub_f sub;
+inline constexpr Sub sub;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

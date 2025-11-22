@@ -11,11 +11,11 @@
 
 namespace ac {
 
-struct sqr_f : scalar_operation<sqr_f, 1> {
+struct Sqr : operation_base<Sqr> {
     using operation_category = multiplicative_operation_tag;
 
     static constexpr auto formula = x_ * x_;
 };
-inline constexpr sqr_f sqr;
+inline constexpr Sqr sqr;
 
 } // namespace ac

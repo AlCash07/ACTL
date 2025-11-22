@@ -22,7 +22,7 @@ struct Promotion {
 
     template<typename L, typename R>
     static constexpr auto evaluate(
-        select_f op, bool condition, L const& l, R const& r
+        Select op, bool condition, L const& l, R const& r
     ) {
         using CT = std::common_type_t<L, R>;
         return op.evaluate(condition, cast<CT>(l), cast<CT>(r));

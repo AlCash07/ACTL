@@ -12,24 +12,24 @@ namespace ac {
 
 namespace scalar {
 
-struct less_f : scalar_operation<less_f, 2> {
+struct Less : operation_base<Less> {
     using operation_category = ordering_operation_tag;
 
     template<typename L, typename R>
-    static constexpr bool eval_scalar(L l, R r) {
+    static constexpr bool evaluate(L l, R r) {
         return l < r;
     }
 };
-inline constexpr less_f less;
+inline constexpr Less less;
 
 } // namespace scalar
 
-struct less_f : operation_base<less_f> {
+struct Less : operation_base<Less> {
     using operation_category = ordering_operation_tag;
 
     static constexpr auto formula = scalar::less;
 };
-inline constexpr less_f less;
+inline constexpr Less less;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

@@ -24,7 +24,7 @@ concept has_non_member_data = requires(T& t) {
     { data(t) };
 };
 
-struct data_f {
+struct Data {
     template<typename T, size_t N>
     constexpr T* operator()(T (&array)[N]) const noexcept {
         return array;
@@ -47,6 +47,6 @@ struct data_f {
 /// Replacement for std::data with the following benefits:
 /// - support for user-specified data function that can be found by ADL;
 /// - correct noexcept propagation in case range.data() is available.
-inline constexpr impl::data_f data;
+inline constexpr impl::Data data;
 
 } // namespace ac::ranges

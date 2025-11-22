@@ -12,19 +12,19 @@ namespace ac {
 
 namespace scalar {
 
-struct bit_or_f : scalar_operation<bit_or_f, 2> {
+struct BitOr : operation_base<BitOr> {
     using operation_category = bitwise_operation_tag;
 
     template<typename L, typename R>
-    static constexpr auto eval_scalar(L l, R r) {
+    static constexpr auto evaluate(L l, R r) {
         return l | r;
     }
 };
-inline constexpr bit_or_f bit_or;
+inline constexpr BitOr bit_or;
 
 } // namespace scalar
 
-struct bit_or_f : operation_base<bit_or_f> {
+struct BitOr : operation_base<BitOr> {
     using operation_category = bitwise_operation_tag;
 
     static constexpr bool is_associative = true;
@@ -32,10 +32,10 @@ struct bit_or_f : operation_base<bit_or_f> {
 
     static constexpr auto formula = scalar::bit_or;
 };
-inline constexpr bit_or_f bit_or;
+inline constexpr BitOr bit_or;
 
 template<typename T>
-struct identity_element<bit_or_f, T> {
+struct identity_element<BitOr, T> {
     static constexpr T value() {
         return T{0};
     }

@@ -12,7 +12,7 @@
 
 namespace ac {
 
-struct equal_tuple_f {
+struct EqualTuple {
     static constexpr size_t inner_count = 0;
 
     template<typename EqualOps, typename L, typename R, size_t... Is>
@@ -27,10 +27,10 @@ struct equal_tuple_f {
         return evaluate_impl(ops, l, r, tuple_indices_t<L>{});
     }
 };
-inline constexpr operation_composer<equal_tuple_f> equal_tuple;
+inline constexpr operation_composer<EqualTuple> equal_tuple;
 
 template<Tuple L, Tuple R>
-struct overload<equal_f, L, R> {
+struct overload<Equal, L, R> {
     static constexpr auto formula =
         tuple_op_resolver<L, R>::resolve_tuple(equal_tuple, equal);
 };

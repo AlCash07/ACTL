@@ -541,7 +541,7 @@ struct is_tensor<ac::detail::tensor_base<Ts...>> : std::true_type {};
 template<typename T>
 concept Tensor = detail::is_tensor<T>::value;
 
-struct tensor_equal_f {
+struct TensorEqual {
     static constexpr size_t inner_count = 1;
 
     template<typename EqualOp, typename L, typename R>
@@ -557,9 +557,9 @@ struct tensor_equal_f {
 };
 
 template<Tensor T, Tensor U>
-struct overload<equal_f, T, U> {
+struct overload<Equal, T, U> {
     static constexpr auto formula =
-        operation_composer<tensor_equal_f>(resolve_nested<T, U>(equal));
+        operation_composer<TensorEqual>(resolve_nested<T, U>(equal));
 };
 
 /// N-dimensional array with dimensions completely or partially known at compile

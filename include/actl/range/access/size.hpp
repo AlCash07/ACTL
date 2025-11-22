@@ -24,7 +24,7 @@ concept has_non_member_size = requires(T& t) {
     { size(t) };
 };
 
-struct size_f {
+struct Size {
     // We always return `ac::constant` when the size is a static constant,
     // even for types like `std::array` where size() returns a regular integer.
     template<HasStaticSize R>
@@ -52,6 +52,6 @@ struct size_f {
 /// Replacement for std::size with the following benefits:
 /// - support for user-specified size function that can be found by ADL;
 /// - correct noexcept propagation in case range.size() is available.
-inline constexpr impl::size_f size;
+inline constexpr impl::Size size;
 
 } // namespace ac::ranges
