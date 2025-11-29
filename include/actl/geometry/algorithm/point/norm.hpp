@@ -13,7 +13,7 @@ namespace ac {
 
 template<index N, typename T>
 auto norm(Policy auto const& policy, point<T, N> const& p) {
-    return sqrt(policy, dot(policy, p));
+    return square_root(policy, dot(policy, p));
 }
 
 template<index N, typename T>

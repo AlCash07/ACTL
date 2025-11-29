@@ -23,10 +23,10 @@ auto area(
     } else if constexpr (N == 3) {
         // TODO: figure out the correct sign instead of returning the absolute
         // value.
-        return sqrt(policy, dot(policy, cross(policy, p0, p1)));
+        return square_root(policy, dot(policy, cross(policy, p0, p1)));
     } else {
         auto a = product(policy, dot(policy, p0), dot(policy, p1));
-        return sqrt(policy, a - sqr(policy, dot(policy, p0, p1)));
+        return square_root(policy, a - squared(policy, dot(policy, p0, p1)));
     }
 }
 

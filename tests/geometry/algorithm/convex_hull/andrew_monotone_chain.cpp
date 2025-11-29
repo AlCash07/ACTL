@@ -15,7 +15,7 @@ TEST_CASE("random", repeat = 10) {
     std::vector<point<int>> points;
     while (points.size() < 1000) {
         point p{gen(), gen()};
-        if (dot(p) <= sqr(R))
+        if (dot(p) <= squared(R))
             points.push_back(p);
     }
     auto points_copy = points;

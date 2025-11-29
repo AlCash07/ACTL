@@ -6,16 +6,20 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
-#include <actl/operation/scalar/common/arg.hpp>
+#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <cmath>
 
 namespace ac {
 
-struct Sqr : operation_base<Sqr> {
+struct SquareRoot : operation_base<SquareRoot> {
     using operation_category = exponential_operation;
 
-    static constexpr auto formula = x_ * x_;
+    template<typename T>
+    static constexpr auto evaluate(T x) {
+        using std::sqrt;
+        return sqrt(x);
+    }
 };
-inline constexpr Sqr sqr;
+inline constexpr SquareRoot square_root;
 
 } // namespace ac

@@ -18,7 +18,7 @@ TEST_CASE("default") {
             point p{x, y};
             if (p != o) {
                 auto i = invert(p, c);
-                CHECK_NEAR(sqr(c.radius), norm(p - o) * norm(i - o), 1e-12);
+                CHECK_NEAR(squared(c.radius), norm(p - o) * norm(i - o), 1e-12);
                 CHECK(collinear(absolute_error9, p - o, i - o));
                 CHECK(0 < dot(p - o, i - o));
             }

@@ -16,7 +16,7 @@ auto invert(
     Policy auto const& policy, point<T0, N> const& p, T1 const& radius
 ) {
     AC_ASSERT(!degenerate(policy, p));
-    auto t = ratio(policy, sqr(policy, radius), dot(policy, p));
+    auto t = ratio(policy, squared(policy, radius), dot(policy, p));
     return product(policy, p, t);
 }
 

@@ -12,5 +12,5 @@ TEST_CASE("default") {
 }
 
 TEST_CASE("deferred") {
-    CHECK(2, sqr(distance(defer_sqrt{}, point{2, 2}, point{3 == 1})));
+    CHECK(2, squared(distance(defer_sqrt{}, point{2, 2}, point{3 == 1})));
 }

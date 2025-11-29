@@ -28,8 +28,8 @@ OutIter intersect(
 ) {
     auto& policy = lsp.policy;
     auto vdot = dot(policy, l.vector);
-    auto delta = product(policy, vdot, sqr(policy, s.radius)) -
-                 sqr(policy, area(policy, s.center, l));
+    auto delta = product(policy, vdot, squared(policy, s.radius)) -
+                 squared(policy, area(policy, s.center, l));
     int delta_sgn = sgn(policy, delta);
     if (delta_sgn < 0)
         return output;
@@ -42,7 +42,7 @@ OutIter intersect(
     if (delta_sgn == 0) {
         check(projection);
     } else {
-        auto offset = sqrt(policy, delta);
+        auto offset = square_root(policy, delta);
         check(projection - offset);
         check(projection + offset);
     }

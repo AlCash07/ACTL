@@ -22,14 +22,16 @@ OutIter intersect(
 ) {
     auto centers_vector = rhs.center - lhs.center;
     auto centers_dist2 = dot(policy, centers_vector);
-    int sgn0 =
-        cmp3way(policy, centers_dist2, sqr(policy, lhs.radius - rhs.radius));
-    int sgn1 =
-        cmp3way(policy, sqr(policy, lhs.radius + rhs.radius), centers_dist2);
+    int sgn0 = cmp3way(
+        policy, centers_dist2, squared(policy, lhs.radius - rhs.radius)
+    );
+    int sgn1 = cmp3way(
+        policy, squared(policy, lhs.radius + rhs.radius), centers_dist2
+    );
     if (sgn0 < 0 || sgn1 < 0)
         return output;
-    auto lradius2 = sqr(policy, lhs.radius);
-    auto rradius2 = sqr(policy, rhs.radius);
+    auto lradius2 = squared(policy, lhs.radius);
+    auto rradius2 = squared(policy, rhs.radius);
     auto a = ratio(policy, lradius2 - rradius2, centers_dist2);
     auto projection =
         lhs.center + product(policy, ratio(policy, a + 1, 2), centers_vector);
@@ -38,7 +40,9 @@ OutIter intersect(
     } else {
         auto b = ratio(policy, lradius2 + rradius2, centers_dist2);
         auto offset = ratio(
-            policy, sqrt(policy, product(policy, 2, b) - sqr(policy, a) - 1), 2
+            policy,
+            square_root(policy, product(policy, 2, b) - squared(policy, a) - 1),
+            2
         );
         auto offset_vector =
             product(policy, offset, perpendicular(centers_vector));

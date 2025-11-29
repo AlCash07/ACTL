@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/numeric/arithmetic/exponential/sqr.hpp>
+#include <actl/numeric/arithmetic/exponential/squared.hpp>
 #include <actl/operation/policy/common/absolute_error.hpp>
 #include "test.hpp"
 
@@ -21,7 +21,7 @@ constexpr ac::absolute_error<Eps> eps_policy;
 TEST_CASE("equal") {
     constexpr auto abs_equal = ac::equal | eps_policy;
     CHECK(abs_equal(0.0, eps));
-    CHECK_FALSE(abs_equal(0.0, eps + ac::sqr(eps)));
+    CHECK_FALSE(abs_equal(0.0, eps + ac::squared(eps)));
 }
 
 TEST_CASE("less") {
@@ -29,5 +29,5 @@ TEST_CASE("less") {
     CHECK_FALSE(ac::less(0.0, -eps));
     CHECK(ac::less(-eps, 0.0));
     CHECK_FALSE(abs_less(-eps, 0.0));
-    CHECK(abs_less(-eps - ac::sqr(eps), 0.0));
+    CHECK(abs_less(-eps - ac::squared(eps), 0.0));
 }

@@ -15,5 +15,5 @@ static_assert(4 == ac::subtract(6, 2));
 static_assert(12 == ac::multiply(6, 2));
 static_assert(3 == ac::divide(7, 2));
 /* exponential */
-static_assert(36 == ac::sqr(6));
-static_assert(4 == ac::sqr(-2));
+static_assert(36 == ac::squared(6));
+static_assert(4 == ac::squared(-2));

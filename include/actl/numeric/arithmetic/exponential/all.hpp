@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/exponential/sqr.hpp>
-#include <actl/numeric/arithmetic/exponential/sqrt.hpp>
+#include <actl/numeric/arithmetic/exponential/square_root.hpp>
+#include <actl/numeric/arithmetic/exponential/squared.hpp>

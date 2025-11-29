@@ -23,8 +23,9 @@ OutIter tangents(
 ) {
     switch (within(policy, p, c)) {
         case within::outside: {
-            auto dist = sqrt(
-                policy, sqr(norm(policy, c.center - p)) - sqr(policy, c.radius)
+            auto dist = square_root(
+                policy,
+                squared(norm(policy, c.center - p)) - squared(policy, c.radius)
             );
             intersect(policy, make_circle(p, dist), c, output);
             break;
