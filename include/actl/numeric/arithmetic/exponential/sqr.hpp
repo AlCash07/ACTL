@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/operation/scalar/arithmetic/mul.hpp>
+#include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
 #include <actl/operation/scalar/common/arg.hpp>
 
 namespace ac {
 
 struct Sqr : operation_base<Sqr> {
-    using operation_category = multiplicative_operation_tag;
+    using operation_category = exponential_operation;
 
     static constexpr auto formula = x_ * x_;
 };

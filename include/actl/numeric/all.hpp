@@ -7,6 +7,7 @@
 #pragma once
 
 #include <actl/numeric/algorithm/all.hpp>
+#include <actl/numeric/arithmetic/all.hpp>
 #include <actl/numeric/bit/all.hpp>
 #include <actl/numeric/constants.hpp>
 #include <actl/numeric/hash.hpp>

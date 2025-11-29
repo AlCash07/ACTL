@@ -4,6 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
+#include <actl/numeric/arithmetic/additive/add.hpp>
 #include <actl/operation/policy/common/allow_promotion.hpp>
 #include <actl/operation/tuple/equal_tuple.hpp>
 #include <actl/range/operation/equal_range.hpp>

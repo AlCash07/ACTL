@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/operation/operation/Operation.hpp>
 #include <type_traits>
 #include <utility>
 

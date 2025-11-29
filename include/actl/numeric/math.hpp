@@ -58,7 +58,6 @@ struct math_operation : operation_base<Op> {
 
 MATH_OP1(cos_t, cos)
 MATH_OP1(sin_t, sin)
-MATH_OP1(sqrt_t, sqrt)
 
 MATH_OP2(atan2_t, atan2)
 

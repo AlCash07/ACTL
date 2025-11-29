@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/scalar/arithmetic/sub.hpp>
+#include <actl/numeric/arithmetic/additive/subtract.hpp>
 #include <actl/operation/scalar/common/cast.hpp>
 #include <actl/operation/scalar/comparison/greater.hpp>
 #include <actl/operation/scalar/comparison/less.hpp>

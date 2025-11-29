@@ -4,6 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
+#include <actl/numeric/arithmetic/exponential/sqr.hpp>
 #include <actl/operation/policy/common/absolute_error.hpp>
 #include "test.hpp"
 

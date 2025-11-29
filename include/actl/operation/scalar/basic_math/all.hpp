@@ -9,4 +9,3 @@
 #include <actl/operation/scalar/basic_math/max.hpp>
 #include <actl/operation/scalar/basic_math/min.hpp>
 #include <actl/operation/scalar/basic_math/sgn.hpp>
-#include <actl/operation/scalar/basic_math/sqr.hpp>

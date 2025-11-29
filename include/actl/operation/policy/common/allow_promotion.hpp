@@ -7,9 +7,9 @@
 #pragma once
 
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/arithmetic/add.hpp>
 #include <actl/operation/scalar/common/cast.hpp>
 #include <actl/operation/scalar/common/select.hpp>
+#include <actl/operation/scalar_operation.hpp>
 
 namespace ac {
 

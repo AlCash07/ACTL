@@ -22,4 +22,11 @@ struct default_overload<Op> {
 template<Operation Op, typename... Ts>
 struct overload : default_overload<Op> {};
 
+#define AC_REGISTER_OVERLOAD(name)                    \
+    template<typename... Args>                        \
+        requires name::requirement<Args...>           \
+    struct overload<typename name::parent, Args...> { \
+        static constexpr auto formula = name{};       \
+    };
+
 } // namespace ac

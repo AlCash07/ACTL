@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/operation/scalar/all.hpp>
+#include <actl/numeric/arithmetic/additive/add.hpp>
 #include "test.hpp"
 
 TEST_CASE("expression assignment to out") {

@@ -14,10 +14,6 @@ namespace ac {
 // clang-format off
 struct scalar_operation_tag {};
 
-struct arithmetic_operation_tag     : scalar_operation_tag {};
-struct additive_operation_tag       : arithmetic_operation_tag {};
-struct multiplicative_operation_tag : arithmetic_operation_tag {};
-
 struct bit_operation_tag     : scalar_operation_tag {};
 struct bitwise_operation_tag : bit_operation_tag {};
 
@@ -28,14 +24,11 @@ struct ordering_operation_tag   : comparison_operation_tag {};
 struct logical_operation_tag : scalar_operation_tag {};
 // clang-format on
 
-template<typename T>
-concept ScalarOperation =
-    Operation<T> &&
-    std::derived_from<typename T::operation_category, scalar_operation_tag>;
-
+#if 0
 template<typename T>
 concept ComparisonOperation =
     ScalarOperation<T> &&
     std::derived_from<typename T::operation_category, comparison_operation_tag>;
+#endif
 
 } // namespace ac

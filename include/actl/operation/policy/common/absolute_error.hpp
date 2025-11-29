@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/numeric/arithmetic/additive/subtract.hpp>
 #include <actl/numeric/math.hpp>
-#include <actl/operation/scalar/arithmetic/sub.hpp>
 #include <actl/operation/scalar/common/arg.hpp>
 #include <actl/operation/scalar/comparison/all.hpp>
 
@@ -21,7 +21,7 @@ struct absolute_error : E {
 
 template<typename E>
 constexpr auto apply_policy(scalar::Equal, absolute_error<E> const& policy) {
-    return abs(sub) <= policy.epsilon();
+    return abs(subtract) <= policy.epsilon();
 }
 
 template<typename E>
