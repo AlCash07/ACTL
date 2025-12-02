@@ -7,5 +7,6 @@
 #pragma once
 
 #include <actl/numeric/arithmetic/additive/all.hpp>
+#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
 #include <actl/numeric/arithmetic/exponential/all.hpp>
 #include <actl/numeric/arithmetic/multiplicative/all.hpp>

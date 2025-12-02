@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/operation/scalar/bit/all.hpp>
+#include <actl/numeric/bit/all.hpp>
 
 static_assert(-2 == ac::bit_not(1));
 static_assert(1 == ac::bit_and(3, 5));

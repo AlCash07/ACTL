@@ -6,5 +6,10 @@
 
 #pragma once
 
+#include <actl/numeric/bit/bit_and.hpp>
 #include <actl/numeric/bit/bit_cast.hpp>
+#include <actl/numeric/bit/bit_not.hpp>
+#include <actl/numeric/bit/bit_operation.hpp>
+#include <actl/numeric/bit/bit_or.hpp>
+#include <actl/numeric/bit/bit_xor.hpp>
 #include <actl/numeric/bit/operation.hpp>

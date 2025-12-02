@@ -7,6 +7,5 @@
 #pragma once
 
 #include <actl/operation/scalar/basic_math/all.hpp>
-#include <actl/operation/scalar/bit/all.hpp>
 #include <actl/operation/scalar/common/all.hpp>
 #include <actl/operation/scalar/comparison/all.hpp>

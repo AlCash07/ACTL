@@ -6,31 +6,13 @@
 
 #pragma once
 
-#include <actl/operation/scalar/scalar_operation.hpp>
+#include <actl/numeric/bit/bit_operation.hpp>
+#include <actl/operation/scalar/enable_operators.hpp>
 
 namespace ac {
 
-namespace scalar {
-
 struct BitAnd : operation_base<BitAnd> {
-    using operation_category = bitwise_operation_tag;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(L l, R r) {
-        return l & r;
-    }
-};
-inline constexpr BitAnd bit_and;
-
-} // namespace scalar
-
-struct BitAnd : operation_base<BitAnd> {
-    using operation_category = bitwise_operation_tag;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
-
-    static constexpr auto formula = scalar::bit_and;
+    using operation_category = bitwise_operation;
 };
 inline constexpr BitAnd bit_and;
 
@@ -52,5 +34,25 @@ template<typename L, typename R>
 constexpr decltype(auto) operator&=(L&& l, R&& r) {
     return bit_and(inout{std::forward<L>(l)}, pass<R>(r));
 }
+
+struct BitAndScalar : operation_base<BitAndScalar> {
+    using operation_category = bitwise_operation;
+
+    using parent = BitAnd;
+
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
+
+    template<typename L, typename R>
+    static constexpr bool requirement =
+        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
+
+    template<std::integral L, std::integral R>
+    static constexpr auto evaluate(L l, R r) {
+        return l & r;
+    }
+};
+AC_REGISTER_OVERLOAD(BitAndScalar)
+inline constexpr BitAndScalar bit_and_scalar;
 
 } // namespace ac

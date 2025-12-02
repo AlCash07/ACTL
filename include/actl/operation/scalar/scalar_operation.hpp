@@ -14,9 +14,6 @@ namespace ac {
 // clang-format off
 struct scalar_operation_tag {};
 
-struct bit_operation_tag     : scalar_operation_tag {};
-struct bitwise_operation_tag : bit_operation_tag {};
-
 struct comparison_operation_tag : scalar_operation_tag {};
 struct equality_operation_tag   : comparison_operation_tag {};
 struct ordering_operation_tag   : comparison_operation_tag {};
