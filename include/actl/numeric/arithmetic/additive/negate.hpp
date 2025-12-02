@@ -24,8 +24,6 @@ constexpr auto operator-(T&& x) {
 }
 
 struct NegateScalar : operation_base<NegateScalar> {
-    using operation_category = additive_operation;
-
     using parent = Negate;
 
     template<typename T>

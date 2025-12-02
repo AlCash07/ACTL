@@ -29,8 +29,6 @@ constexpr decltype(auto) operator/=(L&& l, R&& r) {
 }
 
 struct DivideScalars : operation_base<DivideScalars> {
-    using operation_category = multiplicative_operation;
-
     using parent = Divide;
 
     template<typename L, typename R>

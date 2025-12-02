@@ -29,8 +29,6 @@ constexpr decltype(auto) operator-=(L&& l, R&& r) {
 }
 
 struct SubtractScalars : operation_base<SubtractScalars> {
-    using operation_category = additive_operation;
-
     using parent = Subtract;
 
     template<typename L, typename R>

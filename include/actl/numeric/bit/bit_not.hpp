@@ -23,8 +23,6 @@ constexpr auto operator~(T&& x) {
 }
 
 struct BitNotScalar : operation_base<BitNotScalar> {
-    using operation_category = bitwise_operation;
-
     using parent = BitNot;
 
     template<typename T>

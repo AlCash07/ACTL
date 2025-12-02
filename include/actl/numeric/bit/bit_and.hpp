@@ -36,8 +36,6 @@ constexpr decltype(auto) operator&=(L&& l, R&& r) {
 }
 
 struct BitAndScalar : operation_base<BitAndScalar> {
-    using operation_category = bitwise_operation;
-
     using parent = BitAnd;
 
     static constexpr bool is_associative = true;

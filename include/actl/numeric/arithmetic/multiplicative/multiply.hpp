@@ -36,8 +36,6 @@ constexpr decltype(auto) operator*=(L&& l, R&& r) {
 }
 
 struct MultiplyIntegers : operation_base<MultiplyIntegers> {
-    using operation_category = multiplicative_operation;
-
     using parent = Multiply;
 
     static constexpr bool is_associative = true;
@@ -55,8 +53,6 @@ AC_REGISTER_OVERLOAD(MultiplyIntegers)
 inline constexpr MultiplyIntegers miltiply_integers;
 
 struct MultiplyFloats : operation_base<MultiplyFloats> {
-    using operation_category = multiplicative_operation;
-
     using parent = Multiply;
 
     // floating point multiplication is neither associative nor commutative
