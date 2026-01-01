@@ -8,7 +8,7 @@
 
 #include <actl/meta/concepts/core/AssignableFrom.hpp>
 #include <actl/meta/concepts/core/MoveConstructible.hpp>
-#include <actl/meta/concepts/core/Swappable1.hpp>
+#include <actl/meta/concepts/core/Swappable.hpp>
 
 namespace ac {
 

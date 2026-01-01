@@ -32,7 +32,7 @@ For `std::assignable_from <https://en.cppreference.com/w/cpp/concepts/assignable
 
 For `std::swappable, std::swappable_with <https://en.cppreference.com/w/cpp/concepts/swappable>`_:
 
-.. ac-include:: actl/meta/concepts/core/Swappable1.hpp
+.. ac-include:: actl/meta/concepts/core/Swappable.hpp
 .. doxygenconcept:: ac::NothrowSwappable
 .. doxygenconcept:: ac::NothrowSwappableWith
 
@@ -74,24 +74,24 @@ Object concepts
 
 For `std::movable <https://en.cppreference.com/w/cpp/concepts/movable>`_:
 
-.. ac-include:: actl/meta/concepts/object/Movable1.hpp
+.. ac-include:: actl/meta/concepts/object/Movable.hpp
 .. doxygenconcept:: ac::TriviallyMovable
 .. doxygenconcept:: ac::NothrowMovable
 
 For `std::copyable <https://en.cppreference.com/w/cpp/concepts/copyable>`_:
 
-.. ac-include:: actl/meta/concepts/object/Copyable1.hpp
+.. ac-include:: actl/meta/concepts/object/Copyable.hpp
 .. doxygenconcept:: ac::TriviallyCopyable
 .. doxygenconcept:: ac::NothrowCopyable
 .. doxygenconcept:: ac::MayThrowCopyable
 
 For `std::semiregular <https://en.cppreference.com/w/cpp/concepts/semiregular>`_:
 
-.. ac-include:: actl/meta/concepts/object/SemiRegular1.hpp
+.. ac-include:: actl/meta/concepts/object/SemiRegular.hpp
 .. doxygenconcept:: ac::TriviallySemiRegular
 .. doxygenconcept:: ac::NothrowSemiRegular
 
 For `std::regular <https://en.cppreference.com/w/cpp/concepts/regular>`_:
 
-.. ac-include:: actl/meta/concepts/object/Regular1.hpp
+.. ac-include:: actl/meta/concepts/object/Regular.hpp
 .. doxygenconcept:: ac::NothrowRegular

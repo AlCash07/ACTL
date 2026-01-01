@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/concepts/comparison/EqualityComparable.hpp>
-#include <actl/meta/concepts/object/SemiRegular1.hpp>
+#include <actl/meta/concepts/object/SemiRegular.hpp>
 
 namespace ac {
 
