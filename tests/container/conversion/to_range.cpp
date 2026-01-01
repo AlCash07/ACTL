@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/conversion/to_range.hpp>
-#include <actl/container/equal_sequences/arrays.hpp>
+#include <actl/container/equality/arrays.hpp>
 #include <array>
 #include <vector>
 #include "test.hpp"
@@ -14,11 +14,11 @@
 using Array2i = std::array<int, 2>;
 // same types
 static_assert(ac::can_convert_to_v<Array2i, int, int>);
-static_assert(ac::equal_arrays(Array2i{3, 2}, ac::convert_to<Array2i>(3, 2)));
+static_assert(ac::is_equal_array(Array2i{3, 2}, ac::convert_to<Array2i>(3, 2)));
 // compatible types
 static_assert(ac::can_convert_to_v<Array2i, uint32_t, int>);
 static_assert(
-    ac::equal_arrays(Array2i{3, 2}, ac::convert_to<Array2i>(uint32_t{3}, 2))
+    ac::is_equal_array(Array2i{3, 2}, ac::convert_to<Array2i>(uint32_t{3}, 2))
 );
 // different size
 static_assert(!ac::can_convert_to_v<Array2i, int>);

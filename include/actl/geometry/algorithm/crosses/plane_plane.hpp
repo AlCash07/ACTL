@@ -20,7 +20,7 @@ bool crosses(
     if (!collinear(policy, lhs.normal, rhs.normal))
         return true;
     index i = 0;
-    while (equal(policy, lhs.normal[i], 0))
+    while (is_equal(policy, lhs.normal[i], 0))
         ++i;
     return collinear(
         policy, point{lhs.normal[i], lhs.d}, point{rhs.normal[i], rhs.d}

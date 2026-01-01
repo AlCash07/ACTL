@@ -19,7 +19,7 @@ struct Eps {
 constexpr ac::absolute_error<Eps> eps_policy;
 
 TEST_CASE("equal") {
-    constexpr auto abs_equal = ac::equal | eps_policy;
+    constexpr auto abs_equal = ac::is_equal | eps_policy;
     CHECK(abs_equal(0.0, eps));
     CHECK_FALSE(abs_equal(0.0, eps + ac::squared(eps)));
 }

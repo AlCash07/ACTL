@@ -6,8 +6,8 @@
 
 #include <actl/numeric/arithmetic/additive/add.hpp>
 #include <actl/operation/policy/common/allow_promotion.hpp>
-#include <actl/operation/tuple/equal_tuple.hpp>
-#include <actl/range/operation/equal_range.hpp>
+#include <actl/operation/tuple/is_equal_tuple.hpp>
+#include <actl/range/operation/is_equal_range.hpp>
 #include "test.hpp"
 
 // simple operation
@@ -18,7 +18,7 @@ TEST_CASE("nested composite operation") {
     std::vector<std::pair<int, uint16_t>> const r{
         {2, uint16_t{3}}, {5, uint16_t{8}}
     };
-    CHECK((ac::equal | ac::allow_promotion{})(l, r));
+    CHECK((ac::is_equal | ac::allow_promotion{})(l, r));
 }
 
 // nested expression operation

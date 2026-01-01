@@ -7,9 +7,9 @@
 #pragma once
 
 #include <actl/operation/scalar/comparison/cmp3way.hpp>
-#include <actl/operation/scalar/comparison/equal.hpp>
 #include <actl/operation/scalar/comparison/greater.hpp>
 #include <actl/operation/scalar/comparison/greater_equal.hpp>
+#include <actl/operation/scalar/comparison/is_equal.hpp>
+#include <actl/operation/scalar/comparison/is_not_equal.hpp>
 #include <actl/operation/scalar/comparison/less.hpp>
 #include <actl/operation/scalar/comparison/less_equal.hpp>
-#include <actl/operation/scalar/comparison/not_equal.hpp>

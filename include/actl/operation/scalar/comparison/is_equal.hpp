@@ -12,7 +12,7 @@ namespace ac {
 
 namespace scalar {
 
-struct Equal : operation_base<Equal> {
+struct IsEqual : operation_base<IsEqual> {
     using operation_category = equality_operation_tag;
 
     template<typename L, typename R>
@@ -20,23 +20,23 @@ struct Equal : operation_base<Equal> {
         return l == r;
     }
 };
-inline constexpr Equal equal;
+inline constexpr IsEqual is_equal;
 
 } // namespace scalar
 
-struct Equal : operation_base<Equal> {
+struct IsEqual : operation_base<IsEqual> {
     using operation_category = equality_operation_tag;
 
     static constexpr bool is_commutative = true;
 
-    static constexpr auto formula = scalar::equal;
+    static constexpr auto formula = scalar::is_equal;
 };
-inline constexpr Equal equal;
+inline constexpr IsEqual is_equal;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator==(L&& l, R&& r) {
-    return equal(pass<L>(l), pass<R>(r));
+    return is_equal(pass<L>(l), pass<R>(r));
 }
 
 } // namespace ac

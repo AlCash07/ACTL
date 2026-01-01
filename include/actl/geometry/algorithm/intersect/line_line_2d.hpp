@@ -53,7 +53,7 @@ OutIter intersect(
 ) {
     auto& policy = lsp.policy;
     auto tarea = area(policy, rhs.vector, lhs.vector);
-    if (equal(policy, tarea, 0))
+    if (is_equal(policy, tarea, 0))
         return output;
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
@@ -89,8 +89,8 @@ OutIter intersect(
     auto tarea = area(policy, rhs.vector, lhs.vector);
     auto v = lhs.begin - rhs.begin;
     auto larea = area(policy, v, rhs.vector);
-    if (equal(policy, tarea, 0)) {
-        if (!equal(policy, larea, 0))
+    if (is_equal(policy, tarea, 0)) {
+        if (!is_equal(policy, larea, 0))
             return output;
         return detail::common_line(policy, lhs, rhs, output);
     }

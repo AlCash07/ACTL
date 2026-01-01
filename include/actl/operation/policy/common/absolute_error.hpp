@@ -20,7 +20,7 @@ struct absolute_error : E {
 };
 
 template<typename E>
-constexpr auto apply_policy(scalar::Equal, absolute_error<E> const& policy) {
+constexpr auto apply_policy(scalar::IsEqual, absolute_error<E> const& policy) {
     return abs(subtract) <= policy.epsilon();
 }
 

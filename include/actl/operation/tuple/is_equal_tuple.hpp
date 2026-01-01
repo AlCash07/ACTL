@@ -7,12 +7,12 @@
 #pragma once
 
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/comparison/equal.hpp>
+#include <actl/operation/scalar/comparison/is_equal.hpp>
 #include <actl/operation/tuple/resolver.hpp>
 
 namespace ac {
 
-struct EqualTuple {
+struct IsEqualTuple {
     static constexpr size_t inner_count = 0;
 
     template<typename EqualOps, typename L, typename R, size_t... Is>
@@ -27,12 +27,12 @@ struct EqualTuple {
         return evaluate_impl(ops, l, r, tuple_indices_t<L>{});
     }
 };
-inline constexpr operation_composer<EqualTuple> equal_tuple;
+inline constexpr operation_composer<IsEqualTuple> is_equal_tuple;
 
 template<Tuple L, Tuple R>
-struct overload<Equal, L, R> {
+struct overload<IsEqual, L, R> {
     static constexpr auto formula =
-        tuple_op_resolver<L, R>::resolve_tuple(equal_tuple, equal);
+        tuple_op_resolver<L, R>::resolve_tuple(is_equal_tuple, is_equal);
 };
 
 } // namespace ac

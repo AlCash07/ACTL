@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/range/operation/equal_range.hpp>
+#include <actl/range/operation/is_equal_range.hpp>
 #include <actl/range/operation/lexicographical_compare_range.hpp>

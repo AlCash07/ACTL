@@ -5,13 +5,13 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/meta/constant_literals.hpp>
-#include <actl_test/base/equal_same_type.hpp>
+#include <actl_test/base/is_equal_same_type.hpp>
 
 using namespace ac::constant_literals;
 
 template<typename Int, typename Constant>
 constexpr bool equal_constants(Int expected, Constant) noexcept {
-    return ac::equal_same_type(expected, Constant::value);
+    return ac::is_equal_same_type(expected, Constant::value);
 }
 
 static_assert(equal_constants(2, 2_c));

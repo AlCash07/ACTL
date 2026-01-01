@@ -33,8 +33,8 @@ enum orientation orientation(
     Policy auto const& policy, point<TL, N> const& l, point<TR, N> const& r
 ) {
     index i = 0;
-    for (; i < N && equal(policy, l[i], 0); ++i) {
-        if (!equal(policy, r[i], 0))
+    for (; i < N && is_equal(policy, l[i], 0); ++i) {
+        if (!is_equal(policy, r[i], 0))
             return orientation::non_collinear;
     }
     for (index j = i + 1; j < N; ++j) {

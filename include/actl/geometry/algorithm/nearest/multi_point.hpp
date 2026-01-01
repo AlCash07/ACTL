@@ -69,7 +69,7 @@ auto nearest(Policy auto const& policy, T& points) {
     AC_ASSERT(points.size() > 1);
     sort(points, less(policy));
     for (auto i = points.begin(), j = i + 1; j != points.end(); i = j, ++j) {
-        if (equal(policy, *i, *j))
+        if (is_equal(policy, *i, *j))
             return std::pair{*i, *j};
     }
     using Point = typename geometry_traits<T>::point;

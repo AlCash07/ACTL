@@ -8,7 +8,7 @@
 #include <actl/meta/concepts/object/Regular.hpp>
 #include <actl/meta/constant_literals.hpp>
 #include <actl/platform/compiler.hpp>
-#include <actl_test/base/equal_same_type.hpp>
+#include <actl_test/base/is_equal_same_type.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 using namespace ac::constant_literals;
@@ -33,7 +33,7 @@ void test_static_array_constructors() {
     static_assert(!std::is_constructible_v<sa31, int>);
     /* CTAD */
 #if AC_COMPILER_MSVC() // internal compiler error
-    static_assert(ac::equal_same_type(array, ac::static_array{3_c, 1_c}));
+    static_assert(ac::is_equal_same_type(array, ac::static_array{3_c, 1_c}));
 #endif
 }
 
@@ -54,14 +54,15 @@ void test_static_array_interface_impl(std::index_sequence<Is...>) {
     static_assert(((Values == array[Is]) && ...));
     static_assert(((noexcept(array[constant<Is>{}])) && ...));
     // T{Values} is a workaround for a brand new MSVC bug.
-    static_assert((
-        ac::equal_same_type(constant<T{Values}>{}, array[constant<Is>{}]) && ...
-    ));
+    static_assert(
+        (ac::is_equal_same_type(constant<T{Values}>{}, array[constant<Is>{}]) &&
+         ...)
+    );
     /* tuple interface */
     using std::get;
     static_assert(((noexcept(get<Is>(array))) && ...));
     static_assert(
-        (ac::equal_same_type(array[constant<Is>{}], get<Is>(array)) && ...)
+        (ac::is_equal_same_type(array[constant<Is>{}], get<Is>(array)) && ...)
     );
     /* equality */
     static_assert(noexcept(array == array));

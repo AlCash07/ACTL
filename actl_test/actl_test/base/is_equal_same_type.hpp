@@ -11,7 +11,8 @@
 namespace ac {
 
 template<typename L, typename R>
-constexpr bool equal_same_type(L const& l, R const& r) noexcept(noexcept(l == r)
+constexpr bool is_equal_same_type(L const& l, R const& r) noexcept(
+    noexcept(l == r)
 ) {
     static_assert(std::is_same_v<L, R>);
     return l == r;

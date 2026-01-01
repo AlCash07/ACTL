@@ -23,14 +23,15 @@ enum within within(
     if (poly.empty())
         return within::outside;
     if (poly.size() == 1)
-        return equal(policy, p, poly[0]) ? within::border : within::outside;
+        return is_equal(policy, p, poly[0]) ? within::border : within::outside;
     index const right = poly.right();
     auto first = poly.begin();
     if (less(policy, p, poly[0]) || less(policy, first[right], p))
         return within::outside;
     switch (orientation(policy, p, first[right], poly[0])) {
         case orientation2d::collinear: {
-            if (equal(policy, p, poly[0]) || equal(policy, p, first[right]))
+            if (is_equal(policy, p, poly[0]) ||
+                is_equal(policy, p, first[right]))
                 return within::border;
             return right == 1 || right + 1 == poly.size() ? within::border
                                                           : within::inside;

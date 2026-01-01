@@ -12,7 +12,7 @@ namespace ac {
 
 template<typename L, typename R>
     requires(is_dynamic_range_v<L> && is_dynamic_range_v<R>)
-constexpr bool equal_sequences(L const& l, R const& r) noexcept {
+constexpr bool is_equal_sequence(L const& l, R const& r) noexcept {
     static_assert(RandomAccessRange<L>);
     static_assert(RandomAccessRange<R>);
     static_assert(noexcept(l.size(), l[0], r.size(), r[0]));

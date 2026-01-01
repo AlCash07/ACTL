@@ -6,10 +6,10 @@
 
 #include <actl/operation/scalar/comparison/all.hpp>
 
-static_assert(true == ac::equal(2, 2));
-static_assert(false == ac::equal(2, 6));
-static_assert(true == ac::not_equal(2, 6));
-static_assert(false == ac::not_equal(2, 2));
+static_assert(true == ac::is_equal(2, 2));
+static_assert(false == ac::is_equal(2, 6));
+static_assert(true == ac::is_not_equal(2, 6));
+static_assert(false == ac::is_not_equal(2, 2));
 static_assert(true == ac::less(2, 6));
 static_assert(false == ac::less(2, 2));
 static_assert(true == ac::greater(6, 2));

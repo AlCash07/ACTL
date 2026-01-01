@@ -11,7 +11,7 @@
 #include <actl/container/container_id.hpp>
 #include <actl/container/conversion/all.hpp>
 #include <actl/container/dummy_container.hpp>
-#include <actl/container/equal_sequences/all.hpp>
+#include <actl/container/equality/all.hpp>
 #include <actl/container/hash_map.hpp>
 #include <actl/container/hash_set.hpp>
 #include <actl/container/tensor.hpp>

@@ -27,8 +27,8 @@ static_assert(ssa5X2_v == ac::convert_to<ssa5X2_t>(ssa542_v));
 static_assert(ssa5X2_v == ac::convert_to<ssa5X2_t>(ssa5X2_v));
 static_assert(ssaXX2_v == ac::convert_to<ssaXX2_t>(ssa5X2_v));
 static_assert(ssaXX2_v == ac::convert_to<ssaXX2_t>(ssaXXX_v));
-static_assert(ac::equal_arrays(ssaXXX_v, ac::convert_to<ssaXXX_t>(ssa542_v)));
-static_assert(ac::equal_arrays(ssaXXX_v, ac::convert_to<ssaXXX_t>(ssa5X2_v)));
+static_assert(ac::is_equal_array(ssaXXX_v, ac::convert_to<ssaXXX_t>(ssa542_v)));
+static_assert(ac::is_equal_array(ssaXXX_v, ac::convert_to<ssaXXX_t>(ssa5X2_v)));
 
 /* not matching static values */
 static_assert(!ac::can_convert_to_v<ssa<size_t, 5, 4>, ssa<size_t, 4, 4>>);

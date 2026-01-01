@@ -17,7 +17,7 @@ enum within within(
     Policy auto const& policy, point<T0, N> const& p, line<T1, N, K> const& l
 ) {
     if (degenerate(policy, l))
-        return equal(policy, p, l.begin) ? within::border : within::outside;
+        return is_equal(policy, p, l.begin) ? within::border : within::outside;
     if (!collinear(policy, p - l.begin, l.vector))
         return within::outside;
     return detail::between_endpoints(policy, p, l) ? within::border

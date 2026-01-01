@@ -51,7 +51,7 @@ span<T> convex_hull(andrew_monotone_chain_policy<P> amcp, span<T> points) {
         points[++last] = points[i];
     }
     pop(points[0]);
-    if (last == 1 && equal(policy, points[0], points[1]))
+    if (last == 1 && is_equal(policy, points[0], points[1]))
         --last;
     return points.first(last + 1);
 }

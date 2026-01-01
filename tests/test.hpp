@@ -43,7 +43,7 @@ struct abs_rel_error : operation_base<abs_rel_error<T>> {
 };
 
 template<typename T>
-auto apply_policy(scalar::Equal, abs_rel_error<T> const& policy) {
+auto apply_policy(scalar::IsEqual, abs_rel_error<T> const& policy) {
     return policy;
 }
 
@@ -58,15 +58,15 @@ void check_sets(std::vector<T> expected, std::vector<T> actual) {
 
 template<typename T, typename U, typename E>
 void check_near(T const& expected, U const& actual, E eps) {
-    CHECK((ac::equal | ac::abs_rel_error<E>{eps})(expected, actual));
+    CHECK((ac::is_equal | ac::abs_rel_error<E>{eps})(expected, actual));
 }
 
 template<typename T, typename U>
 void check_equal(T const& expected, U const& actual) {
-    CHECK(ac::equal(expected, actual));
+    CHECK(ac::is_equal(expected, actual));
 }
 
 template<typename T, typename U>
 void check_not_equal(T const& not_expected, U const& actual) {
-    CHECK_FALSE(ac::equal(not_expected, actual));
+    CHECK_FALSE(ac::is_equal(not_expected, actual));
 }

@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/operation/tuple/equal_tuple.hpp>
+#include <actl/operation/tuple/is_equal_tuple.hpp>
 #include <actl/operation/tuple/lexicographical_compare_tuple.hpp>

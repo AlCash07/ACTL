@@ -15,7 +15,8 @@ template<index N, typename T0, typename T1>
 enum within within(
     Policy auto const& policy, point<T0, N> const& p, plane<T1, N> const& pl
 ) {
-    return equal(policy, pl(policy, p), 0) ? within::border : within::outside;
+    return is_equal(policy, pl(policy, p), 0) ? within::border
+                                              : within::outside;
 }
 
 } // namespace ac

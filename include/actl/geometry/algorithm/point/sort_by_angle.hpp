@@ -23,7 +23,7 @@ void sort_by_angle(
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
     first = std::partition(first, last, [to_point, &policy, &origin](ref x) {
-        return equal(policy, origin, to_point(x));
+        return is_equal(policy, origin, to_point(x));
     });
     auto pivot =
         std::partition(first, last, [to_point, &policy, &origin](ref x) {

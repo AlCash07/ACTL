@@ -161,12 +161,12 @@ constexpr auto operator-(point<TL, N> const& l, point<TR, N> const& r) {
 
 template<index N, typename TL, typename TR>
 constexpr bool perform(
-    equal_t,
+    IsEqual,
     Policy auto const& policy,
     point<TL, N> const& l,
     point<TR, N> const& r
 ) {
-    return equal(policy, span{l}, span{r});
+    return is_equal(policy, span{l}, span{r});
 }
 
 template<index N, typename TL, typename TR>
@@ -201,7 +201,7 @@ template<index N, typename TL, typename TR>
 constexpr auto perform(
     Div, Policy auto const& policy, point<TL, N> const& l, TR const& factor
 ) {
-    AC_ASSERT(!equal(policy, factor, 0));
+    AC_ASSERT(!is_equal(policy, factor, 0));
     return detail::apply<N>(
         [&policy, &factor](TL const& x) { return div(policy, x, factor); }, l
     );
@@ -235,7 +235,7 @@ constexpr auto dot(point<T, N> const& p) {
 template<index N, typename T>
 constexpr bool degenerate(Policy auto const& policy, point<T, N> const& p) {
     for (index i = 0; i < N; ++i) {
-        if (!equal(policy, p[i], 0))
+        if (!is_equal(policy, p[i], 0))
             return false;
     }
     return true;

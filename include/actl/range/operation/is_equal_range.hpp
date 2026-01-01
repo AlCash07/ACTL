@@ -7,13 +7,13 @@
 #pragma once
 
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/comparison/equal.hpp>
+#include <actl/operation/scalar/comparison/is_equal.hpp>
 #include <actl/range/traits/nesting_depth.hpp>
 #include <algorithm>
 
 namespace ac {
 
-struct EqualRange {
+struct IsEqualRange {
     static constexpr size_t inner_count = 1;
 
     template<typename EqualOp, typename L, typename R>
@@ -27,11 +27,12 @@ struct EqualRange {
         );
     }
 };
-inline constexpr operation_composer<EqualRange> equal_range;
+inline constexpr operation_composer<IsEqualRange> is_equal_range;
 
 template<Range L, Range R>
-struct overload<Equal, L, R> {
-    static constexpr auto formula = equal_range(resolve_nested<L, R>(equal));
+struct overload<IsEqual, L, R> {
+    static constexpr auto formula =
+        is_equal_range(resolve_nested<L, R>(is_equal));
 };
 
 } // namespace ac

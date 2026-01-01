@@ -557,9 +557,9 @@ struct TensorEqual {
 };
 
 template<Tensor T, Tensor U>
-struct overload<Equal, T, U> {
+struct overload<IsEqual, T, U> {
     static constexpr auto formula =
-        operation_composer<TensorEqual>(resolve_nested<T, U>(equal));
+        operation_composer<TensorEqual>(resolve_nested<T, U>(is_equal));
 };
 
 /// N-dimensional array with dimensions completely or partially known at compile

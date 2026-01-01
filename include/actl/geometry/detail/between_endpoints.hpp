@@ -18,7 +18,8 @@ bool between_endpoints(
         return endpoint_test(
             policy, begin(l.kind()), 0, dot(policy, p - l.begin, l.vector)
         );
-    if (l.kind() == line_kind::half_open_segment && equal(policy, p, l.begin))
+    if (l.kind() == line_kind::half_open_segment &&
+        is_equal(policy, p, l.begin))
         return false;
     return endpoint_test(
         policy, end(l.kind()), 0, dot(policy, l.begin - p, p - l.end())

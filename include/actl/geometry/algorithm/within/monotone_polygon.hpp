@@ -23,7 +23,7 @@ enum within within(
     if (poly.empty())
         return within::outside;
     if (poly.size() == 1)
-        return equal(policy, p, poly[0]) ? within::border : within::outside;
+        return is_equal(policy, p, poly[0]) ? within::border : within::outside;
     index const right = poly.right();
     auto first = poly.begin();
     if (less(policy, p, poly[0]) || less(policy, first[right], p))

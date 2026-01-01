@@ -25,13 +25,14 @@ int winding_number(
         return 0;
     index n = static_cast<index>(poly.size());
     if (n == 1)
-        return equal(policy, p, poly[0]) ? boundary : 0;
+        return is_equal(policy, p, poly[0]) ? boundary : 0;
     int res = 0;
     for (auto i = cyclic_begin(poly); n-- > 0; ++i) {
-        if (equal(policy, p, *i))
+        if (is_equal(policy, p, *i))
             return boundary;
         auto j = i + 1;
-        if (equal(policy, i->y(), p.y()) && equal(policy, j->y(), p.y())) {
+        if (is_equal(policy, i->y(), p.y()) &&
+            is_equal(policy, j->y(), p.y())) {
             if (less(policy, i->x(), j->x())) {
                 if (!less(policy, p.x(), i->x()) &&
                     !less(policy, j->x(), p.x()))

@@ -4,11 +4,11 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/container/equal_sequences/tuples.hpp>
+#include <actl/container/equality/tuples.hpp>
 #include <array>
 
-static_assert(ac::equal_sequences(std::tuple{4LL, 2}, std::array{4, 2}));
+static_assert(ac::is_equal_sequence(std::tuple{4LL, 2}, std::array{4, 2}));
 /* size mismatch with a common prefix */
-static_assert(!ac::equal_sequences(std::tuple{4LL}, std::array{4, 2}));
+static_assert(!ac::is_equal_sequence(std::tuple{4LL}, std::array{4, 2}));
 /* element mismatch */
-static_assert(!ac::equal_sequences(std::tuple{4LL, 2}, std::array{2, 2}));
+static_assert(!ac::is_equal_sequence(std::tuple{4LL, 2}, std::array{2, 2}));

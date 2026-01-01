@@ -62,7 +62,7 @@ decltype(auto) get_key(T const& x) {
 template<typename L, typename R>
     requires MimicPair<L> || MimicPair<R>
 auto operator==(L const& l, R const& r) {
-    return equal(get_key(l), get_key(r));
+    return is_equal(get_key(l), get_key(r));
 }
 
 template<typename L, typename R>

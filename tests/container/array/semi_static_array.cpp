@@ -8,7 +8,7 @@
 #include <actl/meta/concepts/object/Regular.hpp>
 #include <actl/meta/constant_literals.hpp>
 #include <actl_test/base/Regular.hpp>
-#include <actl_test/base/equal_same_type.hpp>
+#include <actl_test/base/is_equal_same_type.hpp>
 
 using namespace ac::constant_literals;
 
@@ -48,7 +48,7 @@ void test_static_array_constructors() {
     static_assert(!std::is_constructible_v<ssa3XX2, int, void*, int, int>);
     /* CTAD */
     static_assert(
-        ac::equal_same_type(array, ac::semi_static_array{3_c, 5, 4, 2_c})
+        ac::is_equal_same_type(array, ac::semi_static_array{3_c, 5, 4, 2_c})
     );
 }
 
@@ -93,7 +93,7 @@ void test_semi_static_array_interface_impl(std::integer_sequence<T, DynamicValue
     using std::get;
     static_assert(((noexcept(get<Is>(array))) && ...));
     static_assert(
-        (ac::equal_same_type(array[constant<Is>{}], get<Is>(array)) && ...)
+        (ac::is_equal_same_type(array[constant<Is>{}], get<Is>(array)) && ...)
     );
 }
 
@@ -129,8 +129,8 @@ TEST_CASE("semi_static_array") {
     }
     SECTION("structured binding") {
         auto [x0, x1] = ssa4X{2}; // can't be constexpr yet
-        CHECK(ac::equal_same_type(4_c, x0));
-        CHECK(ac::equal_same_type(2, x1));
+        CHECK(ac::is_equal_same_type(4_c, x0));
+        CHECK(ac::is_equal_same_type(2, x1));
     }
     /* equality */ {
         static_assert(noexcept(ssaX3X2{} == ssaX3X2{}));

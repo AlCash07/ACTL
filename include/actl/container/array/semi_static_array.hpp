@@ -9,7 +9,7 @@
 #include <actl/AC_ASSERT.hpp>
 #include <actl/container/array/static_array.hpp>
 #include <actl/container/conversion/convert_to.hpp>
-#include <actl/container/equal_sequences/arrays.hpp>
+#include <actl/container/equality/arrays.hpp>
 #include <actl/container/extent.hpp>
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
 #include <actl/meta/type_traits.hpp>
@@ -97,7 +97,7 @@ public:
     friend constexpr auto operator==(
         semi_static_array const& l, semi_static_array const& r
     ) noexcept {
-        return equal_arrays(l.dynamic_values, r.dynamic_values);
+        return is_equal_array(l.dynamic_values, r.dynamic_values);
     }
 
 private:
