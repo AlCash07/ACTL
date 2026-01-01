@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <actl/numeric/logic/logical_not.hpp>
+#include <actl/numeric/logic/logical_or.hpp>
 #include <actl/operation/scalar/common/arg.hpp>
-#include <actl/operation/scalar/logical/logical_not.hpp>
-#include <actl/operation/scalar/logical/logical_or.hpp>
 
 namespace ac {
 

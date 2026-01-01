@@ -17,8 +17,6 @@ struct scalar_operation_tag {};
 struct comparison_operation_tag : scalar_operation_tag {};
 struct equality_operation_tag   : comparison_operation_tag {};
 struct ordering_operation_tag   : comparison_operation_tag {};
-
-struct logical_operation_tag : scalar_operation_tag {};
 // clang-format on
 
 #if 0

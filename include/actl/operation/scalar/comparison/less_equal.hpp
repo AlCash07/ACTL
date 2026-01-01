@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/numeric/logic/logical_not.hpp>
 #include <actl/operation/scalar/comparison/greater.hpp>
-#include <actl/operation/scalar/logical/logical_not.hpp>
 
 namespace ac {
 
