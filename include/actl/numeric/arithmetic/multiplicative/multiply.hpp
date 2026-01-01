@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/numeric/arithmetic/arithmetic_operation.hpp>
-#include <actl/operation/scalar/enable_operators.hpp>
 
 namespace ac {
 

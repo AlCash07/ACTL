@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/operation/scalar/enable_operators.hpp>
 #include <actl/operation/scalar_operation.hpp>
 
 namespace ac {
