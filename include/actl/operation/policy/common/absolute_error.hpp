@@ -7,9 +7,9 @@
 #pragma once
 
 #include <actl/numeric/arithmetic/additive/subtract.hpp>
+#include <actl/numeric/comparison/all.hpp>
 #include <actl/numeric/math.hpp>
 #include <actl/operation/scalar/common/arg.hpp>
-#include <actl/operation/scalar/comparison/all.hpp>
 
 namespace ac {
 
@@ -20,12 +20,12 @@ struct absolute_error : E {
 };
 
 template<typename E>
-constexpr auto apply_policy(scalar::IsEqual, absolute_error<E> const& policy) {
+constexpr auto apply_policy(IsEqualScalar, absolute_error<E> const& policy) {
     return abs(subtract) <= policy.epsilon();
 }
 
 template<typename E>
-constexpr auto apply_policy(scalar::Less, absolute_error<E> const& policy) {
+constexpr auto apply_policy(IsLessScalar, absolute_error<E> const& policy) {
     return policy.epsilon() < r_ - l_;
 }
 

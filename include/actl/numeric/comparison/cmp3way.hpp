@@ -7,16 +7,15 @@
 #pragma once
 
 #include <actl/numeric/arithmetic/additive/subtract.hpp>
+#include <actl/numeric/comparison/ordering.hpp>
 #include <actl/operation/scalar/common/cast.hpp>
-#include <actl/operation/scalar/comparison/greater.hpp>
-#include <actl/operation/scalar/comparison/less.hpp>
 
 namespace ac {
 
 struct Cmp3Way : operation_base<Cmp3Way> {
-    using operation_category = ordering_operation_tag;
+    using operation_category = ordering_operation;
 
-    static constexpr auto formula = cast<int>(greater) - cast<int>(less);
+    static constexpr auto formula = cast<int>(is_greater) - cast<int>(is_less);
 };
 inline constexpr Cmp3Way cmp3way;
 

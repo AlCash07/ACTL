@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/numeric/comparison/equality.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/comparison/is_equal.hpp>
 #include <actl/operation/tuple/resolver.hpp>
 
 namespace ac {

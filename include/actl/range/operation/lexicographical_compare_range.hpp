@@ -7,9 +7,9 @@
 #pragma once
 
 #include <actl/meta/constant_literals.hpp>
+#include <actl/numeric/comparison/cmp3way.hpp>
+#include <actl/numeric/comparison/ordering.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/comparison/cmp3way.hpp>
-#include <actl/operation/scalar/comparison/less.hpp>
 #include <actl/range/traits/nesting_depth.hpp>
 
 namespace ac {
@@ -43,7 +43,7 @@ struct overload<Cmp3Way, L, R> {
 };
 
 template<Range L, Range R>
-struct overload<Less, L, R> {
+struct overload<IsLess, L, R> {
     static constexpr auto formula = cmp3way < 0_c;
 };
 

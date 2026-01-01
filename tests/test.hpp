@@ -43,7 +43,7 @@ struct abs_rel_error : operation_base<abs_rel_error<T>> {
 };
 
 template<typename T>
-auto apply_policy(scalar::IsEqual, abs_rel_error<T> const& policy) {
+auto apply_policy(IsEqualScalar, abs_rel_error<T> const& policy) {
     return policy;
 }
 

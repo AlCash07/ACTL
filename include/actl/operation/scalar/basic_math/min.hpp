@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/numeric/comparison/ordering.hpp>
 #include <actl/operation/scalar/common/select.hpp>
-#include <actl/operation/scalar/comparison/less.hpp>
 #include <limits>
 
 namespace ac {

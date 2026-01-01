@@ -25,9 +25,9 @@ TEST_CASE("equal") {
 }
 
 TEST_CASE("less") {
-    constexpr auto abs_less = ac::less | eps_policy;
-    CHECK_FALSE(ac::less(0.0, -eps));
-    CHECK(ac::less(-eps, 0.0));
+    constexpr auto abs_less = ac::is_less | eps_policy;
+    CHECK_FALSE(ac::is_less(0.0, -eps));
+    CHECK(ac::is_less(-eps, 0.0));
     CHECK_FALSE(abs_less(-eps, 0.0));
     CHECK(abs_less(-eps - ac::squared(eps), 0.0));
 }
