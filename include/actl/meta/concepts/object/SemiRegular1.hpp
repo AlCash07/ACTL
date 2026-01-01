@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/concepts/core/DefaultInitializable.hpp>
-#include <actl/meta/concepts/object/Copyable.hpp>
+#include <actl/meta/concepts/object/Copyable1.hpp>
 
 namespace ac {
 
