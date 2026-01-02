@@ -4,7 +4,8 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/operation/scalar/all.hpp>
+#include <actl/numeric/arithmetic/additive/subtract.hpp>
+#include <actl/numeric/comparison/min_max.hpp>
 #include "test.hpp"
 
 TEST_CASE("inout parameter") {

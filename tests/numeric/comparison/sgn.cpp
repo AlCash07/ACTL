@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/numeric/comparison/equality.hpp>
-#include <actl/operation/scalar/basic_math/all.hpp>
+#include <actl/numeric/comparison/sgn.hpp>
 #include <limits>
 
 static_assert(1 == ac::sgn(std::numeric_limits<double>::max()));

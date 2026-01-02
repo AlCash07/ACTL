@@ -8,7 +8,7 @@
 
 #include <actl/AC_ASSERT.hpp>
 #include <actl/io/io.hpp>
-#include <actl/operation/scalar/basic_math/all.hpp>
+#include <actl/numeric/comparison/min_max.hpp>
 #include <actl/range/operation/copy.hpp>
 
 namespace ac::io {

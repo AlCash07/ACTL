@@ -6,6 +6,10 @@
 
 #pragma once
 
+#include <actl/numeric/comparison/abs.hpp>
 #include <actl/numeric/comparison/compare3way.hpp>
+#include <actl/numeric/comparison/comparison_operation.hpp>
 #include <actl/numeric/comparison/equality.hpp>
+#include <actl/numeric/comparison/min_max.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
+#include <actl/numeric/comparison/sgn.hpp>

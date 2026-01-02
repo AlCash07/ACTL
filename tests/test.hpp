@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/numeric/comparison/min_max.hpp>
 #include <actl/operation/scalar/all.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/irange.hpp>

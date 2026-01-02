@@ -14,9 +14,18 @@ namespace ac {
 
 struct Sgn : operation_base<Sgn> {
     using operation_category = comparison_operation;
+};
+inline constexpr Sgn sgn;
+
+struct SgnScalar : operation_base<SgnScalar> {
+    using parent = Sgn;
+
+    template<typename T>
+    static constexpr bool requirement = std::is_arithmetic_v<T>;
 
     static constexpr auto formula = compare3way(x_, 0_c);
 };
-inline constexpr Sgn sgn;
+AC_REGISTER_OVERLOAD(SgnScalar)
+inline constexpr SgnScalar sgn_scalar;
 
 } // namespace ac

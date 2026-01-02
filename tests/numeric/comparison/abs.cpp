@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/numeric/math.hpp>
+#include <actl/numeric/comparison/abs.hpp>
 #include <limits>
 #include "test.hpp"
 

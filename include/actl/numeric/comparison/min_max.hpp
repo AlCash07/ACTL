@@ -12,8 +12,28 @@
 
 namespace ac {
 
+struct Min : operation_base<Min> {
+    using operation_category = comparison_operation;
+
+    static constexpr bool is_associative = true;
+    static constexpr bool is_commutative = true;
+
+    template<typename L, typename R>
+    static constexpr auto evaluate(L l, R r) {
+        return eval(select(less(r, l), r, l));
+    }
+};
+inline constexpr Min min;
+
+template<typename T>
+struct identity_element<Min, T> {
+    static constexpr T value() {
+        return std::numeric_limits<T>::max();
+    }
+};
+
 struct Max : operation_base<Max> {
-    using operation_category = scalar_operation_tag;
+    using operation_category = comparison_operation;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;

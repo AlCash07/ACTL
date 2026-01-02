@@ -8,28 +8,12 @@
 
 #include <actl/operation/scalar/scalar_operation.hpp>
 #include <cmath>
-#include <cstdlib>
 
 namespace ac {
 
 struct math_operation_tag {
     using base = scalar_operation_tag;
 };
-
-struct abs_t : operation_base<abs_t> {
-    using operation_category = math_operation_tag;
-
-    template<typename T>
-    static constexpr T evaluate(T x) {
-        if constexpr (std::is_unsigned_v<T>) {
-            return x;
-        } else {
-            using std::abs;
-            return abs(x);
-        }
-    }
-};
-inline constexpr abs_t abs;
 
 template<typename Op>
 struct math_operation : operation_base<Op> {
