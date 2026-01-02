@@ -22,10 +22,10 @@ OutIter intersect(
 ) {
     auto centers_vector = rhs.center - lhs.center;
     auto centers_dist2 = dot(policy, centers_vector);
-    int sgn0 = cmp3way(
+    int sgn0 = compare3way(
         policy, centers_dist2, squared(policy, lhs.radius - rhs.radius)
     );
-    int sgn1 = cmp3way(
+    int sgn1 = compare3way(
         policy, squared(policy, lhs.radius + rhs.radius), centers_dist2
     );
     if (sgn0 < 0 || sgn1 < 0)

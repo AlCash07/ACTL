@@ -29,7 +29,7 @@ auto const& max_endpoint(
         if (rhs.second == endpoint::free) {
             return lhs;
         } else {
-            int v = cmp3way(policy, lhs.first, rhs.first);
+            int v = compare3way(policy, lhs.first, rhs.first);
             if (v == 0)
                 return lhs.second >= rhs.second ? lhs : rhs;
             return v > 0 == start ? lhs : rhs;

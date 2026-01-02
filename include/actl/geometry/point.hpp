@@ -300,7 +300,7 @@ template<typename TL, typename TR>
 constexpr bool y_compare(
     Policy auto const& policy, point<TL> const& l, point<TR> const& r
 ) {
-    int v = cmp3way(policy, l[1], r[1]);
+    int v = compare3way(policy, l[1], r[1]);
     return v < 0 || (v == 0 && less(policy, l[0], r[0]));
 }
 

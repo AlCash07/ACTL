@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/constant_literals.hpp>
-#include <actl/numeric/comparison/cmp3way.hpp>
+#include <actl/numeric/comparison/compare3way.hpp>
 #include <actl/operation/scalar/common/arg.hpp>
 
 namespace ac {
@@ -15,7 +15,7 @@ namespace ac {
 struct Sgn : operation_base<Sgn> {
     using operation_category = comparison_operation;
 
-    static constexpr auto formula = cmp3way(x_, 0_c);
+    static constexpr auto formula = compare3way(x_, 0_c);
 };
 inline constexpr Sgn sgn;
 

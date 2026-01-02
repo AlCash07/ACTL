@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/meta/constant_literals.hpp>
-#include <actl/numeric/comparison/cmp3way.hpp>
+#include <actl/numeric/comparison/compare3way.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
 #include <actl/operation/scalar/common/select.hpp>
@@ -18,8 +18,8 @@ namespace ac {
 struct LexicographicalCompareTuple {
     static constexpr size_t inner_count = 0;
 
-    template<size_t I = 0, typename Cmp3WayOps, typename L, typename R>
-    static int evaluate(Cmp3WayOps const& ops, L const& l, R const& r) {
+    template<size_t I = 0, typename Compare3WayOps, typename L, typename R>
+    static int evaluate(Compare3WayOps const& ops, L const& l, R const& r) {
         using std::get;
         int v = get<I>(ops)(get<I>(l), get<I>(r));
         if constexpr (I + 1 == std::tuple_size_v<L>)
@@ -32,15 +32,15 @@ inline constexpr operation_composer<LexicographicalCompareTuple>
     lexicographical_compare_tuple;
 
 template<Tuple L, Tuple R>
-struct overload<Cmp3Way, L, R> {
+struct overload<Compare3Way, L, R> {
     static constexpr auto formula = tuple_op_resolver<L, R>::resolve_tuple(
-        lexicographical_compare_tuple, cmp3way
+        lexicographical_compare_tuple, compare3way
     );
 };
 
 template<Tuple L, Tuple R>
 struct overload<IsLess, L, R> {
-    static constexpr auto formula = cmp3way < 0_c;
+    static constexpr auto formula = compare3way < 0_c;
 };
 
 } // namespace ac
