@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/core/scalar_operation.hpp>
 #include <actl/numeric/arithmetic/exponential/all.hpp>
-#include <actl/operation/scalar/scalar_operation.hpp>
 
 namespace ac {
 

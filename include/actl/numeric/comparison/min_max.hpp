@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/core/if_else.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
-#include <actl/operation/scalar/common/select.hpp>
 #include <limits>
 
 namespace ac {
@@ -20,7 +20,7 @@ struct Min : operation_base<Min> {
 
     template<typename L, typename R>
     static constexpr auto evaluate(L l, R r) {
-        return eval(select(less(r, l), r, l));
+        return eval(if_else(less(r, l), r, l));
     }
 };
 inline constexpr Min min;
@@ -40,7 +40,7 @@ struct Max : operation_base<Max> {
 
     template<typename L, typename R>
     static constexpr auto evaluate(L l, R r) {
-        return eval(select(is_less(l, r), r, l));
+        return eval(if_else(is_less(l, r), r, l));
     }
 };
 inline constexpr Max max;

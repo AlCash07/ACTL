@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <actl/core/as.hpp>
 #include <actl/numeric/arithmetic/additive/subtract.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
-#include <actl/operation/scalar/common/cast.hpp>
 
 namespace ac {
 
@@ -19,7 +19,7 @@ struct Compare3WayScalar : operation_base<Compare3WayScalar> {
     static constexpr bool requirement =
         std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
 
-    static constexpr auto formula = cast<int>(is_greater) - cast<int>(is_less);
+    static constexpr auto formula = as<int>(is_greater) - as<int>(is_less);
 };
 // AC_REGISTER_OVERLOAD(Compare3WayScalar)
 inline constexpr Compare3WayScalar compare3way_scalar;

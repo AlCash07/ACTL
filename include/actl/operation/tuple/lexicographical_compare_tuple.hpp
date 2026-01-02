@@ -6,11 +6,11 @@
 
 #pragma once
 
+#include <actl/core/if_else.hpp>
 #include <actl/meta/constant_literals.hpp>
 #include <actl/numeric/comparison/compare3way.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/common/select.hpp>
 #include <actl/operation/tuple/resolver.hpp>
 
 namespace ac {
@@ -25,7 +25,7 @@ struct LexicographicalCompareTuple {
         if constexpr (I + 1 == std::tuple_size_v<L>)
             return v;
         else
-            return select(v == 0, evaluate<I + 1>(ops, l, r), v);
+            return if_else(v == 0, evaluate<I + 1>(ops, l, r), v);
     }
 };
 inline constexpr operation_composer<LexicographicalCompareTuple>

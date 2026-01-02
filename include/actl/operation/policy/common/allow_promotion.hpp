@@ -6,10 +6,10 @@
 
 #pragma once
 
+#include <actl/core/as.hpp>
+#include <actl/core/if_else.hpp>
+#include <actl/core/scalar_operation.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/common/cast.hpp>
-#include <actl/operation/scalar/common/select.hpp>
-#include <actl/operation/scalar_operation.hpp>
 
 namespace ac {
 
@@ -22,16 +22,16 @@ struct Promotion {
 
     template<typename L, typename R>
     static constexpr auto evaluate(
-        Select op, bool condition, L const& l, R const& r
+        IfElse op, bool condition, L const& l, R const& r
     ) {
         using CT = std::common_type_t<L, R>;
-        return op.evaluate(condition, cast<CT>(l), cast<CT>(r));
+        return IfElse::evaluate(condition, as<CT>(l), as<CT>(r));
     }
 
     template<Operation Op, typename... Ts>
     static constexpr auto evaluate(Op const& op, Ts const&... xs) {
         using CT = std::common_type_t<decltype(xs)...>;
-        return op.evaluate(eval(cast<CT>(xs))...);
+        return op.evaluate(eval(as<CT>(xs))...);
     }
 };
 

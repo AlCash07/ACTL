@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/operation/scalar/scalar_operation.hpp>
+#include <actl/core/scalar_operation.hpp>
 
 namespace ac {
 
 template<typename Target>
-struct Cast : operation_base<Cast<Target>> {
-    using operation_category = scalar_operation_tag;
+struct As : operation_base<As<Target>> {
+    using operation_category = scalar_operation;
 
     template<typename T>
     static constexpr Target evaluate(T x) {
@@ -20,6 +20,6 @@ struct Cast : operation_base<Cast<Target>> {
     }
 };
 template<typename T>
-inline constexpr Cast<T> cast;
+inline constexpr As<T> as;
 
 } // namespace ac

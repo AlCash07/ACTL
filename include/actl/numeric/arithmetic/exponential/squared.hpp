@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/core/arg.hpp>
 #include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
-#include <actl/operation/scalar/common/arg.hpp>
 
 namespace ac {
 

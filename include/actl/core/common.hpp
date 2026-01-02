@@ -7,13 +7,13 @@
 #pragma once
 
 #include <actl/AC_ASSERT.hpp>
-#include <actl/operation/scalar/scalar_operation.hpp>
+#include <actl/core/scalar_operation.hpp>
 #include <actl/utility/none.hpp>
 
 namespace ac {
 
 struct Common : operation_base<Common> {
-    using operation_category = scalar_operation_tag;
+    using operation_category = scalar_operation;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;

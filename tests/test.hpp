@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/numeric/comparison/min_max.hpp>
-#include <actl/operation/scalar/all.hpp>
 #include <actl/range/algorithm.hpp>
 #include <actl/range/irange.hpp>
 #include <actl/range/operation/comparison.hpp>
@@ -28,7 +27,7 @@ namespace ac {
 
 template<typename T>
 struct abs_rel_error : operation_base<abs_rel_error<T>> {
-    using operation_category = scalar_operation_tag;
+    using operation_category = scalar_operation;
 
     struct is_policy;
 

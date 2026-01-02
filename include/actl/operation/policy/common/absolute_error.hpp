@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <actl/core/arg.hpp>
 #include <actl/numeric/arithmetic/additive/subtract.hpp>
 #include <actl/numeric/comparison/all.hpp>
-#include <actl/operation/scalar/common/arg.hpp>
 
 namespace ac {
 

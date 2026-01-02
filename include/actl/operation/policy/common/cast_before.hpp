@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/core/as.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/scalar/common/cast.hpp>
 
 namespace ac {
 
@@ -18,7 +18,7 @@ struct cast_before {
 
 template<Operation Op, typename T>
 constexpr auto apply_policy(Op const& op, cast_before<Op, T>) {
-    return op(cast<T>);
+    return op(as<T>);
 }
 
 } // namespace ac
