@@ -6,5 +6,6 @@
 
 #pragma once
 
-#include <actl/operation/policy/common/all.hpp>
-#include <actl/operation/policy/resolve_under_policy.hpp>
+#include <actl/operation/policy/policy.hpp>
+#include <actl/operation/policy/resolve_overload.hpp>
+#include <actl/operation/policy/tuned_operation.hpp>

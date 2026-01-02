@@ -9,5 +9,5 @@
 #include <actl/operation/enable_operators.hpp>
 #include <actl/operation/fold/all.hpp>
 #include <actl/operation/operation/all.hpp>
-#include <actl/operation/policy/common/all.hpp>
+#include <actl/operation/policy/all.hpp>
 #include <actl/operation/tuple/all.hpp>

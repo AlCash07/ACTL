@@ -12,12 +12,12 @@
 namespace ac {
 
 template<Operation Op, typename T>
-struct cast_before {
+struct convert_before {
     struct is_policy;
 };
 
 template<Operation Op, typename T>
-constexpr auto apply_policy(Op const& op, cast_before<Op, T>) {
+constexpr auto apply_policy(Op const& op, convert_before<Op, T>) {
     return op(as<T>);
 }
 

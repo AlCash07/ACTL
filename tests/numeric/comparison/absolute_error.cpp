@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/numeric/arithmetic/exponential/squared.hpp>
-#include <actl/operation/policy/common/absolute_error.hpp>
+#include <actl/numeric/comparison/absolute_error.hpp>
 #include "test.hpp"
 
 constexpr double eps = 1e-9;
