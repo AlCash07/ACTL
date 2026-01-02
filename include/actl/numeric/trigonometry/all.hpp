@@ -6,4 +6,5 @@
 
 #pragma once
 
+#include <actl/numeric/trigonometry/operations.hpp>
 #include <actl/numeric/trigonometry/pi.hpp>
