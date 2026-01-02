@@ -1,5 +1,10 @@
 path=$1
 
+if [[ ${path:0:2} = './' ]]
+then
+path=${path:2:${#path}}
+fi
+
 if [[ ${path:0:13} = 'include/actl/' ]]
 then
 test=tests${path:12:${#path}-4}
@@ -13,5 +18,5 @@ echo "
 
 TEST_CASE(\"\") {}" >> $test
 else
-echo error: include path expected
+echo error: path starting with include/actl/ is expected
 fi
