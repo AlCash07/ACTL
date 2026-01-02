@@ -6,8 +6,8 @@
 
 #include <actl/numeric/arithmetic/additive/add.hpp>
 #include <actl/numeric/conversion/allow_promotion.hpp>
-#include <actl/operation/tuple/is_equal_tuple.hpp>
 #include <actl/range/operation/is_equal_range.hpp>
+#include <actl/sequence/tuple/is_equal_tuple.hpp>
 #include "test.hpp"
 
 // simple operation

@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/numeric/hash.hpp>
-#include <actl/operation/tuple/comparison.hpp>
+#include <actl/sequence/tuple/comparison.hpp>
 #include <utility>
 
 namespace ac {

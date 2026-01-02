@@ -8,7 +8,7 @@
 
 #include <actl/numeric/comparison/equality.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/operation/tuple/resolver.hpp>
+#include <actl/sequence/tuple/resolver.hpp>
 
 namespace ac {
 

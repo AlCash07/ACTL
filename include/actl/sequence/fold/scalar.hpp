@@ -6,11 +6,10 @@
 
 #pragma once
 
+#include <actl/numeric/arithmetic/additive/add.hpp>
+#include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
+#include <actl/numeric/comparison/min_max.hpp>
 #include <actl/operation/fold/fold.hpp>
-#include <actl/operation/scalar/arithmetic/add.hpp>
-#include <actl/operation/scalar/arithmetic/mul.hpp>
-#include <actl/operation/scalar/basic_math/max.hpp>
-#include <actl/operation/scalar/basic_math/min.hpp>
 
 namespace ac {
 
