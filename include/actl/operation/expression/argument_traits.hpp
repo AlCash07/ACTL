@@ -11,12 +11,10 @@
 namespace ac {
 
 template<typename T>
-struct raw {
-    using type = T;
-};
+struct raw : std::remove_cvref<T> {};
 
 template<typename T>
-using raw_t = typename raw<std::remove_cvref_t<T>>::type;
+using raw_t = typename raw<T>::type;
 
 namespace detail {
 

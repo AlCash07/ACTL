@@ -4,6 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
+#include <actl/numeric/arithmetic/additive/add.hpp>
 #include <actl/operation/operation/operation_base.hpp>
 #include <memory> // for std::unique_ptr
 #include "test.hpp"
@@ -16,14 +17,14 @@ struct non_trivial_operation : ac::operation_base<non_trivial_operation> {
     }
 };
 
-TEST_CASE("operation_base creates an expression") {
-    // r-values are always stored by value.
+TEST_CASE("operation_base without ac::inout arguments creates an expression") {
+    /* r-values are always stored by value. */
     auto expr_r = non_trivial_operation{}(std::unique_ptr<int>{}, 2);
     using type_r =
         ac::expression<non_trivial_operation, std::unique_ptr<int>, int>;
     static_assert(std::is_same_v<decltype(expr_r), type_r>);
-    // l-values are stored by value only if cheap to copy,
-    // and are always treated as const.
+    /* l-values are stored by value only if cheap to copy,
+       and are always treated as const. */
     non_trivial_operation op{};
     std::unique_ptr<int> arg0;
     int arg1 = 1;
@@ -35,4 +36,22 @@ TEST_CASE("operation_base creates an expression") {
         int>;
     static_assert(std::is_same_v<decltype(expr_l), type_l>);
     static_assert(std::is_same_v<decltype(expr_lc), type_l>);
+}
+
+TEST_CASE("operation_base with ac::inout argument is immediately evaluated") {
+    int x = 2;
+    int y = 3;
+    /* Any compatible argument can be ac::inout. */
+    /* Resulting reference is returned. */
+    REQUIRE(5 == ac::add(ac::inout{x}, y));
+    REQUIRE(5 == x);
+    REQUIRE(3 == y); // other argument is unchanged
+    REQUIRE(8 == ac::add(x, ac::inout{y}));
+    REQUIRE(8 == y);
+    REQUIRE(5 == x); // other argument is unchanged
+    /* The same result can be achieved by using
+       assignment operators on ac::inout. */
+    REQUIRE(13 == (ac::inout{x} += y));
+    REQUIRE(13 == x);
+    REQUIRE(8 == y); // other argument is unchanged
 }

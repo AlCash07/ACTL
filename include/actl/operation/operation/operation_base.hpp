@@ -57,6 +57,13 @@ struct operation_base {
         };
     }
 
+    /// Evaluates operation immediately into the ac::inout argument,
+    /// also using it as one of the inputs.
+    ///
+    /// ac::inout argument can be at any position as long as
+    /// it's compatible with the operation result type.
+    ///
+    /// @return Reference stored in the ac::inout argument.
     template<typename... Args>
         requires(... || is_inout_v<Args>)
     constexpr decltype(auto) operator()(Args&&... args) const& {
