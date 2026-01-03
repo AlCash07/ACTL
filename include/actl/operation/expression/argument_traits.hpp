@@ -35,9 +35,23 @@ using value_type_if_t = typename value_if<B, T>::type;
 
 } // namespace detail
 
-template<typename T, typename U = std::remove_cvref_t<T>>
-using value_if_small =
-    std::conditional_t<std::is_empty_v<U> || std::is_arithmetic_v<U>, U, T>;
+template<typename T>
+struct value_if_cheap {
+    using type = T;
+};
+
+template<typename T>
+struct value_if_cheap<T&> {
+    static constexpr bool is_copy_cheap =
+        std::is_empty_v<T> || std::is_arithmetic_v<T>;
+    // sizeof(T) <= sizeof(void*) && std::is_trivially_copyable_v<T>;
+
+    using type =
+        std::conditional_t<is_copy_cheap, std::remove_const_t<T>, T const&>;
+};
+
+template<typename T>
+using value_if_cheap_t = typename value_if_cheap<T>::type;
 
 // pass is the same as std::forward except it converts reference into const
 // reference

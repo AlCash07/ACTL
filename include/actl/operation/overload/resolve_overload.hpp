@@ -18,12 +18,11 @@ template<typename Context, typename Op, typename... Ts>
 struct context_overload {
     struct is_resolved;
 
-    static constexpr auto resolve(Context, Op op) {
-        return op;
+    static constexpr Op resolve(Context, Op&& op) {
+        return std::move(op);
     }
 
-    template<typename Op1>
-    static constexpr auto& resolve(Context, Op1& op) {
+    static constexpr Op const& resolve(Context, Op const& op) {
         return op;
     }
 };

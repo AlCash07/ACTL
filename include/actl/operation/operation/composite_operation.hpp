@@ -37,7 +37,7 @@ struct operation_composer {
     constexpr auto operator()(InnerOps&&... ops) const {
         constexpr size_t N = OuterOp::inner_count;
         static_assert(N == 0 || N == size_t{sizeof...(InnerOps)});
-        return composite_operation<OuterOp, value_if_small<InnerOps>...>{
+        return composite_operation<OuterOp, value_if_cheap_t<InnerOps>...>{
             std::forward<InnerOps>(ops)...
         };
     }

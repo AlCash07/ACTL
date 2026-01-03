@@ -37,7 +37,7 @@ public:
 };
 
 template<typename... Ts>
-expression(Ts&&...) -> expression<value_if_small<Ts>...>;
+expression(Ts&&...) -> expression<value_if_cheap_t<Ts>...>;
 
 template<typename... Ts>
 struct is_expression<expression<Ts...>> : std::true_type {};
