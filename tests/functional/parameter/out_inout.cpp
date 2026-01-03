@@ -42,19 +42,19 @@ TEST_CASE("Output parameter wrappers example") {
 TEST_CASE("assignment") {
     int output{};
     /* out */ {
-        CHECK(5 == *(out{output} = 5));
+        CHECK(5 == (out{output} = 5));
         CHECK(5 == output);
         static_assert(std::is_same_v<
-                      out<int&>&,
+                      int&,
                       decltype(out{std::declval<int&>()} = 5)>);
         // void* is just an arbitrary incompatible type
         static_assert(!std::is_assignable_v<out<int&>, void*>);
     }
     /* inout */ {
-        CHECK(3 == *(inout{output} = 3));
+        CHECK(3 == (inout{output} = 3));
         CHECK(3 == output);
         static_assert(std::is_same_v<
-                      inout<int&>&,
+                      int&,
                       decltype(inout{std::declval<int&>()} = 3)>);
         static_assert(!std::is_assignable_v<inout<int&>, void*>);
     }

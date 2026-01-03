@@ -20,7 +20,7 @@ namespace ac {
 /// Uses CRTP idiom https://en.cppreference.com/w/cpp/language/crtp.html
 /// to provide function call operator implementation, which:
 /// - Creates an expression without evaluating it by default.
-/// - If one of the arguments is `inout` then
+/// - If one of the arguments is ac::inout then
 ///   evaluates the expression into it.
 template<typename DerivedOperation>
 struct operation_base {
@@ -45,7 +45,7 @@ struct operation_base {
     /// - if passed as l-value, then by reference or by value
     ///   making a copy if the copy is cheap.
     ///   In either case, the arguments are never modified
-    ///   unless wrapped into `out` or `inout`.
+    ///   unless wrapped into ac::out or ac::inout.
     template<typename... Args>
     constexpr auto operator()(Args&&... args) const& {
         return expression{derived(), std::forward<Args>(args)...};

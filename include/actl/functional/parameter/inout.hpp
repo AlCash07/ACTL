@@ -61,14 +61,7 @@ public:
     constexpr inout(inout<Source>&& source)
         AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<Ref>{*source}) {}
 
-    /// Analogous to `ac::out<Ref>::operator=`.
-    /// Overridden to change the return type from ac::out& to ac::inout&.
-    template<typename Source>
-    constexpr inout& operator=(Source&& source)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
-            this->out<Ref>::operator=(std::forward<Source>(source)),
-            *this
-        )
+    using out<Ref>::operator=;
 };
 
 template<Reference Ref>

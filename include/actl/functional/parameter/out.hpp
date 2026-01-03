@@ -113,14 +113,19 @@ public:
     ///     ...
     /// }
     /// @endcode
+    ///
+    /// @return The wrapped reference, which is inconsistent
+    /// with the convention to return `*this` from operator=.
+    /// However, it's intended to not return ac::out here,
+    /// because each usage of a reference as an output parameter
+    /// should be separately wrapped into ac::out.
     template<typename Source>
-    constexpr out& operator=(Source&& source)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
-            assign(*this, std::forward<Source>(source)),
-            *this
+    constexpr Ref operator=(Source&& source)
+        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
+            assign(*this, std::forward<Source>(source))
         )
 
-    // TODO: struct enable_operators;
+    struct enable_operators;
 
 private:
     Ref m_ref;
@@ -135,8 +140,9 @@ struct is_out<out<Ref>> : std::true_type {};
 } // namespace detail
 
 template<typename Target, typename Source>
-constexpr Target assign(
-    out<Target>& target, Source&& source
-) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(*target = std::forward<Source>(source))
+constexpr Target assign(out<Target>& target, Source&& source)
+    AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+            * target = std::forward<Source>(source)
+    )
 
 } // namespace ac
