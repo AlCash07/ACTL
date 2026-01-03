@@ -19,7 +19,7 @@ inline constexpr Negate negate;
 template<typename T>
     requires EnableOperators<T>
 constexpr auto operator-(T&& x) {
-    return negate(pass<T>(x));
+    return negate(std::forward<T>(x));
 }
 
 struct NegateScalar : operation_base<NegateScalar> {

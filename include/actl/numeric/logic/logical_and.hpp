@@ -25,7 +25,7 @@ struct identity_element<LogicalAnd, T> {
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator&&(L&& l, R&& r) {
-    return logical_and(pass<L>(l), pass<R>(r));
+    return logical_and(std::forward<L>(l), std::forward<R>(r));
 }
 
 struct LogicalAndScalar : operation_base<LogicalAndScalar> {

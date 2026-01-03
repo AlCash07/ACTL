@@ -25,13 +25,13 @@ struct identity_element<BitAnd, T> {
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator&(L&& l, R&& r) {
-    return bit_and(pass<L>(l), pass<R>(r));
+    return bit_and(std::forward<L>(l), std::forward<R>(r));
 }
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr decltype(auto) operator&=(L&& l, R&& r) {
-    return bit_and(inout{std::forward<L>(l)}, pass<R>(r));
+    return bit_and(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
 
 struct BitAndScalar : operation_base<BitAndScalar> {

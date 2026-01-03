@@ -18,13 +18,13 @@ inline constexpr Subtract subtract;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator-(L&& l, R&& r) {
-    return subtract(pass<L>(l), pass<R>(r));
+    return subtract(std::forward<L>(l), std::forward<R>(r));
 }
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr decltype(auto) operator-=(L&& l, R&& r) {
-    return subtract(inout{std::forward<L>(l)}, pass<R>(r));
+    return subtract(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
 
 struct SubtractScalars : operation_base<SubtractScalars> {

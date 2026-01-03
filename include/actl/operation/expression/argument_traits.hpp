@@ -53,19 +53,4 @@ struct value_if_cheap<T&> {
 template<typename T>
 using value_if_cheap_t = typename value_if_cheap<T>::type;
 
-// pass is the same as std::forward except it converts reference into const
-// reference
-template<typename T>
-constexpr T&& pass(std::remove_reference_t<T>& x) {
-    return static_cast<T&&>(x);
-}
-
-template<typename T>
-constexpr T const&& pass(std::remove_reference_t<T>&& x) {
-    static_assert(
-        !std::is_lvalue_reference_v<T>, "can not pass an rvalue as an lvalue"
-    );
-    return static_cast<T const&&>(x);
-}
-
 } // namespace ac

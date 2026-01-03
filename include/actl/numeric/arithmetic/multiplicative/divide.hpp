@@ -18,13 +18,13 @@ inline constexpr Divide divide;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator/(L&& l, R&& r) {
-    return divide(pass<L>(l), pass<R>(r));
+    return divide(std::forward<L>(l), std::forward<R>(r));
 }
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr decltype(auto) operator/=(L&& l, R&& r) {
-    return divide(inout{std::forward<L>(l)}, pass<R>(r));
+    return divide(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
 
 struct DivideScalars : operation_base<DivideScalars> {

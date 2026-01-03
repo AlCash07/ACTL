@@ -39,7 +39,7 @@ inline constexpr IsLess is_less;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator<(L&& l, R&& r) {
-    return is_less(pass<L>(l), pass<R>(r));
+    return is_less(std::forward<L>(l), std::forward<R>(r));
 }
 
 struct IsGreater : operation_base<IsGreater> {
@@ -53,7 +53,7 @@ inline constexpr IsGreater is_greater;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator>(L&& l, R&& r) {
-    return is_greater(pass<L>(l), pass<R>(r));
+    return is_greater(std::forward<L>(l), std::forward<R>(r));
 }
 
 inline constexpr auto is_less_or_equal = !is_greater;
@@ -61,7 +61,7 @@ inline constexpr auto is_less_or_equal = !is_greater;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator<=(L&& l, R&& r) {
-    return is_less_or_equal(pass<L>(l), pass<R>(r));
+    return is_less_or_equal(std::forward<L>(l), std::forward<R>(r));
 }
 
 inline constexpr auto is_greater_or_equal = !is_less;
@@ -69,7 +69,7 @@ inline constexpr auto is_greater_or_equal = !is_less;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator>=(L&& l, R&& r) {
-    return is_greater_or_equal(pass<L>(l), pass<R>(r));
+    return is_greater_or_equal(std::forward<L>(l), std::forward<R>(r));
 }
 
 } // namespace ac

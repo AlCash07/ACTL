@@ -26,13 +26,13 @@ struct identity_element<Add, T> {
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator+(L&& l, R&& r) {
-    return add(pass<L>(l), pass<R>(r));
+    return add(std::forward<L>(l), std::forward<R>(r));
 }
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr decltype(auto) operator+=(L&& l, R&& r) {
-    return add(inout{std::forward<L>(l)}, pass<R>(r));
+    return add(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
 
 struct AddIntegers : operation_base<AddIntegers> {

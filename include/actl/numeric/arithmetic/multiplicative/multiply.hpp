@@ -25,13 +25,13 @@ struct identity_element<Multiply, T> {
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator*(L&& l, R&& r) {
-    return multiply(pass<L>(l), pass<R>(r));
+    return multiply(std::forward<L>(l), std::forward<R>(r));
 }
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr decltype(auto) operator*=(L&& l, R&& r) {
-    return multiply(inout{std::forward<L>(l)}, pass<R>(r));
+    return multiply(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
 
 struct MultiplyIntegers : operation_base<MultiplyIntegers> {

@@ -19,7 +19,7 @@ inline constexpr IsEqual is_equal;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator==(L&& l, R&& r) {
-    return is_equal(pass<L>(l), pass<R>(r));
+    return is_equal(std::forward<L>(l), std::forward<R>(r));
 }
 
 inline constexpr auto is_not_equal = !is_equal;
@@ -27,7 +27,7 @@ inline constexpr auto is_not_equal = !is_equal;
 template<typename L, typename R>
     requires EnableOperators<L, R>
 constexpr auto operator!=(L&& l, R&& r) {
-    return is_not_equal(pass<L>(l), pass<R>(r));
+    return is_not_equal(std::forward<L>(l), std::forward<R>(r));
 }
 
 struct IsEqualScalar : operation_base<IsEqualScalar> {

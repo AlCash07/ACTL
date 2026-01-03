@@ -18,7 +18,7 @@ inline constexpr LogicalNot logical_not;
 template<typename T>
     requires EnableOperators<T>
 constexpr auto operator!(T&& x) {
-    return logical_not(pass<T>(x));
+    return logical_not(std::forward<T>(x));
 }
 
 struct LogicalNotScalar : operation_base<LogicalNotScalar> {

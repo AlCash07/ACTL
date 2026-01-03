@@ -18,7 +18,7 @@ inline constexpr BitNot bit_not;
 template<typename T>
     requires EnableOperators<T>
 constexpr auto operator~(T&& x) {
-    return bit_not(pass<T>(x));
+    return bit_not(std::forward<T>(x));
 }
 
 struct BitNotScalar : operation_base<BitNotScalar> {
