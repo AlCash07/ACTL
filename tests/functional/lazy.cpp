@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/functional/lazy.hpp>
-#include <actl_test/base/lifetime_counter.hpp>
+#include <actl_test/core/lifetime_counter.hpp>
 #include <map>
 #include <optional>
 #include "test.hpp"

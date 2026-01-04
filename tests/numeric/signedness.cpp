@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/numeric/signedness.hpp>
-#include <actl_test/base/is_equal_same_type.hpp>
+#include <actl_test/core/is_equal_same_type.hpp>
 #include <cstdint>
 
 static_assert(ac::is_equal_same_type(int32_t{3}, ac::to_signed(uint32_t{3})));

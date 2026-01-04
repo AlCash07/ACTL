@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/container/conversion/to_constant.hpp>
-#include <actl_test/base/is_equal_same_type.hpp>
+#include <actl_test/core/is_equal_same_type.hpp>
 #include "test.hpp"
 
 TEST_CASE("integral_constant conversion") {

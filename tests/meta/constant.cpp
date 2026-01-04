@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt).
 
 #include <actl/meta/constant.hpp>
-#include <actl_test/base/is_equal_same_type.hpp>
+#include <actl_test/core/is_equal_same_type.hpp>
 
 static_assert(ac::is_equal_same_type(false, ac::constant<false>::value));
 static_assert(ac::is_equal_same_type(2, ac::constant<2>::value));

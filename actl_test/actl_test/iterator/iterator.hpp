@@ -9,7 +9,7 @@
 #include <actl/core/none.hpp>
 #include <actl/range/iterator/traits/category.hpp>
 #include <actl/range/traits/associated_types.hpp>
-#include <actl_test/base/regular.hpp>
+#include <actl_test/core/regular.hpp>
 #include <actl_test/operation/relational_operators.hpp>
 #include <iterator>
 

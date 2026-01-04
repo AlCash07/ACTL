@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/range/access/all.hpp>
-#include <actl_test/base/is_equal_same_type.hpp>
+#include <actl_test/core/is_equal_same_type.hpp>
 #include <array>
 
 namespace test {
