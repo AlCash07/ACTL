@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/core/none.hpp>
 #include <actl/range/traits/associated_types.hpp>
-#include <actl/utility/none.hpp>
 
 namespace ac::graph {
 

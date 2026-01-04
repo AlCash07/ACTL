@@ -27,8 +27,8 @@ inline constexpr bool is_none_v = std::is_same_v<T, none>;
 
 // clang-format off
 template<typename T> struct void_to_none             { using type = T;          };
-template <>        struct void_to_none<void>       { using type = none;       };
-template <>        struct void_to_none<void const> { using type = none const; };
+template <>          struct void_to_none<void>       { using type = none;       };
+template <>          struct void_to_none<void const> { using type = none const; };
 // clang-format on
 
 template<typename T>

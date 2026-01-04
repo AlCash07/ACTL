@@ -8,5 +8,3 @@
 
 #include <actl/utility/index.hpp>
 #include <actl/utility/introspection.hpp>
-#include <actl/utility/none.hpp>
-#include <actl/utility/use_default.hpp>

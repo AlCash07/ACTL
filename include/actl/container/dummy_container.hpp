@@ -6,12 +6,12 @@
 
 #pragma once
 
+#include <actl/core/none.hpp>
 #include <actl/numeric/utility/hash_access.hpp>
 #include <actl/range/iterator/integer_iterator.hpp>
 #include <actl/range/traits/properties.hpp>
 #include <actl/std/utility.hpp>
 #include <actl/utility/index.hpp>
-#include <actl/utility/none.hpp>
 
 namespace ac {
 

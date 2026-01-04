@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/AC_ASSERT.hpp>
-#include <actl/utility/use_default.hpp>
+#include <actl/core/use_default.hpp>
 
 namespace ac {
 

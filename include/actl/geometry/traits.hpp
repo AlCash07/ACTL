@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <actl/core/use_default.hpp>
 #include <actl/operation/scalar/all.hpp>
 #include <actl/utility/index.hpp>
-#include <actl/utility/use_default.hpp>
 
 namespace ac {
 

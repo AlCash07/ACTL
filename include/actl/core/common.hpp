@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/AC_ASSERT.hpp>
+#include <actl/core/none.hpp>
 #include <actl/core/scalar_operation.hpp>
-#include <actl/utility/none.hpp>
 
 namespace ac {
 

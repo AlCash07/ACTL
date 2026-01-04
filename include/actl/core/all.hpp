@@ -11,3 +11,6 @@
 #include <actl/core/common.hpp>
 #include <actl/core/copy.hpp>
 #include <actl/core/if_else.hpp>
+#include <actl/core/none.hpp>
+#include <actl/core/scalar_operation.hpp>
+#include <actl/core/use_default.hpp>
