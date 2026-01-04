@@ -12,6 +12,23 @@
 
 namespace ac {
 
+/// Evaluates the expression.
+///
+/// If the passed value is not an expression then its reference
+/// is forwarded with value category preserved, without making a copy.
+///
+/// @note The name is chosen as abbreviated "eval" instead of "evaluate",
+/// because it can be used often and a shorter name is helpful.
+/// Also, it's consistent with C++ libraries that support lazy evaluation:
+/// - Eigen:
+///   https://libeigen.gitlab.io/eigen/docs-nightly/classEigen_1_1DenseBase.html#aa73e57a2f0f7cfcb4ad4d55ea0b6414b
+/// - xtensor:
+///   https://xtensor.readthedocs.io/en/latest/expression.html#forcing-evaluation
+/// As well as scripting languages:
+/// - Python:
+///   https://docs.python.org/3/library/functions.html#eval
+/// - JavaScript:
+///   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 template<typename T>
     requires(!is_expression_v<T>)
 constexpr decltype(auto) eval(T&& x) {
