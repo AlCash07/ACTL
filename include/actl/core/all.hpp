@@ -9,8 +9,9 @@
 #include <actl/core/arg.hpp>
 #include <actl/core/as.hpp>
 #include <actl/core/common.hpp>
-#include <actl/core/copy.hpp>
+#include <actl/core/copy/all.hpp>
 #include <actl/core/if_else.hpp>
+#include <actl/core/move/all.hpp>
 #include <actl/core/none.hpp>
 #include <actl/core/scalar_operation.hpp>
 #include <actl/core/use_default.hpp>
