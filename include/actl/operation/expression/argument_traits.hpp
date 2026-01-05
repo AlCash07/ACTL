@@ -33,22 +33,4 @@ using value_type_if_t = typename value_if<B, T>::type;
 
 } // namespace detail
 
-template<typename T>
-struct value_if_cheap {
-    using type = T;
-};
-
-template<typename T>
-struct value_if_cheap<T&> {
-    static constexpr bool is_copy_cheap =
-        std::is_empty_v<T> || std::is_arithmetic_v<T>;
-    // sizeof(T) <= sizeof(void*) && std::is_trivially_copyable_v<T>;
-
-    using type =
-        std::conditional_t<is_copy_cheap, std::remove_const_t<T>, T const&>;
-};
-
-template<typename T>
-using value_if_cheap_t = typename value_if_cheap<T>::type;
-
 } // namespace ac
