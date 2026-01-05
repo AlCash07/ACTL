@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN.hpp>
 #include <actl/operation/operation/Operation.hpp>
 #include <actl/operation/operation/inout.hpp>
 #include <actl/operation/operation/operation_traits.hpp>
@@ -47,15 +48,15 @@ struct operation_base {
     ///   In either case, the arguments are never modified
     ///   unless wrapped into ac::out or ac::inout.
     template<typename... Args>
-    constexpr auto operator()(Args&&... args) const& {
-        return expression{derived(), std::forward<Args>(args)...};
-    }
+    constexpr auto operator()(Args&&... args) const& //
+        AC_DEDUCE_NOEXCEPT_AND_RETURN(               //
+            expression{this->derived(), std::forward<Args>(args)...}
+        )
     template<typename... Args>
-    constexpr auto operator()(Args&&... args) && {
-        return expression{
-            std::move(*this).derived(), std::forward<Args>(args)...
-        };
-    }
+        constexpr auto operator()(Args&&... args) &&
+        AC_DEDUCE_NOEXCEPT_AND_RETURN( //
+            expression{std::move(*this).derived(), std::forward<Args>(args)...}
+        )
 
     /// Evaluates operation immediately into the ac::inout argument,
     /// also using it as one of the inputs.

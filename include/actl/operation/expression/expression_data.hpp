@@ -49,7 +49,10 @@ public:
         requires(std::is_constructible_v<Op, OpT &&> &&
                  sizeof...(ArgsT) == argument_count &&
                  (... && std::is_constructible_v<Args, ArgsT>))
-    constexpr expression_data(OpT&& op, ArgsT&&... args)
+    constexpr expression_data(OpT&& op, ArgsT&&... args) noexcept(
+        (std::is_nothrow_constructible_v<Op, OpT> && ... &&
+         std::is_nothrow_constructible_v<Args, ArgsT>)
+    )
         : operation{std::forward<OpT>(op)}
         , arguments{std::forward<ArgsT>(args)...} {}
 };
