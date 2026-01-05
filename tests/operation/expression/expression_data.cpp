@@ -5,6 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/meta/constant.hpp>
+#include <actl/numeric/arithmetic/additive/add.hpp>
 #include <actl/operation/operation/operation_base.hpp>
 #include "core/int_move_copy.hpp"
 #include "test.hpp"
@@ -66,4 +67,17 @@ TEST_CASE("operation_base without ac::inout arguments creates an expression") {
     test_lvalue_arguments<int_mo const, int_cmt const>();
     test_lvalue_arguments<int_momt, int_mo>();
     test_lvalue_arguments<int_momt const, int_mo const>();
+    /* expression size is the sum of its components */
+    static_assert(3 * sizeof(int) == sizeof(sum<int_mo>{{}, 0}(int_mo{1}, 2)));
+    /* empty operation */
+    static_assert(2 * sizeof(int) == sizeof(ac::add(1, 2)));
+    /* empty argument */
+    static_assert(
+        2 * sizeof(int) == sizeof(sum<int_mo>{{}, 0}(int_mo{1}, 2_c))
+    );
+    /* empty operation and arguments */
+    // TODO: currently fails because of std::tuple.
+    // static_assert(std::is_empty_v<decltype(ac::add_integer(1_c, 2_c))>);
+    // TODO: currently fails because of std::tuple.
+    // static_assert(std::is_trivially_copyable_v<decltype(ac::add(1, 2))>);
 }

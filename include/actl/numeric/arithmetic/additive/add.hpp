@@ -35,7 +35,7 @@ constexpr decltype(auto) operator+=(L&& l, R&& r) {
     return add(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
 
-struct AddIntegers : operation_base<AddIntegers> {
+struct AddInteger : operation_base<AddInteger> {
     using operation_category = additive_operation;
 
     using parent = Add;
@@ -51,10 +51,10 @@ struct AddIntegers : operation_base<AddIntegers> {
         return l + r;
     }
 };
-AC_REGISTER_OVERLOAD(AddIntegers)
-inline constexpr AddIntegers add_integers;
+AC_REGISTER_OVERLOAD(AddInteger)
+inline constexpr AddInteger add_integer;
 
-struct AddFloats : operation_base<AddFloats> {
+struct AddFloat : operation_base<AddFloat> {
     using operation_category = additive_operation;
 
     using parent = Add;
@@ -70,7 +70,7 @@ struct AddFloats : operation_base<AddFloats> {
         return l + r;
     }
 };
-AC_REGISTER_OVERLOAD(AddFloats)
-inline constexpr AddFloats add_floats;
+AC_REGISTER_OVERLOAD(AddFloat)
+inline constexpr AddFloat add_float;
 
 } // namespace ac

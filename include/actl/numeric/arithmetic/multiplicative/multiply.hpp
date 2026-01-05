@@ -34,7 +34,7 @@ constexpr decltype(auto) operator*=(L&& l, R&& r) {
     return multiply(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
 
-struct MultiplyIntegers : operation_base<MultiplyIntegers> {
+struct MultiplyInteger : operation_base<MultiplyInteger> {
     using parent = Multiply;
 
     static constexpr bool is_associative = true;
@@ -48,10 +48,10 @@ struct MultiplyIntegers : operation_base<MultiplyIntegers> {
         return l * r;
     }
 };
-AC_REGISTER_OVERLOAD(MultiplyIntegers)
-inline constexpr MultiplyIntegers miltiply_integers;
+AC_REGISTER_OVERLOAD(MultiplyInteger)
+inline constexpr MultiplyInteger miltiply_integer;
 
-struct MultiplyFloats : operation_base<MultiplyFloats> {
+struct MultiplyFloat : operation_base<MultiplyFloat> {
     using parent = Multiply;
 
     // floating point multiplication is neither associative nor commutative
@@ -65,7 +65,7 @@ struct MultiplyFloats : operation_base<MultiplyFloats> {
         return l * r;
     }
 };
-AC_REGISTER_OVERLOAD(MultiplyFloats)
-inline constexpr MultiplyFloats miltiply_floats;
+AC_REGISTER_OVERLOAD(MultiplyFloat)
+inline constexpr MultiplyFloat miltiply_float;
 
 } // namespace ac
