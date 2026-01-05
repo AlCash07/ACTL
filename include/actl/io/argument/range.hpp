@@ -11,6 +11,7 @@
 #include <actl/io/argument/size.hpp>
 #include <actl/io/core/batch.hpp>
 #include <actl/meta/static_size.hpp>
+#include <actl/range/traits/associated_types.hpp>
 #include <actl/range/traits/associative_range.hpp>
 #include <actl/range/traits/concepts.hpp>
 #include <actl/range/traits/properties.hpp>

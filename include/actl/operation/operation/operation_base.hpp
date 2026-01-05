@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN.hpp>
+#include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
 #include <actl/operation/operation/Operation.hpp>
 #include <actl/operation/operation/inout.hpp>
 #include <actl/operation/operation/operation_traits.hpp>

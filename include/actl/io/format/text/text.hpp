@@ -13,6 +13,7 @@
 #include <actl/io/io.hpp>
 #include <actl/io/utility/raw.hpp>
 #include <actl/numeric/bit/operation.hpp>
+#include <actl/range/traits/associated_types.hpp>
 #include <actl/string/traits.hpp>
 
 namespace ac::io {

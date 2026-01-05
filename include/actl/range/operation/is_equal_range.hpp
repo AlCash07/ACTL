@@ -8,6 +8,7 @@
 
 #include <actl/numeric/comparison/equality.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
+#include <actl/range/traits/associated_types.hpp>
 #include <algorithm>
 
 namespace ac {

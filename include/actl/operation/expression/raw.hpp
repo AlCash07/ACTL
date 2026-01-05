@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/range/traits/associated_types.hpp>
+#include <type_traits>
 
 namespace ac {
 
@@ -15,22 +15,5 @@ struct raw : std::remove_cvref<T> {};
 
 template<typename T>
 using raw_t = typename raw<T>::type;
-
-namespace detail {
-
-template<bool B, typename T>
-struct value_if {
-    using type = range_value_t<raw_t<T>>;
-};
-
-template<typename T>
-struct value_if<false, T> {
-    using type = T;
-};
-
-template<bool B, typename T>
-using value_type_if_t = typename value_if<B, T>::type;
-
-} // namespace detail
 
 } // namespace ac

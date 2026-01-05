@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/core/all.hpp>
+#include <actl/core/common.hpp>
 #include "test.hpp"
 
 TEST_CASE("common") {
