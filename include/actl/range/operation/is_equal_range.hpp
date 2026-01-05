@@ -8,7 +8,6 @@
 
 #include <actl/numeric/comparison/equality.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/range/traits/nesting_depth.hpp>
 #include <algorithm>
 
 namespace ac {
@@ -32,7 +31,9 @@ inline constexpr operation_composer<IsEqualRange> is_equal_range;
 template<Range L, Range R>
 struct overload<IsEqual, L, R> {
     static constexpr auto formula =
-        is_equal_range(resolve_nested<L, R>(is_equal));
+        is_equal_range(resolve_overload<range_value_t<L>, range_value_t<R>>(
+            default_context{}, is_equal
+        ));
 };
 
 } // namespace ac

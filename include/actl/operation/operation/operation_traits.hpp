@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/meta/nesting_depth.hpp>
 #include <actl/operation/operation/Operation.hpp>
 #include <limits>
 
@@ -14,9 +13,5 @@ namespace ac {
 
 template<Operation Op, typename T>
 struct identity_element;
-
-// TODO: we shouldn't need this.
-template<Operation T>
-struct nesting_depth<T> : constant<std::numeric_limits<size_t>::max()> {};
 
 } // namespace ac

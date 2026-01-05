@@ -556,10 +556,13 @@ struct TensorEqual {
     }
 };
 
-template<Tensor T, Tensor U>
-struct overload<IsEqual, T, U> {
-    static constexpr auto formula =
-        operation_composer<TensorEqual>(resolve_nested<T, U>(is_equal));
+template<Tensor L, Tensor R>
+struct overload<IsEqual, L, R> {
+    static constexpr auto formula = operation_composer<TensorEqual>(
+        resolve_overload<range_value_t<L>, range_value_t<R>>(
+            default_context{}, is_equal
+        )
+    );
 };
 
 /// N-dimensional array with dimensions completely or partially known at compile

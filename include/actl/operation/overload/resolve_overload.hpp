@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/meta/nesting_depth.hpp>
 #include <actl/operation/overload/overload.hpp>
 #include <algorithm>
 
@@ -34,15 +33,6 @@ template<typename... Ts, typename Context, typename Op>
 constexpr decltype(auto) resolve_overload(Context context, Op&& op) {
     return overload_resolver<Context, raw_t<Op>, raw_t<Ts>...>::resolve(
         context, std::forward<Op>(op)
-    );
-}
-
-template<typename... Ts, Operation Op>
-constexpr decltype(auto) resolve_nested(Op const& op) {
-    constexpr auto max_depth = max_nesting_depth_v<Ts...>;
-    return resolve_overload<
-        detail::value_type_if_t<nesting_depth_v<Ts> == max_depth, Ts>...>(
-        default_context{}, op
     );
 }
 

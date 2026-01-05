@@ -10,7 +10,6 @@
 #include <actl/numeric/comparison/compare3way.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
-#include <actl/range/traits/nesting_depth.hpp>
 
 namespace ac {
 
@@ -38,8 +37,11 @@ inline constexpr operation_composer<LexicographicalCompareRange>
 
 template<Range L, Range R>
 struct overload<Compare3Way, L, R> {
-    static constexpr auto formula =
-        lexicographical_compare_range(resolve_nested<L, R>(compare3way));
+    static constexpr auto formula = lexicographical_compare_range(
+        resolve_overload<range_value_t<L>, range_value_t<R>>(
+            default_context{}, compare3way
+        )
+    );
 };
 
 template<Range L, Range R>
