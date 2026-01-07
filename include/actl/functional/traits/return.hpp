@@ -27,18 +27,18 @@ struct with_return_type {
         traits::is_noexcept>;
 };
 template<typename... Ts, typename ReturnType>
-struct with_return_type<type_list<Ts...>, ReturnType> {
+struct with_return_type<type_array<Ts...>, ReturnType> {
     using type = assemble_function_t<
         function_category::free,
         ReturnType,
-        type_list<Ts...>,
+        type_array<Ts...>,
         false,
         false>;
 };
 /// Resulting type is different for different input types T:
 /// - If T is a function, then it's a function with the given return type,
 ///   but otherwise identical to T.
-/// - If T is an ac::type_list template instantiaion, then it's a
+/// - If T is an ac::type_array template instantiaion, then it's a
 ///   free function with the given return type and T as its parameters list.
 template<typename T, typename ReturnType>
 using with_return_type_t = typename with_return_type<T, ReturnType>::type;

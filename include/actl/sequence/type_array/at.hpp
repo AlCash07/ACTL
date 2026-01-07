@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/type_list/type_list.hpp>
+#include <actl/sequence/type_array/type_array.hpp>
 
 namespace ac {
 
@@ -27,19 +27,19 @@ using at_t = typename type_at<TypeList, Index>::type;
 // TODO: use Clang's __type_pack_element builtin.
 // The difficulty is in reliably checking Clang version for it.
 template<typename T0, typename... Types>
-struct type_at<type_list<T0, Types...>, 0> {
+struct type_at<type_array<T0, Types...>, 0> {
     using type = T0;
 };
 template<typename T0, typename T1, typename... Types>
-struct type_at<type_list<T0, T1, Types...>, 1> {
+struct type_at<type_array<T0, T1, Types...>, 1> {
     using type = T1;
 };
 template<typename T0, typename T1, typename T2, typename... Types>
-struct type_at<type_list<T0, T1, T2, Types...>, 2> {
+struct type_at<type_array<T0, T1, T2, Types...>, 2> {
     using type = T2;
 };
 template<typename T0, typename T1, typename T2, typename T3, typename... Types>
-struct type_at<type_list<T0, T1, T2, T3, Types...>, 3> {
+struct type_at<type_array<T0, T1, T2, T3, Types...>, 3> {
     using type = T3;
 };
 template<
@@ -49,26 +49,26 @@ template<
     typename T3,
     typename T4,
     typename... Types>
-struct type_at<type_list<T0, T1, T2, T3, T4, Types...>, 4> {
+struct type_at<type_array<T0, T1, T2, T3, T4, Types...>, 4> {
     using type = T4;
 };
 // clang-format off
 template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename... Types>
-struct type_at<type_list<T0, T1, T2, T3, T4, T5, Types...>, 5> {
+struct type_at<type_array<T0, T1, T2, T3, T4, T5, Types...>, 5> {
     using type = T5;
 };
 template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename... Types>
-struct type_at<type_list<T0, T1, T2, T3, T4, T5, T6, Types...>, 6> {
+struct type_at<type_array<T0, T1, T2, T3, T4, T5, T6, Types...>, 6> {
     using type = T6;
 };
 template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename... Types>
-struct type_at<type_list<T0, T1, T2, T3, T4, T5, T6, T7, Types...>, 7> {
+struct type_at<type_array<T0, T1, T2, T3, T4, T5, T6, T7, Types...>, 7> {
     using type = T7;
 };
 template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename... Types, size_t Index>
     requires(Index >= 8)
-struct type_at<type_list<T0, T1, T2, T3, T4, T5, T6, T7, Types...>, Index> {
-    using type = at_t<type_list<Types...>, Index - 8>;
+struct type_at<type_array<T0, T1, T2, T3, T4, T5, T6, T7, Types...>, Index> {
+    using type = at_t<type_array<Types...>, Index - 8>;
 };
 // clang-format on
 

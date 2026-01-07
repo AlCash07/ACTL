@@ -10,13 +10,13 @@
 
 namespace ac {
 
-/// List of types intended for meta-programming.
+/// Array of types intended for meta-programming.
 /// Should be preferred over `std::tuple` when
 /// the types don't have to be instantiated
 /// because of improved compilation time, see
 /// https://marzer.github.io/md_blog_2021_05_31_compilation_speed_humps_std_tuple.html
 template<typename... Types>
-struct type_list {
+struct type_array {
     static constexpr size_t length = sizeof...(Types);
 };
 

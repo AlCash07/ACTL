@@ -61,16 +61,17 @@ struct modify_class;
 
 template<
     MemberFunction MF,
-    template<typename> typename Modifier,
+    template<typename>
+    typename Modifier,
     typename Class,
     typename... Parameters>
-struct modify_class<MF, Modifier, type_list<Class, Parameters...>> {
+struct modify_class<MF, Modifier, type_array<Class, Parameters...>> {
     using Traits = function_traits<MF>;
 
     using type = assemble_function_t<
         function_category::member,
         typename Traits::return_type,
-        type_list<typename Modifier<Class>::type, Parameters...>,
+        type_array<typename Modifier<Class>::type, Parameters...>,
         Traits::accepts_variadic_arguments,
         Traits::is_noexcept>;
 };
@@ -88,7 +89,7 @@ struct as_member_of<FF, Class> {
     using type = assemble_function_t<
         function_category::member,
         typename traits::return_type,
-        concat_t<type_list<Class>, typename traits::parameters_type>,
+        concat_t<type_array<Class>, typename traits::parameters_type>,
         traits::accepts_variadic_arguments,
         traits::is_noexcept>;
 };

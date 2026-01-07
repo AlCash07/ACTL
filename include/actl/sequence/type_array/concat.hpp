@@ -6,30 +6,33 @@
 
 #pragma once
 
-#include <actl/meta/type_list/type_list.hpp>
+#include <actl/sequence/type_array/type_array.hpp>
 
 namespace ac {
 
 template<typename... TypeLists>
 struct types_concat;
 
-/// Concatenation of the given TypeLists as a single ac::type_list.
+/// Concatenation of the given TypeLists as a single ac::type_array.
 template<typename... TypeLists>
 using concat_t = typename types_concat<TypeLists...>::type;
 
 template<typename... Types>
-struct types_concat<type_list<Types...>> {
-    using type = type_list<Types...>;
+struct types_concat<type_array<Types...>> {
+    using type = type_array<Types...>;
 };
 
 template<>
 struct types_concat<> {
-    using type = type_list<>;
+    using type = type_array<>;
 };
 
 template<typename... Types0, typename... Types1, typename... TypeLists>
-struct types_concat<type_list<Types0...>, type_list<Types1...>, TypeLists...> {
-    using type = concat_t<type_list<Types0..., Types1...>, TypeLists...>;
+struct types_concat<
+    type_array<Types0...>,
+    type_array<Types1...>,
+    TypeLists...> {
+    using type = concat_t<type_array<Types0..., Types1...>, TypeLists...>;
 };
 
 } // namespace ac

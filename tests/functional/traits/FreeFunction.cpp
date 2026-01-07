@@ -10,7 +10,7 @@
 template<typename Fn, bool AcceptsVArgs, bool IsNoexcept>
 void test_void_free_function_traits() {
     static_assert(std::is_same_v<void, ac::return_t<Fn>>);
-    static_assert(std::is_same_v<ac::type_list<int>, ac::parameters_t<Fn>>);
+    static_assert(std::is_same_v<ac::type_array<int>, ac::parameters_t<Fn>>);
     static_assert(AcceptsVArgs == ac::accepts_variadic_arguments_v<Fn>);
     static_assert(IsNoexcept == ac::is_noexcept_v<Fn>);
 }
@@ -39,7 +39,7 @@ using fn_parameters = //
     int && (int&, int const&, int*, int const*, ...) noexcept;
 static_assert(std::is_same_v<int&&, ac::return_t<fn_parameters>>);
 static_assert(std::is_same_v<
-              ac::type_list<int&, int const&, int*, int const*>,
+              ac::type_array<int&, int const&, int*, int const*>,
               ac::parameters_t<fn_parameters>>);
 static_assert(ac::accepts_variadic_arguments_v<fn_parameters>);
 static_assert(ac::is_noexcept_v<fn_parameters>);
@@ -87,7 +87,7 @@ static_assert(std::is_same_v<fn, ac::remove_noexcept_t<fn>>); // unchanged
 /* with_return_type_t */
 static_assert(std::is_same_v<
               char(int, long),
-              ac::with_return_type_t<ac::type_list<int, long>, char>>);
+              ac::with_return_type_t<ac::type_array<int, long>, char>>);
 static_assert(std::is_same_v<char(int), ac::with_return_type_t<fn, char>>);
 static_assert(std::is_same_v<
               char(int, ...) noexcept,

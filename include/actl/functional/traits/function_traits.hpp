@@ -8,9 +8,9 @@
 
 // These includes aren't used in this file itself,
 // but are needed for all the specializations of function_traits.
-#include <actl/meta/type_list/type_list.hpp>
 #include <actl/preprocessor/AC_IS_EMPTY.hpp>
 #include <actl/preprocessor/AC_UNPARENTHESIZED.hpp>
+#include <actl/sequence/type_array/type_array.hpp>
 #include <type_traits>
 
 namespace ac {
@@ -20,7 +20,7 @@ enum class function_category { free, member, object };
 /// If @p T is a function, then the following members are specified:
 /// - category as ac::function_category;
 /// - return_type;
-/// - parameters_type as ac::type_list;
+/// - parameters_type as ac::type_array;
 /// - accepts_variadic_arguments as a `bool`;
 /// - is_noexcept as a `bool`.
 template<typename T>

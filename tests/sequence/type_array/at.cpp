@@ -4,15 +4,15 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/meta/type_list/at.hpp>
+#include <actl/sequence/type_array/at.hpp>
 #include <type_traits>
 
 template<size_t Index>
 struct I {};
 
-static_assert(std::is_same_v<int, ac::at_t<ac::type_list<int>, 0>>);
+static_assert(std::is_same_v<int, ac::at_t<ac::type_array<int>, 0>>);
 
-using ShortList = ac::type_list<I<0>, I<1>, I<2>>;
+using ShortList = ac::type_array<I<0>, I<1>, I<2>>;
 
 static_assert(std::is_same_v<I<0>, ac::at_t<ShortList, 0>>);
 static_assert(std::is_same_v<I<1>, ac::at_t<ShortList, 1>>);
@@ -20,7 +20,7 @@ static_assert(std::is_same_v<I<2>, ac::at_t<ShortList, 2>>);
 
 // The implementation for length 8+ is different,
 // so we need a long enough list to test it.
-using LongList = ac::type_list<
+using LongList = ac::type_array<
     I<0>,
     I<1>,
     I<2>,

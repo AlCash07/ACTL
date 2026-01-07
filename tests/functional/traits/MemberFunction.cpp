@@ -17,7 +17,7 @@ void check() {
     using MF = decltype(Member);
     static_assert(std::is_same_v<int, ac::return_t<MF>>);
     static_assert(std::is_same_v<
-                  ac::type_list<ClassParameter>,
+                  ac::type_array<ClassParameter>,
                   ac::parameters_t<MF>>);
     static_assert(1ul == ac::arity_v<MF>);
     static_assert(std::is_same_v<ClassParameter, ac::class_parameter_t<MF>>);
@@ -84,7 +84,7 @@ TEST_CASE("member function pointers") {
 using fn_parameters = decltype(&M::fn_parameters);
 static_assert(std::is_same_v<int const&, ac::return_t<fn_parameters>>);
 static_assert(std::is_same_v<
-              ac::type_list<M const&, int, int&&>,
+              ac::type_array<M const&, int, int&&>,
               ac::parameters_t<fn_parameters>>);
 static_assert(ac::accepts_variadic_arguments_v<fn_parameters>);
 static_assert(ac::is_noexcept_v<fn_parameters>);

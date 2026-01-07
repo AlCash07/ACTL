@@ -50,7 +50,7 @@ struct function_traits<Function*> : function_traits<Function> {};
                                NOEXCEPT> {                                    \
         static constexpr auto category = function_category::free;             \
         using return_type = Return;                                           \
-        using parameters_type = type_list<Parameters...>;                     \
+        using parameters_type = type_array<Parameters...>;                    \
         static constexpr bool accepts_variadic_arguments =                    \
             !AC_IS_EMPTY(VARGS);                                              \
         static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);           \
@@ -60,7 +60,7 @@ struct function_traits<Function*> : function_traits<Function> {};
     struct assemble_function<                                                 \
         function_category::free,                                              \
         Return,                                                               \
-        type_list<Parameters...>,                                             \
+        type_array<Parameters...>,                                            \
         !AC_IS_EMPTY(VARGS),                                                  \
         !AC_IS_EMPTY(NOEXCEPT)> {                                             \
         using type = Return(Parameters... AC_UNPARENTHESIZED VARGS) NOEXCEPT; \

@@ -81,29 +81,30 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
 
 // We could inherit function_traits of a corresponding free function here,
 // but that would create an unnecessary template instantiation.
-#define AC_MF_FULL(VARGS, CV_REF, NOEXCEPT)                                    \
-    template<typename Return, typename Class, typename... Parameters>          \
-    struct function_traits<Return (Class::*)(Parameters... AC_UNPARENTHESIZED  \
-                                                 VARGS) CV_REF NOEXCEPT> {     \
-        static constexpr auto category = function_category::member;            \
-        using return_type = Return;                                            \
-        using parameters_type =                                                \
-            type_list<detail::class_t<Class CV_REF>, Parameters...>;           \
-        using unique_parameters_type = type_list<Class CV_REF, Parameters...>; \
-        static constexpr bool accepts_variadic_arguments =                     \
-            !AC_IS_EMPTY(VARGS);                                               \
-        static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);            \
-    };                                                                         \
-                                                                               \
-    template<typename Return, typename Class, typename... Parameters>          \
-    struct assemble_function<                                                  \
-        function_category::member,                                             \
-        Return,                                                                \
-        type_list<Class CV_REF, Parameters...>,                                \
-        !AC_IS_EMPTY(VARGS),                                                   \
-        !AC_IS_EMPTY(NOEXCEPT)> {                                              \
-        using type = Return (Class::*)(Parameters... AC_UNPARENTHESIZED VARGS  \
-        ) CV_REF NOEXCEPT;                                                     \
+#define AC_MF_FULL(VARGS, CV_REF, NOEXCEPT)                                   \
+    template<typename Return, typename Class, typename... Parameters>         \
+    struct function_traits<Return (Class::*)(Parameters... AC_UNPARENTHESIZED \
+                                                 VARGS) CV_REF NOEXCEPT> {    \
+        static constexpr auto category = function_category::member;           \
+        using return_type = Return;                                           \
+        using parameters_type =                                               \
+            type_array<detail::class_t<Class CV_REF>, Parameters...>;         \
+        using unique_parameters_type =                                        \
+            type_array<Class CV_REF, Parameters...>;                          \
+        static constexpr bool accepts_variadic_arguments =                    \
+            !AC_IS_EMPTY(VARGS);                                              \
+        static constexpr bool is_noexcept = !AC_IS_EMPTY(NOEXCEPT);           \
+    };                                                                        \
+                                                                              \
+    template<typename Return, typename Class, typename... Parameters>         \
+    struct assemble_function<                                                 \
+        function_category::member,                                            \
+        Return,                                                               \
+        type_array<Class CV_REF, Parameters...>,                              \
+        !AC_IS_EMPTY(VARGS),                                                  \
+        !AC_IS_EMPTY(NOEXCEPT)> {                                             \
+        using type = Return (Class::*)(Parameters... AC_UNPARENTHESIZED VARGS \
+        ) CV_REF NOEXCEPT;                                                    \
     };
 
 AC_MF_VARGS()

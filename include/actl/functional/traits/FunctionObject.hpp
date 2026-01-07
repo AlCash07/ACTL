@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/traits/MemberFunction.hpp>
-#include <actl/meta/type_list/slice.hpp>
+#include <actl/sequence/type_array/slice.hpp>
 
 namespace ac {
 

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/type_list/at.hpp>
-#include <actl/meta/type_list/concat.hpp>
-#include <actl/meta/type_list/prefix.hpp>
-#include <actl/meta/type_list/type_list.hpp>
+#include <actl/sequence/type_array/at.hpp>
+#include <actl/sequence/type_array/concat.hpp>
+#include <actl/sequence/type_array/prefix.hpp>
+#include <actl/sequence/type_array/type_array.hpp>

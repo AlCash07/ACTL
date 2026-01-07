@@ -85,7 +85,7 @@ Parameters
 Trait name                     Example 1                       Example 2                        
 ============================== =============================== =================================
 Input type `Fn`                `float(int, int) noexcept`      `void(const char*, ...)`         
-`parameters_t`                 `ac::type_list<int, int>`       `ac::type_list<const char*>`     
+`parameters_t`                 `ac::type_array<int, int>`       `ac::type_array<const char*>`     
 `arity_v`                      `2`                             `1`                              
 `parameter_at_t<Fn, 0>`        `int`                           `const char*`                    
 ============================== =============================== =================================

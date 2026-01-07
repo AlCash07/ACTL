@@ -17,4 +17,3 @@
 #include <actl/meta/static_size.hpp>
 #include <actl/meta/strict_common_type.hpp>
 #include <actl/meta/template_type.hpp>
-#include <actl/meta/type_list/all.hpp>

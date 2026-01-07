@@ -8,11 +8,11 @@
 
 #include <actl/functional/traits/FreeFunction.hpp>
 #include <actl/functional/traits/FunctionObject.hpp>
-#include <actl/meta/type_list/at.hpp>
+#include <actl/sequence/type_array/at.hpp>
 
 namespace ac {
 
-/// Parameter types of a function as ac::type_list.
+/// Parameter types of a function as ac::type_array.
 ///
 /// @note Arguments name is sometimes incorrectly used instead of parameters.
 /// Arguments are the values passed to the function when called,
