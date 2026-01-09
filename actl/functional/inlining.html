@@ -200,7 +200,7 @@ We address this by exposing related compiler extensions in a portable way.</p>
 <dd><p>Macro to prevent inlining of a function, typically to reduce binary size. For example, <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Exception</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span>
 <span class="p">[[</span><span class="n">noreturn</span><span class="p">]]</span><span class="w"> </span><span class="n">AC_NEVER_INLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">throw_exception</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">Exception</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Args</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">)...};</span>
-<span class="p">}</span><span class="w"> </span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </p>

@@ -165,7 +165,7 @@
 <span class="target" id="_a_c___u_n_p_a_r_e_n_t_h_e_s_i_z_e_d_8hpp_1a50e2ba6617dcc9e59c3ce83678f8044d"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_UNPARENTHESIZED</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_UNPARENTHESIZED" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Removes the outermost parenthesis from a macro parameter.</p>
 <p>This is useful, because commas separate arguments to function macros, but commas can sometimes be needed inside an argument as well.</p>
-<p>The solution is to wrap such an argument into extra parenthesis like <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">MACRO</span><span class="p">((</span><span class="n">foo</span><span class="p">,</span><span class="w"> </span><span class="n">bar</span><span class="p">))</span><span class="w"> </span>
+<p>The solution is to wrap such an argument into extra parenthesis like <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">MACRO</span><span class="p">((</span><span class="n">foo</span><span class="p">,</span><span class="w"> </span><span class="n">bar</span><span class="p">))</span>
 </pre></div>
 </div>
  and use #AC_UNPARENTHESIZED in the final macro expansion. </p>

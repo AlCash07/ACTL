@@ -189,7 +189,7 @@ doesn’t help either (see Notes).</p>
 <dd><p>Macro that avoids code duplication by returning the given expression from the function and deducing the <code class="docutils literal notranslate"><span class="pre">noexcept</span></code> specification from it. For example, the following operator <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
 <span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="p">(</span><span class="k">noexcept</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">;</span>
-<span class="p">}</span><span class="w"> </span>
+<span class="p">}</span>
 </pre></div>
 </div>
  can be rewritten as <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
@@ -208,7 +208,7 @@ doesn’t help either (see Notes).</p>
 <span class="k">auto</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="p">(</span><span class="k">noexcept</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">))</span>
 <span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">;</span>
-<span class="p">}</span><span class="w"> </span>
+<span class="p">}</span>
 </pre></div>
 </div>
  can be rewritten as <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
@@ -227,7 +227,7 @@ doesn’t help either (see Notes).</p>
 <span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="p">(</span><span class="k">noexcept</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">))</span>
 <span class="w">    </span><span class="k">requires</span><span class="w"> </span><span class="k">requires</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">l</span><span class="p">;</span>
-<span class="p">}</span><span class="w"> </span>
+<span class="p">}</span>
 </pre></div>
 </div>
  can be rewritten as <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
@@ -248,7 +248,7 @@ doesn’t help either (see Notes).</p>
  can be rewritten as <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Derived</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">AC_DEDUCE_NOEXCEPT_AND_INITIALIZE</span><span class="p">(</span><span class="n">Base</span><span class="p">{</span><span class="n">x</span><span class="p">})</span><span class="w"> </span><span class="p">{}</span>
 </pre></div>
 </div>
- </p>
+</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Data members aren’t supported, only base classes and delegated constructors. </p>
