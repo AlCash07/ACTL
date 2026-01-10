@@ -13,7 +13,7 @@ namespace ac {
 
 struct default_context {};
 
-template<typename Context, typename Op, typename... Ts>
+template<Operation Op, typename ArgsArray, typename Context>
 struct context_overload {
     struct is_resolved;
 
@@ -26,29 +26,29 @@ struct context_overload {
     }
 };
 
-template<typename Context, typename Op, typename... Ts>
-struct overload_resolver : context_overload<Context, Op, Ts...> {};
+template<Operation Op, typename ArgsArray, typename Context>
+struct overload_resolver : context_overload<Op, ArgsArray, Context> {};
 
-template<typename... Ts, typename Context, typename Op>
+template<typename... Args, typename Context, typename Op>
 constexpr decltype(auto) resolve_overload(Context context, Op&& op) {
-    return overload_resolver<Context, raw_t<Op>, raw_t<Ts>...>::resolve(
-        context, std::forward<Op>(op)
-    );
+    return overload_resolver<raw_t<Op>, type_array<raw_t<Args>...>, Context>::
+        resolve(context, std::forward<Op>(op));
 }
 
-template<typename... Ts>
-inline constexpr bool is_overload_resolved_v =
-    requires { typename overload_resolver<raw_t<Ts>...>::is_resolved; };
+template<Operation Op, typename ArgsArray, typename Context>
+inline constexpr bool is_overload_resolved_v = requires {
+    typename overload_resolver<raw_t<Op>, ArgsArray, Context>::is_resolved;
+};
 
-template<typename Context, Operation Op, typename... Ts>
-    requires requires { overload<Op, Ts...>::formula; }
-struct overload_resolver<Context, Op, Ts...> {
+template<typename Op, typename... Args, typename Context>
+    requires requires { overload<Op, Args...>::formula; }
+struct overload_resolver<Op, type_array<Args...>, Context> {
     template<typename Op1>
     static constexpr auto resolve(Context context, Op1&& op) {
-        return resolve_overload<Ts...>(
-            context,
-            std::remove_const_t<decltype(overload<Op, Ts...>::formula)>{}
-        );
+        using Formula =
+            std::remove_const_t<decltype(overload<Op, Args...>::formula)>;
+        return overload_resolver<Formula, type_array<Args...>, Context>::
+            resolve(context, Formula{});
     }
 };
 

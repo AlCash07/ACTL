@@ -16,27 +16,29 @@ struct policy_context : Base {
     P const& policy;
 };
 
-template<typename Base, typename Policy, Operation Op, typename... Ts>
+template<Operation Op, typename ArgsArray, typename Base, typename Policy>
     requires can_apply_policy_v<Op, Policy>
-struct context_overload<policy_context<Base, Policy>, Op, Ts...> {
+struct context_overload<Op, ArgsArray, policy_context<Base, Policy>> {
     template<typename Op1>
     static constexpr auto resolve(
         policy_context<Base, Policy> context, Op1&& op
     ) {
-        return resolve_overload<Ts...>(
-            Base{context}, apply_policy(std::forward<Op1>(op), context.policy)
-        );
+        auto&& new_op = apply_policy(std::forward<Op1>(op), context.policy);
+        return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Base>::
+            resolve(Base{context}, std::forward<decltype(new_op)>(new_op));
     }
 };
 
-template<typename Context, Operation Op, typename Policy, typename... Ts>
-struct overload_resolver<Context, tuned_operation<Op, Policy>, Ts...> {
+template<Operation Op, typename Policy, typename ArgsArray, typename Context>
+struct overload_resolver<tuned_operation<Op, Policy>, ArgsArray, Context> {
     static constexpr decltype(auto) resolve(
         Context context, tuned_operation<Op, Policy> const& op
     ) {
-        return resolve_overload<Ts...>(
-            policy_context<Context, Policy>{context, op.policy}, op.operation
-        );
+        using resolver = overload_resolver<
+            raw_t<Op>,
+            ArgsArray,
+            policy_context<Context, Policy>>;
+        return resolver::resolve({context, op.policy}, op.operation);
     }
 };
 

@@ -12,17 +12,25 @@ namespace ac {
 
 namespace detail {
 
-template<typename S, typename Context, Operation Op, typename... Ts>
+template<typename OE, typename ArgsArray, typename Context>
 struct expression_overload;
 
-template<size_t... Is, typename Context, Operation Op, typename... Ts>
-struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...> {
-    template<typename Op1, typename... Us>
+template<
+    Operation Op,
+    size_t... Is,
+    typename... Ts,
+    typename ArgsArray,
+    typename Context>
+struct expression_overload<
+    expression_data<Op, std::index_sequence<Is...>, Ts...>,
+    ArgsArray,
+    Context> {
+    template<typename OE, typename... Us>
     static constexpr auto make_expression(
-        Context context, Op1&& op, Us&&... xs
+        Context context, OE&& oe, Us&&... xs
     ) {
         return expression{
-            resolve_overload<Us...>(context, std::forward<Op1>(op)),
+            resolve_overload<Us...>(context, std::forward<OE>(oe)),
             std::forward<Us>(xs)...
         };
     }
@@ -32,7 +40,7 @@ struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...> {
         return make_expression(
             context,
             static_cast<OE&&>(oe).operation,
-            resolve_overload<Ts...>(
+            overload_resolver<raw_t<Ts>, ArgsArray, Context>::resolve(
                 context, std::get<Is>(static_cast<OE&&>(oe).arguments)
             )...
         );
@@ -41,16 +49,15 @@ struct expression_overload<std::index_sequence<Is...>, Context, Op, Ts...> {
 
 } // namespace detail
 
-template<typename Context, Operation Op, typename... Us, typename... Ts>
-    requires(
-        !(is_overload_resolved_v<Context, Op, Us...> &&
-          (... && is_overload_resolved_v<Context, Us, Ts...>))
-    )
-struct overload_resolver<Context, expression<Op, Us...>, Ts...>
+template<Operation Op, typename... Ts, typename ArgsArray, typename Context>
+    requires(!(
+        is_overload_resolved_v<raw_t<Op>, type_array<raw_t<Ts>...>, Context> &&
+        (... && is_overload_resolved_v<raw_t<Ts>, ArgsArray, Context>)
+    ))
+struct overload_resolver<expression<Op, Ts...>, ArgsArray, Context>
     : detail::expression_overload<
-          std::index_sequence_for<Us...>,
-          Context,
-          expression<Op, Us...>,
-          Ts...> {};
+          expression_data_t<Op, Ts...>,
+          ArgsArray,
+          Context> {};
 
 } // namespace ac

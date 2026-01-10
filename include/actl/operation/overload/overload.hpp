@@ -6,7 +6,8 @@
 
 #pragma once
 
-#include <type_traits>
+#include <actl/operation/operation/Operation.hpp>
+#include <actl/sequence/type_array/type_array.hpp>
 
 namespace ac {
 
@@ -19,7 +20,7 @@ struct default_overload<Op> {
     static constexpr auto formula = Op::formula;
 };
 
-template<Operation Op, typename... Ts>
+template<Operation Op, typename... Args>
 struct overload : default_overload<Op> {};
 
 #define AC_REGISTER_OVERLOAD(name)                    \
