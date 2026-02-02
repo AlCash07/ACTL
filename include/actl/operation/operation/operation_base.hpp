@@ -71,7 +71,7 @@ struct operation_base {
         static_assert(
             1 == (... + is_inout_v<Args>), "single inout argument expected"
         );
-        auto&& op = resolve_overload<Args...>(default_context{}, derived());
+        auto&& op = resolve_overload<Args...>(derived());
         auto& target = find_target(args...);
         op.evaluate_to(out{target}, remove_inout(args)...);
         return target;

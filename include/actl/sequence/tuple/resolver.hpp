@@ -22,7 +22,7 @@ struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
     static constexpr auto resolve_tuple(Composer composer, Op const& op) {
         return composer(resolve_overload<
                         std::tuple_element_t<Is, T>,
-                        std::tuple_element_t<Is, U>>(default_context{}, op)...);
+                        std::tuple_element_t<Is, U>>(op)...);
     }
 };
 

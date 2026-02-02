@@ -11,34 +11,33 @@
 
 namespace ac {
 
-template<typename Base, typename P>
-struct policy_context : Base {
-    P const& policy;
+template<typename Head, typename Tail>
+struct policy_stack {
+    Head const& head;
+    Tail const& tail;
 };
 
-template<Operation Op, typename ArgsArray, typename Base, typename Policy>
-    requires can_apply_policy_v<Op, Policy>
-struct context_overload<Op, ArgsArray, policy_context<Base, Policy>> {
+template<Operation Op, typename ArgsArray, typename Head, typename Tail>
+    requires can_apply_policy_v<Op, Head>
+struct policy_overload<Op, ArgsArray, policy_stack<Head, Tail>> {
     template<typename Op1>
-    static constexpr auto resolve(
-        policy_context<Base, Policy> context, Op1&& op
-    ) {
-        auto&& new_op = apply_policy(std::forward<Op1>(op), context.policy);
-        return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Base>::
-            resolve(Base{context}, std::forward<decltype(new_op)>(new_op));
+    static constexpr auto resolve(Op1&& op, policy_stack<Head, Tail> policy) {
+        auto&& new_op = apply_policy(std::forward<Op1>(op), policy.head);
+        return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Tail>::
+            resolve(std::forward<decltype(new_op)>(new_op), policy.tail);
     }
 };
 
-template<Operation Op, typename Policy, typename ArgsArray, typename Context>
-struct overload_resolver<tuned_operation<Op, Policy>, ArgsArray, Context> {
+template<Operation Op, typename OpPolicy, typename ArgsArray, typename Policy>
+struct overload_resolver<tuned_operation<Op, OpPolicy>, ArgsArray, Policy> {
     static constexpr decltype(auto) resolve(
-        Context context, tuned_operation<Op, Policy> const& op
+        tuned_operation<Op, OpPolicy> const& op, Policy policy
     ) {
         using resolver = overload_resolver<
             raw_t<Op>,
             ArgsArray,
-            policy_context<Context, Policy>>;
-        return resolver::resolve({context, op.policy}, op.operation);
+            policy_stack<OpPolicy, Policy>>;
+        return resolver::resolve(op.operation, {op.policy, policy});
     }
 };
 

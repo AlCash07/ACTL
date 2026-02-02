@@ -31,10 +31,9 @@ inline constexpr operation_composer<IsEqualRange> is_equal_range;
 
 template<Range L, Range R>
 struct overload<IsEqual, L, R> {
-    static constexpr auto formula =
-        is_equal_range(resolve_overload<range_value_t<L>, range_value_t<R>>(
-            default_context{}, is_equal
-        ));
+    static constexpr auto formula = is_equal_range(
+        resolve_overload<range_value_t<L>, range_value_t<R>>(is_equal)
+    );
 };
 
 } // namespace ac

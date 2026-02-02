@@ -54,7 +54,7 @@ constexpr decltype(auto) eval(
 ) {
     auto&& operation =
         resolve_overload<decltype(eval(std::declval<Args const&>()))...>(
-            default_context{}, expression.operation
+            expression.operation
         );
     return operation.evaluate(
         detail::argument_at<decltype(operation), Is>(expression.arguments)...
@@ -66,8 +66,7 @@ constexpr void assign(
     out<Target>& target,
     expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
-    auto&& operation =
-        resolve_overload<Args...>(default_context{}, expression.operation);
+    auto&& operation = resolve_overload<Args...>(expression.operation);
     operation.evaluate_to(
         out{target},
         detail::argument_at<decltype(operation), Is>(expression.arguments)...

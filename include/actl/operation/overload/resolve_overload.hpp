@@ -6,49 +6,49 @@
 
 #pragma once
 
+#include <actl/core/none.hpp>
 #include <actl/operation/overload/overload.hpp>
 #include <algorithm>
 
 namespace ac {
 
-struct default_context {};
-
-template<Operation Op, typename ArgsArray, typename Context>
-struct context_overload {
+template<Operation Op, typename ArgsArray, typename Policy>
+struct policy_overload {
     struct is_resolved;
 
-    static constexpr Op resolve(Context, Op&& op) {
+    static constexpr Op resolve(Op&& op, Policy) {
         return std::move(op);
     }
 
-    static constexpr Op const& resolve(Context, Op const& op) {
+    static constexpr Op const& resolve(Op const& op, Policy) {
         return op;
     }
 };
 
-template<Operation Op, typename ArgsArray, typename Context>
-struct overload_resolver : context_overload<Op, ArgsArray, Context> {};
+template<Operation Op, typename ArgsArray, typename Policy>
+struct overload_resolver : policy_overload<Op, ArgsArray, Policy> {};
 
-template<typename... Args, typename Context, typename Op>
-constexpr decltype(auto) resolve_overload(Context context, Op&& op) {
-    return overload_resolver<raw_t<Op>, type_array<raw_t<Args>...>, Context>::
-        resolve(context, std::forward<Op>(op));
+template<typename... Args, typename Op>
+constexpr decltype(auto) resolve_overload(Op&& op) {
+    return overload_resolver<raw_t<Op>, type_array<raw_t<Args>...>, none>::
+        resolve(std::forward<Op>(op), none{});
 }
 
-template<Operation Op, typename ArgsArray, typename Context>
+template<Operation Op, typename ArgsArray, typename Policy>
 inline constexpr bool is_overload_resolved_v = requires {
-    typename overload_resolver<raw_t<Op>, ArgsArray, Context>::is_resolved;
+    typename overload_resolver<raw_t<Op>, ArgsArray, Policy>::is_resolved;
 };
 
-template<typename Op, typename... Args, typename Context>
+template<typename Op, typename... Args, typename Policy>
     requires requires { overload<Op, Args...>::formula; }
-struct overload_resolver<Op, type_array<Args...>, Context> {
+struct overload_resolver<Op, type_array<Args...>, Policy> {
     template<typename Op1>
-    static constexpr auto resolve(Context context, Op1&& op) {
+    static constexpr auto resolve(Op1&& op, Policy policy) {
         using Formula =
             std::remove_const_t<decltype(overload<Op, Args...>::formula)>;
-        return overload_resolver<Formula, type_array<Args...>, Context>::
-            resolve(context, Formula{});
+        return overload_resolver<Formula, type_array<Args...>, Policy>::resolve(
+            Formula{}, policy
+        );
     }
 };
 

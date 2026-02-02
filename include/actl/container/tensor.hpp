@@ -559,9 +559,7 @@ struct TensorEqual {
 template<Tensor L, Tensor R>
 struct overload<IsEqual, L, R> {
     static constexpr auto formula = operation_composer<TensorEqual>(
-        resolve_overload<range_value_t<L>, range_value_t<R>>(
-            default_context{}, is_equal
-        )
+        resolve_overload<range_value_t<L>, range_value_t<R>>(is_equal)
     );
 };
 
