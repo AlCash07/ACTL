@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/meta/constant_literals.hpp>
+#include <actl/numeric/constant_literals.hpp>
 #include <actl_test/core/is_equal_same_type.hpp>
 
 using namespace ac::constant_literals;

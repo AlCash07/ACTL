@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/constant.hpp>
+#include <actl/numeric/constant.hpp>
 #include <actl/range/interface/contiguous_range_interface.hpp>
 #include <actl/std/array.hpp>
 

@@ -8,7 +8,7 @@
 
 #include <actl/AC_ASSERT.hpp>
 #include <actl/container/conversion/convert_to.hpp>
-#include <actl/meta/constant.hpp>
+#include <actl/numeric/constant.hpp>
 
 namespace ac {
 

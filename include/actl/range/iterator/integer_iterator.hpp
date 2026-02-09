@@ -8,7 +8,7 @@
 
 #include <actl/AC_ASSERT.hpp>
 #include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
-#include <actl/meta/constant.hpp>
+#include <actl/numeric/constant.hpp>
 #include <actl/range/iterator/interface/random_access_iterator_interface.hpp>
 
 namespace ac {

@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN.hpp>
-#include <actl/meta/constant.hpp>
+#include <actl/numeric/constant.hpp>
 #include <actl/range/iterator/interface/bidirectional_iterator_interface.hpp>
 
 namespace ac {

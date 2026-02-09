@@ -19,9 +19,10 @@ Low-level supplementary libraries useful in various contexts:
    :maxdepth: 1
 
    actl/functional
-   actl/meta
-   actl/memory
    actl/lifetime
+   actl/memory
+   actl/meta
+   actl/numeric
    actl/platform
    actl/preprocessor
 
@@ -52,7 +53,7 @@ and widely used across the library:
 .. toctree::
    :maxdepth: 1
 
-   actl/meta/constant
+   actl/numeric/constant
 
 Contributing
 ============

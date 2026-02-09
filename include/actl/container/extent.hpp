@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/core/use_default.hpp>
-#include <actl/meta/constant.hpp>
+#include <actl/numeric/constant.hpp>
 #include <limits>
 
 namespace ac {

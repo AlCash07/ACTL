@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/meta/constant.hpp>
+#include <actl/numeric/constant.hpp>
 #include <actl/operation/expression/evaluate.hpp>
 #include <actl/operation/expression/raw.hpp>
 #include <actl/operation/expression/value_if_cheap.hpp>

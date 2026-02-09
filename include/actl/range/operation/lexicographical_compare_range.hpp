@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <actl/meta/constant_literals.hpp>
 #include <actl/numeric/comparison/compare3way.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
+#include <actl/numeric/constant_literals.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
 #include <actl/range/traits/associated_types.hpp>
 

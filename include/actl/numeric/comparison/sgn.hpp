@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/core/arg.hpp>
-#include <actl/meta/constant_literals.hpp>
 #include <actl/numeric/comparison/compare3way.hpp>
+#include <actl/numeric/constant_literals.hpp>
 
 namespace ac {
 
