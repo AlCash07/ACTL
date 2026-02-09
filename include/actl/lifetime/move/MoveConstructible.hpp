@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <actl/lifetime/constructor/ConstructibleFrom.hpp>
 #include <actl/lifetime/conversion/ConvertibleTo.hpp>
-#include <actl/meta/concepts/core/ConstructibleFrom.hpp>
 
 namespace ac {
 

@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <actl/meta/concepts/core/CopyConstructible.hpp>
-#include <actl/meta/concepts/object/Movable.hpp>
+#include <actl/lifetime/copy/CopyConstructible.hpp>
+#include <actl/lifetime/move/Movable.hpp>
 
 namespace ac {
 

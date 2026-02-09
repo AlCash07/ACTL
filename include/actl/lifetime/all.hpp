@@ -7,5 +7,11 @@
 #pragma once
 
 #include <actl/lifetime/Reference.hpp>
+#include <actl/lifetime/Regular.hpp>
+#include <actl/lifetime/SemiRegular.hpp>
+#include <actl/lifetime/assignment/all.hpp>
+#include <actl/lifetime/constructor/all.hpp>
+#include <actl/lifetime/conversion/all.hpp>
 #include <actl/lifetime/copy/all.hpp>
 #include <actl/lifetime/move/all.hpp>
+#include <actl/lifetime/swap/all.hpp>

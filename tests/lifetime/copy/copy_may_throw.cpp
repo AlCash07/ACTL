@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/meta/concepts/object/Copyable.hpp>
+#include <actl/lifetime/copy/Copyable.hpp>
 #include <actl_test/core/copy_may_throw.hpp>
 
 struct tests_copy : ac::copy_may_throw {};

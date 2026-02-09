@@ -7,4 +7,6 @@
 #pragma once
 
 #include <actl/lifetime/copy/AC_DISABLE_COPY.hpp>
+#include <actl/lifetime/copy/CopyConstructible.hpp>
+#include <actl/lifetime/copy/Copyable.hpp>
 #include <actl/lifetime/copy/copy.hpp>

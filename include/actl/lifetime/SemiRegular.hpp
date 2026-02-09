@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/meta/concepts/core/DefaultInitializable.hpp>
-#include <actl/meta/concepts/object/Copyable.hpp>
+#include <actl/lifetime/constructor/DefaultInitializable.hpp>
+#include <actl/lifetime/copy/Copyable.hpp>
 
 namespace ac {
 

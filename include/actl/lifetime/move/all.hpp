@@ -7,3 +7,5 @@
 #pragma once
 
 #include <actl/lifetime/move/AC_DISABLE_MOVE.hpp>
+#include <actl/lifetime/move/Movable.hpp>
+#include <actl/lifetime/move/MoveConstructible.hpp>

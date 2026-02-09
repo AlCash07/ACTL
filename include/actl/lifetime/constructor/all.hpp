@@ -6,6 +6,6 @@
 
 #pragma once
 
-#include <actl/meta/concepts/comparison/all.hpp>
-#include <actl/meta/concepts/core/all.hpp>
-#include <actl/meta/concepts/object/all.hpp>
+#include <actl/lifetime/constructor/ConstructibleFrom.hpp>
+#include <actl/lifetime/constructor/DefaultInitializable.hpp>
+#include <actl/lifetime/constructor/can_list_initialize.hpp>

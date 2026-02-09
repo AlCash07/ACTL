@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/meta/can_list_initialize.hpp>
+#include <actl/lifetime/constructor/can_list_initialize.hpp>
 
 struct aggregate {
     int x;
