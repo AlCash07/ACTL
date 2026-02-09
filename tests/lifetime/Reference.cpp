@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/meta/Reference.hpp>
+#include <actl/lifetime/Reference.hpp>
 
 static_assert(!ac::Reference<void>);
 static_assert(!ac::Reference<int>);

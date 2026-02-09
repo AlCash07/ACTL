@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/core/copy/AC_DISABLE_COPY.hpp>
+#include <actl/lifetime/copy/AC_DISABLE_COPY.hpp>
 #include <concepts>
 
 struct no_copy {

@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/core/copy/AC_DISABLE_COPY.hpp>
-#include <actl/core/copy/copy.hpp>
+#include <actl/lifetime/copy/AC_DISABLE_COPY.hpp>
+#include <actl/lifetime/copy/copy.hpp>

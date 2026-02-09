@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/core/copy/AC_DISABLE_COPY.hpp>
+#include <actl/lifetime/copy/AC_DISABLE_COPY.hpp>
 #include <actl_test/core/copy_may_throw.hpp>
 #include <actl_test/core/move_may_throw.hpp>
 

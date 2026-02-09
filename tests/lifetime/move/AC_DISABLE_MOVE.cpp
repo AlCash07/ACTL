@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/core/move/AC_DISABLE_MOVE.hpp>
+#include <actl/lifetime/move/AC_DISABLE_MOVE.hpp>
 #include <type_traits>
 
 struct no_move {

@@ -6,8 +6,6 @@
 
 #pragma once
 
-namespace ac {
-
 /// Macro to be used inside a class to disable its
 /// copy constructor and assignment operator
 /// while allowing to define custom
@@ -18,6 +16,8 @@ namespace ac {
 ///     void* pointer = nullptr;
 /// public:
 ///     unique_ptr() = default;
+///     AC_DISABLE_COPY(unique_ptr)
+///
 ///     unique_ptr(unique_ptr&& that) {
 ///         this = std::move(*that);
 ///     }
@@ -26,7 +26,6 @@ namespace ac {
 ///         that->poiner = nullptr;
 ///         return *this;
 ///     }
-///     AC_DISABLE_COPY(unique_ptr)
 /// };
 ///
 /// unique_ptr a;
@@ -41,5 +40,3 @@ namespace ac {
 #define AC_DISABLE_COPY(type)   \
     type(const type&) = delete; \
     type& operator=(const type&) = delete;
-
-} // namespace ac

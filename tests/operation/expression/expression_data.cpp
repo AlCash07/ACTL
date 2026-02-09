@@ -7,7 +7,7 @@
 #include <actl/meta/constant.hpp>
 #include <actl/numeric/arithmetic/additive/add.hpp>
 #include <actl/operation/operation/operation_base.hpp>
-#include "core/int_move_copy.hpp"
+#include "lifetime/int_move_copy.hpp"
 #include "test.hpp"
 
 template<typename Int>

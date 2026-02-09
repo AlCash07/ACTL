@@ -2,7 +2,10 @@
 Reference
 ********************************
 
-.. ac-include:: actl/meta/Reference.hpp
+Reference
+=========
+
+.. ac-include:: actl/lifetime/Reference.hpp
 .. doxygenconcept:: ac::Reference
 
-.. ac-tests:: tests/meta/Reference.cpp
+.. ac-tests:: tests/lifetime/Reference.cpp

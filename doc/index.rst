@@ -21,6 +21,7 @@ Low-level supplementary libraries useful in various contexts:
    actl/functional
    actl/meta
    actl/memory
+   actl/lifetime
    actl/platform
    actl/preprocessor
 
