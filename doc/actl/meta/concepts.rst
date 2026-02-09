@@ -61,14 +61,6 @@ For `std::copy_constructible <https://en.cppreference.com/w/cpp/concepts/copy_co
 .. doxygenconcept:: ac::NothrowCopyConstructible
 .. doxygenconcept:: ac::MayThrowCopyConstructible
 
-Comparison concepts
--------------------
-
-For `std::equality_comparable <https://en.cppreference.com/w/cpp/concepts/equality_comparable>`_:
-
-.. ac-include:: actl/meta/concepts/comparison/EqualityComparable.hpp
-.. doxygenconcept:: ac::NothrowEqualityComparable
-
 Object concepts
 ---------------
 

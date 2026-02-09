@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/numeric/comparison/EqualityComparable.hpp>
 #include <actl/numeric/comparison/abs.hpp>
 #include <actl/numeric/comparison/absolute_error.hpp>
 #include <actl/numeric/comparison/compare3way.hpp>
