@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <actl/core/as.hpp>
 #include <actl/core/if_else.hpp>
 #include <actl/core/scalar_operation.hpp>
+#include <actl/lifetime/conversion/as.hpp>
 #include <actl/operation/operation/composite_operation.hpp>
 
 namespace ac {

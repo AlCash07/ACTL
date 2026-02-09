@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/core/as.hpp>
+#include <actl/lifetime/conversion/as.hpp>
 #include <actl/numeric/arithmetic/additive/subtract.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 

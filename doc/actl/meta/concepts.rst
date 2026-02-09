@@ -17,13 +17,6 @@ Reference
 Core language concepts
 ----------------------
 
-For `std::convertible_to <https://en.cppreference.com/w/cpp/concepts/convertible_to>`_:
-
-.. ac-include:: actl/meta/concepts/core/ConvertibleTo.hpp
-.. doxygenconcept:: ac::NothrowExplicitlyConvertibleTo
-.. doxygenconcept:: ac::NothrowConvertibleTo
-.. doxygenconcept:: ac::MayThrowConvertibleTo
-
 For `std::assignable_from <https://en.cppreference.com/w/cpp/concepts/assignable_from>`_:
 
 .. ac-include:: actl/meta/concepts/core/AssignableFrom.hpp

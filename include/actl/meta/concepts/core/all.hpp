@@ -8,7 +8,6 @@
 
 #include <actl/meta/concepts/core/AssignableFrom.hpp>
 #include <actl/meta/concepts/core/ConstructibleFrom.hpp>
-#include <actl/meta/concepts/core/ConvertibleTo.hpp>
 #include <actl/meta/concepts/core/CopyConstructible.hpp>
 #include <actl/meta/concepts/core/DefaultInitializable.hpp>
 #include <actl/meta/concepts/core/MoveConstructible.hpp>
