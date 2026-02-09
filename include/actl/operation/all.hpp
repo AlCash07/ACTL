@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/operation/arg.hpp>
 #include <actl/operation/enable_operators.hpp>
 #include <actl/operation/operation/all.hpp>
 #include <actl/operation/overload/all.hpp>
