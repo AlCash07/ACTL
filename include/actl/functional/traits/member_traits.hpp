@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <actl/core/qualifiers/copy.hpp>
 #include <actl/functional/traits/MemberFunction.hpp>
 #include <actl/functional/traits/parameters.hpp>
-#include <actl/meta/qualifiers/copy.hpp>
 
 namespace ac {
 

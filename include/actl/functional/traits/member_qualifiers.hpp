@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <actl/core/qualifiers/detection.hpp>
+#include <actl/core/qualifiers/inner.hpp>
 #include <actl/functional/traits/member_traits.hpp>
-#include <actl/meta/qualifiers/detection.hpp>
-#include <actl/meta/qualifiers/inner.hpp>
 
 namespace ac {
 

@@ -9,14 +9,14 @@
 #pragma once
 
 #include <actl/AC_ASSERT.hpp>
-#include <actl/category/all.hpp>
 #include <actl/container/all.hpp>
+#include <actl/core/all.hpp>
+#include <actl/functional/all.hpp>
 // #include <actl/geometry/all.hpp>
 // #include <actl/graph/all.hpp>
 #include <actl/io/all.hpp>
 #include <actl/lifetime/all.hpp>
 #include <actl/linear_algebra/all.hpp>
-#include <actl/macros.hpp>
 #include <actl/map/all.hpp>
 #include <actl/meta/all.hpp>
 #include <actl/numeric/all.hpp>

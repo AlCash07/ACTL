@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/meta/qualifiers/copy.hpp>
+#include <actl/core/qualifiers/copy.hpp>
 
 /* copy_const_t */
 /* unqualified target */

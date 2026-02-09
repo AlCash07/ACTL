@@ -1,9 +1,9 @@
 ********************************
-meta-programming
+core functionality
 ********************************
 
 .. toctree::
    :glob:
    :maxdepth: 1
 
-   meta/*
+   core/*

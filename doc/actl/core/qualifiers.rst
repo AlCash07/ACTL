@@ -12,11 +12,11 @@ Reference
 Detection traits
 ----------------
 
-.. ac-include:: actl/meta/qualifiers/detection.hpp
+.. ac-include:: actl/core/qualifiers/detection.hpp
 .. doxygenvariable:: is_cv_v
 .. doxygenvariable:: has_qualifiers_v
 
-.. ac-tests:: tests/meta/qualifiers/detection.cpp
+.. ac-tests:: tests/core/qualifiers/detection.cpp
 
 Qualifiers copy between types
 -----------------------------
@@ -62,14 +62,14 @@ Source type S                    `char`      `char const volatile` `char const&`
   Our copy is different and instead fully replaces qualifiers,
   because this behavior is consistent with data copy.
 
-.. ac-include:: actl/meta/qualifiers/copy.hpp
+.. ac-include:: actl/core/qualifiers/copy.hpp
 .. doxygentypedef:: copy_const_t
 .. doxygentypedef:: copy_volatile_t
 .. doxygentypedef:: copy_cv_t
 .. doxygentypedef:: copy_reference_t
 .. doxygentypedef:: copy_cvref_t
 
-.. ac-tests:: tests/meta/qualifiers/copy.cpp
+.. ac-tests:: tests/core/qualifiers/copy.cpp
 
 Inner qualifiers modification
 -----------------------------
@@ -95,7 +95,7 @@ Input type                `int const volatile` `int const volatile&`
 `remove_inner_cv_t`       `int`                `int&`               
 ========================= ==================== =====================
 
-.. ac-include:: actl/meta/qualifiers/inner.hpp
+.. ac-include:: actl/core/qualifiers/inner.hpp
 .. doxygentypedef:: add_inner_const_t
 .. doxygentypedef:: remove_inner_const_t
 .. doxygentypedef:: add_inner_volatile_t
@@ -103,4 +103,4 @@ Input type                `int const volatile` `int const volatile&`
 .. doxygentypedef:: add_inner_cv_t
 .. doxygentypedef:: remove_inner_cv_t
 
-.. ac-tests:: tests/meta/qualifiers/inner.cpp
+.. ac-tests:: tests/core/qualifiers/inner.cpp

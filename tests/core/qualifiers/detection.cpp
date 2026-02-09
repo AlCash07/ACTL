@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/meta/qualifiers/detection.hpp>
+#include <actl/core/qualifiers/detection.hpp>
 
 /* ac::is_cv_v */
 static_assert(!ac::is_cv_v<void>);

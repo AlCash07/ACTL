@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/meta/is_template_base_of.hpp>
-#include <actl/meta/qualifiers/all.hpp>
 #include <actl/meta/rebind.hpp>
 #include <actl/meta/static_size.hpp>
 #include <actl/meta/strict_common_type.hpp>
