@@ -7,24 +7,24 @@
 #pragma once
 
 #include <actl/operation/overload/resolve_overload.hpp>
+#include <actl/operation/policy/policy_stack.hpp>
 #include <actl/operation/policy/tuned_operation.hpp>
 
 namespace ac {
 
-template<typename Head, typename Tail>
-struct policy_stack {
-    Head const& head;
-    Tail const& tail;
-};
-
 template<Operation Op, typename ArgsArray, typename Head, typename Tail>
-    requires can_apply_policy_v<Op, Head>
 struct policy_overload<Op, ArgsArray, policy_stack<Head, Tail>> {
     template<typename Op1>
     static constexpr auto resolve(Op1&& op, policy_stack<Head, Tail> policy) {
-        auto&& new_op = apply_policy(std::forward<Op1>(op), policy.head);
-        return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Tail>::
-            resolve(std::forward<decltype(new_op)>(new_op), policy.tail);
+        if constexpr (can_apply_policy_v<Op, Head>) {
+            auto&& new_op = apply_policy(std::forward<Op1>(op), policy.head);
+            return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Tail>::
+                resolve(std::forward<decltype(new_op)>(new_op), policy.tail);
+        } else {
+            auto relevant_policy = skip_irrelevant<Op>(policy);
+            return policy_overload<Op, ArgsArray, decltype(relevant_policy)>::
+                resolve(std::forward<Op1>(op), relevant_policy);
+        }
     }
 };
 
