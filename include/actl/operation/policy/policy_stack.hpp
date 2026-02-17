@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <actl/core/none.hpp>
 #include <actl/operation/policy/policy.hpp>
 
 namespace ac {
@@ -17,17 +16,11 @@ struct policy_stack {
     Tail const& tail;
 };
 
-template<typename Op>
-constexpr none skip_irrelevant(none) noexcept {
-    return {};
-}
+template<Operation Op, typename Policy>
+inline constexpr bool can_apply_any_policy_v = false;
 
-template<typename Op, typename Head, typename Tail>
-constexpr auto skip_irrelevant(policy_stack<Head, Tail> policy_stack) noexcept {
-    if constexpr (can_apply_policy_v<Op, Head>)
-        return policy_stack;
-    else
-        return skip_irrelevant<Op>(policy_stack.tail);
-}
+template<Operation Op, typename Head, typename Tail>
+inline constexpr bool can_apply_any_policy_v<Op, policy_stack<Head, Tail>> =
+    can_apply_policy_v<Op, Head> || can_apply_any_policy_v<Op, Tail>;
 
 } // namespace ac

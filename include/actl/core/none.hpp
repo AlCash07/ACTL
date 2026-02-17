@@ -17,7 +17,7 @@ struct none {
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
     template<typename T, typename... Ts>
-    explicit constexpr none(T, Ts...) noexcept {}
+    constexpr none(T, Ts...) noexcept {}
 
     using value_type = none;
 };

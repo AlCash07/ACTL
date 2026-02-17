@@ -13,18 +13,17 @@
 namespace ac {
 
 template<Operation Op, typename ArgsArray, typename Head, typename Tail>
+    requires(!can_apply_any_policy_v<Op, policy_stack<Head, Tail>>)
+struct policy_overload<Op, ArgsArray, policy_stack<Head, Tail>>
+    : policy_overload<Op, ArgsArray, none> {};
+
+template<Operation Op, typename ArgsArray, typename Head, typename Tail>
 struct policy_overload<Op, ArgsArray, policy_stack<Head, Tail>> {
     template<typename Op1>
     static constexpr auto resolve(Op1&& op, policy_stack<Head, Tail> policy) {
-        if constexpr (can_apply_policy_v<Op, Head>) {
-            auto&& new_op = apply_policy(std::forward<Op1>(op), policy.head);
-            return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Tail>::
-                resolve(std::forward<decltype(new_op)>(new_op), policy.tail);
-        } else {
-            auto relevant_policy = skip_irrelevant<Op>(policy);
-            return policy_overload<Op, ArgsArray, decltype(relevant_policy)>::
-                resolve(std::forward<Op1>(op), relevant_policy);
-        }
+        auto&& new_op = apply_policy_if_can(std::forward<Op1>(op), policy.head);
+        return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Tail>::
+            resolve(std::forward<decltype(new_op)>(new_op), policy.tail);
     }
 };
 
