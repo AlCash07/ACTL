@@ -10,17 +10,17 @@
 
 namespace ac {
 
-template<typename Head, typename Tail>
+template<typename Top, typename Rest>
 struct policy_stack {
-    Head const& head;
-    Tail const& tail;
+    Top const& top;
+    Rest const& rest;
 };
 
 template<Operation Op, typename Policy>
 inline constexpr bool can_apply_any_policy_v = false;
 
-template<Operation Op, typename Head, typename Tail>
-inline constexpr bool can_apply_any_policy_v<Op, policy_stack<Head, Tail>> =
-    can_apply_policy_v<Op, Head> || can_apply_any_policy_v<Op, Tail>;
+template<Operation Op, typename Top, typename Rest>
+inline constexpr bool can_apply_any_policy_v<Op, policy_stack<Top, Rest>> =
+    can_apply_policy_v<Op, Top> || can_apply_any_policy_v<Op, Rest>;
 
 } // namespace ac
