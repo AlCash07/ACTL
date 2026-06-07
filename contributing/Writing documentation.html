@@ -9,8 +9,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../_static/documentation_options.js?v=7f41d439"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Writing code" href="Writing%20code.html" />
@@ -52,9 +52,11 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../actl/core.html">core functionality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../actl/functional.html">functional</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../actl/meta.html">meta-programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actl/lifetime.html">lifetime</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../actl/memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actl/numeric.html">numeric</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../actl/platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../actl/preprocessor.html">preprocessor</a></li>
 </ul>
@@ -63,7 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../actl/string.html">string</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../actl/meta/constant.html">constant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actl/numeric/constant.html">constant</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Running%20tests.html">Running tests</a></li>
@@ -159,7 +161,7 @@ which you can read for more details.
 The main difference is that shell scripts are used insted of CMake commands for simplicity,
 but this may be revisited to make scripts portable.</p>
 <p>All the requirements can be installed using the
-<a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/install.sh">scripts/doc/install.sh</a> script.</p>
+<a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/scripts/doc/install.sh">scripts/doc/install.sh</a> script.</p>
 <section id="doxygen">
 <h2>Doxygen<a class="headerlink" href="#doxygen" title="Link to this heading">¶</a></h2>
 <p>The most complicated task, the C++ code parsing, is done by Doxygen.
@@ -183,9 +185,9 @@ for a comment explaining that these two points represent a line.</p></li>
 </ul>
 <p>Treat every comment as a failure to express yourself in code.
 Write a comment only when it provides useful information that can’t be written in the code itself.</p>
-<p>Doxygen can be run using the <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/doxygen.sh">scripts/doc/doxygen.sh</a> script
+<p>Doxygen can be run using the <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/scripts/doc/doxygen.sh">scripts/doc/doxygen.sh</a> script
 or the <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">doxygen</span></code> VS Code task.</p>
-<p>The Doxygen configuration file can be found <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/doc/Doxyfile.in">here</a>.
+<p>The Doxygen configuration file can be found <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/doc/Doxyfile.in">here</a>.
 The options of interest are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">GENERATE_XML</span></code> is set to <code class="docutils literal notranslate"><span class="pre">YES</span></code>, because xml output is used for the following steps.</p></li>
@@ -202,7 +204,7 @@ They would be parsed incorrectly otherwise.</p></li>
 <section id="sphinx">
 <h2>Sphinx<a class="headerlink" href="#sphinx" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx generator</a> is used to generate the final documentation web pages.
-The sources in rst format are located in the <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/doc">doc</a> folder.
+The sources in rst format are located in the <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/doc">doc</a> folder.
 Existing sources can be used as a reference, other useful links for writing them are:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/rst/quickref.html">reStructuredText quick reference</a></p></li>
@@ -211,14 +213,14 @@ Existing sources can be used as a reference, other useful links for writing them
 <li><p><a class="reference external" href="https://breathe.readthedocs.io/en/latest/directives.html">Breathe directives</a>.
 Breathe is an extension for Sphinx that allows to use Doxygen xml output.</p></li>
 </ul>
-<p>Sphinx can be run using the <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/sphinx.sh">scripts/doc/sphinx.sh</a> script
+<p>Sphinx can be run using the <a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/scripts/doc/sphinx.sh">scripts/doc/sphinx.sh</a> script
 or the <code class="docutils literal notranslate"><span class="pre">generate</span> <span class="pre">documentation</span></code> VS Code task (together with Doxygen),
 and its output can be examined by opening <em>build/doc/sphinx/index.html</em></p>
 </section>
 <section id="publishing-documentation">
 <h2>Publishing documentation<a class="headerlink" href="#publishing-documentation" title="Link to this heading">¶</a></h2>
 <p>Currently, the documentation is published manually only by the project maintainers using the
-<a class="reference external" href="https://github.com/AlCash07/ACTL/blob/master/scripts/doc/publish.sh">scripts/doc/publish.sh</a> script
+<a class="reference external" href="https://github.com/AlCash07/ACTL/blob/main/scripts/doc/publish.sh">scripts/doc/publish.sh</a> script
 or the <code class="docutils literal notranslate"><span class="pre">publish</span> <span class="pre">documentation</span></code> VS Code task (together with documentation generation).</p>
 <p>Generated documentation is committed to a special <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/doc">doc branch</a>
 and then automatically published to <a class="reference external" href="https://pages.github.com/">GitHub pages</a> at <a class="reference external" href="https://alcash07.github.io/ACTL/">https://alcash07.github.io/ACTL/</a>.</p>
@@ -239,7 +241,7 @@ and then automatically published to <a class="reference external" href="https://
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 9.1.0.<br/>
     </p>
   </div>
 </footer>

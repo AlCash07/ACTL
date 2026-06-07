@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="memory" href="../memory.html" />
-    <link rel="prev" title="constant_literals" href="constant_literals.html" />
+    <link rel="next" title="functional" href="../functional.html" />
+    <link rel="prev" title="core functionality" href="../core.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -53,9 +53,11 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../core.html">core functionality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional.html">functional</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../meta.html">meta-programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lifetime.html">lifetime</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numeric.html">numeric</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
 </ul>
@@ -64,7 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="constant.html">constant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numeric/constant.html">constant</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
@@ -120,11 +122,11 @@
               
                 
   <li>
-    <a href="constant_literals.html" title="Previous Chapter: constant_literals"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; constant_literals</span>
+    <a href="../core.html" title="Previous Chapter: core functionality"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; core functionality</span>
     </a>
   </li>
   <li>
-    <a href="../memory.html" title="Next Chapter: memory"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">memory &raquo;</span>
+    <a href="../functional.html" title="Next Chapter: functional"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">functional &raquo;</span>
     </a>
   </li>
               
@@ -185,11 +187,11 @@
 </ul>
 
   <li>
-    <a href="constant_literals.html" title="Previous Chapter: constant_literals"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; constant_literals</span>
+    <a href="../core.html" title="Previous Chapter: core functionality"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; core functionality</span>
     </a>
   </li>
   <li>
-    <a href="../memory.html" title="Next Chapter: memory"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">memory &raquo;</span>
+    <a href="../functional.html" title="Next Chapter: functional"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">functional &raquo;</span>
     </a>
   </li>
 <form action="../../search.html" method="get">
@@ -212,7 +214,7 @@ as well as <a class="reference external" href="https://en.cppreference.com/w/cpp
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
 <section id="detection-traits">
 <h3>Detection traits<a class="headerlink" href="#detection-traits" title="Link to this heading">¶</a></h3>
-<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/qualifiers/detection.hpp">actl/meta/qualifiers/detection.hpp</a>&gt;</pre>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/core/qualifiers/detection.hpp">actl/core/qualifiers/detection.hpp</a>&gt;</pre>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac7is_cv_vE">
 <span id="_CPPv3I0EN2ac7is_cv_vE"></span><span id="_CPPv2I0EN2ac7is_cv_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a20fad65e81b3efe75a01309268b52716"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_cv_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_const_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac7is_cv_vE" title="ac::is_cv_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_volatile_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac7is_cv_vE" title="ac::is_cv_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN2ac7is_cv_vE" title="Link to this definition">¶</a><br /></dt>
@@ -225,7 +227,7 @@ as well as <a class="reference external" href="https://en.cppreference.com/w/cpp
 <dd><p>Checks if the type has any of <code class="docutils literal notranslate"><span class="pre">const</span></code>, <code class="docutils literal notranslate"><span class="pre">volatile</span></code> or reference qualifiers. </p>
 </dd></dl>
 
-<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/qualifiers/detection.cpp">tests/meta/qualifiers/detection.cpp</a></p>
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/core/qualifiers/detection.cpp">tests/core/qualifiers/detection.cpp</a></p>
 </section>
 <section id="qualifiers-copy-between-types">
 <h3>Qualifiers copy between types<a class="headerlink" href="#qualifiers-copy-between-types" title="Link to this heading">¶</a></h3>
@@ -355,7 +357,7 @@ don’t remove existing qualifiers and only add new ones.
 Our copy is different and instead fully replaces qualifiers,
 because this behavior is consistent with data copy.</p>
 </div>
-<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/qualifiers/copy.hpp">actl/meta/qualifiers/copy.hpp</a>&gt;</pre>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/core/qualifiers/copy.hpp">actl/core/qualifiers/copy.hpp</a>&gt;</pre>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4I00EN2ac12copy_const_tE">
 <span id="_CPPv3I00EN2ac12copy_const_tE"></span><span id="_CPPv2I00EN2ac12copy_const_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Target</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Source</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a38ad5d4518de7d3965a034abe7aec58b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_const_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">copy_const</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_const_tE" title="ac::copy_const_t::Target"><span class="n"><span class="pre">Target</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_const_tE" title="ac::copy_const_t::Source"><span class="n"><span class="pre">Source</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac12copy_const_tE" title="Link to this definition">¶</a><br /></dt>
@@ -381,7 +383,7 @@ because this behavior is consistent with data copy.</p>
 <span id="_CPPv3I00EN2ac12copy_cvref_tE"></span><span id="_CPPv2I00EN2ac12copy_cvref_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Target</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Source</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a0d91ebed68494ed6c4742ed81d14592e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_cvref_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">copy_cvref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_cvref_tE" title="ac::copy_cvref_t::Target"><span class="n"><span class="pre">Target</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN2ac12copy_cvref_tE" title="ac::copy_cvref_t::Source"><span class="n"><span class="pre">Source</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I00EN2ac12copy_cvref_tE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/qualifiers/copy.cpp">tests/meta/qualifiers/copy.cpp</a></p>
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/core/qualifiers/copy.cpp">tests/core/qualifiers/copy.cpp</a></p>
 </section>
 <section id="inner-qualifiers-modification">
 <h3>Inner qualifiers modification<a class="headerlink" href="#inner-qualifiers-modification" title="Link to this heading">¶</a></h3>
@@ -439,7 +441,7 @@ If the type is a reference, then the referenced type is modified.</p>
 </tr>
 </tbody>
 </table>
-<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/qualifiers/inner.hpp">actl/meta/qualifiers/inner.hpp</a>&gt;</pre>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/core/qualifiers/inner.hpp">actl/core/qualifiers/inner.hpp</a>&gt;</pre>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN2ac17add_inner_const_tE">
 <span id="_CPPv3I0EN2ac17add_inner_const_tE"></span><span id="_CPPv2I0EN2ac17add_inner_const_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a7c6d15ebe8555f2e84f773f05f4e45c5"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">add_inner_const_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">add_inner_const</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac17add_inner_const_tE" title="ac::add_inner_const_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac17add_inner_const_tE" title="Link to this definition">¶</a><br /></dt>
@@ -470,7 +472,7 @@ If the type is a reference, then the referenced type is modified.</p>
 <span id="_CPPv3I0EN2ac17remove_inner_cv_tE"></span><span id="_CPPv2I0EN2ac17remove_inner_cv_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1a34a89afb2aac33037abe15cab56d7001"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">remove_inner_cv_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">remove_inner_cv</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac17remove_inner_cv_tE" title="ac::remove_inner_cv_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN2ac17remove_inner_cv_tE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/qualifiers/inner.cpp">tests/meta/qualifiers/inner.cpp</a></p>
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/core/qualifiers/inner.cpp">tests/core/qualifiers/inner.cpp</a></p>
 </section>
 </section>
 </section>
@@ -488,7 +490,7 @@ If the type is a reference, then the referenced type is modified.</p>
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 9.1.0.<br/>
     </p>
   </div>
 </footer>

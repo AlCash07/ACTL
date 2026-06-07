@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="constant_literals" href="constant_literals.html" />
-    <link rel="prev" title="Concepts" href="concepts.html" />
+    <link rel="prev" title="comparison" href="comparison.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -53,9 +53,11 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core.html">core functionality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional.html">functional</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../meta.html">meta-programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lifetime.html">lifetime</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../numeric.html">numeric</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../platform.html">platform introspection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
 </ul>
@@ -107,7 +109,7 @@
               
                 
   <li>
-    <a href="concepts.html" title="Previous Chapter: Concepts"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Concepts</span>
+    <a href="comparison.html" title="Previous Chapter: comparison"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; comparison</span>
     </a>
   </li>
   <li>
@@ -159,7 +161,7 @@
 </ul>
 
   <li>
-    <a href="concepts.html" title="Previous Chapter: Concepts"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Concepts</span>
+    <a href="comparison.html" title="Previous Chapter: comparison"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; comparison</span>
     </a>
   </li>
   <li>
@@ -198,7 +200,7 @@ and detecting that isn’t trivial.
 Standard facilities such as <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">true_type</span></code> can still be used for type traits.</p>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
-<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/include/actl/meta/constant.hpp">actl/meta/constant.hpp</a>&gt;</pre>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/numeric/constant.hpp">actl/numeric/constant.hpp</a>&gt;</pre>
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4I_DaEN2ac8constantE">
 <span id="_CPPv3I_DaEN2ac8constantE"></span><span id="_CPPv2I_DaEN2ac8constantE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">X</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structac_1_1constant"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">constant</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">integral_constant</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I_DaEN2ac8constantE" title="ac::constant::X"><span class="n"><span class="pre">X</span></span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_DaEN2ac8constantE" title="ac::constant::X"><span class="n"><span class="pre">X</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_DaEN2ac8constantE" title="Link to this definition">¶</a><br /></dt>
@@ -253,7 +255,7 @@ Standard facilities such as <code class="code highlight cpp docutils literal hig
 <span id="_CPPv3I0EN2ac13is_constant_vE"></span><span id="_CPPv2I0EN2ac13is_constant_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceac_1acf4d691013d2aa3ab01c4bdad9be4764"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../functional/1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_constant_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN2ac11is_constantE" title="ac::is_constant"><span class="n"><span class="pre">is_constant</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN2ac13is_constant_vE" title="ac::is_constant_v::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><a class="headerlink" href="#_CPPv4I0EN2ac13is_constant_vE" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/master/tests/meta/constant.cpp">tests/meta/constant.cpp</a></p>
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/numeric/constant.cpp">tests/numeric/constant.cpp</a></p>
 </section>
 </section>
 
@@ -270,7 +272,7 @@ Standard facilities such as <code class="code highlight cpp docutils literal hig
     </p>
     <p>
         &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 9.1.0.<br/>
     </p>
   </div>
 </footer>

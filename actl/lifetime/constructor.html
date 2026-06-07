@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>constructor concepts &#8212; ACTL  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="conversion concepts" href="conversion.html" />
+    <link rel="prev" title="assignment concepts" href="assignment.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          ACTL</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core.html">core functionality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functional.html">functional</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../lifetime.html">lifetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numeric.html">numeric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform.html">platform introspection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessor.html">preprocessor</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../range.html">range</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string.html">string</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../numeric/constant.html">constant</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Running%20tests.html">Running tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20code.html">Writing code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/Writing%20documentation.html">Writing documentation</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">constructor concepts</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0DpEN2ac26TriviallyConstructibleFromE"><code class="docutils literal notranslate"><span class="pre">TriviallyConstructibleFrom</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0DpEN2ac24NothrowConstructibleFromE"><code class="docutils literal notranslate"><span class="pre">NothrowConstructibleFrom</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac29TriviallyDefaultInitializableE"><code class="docutils literal notranslate"><span class="pre">TriviallyDefaultInitializable</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac27NothrowDefaultInitializableE"><code class="docutils literal notranslate"><span class="pre">NothrowDefaultInitializable</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="assignment.html" title="Previous Chapter: assignment concepts"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; assignment concepts</span>
+    </a>
+  </li>
+  <li>
+    <a href="conversion.html" title="Next Chapter: conversion concepts"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">conversion concepts &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">constructor concepts</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0DpEN2ac26TriviallyConstructibleFromE"><code class="docutils literal notranslate"><span class="pre">TriviallyConstructibleFrom</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0DpEN2ac24NothrowConstructibleFromE"><code class="docutils literal notranslate"><span class="pre">NothrowConstructibleFrom</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac29TriviallyDefaultInitializableE"><code class="docutils literal notranslate"><span class="pre">TriviallyDefaultInitializable</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac27NothrowDefaultInitializableE"><code class="docutils literal notranslate"><span class="pre">NothrowDefaultInitializable</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="assignment.html" title="Previous Chapter: assignment concepts"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; assignment concepts</span>
+    </a>
+  </li>
+  <li>
+    <a href="conversion.html" title="Next Chapter: conversion concepts"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">conversion concepts &raquo;</span>
+    </a>
+  </li>
+<form action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="constructor-concepts">
+<h1>constructor concepts<a class="headerlink" href="#constructor-concepts" title="Link to this heading">¶</a></h1>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
+<p>Concepts augmenting
+<a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/constructible_from">std::constructible_from</a>:</p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/lifetime/constructor/ConstructibleFrom.hpp">actl/lifetime/constructor/ConstructibleFrom.hpp</a>&gt;</pre>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN2ac26TriviallyConstructibleFromE">
+<span id="_CPPv3I0DpEN2ac26TriviallyConstructibleFromE"></span><span id="_CPPv2I0DpEN2ac26TriviallyConstructibleFromE"></span><span class="target" id="conceptac_1_1_trivially_constructible_from"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyConstructibleFrom</span></span></span><a class="headerlink" href="#_CPPv4I0DpEN2ac26TriviallyConstructibleFromE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN2ac24NothrowConstructibleFromE">
+<span id="_CPPv3I0DpEN2ac24NothrowConstructibleFromE"></span><span id="_CPPv2I0DpEN2ac24NothrowConstructibleFromE"></span><span class="target" id="conceptac_1_1_nothrow_constructible_from"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowConstructibleFrom</span></span></span><a class="headerlink" href="#_CPPv4I0DpEN2ac24NothrowConstructibleFromE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+</dd></dl>
+
+<p>Concepts augmenting
+<a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/default_initializable">std::default_initializable</a>:</p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/lifetime/constructor/DefaultInitializable.hpp">actl/lifetime/constructor/DefaultInitializable.hpp</a>&gt;</pre>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac29TriviallyDefaultInitializableE">
+<span id="_CPPv3I0EN2ac29TriviallyDefaultInitializableE"></span><span id="_CPPv2I0EN2ac29TriviallyDefaultInitializableE"></span><span class="target" id="conceptac_1_1_trivially_default_initializable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriviallyDefaultInitializable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac29TriviallyDefaultInitializableE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac27NothrowDefaultInitializableE">
+<span id="_CPPv3I0EN2ac27NothrowDefaultInitializableE"></span><span id="_CPPv2I0EN2ac27NothrowDefaultInitializableE"></span><span class="target" id="conceptac_1_1_nothrow_default_initializable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NothrowDefaultInitializable</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac27NothrowDefaultInitializableE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+</dd></dl>
+
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2022, Oleksandr Bacherikov.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 9.1.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
