@@ -11,7 +11,7 @@ The main difference is that shell scripts are used insted of CMake commands for 
 but this may be revisited to make scripts portable.
 
 All the requirements can be installed using the
-`scripts/doc/install.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/install.sh>`_ script.
+`scripts/doc/install.sh <https://github.com/AlCash07/ACTL/blob/main/scripts/doc/install.sh>`_ script.
 
 Doxygen
 =======
@@ -41,10 +41,10 @@ The goal is to have self-documenting code whenever possible:
 Treat every comment as a failure to express yourself in code.
 Write a comment only when it provides useful information that can't be written in the code itself.
 
-Doxygen can be run using the `scripts/doc/doxygen.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/doxygen.sh>`_ script
+Doxygen can be run using the `scripts/doc/doxygen.sh <https://github.com/AlCash07/ACTL/blob/main/scripts/doc/doxygen.sh>`_ script
 or the ``run doxygen`` VS Code task.
 
-The Doxygen configuration file can be found `here <https://github.com/AlCash07/ACTL/blob/master/doc/Doxyfile.in>`_.
+The Doxygen configuration file can be found `here <https://github.com/AlCash07/ACTL/blob/main/doc/Doxyfile.in>`_.
 The options of interest are:
 
 - ``GENERATE_XML`` is set to ``YES``, because xml output is used for the following steps.
@@ -61,7 +61,7 @@ Sphinx
 ======
 
 `Sphinx generator <https://www.sphinx-doc.org/en/master/>`_ is used to generate the final documentation web pages.
-The sources in rst format are located in the `doc <https://github.com/AlCash07/ACTL/tree/master/doc>`_ folder.
+The sources in rst format are located in the `doc <https://github.com/AlCash07/ACTL/tree/main/doc>`_ folder.
 Existing sources can be used as a reference, other useful links for writing them are:
 
 - `reStructuredText quick reference <https://docutils.sourceforge.io/docs/user/rst/quickref.html>`_
@@ -70,7 +70,7 @@ Existing sources can be used as a reference, other useful links for writing them
 - `Breathe directives <https://breathe.readthedocs.io/en/latest/directives.html>`_.
   Breathe is an extension for Sphinx that allows to use Doxygen xml output.
 
-Sphinx can be run using the `scripts/doc/sphinx.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/sphinx.sh>`_ script
+Sphinx can be run using the `scripts/doc/sphinx.sh <https://github.com/AlCash07/ACTL/blob/main/scripts/doc/sphinx.sh>`_ script
 or the ``generate documentation`` VS Code task (together with Doxygen),
 and its output can be examined by opening *build/doc/sphinx/index.html*
 
@@ -78,7 +78,7 @@ Publishing documentation
 ========================
 
 Currently, the documentation is published manually only by the project maintainers using the
-`scripts/doc/publish.sh <https://github.com/AlCash07/ACTL/blob/master/scripts/doc/publish.sh>`_ script
+`scripts/doc/publish.sh <https://github.com/AlCash07/ACTL/blob/main/scripts/doc/publish.sh>`_ script
 or the ``publish documentation`` VS Code task (together with documentation generation).
 
 Generated documentation is committed to a special `doc branch <https://github.com/AlCash07/ACTL/tree/doc>`_

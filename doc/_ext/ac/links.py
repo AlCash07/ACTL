@@ -10,7 +10,7 @@ from sphinx.util.typing import ExtensionMetadata
 
 def link(path):
     assert os.path.exists(path), f"Path doesn't exist: {path}"
-    github_link = "https://github.com/AlCash07/ACTL/tree/master"
+    github_link = "https://github.com/AlCash07/ACTL/tree/main"
     return github_link + "/" + path
 
 
