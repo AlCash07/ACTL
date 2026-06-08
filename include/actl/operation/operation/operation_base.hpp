@@ -10,8 +10,8 @@
 #include <actl/operation/operation/Operation.hpp>
 #include <actl/operation/operation/inout.hpp>
 #include <actl/operation/operation/operation_traits.hpp>
-#include <actl/operation/overload/resolve_expression.hpp>
-#include <actl/operation/overload/resolve_overload.hpp>
+#include <actl/operation/resolver/expression_resolver.hpp>
+#include <actl/operation/resolver/operation_resolver.hpp>
 #include <actl/operation/policy/resolve_overload.hpp>
 
 namespace ac {
@@ -71,7 +71,7 @@ struct operation_base {
         static_assert(
             1 == (... + is_inout_v<Args>), "single inout argument expected"
         );
-        auto&& op = resolve_overload<Args...>(derived());
+        auto&& op = resolve_operation<Args...>(derived());
         auto& target = find_target(args...);
         op.evaluate_to(out{target}, remove_inout(args)...);
         return target;

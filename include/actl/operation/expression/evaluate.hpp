@@ -8,7 +8,7 @@
 
 #include <actl/functional/parameter/out.hpp>
 #include <actl/operation/expression/expression_data.hpp>
-#include <actl/operation/overload/resolve_overload.hpp>
+#include <actl/operation/resolver/operation_resolver.hpp>
 
 namespace ac {
 
@@ -53,7 +53,7 @@ constexpr decltype(auto) eval(
     expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
     auto&& operation =
-        resolve_overload<decltype(eval(std::declval<Args const&>()))...>(
+        resolve_operation<decltype(eval(std::declval<Args const&>()))...>(
             expression.operation
         );
     return operation.evaluate(
@@ -66,7 +66,7 @@ constexpr void assign(
     out<Target>& target,
     expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
-    auto&& operation = resolve_overload<Args...>(expression.operation);
+    auto&& operation = resolve_operation<Args...>(expression.operation);
     operation.evaluate_to(
         out{target},
         detail::argument_at<decltype(operation), Is>(expression.arguments)...

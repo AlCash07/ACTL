@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/overload/resolve_overload.hpp>
+#include <actl/operation/resolver/operation_resolver.hpp>
 #include <actl/operation/policy/tuned_operation.hpp>
 
 namespace ac {
@@ -24,7 +24,7 @@ struct policy_overload<Op, ArgsArray, TopPolicy, Policies...> {
     ) {
         auto&& new_op = apply_policy_if_can(std::forward<Op1>(op), top_policy);
         using resolver =
-            overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Policies...>;
+            operation_resolver<raw_t<decltype(new_op)>, ArgsArray, Policies...>;
         return resolver::resolve(
             std::forward<decltype(new_op)>(new_op), policies...
         );
@@ -36,7 +36,7 @@ template<
     typename NewPolicy,
     typename ArgsArray,
     typename... Policies>
-struct overload_resolver<
+struct operation_resolver<
     tuned_operation<Op, NewPolicy>,
     ArgsArray,
     Policies...> {
@@ -44,7 +44,7 @@ struct overload_resolver<
         tuned_operation<Op, NewPolicy> const& op, Policies const&... policies
     ) {
         using resolver =
-            overload_resolver<raw_t<Op>, ArgsArray, NewPolicy, Policies...>;
+            operation_resolver<raw_t<Op>, ArgsArray, NewPolicy, Policies...>;
         return resolver::resolve(op.operation, op.policy, policies...);
     }
 };

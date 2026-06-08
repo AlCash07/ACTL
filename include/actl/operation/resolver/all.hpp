@@ -6,6 +6,6 @@
 
 #pragma once
 
-#include <actl/operation/overload/overload.hpp>
-#include <actl/operation/overload/resolve_expression.hpp>
-#include <actl/operation/overload/resolve_overload.hpp>
+#include <actl/operation/resolver/overload.hpp>
+#include <actl/operation/resolver/expression.hpp>
+#include <actl/operation/resolver/operation_resolver.hpp>

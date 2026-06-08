@@ -39,7 +39,7 @@ inline constexpr operation_composer<LexicographicalCompareRange>
 template<Range L, Range R>
 struct overload<Compare3Way, L, R> {
     static constexpr auto formula = lexicographical_compare_range(
-        resolve_overload<range_value_t<L>, range_value_t<R>>(compare3way)
+        resolve_operation<range_value_t<L>, range_value_t<R>>(compare3way)
     );
 };
 

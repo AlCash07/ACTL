@@ -13,7 +13,7 @@ namespace ac {
 namespace detail {
 
 template<typename OE, typename ArgsArray, typename... Policies>
-struct expression_overload;
+struct expression_resolver;
 
 template<
     Operation Op,
@@ -21,7 +21,7 @@ template<
     typename... Ts,
     typename ArgsArray,
     typename... Policies>
-struct expression_overload<
+struct expression_resolver<
     expression_data<Op, std::index_sequence<Is...>, Ts...>,
     ArgsArray,
     Policies...> {
@@ -30,7 +30,7 @@ struct expression_overload<
         OE&& oe, Policies const&... policies, Us&&... xs
     ) {
         return expression{
-            overload_resolver<
+            operation_resolver<
                 raw_t<OE>,
                 type_array<raw_t<Us>...>,
                 Policies...>::resolve(std::forward<OE>(oe), policies...),
@@ -43,7 +43,7 @@ struct expression_overload<
         return make_expression(
             static_cast<OE&&>(oe).operation,
             policies...,
-            overload_resolver<raw_t<Ts>, ArgsArray, Policies...>::resolve(
+            operation_resolver<raw_t<Ts>, ArgsArray, Policies...>::resolve(
                 std::get<Is>(static_cast<OE&&>(oe).arguments), policies...
             )...
         );
@@ -54,14 +54,14 @@ struct expression_overload<
 
 template<Operation Op, typename... Ts, typename ArgsArray, typename... Policies>
     requires(
-        !(is_overload_resolved_v<
+        !(is_operation_resolved_v<
               raw_t<Op>,
               type_array<raw_t<Ts>...>,
               Policies...> &&
-          (... && is_overload_resolved_v<raw_t<Ts>, ArgsArray, Policies...>))
+          (... && is_operation_resolved_v<raw_t<Ts>, ArgsArray, Policies...>))
     )
-struct overload_resolver<expression<Op, Ts...>, ArgsArray, Policies...>
-    : detail::expression_overload<
+struct operation_resolver<expression<Op, Ts...>, ArgsArray, Policies...>
+    : detail::expression_resolver<
           expression_data_t<Op, Ts...>,
           ArgsArray,
           Policies...> {};
