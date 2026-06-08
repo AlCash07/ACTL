@@ -7,5 +7,4 @@
 #pragma once
 
 #include <actl/operation/policy/policy.hpp>
-#include <actl/operation/policy/resolve_operation.hpp>
 #include <actl/operation/policy/tuned_operation.hpp>

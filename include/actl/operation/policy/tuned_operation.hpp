@@ -25,4 +25,22 @@ constexpr auto operator|(Op&& op, P&& policy) {
     };
 }
 
+template<
+    Operation Op,
+    typename NewPolicy,
+    typename ArgsArray,
+    typename... Policies>
+struct operation_resolver<
+    tuned_operation<Op, NewPolicy>,
+    ArgsArray,
+    Policies...> {
+    constexpr decltype(auto) operator()(
+        tuned_operation<Op, NewPolicy> const& op, Policies const&... policies
+    ) const {
+        using resolver =
+            operation_resolver<raw_t<Op>, ArgsArray, NewPolicy, Policies...>;
+        return resolver{}(op.operation, op.policy, policies...);
+    }
+};
+
 } // namespace ac
