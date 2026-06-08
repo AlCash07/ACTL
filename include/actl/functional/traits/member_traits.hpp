@@ -61,8 +61,7 @@ struct modify_class;
 
 template<
     MemberFunction MF,
-    template<typename>
-    typename Modifier,
+    template<typename> typename Modifier,
     typename Class,
     typename... Parameters>
 struct modify_class<MF, Modifier, type_array<Class, Parameters...>> {

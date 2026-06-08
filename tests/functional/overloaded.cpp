@@ -14,9 +14,7 @@ using int_or_float = std::variant<int, float>;
 constexpr auto has_int = overloaded{
     [](int) { return true; },
     // overloads can be templates
-    [](auto) {
-        return false;
-    }
+    [](auto) { return false; }
 };
 
 static_assert(std::visit(has_int, int_or_float{2}));

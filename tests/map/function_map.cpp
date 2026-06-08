@@ -16,9 +16,7 @@ TEST_CASE("function_map free_function") {
 
 TEST_CASE("function_map lambda") {
     int count = 0;
-    auto map = function_map{[&count](int) {
-        return count++;
-    }};
+    auto map = function_map{[&count](int) { return count++; }};
     CHECK(0 == get(map, 0));
     CHECK(1 == get(map, 0));
     CHECK(2 == count);

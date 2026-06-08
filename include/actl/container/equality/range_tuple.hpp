@@ -14,8 +14,9 @@ namespace ac {
 namespace detail {
 
 template<typename L, typename R, size_t... Is>
-constexpr bool
-is_equal_tuple_range(L const& l, R const& r, std::index_sequence<Is...>) noexcept {
+constexpr bool is_equal_tuple_range(
+    L const& l, R const& r, std::index_sequence<Is...>
+) noexcept {
     using std::get;
     static_assert(noexcept((... && (get<Is>(l) == r[Is]))));
     return (... && (get<Is>(l) == r[Is]));

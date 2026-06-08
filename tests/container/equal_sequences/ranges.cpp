@@ -8,9 +8,11 @@
 #include "test.hpp"
 
 TEST_CASE("is_equal_sequence for vectors") {
-    CHECK(ac::is_equal_sequence(
-        std::vector<int>{4, 2}, std::vector<long long>{4, 2}
-    ));
+    CHECK(
+        ac::is_equal_sequence(
+            std::vector<int>{4, 2}, std::vector<long long>{4, 2}
+        )
+    );
     /* size mismatch with a common prefix */ {
         CHECK(!ac::is_equal_sequence(std::vector{4}, std::vector{4, 2}));
         CHECK(!ac::is_equal_sequence(std::vector{4, 2}, std::vector{4}));

@@ -36,7 +36,7 @@ TEST_CASE("free function traits") {
 }
 
 using fn_parameters = //
-    int && (int&, int const&, int*, int const*, ...) noexcept;
+    int&&(int&, int const&, int*, int const*, ...) noexcept;
 static_assert(std::is_same_v<int&&, ac::return_t<fn_parameters>>);
 static_assert(std::is_same_v<
               ac::type_array<int&, int const&, int*, int const*>,
@@ -60,16 +60,16 @@ static_assert(std::is_same_v<int const*, ac::parameter_at_t<fn_parameters, 3>>);
 /* variadic arguments modification */
 /* add_variadic_arguments_t */
 static_assert(std::is_same_v<fn_va, ac::add_variadic_arguments_t<fn>>);
-static_assert(std::is_same_v<
-              fn_va_noexcept,
-              ac::add_variadic_arguments_t<fn_noexcept>>);
+static_assert(
+    std::is_same_v<fn_va_noexcept, ac::add_variadic_arguments_t<fn_noexcept>>
+);
 // unchanged
 static_assert(std::is_same_v<fn_va, ac::add_variadic_arguments_t<fn_va>>);
 /* remove_variadic_arguments_t */
 static_assert(std::is_same_v<fn, ac::remove_variadic_arguments_t<fn_va>>);
-static_assert(std::is_same_v<
-              fn_noexcept,
-              ac::remove_variadic_arguments_t<fn_va_noexcept>>);
+static_assert(
+    std::is_same_v<fn_noexcept, ac::remove_variadic_arguments_t<fn_va_noexcept>>
+);
 // unchanged
 static_assert(std::is_same_v<fn, ac::remove_variadic_arguments_t<fn>>);
 
@@ -95,6 +95,6 @@ static_assert(std::is_same_v<
 
 /* as_free_function_t */
 static_assert(std::is_same_v<fn, ac::as_free_function_t<fn>>);
-static_assert(std::is_same_v<
-              fn_va_noexcept,
-              ac::as_free_function_t<fn_va_noexcept>>);
+static_assert(
+    std::is_same_v<fn_va_noexcept, ac::as_free_function_t<fn_va_noexcept>>
+);

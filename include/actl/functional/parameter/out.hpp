@@ -120,10 +120,10 @@ public:
     /// because each usage of a reference as an output parameter
     /// should be separately wrapped into ac::out.
     template<typename Source>
-    constexpr Ref operator=(Source&& source)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
-            assign(*this, std::forward<Source>(source))
-        )
+    constexpr Ref
+    operator=(Source&& source) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN(
+        assign(*this, std::forward<Source>(source))
+    )
 
     struct enable_operators;
 

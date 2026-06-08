@@ -13,7 +13,12 @@ namespace ac {
 
 // C++20 version requires std::is_trivially_constructible_v<Target>.
 template<typename Target, typename Source>
-    requires(sizeof(Target) == sizeof(Source) && std::is_default_constructible_v<Target> && std::is_trivially_copyable_v<Target> && std::is_trivially_copyable_v<Source>)
+    requires(
+        sizeof(Target) == sizeof(Source) &&
+        std::is_default_constructible_v<Target> &&
+        std::is_trivially_copyable_v<Target> &&
+        std::is_trivially_copyable_v<Source>
+    )
 Target bit_cast(Source const& source) noexcept {
     Target output;
     std::memcpy(&output, &source, sizeof(Target));

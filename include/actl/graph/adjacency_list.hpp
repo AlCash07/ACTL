@@ -79,9 +79,9 @@ protected:
     edge get_edge(vertex u, typename traits::out_edge_data const& oed) const {
         auto e = oed.second;
         vertex v;
-        if constexpr (std::is_same_v<
-                          typename traits::out_edge_data::first_type,
-                          none>) {
+        if constexpr (
+            std::is_same_v<typename traits::out_edge_data::first_type, none>
+        ) {
             v = vertex{m_edge_list.get_target(id_to_raw(u), e)};
         } else {
             v = vertex{oed.first};

@@ -62,12 +62,15 @@ AC_MF_CHECK(
 static_assert(!ac::is_lvalue_reference_member_v<decltype(&M::fn)>);
 static_assert(!ac::is_lvalue_reference_member_v<decltype(&M::fn_rref)>);
 static_assert(ac::is_lvalue_reference_member_v<decltype(&M::fn_lref)>);
-static_assert(!ac::is_lvalue_reference_member_v<decltype(&M::fn_va_c_noexcept
-              )>);
-static_assert(!ac::is_lvalue_reference_member_v<
-              decltype(&M::fn_va_c_rref_noexcept)>);
-static_assert(ac::is_lvalue_reference_member_v<
-              decltype(&M::fn_va_c_lref_noexcept)>);
+static_assert(
+    !ac::is_lvalue_reference_member_v<decltype(&M::fn_va_c_noexcept)>
+);
+static_assert(
+    !ac::is_lvalue_reference_member_v<decltype(&M::fn_va_c_rref_noexcept)>
+);
+static_assert(
+    ac::is_lvalue_reference_member_v<decltype(&M::fn_va_c_lref_noexcept)>
+);
 // unchanged
 AC_MF_CHECK(&M::fn_lref, ac::add_member_lvalue_reference_t, &M::fn_lref);
 AC_MF_CHECK(&M::fn_lref, ac::add_member_lvalue_reference_t, &M::fn_lref);
@@ -94,12 +97,15 @@ AC_MF_CHECK(
 static_assert(!ac::is_rvalue_reference_member_v<decltype(&M::fn)>);
 static_assert(!ac::is_rvalue_reference_member_v<decltype(&M::fn_lref)>);
 static_assert(ac::is_rvalue_reference_member_v<decltype(&M::fn_rref)>);
-static_assert(!ac::is_rvalue_reference_member_v<decltype(&M::fn_va_c_noexcept
-              )>);
-static_assert(!ac::is_rvalue_reference_member_v<
-              decltype(&M::fn_va_c_lref_noexcept)>);
-static_assert(ac::is_rvalue_reference_member_v<
-              decltype(&M::fn_va_c_rref_noexcept)>);
+static_assert(
+    !ac::is_rvalue_reference_member_v<decltype(&M::fn_va_c_noexcept)>
+);
+static_assert(
+    !ac::is_rvalue_reference_member_v<decltype(&M::fn_va_c_lref_noexcept)>
+);
+static_assert(
+    ac::is_rvalue_reference_member_v<decltype(&M::fn_va_c_rref_noexcept)>
+);
 // unchanged
 AC_MF_CHECK(&M::fn_rref, ac::add_member_rvalue_reference_t, &M::fn_rref);
 AC_MF_CHECK(&M::fn_rref, ac::add_member_rvalue_reference_t, &M::fn_rref);

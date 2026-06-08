@@ -16,8 +16,9 @@ struct IsEqualTuple {
     static constexpr size_t inner_count = 0;
 
     template<typename EqualOps, typename L, typename R, size_t... Is>
-    static bool
-    evaluate_impl(EqualOps const& ops, L const& l, R const& r, std::index_sequence<Is...>) {
+    static bool evaluate_impl(
+        EqualOps const& ops, L const& l, R const& r, std::index_sequence<Is...>
+    ) {
         using std::get;
         return (... && get<Is>(ops)(get<Is>(l), get<Is>(r)));
     }

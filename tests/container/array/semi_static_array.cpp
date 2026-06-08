@@ -39,12 +39,9 @@ void test_static_array_constructors() {
     /* from all values */
     static_assert(array == ssa3XX2{3_c, 5, 4, 2_c});
     static_assert(!std::is_constructible_v<ssa3XX2, int, int, int, int, int>);
-    static_assert(!std::is_constructible_v<
-                  ssa3XX2,
-                  decltype(4_c),
-                  int,
-                  int,
-                  int>);
+    static_assert(
+        !std::is_constructible_v<ssa3XX2, decltype(4_c), int, int, int>
+    );
     static_assert(!std::is_constructible_v<ssa3XX2, int, void*, int, int>);
     /* CTAD */
     static_assert(
@@ -62,7 +59,9 @@ constexpr Array fill_dynamic_values(Array array, D dynamic) noexcept {
 }
 
 template<typename T, T... StaticValues, T... DynamicValues, size_t... Is>
-void test_semi_static_array_interface_impl(std::integer_sequence<T, DynamicValues...>, std::index_sequence<Is...>) {
+void test_semi_static_array_interface_impl(
+    std::integer_sequence<T, DynamicValues...>, std::index_sequence<Is...>
+) {
     using ac::constant;
     using Array = ac::semi_static_array<T, StaticValues...>;
     constexpr Array array{DynamicValues...};

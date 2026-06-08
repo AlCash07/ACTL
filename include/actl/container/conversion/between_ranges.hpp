@@ -35,9 +35,8 @@ struct range_construct_and_copy {
                                       range_reference_t<Source const>>;
 
     static constexpr Target convert(Source const& source) noexcept(
-        std::is_nothrow_default_constructible_v<Target>&& noexcept(
-            ranges::copy(std::declval<Target>(), source)
-        )
+        std::is_nothrow_default_constructible_v<Target> &&
+        noexcept(ranges::copy(std::declval<Target>(), source))
     ) {
         Target output{};
         ranges::copy(output, source);
@@ -56,7 +55,10 @@ template<typename Target, typename Source>
 constexpr bool can_convert_as_ranges() noexcept {
     // We check for StrictRange, because we don't want to
     // miss additional type checking enabled by the tuple.
-    if constexpr (StrictRange<Target> && StrictRange<Source> && have_matching_static_sizes_v<Target, Source>)
+    if constexpr (
+        StrictRange<Target> && StrictRange<Source> &&
+        have_matching_static_sizes_v<Target, Source>
+    )
         return ranges_conversion<Target, Source>::value;
     else
         return false;

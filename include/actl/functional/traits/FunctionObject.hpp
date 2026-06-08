@@ -35,9 +35,8 @@ concept FunctionObject = requires(T) {
 template<FunctionObject Function>
 struct function_traits<Function> {
 private:
-    using member_traits =
-        function_traits<decltype(&std::remove_reference_t<Function>::operator()
-        )>;
+    using member_traits = function_traits<
+        decltype(&std::remove_reference_t<Function>::operator())>;
     using all_parameters = typename member_traits::parameters_type;
 
 public:

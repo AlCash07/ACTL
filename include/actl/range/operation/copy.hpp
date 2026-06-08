@@ -14,9 +14,8 @@ namespace ac::ranges {
 
 template<std::input_or_output_iterator OutIter, Range SourceRange>
 constexpr OutIter copy(OutIter target, SourceRange const& source) noexcept(
-    is_nothrow_iterable_v<SourceRange const>&& noexcept(
-        ++target, *target = *ranges::begin(source)
-    )
+    is_nothrow_iterable_v<SourceRange const> &&
+    noexcept(++target, *target = *ranges::begin(source))
 ) {
     auto first = ranges::begin(source);
     auto last = ranges::end(source);

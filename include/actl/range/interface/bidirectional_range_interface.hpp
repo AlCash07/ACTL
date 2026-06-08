@@ -14,9 +14,9 @@ template<typename Derived>
 class bidirectional_range_interface : public basic_range_interface<Derived> {
 public:
     // decltype(auto) because a reference can be returned here.
-    constexpr decltype(auto) back() const
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end())
-        ) {
+    constexpr decltype(auto) back() const noexcept(
+        AC_ASSERT_IS_NOEXCEPT() && noexcept(*--this->derived().end())
+    ) {
         AC_ASSERT(!this->empty());
         auto last = this->derived().end();
         return *--last;

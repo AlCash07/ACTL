@@ -40,7 +40,8 @@ enum within within(
         {
             auto lit =
                 std::lower_bound(first + 1, first + right, p, less(policy));
-            return detail::to_inclusion(orientation(policy, p, lit[0], lit[-1])
+            return detail::to_inclusion(
+                orientation(policy, p, lit[0], lit[-1])
             );
         }
         case orientation2d::right: // upper chain

@@ -27,8 +27,9 @@ public:
     )
 
     // decltype(auto) because a reference can be returned here.
-    constexpr decltype(auto) front() const
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin())) {
+    constexpr decltype(auto) front() const noexcept(
+        AC_ASSERT_IS_NOEXCEPT() && noexcept(*derived().begin())
+    ) {
         AC_ASSERT(!empty());
         return *derived().begin();
     }

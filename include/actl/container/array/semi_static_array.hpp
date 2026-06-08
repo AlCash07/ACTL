@@ -104,8 +104,9 @@ private:
     static constexpr auto indices = std::make_index_sequence<size()>{};
 
     template<size_t... Is>
-    static constexpr size_t
-    dymanic_index_impl(std::index_sequence<Is...>) noexcept {
+    static constexpr size_t dymanic_index_impl(
+        std::index_sequence<Is...>
+    ) noexcept {
         return (0 + ... + size_t{static_values[Is] == dynamic_extent<T>});
     }
 

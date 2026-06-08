@@ -64,7 +64,8 @@ public:
     // https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2024/p2727r4.html#changes-since-r1
     template<std::same_as<DerivedIterator> Iter>
         requires(!std::copyable<Iter>)
-    friend constexpr void operator++(Iter& iter, int) noexcept(noexcept(++iter)
+    friend constexpr void operator++(Iter& iter, int) noexcept(
+        noexcept(++iter)
     ) {
         ++iter;
     }

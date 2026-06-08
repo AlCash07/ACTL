@@ -16,27 +16,29 @@ static_assert(std::is_same_v<ac::type_array<>, ac::slice_t<FullList, 0, 0>>);
 static_assert(std::is_same_v<ac::type_array<>, ac::slice_t<FullList, 2, 2>>);
 static_assert(std::is_same_v<ac::type_array<>, ac::slice_t<FullList, 5, 5>>);
 /* length 1 */
-static_assert(std::
-                  is_same_v<ac::type_array<void>, ac::slice_t<FullList, 0, 1>>);
-static_assert(std::
-                  is_same_v<ac::type_array<long>, ac::slice_t<FullList, 2, 3>>);
-static_assert(std::is_same_v<
-              ac::type_array<double>,
-              ac::slice_t<FullList, 4, 5>>);
+static_assert(
+    std::is_same_v<ac::type_array<void>, ac::slice_t<FullList, 0, 1>>
+);
+static_assert(
+    std::is_same_v<ac::type_array<long>, ac::slice_t<FullList, 2, 3>>
+);
+static_assert(
+    std::is_same_v<ac::type_array<double>, ac::slice_t<FullList, 4, 5>>
+);
 /* length 2 */
-static_assert(std::is_same_v<
-              ac::type_array<void, int>,
-              ac::slice_t<FullList, 0, 2>>);
-static_assert(std::is_same_v<
-              ac::type_array<long, float>,
-              ac::slice_t<FullList, 2, 4>>);
-static_assert(std::is_same_v<
-              ac::type_array<float, double>,
-              ac::slice_t<FullList, 3, 5>>);
+static_assert(
+    std::is_same_v<ac::type_array<void, int>, ac::slice_t<FullList, 0, 2>>
+);
+static_assert(
+    std::is_same_v<ac::type_array<long, float>, ac::slice_t<FullList, 2, 4>>
+);
+static_assert(
+    std::is_same_v<ac::type_array<float, double>, ac::slice_t<FullList, 3, 5>>
+);
 /* length 3 */
-static_assert(std::is_same_v<
-              ac::type_array<void, int, long>,
-              ac::slice_t<FullList, 0, 3>>);
+static_assert(
+    std::is_same_v<ac::type_array<void, int, long>, ac::slice_t<FullList, 0, 3>>
+);
 static_assert(std::is_same_v<
               ac::type_array<int, long, float>,
               ac::slice_t<FullList, 1, 4>>);
@@ -55,11 +57,12 @@ static_assert(std::is_same_v<FullList, ac::slice_t<FullList, 0, 5>>);
 
 /* prefix and suffix as special cases */
 static_assert(std::is_same_v<ac::type_array<void>, ac::prefix_t<FullList, 1>>);
-static_assert(std::is_same_v<
-              ac::type_array<void, int>,
-              ac::prefix_t<FullList, 2>>);
-static_assert(std::
-                  is_same_v<ac::type_array<double>, ac::suffix_t<FullList, 1>>);
-static_assert(std::is_same_v<
-              ac::type_array<float, double>,
-              ac::suffix_t<FullList, 2>>);
+static_assert(
+    std::is_same_v<ac::type_array<void, int>, ac::prefix_t<FullList, 2>>
+);
+static_assert(
+    std::is_same_v<ac::type_array<double>, ac::suffix_t<FullList, 1>>
+);
+static_assert(
+    std::is_same_v<ac::type_array<float, double>, ac::suffix_t<FullList, 2>>
+);

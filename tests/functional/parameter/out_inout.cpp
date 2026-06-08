@@ -44,18 +44,18 @@ TEST_CASE("assignment") {
     /* out */ {
         CHECK(5 == (out{output} = 5));
         CHECK(5 == output);
-        static_assert(std::is_same_v<
-                      int&,
-                      decltype(out{std::declval<int&>()} = 5)>);
+        static_assert(
+            std::is_same_v<int&, decltype(out{std::declval<int&>()} = 5)>
+        );
         // void* is just an arbitrary incompatible type
         static_assert(!std::is_assignable_v<out<int&>, void*>);
     }
     /* inout */ {
         CHECK(3 == (inout{output} = 3));
         CHECK(3 == output);
-        static_assert(std::is_same_v<
-                      int&,
-                      decltype(inout{std::declval<int&>()} = 3)>);
+        static_assert(
+            std::is_same_v<int&, decltype(inout{std::declval<int&>()} = 3)>
+        );
         static_assert(!std::is_assignable_v<inout<int&>, void*>);
     }
 }
@@ -114,27 +114,27 @@ constexpr bool test_wrapper_conversions() {
     /* Conversion is allowed only if the wrapped types are implicitly
      * convertible */
     {
-        static_assert(std::is_convertible_v<
-                      Wrapper<int const&>,
-                      Wrapper<test_ref>>);
+        static_assert(
+            std::is_convertible_v<Wrapper<int const&>, Wrapper<test_ref>>
+        );
         // we need a variable here, because ->ref access isn't const.
         Wrapper<test_ref> wrapped{Wrapper<int const&>{intValue}};
         if (&intValue != &wrapped->ref)
             return false;
-        static_assert(!std::is_constructible_v<
-                      Wrapper<test_ref>,
-                      Wrapper<wrapped_int&>>);
+        static_assert(
+            !std::is_constructible_v<Wrapper<test_ref>, Wrapper<wrapped_int&>>
+        );
     }
     /* Conversion noexcept specification follows the wrapped types */ {
         static_assert(std::is_nothrow_constructible_v<
                       Wrapper<test_ref>,
                       Wrapper<int const&>>);
-        static_assert(std::is_convertible_v<
-                      Wrapper<int const&>,
-                      Wrapper<test_ref>>);
-        static_assert(!std::is_nothrow_constructible_v<
-                      Wrapper<test_ref>,
-                      Wrapper<int&>>);
+        static_assert(
+            std::is_convertible_v<Wrapper<int const&>, Wrapper<test_ref>>
+        );
+        static_assert(
+            !std::is_nothrow_constructible_v<Wrapper<test_ref>, Wrapper<int&>>
+        );
     }
     return true;
 }

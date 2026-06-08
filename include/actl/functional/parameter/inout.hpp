@@ -52,14 +52,16 @@ public:
     /// Constructor from an arbitrary type convertible to the wrapped type.
     template<typename Arg>
         requires(std::is_constructible_v<Ref, Arg &&> && !is_out_v<Arg>)
-    explicit constexpr inout(Arg&& arg)
-        AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<Ref>{std::forward<Arg>(arg)}) {}
+    explicit constexpr inout(Arg&& arg) AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(
+        out<Ref>{std::forward<Arg>(arg)}
+    ) {}
 
     /// See analogous ac::out constructor.
     template<typename Source>
         requires(std::is_convertible_v<Source, Ref>)
-    constexpr inout(inout<Source>&& source)
-        AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(out<Ref>{*source}) {}
+    constexpr inout(inout<Source>&& source) AC_DEDUCE_NOEXCEPT_AND_INITIALIZE(
+        out<Ref>{*source}
+    ) {}
 
     using out<Ref>::operator=;
 };

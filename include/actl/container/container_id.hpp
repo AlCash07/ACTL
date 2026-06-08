@@ -46,8 +46,9 @@ public:
         return get_id_key(*this) < get_id_key(that);
     }
 
-    iterator_id operator*() const
-        noexcept(std::is_nothrow_copy_constructible_v<Iter>) {
+    iterator_id operator*() const noexcept(
+        std::is_nothrow_copy_constructible_v<Iter>
+    ) {
         return *this;
     }
 

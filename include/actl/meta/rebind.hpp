@@ -47,8 +47,7 @@ struct rebind0 {
 };
 
 template<
-    template<typename...>
-    typename C,
+    template<typename...> typename C,
     typename T0,
     typename... Ts,
     typename Target>

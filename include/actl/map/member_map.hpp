@@ -20,16 +20,16 @@ public:
     using class_t = Class;
     using member_t = Member;
 
-    explicit constexpr member_map(Member Class::*ptr) : ptr{ptr} {}
+    explicit constexpr member_map(Member Class::* ptr) : ptr{ptr} {}
 
-    Member Class::*const ptr;
+    Member Class::* const ptr;
 };
 
 /// Member property map with member mapping known at compile-time.
 template<auto Ptr>
 class static_member_map;
 
-template<typename Class, typename Member, Member Class::*Ptr>
+template<typename Class, typename Member, Member Class::* Ptr>
 class static_member_map<Ptr> {
 public:
     using class_t = Class;

@@ -27,7 +27,8 @@ static_assert(
 static_assert(
     !ac::is_equal_sequence(ssaX4X2{5, 3}, ssa<int, -1, -1, -1, -1>{5, 2, 3, 2})
 );
-static_assert(ac::is_equal_sequence(ssaX4X2{5, 3}, ssa<int, 5, -1, 3, -1>{4, 2})
+static_assert(
+    ac::is_equal_sequence(ssaX4X2{5, 3}, ssa<int, 5, -1, 3, -1>{4, 2})
 );
 static_assert(
     !ac::is_equal_sequence(ssaX4X2{5, 3}, ssa<int, 5, -1, 3, -1>{4, 3})

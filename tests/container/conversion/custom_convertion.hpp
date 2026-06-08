@@ -25,7 +25,8 @@ template<typename Target, typename Source>
 struct conversion<converted<Target>, converted<Source>> {
     static constexpr bool value = can_convert_to_v<Target, Source>;
 
-    static constexpr converted<Target> convert(converted<Source> source
+    static constexpr converted<Target> convert(
+        converted<Source> source
     ) noexcept {
         return converted<Target>{source.value};
     }

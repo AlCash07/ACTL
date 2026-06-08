@@ -17,16 +17,18 @@ struct serialization_access {
     static constexpr bool is_io_tuple_v = requires { typename T::is_io_tuple; };
 
     template<typename T, typename... Ts>
-    static bool write_final(T const& x, Ts&... args)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
-            x.write_final(args...)
-        )
+    static bool write_final(
+        T const& x, Ts&... args
+    ) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+        x.write_final(args...)
+    )
 
     template<typename T, typename... Ts>
-    static bool read(T& x, Ts&&... args)
-        AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
-            x.read_final(args...)
-        )
+    static bool read(
+        T& x, Ts&&... args
+    ) AC_DEDUCE_NOEXCEPT_REQUIRES_AND_RETURN( //
+        x.read_final(args...)
+    )
 };
 
 template<typename T>

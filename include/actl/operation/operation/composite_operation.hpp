@@ -44,10 +44,14 @@ struct operation_composer {
 };
 
 template<typename Outer, typename... Inner, size_t... Is>
-constexpr auto
-apply_policy_to_composite(composite_operation<Outer, Inner...> const& op, Policy auto const& policy, std::index_sequence<Is...>) {
-    return operation_composer<Outer>{
-    }(apply_policy_if_can(std::get<Is>(op.inner()), policy)...);
+constexpr auto apply_policy_to_composite(
+    composite_operation<Outer, Inner...> const& op,
+    Policy auto const& policy,
+    std::index_sequence<Is...>
+) {
+    return operation_composer<Outer>{}(
+        apply_policy_if_can(std::get<Is>(op.inner()), policy)...
+    );
 }
 
 template<typename Outer, typename... Inner, Policy P>

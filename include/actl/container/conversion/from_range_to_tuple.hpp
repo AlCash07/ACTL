@@ -27,13 +27,16 @@ struct range_to_tuple_impl<std::index_sequence<Is...>, Target, Source> {
         &&(... &&
            can_convert_to_v<std::tuple_element_t<Is, Target>, source_ref>);
 
-    static constexpr Target convert(Source&& source
-    ) noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(Target{
-        convert_to<std::tuple_element_t<Is, Target>>(source[Is])...
-    })) {
+    static constexpr Target convert(Source&& source) noexcept(
+        AC_ASSERT_IS_NOEXCEPT() &&
+        noexcept(Target{
+            convert_to<std::tuple_element_t<Is, Target>>(source[Is])...
+        })
+    ) {
         AC_ASSERT(std::tuple_size_v<Target> == source.size());
-        return Target{convert_to<std::tuple_element_t<Is, Target>>(source[Is]
-        )...};
+        return Target{
+            convert_to<std::tuple_element_t<Is, Target>>(source[Is])...
+        };
     }
 };
 

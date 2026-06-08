@@ -34,7 +34,7 @@ constexpr bool can_initialize_range() noexcept {
     // miss additional type checking enabled by the tuple.
     if constexpr (StrictRange<Target>)
         return static_sizes_match(static_size_v<Target>, sizeof...(Args)) &&
-               (... && can_convert_to_v<range_value_t<Target>, Args>)&& //
+               (... && can_convert_to_v<range_value_t<Target>, Args>) && //
                can_list_initialize_v<
                    Target,
                    repeat_t<range_value_t<Target>, Args>...>;

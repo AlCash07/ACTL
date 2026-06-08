@@ -21,11 +21,8 @@ namespace detail {
     struct name##_impl {};                                          \
                                                                     \
     template<typename T>                                            \
-    concept has_##name = !std::is_const_v<T>&&                      \
-                             requires(T)                            \
-    {                                                               \
-        typename T::name;                                           \
-    };                                                              \
+    concept has_##name =                                            \
+        !std::is_const_v<T> && requires(T) { typename T::name; };   \
                                                                     \
     template<has_##name T>                                          \
     struct name##_impl<T> {                                         \

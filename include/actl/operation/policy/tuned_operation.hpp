@@ -6,7 +6,9 @@
 
 #pragma once
 
+#include <actl/operation/expression/value_if_cheap.hpp>
 #include <actl/operation/policy/policy.hpp>
+#include <actl/operation/resolver/operation_resolver.hpp>
 
 namespace ac {
 

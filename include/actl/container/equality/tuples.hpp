@@ -14,8 +14,9 @@ namespace ac {
 namespace detail {
 
 template<size_t... Is>
-constexpr bool
-is_equal_tuples(Tuple auto const& l, Tuple auto const& r, std::index_sequence<Is...>) noexcept {
+constexpr bool is_equal_tuples(
+    Tuple auto const& l, Tuple auto const& r, std::index_sequence<Is...>
+) noexcept {
     using std::get;
     static_assert(noexcept((... && (get<Is>(l) == get<Is>(r)))));
     return (... && (get<Is>(l) == get<Is>(r)));

@@ -43,8 +43,9 @@ struct const_function_object_noexcept {
 };
 
 static_assert(0ul == ac::arity_v<const_function_object_noexcept>);
-static_assert(std::
-                  is_same_v<int, ac::return_t<const_function_object_noexcept>>);
+static_assert(
+    std::is_same_v<int, ac::return_t<const_function_object_noexcept>>
+);
 static_assert(ac::is_noexcept_v<const_function_object_noexcept>);
 
 struct function_object_params {
@@ -52,8 +53,9 @@ struct function_object_params {
 };
 
 static_assert(3ul == ac::arity_v<function_object_params>);
-static_assert(std::
-                  is_same_v<void const*, ac::return_t<function_object_params>>);
+static_assert(
+    std::is_same_v<void const*, ac::return_t<function_object_params>>
+);
 static_assert(std::is_same_v<
               ac::type_array<int const*, int&&, int>,
               ac::parameters_t<function_object_params>>);
@@ -62,9 +64,9 @@ static_assert(ac::is_noexcept_v<function_object_params>);
 
 using std_function = std::function<int*(int&)>;
 static_assert(std::is_same_v<int*, ac::return_t<std_function>>);
-static_assert(std::is_same_v<
-              ac::type_array<int&>,
-              ac::parameters_t<std_function>>);
+static_assert(
+    std::is_same_v<ac::type_array<int&>, ac::parameters_t<std_function>>
+);
 
 /* as_free_function_t */
 static_assert(std::is_same_v<int(), ac::as_free_function_t<function_object>>);

@@ -21,38 +21,38 @@ static_assert(std::is_same_v<int&&, ac::remove_inner_const_t<int const&&>>);
 
 /* add_inner_volatile_t */
 static_assert(std::is_same_v<int volatile, ac::add_inner_volatile_t<int>>);
-static_assert(std::is_same_v<
-              int volatile,
-              ac::add_inner_volatile_t<int volatile>>);
+static_assert(
+    std::is_same_v<int volatile, ac::add_inner_volatile_t<int volatile>>
+);
 static_assert(std::is_same_v<int volatile&, ac::add_inner_volatile_t<int&>>);
-static_assert(std::is_same_v<
-              int volatile&,
-              ac::add_inner_volatile_t<int volatile&>>);
+static_assert(
+    std::is_same_v<int volatile&, ac::add_inner_volatile_t<int volatile&>>
+);
 static_assert(std::is_same_v<int volatile&&, ac::add_inner_volatile_t<int&&>>);
 /* remove_inner_volatile_t */
 static_assert(std::is_same_v<int, ac::remove_inner_volatile_t<int volatile>>);
 static_assert(std::is_same_v<int, ac::remove_inner_volatile_t<int>>);
 static_assert(std::is_same_v<int&, ac::remove_inner_volatile_t<int volatile&>>);
 static_assert(std::is_same_v<int&, ac::remove_inner_volatile_t<int&>>);
-static_assert(std::is_same_v<
-              int&&,
-              ac::remove_inner_volatile_t<int volatile&&>>);
+static_assert(
+    std::is_same_v<int&&, ac::remove_inner_volatile_t<int volatile&&>>
+);
 
 /* add_inner_cv_t */
 static_assert(std::is_same_v<int const volatile, ac::add_inner_cv_t<int>>);
-static_assert(std::is_same_v<
-              int const volatile,
-              ac::add_inner_cv_t<int const volatile>>);
+static_assert(
+    std::is_same_v<int const volatile, ac::add_inner_cv_t<int const volatile>>
+);
 static_assert(std::is_same_v<int const volatile&, ac::add_inner_cv_t<int&>>);
-static_assert(std::is_same_v<
-              int const volatile&,
-              ac::add_inner_cv_t<int const volatile&>>);
+static_assert(
+    std::is_same_v<int const volatile&, ac::add_inner_cv_t<int const volatile&>>
+);
 static_assert(std::is_same_v<int const volatile&&, ac::add_inner_cv_t<int&&>>);
 /* remove_inner_cv_t */
 static_assert(std::is_same_v<int, ac::remove_inner_cv_t<int const volatile>>);
 static_assert(std::is_same_v<int, ac::remove_inner_cv_t<int>>);
 static_assert(std::is_same_v<int&, ac::remove_inner_cv_t<int const volatile&>>);
 static_assert(std::is_same_v<int&, ac::remove_inner_cv_t<int&>>);
-static_assert(std::is_same_v<
-              int&&,
-              ac::remove_inner_cv_t<int const volatile&&>>);
+static_assert(
+    std::is_same_v<int&&, ac::remove_inner_cv_t<int const volatile&&>>
+);

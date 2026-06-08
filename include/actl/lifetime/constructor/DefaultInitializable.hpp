@@ -16,7 +16,7 @@ concept TriviallyDefaultInitializable =
 
 template<typename T>
 concept NothrowDefaultInitializable =
-    std::default_initializable<T> &&
-    std::is_nothrow_constructible_v<T>&& noexcept(T{});
+    std::default_initializable<T> && std::is_nothrow_constructible_v<T> &&
+    noexcept(T{});
 
 } // namespace ac

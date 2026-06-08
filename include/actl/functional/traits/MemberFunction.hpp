@@ -103,7 +103,8 @@ using class_t = std::conditional_t<std::is_reference_v<T>, T, T&>;
         type_array<Class CV_REF, Parameters...>,                              \
         !AC_IS_EMPTY(VARGS),                                                  \
         !AC_IS_EMPTY(NOEXCEPT)> {                                             \
-        using type = Return (Class::*)(Parameters... AC_UNPARENTHESIZED VARGS \
+        using type = Return (Class::*)(                                       \
+            Parameters... AC_UNPARENTHESIZED VARGS                            \
         ) CV_REF NOEXCEPT;                                                    \
     };
 

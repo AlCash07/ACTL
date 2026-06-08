@@ -17,8 +17,9 @@ struct conversion<constant<Target>, Source> {
     static constexpr bool value =
         std::is_constructible_v<decltype(Target), Source>;
 
-    static constexpr constant<Target> convert(Source&& source
-    ) noexcept(AC_ASSERT_IS_NOEXCEPT()) {
+    static constexpr constant<Target> convert(Source&& source) noexcept(
+        AC_ASSERT_IS_NOEXCEPT()
+    ) {
         AC_ASSERT(source == Target);
         return {};
     }

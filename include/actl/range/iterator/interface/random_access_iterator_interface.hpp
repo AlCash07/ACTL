@@ -22,10 +22,11 @@ public:
     using iterator_category = std::random_access_iterator_tag;
 
     template<typename Difference>
-    constexpr auto operator[](Difference offset) const
-        AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //
-            *(this->derived() + offset)
-        )
+    constexpr auto operator[](
+        Difference offset
+    ) const AC_DEDUCE_NOEXCEPT_DECLTYPE_AND_RETURN( //
+        *(this->derived() + offset)
+    )
 
     // This is a member function not a friend function
     // to allow overriding it in the derived iterator.

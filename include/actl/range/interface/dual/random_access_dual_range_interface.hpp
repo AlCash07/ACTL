@@ -17,7 +17,8 @@ class random_access_non_const_range_interface
 public:
     template<typename Difference>
     constexpr decltype(auto) operator[](Difference n) //
-        noexcept(AC_ASSERT_IS_NOEXCEPT() && noexcept(this->derived().begin()[n])
+        noexcept(
+            AC_ASSERT_IS_NOEXCEPT() && noexcept(this->derived().begin()[n])
         ) {
         AC_ASSERT(0 <= n && n < size());
         return this->derived().begin()[n];

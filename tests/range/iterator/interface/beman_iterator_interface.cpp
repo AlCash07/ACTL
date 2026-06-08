@@ -157,8 +157,9 @@ struct dummy_input_iterator : input_iterator_interface<dummy_input_iterator> {
         return *this;
     }
 
-    friend constexpr bool
-    operator==(std::default_sentinel_t const&, dummy_input_iterator const&) {
+    friend constexpr bool operator==(
+        std::default_sentinel_t const&, dummy_input_iterator const&
+    ) {
         return true;
     }
 

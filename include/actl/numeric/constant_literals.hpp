@@ -70,8 +70,9 @@ struct str_to_constant {
     using number = to_number<Cs...>;
 
     template<U X, unsigned D, unsigned... Ds>
-    static constexpr U
-    fold(std::integer_sequence<unsigned, D, Ds...>) noexcept {
+    static constexpr U fold(
+        std::integer_sequence<unsigned, D, Ds...>
+    ) noexcept {
         static_assert(0 <= D && D < number::base);
         static_assert(X <= (std::numeric_limits<U>::max() - D) / number::base);
         return fold<D + number::base * X>(

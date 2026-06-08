@@ -24,7 +24,9 @@ struct conversion<Target> : std::true_type {
 };
 
 template<typename Target, typename Source>
-    requires(std::is_arithmetic_v<Target> && std::is_convertible_v<Source, Target>)
+    requires(
+        std::is_arithmetic_v<Target> && std::is_convertible_v<Source, Target>
+    )
 struct conversion<Target, Source> : std::true_type {
     static constexpr Target convert(Source&& source)
         AC_DEDUCE_NOEXCEPT_AND_RETURN( //

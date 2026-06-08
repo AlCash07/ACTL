@@ -13,7 +13,8 @@ namespace ac::io {
 
 template<Device Dev, Byte B, size_t N>
 bool write_final(Dev& od, Format auto&, span<B, N> s) {
-    return od.write({reinterpret_cast<char_t<Dev> const*>(s.data()), s.size()}
+    return od.write(
+               {reinterpret_cast<char_t<Dev> const*>(s.data()), s.size()}
            ) == s.size();
 }
 

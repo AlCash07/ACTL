@@ -92,8 +92,9 @@ public:
     }
 
     template<typename Target, typename... PassedArgs>
-    constexpr void evaluate_to(out<Target&> target, PassedArgs const&... args)
-        const {
+    constexpr void evaluate_to(
+        out<Target&> target, PassedArgs const&... args
+    ) const {
         assign(out{target}, detail::pass_arguments(*this, args...));
     }
 };
