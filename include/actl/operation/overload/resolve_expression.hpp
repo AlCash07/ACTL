@@ -12,7 +12,7 @@ namespace ac {
 
 namespace detail {
 
-template<typename OE, typename ArgsArray, typename Policy>
+template<typename OE, typename ArgsArray, typename... Policies>
 struct expression_overload;
 
 template<
@@ -20,27 +20,31 @@ template<
     size_t... Is,
     typename... Ts,
     typename ArgsArray,
-    typename Policy>
+    typename... Policies>
 struct expression_overload<
     expression_data<Op, std::index_sequence<Is...>, Ts...>,
     ArgsArray,
-    Policy> {
+    Policies...> {
     template<typename OE, typename... Us>
-    static constexpr auto make_expression(OE&& oe, Policy policy, Us&&... xs) {
+    static constexpr auto make_expression(
+        OE&& oe, Policies const&... policies, Us&&... xs
+    ) {
         return expression{
-            overload_resolver<raw_t<OE>, type_array<raw_t<Us>...>, Policy>::
-                resolve(std::forward<OE>(oe), policy),
+            overload_resolver<
+                raw_t<OE>,
+                type_array<raw_t<Us>...>,
+                Policies...>::resolve(std::forward<OE>(oe), policies...),
             std::forward<Us>(xs)...
         };
     }
 
     template<typename OE>
-    static constexpr auto resolve(OE&& oe, Policy policy) {
+    static constexpr auto resolve(OE&& oe, Policies const&... policies) {
         return make_expression(
             static_cast<OE&&>(oe).operation,
-            policy,
-            overload_resolver<raw_t<Ts>, ArgsArray, Policy>::resolve(
-                std::get<Is>(static_cast<OE&&>(oe).arguments), policy
+            policies...,
+            overload_resolver<raw_t<Ts>, ArgsArray, Policies...>::resolve(
+                std::get<Is>(static_cast<OE&&>(oe).arguments), policies...
             )...
         );
     }
@@ -48,14 +52,18 @@ struct expression_overload<
 
 } // namespace detail
 
-template<Operation Op, typename... Ts, typename ArgsArray, typename Policy>
+template<Operation Op, typename... Ts, typename ArgsArray, typename... Policies>
     requires(
-        !(is_overload_resolved_v<raw_t<Op>, type_array<raw_t<Ts>...>, Policy> &&
-          (... && is_overload_resolved_v<raw_t<Ts>, ArgsArray, Policy>))
+        !(is_overload_resolved_v<
+              raw_t<Op>,
+              type_array<raw_t<Ts>...>,
+              Policies...> &&
+          (... && is_overload_resolved_v<raw_t<Ts>, ArgsArray, Policies...>))
     )
-struct overload_resolver<expression<Op, Ts...>, ArgsArray, Policy>
-    : detail::
-          expression_overload<expression_data_t<Op, Ts...>, ArgsArray, Policy> {
-};
+struct overload_resolver<expression<Op, Ts...>, ArgsArray, Policies...>
+    : detail::expression_overload<
+          expression_data_t<Op, Ts...>,
+          ArgsArray,
+          Policies...> {};
 
 } // namespace ac

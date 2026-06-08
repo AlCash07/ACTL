@@ -7,36 +7,45 @@
 #pragma once
 
 #include <actl/operation/overload/resolve_overload.hpp>
-#include <actl/operation/policy/policy_stack.hpp>
 #include <actl/operation/policy/tuned_operation.hpp>
 
 namespace ac {
 
-template<Operation Op, typename ArgsArray, typename Top, typename Rest>
-    requires(!can_apply_any_policy_v<Op, policy_stack<Top, Rest>>)
-struct policy_overload<Op, ArgsArray, policy_stack<Top, Rest>>
-    : policy_overload<Op, ArgsArray, none> {};
-
-template<Operation Op, typename ArgsArray, typename Top, typename Rest>
-struct policy_overload<Op, ArgsArray, policy_stack<Top, Rest>> {
+template<
+    Operation Op,
+    typename ArgsArray,
+    typename TopPolicy,
+    typename... Policies>
+    requires can_apply_any_policy_v<Op, TopPolicy, Policies...>
+struct policy_overload<Op, ArgsArray, TopPolicy, Policies...> {
     template<typename Op1>
-    static constexpr auto resolve(Op1&& op, policy_stack<Top, Rest> policy) {
-        auto&& new_op = apply_policy_if_can(std::forward<Op1>(op), policy.top);
-        return overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Rest>::
-            resolve(std::forward<decltype(new_op)>(new_op), policy.rest);
+    static constexpr auto resolve(
+        Op1&& op, TopPolicy const& top_policy, Policies const&... policies
+    ) {
+        auto&& new_op = apply_policy_if_can(std::forward<Op1>(op), top_policy);
+        using resolver =
+            overload_resolver<raw_t<decltype(new_op)>, ArgsArray, Policies...>;
+        return resolver::resolve(
+            std::forward<decltype(new_op)>(new_op), policies...
+        );
     }
 };
 
-template<Operation Op, typename NewPolicy, typename ArgsArray, typename Policy>
-struct overload_resolver<tuned_operation<Op, NewPolicy>, ArgsArray, Policy> {
+template<
+    Operation Op,
+    typename NewPolicy,
+    typename ArgsArray,
+    typename... Policies>
+struct overload_resolver<
+    tuned_operation<Op, NewPolicy>,
+    ArgsArray,
+    Policies...> {
     static constexpr decltype(auto) resolve(
-        tuned_operation<Op, NewPolicy> const& op, Policy policy
+        tuned_operation<Op, NewPolicy> const& op, Policies const&... policies
     ) {
-        using resolver = overload_resolver<
-            raw_t<Op>,
-            ArgsArray,
-            policy_stack<NewPolicy, Policy>>;
-        return resolver::resolve(op.operation, {op.policy, policy});
+        using resolver =
+            overload_resolver<raw_t<Op>, ArgsArray, NewPolicy, Policies...>;
+        return resolver::resolve(op.operation, op.policy, policies...);
     }
 };
 
