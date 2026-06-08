@@ -20,9 +20,12 @@ struct tuple_op_resolver<std::index_sequence<Is...>, T, U> {
 
     template<typename Composer, Operation Op>
     static constexpr auto resolve_tuple(Composer composer, Op const& op) {
-        return composer(resolve_operation<
-                        std::tuple_element_t<Is, T>,
-                        std::tuple_element_t<Is, U>>(op)...);
+        return composer(
+            resolve_operation<
+                Op,
+                std::tuple_element_t<Is, T>,
+                std::tuple_element_t<Is, U>>(op)...
+        );
     }
 };
 

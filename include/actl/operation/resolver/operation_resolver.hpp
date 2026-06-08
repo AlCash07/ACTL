@@ -28,12 +28,9 @@ struct policy_overload {
 template<Operation Op, typename ArgsArray, typename... Policies>
 struct operation_resolver : policy_overload<Op, ArgsArray, Policies...> {};
 
-template<typename... Args, typename Op>
-constexpr decltype(auto) resolve_operation(Op&& op) {
-    return operation_resolver<raw_t<Op>, type_array<raw_t<Args>...>>{}(
-        std::forward<Op>(op)
-    );
-}
+template<Operation Op, typename... Args>
+inline constexpr auto resolve_operation =
+    operation_resolver<raw_t<Op>, type_array<raw_t<Args>...>>{};
 
 template<Operation Op, typename ArgsArray, typename... Policies>
 inline constexpr bool is_operation_resolved_v = requires {
