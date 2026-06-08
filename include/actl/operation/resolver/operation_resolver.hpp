@@ -16,11 +16,11 @@ template<Operation Op, typename ArgsArray, typename... Policies>
 struct policy_overload {
     struct is_resolved;
 
-    static constexpr Op resolve(Op&& op, Policies const&...) {
+    constexpr Op operator()(Op&& op, Policies const&...) const {
         return std::move(op);
     }
 
-    static constexpr Op const& resolve(Op const& op, Policies const&...) {
+    constexpr Op const& operator()(Op const& op, Policies const&...) const {
         return op;
     }
 };
@@ -30,7 +30,7 @@ struct operation_resolver : policy_overload<Op, ArgsArray, Policies...> {};
 
 template<typename... Args, typename Op>
 constexpr decltype(auto) resolve_operation(Op&& op) {
-    return operation_resolver<raw_t<Op>, type_array<raw_t<Args>...>>::resolve(
+    return operation_resolver<raw_t<Op>, type_array<raw_t<Args>...>>{}(
         std::forward<Op>(op)
     );
 }
@@ -44,11 +44,12 @@ template<typename Op, typename... Args, typename... Policies>
     requires requires { overload<Op, Args...>::formula; }
 struct operation_resolver<Op, type_array<Args...>, Policies...> {
     template<typename Op1>
-    static constexpr auto resolve(Op1&& op, Policies const&... policies) {
+    constexpr auto operator()(Op1&& op, Policies const&... policies) const {
         using Formula =
             std::remove_const_t<decltype(overload<Op, Args...>::formula)>;
-        return operation_resolver<Formula, type_array<Args...>, Policies...>::
-            resolve(Formula{}, policies...);
+        return operation_resolver<Formula, type_array<Args...>, Policies...>{}(
+            Formula{}, policies...
+        );
     }
 };
 

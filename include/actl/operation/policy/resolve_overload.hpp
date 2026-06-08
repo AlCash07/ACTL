@@ -19,13 +19,13 @@ template<
     requires can_apply_any_policy_v<Op, TopPolicy, Policies...>
 struct policy_overload<Op, ArgsArray, TopPolicy, Policies...> {
     template<typename Op1>
-    static constexpr auto resolve(
+    constexpr auto operator()(
         Op1&& op, TopPolicy const& top_policy, Policies const&... policies
-    ) {
+    ) const {
         auto&& new_op = apply_policy_if_can(std::forward<Op1>(op), top_policy);
         using resolver =
             operation_resolver<raw_t<decltype(new_op)>, ArgsArray, Policies...>;
-        return resolver::resolve(
+        return resolver{}(
             std::forward<decltype(new_op)>(new_op), policies...
         );
     }
@@ -40,12 +40,12 @@ struct operation_resolver<
     tuned_operation<Op, NewPolicy>,
     ArgsArray,
     Policies...> {
-    static constexpr decltype(auto) resolve(
+    constexpr decltype(auto) operator()(
         tuned_operation<Op, NewPolicy> const& op, Policies const&... policies
-    ) {
+    ) const {
         using resolver =
             operation_resolver<raw_t<Op>, ArgsArray, NewPolicy, Policies...>;
-        return resolver::resolve(op.operation, op.policy, policies...);
+        return resolver{}(op.operation, op.policy, policies...);
     }
 };
 

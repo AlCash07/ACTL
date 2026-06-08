@@ -33,17 +33,17 @@ struct expression_resolver<
             operation_resolver<
                 raw_t<OE>,
                 type_array<raw_t<Us>...>,
-                Policies...>::resolve(std::forward<OE>(oe), policies...),
+                Policies...>{}(std::forward<OE>(oe), policies...),
             std::forward<Us>(xs)...
         };
     }
 
     template<typename OE>
-    static constexpr auto resolve(OE&& oe, Policies const&... policies) {
+    constexpr auto operator()(OE&& oe, Policies const&... policies) const {
         return make_expression(
             static_cast<OE&&>(oe).operation,
             policies...,
-            operation_resolver<raw_t<Ts>, ArgsArray, Policies...>::resolve(
+            operation_resolver<raw_t<Ts>, ArgsArray, Policies...>{}(
                 std::get<Is>(static_cast<OE&&>(oe).arguments), policies...
             )...
         );
