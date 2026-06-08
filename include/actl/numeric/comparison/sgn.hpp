@@ -25,7 +25,7 @@ struct SgnScalar : operation_base<SgnScalar> {
 
     static constexpr auto formula = compare3way(x_, 0_c);
 };
-AC_REGISTER_OVERLOAD(SgnScalar)
+AC_REGISTER_SPECIALIZATION(SgnScalar)
 inline constexpr SgnScalar sgn_scalar;
 
 } // namespace ac

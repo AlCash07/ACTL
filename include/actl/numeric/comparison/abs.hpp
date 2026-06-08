@@ -32,7 +32,7 @@ struct AbsScalar : operation_base<AbsScalar> {
         }
     }
 };
-AC_REGISTER_OVERLOAD(AbsScalar)
+AC_REGISTER_SPECIALIZATION(AbsScalar)
 inline constexpr AbsScalar abs_scalar;
 
 } // namespace ac

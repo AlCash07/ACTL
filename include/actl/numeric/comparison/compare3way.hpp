@@ -21,7 +21,7 @@ struct Compare3WayScalar : operation_base<Compare3WayScalar> {
 
     static constexpr auto formula = as<int>(is_greater) - as<int>(is_less);
 };
-// AC_REGISTER_OVERLOAD(Compare3WayScalar)
+// AC_REGISTER_SPECIALIZATION(Compare3WayScalar)
 inline constexpr Compare3WayScalar compare3way_scalar;
 
 struct Compare3Way : operation_base<Compare3Way> {

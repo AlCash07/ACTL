@@ -43,7 +43,7 @@ struct LogicalAndScalar : operation_base<LogicalAndScalar> {
         return l && r;
     }
 };
-AC_REGISTER_OVERLOAD(LogicalAndScalar)
+AC_REGISTER_SPECIALIZATION(LogicalAndScalar)
 inline constexpr LogicalAndScalar logical_and_scalar;
 
 } // namespace ac

@@ -49,7 +49,7 @@ struct BitXorScalar : operation_base<BitXorScalar> {
         return l ^ r;
     }
 };
-AC_REGISTER_OVERLOAD(BitXorScalar)
+AC_REGISTER_SPECIALIZATION(BitXorScalar)
 inline constexpr BitXorScalar bit_xor_scalar;
 
 } // namespace ac

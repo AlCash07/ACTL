@@ -33,7 +33,7 @@ struct NegateScalar : operation_base<NegateScalar> {
         return -x;
     }
 };
-AC_REGISTER_OVERLOAD(NegateScalar)
+AC_REGISTER_SPECIALIZATION(NegateScalar)
 inline constexpr NegateScalar negate_scalar;
 
 } // namespace ac

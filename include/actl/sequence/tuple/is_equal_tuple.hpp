@@ -30,7 +30,7 @@ struct IsEqualTuple {
 inline constexpr operation_composer<IsEqualTuple> is_equal_tuple;
 
 template<Tuple L, Tuple R>
-struct overload<IsEqual, L, R> {
+struct specialization<IsEqual, L, R> {
     static constexpr auto formula =
         tuple_op_resolver<L, R>::resolve_tuple(is_equal_tuple, is_equal);
 };

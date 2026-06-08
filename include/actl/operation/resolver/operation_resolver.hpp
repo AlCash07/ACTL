@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/core/none.hpp>
-#include <actl/operation/resolver/overload.hpp>
+#include <actl/operation/resolver/specialization.hpp>
 #include <algorithm>
 
 namespace ac {
@@ -38,12 +38,12 @@ inline constexpr bool is_operation_resolved_v = requires {
 };
 
 template<typename Op, typename... Args, typename... Policies>
-    requires requires { overload<Op, Args...>::formula; }
+    requires requires { specialization<Op, Args...>::formula; }
 struct operation_resolver<Op, type_array<Args...>, Policies...> {
     template<typename Op1>
     constexpr auto operator()(Op1&& op, Policies const&... policies) const {
         using Formula =
-            std::remove_const_t<decltype(overload<Op, Args...>::formula)>;
+            std::remove_const_t<decltype(specialization<Op, Args...>::formula)>;
         return operation_resolver<Formula, type_array<Args...>, Policies...>{}(
             Formula{}, policies...
         );

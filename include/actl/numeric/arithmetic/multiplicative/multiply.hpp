@@ -48,7 +48,7 @@ struct MultiplyInteger : operation_base<MultiplyInteger> {
         return l * r;
     }
 };
-AC_REGISTER_OVERLOAD(MultiplyInteger)
+AC_REGISTER_SPECIALIZATION(MultiplyInteger)
 inline constexpr MultiplyInteger miltiply_integer;
 
 struct MultiplyFloat : operation_base<MultiplyFloat> {
@@ -65,7 +65,7 @@ struct MultiplyFloat : operation_base<MultiplyFloat> {
         return l * r;
     }
 };
-AC_REGISTER_OVERLOAD(MultiplyFloat)
+AC_REGISTER_SPECIALIZATION(MultiplyFloat)
 inline constexpr MultiplyFloat miltiply_float;
 
 } // namespace ac

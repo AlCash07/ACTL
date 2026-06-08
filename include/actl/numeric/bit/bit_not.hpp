@@ -31,7 +31,7 @@ struct BitNotScalar : operation_base<BitNotScalar> {
         return ~x;
     }
 };
-AC_REGISTER_OVERLOAD(BitNotScalar)
+AC_REGISTER_SPECIALIZATION(BitNotScalar)
 inline constexpr BitNotScalar bit_not_scalar;
 
 } // namespace ac

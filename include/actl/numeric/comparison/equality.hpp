@@ -44,7 +44,7 @@ struct IsEqualScalar : operation_base<IsEqualScalar> {
         return l == r;
     }
 };
-AC_REGISTER_OVERLOAD(IsEqualScalar)
+AC_REGISTER_SPECIALIZATION(IsEqualScalar)
 inline constexpr IsEqualScalar is_equal_scalar;
 
 } // namespace ac

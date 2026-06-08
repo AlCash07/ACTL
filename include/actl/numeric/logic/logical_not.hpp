@@ -31,7 +31,7 @@ struct LogicalNotScalar : operation_base<LogicalNotScalar> {
         return !x;
     }
 };
-AC_REGISTER_OVERLOAD(LogicalNotScalar)
+AC_REGISTER_SPECIALIZATION(LogicalNotScalar)
 inline constexpr LogicalNotScalar logical_not_scalar;
 
 } // namespace ac

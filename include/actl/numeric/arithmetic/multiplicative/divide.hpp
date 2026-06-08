@@ -39,7 +39,7 @@ struct DivideScalars : operation_base<DivideScalars> {
         return l / r;
     }
 };
-AC_REGISTER_OVERLOAD(DivideScalars)
+AC_REGISTER_SPECIALIZATION(DivideScalars)
 inline constexpr DivideScalars divide_scalars;
 
 } // namespace ac

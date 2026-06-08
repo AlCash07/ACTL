@@ -43,7 +43,7 @@ struct LogicalOrScalar : operation_base<LogicalOrScalar> {
         return l || r;
     }
 };
-AC_REGISTER_OVERLOAD(LogicalOrScalar)
+AC_REGISTER_SPECIALIZATION(LogicalOrScalar)
 inline constexpr LogicalOrScalar logical_or_scalar;
 
 } // namespace ac

@@ -32,14 +32,14 @@ inline constexpr operation_composer<LexicographicalCompareTuple>
     lexicographical_compare_tuple;
 
 template<Tuple L, Tuple R>
-struct overload<Compare3Way, L, R> {
+struct specialization<Compare3Way, L, R> {
     static constexpr auto formula = tuple_op_resolver<L, R>::resolve_tuple(
         lexicographical_compare_tuple, compare3way
     );
 };
 
 template<Tuple L, Tuple R>
-struct overload<IsLess, L, R> {
+struct specialization<IsLess, L, R> {
     static constexpr auto formula = compare3way < 0_c;
 };
 

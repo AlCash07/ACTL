@@ -39,7 +39,7 @@ struct SubtractScalars : operation_base<SubtractScalars> {
         return l - r;
     }
 };
-AC_REGISTER_OVERLOAD(SubtractScalars)
+AC_REGISTER_SPECIALIZATION(SubtractScalars)
 inline constexpr SubtractScalars subtract_scalars;
 
 } // namespace ac

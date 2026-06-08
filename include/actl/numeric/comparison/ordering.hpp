@@ -25,7 +25,7 @@ struct IsLessScalar : operation_base<IsLessScalar> {
         return l < r;
     }
 };
-// AC_REGISTER_OVERLOAD(IsLessScalar)
+// AC_REGISTER_SPECIALIZATION(IsLessScalar)
 inline constexpr IsLessScalar is_less_scalar;
 
 struct IsLess : operation_base<IsLess> {

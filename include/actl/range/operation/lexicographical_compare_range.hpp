@@ -37,7 +37,7 @@ inline constexpr operation_composer<LexicographicalCompareRange>
     lexicographical_compare_range;
 
 template<Range L, Range R>
-struct overload<Compare3Way, L, R> {
+struct specialization<Compare3Way, L, R> {
     static constexpr auto formula = lexicographical_compare_range(
         resolve_operation<Compare3Way, range_value_t<L>, range_value_t<R>>(
             compare3way
@@ -46,7 +46,7 @@ struct overload<Compare3Way, L, R> {
 };
 
 template<Range L, Range R>
-struct overload<IsLess, L, R> {
+struct specialization<IsLess, L, R> {
     static constexpr auto formula = compare3way < 0_c;
 };
 

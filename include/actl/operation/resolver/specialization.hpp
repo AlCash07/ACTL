@@ -12,22 +12,22 @@
 namespace ac {
 
 template<Operation Op>
-struct default_overload {};
+struct default_specialization {};
 
 template<Operation Op>
     requires requires { Op::formula; }
-struct default_overload<Op> {
+struct default_specialization<Op> {
     static constexpr auto formula = Op::formula;
 };
 
 template<Operation Op, typename... Args>
-struct overload : default_overload<Op> {};
+struct specialization : default_specialization<Op> {};
 
-#define AC_REGISTER_OVERLOAD(name)                    \
-    template<typename... Args>                        \
-        requires name::requirement<Args...>           \
-    struct overload<typename name::parent, Args...> { \
-        static constexpr auto formula = name{};       \
+#define AC_REGISTER_SPECIALIZATION(name)                    \
+    template<typename... Args>                              \
+        requires name::requirement<Args...>                 \
+    struct specialization<typename name::parent, Args...> { \
+        static constexpr auto formula = name{};             \
     };
 
 } // namespace ac

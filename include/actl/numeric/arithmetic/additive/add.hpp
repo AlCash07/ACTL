@@ -51,7 +51,7 @@ struct AddInteger : operation_base<AddInteger> {
         return l + r;
     }
 };
-AC_REGISTER_OVERLOAD(AddInteger)
+AC_REGISTER_SPECIALIZATION(AddInteger)
 inline constexpr AddInteger add_integer;
 
 struct AddFloat : operation_base<AddFloat> {
@@ -70,7 +70,7 @@ struct AddFloat : operation_base<AddFloat> {
         return l + r;
     }
 };
-AC_REGISTER_OVERLOAD(AddFloat)
+AC_REGISTER_SPECIALIZATION(AddFloat)
 inline constexpr AddFloat add_float;
 
 } // namespace ac

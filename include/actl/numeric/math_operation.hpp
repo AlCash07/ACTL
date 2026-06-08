@@ -29,7 +29,7 @@ namespace ac {
             return name(x);                                          \
         }                                                            \
     };                                                               \
-    AC_REGISTER_OVERLOAD(Type##Scalar)                               \
+    AC_REGISTER_SPECIALIZATION(Type##Scalar)                         \
     inline constexpr Type##Scalar name##_scalar;
 
 #define AC_MATH_OPERATION2(Type, name, category)                \
@@ -51,7 +51,7 @@ namespace ac {
             return name(l, r);                                  \
         }                                                       \
     };                                                          \
-    AC_REGISTER_OVERLOAD(Type##Scalar)                          \
+    AC_REGISTER_SPECIALIZATION(Type##Scalar)                    \
     inline constexpr Type##Scalar name##_scalar;
 
 } // namespace ac
