@@ -18,23 +18,23 @@ struct expression_resolver;
 template<
     Operation Op,
     size_t... Is,
-    typename... Ts,
+    typename... StoredArgs,
     typename ArgsArray,
     typename... Policies>
 struct expression_resolver<
-    expression_data<Op, std::index_sequence<Is...>, Ts...>,
+    expression_data<Op, std::index_sequence<Is...>, StoredArgs...>,
     ArgsArray,
     Policies...> {
-    template<typename OE, typename... Us>
+    template<typename Op1, typename... ResolvedArgs>
     static constexpr auto make_expression(
-        OE&& oe, Policies const&... policies, Us&&... xs
+        Op1&& op, Policies const&... policies, ResolvedArgs&&... args
     ) {
         return expression{
             operation_resolver<
-                raw_t<OE>,
-                type_array<raw_t<Us>...>,
-                Policies...>{}(std::forward<OE>(oe), policies...),
-            std::forward<Us>(xs)...
+                Op,
+                type_array<raw_t<ResolvedArgs>...>,
+                Policies...>{}(std::forward<Op1>(op), policies...),
+            std::forward<ResolvedArgs>(args)...
         };
     }
 
@@ -43,7 +43,7 @@ struct expression_resolver<
         return make_expression(
             static_cast<OE&&>(oe).operation,
             policies...,
-            operation_resolver<raw_t<Ts>, ArgsArray, Policies...>{}(
+            operation_resolver<raw_t<StoredArgs>, ArgsArray, Policies...>{}(
                 std::get<Is>(static_cast<OE&&>(oe).arguments), policies...
             )...
         );
@@ -52,17 +52,22 @@ struct expression_resolver<
 
 } // namespace detail
 
-template<Operation Op, typename... Ts, typename ArgsArray, typename... Policies>
+template<
+    Operation Op,
+    typename... StoredArgs,
+    typename ArgsArray,
+    typename... Policies>
     requires(
         !(is_operation_resolved_v<
               raw_t<Op>,
-              type_array<raw_t<Ts>...>,
+              type_array<raw_t<StoredArgs>...>,
               Policies...> &&
-          (... && is_operation_resolved_v<raw_t<Ts>, ArgsArray, Policies...>))
+          (... &&
+           is_operation_resolved_v<raw_t<StoredArgs>, ArgsArray, Policies...>))
     )
-struct operation_resolver<expression<Op, Ts...>, ArgsArray, Policies...>
+struct operation_resolver<expression<Op, StoredArgs...>, ArgsArray, Policies...>
     : detail::expression_resolver<
-          expression_data_t<Op, Ts...>,
+          expression_data_t<Op, StoredArgs...>,
           ArgsArray,
           Policies...> {};
 

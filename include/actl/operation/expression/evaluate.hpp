@@ -35,6 +35,9 @@ constexpr decltype(auto) eval(T&& x) {
     return std::forward<T>(x);
 }
 
+template<typename T>
+using result_t = decltype(eval(std::declval<T>()));
+
 namespace detail {
 
 template<typename Op, size_t ArgumentIndex, typename Args>
@@ -53,9 +56,7 @@ constexpr decltype(auto) eval(
     expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
     auto&& operation =
-        resolve_operation<Op, decltype(eval(std::declval<Args const&>()))...>(
-            expression.operation
-        );
+        resolve_operation<Op, result_t<Args const&>...>(expression.operation);
     return operation.evaluate(
         detail::argument_at<decltype(operation), Is>(expression.arguments)...
     );
@@ -66,7 +67,8 @@ constexpr void assign(
     out<Target>& target,
     expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
-    auto&& operation = resolve_operation<Op, Args...>(expression.operation);
+    auto&& operation =
+        resolve_operation<Op, result_t<Args const&>...>(expression.operation);
     operation.evaluate_to(
         out{target},
         detail::argument_at<decltype(operation), Is>(expression.arguments)...

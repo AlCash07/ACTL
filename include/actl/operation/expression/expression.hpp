@@ -21,8 +21,7 @@ namespace ac {
 template<Operation Op, typename... Args>
 class expression : public expression_data_t<Op, Args...> {
     using base_t = expression_data_t<Op, Args...>;
-    using result_t =
-        decltype(eval(std::declval<expression_data_t<Op, Args...> const&>()));
+    using result_t = result_t<expression_data_t<Op, Args...> const&>;
 
 public:
     using base_t::base_t;
@@ -77,7 +76,7 @@ template<typename Derived>
 struct operation_base;
 
 template<Operation Op, typename... Args>
-    requires(... || ac::Operation<std::remove_cvref_t<Args>>)
+    requires(... || Operation<std::remove_cvref_t<Args>>)
 class expression<Op, Args...>
     : public expression_data_t<Op, Args...>
     , public operation_base<expression<Op, Args...>> {
