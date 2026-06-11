@@ -12,6 +12,13 @@
 
 namespace ac {
 
+template<typename T, typename... Args>
+struct Eval {
+    static constexpr decltype(auto) call(T&& t, Args&&...) {
+        return std::forward<T>(t);
+    }
+};
+
 /// Evaluates the expression.
 ///
 /// If the passed value is not an expression then its reference
@@ -29,50 +36,48 @@ namespace ac {
 ///   https://docs.python.org/3/library/functions.html#eval
 /// - JavaScript:
 ///   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
-template<typename T>
-    requires(!is_expression_v<T>)
-constexpr decltype(auto) eval(T&& x) {
-    return std::forward<T>(x);
+template<typename T, typename... Args>
+constexpr decltype(auto) eval(T&& t, Args&&... args) {
+    return Eval<T, Args...>::call(
+        std::forward<T>(t), std::forward<Args>(args)...
+    );
 }
 
-template<typename T>
-using result_t = decltype(eval(std::declval<T>()));
+template<typename T, typename... Args>
+using result_t = decltype(eval(std::declval<T>(), std::declval<Args>()...));
 
 namespace detail {
 
-template<typename Op, size_t ArgumentIndex, typename Args>
-constexpr decltype(auto) argument_at(const Args& args) {
-    using RawOp = std::remove_reference_t<Op>;
-    if constexpr (RawOp::is_argument_maybe_unused(ArgumentIndex))
-        return std::get<ArgumentIndex>(args);
-    else
-        return eval(std::get<ArgumentIndex>(args));
-}
+template<bool IsLazy, typename T>
+struct PrepareArgument {
+    static constexpr decltype(auto) call(T&& t) {
+        return std::forward<T>(t);
+    }
+};
+template<typename T>
+struct PrepareArgument<false, T> : Eval<T> {};
+
+template<Operation Op, typename Indices, typename... Args>
+struct EvalOperation;
+
+template<Operation Op, size_t... Is, typename... Args>
+struct EvalOperation<Op, std::index_sequence<Is...>, Args...> {
+    static constexpr decltype(auto) call(Op&& op, Args&&... args) {
+        auto&& resolved_op =
+            resolve_operation<Op, result_t<Args>...>(std::forward<Op>(op));
+        using RawOp = std::remove_reference_t<decltype(resolved_op)>;
+        return resolved_op.evaluate(
+            PrepareArgument<RawOp::is_argument_maybe_unused(Is), Args>::call(
+                std::forward<Args>(args)
+            )...
+        );
+    }
+};
 
 } // namespace detail
 
-template<Operation Op, size_t... Is, typename... Args>
-constexpr decltype(auto) eval(
-    expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
-) {
-    auto&& operation =
-        resolve_operation<Op, result_t<Args const&>...>(expression.operation);
-    return operation.evaluate(
-        detail::argument_at<decltype(operation), Is>(expression.arguments)...
-    );
-}
-
-template<typename Target, Operation Op, size_t... Is, typename... Args>
-constexpr void assign(
-    out<Target>& target,
-    expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
-) {
-    auto&& operation =
-        resolve_operation<Op, result_t<Args const&>...>(expression.operation);
-    operation.evaluate_to(
-        out{target},
-        detail::argument_at<decltype(operation), Is>(expression.arguments)...
-    );
-}
+template<Operation Op, typename... Args>
+struct Eval<Op, Args...>
+    : detail::EvalOperation<Op, std::index_sequence_for<Args...>, Args...> {};
 
 } // namespace ac

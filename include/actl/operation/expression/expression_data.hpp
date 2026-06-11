@@ -55,6 +55,16 @@ public:
     ))
         : operation{std::forward<OpT>(op)}
         , arguments{std::forward<ArgsT>(args)...} {}
+
+    // This is relevant only for operation expressions,
+    // but it's computed here because Indices are not accessible in expression.
+    static constexpr bool is_argument_maybe_unused(size_t index) noexcept {
+        return !(
+            ... &&
+            !(Operation<Args> && !Op::is_argument_maybe_unused(Indices) &&
+              !Args::is_argument_maybe_unused(index))
+        );
+    }
 };
 
 template<Operation Op, typename... Args>

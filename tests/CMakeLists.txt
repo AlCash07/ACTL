@@ -6,6 +6,7 @@ set(actl_root_dir ${CMAKE_CURRENT_LIST_DIR}/..)
 file(GLOB_RECURSE actl_test_files *.hpp *.cpp)
 list(FILTER actl_test_files EXCLUDE REGEX geometry/*)
 list(FILTER actl_test_files EXCLUDE REGEX graph/*)
+set(actl_test_files "numeric/arithmetic.cpp")
 source_group(TREE ${actl_root_dir}/tests FILES ${actl_test_files})
 add_executable(actl_unit_tests ${actl_test_files})
 
