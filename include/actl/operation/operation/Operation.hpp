@@ -17,6 +17,6 @@ template<typename T>
 struct is_operation : is_template_base_of<operation_base, T> {};
 
 template<typename T>
-concept Operation = is_operation<T>::value;
+concept Operation = is_operation<std::remove_reference_t<T>>::value;
 
 } // namespace ac

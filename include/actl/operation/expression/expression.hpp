@@ -76,7 +76,7 @@ template<typename Derived>
 struct operation_base;
 
 template<Operation Op, typename... Args>
-    requires(... || Operation<std::remove_cvref_t<Args>>)
+    requires(... || Operation<Args>)
 class expression<Op, Args...>
     : public expression_data_t<Op, Args...>
     , public operation_base<expression<Op, Args...>> {

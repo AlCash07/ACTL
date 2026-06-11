@@ -22,7 +22,9 @@ std::false_type test_base(void const*);
 } // namespace detail
 
 template<template<typename...> typename B, typename D>
-struct is_template_base_of : std::true_type {};
+struct is_template_base_of {
+    static constexpr bool value = !std::is_reference_v<D>;
+};
 
 template<template<typename...> typename B, typename D>
     requires requires { detail::test_base<B>(std::declval<D*>()); }

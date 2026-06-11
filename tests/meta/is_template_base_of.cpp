@@ -21,3 +21,7 @@ static_assert(ac::is_template_base_of_v<std::vector, public_derived>);
 static_assert(ac::is_template_base_of_v<std::vector, private_derived>);
 static_assert(!ac::is_template_base_of_v<std::vector, std::pair<int, int>>);
 static_assert(!ac::is_template_base_of_v<std::vector, int>);
+static_assert(!ac::is_template_base_of_v<std::vector, int&>);
+static_assert(!ac::is_template_base_of_v<std::vector, int&&>);
+static_assert(!ac::is_template_base_of_v<std::vector, int*>);
+static_assert(!ac::is_template_base_of_v<std::vector, void>);
