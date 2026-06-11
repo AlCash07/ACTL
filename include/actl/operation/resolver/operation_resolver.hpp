@@ -11,7 +11,7 @@
 
 namespace ac {
 
-template<Operation Op, typename ArgsArray, typename... Policies>
+template<typename Op, typename ArgsArray, typename... Policies>
 struct policy_overload {
     struct is_resolved;
 
@@ -24,7 +24,7 @@ struct policy_overload {
     }
 };
 
-template<Operation Op, typename ArgsArray, typename... Policies>
+template<typename Op, typename ArgsArray, typename... Policies>
 struct operation_resolver : policy_overload<Op, ArgsArray, Policies...> {};
 
 template<
