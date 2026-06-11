@@ -7,10 +7,23 @@
 #pragma once
 
 #include <actl/operation/expression/expression.hpp>
+#include <actl/operation/resolver/operation_resolver.hpp>
 
 namespace ac {
 
 namespace detail {
+
+template<typename T, typename ArgsArray>
+struct with_arguments;
+
+template<typename T, typename... Args>
+struct with_arguments<T, type_array<Args...>> {
+    using type =
+        decltype(pass_arguments(std::declval<T>(), std::declval<Args>()...));
+};
+
+template<typename T, typename ArgsArray>
+using with_arguments_t = typename with_arguments<T, ArgsArray>::type;
 
 template<typename OE, typename ArgsArray, typename... Policies>
 struct expression_resolver;
@@ -32,7 +45,8 @@ struct expression_resolver<
         return expression{
             operation_resolver<
                 Op,
-                type_array<raw_t<ResolvedArgs>...>,
+                type_array<raw_t<
+                    result_t<with_arguments_t<ResolvedArgs, ArgsArray>>>...>,
                 Policies...>{}(std::forward<Op1>(op), policies...),
             std::forward<ResolvedArgs>(args)...
         };
@@ -57,14 +71,15 @@ template<
     typename... StoredArgs,
     typename ArgsArray,
     typename... Policies>
-    requires(
-        !(is_operation_resolved_v<
-              raw_t<Op>,
-              type_array<raw_t<StoredArgs>...>,
-              Policies...> &&
-          (... &&
-           is_operation_resolved_v<raw_t<StoredArgs>, ArgsArray, Policies...>))
-    )
+    requires(!(
+        is_operation_resolved_v<
+            raw_t<Op>,
+            type_array<raw_t<
+                result_t<detail::with_arguments_t<StoredArgs, ArgsArray>>>...>,
+            Policies...> &&
+        (... &&
+         is_operation_resolved_v<raw_t<StoredArgs>, ArgsArray, Policies...>)
+    ))
 struct operation_resolver<expression<Op, StoredArgs...>, ArgsArray, Policies...>
     : detail::expression_resolver<
           expression_data_t<Op, StoredArgs...>,
