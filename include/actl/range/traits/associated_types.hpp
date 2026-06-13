@@ -36,6 +36,11 @@ template<Range R>
 using range_reference_t = std::iter_reference_t<range_iterator_t<R>>;
 
 template<Range R>
+struct range_reference {
+    using type = range_reference_t<R>;
+};
+
+template<Range R>
 struct associated_types<R> {
     using value_type = range_value_t<R>;
     using reference = range_reference_t<R>;

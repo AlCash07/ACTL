@@ -7,33 +7,42 @@
 #pragma once
 
 #include <actl/numeric/comparison/equality.hpp>
-#include <actl/operation/operation/composite_operation.hpp>
+#include <actl/operation/type_operation.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <algorithm>
 
 namespace ac {
 
-struct IsEqualRange {
-    static constexpr size_t inner_count = 1;
+struct IsEqualRange : operation_base<IsEqualRange> {
+    static constexpr bool is_argument_operation(size_t index) {
+        return index == 2;
+    }
 
-    template<typename EqualOp, typename L, typename R>
-    static bool evaluate(EqualOp const& op, L const& l, R const& r) {
+    static constexpr bool evaluate(
+        Range auto& l, Range auto& r, auto const& equal_element
+    ) {
         return std::equal(
             ranges::begin(l),
             ranges::end(l),
             ranges::begin(r),
             ranges::end(r),
-            op
+            equal_element
         );
     }
 };
-inline constexpr operation_composer<IsEqualRange> is_equal_range;
+
+inline constexpr auto is_equal_range = IsEqualRange{}(
+    l_,
+    r_,
+    is_equal(
+        type_operation<range_reference, Arg<0, 2>>,
+        type_operation<range_reference, Arg<1, 2>>
+    )
+);
 
 template<Range L, Range R>
 struct specialization<IsEqual, L, R> {
-    static constexpr auto formula = is_equal_range(
-        resolve_operation<IsEqual, range_value_t<L>, range_value_t<R>>(is_equal)
-    );
+    static constexpr auto formula = is_equal_range;
 };
 
 } // namespace ac
