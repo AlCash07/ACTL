@@ -8,29 +8,24 @@
 
 #include <actl/operation/arg.hpp>
 #include <actl/operation/expression/expression.hpp>
-#include <actl/operation/operation/operation_base.hpp>
+#include <actl/preprocessor/AC_WARNING_DISABLE.hpp>
 #include <actl/sequence/type_array/at.hpp>
 
 namespace ac {
 
 template<typename T, typename Arg>
-struct Placeholder {
-    // TODO: remove this function.
-    template<typename... Args>
-    static constexpr T evaluate(Args&&...);
+struct Placeholder {};
 
-    static constexpr bool is_argument_maybe_unused(size_t index) {
-        return true;
-    }
-
-    struct enable_operators;
-};
-
+AC_WARNING_DISABLE(AC_UNDEFINED_FUNCTION)
+// It's correct to keep these functions undefined because
+// they should be used only for result type deduction.
+// Placeholders must be stripped before the actual execution.
 template<typename T, typename Arg>
 constexpr T eval(Placeholder<T, Arg>&&);
 
 template<typename T, typename Arg>
 constexpr T eval(Placeholder<T, Arg> const&);
+AC_WARNING_ENABLE()
 
 template<typename T>
     requires(!is_expression_v<T>)
@@ -47,16 +42,26 @@ template<Operation Op, size_t... Is, typename... Args>
 constexpr auto strip_placeholders(
     const expression_data<Op, std::index_sequence<Is...>, Args...>& expression
 ) {
-    return expression.operation(
+    return ac::expression{
+        expression.operation,
         strip_placeholders(std::get<Is>(expression.arguments))...
-    );
+    };
 }
 
 template<template<typename> typename Trait, typename Arg>
-struct TypeOperation : operation_base<TypeOperation<Trait, Arg>> {};
+struct TypeOperation {
+    // Without this operator(), we'd have to make Placeholder an operation.
+    template<typename... Args>
+    constexpr auto operator()(Args&&...) const {
+        return specialization<TypeOperation, raw_t<Args>...>::formula;
+    }
+};
 
 template<template<typename> typename Trait, typename Arg>
 inline constexpr TypeOperation<Trait, Arg> type_operation;
+
+template<template<typename> typename Trait, typename Arg>
+struct is_operation<TypeOperation<Trait, Arg>> : std::true_type {};
 
 template<
     template<typename> typename Trait,
