@@ -42,19 +42,15 @@ template<typename T0, typename T1, typename T2, typename... Types>
 struct types_slice<type_array<T0, T1, T2, Types...>, 0, 3> {
     using type = type_array<T0, T1, T2>;
 };
-template<
-    typename T0,
-    typename T1,
-    typename T2,
-    typename T3,
-    typename... Types,
-    size_t Length>
+// clang-format off
+template<typename T0, typename T1, typename T2, typename T3, typename... Types, size_t Length>
     requires(Length >= 4)
 struct types_slice<type_array<T0, T1, T2, T3, Types...>, 0, Length> {
     using type = concat_t<
         type_array<T0, T1, T2, T3>,
         prefix_t<type_array<Types...>, Length - 4>>;
 };
+// clang-format on
 
 /* dropping types until the first index reaches 0 */
 template<typename T0, typename... Types, size_t Last>

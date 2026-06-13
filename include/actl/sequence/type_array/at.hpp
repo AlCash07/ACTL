@@ -42,17 +42,11 @@ template<typename T0, typename T1, typename T2, typename T3, typename... Types>
 struct type_at<type_array<T0, T1, T2, T3, Types...>, 3> {
     using type = T3;
 };
-template<
-    typename T0,
-    typename T1,
-    typename T2,
-    typename T3,
-    typename T4,
-    typename... Types>
+// clang-format off
+template<typename T0, typename T1, typename T2, typename T3, typename T4, typename... Types>
 struct type_at<type_array<T0, T1, T2, T3, T4, Types...>, 4> {
     using type = T4;
 };
-// clang-format off
 template<typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename... Types>
 struct type_at<type_array<T0, T1, T2, T3, T4, T5, Types...>, 5> {
     using type = T5;
