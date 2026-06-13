@@ -8,4 +8,6 @@
 
 #include <actl/preprocessor/AC_CONCAT.hpp>
 #include <actl/preprocessor/AC_IS_EMPTY.hpp>
+#include <actl/preprocessor/AC_PRAGMA.hpp>
 #include <actl/preprocessor/AC_UNPARENTHESIZED.hpp>
+#include <actl/preprocessor/AC_WARNING_DISABLE.hpp>
