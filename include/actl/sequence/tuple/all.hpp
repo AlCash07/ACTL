@@ -6,4 +6,5 @@
 
 #pragma once
 
+#include <actl/sequence/tuple/Tuple.hpp>
 #include <actl/sequence/tuple/comparison.hpp>
