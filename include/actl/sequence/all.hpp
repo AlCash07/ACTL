@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <actl/sequence/at.hpp>
 #include <actl/sequence/fold/all.hpp>
 #include <actl/sequence/tuple/all.hpp>
 #include <actl/sequence/type_array/all.hpp>
