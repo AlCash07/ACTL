@@ -33,6 +33,8 @@ constexpr auto operator!=(L&& l, R&& r) {
 struct IsEqualScalar : operation_base<IsEqualScalar> {
     using parent = IsEqual;
 
+    using operation_category = equality_operation;
+
     static constexpr bool is_commutative = true;
 
     template<typename L, typename R>

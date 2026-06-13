@@ -7,33 +7,26 @@
 #pragma once
 
 #include <actl/numeric/comparison/equality.hpp>
-#include <actl/operation/operation/composite_operation.hpp>
-#include <actl/sequence/tuple/resolver.hpp>
+#include <actl/numeric/logic/logical_and.hpp>
+#include <actl/sequence/tuple/at_tuple.hpp>
 
 namespace ac {
 
-struct IsEqualTuple {
-    static constexpr size_t inner_count = 0;
+template<Tuple L, Tuple R, typename Indices>
+struct equal_tuple_resolver;
 
-    template<typename EqualOps, typename L, typename R, size_t... Is>
-    static bool evaluate_impl(
-        EqualOps const& ops, L const& l, R const& r, std::index_sequence<Is...>
-    ) {
-        using std::get;
-        return (... && get<Is>(ops)(get<Is>(l), get<Is>(r)));
-    }
-
-    template<typename EqualOps, typename L, typename R>
-    static bool evaluate(EqualOps const& ops, L const& l, R const& r) {
-        return evaluate_impl(ops, l, r, tuple_indices_t<L>{});
-    }
+template<Tuple L, Tuple R, size_t... Is>
+struct equal_tuple_resolver<L, R, std::index_sequence<Is...>> {
+    static constexpr auto formula =
+        (... &&
+         is_equal(at(l_, ac::constant<Is>{}), at(r_, ac::constant<Is>{})));
 };
-inline constexpr operation_composer<IsEqualTuple> is_equal_tuple;
 
 template<Tuple L, Tuple R>
-struct specialization<IsEqual, L, R> {
-    static constexpr auto formula =
-        tuple_op_resolver<L, R>::resolve_tuple(is_equal_tuple, is_equal);
+struct specialization<IsEqual, L, R>
+    : equal_tuple_resolver<L, R, tuple_indices_t<L>> {
+    // TODO: consider returning constant<false> for tuples of different sizes.
+    static_assert(std::tuple_size_v<L> == std::tuple_size_v<R>);
 };
 
 } // namespace ac
