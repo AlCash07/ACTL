@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/operation/arg.hpp>
-#include <actl/operation/expression/expression.hpp>
 #include <actl/preprocessor/AC_WARNING_DISABLE.hpp>
 #include <actl/sequence/type_array/at.hpp>
 
@@ -26,27 +25,6 @@ constexpr T eval(Placeholder<T, Arg>&&);
 template<typename T, typename Arg>
 constexpr T eval(Placeholder<T, Arg> const&);
 AC_WARNING_ENABLE()
-
-template<typename T>
-    requires(!is_expression_v<T>)
-constexpr decltype(auto) strip_placeholders(T&& t) {
-    return std::forward<T>(t);
-}
-
-template<typename T, typename Arg>
-constexpr auto strip_placeholders(Placeholder<T, Arg>) {
-    return Arg{};
-}
-
-template<Operation Op, size_t... Is, typename... Args>
-constexpr auto strip_placeholders(
-    const expression_data<Op, std::index_sequence<Is...>, Args...>& expression
-) {
-    return ac::expression{
-        expression.operation,
-        strip_placeholders(std::get<Is>(expression.arguments))...
-    };
-}
 
 template<template<typename> typename Trait, typename Arg>
 struct TypeOperation {

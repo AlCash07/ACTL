@@ -7,6 +7,9 @@
 #pragma once
 
 #include <actl/functional/parameter/out.hpp>
+#include <actl/operation/evaluation/is_argument_maybe_unused.hpp>
+#include <actl/operation/evaluation/is_argument_operation.hpp>
+#include <actl/operation/evaluation/strip_placeholders.hpp>
 #include <actl/operation/expression/expression_data.hpp>
 #include <actl/operation/resolver/operation_resolver.hpp>
 
@@ -40,13 +43,15 @@ using result_t = decltype(eval(std::declval<T>()));
 
 namespace detail {
 
-template<typename Op, size_t ArgumentIndex, typename Args>
-constexpr decltype(auto) argument_at(const Args& args) {
+template<typename Op, size_t ArgumentIndex, typename T>
+constexpr decltype(auto) prepare_argument(const T& t) {
     using RawOp = std::remove_reference_t<Op>;
-    if constexpr (RawOp::is_argument_maybe_unused(ArgumentIndex))
-        return std::get<ArgumentIndex>(args);
+    if constexpr (is_argument_operation<RawOp, ArgumentIndex>::value)
+        return strip_placeholders(t);
+    else if constexpr (is_argument_maybe_unused<RawOp, ArgumentIndex>::value)
+        return t;
     else
-        return eval(std::get<ArgumentIndex>(args));
+        return eval(t);
 }
 
 } // namespace detail
@@ -58,7 +63,9 @@ constexpr decltype(auto) eval(
     auto&& operation =
         resolve_operation<Op, result_t<Args const&>...>(expression.operation);
     return operation.evaluate(
-        detail::argument_at<decltype(operation), Is>(expression.arguments)...
+        detail::prepare_argument<decltype(operation), Is>(
+            std::get<Is>(expression.arguments)
+        )...
     );
 }
 
@@ -71,7 +78,9 @@ constexpr void assign(
         resolve_operation<Op, result_t<Args const&>...>(expression.operation);
     operation.evaluate_to(
         out{target},
-        detail::argument_at<decltype(operation), Is>(expression.arguments)...
+        detail::prepare_argument<decltype(operation), Is>(
+            std::get<Is>(expression.arguments)
+        )...
     );
 }
 
