@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/operation/resolver/operation_resolver.hpp>
-#include <actl/sequence/tuple/Tuple.hpp>
+#include <actl/sequence/tuple/TupleConcept.hpp>
 
 namespace ac {
 

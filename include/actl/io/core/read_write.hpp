@@ -12,7 +12,7 @@
 #include <actl/io/format/apply_format.hpp>
 #include <actl/range/span.hpp>
 #include <actl/range/traits/concepts.hpp>
-#include <actl/sequence/tuple/Tuple.hpp>
+#include <actl/sequence/tuple/TupleConcept.hpp>
 
 namespace ac::io::detail {
 

@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/io/core/manipulator.hpp>
-#include <actl/sequence/tuple/Tuple.hpp>
+#include <actl/sequence/tuple/TupleConcept.hpp>
 #include <actl/utility/index.hpp>
 
 namespace ac::io {

@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/range/traits/associated_types.hpp>
-#include <actl/sequence/tuple/Tuple.hpp>
+#include <actl/sequence/tuple/TupleConcept.hpp>
 
 namespace ac {
 

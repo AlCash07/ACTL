@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/sequence/tuple/Tuple.hpp>
+#include <actl/sequence/tuple/TupleConcept.hpp>
 #include <tuple>
 
 namespace ac {

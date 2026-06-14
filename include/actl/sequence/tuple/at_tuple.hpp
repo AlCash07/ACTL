@@ -9,7 +9,7 @@
 #include <actl/numeric/constant_literals.hpp>
 #include <actl/operation/operation/operation_base.hpp>
 #include <actl/sequence/at.hpp>
-#include <actl/sequence/tuple/Tuple.hpp>
+#include <actl/sequence/tuple/TupleConcept.hpp>
 
 namespace ac {
 
