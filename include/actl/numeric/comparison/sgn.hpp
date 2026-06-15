@@ -21,7 +21,7 @@ struct SgnScalar : operation_base<SgnScalar> {
     using parent = Sgn;
 
     template<typename T>
-    static constexpr bool requirement = std::is_arithmetic_v<T>;
+    static constexpr bool match = std::is_arithmetic_v<T>;
 
     static constexpr auto formula = compare_3way(t_, 0_c);
 };

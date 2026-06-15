@@ -25,7 +25,7 @@ struct specialization : default_specialization<Op> {};
 
 #define AC_REGISTER_SPECIALIZATION(name)                    \
     template<typename... Args>                              \
-        requires name::requirement<Args...>                 \
+        requires name::match<Args...>                       \
     struct specialization<typename name::parent, Args...> { \
         static constexpr auto formula = name{};             \
     };

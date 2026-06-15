@@ -25,7 +25,7 @@ struct BitNotScalar : operation_base<BitNotScalar> {
     using parent = BitNot;
 
     template<typename T>
-    static constexpr bool requirement = std::is_arithmetic_v<T>;
+    static constexpr bool match = std::is_arithmetic_v<T>;
 
     static constexpr auto evaluate(std::integral auto i) {
         return ~i;

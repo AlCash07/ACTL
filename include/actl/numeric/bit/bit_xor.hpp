@@ -41,7 +41,7 @@ struct BitXorScalar : operation_base<BitXorScalar> {
     static constexpr bool is_commutative = true;
 
     template<typename L, typename R>
-    static constexpr bool requirement =
+    static constexpr bool match =
         std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
 
     template<std::integral L, std::integral R>

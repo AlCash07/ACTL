@@ -25,7 +25,7 @@ struct LogicalNotScalar : operation_base<LogicalNotScalar> {
     using parent = LogicalNot;
 
     template<typename T>
-    static constexpr bool requirement = std::is_arithmetic_v<T>;
+    static constexpr bool match = std::is_arithmetic_v<T>;
 
     static constexpr auto evaluate(std::same_as<bool> auto b) {
         return !b;

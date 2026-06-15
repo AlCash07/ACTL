@@ -20,7 +20,7 @@ struct AbsScalar : operation_base<AbsScalar> {
     using parent = Abs;
 
     template<typename T>
-    static constexpr bool requirement = std::is_arithmetic_v<T>;
+    static constexpr bool match = std::is_arithmetic_v<T>;
 
     template<typename T>
     static constexpr T evaluate(T t) {

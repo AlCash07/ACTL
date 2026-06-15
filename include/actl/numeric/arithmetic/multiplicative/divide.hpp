@@ -31,7 +31,7 @@ struct DivideScalars : operation_base<DivideScalars> {
     using parent = Divide;
 
     template<typename L, typename R>
-    static constexpr bool requirement =
+    static constexpr bool match =
         std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
 
     template<typename L, typename R>

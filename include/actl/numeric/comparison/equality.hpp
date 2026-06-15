@@ -36,7 +36,7 @@ struct IsEqualScalar : operation_base<IsEqualScalar> {
     static constexpr bool is_commutative = true;
 
     template<typename L, typename R>
-    static constexpr bool requirement =
+    static constexpr bool match =
         std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
 
     template<typename L, typename R>

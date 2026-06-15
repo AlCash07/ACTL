@@ -35,7 +35,7 @@ struct LogicalOrScalar : operation_base<LogicalOrScalar> {
     static constexpr bool is_commutative = true;
 
     template<typename L, typename R>
-    static constexpr bool requirement =
+    static constexpr bool match =
         std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
 
     template<std::same_as<bool> T>

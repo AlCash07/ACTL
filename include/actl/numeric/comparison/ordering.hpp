@@ -21,7 +21,7 @@ struct IsLessScalar : operation_base<IsLessScalar> {
     using parent = IsLess;
 
     template<typename L, typename R>
-    static constexpr bool requirement =
+    static constexpr bool match =
         (is_constant_v<L> || std::is_arithmetic_v<L>) &&
         (is_constant_v<R> || std::is_arithmetic_v<R>);
 

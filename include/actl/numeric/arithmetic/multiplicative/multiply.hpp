@@ -41,7 +41,7 @@ struct MultiplyInteger : operation_base<MultiplyInteger> {
     static constexpr bool is_commutative = true;
 
     template<typename L, typename R>
-    static constexpr bool requirement = std::integral<L> && std::integral<R>;
+    static constexpr bool match = std::integral<L> && std::integral<R>;
 
     template<typename L, typename R>
     static constexpr auto evaluate(L l, R r) {
@@ -57,7 +57,7 @@ struct MultiplyFloat : operation_base<MultiplyFloat> {
     // floating point multiplication is neither associative nor commutative
 
     template<typename L, typename R>
-    static constexpr bool requirement =
+    static constexpr bool match =
         std::floating_point<L> && std::floating_point<R>;
 
     template<typename L, typename R>

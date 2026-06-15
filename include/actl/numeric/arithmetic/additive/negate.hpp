@@ -26,7 +26,7 @@ struct NegateScalar : operation_base<NegateScalar> {
     using parent = Negate;
 
     template<typename T>
-    static constexpr bool requirement = std::is_arithmetic_v<T>;
+    static constexpr bool match = std::is_arithmetic_v<T>;
 
     template<typename T>
     static constexpr auto evaluate(T t) {

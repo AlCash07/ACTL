@@ -31,7 +31,7 @@ struct SubtractScalars : operation_base<SubtractScalars> {
     using parent = Subtract;
 
     template<typename L, typename R>
-    static constexpr bool requirement =
+    static constexpr bool match =
         std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
 
     template<typename L, typename R>
