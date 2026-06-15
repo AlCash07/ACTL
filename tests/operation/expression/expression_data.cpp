@@ -28,8 +28,8 @@ constexpr void test_rvalue_arguments() {
     static_assert(std::is_same_v<expr_type const, decltype(expr)>);
     /* Correct values are stored. */
     static_assert(2 == expr.operation.member.value);
-    static_assert(3 == get<0>(expr.arguments).value);
-    static_assert(5 == get<1>(expr.arguments));
+    static_assert(3 == expr.arguments[0_c].value);
+    static_assert(5 == expr.arguments[1_c]);
     /* `noexcept` specification is deduced from the arguments' moves. */
     static_assert(IsNoexcept == noexcept(sum<IntOp>{{}, 2}(IntArg{3}, 5)));
 }
@@ -47,8 +47,8 @@ void test_lvalue_arguments() {
     static_assert(std::is_same_v<expr_type, decltype(expr)>);
     /* Correct values are stored. */
     CHECK(2 == expr.operation.member.value);
-    CHECK(3 == get<0>(expr.arguments).value);
-    CHECK(5 == get<1>(expr.arguments));
+    CHECK(3 == expr.arguments[0_c].value);
+    CHECK(5 == expr.arguments[1_c]);
     /* Expression is always `noexcept` here,
      * because it stored non-trivial types by value. */
     static_assert(noexcept(op(arg0, arg1)));

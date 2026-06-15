@@ -64,7 +64,7 @@ constexpr decltype(auto) eval(
         resolve_operation<Op, result_t<Args const&>...>(expression.operation);
     return operation.evaluate(
         detail::prepare_argument<decltype(operation), Is>(
-            std::get<Is>(expression.arguments)
+            expression.arguments[constant<Is>{}]
         )...
     );
 }
@@ -79,7 +79,7 @@ constexpr void assign(
     operation.evaluate_to(
         out{target},
         detail::prepare_argument<decltype(operation), Is>(
-            std::get<Is>(expression.arguments)
+            expression.arguments[constant<Is>{}]
         )...
     );
 }

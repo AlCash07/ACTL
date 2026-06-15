@@ -27,7 +27,7 @@ constexpr auto strip_placeholders(
     const expression_data<Op, std::index_sequence<Is...>, Args...>& expression
 ) {
     return expression.operation(
-        strip_placeholders(std::get<Is>(expression.arguments))...
+        strip_placeholders(expression.arguments[constant<Is>{}])...
     );
 }
 

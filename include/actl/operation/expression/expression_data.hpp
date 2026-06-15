@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp>
-#include <tuple>
+#include <actl/sequence/tuple/tuple.hpp>
 #include <utility> // for std::index_sequence_for
 
 namespace ac {
@@ -39,9 +39,7 @@ public:
     static_assert(argument_count == sizeof...(Indices));
 
     AC_NO_UNIQUE_ADDRESS Op operation;
-    // TODO: avoid std::tuple because of slow compilation time
-    // and move constructor never being trivial caused by a wording defect.
-    AC_NO_UNIQUE_ADDRESS std::tuple<Args...> arguments;
+    AC_NO_UNIQUE_ADDRESS tuple<Args...> arguments;
 
     expression_data() = default;
 
@@ -54,7 +52,7 @@ public:
         std::is_nothrow_constructible_v<Args, ArgsT>
     ))
         : operation{std::forward<OpT>(op)}
-        , arguments{std::forward<ArgsT>(args)...} {}
+        , arguments{{{std::forward<ArgsT>(args)}...}} {}
 };
 
 template<Operation Op, typename... Args>

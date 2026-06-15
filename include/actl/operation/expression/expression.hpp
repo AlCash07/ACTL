@@ -64,7 +64,7 @@ constexpr decltype(auto) pass_arguments(
     if constexpr (ac::Operation<ac::expression<Op, Args...>>)
         return ac::expression{
             expression.operation,
-            pass_arguments(std::get<Is>(expression.arguments), args...)...
+            pass_arguments(expression.arguments[constant<Is>{}], args...)...
         };
     else
         return expression;
