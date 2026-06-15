@@ -42,8 +42,8 @@ struct abs_rel_error : operation_base<abs_rel_error<T>> {
     }
 };
 
-template<typename T>
-auto apply_policy(IsEqualScalar, abs_rel_error<T> const& policy) {
+template<typename T, typename Args>
+auto apply_policy(IsEqualScalar, abs_rel_error<T> const& policy, Args) {
     return policy;
 }
 

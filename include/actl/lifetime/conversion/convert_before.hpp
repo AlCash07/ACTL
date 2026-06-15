@@ -15,8 +15,8 @@ struct convert_before {
     struct is_policy;
 };
 
-template<Operation Op, typename T>
-constexpr auto apply_policy(Op const& op, convert_before<Op, T>) {
+template<Operation Op, typename T, typename Args>
+constexpr auto apply_policy(Op const& op, convert_before<Op, T>, Args) {
     return op(as<T>);
 }
 

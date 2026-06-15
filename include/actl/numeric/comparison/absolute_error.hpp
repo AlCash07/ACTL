@@ -20,13 +20,17 @@ struct absolute_error : E {
     struct is_policy;
 };
 
-template<typename E>
-constexpr auto apply_policy(IsEqualScalar, absolute_error<E> const& policy) {
+template<typename E, typename Args>
+constexpr auto apply_policy(
+    IsEqualScalar, absolute_error<E> const& policy, Args
+) {
     return abs(subtract) <= policy.epsilon();
 }
 
-template<typename E>
-constexpr auto apply_policy(IsLessScalar, absolute_error<E> const& policy) {
+template<typename E, typename Args>
+constexpr auto apply_policy(
+    IsLessScalar, absolute_error<E> const& policy, Args
+) {
     return policy.epsilon() < r_ - l_;
 }
 

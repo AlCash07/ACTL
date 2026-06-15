@@ -32,13 +32,20 @@ template<
     typename ArgsArray,
     typename TopPolicy,
     typename... Policies>
-    requires can_apply_any_policy_v<Op, TopPolicy, Policies...>
+    requires can_apply_any_policy_v<ArgsArray, Op, TopPolicy, Policies...>
 struct policy_overload<Op, ArgsArray, TopPolicy, Policies...> {
     template<typename Op1>
     constexpr auto operator()(
         Op1&& op, TopPolicy const& top_policy, Policies const&... policies
     ) const {
-        auto&& new_op = apply_policy_if_can(std::forward<Op1>(op), top_policy);
+        auto&& new_op = [&] {
+            if constexpr (can_apply_policy_v<ArgsArray, Op, TopPolicy>)
+                return apply_policy(
+                    std::forward<Op1>(op), top_policy, ArgsArray{}
+                );
+            else
+                return std::forward<Op1>(op);
+        }();
         using resolver =
             operation_resolver<raw_t<decltype(new_op)>, ArgsArray, Policies...>;
         return resolver{}(std::forward<decltype(new_op)>(new_op), policies...);

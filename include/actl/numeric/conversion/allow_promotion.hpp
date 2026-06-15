@@ -12,32 +12,22 @@
 
 namespace ac {
 
-#if 0
 struct allow_promotion {
     struct is_policy;
 };
 
-struct Promotion {
-    static constexpr size_t inner_count = 1;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(
-        IfElse op, bool condition, L const& l, R const& r
-    ) {
-        using CT = std::common_type_t<L, R>;
-        return IfElse::evaluate(condition, as<CT>(l), as<CT>(r));
-    }
-
-    template<Operation Op, typename... Ts>
-    static constexpr auto evaluate(Op const& op, Ts const&... ts) {
-        using CT = std::common_type_t<decltype(ts)...>;
-        return op.evaluate(eval(as<CT>(ts))...);
-    }
-};
-
-constexpr auto apply_policy(ScalarOperation auto const& op, allow_promotion) {
-    return operation_composer<Promotion>{}(op);
+template<Operation Op, typename L, typename R>
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+constexpr auto apply_policy(Op&& op, allow_promotion, type_array<L, R>) {
+    using CT = std::common_type_t<L, R>;
+    return std::forward<Op>(op)(as<CT>(l_), as<CT>(r_));
 }
-#endif
+
+template<typename L, typename R>
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+constexpr auto apply_policy(IfElse, allow_promotion, type_array<L, R>) {
+    using CT = std::common_type_t<L, R>;
+    return if_else(arg<0, 3>, as<CT>(arg<1, 3>), as<CT>(arg<2, 3>));
+}
 
 } // namespace ac

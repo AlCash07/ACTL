@@ -8,30 +8,20 @@
 
 #include <actl/operation/operation/Operation.hpp>
 #include <type_traits>
-#include <utility>
 
 namespace ac {
 
 template<typename T>
 concept Policy = requires { typename std::remove_reference_t<T>::is_policy; };
 
-template<Operation Op, typename Policy>
+template<typename ArgsArray, Operation Op, typename Policy>
 inline constexpr bool can_apply_policy_v =
-    requires(Op op, Policy const& policy) { apply_policy(op, policy); };
+    requires(Op op, Policy const& policy) {
+        apply_policy(op, policy, ArgsArray{});
+    };
 
-template<Operation Op, typename... Policies>
+template<typename ArgsArray, Operation Op, typename... Policies>
 inline constexpr bool can_apply_any_policy_v =
-    (... || can_apply_policy_v<Op, Policies>);
-
-template<Operation Op>
-constexpr decltype(auto) apply_policy_if_can(Op&& op, Policy auto const&) {
-    return std::forward<Op>(op);
-}
-
-template<Operation Op, Policy P>
-    requires can_apply_policy_v<Op, P>
-constexpr decltype(auto) apply_policy_if_can(Op&& op, P const& policy) {
-    return apply_policy(std::forward<Op>(op), policy);
-}
+    (... || can_apply_policy_v<ArgsArray, Op, Policies>);
 
 } // namespace ac

@@ -10,8 +10,6 @@
 #include <actl/sequence/tuple/is_equal_tuple.hpp>
 #include "test.hpp"
 
-#if 0
-
 // simple operation
 static_assert(3LL == (ac::add | ac::allow_promotion{})(1, 2LL));
 
@@ -27,5 +25,3 @@ TEST_CASE("nested composite operation") {
 constexpr auto sum3 = ac::add + 3LL;
 static_assert(6LL == sum3(1LL, 2LL));
 static_assert(6LL == (sum3 | ac::allow_promotion{})(short{1}, int{2}));
-
-#endif
