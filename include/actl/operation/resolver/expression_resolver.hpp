@@ -71,19 +71,21 @@ template<
     typename... StoredArgs,
     typename ArgsArray,
     typename... Policies>
-    requires(!(
-        is_operation_resolved_v<
-            raw_t<Op>,
-            type_array<raw_t<
-                result_t<detail::with_arguments_t<StoredArgs, ArgsArray>>>...>,
-            Policies...> &&
-        (... &&
-         is_operation_resolved_v<raw_t<StoredArgs>, ArgsArray, Policies...>)
-    ))
 struct operation_resolver<expression<Op, StoredArgs...>, ArgsArray, Policies...>
-    : detail::expression_resolver<
-          expression_data_t<Op, StoredArgs...>,
-          ArgsArray,
-          Policies...> {};
+    : std::conditional_t<
+          is_operation_resolved_v<
+              raw_t<Op>,
+              type_array<raw_t<result_t<
+                  detail::with_arguments_t<StoredArgs, ArgsArray>>>...>,
+              Policies...> &&
+              (... && is_operation_resolved_v<
+                          raw_t<StoredArgs>,
+                          ArgsArray,
+                          Policies...>),
+          identity_resolver,
+          detail::expression_resolver<
+              expression_data_t<Op, StoredArgs...>,
+              ArgsArray,
+              Policies...>> {};
 
 } // namespace ac

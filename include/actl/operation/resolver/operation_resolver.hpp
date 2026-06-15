@@ -11,21 +11,40 @@
 
 namespace ac {
 
-template<typename Op, typename ArgsArray, typename... Policies>
-struct policy_overload {
+struct identity_resolver {
     struct is_resolved;
 
-    constexpr Op operator()(Op&& op, Policies const&...) const {
-        return std::move(op);
-    }
-
-    constexpr Op const& operator()(Op const& op, Policies const&...) const {
-        return op;
+    template<typename T, typename... Policies>
+    constexpr T operator()(T&& t, Policies const&...) const {
+        return std::forward<T>(t);
     }
 };
 
+template<Operation Op, typename ArgsArray, typename... Policies>
+struct specialization_resolver : identity_resolver {};
+
+template<Operation Op, typename ArgsArray, typename... Policies>
+struct policy_resolver : specialization_resolver<Op, ArgsArray, Policies...> {};
+
 template<typename Op, typename ArgsArray, typename... Policies>
-struct operation_resolver : policy_overload<Op, ArgsArray, Policies...> {};
+struct operation_resolver : policy_resolver<Op, ArgsArray, Policies...> {};
+
+template<typename Op, typename... Args>
+inline constexpr auto resolve_operation =
+    operation_resolver<raw_t<Op>, type_array<raw_t<Args>...>>{};
+
+template<typename Op, typename ArgsArray, typename... Policies>
+inline constexpr bool is_operation_resolved_v = requires {
+    typename operation_resolver<raw_t<Op>, ArgsArray, Policies...>::is_resolved;
+};
+
+/* implementation */
+
+// Operation expressions can contain leaf nodes with values
+// instead of operations. Their resolution is handled here.
+template<typename T, typename ArgsArray, typename... Policies>
+    requires(!Operation<T>)
+struct operation_resolver<T, ArgsArray, Policies...> : identity_resolver {};
 
 template<
     Operation Op,
@@ -33,7 +52,7 @@ template<
     typename TopPolicy,
     typename... Policies>
     requires can_apply_any_policy_v<ArgsArray, Op, TopPolicy, Policies...>
-struct policy_overload<Op, ArgsArray, TopPolicy, Policies...> {
+struct policy_resolver<Op, ArgsArray, TopPolicy, Policies...> {
     template<typename Op1>
     constexpr auto operator()(
         Op1&& op, TopPolicy const& top_policy, Policies const&... policies
@@ -52,9 +71,9 @@ struct policy_overload<Op, ArgsArray, TopPolicy, Policies...> {
     }
 };
 
-template<typename Op, typename... Args, typename... Policies>
+template<Operation Op, typename... Args, typename... Policies>
     requires requires { specialization<Op, Args...>::formula; }
-struct operation_resolver<Op, type_array<Args...>, Policies...> {
+struct specialization_resolver<Op, type_array<Args...>, Policies...> {
     template<typename Op1>
     constexpr auto operator()(Op1&& op, Policies const&... policies) const {
         using Formula =
@@ -63,15 +82,6 @@ struct operation_resolver<Op, type_array<Args...>, Policies...> {
             Formula{}, policies...
         );
     }
-};
-
-template<Operation Op, typename... Args>
-inline constexpr auto resolve_operation =
-    operation_resolver<raw_t<Op>, type_array<raw_t<Args>...>>{};
-
-template<Operation Op, typename ArgsArray, typename... Policies>
-inline constexpr bool is_operation_resolved_v = requires {
-    typename operation_resolver<raw_t<Op>, ArgsArray, Policies...>::is_resolved;
 };
 
 } // namespace ac
