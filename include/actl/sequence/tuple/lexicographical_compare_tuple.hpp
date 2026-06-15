@@ -8,34 +8,37 @@
 
 #include <actl/core/if_else.hpp>
 #include <actl/numeric/comparison/compare3way.hpp>
+#include <actl/numeric/comparison/equality.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
-#include <actl/numeric/constant_literals.hpp>
-#include <actl/operation/operation/composite_operation.hpp>
-#include <actl/sequence/tuple/resolver.hpp>
+#include <actl/sequence/tuple/at_tuple.hpp>
 
 namespace ac {
 
-struct LexicographicalCompareTuple {
-    static constexpr size_t inner_count = 0;
-
-    template<size_t I = 0, typename Compare3WayOps, typename L, typename R>
-    static int evaluate(Compare3WayOps const& ops, L const& l, R const& r) {
-        using std::get;
-        int v = get<I>(ops)(get<I>(l), get<I>(r));
-        if constexpr (I + 1 == std::tuple_size_v<L>)
-            return v;
-        else
-            return if_else(v == 0, evaluate<I + 1>(ops, l, r), v);
+template<Tuple L, Tuple R, size_t Index>
+struct lexicographical_compare_tuple_suffix {
+    static constexpr auto compare_element() {
+        return compare3way(
+            at(l_, ac::constant<Index>{}), //
+            at(r_, ac::constant<Index>{})
+        );
     }
+
+    static constexpr auto formula = [] {
+        if constexpr (Index + 1 == std::tuple_size_v<L>)
+            return compare_element();
+        else
+            return if_else(l_ != 0, l_, r_)(
+                compare_element(),
+                lexicographical_compare_tuple_suffix<L, R, Index + 1>::formula
+            );
+    }();
 };
-inline constexpr operation_composer<LexicographicalCompareTuple>
-    lexicographical_compare_tuple;
 
 template<Tuple L, Tuple R>
-struct specialization<Compare3Way, L, R> {
-    static constexpr auto formula = tuple_op_resolver<L, R>::resolve_tuple(
-        lexicographical_compare_tuple, compare3way
-    );
+struct specialization<Compare3Way, L, R>
+    : lexicographical_compare_tuple_suffix<L, R, 0> {
+    // TODO: consider supporting tuples of different sizes.
+    static_assert(std::tuple_size_v<L> == std::tuple_size_v<R>);
 };
 
 template<Tuple L, Tuple R>

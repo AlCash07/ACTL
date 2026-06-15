@@ -4,8 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(actl_root_dir ${CMAKE_CURRENT_LIST_DIR}/..)
 file(GLOB_RECURSE actl_test_files *.hpp *.cpp)
-list(FILTER actl_test_files EXCLUDE REGEX geometry/*)
-list(FILTER actl_test_files EXCLUDE REGEX graph/*)
+list(FILTER actl_test_files EXCLUDE REGEX geometry//*)
+list(FILTER actl_test_files EXCLUDE REGEX graph//*)
 source_group(TREE ${actl_root_dir}/tests FILES ${actl_test_files})
 add_executable(actl_unit_tests ${actl_test_files})
 
