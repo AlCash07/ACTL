@@ -9,7 +9,7 @@
 #include <actl/numeric/arithmetic/additive/add.hpp>
 #include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
 #include <actl/numeric/comparison/min_max.hpp>
-#include <actl/operation/fold/fold.hpp>
+#include <actl/sequence/fold/fold.hpp>
 
 namespace ac {
 

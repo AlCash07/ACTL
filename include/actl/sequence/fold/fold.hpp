@@ -6,14 +6,24 @@
 
 #pragma once
 
-#include <actl/operation/operation/composite_operation.hpp>
+#include <actl/operation/operation/type_operation.hpp>
+#include <actl/range/traits/associated_types.hpp>
 
 namespace ac {
 
-struct fold_ {
-    static constexpr size_t inner_count = 1;
+struct Fold : operation_base<Fold> {
+    // TODO: implement.
 };
 
-inline constexpr operation_composer<fold_> fold;
+template<Operation Op>
+constexpr auto fold(Op&& op) {
+    return Fold{}(
+        x_,
+        std::forward<Op>(
+            type_operation<range_reference, Arg<0, 1>>,
+            type_operation<range_reference, Arg<0, 1>>
+        )
+    );
+}
 
 } // namespace ac

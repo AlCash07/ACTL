@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/operation/fold/fold.hpp>
-#include <actl/operation/fold/scalar.hpp>
+#include <actl/sequence/fold/fold.hpp>
+#include <actl/sequence/fold/scalar.hpp>
