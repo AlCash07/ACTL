@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/AC_ASSERT.hpp>
-#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
+#include <actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp>
 #include <actl/numeric/constant.hpp>
 #include <actl/range/iterator/interface/random_access_iterator_interface.hpp>
 

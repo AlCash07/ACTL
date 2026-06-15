@@ -8,7 +8,7 @@
 
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
 #include <actl/functional/traits/Callable.hpp>
-#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
+#include <actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp>
 
 namespace ac {
 

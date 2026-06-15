@@ -1,5 +1,5 @@
 ********************************
-AC_NO_UNIQUE_ADDRESS
+Empty type optimizations
 ********************************
 
 C++20 introduced
@@ -20,7 +20,7 @@ For portability we need a custom wrapper until that's fixed. See
 Reference
 =========
 
-.. ac-include:: actl/memory/AC_NO_UNIQUE_ADDRESS.hpp
-.. doxygenfile:: memory/AC_NO_UNIQUE_ADDRESS.hpp
+.. ac-include:: actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp
+.. doxygenfile:: memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp
 
-.. ac-tests:: tests/memory/AC_NO_UNIQUE_ADDRESS.cpp
+.. ac-tests:: tests/memory/empty_type/AC_NO_UNIQUE_ADDRESS.cpp

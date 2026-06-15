@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/map/traits.hpp>
-#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
+#include <actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp>
 
 namespace ac {
 

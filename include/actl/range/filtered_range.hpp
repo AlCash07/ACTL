@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
+#include <actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp>
 #include <actl/range/interface/range_interface_selector.hpp>
 #include <actl/range/iterator/interface/iterator_adaptor.hpp>
 

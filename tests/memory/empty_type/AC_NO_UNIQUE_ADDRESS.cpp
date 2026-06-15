@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
+#include <actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp>
 #include <type_traits>
 
 struct empty_base {};

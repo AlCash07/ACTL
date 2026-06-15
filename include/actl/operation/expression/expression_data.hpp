@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/memory/AC_NO_UNIQUE_ADDRESS.hpp>
+#include <actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp>
 #include <tuple>
 #include <utility> // for std::index_sequence_for
 
