@@ -541,26 +541,37 @@ struct is_tensor<ac::detail::tensor_base<Ts...>> : std::true_type {};
 template<typename T>
 concept Tensor = detail::is_tensor<T>::value;
 
-struct TensorEqual {
-    static constexpr size_t inner_count = 1;
+struct IsEqualTensor : operation_base<IsEqualTensor> {
+    static constexpr bool is_argument_operation(size_t index) {
+        return index == 2;
+    }
 
-    template<typename EqualOp, typename L, typename R>
-    static bool evaluate(EqualOp const& op, L const& l, R const& r) {
+    static constexpr bool evaluate(
+        Tensor auto& l, Tensor auto& r, auto const& equal_element
+    ) {
         if (l.rank() != r.rank())
             return false;
         for (size_t i = 0; i < l.rank(); ++i) {
             if (l.dimension(i) != r.dimension(i))
                 return false;
         }
-        return op(span{l}, span{r});
+        // TODO: this should be equal_range not element.
+        return equal_element(span{l}, span{r});
     }
 };
 
+inline constexpr auto is_equal_tensor = IsEqualTensor{}(
+    l_,
+    r_,
+    is_equal(
+        type_operation<range_reference, Arg<0, 2>>,
+        type_operation<range_reference, Arg<1, 2>>
+    )
+);
+
 template<Tensor L, Tensor R>
 struct specialization<IsEqual, L, R> {
-    static constexpr auto formula = operation_composer<TensorEqual>(
-        resolve_operation<IsEqual, range_value_t<L>, range_value_t<R>>(is_equal)
-    );
+    static constexpr auto formula = is_equal_tensor;
 };
 
 /// N-dimensional array with dimensions completely or partially known at compile
