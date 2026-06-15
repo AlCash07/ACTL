@@ -9,10 +9,10 @@
 #include <actl/core/if_else.hpp>
 #include <actl/core/scalar_operation.hpp>
 #include <actl/lifetime/conversion/as.hpp>
-#include <actl/operation/operation/composite_operation.hpp>
 
 namespace ac {
 
+#if 0
 struct allow_promotion {
     struct is_policy;
 };
@@ -38,5 +38,6 @@ struct Promotion {
 constexpr auto apply_policy(ScalarOperation auto const& op, allow_promotion) {
     return operation_composer<Promotion>{}(op);
 }
+#endif
 
 } // namespace ac

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <actl/lifetime/conversion/as.hpp>
-#include <actl/operation/operation/composite_operation.hpp>
 
 namespace ac {
 
