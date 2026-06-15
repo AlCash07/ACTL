@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/core/if_else.hpp>
-#include <actl/numeric/comparison/compare3way.hpp>
+#include <actl/numeric/comparison/compare_3way.hpp>
 #include <actl/numeric/comparison/equality.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 #include <actl/sequence/tuple/at_tuple.hpp>
@@ -17,7 +17,7 @@ namespace ac {
 template<Tuple L, Tuple R, size_t Index>
 struct lexicographical_compare_tuple_suffix {
     static constexpr auto compare_element() {
-        return compare3way(
+        return compare_3way(
             at(l_, ac::constant<Index>{}), //
             at(r_, ac::constant<Index>{})
         );
@@ -43,7 +43,7 @@ struct specialization<Compare3Way, L, R>
 
 template<Tuple L, Tuple R>
 struct specialization<IsLess, L, R> {
-    static constexpr auto formula = compare3way < 0_c;
+    static constexpr auto formula = compare_3way < 0_c;
 };
 
 } // namespace ac

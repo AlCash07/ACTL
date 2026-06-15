@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/compare3way.hpp>
+#include <actl/numeric/comparison/compare_3way.hpp>
 #include <actl/numeric/constant_literals.hpp>
 #include <actl/operation/arg.hpp>
 
@@ -23,7 +23,7 @@ struct SgnScalar : operation_base<SgnScalar> {
     template<typename T>
     static constexpr bool requirement = std::is_arithmetic_v<T>;
 
-    static constexpr auto formula = compare3way(t_, 0_c);
+    static constexpr auto formula = compare_3way(t_, 0_c);
 };
 AC_REGISTER_SPECIALIZATION(SgnScalar)
 inline constexpr SgnScalar sgn_scalar;

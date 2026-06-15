@@ -15,7 +15,7 @@ namespace ac {
 struct Compare3Way : operation_base<Compare3Way> {
     using operation_category = ordering_operation;
 };
-inline constexpr Compare3Way compare3way;
+inline constexpr Compare3Way compare_3way;
 
 struct Compare3WayScalar : operation_base<Compare3WayScalar> {
     using parent = Compare3Way;
@@ -28,6 +28,6 @@ struct Compare3WayScalar : operation_base<Compare3WayScalar> {
     static constexpr auto formula = as<int>(is_greater) - as<int>(is_less);
 };
 AC_REGISTER_SPECIALIZATION(Compare3WayScalar)
-inline constexpr Compare3WayScalar compare3way_scalar;
+inline constexpr Compare3WayScalar compare_3way_scalar;
 
 } // namespace ac

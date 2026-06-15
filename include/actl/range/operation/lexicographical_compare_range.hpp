@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/compare3way.hpp>
+#include <actl/numeric/comparison/compare_3way.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 #include <actl/numeric/constant_literals.hpp>
 #include <actl/operation/type_operation.hpp>
@@ -21,7 +21,7 @@ struct LexicographicalCompareRange
     }
 
     static constexpr int evaluate(
-        Range auto& l, Range auto& r, auto const& compare3way_element
+        Range auto& l, Range auto& r, auto const& compare_3way_element
     ) {
         // Can't use std::lexicographical_compare because it doesn't compare
         // 3-way.
@@ -30,7 +30,7 @@ struct LexicographicalCompareRange
         auto rfirst = ranges::begin(r);
         auto rlast = ranges::end(r);
         for (; (lfirst != llast) && (rfirst != rlast); ++lfirst, ++rfirst) {
-            int const v = compare3way_element(*lfirst, *rfirst);
+            int const v = compare_3way_element(*lfirst, *rfirst);
             if (v != 0)
                 return v;
         }
@@ -42,7 +42,7 @@ inline constexpr auto lexicographical_compare_range =
     LexicographicalCompareRange{}(
         l_,
         r_,
-        compare3way(
+        compare_3way(
             type_operation<range_reference, Arg<0, 2>>,
             type_operation<range_reference, Arg<1, 2>>
         )
@@ -50,7 +50,7 @@ inline constexpr auto lexicographical_compare_range =
 
 template<Range L, Range R>
 struct specialization<IsLess, L, R> {
-    static constexpr auto formula = compare3way < 0_c;
+    static constexpr auto formula = compare_3way < 0_c;
 };
 
 } // namespace ac
