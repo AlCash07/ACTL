@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <actl/core/scalar_operation.hpp>
 #include <actl/operation/enable_operators.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
 // clang-format off
-struct arithmetic_operation     : scalar_operation {};
+struct arithmetic_operation {};
 struct additive_operation       : arithmetic_operation {};
 struct multiplicative_operation : arithmetic_operation {};
 struct exponential_operation    : arithmetic_operation {};

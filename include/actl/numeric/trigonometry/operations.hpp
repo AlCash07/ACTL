@@ -10,7 +10,7 @@
 
 namespace ac {
 
-struct trigonometric_operation : scalar_operation {};
+struct trigonometric_operation {};
 
 AC_MATH_OPERATION1(Cos, cos, trigonometric_operation)
 AC_MATH_OPERATION1(Sin, sin, trigonometric_operation)

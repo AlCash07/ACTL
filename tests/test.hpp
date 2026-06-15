@@ -27,8 +27,6 @@ namespace ac {
 
 template<typename T>
 struct abs_rel_error : operation_base<abs_rel_error<T>> {
-    using operation_category = scalar_operation;
-
     struct is_policy;
 
     abs_rel_error(T eps) : eps{eps} {}

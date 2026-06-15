@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <actl/core/scalar_operation.hpp>
 #include <actl/operation/enable_operators.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
-struct bit_operation : scalar_operation {};
+struct bit_operation {};
 struct bitwise_operation : bit_operation {};
 
 } // namespace ac

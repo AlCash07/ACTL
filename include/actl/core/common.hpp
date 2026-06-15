@@ -8,13 +8,11 @@
 
 #include <actl/AC_ASSERT.hpp>
 #include <actl/core/none.hpp>
-#include <actl/core/scalar_operation.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
 struct Common : operation_base<Common> {
-    using operation_category = scalar_operation;
-
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 

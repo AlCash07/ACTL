@@ -6,20 +6,19 @@
 
 #pragma once
 
-#include <actl/core/scalar_operation.hpp>
 #include <actl/operation/enable_operators.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
 // clang-format off
-struct comparison_operation : scalar_operation {};
+struct comparison_operation {};
 struct equality_operation   : comparison_operation {};
 struct ordering_operation   : comparison_operation {};
 // clang-format on
 
 template<typename T>
 concept ComparisonOperation =
-    ScalarOperation<T> &&
     std::derived_from<typename T::operation_category, comparison_operation>;
 
 } // namespace ac

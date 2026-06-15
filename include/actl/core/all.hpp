@@ -10,5 +10,4 @@
 #include <actl/core/if_else.hpp>
 #include <actl/core/none.hpp>
 #include <actl/core/qualifiers/all.hpp>
-#include <actl/core/scalar_operation.hpp>
 #include <actl/core/use_default.hpp>

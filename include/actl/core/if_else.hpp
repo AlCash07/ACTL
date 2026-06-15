@@ -6,13 +6,11 @@
 
 #pragma once
 
-#include <actl/core/scalar_operation.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
 struct IfElse : operation_base<IfElse> {
-    using operation_category = scalar_operation;
-
     static constexpr bool is_argument_maybe_unused(size_t index) noexcept {
         return index == 1 || index == 2;
     }

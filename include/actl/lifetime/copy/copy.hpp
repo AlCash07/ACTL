@@ -6,13 +6,11 @@
 
 #pragma once
 
-#include <actl/core/scalar_operation.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
 struct Copy : operation_base<Copy> {
-    using operation_category = scalar_operation;
-
     template<typename T>
     static constexpr T evaluate(T t) {
         return t;

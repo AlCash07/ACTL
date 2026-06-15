@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <actl/core/scalar_operation.hpp>
 #include <actl/operation/enable_operators.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
-struct logical_operation : scalar_operation {};
+struct logical_operation {};
 
 } // namespace ac
