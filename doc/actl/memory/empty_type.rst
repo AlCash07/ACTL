@@ -20,7 +20,12 @@ For portability we need a custom wrapper until that's fixed. See
 Reference
 =========
 
+.. ac-include:: actl/memory/empty_type/EmptyTrivial.hpp
+.. doxygenconcept:: ac::EmptyTrivial
+
+.. ac-tests:: tests/memory/empty_type/EmptyTrivial.cpp
+
 .. ac-include:: actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp
-.. doxygenfile:: memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp
+.. doxygendefine:: AC_NO_UNIQUE_ADDRESS
 
 .. ac-tests:: tests/memory/empty_type/AC_NO_UNIQUE_ADDRESS.cpp
