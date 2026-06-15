@@ -16,6 +16,9 @@ Unfortunately, the standard attribute is ignored in the current MSVC version.
 For portability we need a custom wrapper until that's fixed. See
 `MSVC blog <https://devblogs.microsoft.com/cppblog/msvc-cpp20-and-the-std-cpp20-switch/#c20-no_unique_address>`_,
 `github issue <https://github.com/microsoft/STL/issues/1364>`_.
+Moreover, MSVC has issues with multiple inheritance support,
+requiring even move workarounds:
+`MSVC blog <https://devblogs.microsoft.com/cppblog/optimizing-the-layout-of-empty-base-classes-in-vs2015-update-2-3>`_.
 
 Reference
 =========
@@ -29,3 +32,8 @@ Reference
 .. doxygendefine:: AC_NO_UNIQUE_ADDRESS
 
 .. ac-tests:: tests/memory/empty_type/AC_NO_UNIQUE_ADDRESS.cpp
+
+.. ac-include:: actl/memory/empty_type/AC_EMPTY_BASES.hpp
+.. doxygendefine:: AC_EMPTY_BASES
+
+.. ac-tests:: tests/memory/empty_type/AC_EMPTY_BASES.cpp
