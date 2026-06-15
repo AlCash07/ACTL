@@ -11,8 +11,7 @@
 namespace ac {
 
 struct Add : operation_base<Add> {
-    // TODO: uncomment this after fixing tests.
-    // using operation_category = additive_operation;
+    using operation_category = additive_operation;
 };
 inline constexpr Add add;
 
@@ -36,8 +35,6 @@ constexpr decltype(auto) operator+=(L&& l, R&& r) {
 }
 
 struct AddInteger : operation_base<AddInteger> {
-    using operation_category = additive_operation;
-
     using parent = Add;
 
     static constexpr bool is_associative = true;
@@ -55,8 +52,6 @@ AC_REGISTER_SPECIALIZATION(AddInteger)
 inline constexpr AddInteger add_integer;
 
 struct AddFloat : operation_base<AddFloat> {
-    using operation_category = additive_operation;
-
     using parent = Add;
 
     // floating point addition is neither associative nor commutative

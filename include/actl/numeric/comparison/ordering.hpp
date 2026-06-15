@@ -12,29 +12,26 @@
 
 namespace ac {
 
-struct IsLessScalar : operation_base<IsLessScalar> {
-    // using parent = IsLess;
+struct IsLess : operation_base<IsLess> {
     using operation_category = ordering_operation;
+};
+inline constexpr IsLess is_less;
+
+struct IsLessScalar : operation_base<IsLessScalar> {
+    using parent = IsLess;
 
     template<typename L, typename R>
     static constexpr bool requirement =
-        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
+        (is_constant_v<L> || std::is_arithmetic_v<L>) &&
+        (is_constant_v<R> || std::is_arithmetic_v<R>);
 
     template<typename L, typename R>
     static constexpr bool evaluate(L l, R r) {
         return l < r;
     }
 };
-// AC_REGISTER_SPECIALIZATION(IsLessScalar)
+AC_REGISTER_SPECIALIZATION(IsLessScalar)
 inline constexpr IsLessScalar is_less_scalar;
-
-struct IsLess : operation_base<IsLess> {
-    using operation_category = ordering_operation;
-
-    // TODO: remove this formula.
-    static constexpr auto formula = is_less_scalar;
-};
-inline constexpr IsLess is_less;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
@@ -42,13 +39,7 @@ constexpr auto operator<(L&& l, R&& r) {
     return is_less(std::forward<L>(l), std::forward<R>(r));
 }
 
-struct IsGreater : operation_base<IsGreater> {
-    using operation_category = ordering_operation;
-
-    static constexpr auto formula = r_ < l_;
-};
-// TODO: after fixing the tests this should be simply is_greater = r_ < l_;
-inline constexpr IsGreater is_greater;
+inline constexpr auto is_greater = r_ < l_;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

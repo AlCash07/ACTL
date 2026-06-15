@@ -12,23 +12,22 @@
 
 namespace ac {
 
+struct Compare3Way : operation_base<Compare3Way> {
+    using operation_category = ordering_operation;
+};
+inline constexpr Compare3Way compare3way;
+
 struct Compare3WayScalar : operation_base<Compare3WayScalar> {
-    // using parent = Compare3Way;
+    using parent = Compare3Way;
 
     template<typename L, typename R>
     static constexpr bool requirement =
-        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
+        (is_constant_v<L> || std::is_arithmetic_v<L>) &&
+        (is_constant_v<R> || std::is_arithmetic_v<R>);
 
     static constexpr auto formula = as<int>(is_greater) - as<int>(is_less);
 };
-// AC_REGISTER_SPECIALIZATION(Compare3WayScalar)
+AC_REGISTER_SPECIALIZATION(Compare3WayScalar)
 inline constexpr Compare3WayScalar compare3way_scalar;
-
-struct Compare3Way : operation_base<Compare3Way> {
-    using operation_category = ordering_operation;
-
-    static constexpr auto formula = compare3way_scalar;
-};
-inline constexpr Compare3Way compare3way;
 
 } // namespace ac
