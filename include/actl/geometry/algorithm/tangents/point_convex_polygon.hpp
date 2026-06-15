@@ -22,9 +22,9 @@ OutIter tangents(
     OutIter output
 ) {
     *output++ =
-        extreme_vertex(policy, poly, [&p](auto const& x) { return x - p; });
+        extreme_vertex(policy, poly, [&p](auto const& t) { return t - p; });
     *output++ =
-        extreme_vertex(policy, poly, [&p](auto const& x) { return p - x; });
+        extreme_vertex(policy, poly, [&p](auto const& t) { return p - t; });
     return output;
 }
 

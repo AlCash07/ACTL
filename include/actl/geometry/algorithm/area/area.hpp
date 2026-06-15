@@ -21,8 +21,8 @@ auto area(Policy auto const& policy, L const& l, R const& r) {
 }
 
 template<typename T, typename... Ts, disable_int_if_policy<T> = 0>
-auto area(T const& x, Ts const&... xs) {
-    return area(geometry_policy, x, xs...);
+auto area(T const& t, Ts const&... ts) {
+    return area(geometry_policy, t, ts...);
 }
 
 } // namespace ac

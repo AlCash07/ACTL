@@ -11,13 +11,13 @@
 namespace ac {
 
 template<std::integral Int>
-constexpr auto to_signed(Int x) noexcept {
-    return static_cast<std::make_signed_t<Int>>(x);
+constexpr auto to_signed(Int i) noexcept {
+    return static_cast<std::make_signed_t<Int>>(i);
 }
 
 template<std::integral Int>
-constexpr auto to_unsigned(Int x) noexcept {
-    return static_cast<std::make_unsigned_t<Int>>(x);
+constexpr auto to_unsigned(Int i) noexcept {
+    return static_cast<std::make_unsigned_t<Int>>(i);
 }
 
 } // namespace ac

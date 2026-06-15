@@ -39,30 +39,30 @@ private:
     cspan<char> m_data;
 };
 
-bool write_final(Device auto& od, Format auto& fmt, float_string const& x) {
-    return write_final(od, fmt, cspan<char>{x});
+bool write_final(Device auto& od, Format auto& fmt, float_string const& s) {
+    return write_final(od, fmt, cspan<char>{s});
 }
 
 } // namespace detail
 
 template<std::floating_point Float>
-auto encode(TextFormat auto& fmt, Float x) {
+auto encode(TextFormat auto& fmt, Float f) {
     detail::float_string res;
     span<char> s;
     char* first;
     char sign{};
-    if (std::signbit(x)) {
+    if (std::signbit(f)) {
         sign = '-';
-        x = -x;
+        f = -f;
     } else {
         if (fmt.getf(flag::showpos))
             sign = '+';
     }
-    if (std::isnan(x)) {
+    if (std::isnan(f)) {
         s = res.reserve(4);
         first = s.begin() + 1;
         std::memcpy(first, fmt.getf(flag::uppercase) ? "NAN" : "nan", 3);
-    } else if (std::isinf(x)) {
+    } else if (std::isinf(f)) {
         s = res.reserve(4);
         first = s.begin() + 1;
         std::memcpy(first, fmt.getf(flag::uppercase) ? "INF" : "inf", 3);
@@ -71,9 +71,9 @@ auto encode(TextFormat auto& fmt, Float x) {
         UInt base = fmt.base;
         size_t precision = fmt.precision;
         auto base_power = binary_pow(base, precision);
-        auto integer_part = static_cast<UInt>(x);
+        auto integer_part = static_cast<UInt>(f);
         auto fractional_part =
-            static_cast<UInt>((x - integer_part) * base_power + Float{0.5});
+            static_cast<UInt>((f - integer_part) * base_power + Float{0.5});
         if (fractional_part >= base_power) {
             ++integer_part;
             fractional_part = 0;

@@ -13,48 +13,48 @@ namespace ac {
 
 template<typename T>
 void test_regular_default_constructor() {
-    T x;
-    CHECK(x == x);
+    T t;
+    CHECK(t == t);
 }
 
 template<typename T>
-void test_regular_copy(T const x, T const y) {
-    T z{x};
-    CHECK(x == z);
-    CHECK(y != z);
-    z = y;
-    CHECK(y == z);
-    CHECK(x != z);
+void test_regular_copy(T const l, T const r) {
+    T t{l};
+    CHECK(l == t);
+    CHECK(r != t);
+    t = r;
+    CHECK(r == t);
+    CHECK(l != t);
 }
 
 template<typename T>
-void test_regular_move(T x, T y) {
-    T x1{x};
-    T z{std::move(x1)};
-    CHECK(x == z);
-    CHECK(y != z);
-    z = std::move(y);
-    CHECK(y == z);
-    CHECK(x != z);
+void test_regular_move(T l, T r) {
+    T l1{l};
+    T t{std::move(l1)};
+    CHECK(l == t);
+    CHECK(r != t);
+    t = std::move(r);
+    CHECK(r == t);
+    CHECK(l != t);
 }
 
 template<typename T>
-void test_regular_swap(T x, T y) {
-    T x1{x}, y1{y};
+void test_regular_swap(T l, T r) {
+    T l1{l}, r1{r};
     using std::swap;
-    swap(x1, y1);
-    CHECK(x == y1);
-    CHECK(y == x1);
+    swap(l1, r1);
+    CHECK(l == r1);
+    CHECK(r == l1);
 }
 
 template<typename T>
-void test_regular(T x, T y) {
+void test_regular(T l, T r) {
     static_assert(std::regular<T>);
-    REQUIRE(x != y);
+    REQUIRE(l != r);
     test_regular_default_constructor<T>();
-    test_regular_copy(x, y);
-    test_regular_move(x, y);
-    test_regular_swap(x, y);
+    test_regular_copy(l, r);
+    test_regular_move(l, r);
+    test_regular_swap(l, r);
 }
 
 } // namespace ac

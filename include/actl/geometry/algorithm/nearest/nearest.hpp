@@ -19,8 +19,8 @@ auto nearest(Policy auto const& policy, L const& l, R const& r) {
 }
 
 template<typename T, typename... Ts, disable_int_if_policy<T> = 0>
-auto nearest(T&& x, Ts&&... xs) {
-    return nearest(geometry_policy, x, xs...);
+auto nearest(T&& t, Ts&&... ts) {
+    return nearest(geometry_policy, t, ts...);
 }
 
 } // namespace ac

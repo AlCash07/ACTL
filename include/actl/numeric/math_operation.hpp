@@ -24,9 +24,9 @@ namespace ac {
         static constexpr bool requirement = std::is_arithmetic_v<T>; \
                                                                      \
         template<typename T>                                         \
-        static constexpr auto evaluate(T x) {                        \
+        static constexpr auto evaluate(T t) {                        \
             using std::name;                                         \
-            return name(x);                                          \
+            return name(t);                                          \
         }                                                            \
     };                                                               \
     AC_REGISTER_SPECIALIZATION(Type##Scalar)                         \

@@ -15,10 +15,10 @@ namespace ac {
 namespace detail {
 
 template<size_t I>
-constexpr decltype(auto) adl_get(Tuple auto const& x) noexcept {
+constexpr decltype(auto) adl_get(Tuple auto const& tuple) noexcept {
     using std::get;
-    static_assert(noexcept(get<I>(x)));
-    return get<I>(x);
+    static_assert(noexcept(get<I>(tuple)));
+    return get<I>(tuple);
 }
 
 template<typename Target, typename Source, typename I = tuple_indices_t<Source>>

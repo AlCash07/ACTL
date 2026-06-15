@@ -34,9 +34,9 @@ OutIter intersect(
     if (delta_sgn < 0)
         return output;
     auto projection = dot(policy, s.center - l.begin, l.vector);
-    auto check = [&](auto const& x) {
-        if (detail::line_test(policy, l.kind(), x, vdot)) {
-            *output++ = ratio(policy, x, vdot);
+    auto check = [&](auto const& t) {
+        if (detail::line_test(policy, l.kind(), t, vdot)) {
+            *output++ = ratio(policy, t, vdot);
         }
     };
     if (delta_sgn == 0) {

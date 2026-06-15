@@ -234,7 +234,7 @@ constexpr bool degenerate(Policy auto const& policy, line<T, N, K> const& l) {
 // can be passed to line operator () to get the point.
 template<typename P>
 struct line_scalar_policy : virtual policy {
-    explicit line_scalar_policy(P const& x) : policy{x} {}
+    explicit line_scalar_policy(P const& policy) : policy{policy} {}
 
     P const& policy;
 };

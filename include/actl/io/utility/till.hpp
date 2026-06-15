@@ -13,7 +13,7 @@ namespace ac::io {
 
 template<typename T, typename P>
 struct till {
-    explicit constexpr till(T x, P pred) : value{x}, terminator{pred} {}
+    explicit constexpr till(T t, P pred) : value{t}, terminator{pred} {}
 
     T value;
     predicate<P> terminator;
@@ -23,28 +23,28 @@ template<typename T, typename P>
 till(T&&, P) -> till<T, P>;
 
 template<typename P, size_t N>
-size_t read_till(Device auto& id, till<span<char, N>, P> x) {
+size_t read_till(Device auto& id, till<span<char, N>, P> t) {
     size_t i = 0;
-    size_t const size = x.value.size();
+    size_t const size = t.value.size();
     for (; i < size; ++i) {
         auto c = id.get();
-        if (id.eof() || x.terminator(c))
+        if (id.eof() || t.terminator(c))
             break;
-        x.value[i] = c;
+        t.value[i] = c;
     }
     return i;
 }
 
 template<typename P, size_t N>
-size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x) {
+size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> t) {
     size_t i = 0;
-    size_t const size = x.value.size();
+    size_t const size = t.value.size();
     while (true) {
         auto s = id.input_buffer();
         auto end = std::min(s.end(), s.begin() + (size - i));
         auto ptr = s.begin();
-        while (ptr != end && !x.terminator(*ptr))
-            x.value[i++] = *ptr++;
+        while (ptr != end && !t.terminator(*ptr))
+            t.value[i++] = *ptr++;
         id.move(ptr - s.begin());
         if (i == size || s.empty() || ptr != end)
             break;
@@ -53,8 +53,8 @@ size_t read_till(BufferedInputDevice auto& id, till<span<char, N>, P> x) {
 }
 
 template<typename T, typename P>
-bool read_final(Device auto& id, Format auto&, till<T, P> x) {
-    read_till(id, x);
+bool read_final(Device auto& id, Format auto&, till<T, P> t) {
+    read_till(id, t);
     return true;
 }
 

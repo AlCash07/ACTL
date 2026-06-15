@@ -14,8 +14,8 @@ struct Copy : operation_base<Copy> {
     using operation_category = scalar_operation;
 
     template<typename T>
-    static constexpr T evaluate(T x) {
-        return x;
+    static constexpr T evaluate(T t) {
+        return t;
     }
 };
 inline constexpr Copy copy;

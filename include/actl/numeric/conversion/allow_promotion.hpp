@@ -29,9 +29,9 @@ struct Promotion {
     }
 
     template<Operation Op, typename... Ts>
-    static constexpr auto evaluate(Op const& op, Ts const&... xs) {
-        using CT = std::common_type_t<decltype(xs)...>;
-        return op.evaluate(eval(as<CT>(xs))...);
+    static constexpr auto evaluate(Op const& op, Ts const&... ts) {
+        using CT = std::common_type_t<decltype(ts)...>;
+        return op.evaluate(eval(as<CT>(ts))...);
     }
 };
 

@@ -22,11 +22,11 @@ void sort_by_angle(
     using ref = range_reference_t<U>;
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
-    first = std::partition(first, last, [to_point, &policy, &origin](ref x) {
+    first = std::partition(first, last, [to_point, &policy, &origin](ref t) {
         return is_equal(policy, origin, to_point(x));
     });
     auto pivot =
-        std::partition(first, last, [to_point, &policy, &origin](ref x) {
+        std::partition(first, last, [to_point, &policy, &origin](ref t) {
             return y_compare(policy, origin, to_point(x));
         });
     auto comp = [to_point, &policy](ref l, ref r) {
@@ -43,10 +43,10 @@ void sort_by_angle(Policy auto const& policy, U& points) {
     using ref = range_reference_t<U>;
     auto to_point = get_to_point(points);
     auto first = points.begin(), last = points.end();
-    first = std::partition(first, last, [to_point, &policy](ref x) {
+    first = std::partition(first, last, [to_point, &policy](ref t) {
         return degenerate(policy, to_point(x));
     });
-    auto pivot = std::partition(first, last, [to_point, &policy](ref x) {
+    auto pivot = std::partition(first, last, [to_point, &policy](ref t) {
         return y_compare(policy, range_value_t<U>{}, to_point(x));
     });
     auto comp = [to_point, &policy](ref l, ref r) {
@@ -57,8 +57,8 @@ void sort_by_angle(Policy auto const& policy, U& points) {
 }
 
 template<typename T, typename... Ts, disable_int_if_policy<T> = 0>
-auto sort_by_angle(T&& x, Ts&&... xs) {
-    return sort_by_angle(geometry_policy, x, xs...);
+auto sort_by_angle(T&& t, Ts&&... ts) {
+    return sort_by_angle(geometry_policy, t, ts...);
 }
 
 } // namespace ac

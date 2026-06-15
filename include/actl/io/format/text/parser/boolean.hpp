@@ -13,7 +13,7 @@ namespace ac::io {
 
 struct boolean_parser {
     enum class states { empty, suffix };
-    bool x;
+    bool b;
     bool const alpha;
     states state = states::empty;
     const_data_parser suffix_parser;
@@ -24,13 +24,13 @@ public:
     size_t parse(cspan<char> s) {
         if (state == states::empty) {
             if (alpha) {
-                x = s[0] == true_s[0];
+                b = s[0] == true_s[0];
                 suffix_parser =
-                    x ? const_data_parser{true_s} : const_data_parser{false_s};
+                    b ? const_data_parser{true_s} : const_data_parser{false_s};
                 state = states::suffix;
             } else {
-                x = s[0] == one_c;
-                bool ok = x || s[0] == zero_c;
+                b = s[0] == one_c;
+                bool ok = b || s[0] == zero_c;
                 if (ok)
                     state = states::suffix;
                 return ok;
@@ -44,7 +44,7 @@ public:
     }
 
     bool value() const {
-        return x;
+        return b;
     }
 };
 

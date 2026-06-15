@@ -33,18 +33,18 @@ namespace detail {
 template<typename D, typename FF, typename First, typename Second, typename T>
 struct format_resolver<D, FF, composed_format<First, Second>, T> {
     static bool write(
-        D& od, FF& full_fmt, composed_format<First, Second>& fmt, T const& x
+        D& od, FF& full_fmt, composed_format<First, Second>& fmt, T const& t
     ) {
         return write_impl(
-            od, full_fmt, fmt.second, apply_format_write(fmt.first, x)
+            od, full_fmt, fmt.second, apply_format_write(fmt.first, t)
         );
     }
 
     static bool read(
-        D& id, FF& full_fmt, composed_format<First, Second>& fmt, T& x
+        D& id, FF& full_fmt, composed_format<First, Second>& fmt, T& t
     ) {
         return read_impl(
-            id, full_fmt, fmt.second, apply_format_read(fmt.first, x)
+            id, full_fmt, fmt.second, apply_format_read(fmt.first, t)
         );
     }
 };

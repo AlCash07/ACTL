@@ -20,23 +20,25 @@ template<typename... Ts>
 batch(Ts&&...) -> batch<Ts...>;
 
 template<typename D, typename F, typename T, size_t... Is>
-bool write_final_batch(D& od, F& fmt, T const& x, std::index_sequence<Is...>) {
-    return (... && write_final(od, fmt, std::get<Is>(x)));
+bool write_final_batch(
+    D& od, F& fmt, T const& batch, std::index_sequence<Is...>
+) {
+    return (... && write_final(od, fmt, std::get<Is>(batch)));
 }
 
 template<typename D, typename F, typename... Ts>
-bool write_pre_final(D& od, F& fmt, batch<Ts...> const& x) {
-    return write_final_batch(od, fmt, x, std::index_sequence_for<Ts...>{});
+bool write_pre_final(D& od, F& fmt, batch<Ts...> const& batch) {
+    return write_final_batch(od, fmt, batch, std::index_sequence_for<Ts...>{});
 }
 
 template<typename D, typename F, typename T, size_t... Is>
-bool read_final_batch(D& id, F& fmt, T& x, std::index_sequence<Is...>) {
-    return (... && read_final(id, fmt, std::get<Is>(x)));
+bool read_final_batch(D& id, F& fmt, T& batch, std::index_sequence<Is...>) {
+    return (... && read_final(id, fmt, std::get<Is>(batch)));
 }
 
 template<typename D, typename F, typename... Ts>
-bool read_pre_final(D& id, F& fmt, batch<Ts...>& x) {
-    return read_final_batch(id, fmt, x, std::index_sequence_for<Ts...>{});
+bool read_pre_final(D& id, F& fmt, batch<Ts...>& batch) {
+    return read_final_batch(id, fmt, batch, std::index_sequence_for<Ts...>{});
 }
 
 namespace detail {
@@ -46,12 +48,12 @@ struct batch_resolver;
 
 template<typename D, typename FF, typename F, typename Batch, size_t... Is>
 struct batch_resolver<D, FF, F, Batch, std::index_sequence<Is...>> {
-    static bool write(D& od, FF& full_fmt, F& fmt, Batch const& x) {
-        return (... && write_impl(od, full_fmt, fmt, std::get<Is>(x)));
+    static bool write(D& od, FF& full_fmt, F& fmt, Batch const& batch) {
+        return (... && write_impl(od, full_fmt, fmt, std::get<Is>(batch)));
     }
 
-    static bool read(D& id, FF& full_fmt, F& fmt, Batch& x) {
-        return (... && read_impl(id, full_fmt, fmt, std::get<Is>(x)));
+    static bool read(D& id, FF& full_fmt, F& fmt, Batch& batch) {
+        return (... && read_impl(id, full_fmt, fmt, std::get<Is>(batch)));
     }
 };
 

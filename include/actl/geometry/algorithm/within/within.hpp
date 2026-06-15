@@ -12,9 +12,9 @@ namespace ac {
 
 enum class within { inside, border, outside };
 
-bool write(Device auto& od, Format auto& fmt, enum within x) {
+bool write(Device auto& od, Format auto& fmt, enum within t) {
     constexpr char const* within_name[] = {"inside", "border", "outside"};
-    return write(od, fmt, within_name[static_cast<index>(x)]);
+    return write(od, fmt, within_name[static_cast<index>(t)]);
 }
 
 template<index N, typename TL, typename R>

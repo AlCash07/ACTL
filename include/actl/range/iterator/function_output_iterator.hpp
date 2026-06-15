@@ -19,8 +19,8 @@ public:
     explicit function_output_iterator(Function const& f = {}) : m_f{f} {}
 
     template<typename T>
-    void operator=(T&& x) const {
-        m_f(std::forward<T>(x));
+    void operator=(T&& t) const {
+        m_f(std::forward<T>(t));
     }
 
     function_output_iterator const& operator*() const noexcept {

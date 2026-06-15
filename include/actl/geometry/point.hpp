@@ -31,8 +31,8 @@ public:
 
     template<typename... Ts>
         requires(... && std::is_convertible_v<Ts, T>)
-    constexpr point_base(Ts&&... xs)
-        : m_coordinates{T{std::forward<Ts>(xs)}...} {}
+    constexpr point_base(Ts&&... ts)
+        : m_coordinates{T{std::forward<Ts>(ts)}...} {}
 
     // TODO: make explicit when conversion is narrowing.
     template<typename TR>
@@ -126,12 +126,12 @@ constexpr auto apply(Operation op, Points const&... points) {
 
 template<index N, typename TL, typename TR = TL>
 constexpr auto& operator+=(point<TL, N>& l, point<TR, N> const& r) {
-    return detail::apply([](TL& l, TR const& x) { l += x; }, l, r);
+    return detail::apply([](TL& l, TR const& t) { l += t; }, l, r);
 }
 
 template<index N, typename TL, typename TR = TL>
 constexpr auto& operator-=(point<TL, N>& l, point<TR, N> const& r) {
-    return detail::apply([](TL& l, TR const& x) { l -= x; }, l, r);
+    return detail::apply([](TL& l, TR const& t) { l -= t; }, l, r);
 }
 
 template<index N, typename TL, typename TR>
@@ -184,7 +184,7 @@ constexpr auto perform(
     Mul, Policy auto const& policy, point<TL, N> const& l, TR const& factor
 ) {
     return detail::apply<N>(
-        [&policy, &factor](TL const& x) { return mul(policy, x, factor); }, l
+        [&policy, &factor](TL const& t) { return mul(policy, t, factor); }, l
     );
 }
 
@@ -193,7 +193,7 @@ constexpr auto perform(
     Mul, Policy auto const& policy, TL const& factor, point<TR, N> const& r
 ) {
     return detail::apply<N>(
-        [&policy, &factor](TR const& x) { return mul(policy, factor, x); }, r
+        [&policy, &factor](TR const& t) { return mul(policy, factor, t); }, r
     );
 }
 
@@ -203,7 +203,7 @@ constexpr auto perform(
 ) {
     AC_ASSERT(!is_equal(policy, factor, 0));
     return detail::apply<N>(
-        [&policy, &factor](TL const& x) { return div(policy, x, factor); }, l
+        [&policy, &factor](TL const& t) { return div(policy, t, factor); }, l
     );
 }
 
@@ -242,8 +242,8 @@ constexpr bool degenerate(Policy auto const& policy, point<T, N> const& p) {
 }
 
 template<typename T>
-constexpr bool degenerate(T const& x) {
-    return degenerate(default_policy, x);
+constexpr bool degenerate(T const& t) {
+    return degenerate(default_policy, t);
 }
 
 namespace detail {

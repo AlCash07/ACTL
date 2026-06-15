@@ -86,8 +86,8 @@ public:
         return m_range;
     }
 
-    bool evaluate(std::iter_reference_t<iterator> x) const {
-        return m_pred(x);
+    bool evaluate(std::iter_reference_t<iterator> t) const {
+        return m_pred(t);
     }
 
 private:

@@ -18,7 +18,7 @@ struct Fold : operation_base<Fold> {
 template<Operation Op>
 constexpr auto fold(Op&& op) {
     return Fold{}(
-        x_,
+        t_,
         std::forward<Op>(
             type_operation<range_reference, Arg<0, 1>>,
             type_operation<range_reference, Arg<0, 1>>

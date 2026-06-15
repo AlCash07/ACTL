@@ -24,7 +24,7 @@ class float_unchecked_parser {
     sign_parser<true> sign;
     UInt const base;
     size_t const max_length;
-    Float x = 0;
+    Float f = 0;
     Float power = 1;
 
     auto parse_int(cspan<char> s) {
@@ -56,7 +56,7 @@ public:
                 if (auto [p, length] = parse_int(s.subspan(i)); length == 0)
                     break;
                 else {
-                    x = static_cast<Float>(p);
+                    f = static_cast<Float>(p);
                     i += length;
                     state = states::integral;
                 }
@@ -71,7 +71,7 @@ public:
                         } else
                             return i;
                     }
-                    x = x * binary_pow(base, length) + p;
+                    f = f * binary_pow(base, length) + p;
                     i += length;
                 }
             case states::point:
@@ -80,7 +80,7 @@ public:
                     if (length == 0)
                         break;
                     power /= binary_pow(base, length);
-                    x += p * power;
+                    f += p * power;
                     i += length;
                 }
         }
@@ -92,7 +92,7 @@ public:
     }
 
     Float value() const {
-        return sign.value(x);
+        return sign.value(f);
     }
 };
 

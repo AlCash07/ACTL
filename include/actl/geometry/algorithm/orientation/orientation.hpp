@@ -16,14 +16,14 @@ enum class orientation2d {
     right = 1      // clockwise
 };
 
-orientation2d operator-(orientation2d x) {
-    return static_cast<orientation2d>(-static_cast<int>(x));
+orientation2d operator-(orientation2d o) {
+    return static_cast<orientation2d>(-static_cast<int>(o));
 }
 
 enum class orientation { collinear = 0, non_collinear = 1 };
 
-enum orientation operator-(enum orientation x) {
-    return x;
+enum orientation operator-(enum orientation o) {
+    return o;
 }
 
 template<typename L, typename R>
@@ -33,23 +33,23 @@ auto orientation(Policy auto const& policy, L const& l, R const& r) {
 }
 
 template<typename T, typename... Ts, disable_int_if_policy<T> = 0>
-auto orientation(T const& x, Ts const&... xs) {
-    return orientation(geometry_policy, x, xs...);
+auto orientation(T const& t, Ts const&... ts) {
+    return orientation(geometry_policy, t, ts...);
 }
 
 template<typename... Ts>
-bool left_turn(Ts const&... xs) {
-    return orientation(xs...) == orientation2d::left;
+bool left_turn(Ts const&... ts) {
+    return orientation(ts...) == orientation2d::left;
 }
 
 template<typename... Ts>
-bool right_turn(Ts const&... xs) {
-    return orientation(xs...) == orientation2d::right;
+bool right_turn(Ts const&... ts) {
+    return orientation(ts...) == orientation2d::right;
 }
 
 template<typename... Ts>
-bool collinear(Ts const&... xs) {
-    return static_cast<int>(orientation(xs...)) == 0;
+bool collinear(Ts const&... ts) {
+    return static_cast<int>(orientation(ts...)) == 0;
 }
 
 } // namespace ac

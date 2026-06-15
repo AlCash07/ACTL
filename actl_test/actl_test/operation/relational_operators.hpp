@@ -11,13 +11,13 @@
 namespace ac {
 
 template<typename T>
-void test_relational_operators_for_equal_values(T const& x, T const& y) {
-    REQUIRE(x == y);
-    CHECK_FALSE(x != y);
-    CHECK_FALSE(x < y);
-    CHECK(x <= y);
-    CHECK_FALSE(x > y);
-    CHECK(x >= y);
+void test_relational_operators_for_equal_values(T const& l, T const& r) {
+    REQUIRE(l == r);
+    CHECK_FALSE(l != r);
+    CHECK_FALSE(l < r);
+    CHECK(l <= r);
+    CHECK_FALSE(l > r);
+    CHECK(l >= r);
 }
 
 template<typename T>
@@ -33,13 +33,13 @@ void test_relational_operators_for_different_values(
 }
 
 template<typename T>
-void test_relational_operators_noexcept(T const& x) {
-    static_assert(noexcept(x == x));
-    static_assert(noexcept(x != x));
-    static_assert(noexcept(x < x));
-    static_assert(noexcept(x <= x));
-    static_assert(noexcept(x > x));
-    static_assert(noexcept(x >= x));
+void test_relational_operators_noexcept(T const& t) {
+    static_assert(noexcept(t == t));
+    static_assert(noexcept(t != t));
+    static_assert(noexcept(t < t));
+    static_assert(noexcept(t <= t));
+    static_assert(noexcept(t > t));
+    static_assert(noexcept(t >= t));
 }
 
 } // namespace ac

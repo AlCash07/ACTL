@@ -38,8 +38,8 @@ inline constexpr bool is_multi_point_v =
 
 template<typename T>
 struct identity_functor {
-    T operator()(T x) const {
-        return x;
+    T operator()(T t) const {
+        return t;
     }
 };
 
@@ -78,8 +78,8 @@ struct indexed_multi_point {
     }
 
     friend auto get_to_point(indexed_multi_point& imp) {
-        return [&p = imp.points](index x) {
-            return p[static_cast<range_size_t<Points>>(x)];
+        return [&p = imp.points](index t) {
+            return p[static_cast<range_size_t<Points>>(t)];
         };
     }
 };

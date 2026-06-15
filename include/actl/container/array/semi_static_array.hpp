@@ -46,8 +46,8 @@ public:
 
     constexpr semi_static_array() noexcept = default;
 
-    constexpr semi_static_array(extent_holder_t<T, Values>... xs) noexcept
-        : semi_static_array{indices, xs...} {}
+    constexpr semi_static_array(extent_holder_t<T, Values>... ts) noexcept
+        : semi_static_array{indices, ts...} {}
 
     // The first parameter is needed because of the bug in std::is_trivial impl.
     template<typename T0, typename... Ts>
@@ -55,8 +55,8 @@ public:
             1 + sizeof...(Ts) == size_dyn_v && std::is_convertible_v<T0, T> &&
             (... && std::is_convertible_v<Ts, T>)
         )
-    constexpr semi_static_array(T0 x0, Ts... xs) noexcept
-        : dynamic_values{static_cast<T>(x0), static_cast<T>(xs)...} {}
+    constexpr semi_static_array(T0 t0, Ts... ts) noexcept
+        : dynamic_values{static_cast<T>(t0), static_cast<T>(ts)...} {}
 
     constexpr T operator[](size_t i) const noexcept(AC_ASSERT_IS_NOEXCEPT()) {
         AC_ASSERT(i < size());
@@ -84,8 +84,8 @@ public:
 
     // Structured binding support.
     template<size_t I>
-    friend constexpr auto get(semi_static_array const& x) noexcept {
-        return x[size_constant<I>{}];
+    friend constexpr auto get(semi_static_array const& array) noexcept {
+        return array[size_constant<I>{}];
     }
 
     friend constexpr void swap(
@@ -122,17 +122,17 @@ private:
     }
 
     template<size_t I>
-    constexpr void assign_at([[maybe_unused]] T x) noexcept {
+    constexpr void assign_at([[maybe_unused]] T t) noexcept {
         if constexpr (static_values[I] == dynamic_extent<T>)
-            dynamic_values[dynamic_index<I>] = x;
+            dynamic_values[dynamic_index<I>] = t;
     }
 
     template<size_t... Is>
     explicit constexpr semi_static_array(
-        std::index_sequence<Is...>, extent_holder_t<T, Values>... xs
+        std::index_sequence<Is...>, extent_holder_t<T, Values>... ts
     ) noexcept
         : dynamic_values{} {
-        (..., assign_at<Is>(xs));
+        (..., assign_at<Is>(ts));
     }
 };
 

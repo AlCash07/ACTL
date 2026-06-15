@@ -14,13 +14,13 @@ template<size_t I, size_t N>
 struct Arg {
     template<typename T, typename... Ts>
     constexpr decltype(auto) operator()(
-        [[maybe_unused]] T&& x, [[maybe_unused]] Ts&&... xs
+        [[maybe_unused]] T&& t, [[maybe_unused]] Ts&&... ts
     ) const {
         static_assert(1 + sizeof...(Ts) == N);
         if constexpr (I == 0)
-            return std::forward<T>(x);
+            return std::forward<T>(t);
         else
-            return Arg<I - 1, N - 1>{}(std::forward<Ts>(xs)...);
+            return Arg<I - 1, N - 1>{}(std::forward<Ts>(ts)...);
     }
 
     struct enable_operators;
@@ -28,7 +28,7 @@ struct Arg {
 template<size_t I, size_t N>
 inline constexpr Arg<I, N> arg;
 
-inline constexpr Arg<0, 1> x_;
+inline constexpr Arg<0, 1> t_;
 inline constexpr Arg<0, 2> l_;
 inline constexpr Arg<1, 2> r_;
 

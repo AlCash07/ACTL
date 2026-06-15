@@ -15,9 +15,9 @@ struct SquareRoot : operation_base<SquareRoot> {
     using operation_category = exponential_operation;
 
     template<typename T>
-    static constexpr auto evaluate(T x) {
+    static constexpr auto evaluate(T t) {
         using std::sqrt;
-        return sqrt(x);
+        return sqrt(t);
     }
 };
 inline constexpr SquareRoot square_root;

@@ -34,15 +34,15 @@ public:
     }
 
     template<typename T>
-    auto value(T x) const {
+    auto value(T t) const {
         if constexpr (std::is_floating_point_v<T>) {
-            return negate ? -x : x;
+            return negate ? -t : t;
         } else {
             using Int = std::make_signed_t<T>;
             if constexpr (Signed)
-                return negate ? ~static_cast<Int>(x - 1) : static_cast<Int>(x);
+                return negate ? ~static_cast<Int>(t - 1) : static_cast<Int>(t);
             else
-                return x;
+                return t;
         }
     }
 };

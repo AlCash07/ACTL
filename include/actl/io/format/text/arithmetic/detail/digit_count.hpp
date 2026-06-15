@@ -11,8 +11,8 @@
 namespace ac::io::detail {
 
 template<typename T, typename U>
-constexpr size_t digit_count(T x, U base) {
-    return x == 0 ? 0 : 1 + digit_count(x / base, base);
+constexpr size_t digit_count(T t, U base) {
+    return t == 0 ? 0 : 1 + digit_count(t / base, base);
 }
 
 } // namespace ac::io::detail

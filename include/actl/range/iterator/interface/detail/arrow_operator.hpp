@@ -13,8 +13,8 @@ namespace ac::detail {
 
 // "real" references
 template<typename T>
-constexpr T* arrow_operator(T& x) noexcept {
-    return std::addressof(x);
+constexpr T* arrow_operator(T& t) noexcept {
+    return std::addressof(t);
 }
 
 // output iterator
@@ -25,8 +25,8 @@ template<typename T>
 class arrow_proxy {
 public:
     template<typename Arg>
-    explicit arrow_proxy(Arg&& x) noexcept(noexcept(T{std::forward<Arg>(x)}))
-        : m_value{std::forward<Arg>(x)} {}
+    explicit arrow_proxy(Arg&& t) noexcept(noexcept(T{std::forward<Arg>(t)}))
+        : m_value{std::forward<Arg>(t)} {}
 
     T* operator->() noexcept {
         return std::addressof(m_value);

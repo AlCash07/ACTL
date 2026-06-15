@@ -22,8 +22,8 @@ public:
         data_[Size] = static_cast<char>(size);
     }
 
-    void set_start(char const* x) {
-        set_size(static_cast<size_t>(data_ + Size - x));
+    void set_start(char const* s) {
+        set_size(static_cast<size_t>(data_ + Size - s));
     }
 
     span<char, Size> available() {
@@ -40,8 +40,8 @@ private:
 };
 
 template<uint8_t Size>
-bool write_final(Device auto& od, Format auto& fmt, int_string<Size> const& x) {
-    return write_final(od, fmt, cspan<char>{x});
+bool write_final(Device auto& od, Format auto& fmt, int_string<Size> const& s) {
+    return write_final(od, fmt, cspan<char>{s});
 }
 
 } // namespace detail
@@ -51,7 +51,7 @@ template<typename Int>
         std::integral<Int> && !std::same_as<Int, char> &&
         !std::same_as<Int, bool>
     )
-auto encode(TextFormat auto& fmt, Int x) {
+auto encode(TextFormat auto& fmt, Int i) {
     using UInt = std::make_unsigned_t<Int>;
     UInt base = fmt.base;
     if (base == 0)
@@ -61,17 +61,17 @@ auto encode(TextFormat auto& fmt, Int x) {
         s;
     auto last = s.available().end();
     if constexpr (std::is_signed_v<Int>) {
-        if (x < 0) {
+        if (i < 0) {
             last =
-                detail::uitoa(last, fmt, ~static_cast<UInt>(x) + UInt{1}, base);
+                detail::uitoa(last, fmt, ~static_cast<UInt>(i) + UInt{1}, base);
             *--last = '-';
         } else {
-            last = detail::uitoa(last, fmt, static_cast<UInt>(x), base);
+            last = detail::uitoa(last, fmt, static_cast<UInt>(i), base);
             if (fmt.getf(flag::showpos))
                 *--last = '+';
         }
     } else {
-        last = detail::uitoa(last, fmt, x, base);
+        last = detail::uitoa(last, fmt, i, base);
     }
     s.set_start(last);
     return s;

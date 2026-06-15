@@ -20,13 +20,13 @@ size(T&&) -> size<T>;
 
 template<typename T>
 bool write_final(Device auto& od, Format auto& fmt, size<T> size) {
-    nested_scope_guard g{fmt};
+    nested_scope_guard guard{fmt};
     return write(od, fmt, size.value);
 }
 
 template<typename T>
 bool read_final(Device auto& id, Format auto& fmt, size<T&> size) {
-    nested_scope_guard g{fmt};
+    nested_scope_guard guard{fmt};
     return read(id, fmt, size.value);
 }
 

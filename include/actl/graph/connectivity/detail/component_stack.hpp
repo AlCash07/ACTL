@@ -24,16 +24,16 @@ public:
 
     explicit component_stack(Map map) : m_map{map} {}
 
-    void push(T x) {
-        m_stack.push(x);
+    void push(T t) {
+        m_stack.push(t);
     }
 
     void pop(T last) {
         while (true) {
-            T x = m_stack.top();
+            T t = m_stack.top();
             m_stack.pop();
-            put(m_map, x, m_n);
-            if (x == last)
+            put(m_map, t, m_n);
+            if (t == last)
                 break;
         }
         ++m_n;
@@ -42,10 +42,10 @@ public:
     template<typename P>
     void pop_while(P pred) {
         while (!m_stack.empty()) {
-            T& x = m_stack.top();
-            if (!pred(x))
+            T& t = m_stack.top();
+            if (!pred(t))
                 break;
-            put(m_map, x, m_n);
+            put(m_map, t, m_n);
             m_stack.pop();
         }
         ++m_n;

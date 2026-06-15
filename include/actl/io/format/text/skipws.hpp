@@ -18,8 +18,8 @@ struct skipws {
 
 template<typename T>
     requires(std::is_arithmetic_v<T> || is_string_v<T>)
-auto encode(skipws&, T& x) {
-    return batch{ws, x};
+auto encode(skipws&, T& t) {
+    return batch{ws, t};
 }
 
 } // namespace ac::io

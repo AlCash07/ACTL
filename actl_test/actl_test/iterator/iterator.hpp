@@ -107,8 +107,8 @@ void test_random_access_iterator(Iterator i, Iterator j) {
     CHECK((init_i + n) == (i += n));
     i = init_i;
     CHECK((i + n) == (n + i));
-    for (std::iter_difference_t<Iterator> x = 0; x <= n && x < 8; ++x)
-        CHECK((i + n) == ((i + x) + (n - x)));
+    for (std::iter_difference_t<Iterator> t = 0; t <= n && t < 8; ++t)
+        CHECK((i + n) == ((i + t) + (n - t)));
     CHECK(i + 0 == i);
     Iterator init_j = j;
     CHECK(i + (n - 1) == --j);

@@ -19,12 +19,12 @@ public:
     explicit constexpr base_t() = default;
 
     template<typename T>
-    explicit constexpr base_t(T x) : value{static_cast<uint8_t>(x)} {
-        AC_ASSERT(x == 0 || 1 < x && x <= 36);
+    explicit constexpr base_t(T t) : value{static_cast<uint8_t>(t)} {
+        AC_ASSERT(t == 0 || 1 < t && t <= 36);
     }
 
-    base_t& operator=(size_t x) {
-        return *this = base_t{x};
+    base_t& operator=(size_t t) {
+        return *this = base_t{t};
     }
 
     constexpr operator uint8_t() const {

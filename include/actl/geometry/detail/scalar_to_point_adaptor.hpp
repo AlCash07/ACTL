@@ -22,8 +22,8 @@ public:
         default;
 
     template<typename T>
-    void operator=(T const& x) {
-        *m_iter = (*m_line)(x);
+    void operator=(T const& t) {
+        *m_iter = (*m_line)(t);
     }
 
     scalar_to_point_adaptor& operator*() {

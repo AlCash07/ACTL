@@ -13,7 +13,7 @@ namespace ac::io {
 
 template<typename UInt>
 class uint_unchecked_parser {
-    UInt x = 0;
+    UInt ui = 0;
     UInt base;
 
 public:
@@ -26,7 +26,7 @@ public:
             UInt d = to_digit<UInt, Kind>(s[i]);
             if (!is_digit_in_base(d, base))
                 break;
-            x = x * base + d;
+            ui = ui * base + d;
         }
         return i;
     }
@@ -40,7 +40,7 @@ public:
     }
 
     UInt value() const {
-        return x;
+        return ui;
     }
 };
 

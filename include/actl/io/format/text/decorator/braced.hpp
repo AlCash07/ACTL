@@ -30,8 +30,8 @@ auto encode(braced, SC const& cont) {
 
 template<typename T>
     requires(Tuple<T> || IO_Tuple<T>)
-auto encode(braced, T const& x) {
-    return batch{'(', x, ')'};
+auto encode(braced, T const& tuple) {
+    return batch{'(', tuple, ')'};
 }
 
 } // namespace ac::io

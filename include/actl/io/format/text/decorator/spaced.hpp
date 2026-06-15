@@ -43,29 +43,29 @@ template<typename Space, typename Char, size_t N>
 spaced(Space, Char const (&)[N]) -> spaced<Space, std::basic_string_view<Char>>;
 
 template<typename T>
-auto as_cspan(T const& x) {
+auto as_cspan(T const& t) {
     if constexpr (ContiguousRange<T>) {
-        return span<range_value_t<T> const>{x};
+        return span<range_value_t<T> const>{t};
     } else {
-        return span{&x, 1};
+        return span{&t, 1};
     }
 }
 
 template<typename S, typename C, typename T>
-auto encode(spaced<S, C>& fmt, T& x) {
+auto encode(spaced<S, C>& fmt, T& t) {
     using Res = batch<decltype(as_cspan(fmt.space)), T&>;
     if (fmt.separate) {
-        return Res{as_cspan(fmt.space), x};
+        return Res{as_cspan(fmt.space), t};
     } else {
         fmt.separate = true;
-        return Res{{}, x};
+        return Res{{}, t};
     }
 }
 
 template<typename S, typename C, typename T>
-decltype(auto) encode(spaced<S, C>& fmt, raw<T> const& x) {
+decltype(auto) encode(spaced<S, C>& fmt, raw<T> const& t) {
     fmt.separate = false;
-    return x;
+    return t;
 }
 
 template<typename S, typename C>

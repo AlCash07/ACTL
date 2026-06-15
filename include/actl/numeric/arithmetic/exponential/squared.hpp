@@ -14,7 +14,7 @@ namespace ac {
 struct Squared : operation_base<Squared> {
     using operation_category = exponential_operation;
 
-    static constexpr auto formula = x_ * x_;
+    static constexpr auto formula = t_ * t_;
 };
 inline constexpr Squared squared;
 

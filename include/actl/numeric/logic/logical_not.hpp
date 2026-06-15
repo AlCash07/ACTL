@@ -17,8 +17,8 @@ inline constexpr LogicalNot logical_not;
 
 template<typename T>
     requires EnableOperators<T>
-constexpr auto operator!(T&& x) {
-    return logical_not(std::forward<T>(x));
+constexpr auto operator!(T&& t) {
+    return logical_not(std::forward<T>(t));
 }
 
 struct LogicalNotScalar : operation_base<LogicalNotScalar> {
@@ -27,8 +27,8 @@ struct LogicalNotScalar : operation_base<LogicalNotScalar> {
     template<typename T>
     static constexpr bool requirement = std::is_arithmetic_v<T>;
 
-    static constexpr auto evaluate(std::same_as<bool> auto x) {
-        return !x;
+    static constexpr auto evaluate(std::same_as<bool> auto b) {
+        return !b;
     }
 };
 AC_REGISTER_SPECIALIZATION(LogicalNotScalar)

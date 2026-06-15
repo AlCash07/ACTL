@@ -17,14 +17,14 @@ inline constexpr char zero_c = '0';
 inline constexpr char one_c = '1';
 
 // We don't simply write bool, because that would allow implicit conversions.
-cspan<char> encode(TextFormat auto& fmt, std::same_as<bool> auto x) {
+cspan<char> encode(TextFormat auto& fmt, std::same_as<bool> auto b) {
     if (fmt.getf(flag::boolalpha))
-        if (x)
+        if (b)
             return true_s;
         else
             return false_s;
     else
-        return {x ? &one_c : &zero_c, 1};
+        return {b ? &one_c : &zero_c, 1};
 }
 
 } // namespace ac::io

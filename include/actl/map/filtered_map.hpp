@@ -14,8 +14,8 @@ namespace ac {
 
 struct to_bool {
     template<typename T>
-    constexpr bool operator()(T const& x) const {
-        return static_cast<bool>(x);
+    constexpr bool operator()(T const& t) const {
+        return static_cast<bool>(t);
     }
 };
 
@@ -24,8 +24,8 @@ struct test_second {
     AC_NO_UNIQUE_ADDRESS Pred predicate;
 
     template<typename Pair>
-    constexpr bool operator()(Pair const& x) const {
-        return predicate(x.second);
+    constexpr bool operator()(Pair const& pair) const {
+        return predicate(pair.second);
     }
 };
 
@@ -35,9 +35,9 @@ template<typename Map, typename Predicate = to_bool>
 class filtered_map {
 public:
     template<typename MapT, typename... PredArgs>
-    explicit constexpr filtered_map(MapT&& map, PredArgs&&... xs)
+    explicit constexpr filtered_map(MapT&& map, PredArgs&&... args)
         : m_map{std::forward<MapT>(map)}
-        , m_pred{std::forward<PredArgs>(xs)...} {}
+        , m_pred{std::forward<PredArgs>(args)...} {}
 
     operator Map&() {
         return m_map;

@@ -15,8 +15,8 @@ struct As : operation_base<As<Target>> {
     using operation_category = scalar_operation;
 
     template<typename T>
-    static constexpr Target evaluate(T x) {
-        return static_cast<Target>(x);
+    static constexpr Target evaluate(T t) {
+        return static_cast<Target>(t);
     }
 };
 template<typename T>

@@ -19,70 +19,70 @@
 namespace ac::io {
 
 template<typename Pair>
-decltype(auto) key_representation(Pair& x) {
+decltype(auto) key_representation(Pair& pair) {
     if constexpr (std::is_const_v<Pair>)
-        return x.first;
+        return pair.first;
     else
         // const_cast is used to read std::map<Key, Value>::value_type
         // which is std::pair<Key const, Value>.
-        return const_cast<typename Pair::first_type&>(x.first);
+        return const_cast<typename Pair::first_type&>(pair.first);
 }
 
 template<typename Range, typename T>
-decltype(auto) element_representation(T& x) {
+decltype(auto) element_representation(T& pair) {
     if constexpr (PairAssociativeRange<Range>)
-        return batch{key_representation(x), colon{}, x.second};
+        return batch{key_representation(pair), colon{}, pair.second};
     else
-        return x;
+        return pair;
 }
 
 template<Range R>
-bool write_final(Device auto& od, Format auto& fmt, R const& x) {
-    nested_scope_guard g{fmt};
+bool write_final(Device auto& od, Format auto& fmt, R const& range) {
+    nested_scope_guard guard{fmt};
     if constexpr (Container<R> && static_size_v<R> == dynamic_size)
-        if (!write(od, fmt, size{x.size()}))
+        if (!write(od, fmt, size{range.size()}))
             return false;
-    for (auto const& value : x)
-        if (!write(od, fmt, element_representation<R>(value)))
+    for (auto const& element : range)
+        if (!write(od, fmt, element_representation<R>(element)))
             return false;
     return true;
 }
 
-bool read_range(Device auto& id, Format auto& fmt, Range auto& x) {
-    for (auto& value : x) {
-        if (!read(id, fmt, value))
+bool read_range(Device auto& id, Format auto& fmt, Range auto& range) {
+    for (auto& element : range) {
+        if (!read(id, fmt, element))
             return false;
     }
     return true;
 }
 
 template<typename C>
-bool read_container(Device auto& id, Format auto& fmt, C& x) {
-    decltype(x.size()) size{};
+bool read_container(Device auto& id, Format auto& fmt, C& cont) {
+    decltype(cont.size()) size{};
     if (!read(id, fmt, io::size{size}))
         return false;
     if constexpr (!RandomAccessRange<C>) {
         for (; size > 0; --size) {
-            range_value_t<C> value;
-            if (!read(id, fmt, element_representation<C>(value)))
+            range_value_t<C> element;
+            if (!read(id, fmt, element_representation<C>(element)))
                 return false;
-            emplace(x, std::move(value));
+            emplace(cont, std::move(element));
         }
         return true;
     } else {
-        x.resize(size);
-        return read_range(id, fmt, x);
+        cont.resize(size);
+        return read_range(id, fmt, cont);
     }
 }
 
 template<Range R>
     requires(!std::is_const_v<range_value_t<R>>)
-bool read_final(Device auto& id, Format auto& fmt, R& x) {
-    nested_scope_guard g{fmt};
+bool read_final(Device auto& id, Format auto& fmt, R& range) {
+    nested_scope_guard guard{fmt};
     if constexpr (Container<R> && static_size_v<R> == dynamic_size)
-        return read_container(id, fmt, x);
+        return read_container(id, fmt, range);
     else
-        return read_range(id, fmt, x);
+        return read_range(id, fmt, range);
 }
 
 } // namespace ac::io

@@ -19,19 +19,19 @@ struct Common : operation_base<Common> {
     static constexpr bool is_commutative = true;
 
     template<typename T>
-    static constexpr T evaluate(T x) {
-        return x;
+    static constexpr T evaluate(T t) {
+        return t;
     }
 
     template<typename T>
-    static constexpr T evaluate(T x, T y) {
-        AC_ASSERT(x == y);
-        return x;
+    static constexpr T evaluate(T l, T r) {
+        AC_ASSERT(l == r);
+        return l;
     }
 
     template<typename T0, typename T1, typename T2, typename... Ts>
-    static constexpr auto evaluate(T0 x0, T1 x1, T2 x2, Ts... xs) {
-        return evaluate(evaluate(x0, x1), x2, xs...);
+    static constexpr auto evaluate(T0 t0, T1 t1, T2 t2, Ts... ts) {
+        return evaluate(evaluate(t0, t1), t2, ts...);
     }
 };
 inline constexpr Common common;

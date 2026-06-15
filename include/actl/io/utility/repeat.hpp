@@ -21,30 +21,30 @@ struct repeat {
 };
 
 template<Device Dev, typename Char>
-bool write_final(Dev& od, Format auto&, repeat<Char> x) {
-    for (; 0 < x.count; --x.count)
-        od.write(static_cast<char_t<Dev>>(x.c));
+bool write_final(Dev& od, Format auto&, repeat<Char> rep) {
+    for (; 0 < rep.count; --rep.count)
+        od.write(static_cast<char_t<Dev>>(rep.c));
     return true;
 }
 
 template<BufferedOutputDevice Dev, typename Char>
-bool write_final(Dev& od, Format auto&, repeat<Char> x) {
+bool write_final(Dev& od, Format auto&, repeat<Char> rep) {
     auto s = od.output_buffer();
-    if (x.count <= s.size()) {
-        std::fill_n(s.data(), x.count, x.c);
-        od.move(static_cast<index>(x.count));
+    if (rep.count <= s.size()) {
+        std::fill_n(s.data(), rep.count, rep.c);
+        od.move(static_cast<index>(rep.count));
     } else {
-        std::fill_n(s.data(), s.size(), x.c);
+        std::fill_n(s.data(), s.size(), rep.c);
         od.move(static_cast<index>(s.size()));
-        x.count -= s.size();
+        rep.count -= s.size();
         s = od.output_buffer();
-        std::fill_n(s.data(), std::min(x.count, s.size()), x.c);
+        std::fill_n(s.data(), std::min(rep.count, s.size()), rep.c);
         // Here we assume that s references device buffer and does not
         // change.
-        for (size_t n = x.count / s.size(); n > 0; --n) {
+        for (size_t n = rep.count / s.size(); n > 0; --n) {
             od.move(static_cast<index>(s.size()));
         }
-        od.move(static_cast<index>(x.count % s.size()));
+        od.move(static_cast<index>(rep.count % s.size()));
     }
     return true;
 }

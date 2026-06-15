@@ -50,15 +50,15 @@ constexpr std::pair<size_t, size_t> adjustment(Format const& fmt, size_t size) {
 
 template<typename Char, typename T>
     requires std::is_constructible_v<cspan<Char>, T>
-auto encode(adjusted<Char> const& fmt, T&& x) {
-    auto [l, r] = adjustment(fmt, cspan<Char>{x}.size());
-    return batch{repeat{fmt.fill, l}, std::forward<T>(x), repeat{fmt.fill, r}};
+auto encode(adjusted<Char> const& fmt, T&& t) {
+    auto [l, r] = adjustment(fmt, cspan<Char>{t}.size());
+    return batch{repeat{fmt.fill, l}, std::forward<T>(t), repeat{fmt.fill, r}};
 }
 
 template<typename Char>
-auto encode(adjusted<Char> const& fmt, Char x) {
+auto encode(adjusted<Char> const& fmt, Char c) {
     auto [l, r] = adjustment(fmt, 1);
-    return batch{repeat{fmt.fill, l}, std::move(x), repeat{fmt.fill, r}};
+    return batch{repeat{fmt.fill, l}, std::move(c), repeat{fmt.fill, r}};
 }
 
 } // namespace ac::io

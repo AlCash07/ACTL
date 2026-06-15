@@ -13,10 +13,10 @@ class precision_t {
 public:
     explicit constexpr precision_t() = default;
 
-    explicit constexpr precision_t(size_t x) : value{x} {}
+    explicit constexpr precision_t(size_t t) : value{t} {}
 
-    precision_t& operator=(size_t x) {
-        return *this = precision_t{x};
+    precision_t& operator=(size_t t) {
+        return *this = precision_t{t};
     }
 
     constexpr operator size_t() const {

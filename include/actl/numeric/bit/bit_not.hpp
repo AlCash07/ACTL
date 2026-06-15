@@ -17,8 +17,8 @@ inline constexpr BitNot bit_not;
 
 template<typename T>
     requires EnableOperators<T>
-constexpr auto operator~(T&& x) {
-    return bit_not(std::forward<T>(x));
+constexpr auto operator~(T&& t) {
+    return bit_not(std::forward<T>(t));
 }
 
 struct BitNotScalar : operation_base<BitNotScalar> {
@@ -27,8 +27,8 @@ struct BitNotScalar : operation_base<BitNotScalar> {
     template<typename T>
     static constexpr bool requirement = std::is_arithmetic_v<T>;
 
-    static constexpr auto evaluate(std::integral auto x) {
-        return ~x;
+    static constexpr auto evaluate(std::integral auto i) {
+        return ~i;
     }
 };
 AC_REGISTER_SPECIALIZATION(BitNotScalar)

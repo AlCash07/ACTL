@@ -17,7 +17,7 @@ namespace ac {
 /// can be parallel).
 template<typename P>
 struct general_position_policy {
-    explicit general_position_policy(P const& x) : policy{x} {}
+    explicit general_position_policy(P const& policy) : policy{policy} {}
 
     P const& policy;
 };

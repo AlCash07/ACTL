@@ -15,7 +15,7 @@ namespace ac {
 
 template<typename P>
 struct andrew_monotone_chain_policy {
-    andrew_monotone_chain_policy(P const& x) : policy{x} {}
+    andrew_monotone_chain_policy(P const& policy) : policy{policy} {}
 
     P const& policy;
 };

@@ -15,23 +15,23 @@ template<typename T>
 struct raw<inout<T>> : raw<T> {};
 
 template<typename T>
-constexpr T const& remove_inout(inout<T>& x) {
-    return *x;
+constexpr T const& remove_inout(inout<T>& t) {
+    return *t;
 }
 
 template<typename T>
-constexpr T const& remove_inout(T const& x) {
-    return x;
+constexpr T const& remove_inout(T const& t) {
+    return t;
 }
 
 template<typename T, typename... Ts>
-constexpr auto& find_target(T&, Ts&... xs) {
-    return find_target(xs...);
+constexpr auto& find_target(T&, Ts&... ts) {
+    return find_target(ts...);
 }
 
 template<typename T, typename... Ts>
-constexpr T& find_target(inout<T>& x, Ts&...) {
-    return *x;
+constexpr T& find_target(inout<T>& t, Ts&...) {
+    return *t;
 }
 
 } // namespace ac

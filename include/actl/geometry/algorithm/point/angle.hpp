@@ -35,8 +35,8 @@ auto angle(
 }
 
 template<typename T, typename... Ts, disable_int_if_policy<T> = 0>
-auto angle(T const& x, Ts const&... xs) {
-    return angle(geometry_policy, x, xs...);
+auto angle(T const& t, Ts const&... ts) {
+    return angle(geometry_policy, t, ts...);
 }
 
 } // namespace ac

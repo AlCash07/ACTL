@@ -19,8 +19,8 @@ template<typename T>
 raw(T) -> raw<T>;
 
 template<typename T>
-bool write_final(Device auto& od, Format auto& fmt, raw<T> const& x) {
-    return write_final(od, fmt, x.value);
+bool write_final(Device auto& od, Format auto& fmt, raw<T> const& t) {
+    return write_final(od, fmt, t.value);
 }
 
 } // namespace ac::io

@@ -47,11 +47,11 @@ template<size_t... Is>
 inline constexpr size_t static_product_v = (1 * ... * Is);
 
 template<typename Int>
-size_t compute_product(cspan<Int> x) {
-    size_t res = 1;
-    for (auto v : x)
-        res *= v;
-    return res;
+size_t compute_product(cspan<Int> array) {
+    size_t result = 1;
+    for (auto element : array)
+        result *= element;
+    return result;
 }
 
 /* NDArray container class, supports array and std::unique_ptr as data. */
@@ -155,8 +155,8 @@ private:
     ) {
         AC_ASSERT(il.size() <= static_cast<size_t>(dims[I]));
         if constexpr (I + 1 < N) {
-            for (auto const& x : il) {
-                T* end = initialize<I + 1>(ptr, x, dims, strides);
+            for (auto const& element : il) {
+                T* end = initialize<I + 1>(ptr, element, dims, strides);
                 ptr += strides[I];
                 std::fill(end, ptr, T{});
             }

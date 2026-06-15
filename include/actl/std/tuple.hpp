@@ -12,13 +12,13 @@
 namespace ac {
 
 template<typename T, size_t... Is>
-constexpr size_t hash_tuple(T const& x, std::index_sequence<Is...>) {
-    return hash_value(std::get<Is>(x)...);
+constexpr size_t hash_tuple(T const& tuple, std::index_sequence<Is...>) {
+    return hash_value(std::get<Is>(tuple)...);
 }
 
 template<typename... Ts>
-constexpr size_t hash_value(std::tuple<Ts...> const& x) {
-    return hash_tuple(x, std::index_sequence_for<Ts...>{});
+constexpr size_t hash_value(std::tuple<Ts...> const& tuple) {
+    return hash_tuple(tuple, std::index_sequence_for<Ts...>{});
 }
 
 } // namespace ac

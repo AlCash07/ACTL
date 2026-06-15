@@ -34,8 +34,8 @@ namespace ac {
 ///   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 template<typename T>
     requires(!is_expression_v<T>)
-constexpr decltype(auto) eval(T&& x) {
-    return std::forward<T>(x);
+constexpr decltype(auto) eval(T&& t) {
+    return std::forward<T>(t);
 }
 
 template<typename T>

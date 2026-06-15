@@ -11,27 +11,27 @@
 namespace ac::io::detail {
 
 template<bool ShowBase = true, typename Char, typename UInt>
-Char* uitoa(Char* last, TextFormat auto& fmt, UInt x, UInt base) {
+Char* uitoa(Char* last, TextFormat auto& fmt, UInt ui, UInt base) {
     if (base <= 10) {
         bool show_base =
-            ShowBase && fmt.getf(flag::showbase) && x != 0 && base == 8;
+            ShowBase && fmt.getf(flag::showbase) && ui != 0 && base == 8;
         do {
-            auto digit = x % base;
-            x /= base;
+            auto digit = ui % base;
+            ui /= base;
             *--last = static_cast<Char>('0' + digit);
-        } while (x != 0);
+        } while (ui != 0);
         if (show_base)
             *--last = '0';
     } else {
         bool show_base =
-            ShowBase && fmt.getf(flag::showbase) && x != 0 && base == 16;
+            ShowBase && fmt.getf(flag::showbase) && ui != 0 && base == 16;
         Char a = fmt.getf(flag::uppercase) ? 'A' : 'a';
         do {
-            Char digit = static_cast<Char>(x % base);
-            x /= base;
+            Char digit = static_cast<Char>(ui % base);
+            ui /= base;
             *--last =
                 static_cast<Char>(digit < 10 ? '0' + digit : a + (digit - 10));
-        } while (x != 0);
+        } while (ui != 0);
         if (show_base) {
             *--last = a - 'a' + 'x';
             *--last = '0';

@@ -24,22 +24,22 @@ struct indented {
 
 template<typename C, typename T>
     requires(!Range<T>)
-batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& x) {
+batch<raw<cspan<C>>, repeat<C>, T&> encode(indented<C>& fmt, T& t) {
     if (!fmt.indent) {
         fmt.indent = true;
-        return {raw{cspan<C>{}}, repeat<C>{}, x};
+        return {raw{cspan<C>{}}, repeat<C>{}, t};
     } else {
         return {
             raw{cspan<C>{&fmt.endl, 1}},
             repeat<C>{fmt.fill, fmt.count * fmt.level},
-            x
+            t
         };
     }
 }
 
 template<typename C, typename T>
-decltype(auto) encode(indented<C>& fmt, raw<T> const& x) {
-    return x;
+decltype(auto) encode(indented<C>& fmt, raw<T> const& t) {
+    return t;
 }
 
 template<typename C, bool Deeper>

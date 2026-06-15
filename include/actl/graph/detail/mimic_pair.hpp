@@ -28,9 +28,9 @@ struct mimic_pair {
     static_assert(I == 1 || I == 2);
 
     template<typename FirstT, typename... SecondTs>
-    explicit constexpr mimic_pair(FirstT&& first, SecondTs&&... xs)
+    explicit constexpr mimic_pair(FirstT&& first, SecondTs&&... ts)
         : first{std::forward<FirstT>(first)}
-        , second{std::forward<SecondTs>(xs)...} {}
+        , second{std::forward<SecondTs>(ts)...} {}
 
     constexpr decltype(auto) key() const {
         if constexpr (I == 1)
@@ -51,11 +51,11 @@ template<typename T>
 concept MimicPair = requires { typename T::is_mimic_pair; };
 
 template<typename T>
-decltype(auto) get_key(T const& x) {
+decltype(auto) get_key(T const& t) {
     if constexpr (MimicPair<T>) {
-        return x.key();
+        return t.key();
     } else {
-        return x;
+        return t;
     }
 }
 

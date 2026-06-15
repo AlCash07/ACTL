@@ -28,8 +28,8 @@ auto invert(
 }
 
 template<index N, typename T, typename U>
-auto invert(point<T, N> const& p, U const& x) {
-    return invert(geometry_policy, p, x);
+auto invert(point<T, N> const& p, U const& t) {
+    return invert(geometry_policy, p, t);
 }
 
 } // namespace ac

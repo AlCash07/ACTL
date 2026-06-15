@@ -18,29 +18,29 @@ constexpr auto bit(I const& i) {
 }
 
 template<typename T, typename I>
-constexpr bool has_bit(T const& x, I const& i) {
+constexpr bool has_bit(T const& t, I const& i) {
     AC_ASSERT(i >= 0);
-    return (x >> i & T{1}) != 0;
+    return (t >> i & T{1}) != 0;
 }
 
 template<typename T>
-constexpr bool has_bits(T const& x, T const& bits) {
-    return (x & bits) == bits;
+constexpr bool has_bits(T const& t, T const& bits) {
+    return (t & bits) == bits;
 }
 
 template<typename T>
-constexpr T clear_bits(T const& x, T const& bits) {
-    return x & ~bits;
+constexpr T clear_bits(T const& t, T const& bits) {
+    return t & ~bits;
 }
 
 template<typename T, typename I>
-constexpr T clear_bit(T const& x, I const& i) {
-    return clear_bits(x, bit<T>(i));
+constexpr T clear_bit(T const& t, I const& i) {
+    return clear_bits(t, bit<T>(i));
 }
 
 template<typename T>
-constexpr T set_bits(T& x, T const& mask, T const& bits) {
-    return clear_bits(x, mask) | (bits & mask);
+constexpr T set_bits(T& t, T const& mask, T const& bits) {
+    return clear_bits(t, mask) | (bits & mask);
 }
 
 } // namespace ac

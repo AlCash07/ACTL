@@ -19,15 +19,15 @@ struct hash_access {
     std::false_type has_hash(...);
 
     template<typename T>
-    static constexpr size_t hash(T const& x) {
-        return x.hash();
+    static constexpr size_t hash(T const& t) {
+        return t.hash();
     }
 };
 
 template<typename T>
     requires(decltype(hash_access{}.has_hash<T>(0))::value)
-constexpr size_t hash_value(T const& x) {
-    return hash_access::hash(x);
+constexpr size_t hash_value(T const& t) {
+    return hash_access::hash(t);
 }
 
 } // namespace ac

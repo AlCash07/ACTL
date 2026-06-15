@@ -18,8 +18,8 @@ inline constexpr Negate negate;
 // unary minus
 template<typename T>
     requires EnableOperators<T>
-constexpr auto operator-(T&& x) {
-    return negate(std::forward<T>(x));
+constexpr auto operator-(T&& t) {
+    return negate(std::forward<T>(t));
 }
 
 struct NegateScalar : operation_base<NegateScalar> {
@@ -29,8 +29,8 @@ struct NegateScalar : operation_base<NegateScalar> {
     static constexpr bool requirement = std::is_arithmetic_v<T>;
 
     template<typename T>
-    static constexpr auto evaluate(T x) {
-        return -x;
+    static constexpr auto evaluate(T t) {
+        return -t;
     }
 };
 AC_REGISTER_SPECIALIZATION(NegateScalar)

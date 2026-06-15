@@ -23,12 +23,12 @@ struct AbsScalar : operation_base<AbsScalar> {
     static constexpr bool requirement = std::is_arithmetic_v<T>;
 
     template<typename T>
-    static constexpr T evaluate(T x) {
+    static constexpr T evaluate(T t) {
         if constexpr (std::is_unsigned_v<T>) {
-            return x;
+            return t;
         } else {
             using std::abs;
-            return abs(x);
+            return abs(t);
         }
     }
 };
