@@ -7,7 +7,8 @@
 #pragma once
 
 #include <actl/memory/empty_type/AC_EMPTY_BASES.hpp>
-#include <actl/sequence/tuple/detail/tuple_element.hpp>
+#include <actl/numeric/constant.hpp>
+#include <actl/sequence/tuple/detail/at.hpp>
 #include <utility> // for std::index_sequence
 
 namespace ac {
@@ -45,14 +46,35 @@ struct AC_EMPTY_BASES tuple_data<std::index_sequence<Is...>, Elements...>
 //	  `std::tuple`, for comparison, is not even trivially move assignable.
 // 2. `ac::tuple` completely avoids storage overhead for empty elements,
 //	  unlike `std::tuple` on MSVC.
-// 3. `ac::tuple` has no constructors and instead relies on
+// 3. `ac::tuple` provides indexing interface consistent with arrays using
+//	  `operator[]`, but accepting constants like `tuple[1_c]` instead of
+//    runtime values. `std::tuple` relies on custom syntax `get<1>(tuple)`.
+// 4. `ac::tuple` has no constructors and instead relies on
 //	  aggregate initialization and separate conversion functions.
 //    `std::tuple` in C++23 has 28 constructors
 //	  which blow up the compilation time even when they aren't used.
-// 4. Some implementations of `std::tuple` (for example, from Microsoft)
+// 5. Some implementations of `std::tuple` (for example, from Microsoft)
 //    are very slow because of recursion.
 template<typename... Elements>
 struct tuple
-    : detail::tuple_data<std::index_sequence_for<Elements...>, Elements...> {};
+    : detail::tuple_data<std::index_sequence_for<Elements...>, Elements...> {
+    /* operator[] */
+    template<auto Index>
+    constexpr decltype(auto) operator[](constant<Index>) & noexcept {
+        return detail::at<Index>(*this);
+    }
+    template<auto Index>
+    constexpr decltype(auto) operator[](constant<Index>) const& noexcept {
+        return detail::at<Index>(*this);
+    }
+    template<auto Index>
+    constexpr decltype(auto) operator[](constant<Index>) && noexcept {
+        return detail::at<Index>(std::move(*this));
+    }
+    template<auto Index>
+    constexpr decltype(auto) operator[](constant<Index>) const&& noexcept {
+        return detail::at<Index>(std::move(*this));
+    }
+};
 
 } // namespace ac
