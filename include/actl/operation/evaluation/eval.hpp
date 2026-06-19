@@ -8,8 +8,6 @@
 
 #include <actl/functional/parameter/out.hpp>
 #include <actl/operation/evaluation/is_argument_maybe_unused.hpp>
-#include <actl/operation/evaluation/is_argument_operation.hpp>
-#include <actl/operation/evaluation/strip_placeholders.hpp>
 #include <actl/operation/expression/expression_data.hpp>
 #include <actl/operation/resolver/operation_resolver.hpp>
 
@@ -46,9 +44,7 @@ namespace detail {
 template<typename Op, size_t ArgumentIndex, typename T>
 constexpr decltype(auto) prepare_argument(const T& t) {
     using RawOp = std::remove_reference_t<Op>;
-    if constexpr (is_argument_operation<RawOp, ArgumentIndex>::value)
-        return strip_placeholders(t);
-    else if constexpr (is_argument_maybe_unused<RawOp, ArgumentIndex>::value)
+    if constexpr (is_argument_maybe_unused<RawOp, ArgumentIndex>::value)
         return t;
     else
         return eval(t);

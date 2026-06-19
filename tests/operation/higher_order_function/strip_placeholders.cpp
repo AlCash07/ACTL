@@ -5,7 +5,8 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/numeric/arithmetic/additive/all.hpp>
-#include <actl/operation/evaluation/strip_placeholders.hpp>
+#include <actl/operation/arg.hpp>
+#include <actl/operation/higher_order_function/strip_placeholders.hpp>
 
 /* strip_placeholders replaces placeholders with associated Arg operations */
 constexpr ac::Placeholder<int, ac::Arg<0, 1>> raw_placeholder;

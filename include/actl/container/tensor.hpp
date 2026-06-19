@@ -542,10 +542,6 @@ template<typename T>
 concept Tensor = detail::is_tensor<T>::value;
 
 struct IsEqualTensor : operation_base<IsEqualTensor> {
-    static constexpr bool is_argument_operation(size_t index) {
-        return index == 2;
-    }
-
     static constexpr bool evaluate(
         Tensor auto& l, Tensor auto& r, auto const& equal_element
     ) {
@@ -563,10 +559,10 @@ struct IsEqualTensor : operation_base<IsEqualTensor> {
 inline constexpr auto is_equal_tensor = IsEqualTensor{}(
     l_,
     r_,
-    is_equal(
+    operation_arg(is_equal(
         type_operation<range_reference, Arg<0, 2>>,
         type_operation<range_reference, Arg<1, 2>>
-    )
+    ))
 );
 
 template<Tensor L, Tensor R>

@@ -8,6 +8,7 @@
 
 #include <actl/operation/arg.hpp>
 #include <actl/operation/enable_operators.hpp>
+#include <actl/operation/higher_order_function/all.hpp>
 #include <actl/operation/operation/all.hpp>
 #include <actl/operation/policy/all.hpp>
 #include <actl/operation/resolver/all.hpp>

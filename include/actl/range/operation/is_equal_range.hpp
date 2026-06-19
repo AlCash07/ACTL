@@ -7,17 +7,13 @@
 #pragma once
 
 #include <actl/numeric/comparison/equality.hpp>
-#include <actl/operation/type_operation.hpp>
+#include <actl/operation/higher_order_function/all.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <algorithm>
 
 namespace ac {
 
 struct IsEqualRange : operation_base<IsEqualRange> {
-    static constexpr bool is_argument_operation(size_t index) {
-        return index == 2;
-    }
-
     static constexpr bool evaluate(
         Range auto& l, Range auto& r, auto const& equal_element
     ) {
@@ -34,10 +30,10 @@ struct IsEqualRange : operation_base<IsEqualRange> {
 inline constexpr auto is_equal_range = IsEqualRange{}(
     l_,
     r_,
-    is_equal(
+    operation_arg(is_equal(
         type_operation<range_reference, Arg<0, 2>>,
         type_operation<range_reference, Arg<1, 2>>
-    )
+    ))
 );
 
 template<Range L, Range R>

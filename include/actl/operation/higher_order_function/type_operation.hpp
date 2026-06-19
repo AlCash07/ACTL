@@ -7,24 +7,11 @@
 #pragma once
 
 #include <actl/operation/arg.hpp>
-#include <actl/preprocessor/AC_WARNING_DISABLE.hpp>
+#include <actl/operation/higher_order_function/placeholder.hpp>
+#include <actl/operation/resolver/specialization.hpp>
 #include <actl/sequence/type_array/at.hpp>
 
 namespace ac {
-
-template<typename T, typename Arg>
-struct Placeholder {};
-
-AC_WARNING_DISABLE(AC_UNDEFINED_FUNCTION)
-// It's correct to keep these functions undefined because
-// they should be used only for result type deduction.
-// Placeholders must be stripped before the actual execution.
-template<typename T, typename Arg>
-constexpr T eval(Placeholder<T, Arg>&&);
-
-template<typename T, typename Arg>
-constexpr T eval(Placeholder<T, Arg> const&);
-AC_WARNING_ENABLE()
 
 template<template<typename> typename Trait, typename Arg>
 struct TypeOperation {

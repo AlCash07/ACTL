@@ -9,17 +9,13 @@
 #include <actl/numeric/comparison/compare_3way.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 #include <actl/numeric/constant_literals.hpp>
-#include <actl/operation/type_operation.hpp>
+#include <actl/operation/higher_order_function/all.hpp>
 #include <actl/range/traits/associated_types.hpp>
 
 namespace ac {
 
 struct LexicographicalCompareRange
     : operation_base<LexicographicalCompareRange> {
-    static constexpr bool is_argument_operation(size_t index) {
-        return index == 2;
-    }
-
     static constexpr int evaluate(
         Range auto& l, Range auto& r, auto const& compare_3way_element
     ) {
@@ -42,10 +38,10 @@ inline constexpr auto lexicographical_compare_range =
     LexicographicalCompareRange{}(
         l_,
         r_,
-        compare_3way(
+        operation_arg(compare_3way(
             type_operation<range_reference, Arg<0, 2>>,
             type_operation<range_reference, Arg<1, 2>>
-        )
+        ))
     );
 
 template<Range L, Range R>
