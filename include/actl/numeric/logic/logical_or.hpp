@@ -12,15 +12,10 @@ namespace ac {
 
 struct LogicalOr : operation_base<LogicalOr> {
     using operation_category = logical_operation;
+
+    static constexpr auto identity_element = constant<false>{};
 };
 inline constexpr LogicalOr logical_or;
-
-template<typename T>
-struct identity_element<LogicalOr, T> {
-    static constexpr T value() {
-        return T{false};
-    }
-};
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

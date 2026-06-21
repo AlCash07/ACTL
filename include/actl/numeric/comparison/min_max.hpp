@@ -18,6 +18,8 @@ struct Min : operation_base<Min> {
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 
+    // static constexpr auto identity_element = infinity;
+
     template<typename L, typename R>
     static constexpr auto evaluate(L l, R r) {
         return eval(if_else(less(r, l), r, l));
@@ -25,18 +27,13 @@ struct Min : operation_base<Min> {
 };
 inline constexpr Min min;
 
-template<typename T>
-struct identity_element<Min, T> {
-    static constexpr T value() {
-        return std::numeric_limits<T>::max();
-    }
-};
-
 struct Max : operation_base<Max> {
     using operation_category = comparison_operation;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
+
+    // static constexpr auto identity_element = -infinity;
 
     template<typename L, typename R>
     static constexpr auto evaluate(L l, R r) {
@@ -44,12 +41,5 @@ struct Max : operation_base<Max> {
     }
 };
 inline constexpr Max max;
-
-template<typename T>
-struct identity_element<Max, T> {
-    static constexpr T value() {
-        return std::numeric_limits<T>::lowest();
-    }
-};
 
 } // namespace ac

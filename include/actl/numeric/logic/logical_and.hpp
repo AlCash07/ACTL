@@ -12,15 +12,10 @@ namespace ac {
 
 struct LogicalAnd : operation_base<LogicalAnd> {
     using operation_category = logical_operation;
+
+    static constexpr auto identity_element = constant<true>{};
 };
 inline constexpr LogicalAnd logical_and;
-
-template<typename T>
-struct identity_element<LogicalAnd, T> {
-    static constexpr T value() {
-        return T{true};
-    }
-};
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

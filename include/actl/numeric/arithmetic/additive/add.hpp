@@ -12,15 +12,10 @@ namespace ac {
 
 struct Add : operation_base<Add> {
     using operation_category = additive_operation;
+
+    static constexpr auto identity_element = 0_c;
 };
 inline constexpr Add add;
-
-template<typename T>
-struct identity_element<Add, T> {
-    static constexpr T value() {
-        return T{0};
-    }
-};
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

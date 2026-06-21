@@ -9,7 +9,6 @@
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
 #include <actl/operation/operation/Operation.hpp>
 #include <actl/operation/operation/inout.hpp>
-#include <actl/operation/operation/operation_traits.hpp>
 #include <actl/operation/policy/tuned_operation.hpp>
 #include <actl/operation/resolver/expression_resolver.hpp>
 #include <actl/operation/resolver/operation_resolver.hpp>

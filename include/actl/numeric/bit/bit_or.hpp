@@ -12,15 +12,10 @@ namespace ac {
 
 struct BitOr : operation_base<BitOr> {
     using operation_category = bitwise_operation;
+
+    static constexpr auto identity_element = 0_c;
 };
 inline constexpr BitOr bit_or;
-
-template<typename T>
-struct identity_element<BitOr, T> {
-    static constexpr T value() {
-        return T{0};
-    }
-};
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

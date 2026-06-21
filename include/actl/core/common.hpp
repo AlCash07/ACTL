@@ -16,6 +16,8 @@ struct Common : operation_base<Common> {
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
 
+    static constexpr auto identity_element = none{};
+
     template<typename T>
     static constexpr T evaluate(T t) {
         return t;
@@ -33,12 +35,5 @@ struct Common : operation_base<Common> {
     }
 };
 inline constexpr Common common;
-
-template<typename T>
-struct identity_element<Common, T> {
-    static constexpr none value() {
-        return none{};
-    }
-};
 
 } // namespace ac

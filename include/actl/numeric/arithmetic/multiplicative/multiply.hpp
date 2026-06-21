@@ -12,15 +12,10 @@ namespace ac {
 
 struct Multiply : operation_base<Multiply> {
     using operation_category = multiplicative_operation;
+
+    static constexpr auto identity_element = 1_c;
 };
 inline constexpr Multiply multiply;
-
-template<typename T>
-struct identity_element<Multiply, T> {
-    static constexpr T value() {
-        return T{1};
-    }
-};
 
 template<typename L, typename R>
     requires EnableOperators<L, R>
