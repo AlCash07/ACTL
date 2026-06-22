@@ -6,12 +6,18 @@
 
 #pragma once
 
-#include <actl/numeric/bit/bit_operation.hpp>
+#include <actl/numeric/bit/bit_not_scalar.hpp>
 
 namespace ac {
 
 struct BitNot : operation_base<BitNot> {
     using operation_category = bitwise_operation;
+
+    template<typename T>
+        requires std::is_arithmetic_v<T>
+    friend constexpr auto specialization(BitNot, type_array<T>) noexcept {
+        return bit_not_scalar;
+    }
 };
 inline constexpr BitNot bit_not;
 
@@ -20,18 +26,5 @@ template<typename T>
 constexpr auto operator~(T&& t) {
     return bit_not(std::forward<T>(t));
 }
-
-struct BitNotScalar : operation_base<BitNotScalar> {
-    using parent = BitNot;
-
-    template<typename T>
-    static constexpr bool match = std::is_arithmetic_v<T>;
-
-    static constexpr auto evaluate(std::integral auto i) {
-        return ~i;
-    }
-};
-AC_REGISTER_SPECIALIZATION(BitNotScalar)
-inline constexpr BitNotScalar bit_not_scalar;
 
 } // namespace ac

@@ -14,36 +14,33 @@
 
 namespace ac {
 
-template<Tuple L, Tuple R, size_t Index>
-struct lexicographical_compare_tuple_suffix {
-    static constexpr auto compare_element() {
+template<size_t Index, size_t Length>
+constexpr auto lexicographical_compare_tuple_suffix() noexcept {
+    auto compare_element = [] {
         return compare_3way(
-            at(l_, ac::constant<Index>{}), //
-            at(r_, ac::constant<Index>{})
+            at_tuple(l_, constant<Index>{}), //
+            at_tuple(r_, constant<Index>{})
         );
-    }
-
-    static constexpr auto formula = [] {
-        if constexpr (Index + 1 == std::tuple_size_v<L>)
-            return compare_element();
-        else
-            return if_else(l_ != 0, l_, r_)(
-                compare_element(),
-                lexicographical_compare_tuple_suffix<L, R, Index + 1>::formula
-            );
-    }();
-};
+    };
+    if constexpr (Index + 1 == Length)
+        return compare_element();
+    else
+        return if_else(l_ != 0, l_, r_)(
+            compare_element(),
+            lexicographical_compare_tuple_suffix<Index + 1, Length>()
+        );
+}
 
 template<Tuple L, Tuple R>
-struct specialization<Compare3Way, L, R>
-    : lexicographical_compare_tuple_suffix<L, R, 0> {
+constexpr auto specialization(Compare3Way, type_array<L, R>) noexcept {
     // TODO: consider supporting tuples of different sizes.
     static_assert(std::tuple_size_v<L> == std::tuple_size_v<R>);
-};
+    return lexicographical_compare_tuple_suffix<0, std::tuple_size_v<L>>();
+}
 
 template<Tuple L, Tuple R>
-struct specialization<IsLess, L, R> {
-    static constexpr auto formula = compare_3way < 0_c;
-};
+constexpr auto specialization(IsLess, type_array<L, R>) noexcept {
+    return compare_3way < 0_c;
+}
 
 } // namespace ac

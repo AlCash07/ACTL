@@ -6,12 +6,18 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/additive/subtract_scalar.hpp>
 
 namespace ac {
 
 struct Subtract : operation_base<Subtract> {
     using operation_category = additive_operation;
+
+    template<typename L, typename R>
+        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+    friend constexpr auto specialization(Subtract, type_array<L, R>) noexcept {
+        return subtract_scalar;
+    }
 };
 inline constexpr Subtract subtract;
 
@@ -26,20 +32,5 @@ template<typename L, typename R>
 constexpr decltype(auto) operator-=(L&& l, R&& r) {
     return subtract(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
-
-struct SubtractScalars : operation_base<SubtractScalars> {
-    using parent = Subtract;
-
-    template<typename L, typename R>
-    static constexpr bool match =
-        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(L l, R r) {
-        return l - r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(SubtractScalars)
-inline constexpr SubtractScalars subtract_scalars;
 
 } // namespace ac

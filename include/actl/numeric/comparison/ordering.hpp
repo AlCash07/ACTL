@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/comparison_operation.hpp>
+#include <actl/numeric/comparison/is_less_scalar.hpp>
 #include <actl/numeric/logic/logical_not.hpp>
 #include <actl/operation/arg.hpp>
 
@@ -14,24 +14,17 @@ namespace ac {
 
 struct IsLess : operation_base<IsLess> {
     using operation_category = ordering_operation;
-};
-inline constexpr IsLess is_less;
-
-struct IsLessScalar : operation_base<IsLessScalar> {
-    using parent = IsLess;
 
     template<typename L, typename R>
-    static constexpr bool match =
-        (is_constant_v<L> || std::is_arithmetic_v<L>) &&
-        (is_constant_v<R> || std::is_arithmetic_v<R>);
-
-    template<typename L, typename R>
-    static constexpr bool evaluate(L l, R r) {
-        return l < r;
+        requires(
+            (is_constant_v<L> || std::is_arithmetic_v<L>) &&
+            (is_constant_v<R> || std::is_arithmetic_v<R>)
+        )
+    friend constexpr auto specialization(IsLess, type_array<L, R>) noexcept {
+        return is_less_scalar;
     }
 };
-AC_REGISTER_SPECIALIZATION(IsLessScalar)
-inline constexpr IsLessScalar is_less_scalar;
+inline constexpr IsLess is_less;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

@@ -11,23 +11,10 @@
 
 namespace ac {
 
-template<Operation Op>
-struct default_specialization {};
-
-template<Operation Op>
+template<Operation Op, typename ArgsArray>
     requires requires { Op::formula; }
-struct default_specialization<Op> {
-    static constexpr auto formula = Op::formula;
-};
-
-template<Operation Op, typename... Args>
-struct specialization : default_specialization<Op> {};
-
-#define AC_REGISTER_SPECIALIZATION(name)                    \
-    template<typename... Args>                              \
-        requires name::match<Args...>                       \
-    struct specialization<typename name::parent, Args...> { \
-        static constexpr auto formula = name{};             \
-    };
+constexpr auto specialization(Op, ArgsArray) noexcept {
+    return Op::formula;
+}
 
 } // namespace ac

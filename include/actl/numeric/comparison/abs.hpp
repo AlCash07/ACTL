@@ -6,33 +6,19 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/comparison_operation.hpp>
-#include <cstdlib>
+#include <actl/numeric/comparison/abs_scalar.hpp>
 
 namespace ac {
 
 struct Abs : operation_base<Abs> {
     using operation_category = comparison_operation;
-};
-inline constexpr Abs abs;
-
-struct AbsScalar : operation_base<AbsScalar> {
-    using parent = Abs;
 
     template<typename T>
-    static constexpr bool match = std::is_arithmetic_v<T>;
-
-    template<typename T>
-    static constexpr T evaluate(T t) {
-        if constexpr (std::is_unsigned_v<T>) {
-            return t;
-        } else {
-            using std::abs;
-            return abs(t);
-        }
+        requires std::is_arithmetic_v<T>
+    friend constexpr auto specialization(Abs, type_array<T>) noexcept {
+        return abs_scalar;
     }
 };
-AC_REGISTER_SPECIALIZATION(AbsScalar)
-inline constexpr AbsScalar abs_scalar;
+inline constexpr Abs abs;
 
 } // namespace ac

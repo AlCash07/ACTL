@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/additive/add_scalar.hpp>
 
 namespace ac {
 
@@ -14,6 +14,18 @@ struct Add : operation_base<Add> {
     using operation_category = additive_operation;
 
     static constexpr auto identity_element = 0_c;
+
+    template<typename L, typename R>
+        requires(std::integral<L> && std::integral<R>)
+    friend constexpr auto specialization(Add, type_array<L, R>) noexcept {
+        return add_integer;
+    }
+
+    template<typename L, typename R>
+        requires(std::floating_point<L> && std::floating_point<R>)
+    friend constexpr auto specialization(Add, type_array<L, R>) noexcept {
+        return add_float;
+    }
 };
 inline constexpr Add add;
 
@@ -28,39 +40,5 @@ template<typename L, typename R>
 constexpr decltype(auto) operator+=(L&& l, R&& r) {
     return add(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
-
-struct AddInteger : operation_base<AddInteger> {
-    using parent = Add;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
-
-    template<typename L, typename R>
-    static constexpr bool match = std::integral<L> && std::integral<R>;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(L l, R r) {
-        return l + r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(AddInteger)
-inline constexpr AddInteger add_integer;
-
-struct AddFloat : operation_base<AddFloat> {
-    using parent = Add;
-
-    // floating point addition is neither associative nor commutative
-
-    template<typename L, typename R>
-    static constexpr bool match =
-        std::floating_point<L> && std::floating_point<R>;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(L l, R r) {
-        return l + r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(AddFloat)
-inline constexpr AddFloat add_float;
 
 } // namespace ac

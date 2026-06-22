@@ -13,21 +13,19 @@
 
 namespace ac {
 
-template<Tuple L, Tuple R, typename Indices>
-struct equal_tuple_resolver;
-
-template<Tuple L, Tuple R, size_t... Is>
-struct equal_tuple_resolver<L, R, std::index_sequence<Is...>> {
-    static constexpr auto formula =
-        (... &&
-         is_equal(at(l_, ac::constant<Is>{}), at(r_, ac::constant<Is>{})));
-};
+template<size_t... Is>
+constexpr auto equal_tuple_resolver(std::index_sequence<Is...>) noexcept {
+    return (
+        ... &&
+        is_equal(at_tuple(l_, constant<Is>{}), at_tuple(r_, constant<Is>{}))
+    );
+}
 
 template<Tuple L, Tuple R>
-struct specialization<IsEqual, L, R>
-    : equal_tuple_resolver<L, R, tuple_indices_t<L>> {
+constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
     // TODO: consider returning constant<false> for tuples of different sizes.
     static_assert(std::tuple_size_v<L> == std::tuple_size_v<R>);
-};
+    return equal_tuple_resolver(tuple_indices_t<L>{});
+}
 
 } // namespace ac

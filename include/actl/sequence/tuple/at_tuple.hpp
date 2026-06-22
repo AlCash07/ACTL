@@ -8,23 +8,20 @@
 
 #include <actl/numeric/constant_literals.hpp>
 #include <actl/operation/operation/operation_base.hpp>
-#include <actl/sequence/at.hpp>
 #include <actl/sequence/tuple/TupleConcept.hpp>
 
 namespace ac {
 
+struct At;
+
 struct AtTuple : operation_base<AtTuple> {
     using parent = At;
-
-    template<typename T, typename Index>
-    static constexpr bool match = Tuple<T>;
 
     template<Tuple T, auto Index>
     static constexpr auto evaluate(T t, constant<Index>) {
         return std::get<size_t{Index}>(t);
     }
 };
-AC_REGISTER_SPECIALIZATION(AtTuple)
 inline constexpr AtTuple at_tuple;
 
 } // namespace ac

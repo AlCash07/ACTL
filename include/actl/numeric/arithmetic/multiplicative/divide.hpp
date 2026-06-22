@@ -6,12 +6,18 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/multiplicative/divide_scalar.hpp>
 
 namespace ac {
 
 struct Divide : operation_base<Divide> {
     using operation_category = multiplicative_operation;
+
+    template<typename L, typename R>
+        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+    friend constexpr auto specialization(Divide, type_array<L, R>) noexcept {
+        return divide_scalar;
+    }
 };
 inline constexpr Divide divide;
 
@@ -26,20 +32,5 @@ template<typename L, typename R>
 constexpr decltype(auto) operator/=(L&& l, R&& r) {
     return divide(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
-
-struct DivideScalars : operation_base<DivideScalars> {
-    using parent = Divide;
-
-    template<typename L, typename R>
-    static constexpr bool match =
-        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(L l, R r) {
-        return l / r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(DivideScalars)
-inline constexpr DivideScalars divide_scalars;
 
 } // namespace ac

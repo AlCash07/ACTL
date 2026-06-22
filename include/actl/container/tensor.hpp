@@ -566,9 +566,9 @@ inline constexpr auto is_equal_tensor = IsEqualTensor{}(
 );
 
 template<Tensor L, Tensor R>
-struct specialization<IsEqual, L, R> {
-    static constexpr auto formula = is_equal_tensor;
-};
+constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
+    return is_equal_tensor;
+}
 
 /// N-dimensional array with dimensions completely or partially known at compile
 /// time.

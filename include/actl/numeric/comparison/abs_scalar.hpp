@@ -1,0 +1,31 @@
+// Copyright 2017 Oleksandr Bacherikov.
+//
+// Distributed under the Boost Software License, Version 1.0
+// (see accompanying file LICENSE.txt or copy at
+//   http://www.boost.org/LICENSE_1_0.txt).
+
+#pragma once
+
+#include <actl/numeric/comparison/comparison_operation.hpp>
+#include <cstdlib>
+
+namespace ac {
+
+struct Abs;
+
+struct AbsScalar : operation_base<AbsScalar> {
+    using parent = Abs;
+
+    template<typename T>
+    static constexpr T evaluate(T t) {
+        if constexpr (std::is_unsigned_v<T>) {
+            return t;
+        } else {
+            using std::abs;
+            return abs(t);
+        }
+    }
+};
+inline constexpr AbsScalar abs_scalar;
+
+} // namespace ac

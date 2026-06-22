@@ -6,13 +6,19 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/comparison_operation.hpp>
+#include <actl/numeric/comparison/is_equal_scalar.hpp>
 #include <actl/numeric/logic/logical_not.hpp>
 
 namespace ac {
 
 struct IsEqual : operation_base<IsEqual> {
     using operation_category = equality_operation;
+
+    template<typename L, typename R>
+        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+    friend constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
+        return is_equal_scalar;
+    }
 };
 inline constexpr IsEqual is_equal;
 
@@ -29,22 +35,5 @@ template<typename L, typename R>
 constexpr auto operator!=(L&& l, R&& r) {
     return is_not_equal(std::forward<L>(l), std::forward<R>(r));
 }
-
-struct IsEqualScalar : operation_base<IsEqualScalar> {
-    using parent = IsEqual;
-
-    static constexpr bool is_commutative = true;
-
-    template<typename L, typename R>
-    static constexpr bool match =
-        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
-
-    template<typename L, typename R>
-    static constexpr bool evaluate(L l, R r) {
-        return l == r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(IsEqualScalar)
-inline constexpr IsEqualScalar is_equal_scalar;
 
 } // namespace ac

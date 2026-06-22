@@ -6,26 +6,19 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/compare_3way.hpp>
-#include <actl/numeric/constant_literals.hpp>
-#include <actl/operation/arg.hpp>
+#include <actl/numeric/comparison/sgn_scalar.hpp>
 
 namespace ac {
 
 struct Sgn : operation_base<Sgn> {
     using operation_category = comparison_operation;
-};
-inline constexpr Sgn sgn;
-
-struct SgnScalar : operation_base<SgnScalar> {
-    using parent = Sgn;
 
     template<typename T>
-    static constexpr bool match = std::is_arithmetic_v<T>;
-
-    static constexpr auto formula = compare_3way(t_, 0_c);
+        requires std::is_arithmetic_v<T>
+    friend constexpr auto specialization(Sgn, type_array<T>) noexcept {
+        return sgn_scalar;
+    }
 };
-AC_REGISTER_SPECIALIZATION(SgnScalar)
-inline constexpr SgnScalar sgn_scalar;
+inline constexpr Sgn sgn;
 
 } // namespace ac

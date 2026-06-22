@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/bit/bit_operation.hpp>
+#include <actl/numeric/bit/bit_or_scalar.hpp>
 
 namespace ac {
 
@@ -14,6 +14,12 @@ struct BitOr : operation_base<BitOr> {
     using operation_category = bitwise_operation;
 
     static constexpr auto identity_element = 0_c;
+
+    template<typename L, typename R>
+        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+    friend constexpr auto specialization(BitOr, type_array<L, R>) noexcept {
+        return bit_or_scalar;
+    }
 };
 inline constexpr BitOr bit_or;
 
@@ -28,23 +34,5 @@ template<typename L, typename R>
 constexpr decltype(auto) operator|=(L&& l, R&& r) {
     return bit_or(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
-
-struct BitOrScalar : operation_base<BitOrScalar> {
-    using parent = BitOr;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
-
-    template<typename L, typename R>
-    static constexpr bool match =
-        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
-
-    template<std::integral L, std::integral R>
-    static constexpr auto evaluate(L l, R r) {
-        return l | r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(BitOrScalar)
-inline constexpr BitOrScalar bit_or_scalar;
 
 } // namespace ac

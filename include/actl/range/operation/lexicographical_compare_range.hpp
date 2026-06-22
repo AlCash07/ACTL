@@ -45,8 +45,8 @@ inline constexpr auto lexicographical_compare_range =
     );
 
 template<Range L, Range R>
-struct specialization<IsLess, L, R> {
-    static constexpr auto formula = compare_3way < 0_c;
-};
+constexpr auto specialization(IsLess, type_array<L, R>) noexcept {
+    return compare_3way < 0_c;
+}
 
 } // namespace ac

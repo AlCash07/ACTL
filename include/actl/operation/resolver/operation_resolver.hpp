@@ -71,16 +71,18 @@ struct policy_resolver<Op, ArgsArray, TopPolicy, Policies...> {
     }
 };
 
-template<Operation Op, typename... Args, typename... Policies>
-    requires requires { specialization<Op, Args...>::formula; }
-struct specialization_resolver<Op, type_array<Args...>, Policies...> {
+template<Operation Op, typename ArgsArray, typename... Policies>
+    requires requires { specialization(std::declval<Op>(), ArgsArray{}); }
+struct specialization_resolver<Op, ArgsArray, Policies...> {
     template<typename Op1>
-    constexpr auto operator()(Op1&& op, Policies const&... policies) const {
-        using Formula =
-            std::remove_const_t<decltype(specialization<Op, Args...>::formula)>;
-        return operation_resolver<Formula, type_array<Args...>, Policies...>{}(
-            Formula{}, policies...
-        );
+    constexpr auto operator()(
+        Op1&& op, Policies const&... policies
+    ) const noexcept {
+        auto&& new_op = specialization(std::forward<Op1>(op), ArgsArray{});
+        return operation_resolver<
+            raw_t<decltype(new_op)>,
+            ArgsArray,
+            Policies...>{}(std::forward<decltype(new_op)>(new_op), policies...);
     }
 };
 

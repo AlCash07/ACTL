@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/multiplicative/multiply_scalar.hpp>
 
 namespace ac {
 
@@ -14,6 +14,18 @@ struct Multiply : operation_base<Multiply> {
     using operation_category = multiplicative_operation;
 
     static constexpr auto identity_element = 1_c;
+
+    template<typename L, typename R>
+        requires(std::integral<L> && std::integral<R>)
+    friend constexpr auto specialization(Multiply, type_array<L, R>) noexcept {
+        return multiply_integer;
+    }
+
+    template<typename L, typename R>
+        requires(std::floating_point<L> && std::floating_point<R>)
+    friend constexpr auto specialization(Multiply, type_array<L, R>) noexcept {
+        return multiply_float;
+    }
 };
 inline constexpr Multiply multiply;
 
@@ -28,39 +40,5 @@ template<typename L, typename R>
 constexpr decltype(auto) operator*=(L&& l, R&& r) {
     return multiply(inout{std::forward<L>(l)}, std::forward<R>(r));
 }
-
-struct MultiplyInteger : operation_base<MultiplyInteger> {
-    using parent = Multiply;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
-
-    template<typename L, typename R>
-    static constexpr bool match = std::integral<L> && std::integral<R>;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(L l, R r) {
-        return l * r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(MultiplyInteger)
-inline constexpr MultiplyInteger miltiply_integer;
-
-struct MultiplyFloat : operation_base<MultiplyFloat> {
-    using parent = Multiply;
-
-    // floating point multiplication is neither associative nor commutative
-
-    template<typename L, typename R>
-    static constexpr bool match =
-        std::floating_point<L> && std::floating_point<R>;
-
-    template<typename L, typename R>
-    static constexpr auto evaluate(L l, R r) {
-        return l * r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(MultiplyFloat)
-inline constexpr MultiplyFloat miltiply_float;
 
 } // namespace ac

@@ -37,8 +37,8 @@ inline constexpr auto is_equal_range = IsEqualRange{}(
 );
 
 template<Range L, Range R>
-struct specialization<IsEqual, L, R> {
-    static constexpr auto formula = is_equal_range;
-};
+constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
+    return is_equal_range;
+}
 
 } // namespace ac

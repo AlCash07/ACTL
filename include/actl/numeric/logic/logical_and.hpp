@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/logic/logical_operation.hpp>
+#include <actl/numeric/logic/logical_and_scalar.hpp>
 
 namespace ac {
 
@@ -14,6 +14,14 @@ struct LogicalAnd : operation_base<LogicalAnd> {
     using operation_category = logical_operation;
 
     static constexpr auto identity_element = constant<true>{};
+
+    template<typename L, typename R>
+        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+    friend constexpr auto specialization(
+        LogicalAnd, type_array<L, R>
+    ) noexcept {
+        return logical_and_scalar;
+    }
 };
 inline constexpr LogicalAnd logical_and;
 
@@ -22,23 +30,5 @@ template<typename L, typename R>
 constexpr auto operator&&(L&& l, R&& r) {
     return logical_and(std::forward<L>(l), std::forward<R>(r));
 }
-
-struct LogicalAndScalar : operation_base<LogicalAndScalar> {
-    using parent = LogicalAnd;
-
-    static constexpr bool is_associative = true;
-    static constexpr bool is_commutative = true;
-
-    template<typename L, typename R>
-    static constexpr bool match =
-        std::is_arithmetic_v<L> && std::is_arithmetic_v<R>;
-
-    template<std::same_as<bool> T>
-    static constexpr auto evaluate(T l, T r) {
-        return l && r;
-    }
-};
-AC_REGISTER_SPECIALIZATION(LogicalAndScalar)
-inline constexpr LogicalAndScalar logical_and_scalar;
 
 } // namespace ac

@@ -6,28 +6,24 @@
 
 #pragma once
 
-#include <actl/lifetime/conversion/as.hpp>
-#include <actl/numeric/arithmetic/additive/subtract.hpp>
-#include <actl/numeric/comparison/ordering.hpp>
+#include <actl/numeric/comparison/compare_3way_scalar.hpp>
 
 namespace ac {
 
 struct Compare3Way : operation_base<Compare3Way> {
     using operation_category = ordering_operation;
-};
-inline constexpr Compare3Way compare_3way;
-
-struct Compare3WayScalar : operation_base<Compare3WayScalar> {
-    using parent = Compare3Way;
 
     template<typename L, typename R>
-    static constexpr bool match =
-        (is_constant_v<L> || std::is_arithmetic_v<L>) &&
-        (is_constant_v<R> || std::is_arithmetic_v<R>);
-
-    static constexpr auto formula = as<int>(is_greater) - as<int>(is_less);
+        requires(
+            (is_constant_v<L> || std::is_arithmetic_v<L>) &&
+            (is_constant_v<R> || std::is_arithmetic_v<R>)
+        )
+    friend constexpr auto specialization(
+        Compare3Way, type_array<L, R>
+    ) noexcept {
+        return compare_3way_scalar;
+    }
 };
-AC_REGISTER_SPECIALIZATION(Compare3WayScalar)
-inline constexpr Compare3WayScalar compare_3way_scalar;
+inline constexpr Compare3Way compare_3way;
 
 } // namespace ac

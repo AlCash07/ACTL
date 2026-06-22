@@ -18,7 +18,7 @@ struct TypeOperation {
     // Without this operator(), we'd have to make Placeholder an operation.
     template<typename... Args>
     constexpr auto operator()(Args&&...) const {
-        return specialization<TypeOperation, raw_t<Args>...>::formula;
+        return specialization(*this, type_array<raw_t<Args>...>{});
     }
 };
 
@@ -32,13 +32,12 @@ template<
     template<typename> typename Trait,
     size_t I,
     size_t N,
-    typename... Args>
-struct specialization<TypeOperation<Trait, Arg<I, N>>, Args...> {
-    static_assert(N == sizeof...(Args));
-
-    static constexpr auto formula = Placeholder<
-        typename Trait<at_t<type_array<Args...>, I>>::type,
-        Arg<I, N>>{};
-};
+    typename ArgsArray>
+constexpr auto specialization(
+    TypeOperation<Trait, Arg<I, N>>, ArgsArray
+) noexcept {
+    static_assert(N == ArgsArray::length);
+    return Placeholder<typename Trait<at_t<ArgsArray, I>>::type, Arg<I, N>>{};
+}
 
 } // namespace ac
