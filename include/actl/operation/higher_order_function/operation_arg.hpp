@@ -11,7 +11,10 @@
 
 namespace ac {
 
-struct OperationArg : operation_base<OperationArg> {};
+struct OperationArg : operation_base<OperationArg> {
+    template<typename T>
+    static constexpr void evaluate(T&&) {}
+};
 inline constexpr OperationArg operation_arg;
 
 template<typename Arg>

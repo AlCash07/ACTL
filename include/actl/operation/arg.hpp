@@ -14,14 +14,19 @@ namespace ac {
 template<size_t I, size_t N>
 struct Arg {
     template<typename T, typename... Ts>
-    constexpr decltype(auto) operator()(
+    static constexpr decltype(auto) evaluate(
         [[maybe_unused]] T&& t, [[maybe_unused]] Ts&&... ts
-    ) const {
+    ) {
         static_assert(1 + sizeof...(Ts) == N);
         if constexpr (I == 0)
             return std::forward<T>(t);
         else
-            return Arg<I - 1, N - 1>{}(std::forward<Ts>(ts)...);
+            return Arg<I - 1, N - 1>::evaluate(std::forward<Ts>(ts)...);
+    }
+
+    template<typename T, typename... Ts>
+    constexpr decltype(auto) operator()(T&& t, Ts&&... ts) const {
+        return evaluate(std::forward<T>(t), std::forward<Ts>(ts)...);
     }
 
     struct enable_operators;

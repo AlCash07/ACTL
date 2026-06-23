@@ -86,4 +86,18 @@ struct specialization_resolver<Op, ArgsArray, Policies...> {
     }
 };
 
+template<Operation Op, typename... Args, typename... Policies>
+    requires(
+        !requires(Op op, Args&&... args) { op.evaluate(args...); } &&
+        !requires(Op op) { specialization(op, type_array<Args...>{}); }
+    )
+struct specialization_resolver<Op, type_array<Args...>, Policies...> {
+    // Error here means that the operation cannot be evaluated for the given
+    // arguments, and there are no specializations found to mitigate that.
+    // Dummy type is defined to produce a helpful compilation error that
+    // explains why all the found specializations didn't match.
+    using _ =
+        decltype(specialization(std::declval<Op>(), type_array<Args...>{}));
+};
+
 } // namespace ac
