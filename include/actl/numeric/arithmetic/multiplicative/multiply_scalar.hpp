@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
 
 namespace ac {
 
-struct Multiply;
-
 struct MultiplyInteger : operation_base<MultiplyInteger> {
-    using parent = Multiply;
+    using parent = Multiply::op;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
@@ -25,8 +23,16 @@ struct MultiplyInteger : operation_base<MultiplyInteger> {
 };
 inline constexpr MultiplyInteger multiply_integer;
 
+namespace Multiply {
+template<typename L, typename R>
+    requires(std::integral<L> && std::integral<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return multiply_integer;
+}
+} // namespace Multiply
+
 struct MultiplyFloat : operation_base<MultiplyFloat> {
-    using parent = Multiply;
+    using parent = Multiply::op;
 
     // floating point multiplication is neither associative nor commutative
 
@@ -36,5 +42,13 @@ struct MultiplyFloat : operation_base<MultiplyFloat> {
     }
 };
 inline constexpr MultiplyFloat multiply_float;
+
+namespace Multiply {
+template<typename L, typename R>
+    requires(std::floating_point<L> && std::floating_point<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return multiply_float;
+}
+} // namespace Multiply
 
 } // namespace ac

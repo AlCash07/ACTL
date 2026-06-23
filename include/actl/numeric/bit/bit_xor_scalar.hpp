@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/bit/bit_operation.hpp>
+#include <actl/numeric/bit/bit_xor.hpp>
 
 namespace ac {
 
-struct BitXor;
-
 struct BitXorScalar : operation_base<BitXorScalar> {
-    using parent = BitXor;
+    using parent = BitXor::op;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
@@ -24,5 +22,13 @@ struct BitXorScalar : operation_base<BitXorScalar> {
     }
 };
 inline constexpr BitXorScalar bit_xor_scalar;
+
+namespace BitXor {
+template<typename L, typename R>
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return bit_xor_scalar;
+}
+} // namespace BitXor
 
 } // namespace ac

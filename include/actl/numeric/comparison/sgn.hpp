@@ -6,19 +6,15 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/sgn_scalar.hpp>
+#include <actl/numeric/comparison/comparison_operation.hpp>
 
 namespace ac {
 
-struct Sgn : operation_base<Sgn> {
+namespace Sgn {
+struct op : operation_base<op> {
     using operation_category = comparison_operation;
-
-    template<typename T>
-        requires std::is_arithmetic_v<T>
-    friend constexpr auto specialization(Sgn, type_array<T>) noexcept {
-        return sgn_scalar;
-    }
 };
-inline constexpr Sgn sgn;
+} // namespace Sgn
+inline constexpr Sgn::op sgn;
 
 } // namespace ac

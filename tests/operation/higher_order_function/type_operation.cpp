@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/numeric/arithmetic/additive/add.hpp>
+#include <actl/numeric/arithmetic/additive/add_scalar.hpp>
 #include <actl/operation/higher_order_function/type_operation.hpp>
 
 /* type_operation is resolved into a placeholder

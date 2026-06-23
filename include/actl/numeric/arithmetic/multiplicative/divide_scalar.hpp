@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/multiplicative/divide.hpp>
 
 namespace ac {
 
-struct Divide;
-
 struct DivideScalar : operation_base<DivideScalar> {
-    using parent = Divide;
+    using parent = Divide::op;
 
     template<typename L, typename R>
     static constexpr auto evaluate(L l, R r) {
@@ -21,5 +19,13 @@ struct DivideScalar : operation_base<DivideScalar> {
     }
 };
 inline constexpr DivideScalar divide_scalar;
+
+namespace Divide {
+template<typename L, typename R>
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return divide_scalar;
+}
+} // namespace Divide
 
 } // namespace ac

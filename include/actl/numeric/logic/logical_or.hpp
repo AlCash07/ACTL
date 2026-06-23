@@ -6,22 +6,18 @@
 
 #pragma once
 
-#include <actl/numeric/logic/logical_or_scalar.hpp>
+#include <actl/numeric/logic/logical_operation.hpp>
 
 namespace ac {
 
-struct LogicalOr : operation_base<LogicalOr> {
+namespace LogicalOr {
+struct op : operation_base<op> {
     using operation_category = logical_operation;
 
     static constexpr auto identity_element = constant<false>{};
-
-    template<typename L, typename R>
-        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
-    friend constexpr auto specialization(LogicalOr, type_array<L, R>) noexcept {
-        return logical_or_scalar;
-    }
 };
-inline constexpr LogicalOr logical_or;
+} // namespace LogicalOr
+inline constexpr LogicalOr::op logical_or;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

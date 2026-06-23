@@ -7,15 +7,13 @@
 #pragma once
 
 #include <actl/numeric/constant_literals.hpp>
-#include <actl/operation/operation/operation_base.hpp>
+#include <actl/sequence/at.hpp>
 #include <actl/sequence/tuple/TupleConcept.hpp>
 
 namespace ac {
 
-struct At;
-
 struct AtTuple : operation_base<AtTuple> {
-    using parent = At;
+    using parent = At::op;
 
     template<Tuple T, auto Index>
     static constexpr auto evaluate(T t, constant<Index>) {
@@ -23,5 +21,12 @@ struct AtTuple : operation_base<AtTuple> {
     }
 };
 inline constexpr AtTuple at_tuple;
+
+namespace At {
+template<Tuple T, typename Index>
+constexpr auto specialization(op, type_array<T, Index>) noexcept {
+    return at_tuple;
+}
+} // namespace At
 
 } // namespace ac

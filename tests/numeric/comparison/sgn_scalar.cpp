@@ -4,8 +4,8 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/numeric/comparison/equality.hpp>
-#include <actl/numeric/comparison/sgn.hpp>
+#include <actl/numeric/comparison/equality_scalar.hpp>
+#include <actl/numeric/comparison/sgn_scalar.hpp>
 #include <limits>
 
 static_assert(1 == ac::sgn(std::numeric_limits<double>::max()));

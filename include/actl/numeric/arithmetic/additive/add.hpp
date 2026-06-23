@@ -6,28 +6,18 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/additive/add_scalar.hpp>
+#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
 
 namespace ac {
 
-struct Add : operation_base<Add> {
+namespace Add {
+struct op : operation_base<op> {
     using operation_category = additive_operation;
 
     static constexpr auto identity_element = 0_c;
-
-    template<typename L, typename R>
-        requires(std::integral<L> && std::integral<R>)
-    friend constexpr auto specialization(Add, type_array<L, R>) noexcept {
-        return add_integer;
-    }
-
-    template<typename L, typename R>
-        requires(std::floating_point<L> && std::floating_point<R>)
-    friend constexpr auto specialization(Add, type_array<L, R>) noexcept {
-        return add_float;
-    }
 };
-inline constexpr Add add;
+} // namespace Add
+inline constexpr Add::op add;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

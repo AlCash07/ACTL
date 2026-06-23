@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/compare_3way.hpp>
-#include <actl/numeric/comparison/ordering.hpp>
+#include <actl/numeric/comparison/compare_3way_scalar.hpp>
+#include <actl/numeric/comparison/ordering_scalar.hpp>
 #include <actl/numeric/constant_literals.hpp>
 #include <actl/operation/higher_order_function/all.hpp>
 #include <actl/range/traits/associated_types.hpp>
@@ -44,9 +44,11 @@ inline constexpr auto lexicographical_compare_range =
         ))
     );
 
+namespace IsLess {
 template<Range L, Range R>
-constexpr auto specialization(IsLess, type_array<L, R>) noexcept {
+constexpr auto specialization(op, type_array<L, R>) noexcept {
     return compare_3way < 0_c;
 }
+} // namespace IsLess
 
 } // namespace ac

@@ -6,20 +6,16 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/additive/negate_scalar.hpp>
+#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
 
 namespace ac {
 
-struct Negate : operation_base<Negate> {
+namespace Negate {
+struct op : operation_base<op> {
     using operation_category = additive_operation;
-
-    template<typename T>
-        requires std::is_arithmetic_v<T>
-    friend constexpr auto specialization(Negate, type_array<T>) noexcept {
-        return negate_scalar;
-    }
 };
-inline constexpr Negate negate;
+} // namespace Negate
+inline constexpr Negate::op negate;
 
 // unary minus
 template<typename T>

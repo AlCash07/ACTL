@@ -565,10 +565,12 @@ inline constexpr auto is_equal_tensor = IsEqualTensor{}(
     ))
 );
 
+namespace IsEqual {
 template<Tensor L, Tensor R>
-constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
+constexpr auto specialization(op, type_array<L, R>) noexcept {
     return is_equal_tensor;
 }
+} // namespace IsEqual
 
 /// N-dimensional array with dimensions completely or partially known at compile
 /// time.

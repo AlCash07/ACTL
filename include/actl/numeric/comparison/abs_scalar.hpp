@@ -6,15 +6,13 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/comparison_operation.hpp>
+#include <actl/numeric/comparison/abs.hpp>
 #include <cstdlib>
 
 namespace ac {
 
-struct Abs;
-
 struct AbsScalar : operation_base<AbsScalar> {
-    using parent = Abs;
+    using parent = Abs::op;
 
     template<typename T>
     static constexpr T evaluate(T t) {
@@ -27,5 +25,13 @@ struct AbsScalar : operation_base<AbsScalar> {
     }
 };
 inline constexpr AbsScalar abs_scalar;
+
+namespace Abs {
+template<typename T>
+    requires std::is_arithmetic_v<T>
+constexpr auto specialization(op, type_array<T>) noexcept {
+    return abs_scalar;
+}
+} // namespace Abs
 
 } // namespace ac

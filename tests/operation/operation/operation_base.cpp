@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/numeric/arithmetic/additive/add.hpp>
+#include <actl/numeric/arithmetic/additive/add_scalar.hpp>
 #include "test.hpp"
 
 TEST_CASE("operation_base with ac::inout argument is immediately evaluated") {

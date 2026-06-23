@@ -7,11 +7,11 @@
 #pragma once
 
 #include <actl/numeric/comparison/EqualityComparable.hpp>
-#include <actl/numeric/comparison/abs.hpp>
+#include <actl/numeric/comparison/abs_scalar.hpp>
 #include <actl/numeric/comparison/absolute_error.hpp>
-#include <actl/numeric/comparison/compare_3way.hpp>
+#include <actl/numeric/comparison/compare_3way_scalar.hpp>
 #include <actl/numeric/comparison/comparison_operation.hpp>
-#include <actl/numeric/comparison/equality.hpp>
+#include <actl/numeric/comparison/equality_scalar.hpp>
 #include <actl/numeric/comparison/min_max.hpp>
 #include <actl/numeric/comparison/ordering.hpp>
 #include <actl/numeric/comparison/sgn.hpp>

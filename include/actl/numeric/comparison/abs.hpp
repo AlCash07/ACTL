@@ -6,19 +6,15 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/abs_scalar.hpp>
+#include <actl/numeric/comparison/comparison_operation.hpp>
 
 namespace ac {
 
-struct Abs : operation_base<Abs> {
+namespace Abs {
+struct op : operation_base<op> {
     using operation_category = comparison_operation;
-
-    template<typename T>
-        requires std::is_arithmetic_v<T>
-    friend constexpr auto specialization(Abs, type_array<T>) noexcept {
-        return abs_scalar;
-    }
 };
-inline constexpr Abs abs;
+} // namespace Abs
+inline constexpr Abs::op abs;
 
 } // namespace ac

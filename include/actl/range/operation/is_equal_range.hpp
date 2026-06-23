@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/equality.hpp>
+#include <actl/numeric/comparison/equality_scalar.hpp>
 #include <actl/operation/higher_order_function/all.hpp>
 #include <actl/range/traits/associated_types.hpp>
 #include <algorithm>
@@ -36,9 +36,11 @@ inline constexpr auto is_equal_range = IsEqualRange{}(
     ))
 );
 
+namespace IsEqual {
 template<Range L, Range R>
-constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
+constexpr auto specialization(op, type_array<L, R>) noexcept {
     return is_equal_range;
 }
+} // namespace IsEqual
 
 } // namespace ac

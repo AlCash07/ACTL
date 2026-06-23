@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/additive/subtract.hpp>
 
 namespace ac {
 
-struct Subtract;
-
 struct SubtractScalar : operation_base<SubtractScalar> {
-    using parent = Subtract;
+    using parent = Subtract::op;
 
     template<typename L, typename R>
     static constexpr auto evaluate(L l, R r) {
@@ -21,5 +19,13 @@ struct SubtractScalar : operation_base<SubtractScalar> {
     }
 };
 inline constexpr SubtractScalar subtract_scalar;
+
+namespace Subtract {
+template<typename L, typename R>
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return subtract_scalar;
+}
+} // namespace Subtract
 
 } // namespace ac

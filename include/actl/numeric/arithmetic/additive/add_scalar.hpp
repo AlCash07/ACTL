@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/additive/add.hpp>
 
 namespace ac {
 
-struct Add;
-
 struct AddInteger : operation_base<AddInteger> {
-    using parent = Add;
+    using parent = Add::op;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
@@ -25,8 +23,16 @@ struct AddInteger : operation_base<AddInteger> {
 };
 inline constexpr AddInteger add_integer;
 
+namespace Add {
+template<typename L, typename R>
+    requires(std::integral<L> && std::integral<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return add_integer;
+}
+} // namespace Add
+
 struct AddFloat : operation_base<AddFloat> {
-    using parent = Add;
+    using parent = Add::op;
 
     // floating point addition is neither associative nor commutative
 
@@ -36,5 +42,13 @@ struct AddFloat : operation_base<AddFloat> {
     }
 };
 inline constexpr AddFloat add_float;
+
+namespace Add {
+template<typename L, typename R>
+    requires(std::floating_point<L> && std::floating_point<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return add_float;
+}
+} // namespace Add
 
 } // namespace ac

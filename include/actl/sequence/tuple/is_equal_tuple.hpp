@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/equality.hpp>
-#include <actl/numeric/logic/logical_and.hpp>
+#include <actl/numeric/comparison/equality_scalar.hpp>
+#include <actl/numeric/logic/logical_and_scalar.hpp>
 #include <actl/operation/arg.hpp>
 #include <actl/sequence/tuple/at_tuple.hpp>
 
@@ -21,11 +21,13 @@ constexpr auto equal_tuple_resolver(std::index_sequence<Is...>) noexcept {
     );
 }
 
+namespace IsEqual {
 template<Tuple L, Tuple R>
-constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
+constexpr auto specialization(op, type_array<L, R>) noexcept {
     // TODO: consider returning constant<false> for tuples of different sizes.
     static_assert(std::tuple_size_v<L> == std::tuple_size_v<R>);
     return equal_tuple_resolver(tuple_indices_t<L>{});
 }
+} // namespace IsEqual
 
 } // namespace ac

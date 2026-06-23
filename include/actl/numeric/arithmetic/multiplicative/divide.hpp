@@ -6,20 +6,16 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/multiplicative/divide_scalar.hpp>
+#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
 
 namespace ac {
 
-struct Divide : operation_base<Divide> {
+namespace Divide {
+struct op : operation_base<op> {
     using operation_category = multiplicative_operation;
-
-    template<typename L, typename R>
-        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
-    friend constexpr auto specialization(Divide, type_array<L, R>) noexcept {
-        return divide_scalar;
-    }
 };
-inline constexpr Divide divide;
+} // namespace Divide
+inline constexpr Divide::op divide;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

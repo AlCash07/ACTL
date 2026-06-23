@@ -6,22 +6,18 @@
 
 #pragma once
 
-#include <actl/numeric/bit/bit_xor_scalar.hpp>
+#include <actl/numeric/bit/bit_operation.hpp>
 
 namespace ac {
 
-struct BitXor : operation_base<BitXor> {
+namespace BitXor {
+struct op : operation_base<op> {
     using operation_category = bitwise_operation;
 
     static constexpr auto identity_element = 0_c;
-
-    template<typename L, typename R>
-        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
-    friend constexpr auto specialization(BitXor, type_array<L, R>) noexcept {
-        return bit_xor_scalar;
-    }
 };
-inline constexpr BitXor bit_xor;
+} // namespace BitXor
+inline constexpr BitXor::op bit_xor;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

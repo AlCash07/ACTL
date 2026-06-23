@@ -6,16 +6,13 @@
 
 #pragma once
 
-#include <actl/sequence/tuple/at_tuple.hpp>
+#include <actl/operation/operation/operation_base.hpp>
 
 namespace ac {
 
-struct At : operation_base<At> {
-    template<Tuple T, typename Index>
-    friend constexpr auto specialization(At, type_array<T, Index>) noexcept {
-        return at_tuple;
-    }
-};
-inline constexpr At at;
+namespace At {
+struct op : operation_base<op> {};
+} // namespace At
+inline constexpr At::op at;
 
 } // namespace ac

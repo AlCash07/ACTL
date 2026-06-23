@@ -6,20 +6,16 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/additive/subtract_scalar.hpp>
+#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
 
 namespace ac {
 
-struct Subtract : operation_base<Subtract> {
+namespace Subtract {
+struct op : operation_base<op> {
     using operation_category = additive_operation;
-
-    template<typename L, typename R>
-        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
-    friend constexpr auto specialization(Subtract, type_array<L, R>) noexcept {
-        return subtract_scalar;
-    }
 };
-inline constexpr Subtract subtract;
+} // namespace Subtract
+inline constexpr Subtract::op subtract;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

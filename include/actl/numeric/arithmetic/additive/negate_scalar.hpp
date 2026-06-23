@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/arithmetic_operation.hpp>
+#include <actl/numeric/arithmetic/additive/negate.hpp>
 
 namespace ac {
 
-struct Negate;
-
 struct NegateScalar : operation_base<NegateScalar> {
-    using parent = Negate;
+    using parent = Negate::op;
 
     template<typename T>
     static constexpr auto evaluate(T t) {
@@ -21,5 +19,13 @@ struct NegateScalar : operation_base<NegateScalar> {
     }
 };
 inline constexpr NegateScalar negate_scalar;
+
+namespace Negate {
+template<typename T>
+    requires std::is_arithmetic_v<T>
+constexpr auto specialization(op, type_array<T>) noexcept {
+    return negate_scalar;
+}
+} // namespace Negate
 
 } // namespace ac

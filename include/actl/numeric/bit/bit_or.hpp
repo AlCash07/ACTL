@@ -6,22 +6,18 @@
 
 #pragma once
 
-#include <actl/numeric/bit/bit_or_scalar.hpp>
+#include <actl/numeric/bit/bit_operation.hpp>
 
 namespace ac {
 
-struct BitOr : operation_base<BitOr> {
+namespace BitOr {
+struct op : operation_base<op> {
     using operation_category = bitwise_operation;
 
     static constexpr auto identity_element = 0_c;
-
-    template<typename L, typename R>
-        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
-    friend constexpr auto specialization(BitOr, type_array<L, R>) noexcept {
-        return bit_or_scalar;
-    }
 };
-inline constexpr BitOr bit_or;
+} // namespace BitOr
+inline constexpr BitOr::op bit_or;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

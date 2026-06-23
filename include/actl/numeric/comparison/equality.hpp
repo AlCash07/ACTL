@@ -6,21 +6,17 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/is_equal_scalar.hpp>
+#include <actl/numeric/comparison/comparison_operation.hpp>
 #include <actl/numeric/logic/logical_not.hpp>
 
 namespace ac {
 
-struct IsEqual : operation_base<IsEqual> {
+namespace IsEqual {
+struct op : operation_base<op> {
     using operation_category = equality_operation;
-
-    template<typename L, typename R>
-        requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
-    friend constexpr auto specialization(IsEqual, type_array<L, R>) noexcept {
-        return is_equal_scalar;
-    }
 };
-inline constexpr IsEqual is_equal;
+} // namespace IsEqual
+inline constexpr IsEqual::op is_equal;
 
 template<typename L, typename R>
     requires EnableOperators<L, R>

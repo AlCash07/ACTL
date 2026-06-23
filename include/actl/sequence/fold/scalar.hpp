@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/additive/add.hpp>
+#include <actl/numeric/arithmetic/additive/add_scalar.hpp>
 #include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
 #include <actl/numeric/comparison/min_max.hpp>
 #include <actl/sequence/fold/fold.hpp>

@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/logic/logical_operation.hpp>
+#include <actl/numeric/logic/logical_or.hpp>
 
 namespace ac {
 
-struct LogicalOr;
-
 struct LogicalOrScalar : operation_base<LogicalOrScalar> {
-    using parent = LogicalOr;
+    using parent = LogicalOr::op;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
@@ -24,5 +22,13 @@ struct LogicalOrScalar : operation_base<LogicalOrScalar> {
     }
 };
 inline constexpr LogicalOrScalar logical_or_scalar;
+
+namespace LogicalOr {
+template<typename L, typename R>
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return logical_or_scalar;
+}
+} // namespace LogicalOr
 
 } // namespace ac

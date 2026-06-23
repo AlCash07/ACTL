@@ -6,20 +6,16 @@
 
 #pragma once
 
-#include <actl/numeric/logic/logical_not_scalar.hpp>
+#include <actl/numeric/logic/logical_operation.hpp>
 
 namespace ac {
 
-struct LogicalNot : operation_base<LogicalNot> {
+namespace LogicalNot {
+struct op : operation_base<op> {
     using operation_category = logical_operation;
-
-    template<typename T>
-        requires std::is_arithmetic_v<T>
-    friend constexpr auto specialization(LogicalNot, type_array<T>) noexcept {
-        return logical_not_scalar;
-    }
 };
-inline constexpr LogicalNot logical_not;
+} // namespace LogicalNot
+inline constexpr LogicalNot::op logical_not;
 
 template<typename T>
     requires EnableOperators<T>

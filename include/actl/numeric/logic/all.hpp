@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/numeric/logic/logical_and.hpp>
+#include <actl/numeric/logic/logical_and_scalar.hpp>
 #include <actl/numeric/logic/logical_implies.hpp>
-#include <actl/numeric/logic/logical_not.hpp>
-#include <actl/numeric/logic/logical_or.hpp>
+#include <actl/numeric/logic/logical_not_scalar.hpp>
+#include <actl/numeric/logic/logical_or_scalar.hpp>

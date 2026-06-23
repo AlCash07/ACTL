@@ -6,24 +6,15 @@
 
 #pragma once
 
-#include <actl/numeric/comparison/compare_3way_scalar.hpp>
+#include <actl/numeric/comparison/comparison_operation.hpp>
 
 namespace ac {
 
-struct Compare3Way : operation_base<Compare3Way> {
+namespace Compare3Way {
+struct op : operation_base<op> {
     using operation_category = ordering_operation;
-
-    template<typename L, typename R>
-        requires(
-            (is_constant_v<L> || std::is_arithmetic_v<L>) &&
-            (is_constant_v<R> || std::is_arithmetic_v<R>)
-        )
-    friend constexpr auto specialization(
-        Compare3Way, type_array<L, R>
-    ) noexcept {
-        return compare_3way_scalar;
-    }
 };
-inline constexpr Compare3Way compare_3way;
+} // namespace Compare3Way
+inline constexpr Compare3Way::op compare_3way;
 
 } // namespace ac

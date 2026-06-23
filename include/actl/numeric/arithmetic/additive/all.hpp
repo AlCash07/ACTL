@@ -6,6 +6,6 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/additive/add.hpp>
-#include <actl/numeric/arithmetic/additive/negate.hpp>
-#include <actl/numeric/arithmetic/additive/subtract.hpp>
+#include <actl/numeric/arithmetic/additive/add_scalar.hpp>
+#include <actl/numeric/arithmetic/additive/negate_scalar.hpp>
+#include <actl/numeric/arithmetic/additive/subtract_scalar.hpp>

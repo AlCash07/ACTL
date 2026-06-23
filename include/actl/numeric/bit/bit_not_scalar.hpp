@@ -6,19 +6,25 @@
 
 #pragma once
 
-#include <actl/numeric/bit/bit_operation.hpp>
+#include <actl/numeric/bit/bit_not.hpp>
 
 namespace ac {
 
-struct BitNot;
-
 struct BitNotScalar : operation_base<BitNotScalar> {
-    using parent = BitNot;
+    using parent = BitNot::op;
 
     static constexpr auto evaluate(std::integral auto i) {
         return ~i;
     }
 };
 inline constexpr BitNotScalar bit_not_scalar;
+
+namespace BitNot {
+template<typename T>
+    requires std::is_arithmetic_v<T>
+constexpr auto specialization(op, type_array<T>) noexcept {
+    return bit_not_scalar;
+}
+} // namespace BitNot
 
 } // namespace ac

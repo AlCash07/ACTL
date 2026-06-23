@@ -6,20 +6,16 @@
 
 #pragma once
 
-#include <actl/numeric/bit/bit_not_scalar.hpp>
+#include <actl/numeric/bit/bit_operation.hpp>
 
 namespace ac {
 
-struct BitNot : operation_base<BitNot> {
+namespace BitNot {
+struct op : operation_base<op> {
     using operation_category = bitwise_operation;
-
-    template<typename T>
-        requires std::is_arithmetic_v<T>
-    friend constexpr auto specialization(BitNot, type_array<T>) noexcept {
-        return bit_not_scalar;
-    }
 };
-inline constexpr BitNot bit_not;
+} // namespace BitNot
+inline constexpr BitNot::op bit_not;
 
 template<typename T>
     requires EnableOperators<T>

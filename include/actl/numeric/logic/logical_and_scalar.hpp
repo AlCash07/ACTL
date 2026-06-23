@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/numeric/logic/logical_operation.hpp>
+#include <actl/numeric/logic/logical_and.hpp>
 
 namespace ac {
 
-struct LogicalAnd;
-
 struct LogicalAndScalar : operation_base<LogicalAndScalar> {
-    using parent = LogicalAnd;
+    using parent = LogicalAnd::op;
 
     static constexpr bool is_associative = true;
     static constexpr bool is_commutative = true;
@@ -24,5 +22,13 @@ struct LogicalAndScalar : operation_base<LogicalAndScalar> {
     }
 };
 inline constexpr LogicalAndScalar logical_and_scalar;
+
+namespace LogicalAnd {
+template<typename L, typename R>
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
+constexpr auto specialization(op, type_array<L, R>) noexcept {
+    return logical_and_scalar;
+}
+} // namespace LogicalAnd
 
 } // namespace ac

@@ -6,5 +6,5 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/multiplicative/divide.hpp>
-#include <actl/numeric/arithmetic/multiplicative/multiply.hpp>
+#include <actl/numeric/arithmetic/multiplicative/divide_scalar.hpp>
+#include <actl/numeric/arithmetic/multiplicative/multiply_scalar.hpp>

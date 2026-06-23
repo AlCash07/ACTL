@@ -4,7 +4,7 @@
 // (see accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt).
 
-#include <actl/numeric/comparison/ordering.hpp>
+#include <actl/numeric/comparison/ordering_scalar.hpp>
 
 static_assert(true == ac::is_less(2, 6));
 static_assert(false == ac::is_less(2, 2));

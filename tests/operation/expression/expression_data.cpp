@@ -4,7 +4,7 @@
 // (See accompanying file LICENSE.txt or copy at
 //   http://www.boost.org/LICENSE_1_0.txt)
 
-#include <actl/numeric/arithmetic/additive/add.hpp>
+#include <actl/numeric/arithmetic/additive/add_scalar.hpp>
 #include <actl/numeric/constant.hpp>
 #include <actl/operation/operation/operation_base.hpp>
 #include "lifetime/int_move_copy.hpp"

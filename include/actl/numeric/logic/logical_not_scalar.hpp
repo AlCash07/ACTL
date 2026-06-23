@@ -6,19 +6,25 @@
 
 #pragma once
 
-#include <actl/numeric/logic/logical_operation.hpp>
+#include <actl/numeric/logic/logical_not.hpp>
 
 namespace ac {
 
-struct LogicalNot;
-
 struct LogicalNotScalar : operation_base<LogicalNotScalar> {
-    using parent = LogicalNot;
+    using parent = LogicalNot::op;
 
     static constexpr auto evaluate(std::same_as<bool> auto b) {
         return !b;
     }
 };
 inline constexpr LogicalNotScalar logical_not_scalar;
+
+namespace LogicalNot {
+template<typename T>
+    requires std::is_arithmetic_v<T>
+constexpr auto specialization(op, type_array<T>) noexcept {
+    return logical_not_scalar;
+}
+} // namespace LogicalNot
 
 } // namespace ac

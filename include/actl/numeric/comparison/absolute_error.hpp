@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <actl/numeric/arithmetic/additive/subtract.hpp>
-#include <actl/numeric/comparison/abs.hpp>
-#include <actl/numeric/comparison/equality.hpp>
-#include <actl/numeric/comparison/ordering.hpp>
+#include <actl/numeric/arithmetic/additive/subtract_scalar.hpp>
+#include <actl/numeric/comparison/abs_scalar.hpp>
+#include <actl/numeric/comparison/equality_scalar.hpp>
+#include <actl/numeric/comparison/ordering_scalar.hpp>
 #include <actl/operation/arg.hpp>
 
 namespace ac {
