@@ -56,13 +56,17 @@ template<Operation Op, size_t... Is, typename... Args>
 constexpr decltype(auto) eval(
     expression_data<Op, std::index_sequence<Is...>, Args...> const& expression
 ) {
-    auto&& operation =
+    auto&& resolved =
         resolve_operation<Op, result_t<Args const&>...>(expression.operation);
-    return operation.evaluate(
-        detail::prepare_argument<decltype(operation), Is>(
-            expression.arguments[constant<Is>{}]
-        )...
-    );
+    using Resolved = decltype(resolved);
+    if constexpr (Operation<Resolved>)
+        return resolved.evaluate(
+            detail::prepare_argument<Resolved, Is>(
+                expression.arguments[constant<Is>{}]
+            )...
+        );
+    else
+        return eval(std::forward<Resolved>(resolved));
 }
 
 template<typename Target, Operation Op, size_t... Is, typename... Args>

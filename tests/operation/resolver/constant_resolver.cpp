@@ -12,4 +12,4 @@ using namespace ac::constant_literals;
 static_assert(ac::is_equal_same_type(3, eval(ac::add(1, 2))));
 static_assert(ac::is_equal_same_type(3, eval(ac::add(1, 2_c))));
 static_assert(ac::is_equal_same_type(3, eval(ac::add(1_c, 2))));
-// static_assert(ac::is_equal_same_type(3, eval(ac::add(1_c, 2_c))));
+static_assert(ac::is_equal_same_type(3, eval(ac::add(1_c, 2_c))));
