@@ -13,11 +13,22 @@
 namespace ac {
 
 template<template<typename> typename Trait, typename Arg>
-struct TypeOperation {
+struct TypeOperation;
+
+template<template<typename> typename Trait, size_t I, size_t N>
+struct TypeOperation<Trait, Arg<I, N>> {
     // Without this operator(), we'd have to make Placeholder an operation.
     template<typename... Args>
     constexpr auto operator()(Args&&...) const {
         return specialization(*this, type_array<raw_t<Args>...>{});
+    }
+
+    template<typename ArgsArray>
+    friend constexpr auto specialization(TypeOperation, ArgsArray) noexcept {
+        static_assert(N == ArgsArray::length);
+        return Placeholder<
+            typename Trait<at_t<ArgsArray, I>>::type,
+            Arg<I, N>>{};
     }
 };
 
@@ -26,17 +37,5 @@ inline constexpr TypeOperation<Trait, Arg> type_operation;
 
 template<template<typename> typename Trait, typename Arg>
 struct is_operation<TypeOperation<Trait, Arg>> : std::true_type {};
-
-template<
-    template<typename> typename Trait,
-    size_t I,
-    size_t N,
-    typename ArgsArray>
-constexpr auto specialization(
-    TypeOperation<Trait, Arg<I, N>>, ArgsArray
-) noexcept {
-    static_assert(N == ArgsArray::length);
-    return Placeholder<typename Trait<at_t<ArgsArray, I>>::type, Arg<I, N>>{};
-}
 
 } // namespace ac
