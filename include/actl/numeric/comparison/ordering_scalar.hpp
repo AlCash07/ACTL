@@ -23,10 +23,7 @@ inline constexpr IsLessScalar is_less_scalar;
 
 namespace IsLess {
 template<typename L, typename R>
-    requires(
-        (is_constant_v<L> || std::is_arithmetic_v<L>) &&
-        (is_constant_v<R> || std::is_arithmetic_v<R>)
-    )
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
 constexpr auto specialization(op, type_array<L, R>) noexcept {
     return is_less_scalar;
 }

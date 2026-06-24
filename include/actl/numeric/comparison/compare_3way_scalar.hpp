@@ -25,10 +25,7 @@ inline constexpr Compare3WayScalar compare_3way_scalar;
 
 namespace Compare3Way {
 template<typename L, typename R>
-    requires(
-        (is_constant_v<L> || std::is_arithmetic_v<L>) &&
-        (is_constant_v<R> || std::is_arithmetic_v<R>)
-    )
+    requires(std::is_arithmetic_v<L> && std::is_arithmetic_v<R>)
 constexpr auto specialization(op, type_array<L, R>) noexcept {
     return compare_3way_scalar;
 }

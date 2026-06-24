@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <actl/operation/policy/policy.hpp>
+#include <actl/operation/expression/raw.hpp>
 #include <actl/sequence/type_array/type_array.hpp>
 
 namespace ac {
@@ -19,6 +19,9 @@ struct identity_resolver {
         return std::forward<T>(t);
     }
 };
+
+template<Operation Op, typename Args, typename Indices, typename... Policies>
+struct constant_resolver;
 
 template<Operation Op, typename ArgsArray, typename... Policies>
 struct specialization_resolver : identity_resolver {};
@@ -38,66 +41,10 @@ inline constexpr bool is_operation_resolved_v = requires {
     typename operation_resolver<raw_t<Op>, ArgsArray, Policies...>::is_resolved;
 };
 
-/* implementation */
-
 // Operation expressions can contain leaf nodes with values
 // instead of operations. Their resolution is handled here.
 template<typename T, typename ArgsArray, typename... Policies>
     requires(!Operation<T>)
 struct operation_resolver<T, ArgsArray, Policies...> : identity_resolver {};
-
-template<
-    Operation Op,
-    typename ArgsArray,
-    typename TopPolicy,
-    typename... Policies>
-    requires can_apply_any_policy_v<ArgsArray, Op, TopPolicy, Policies...>
-struct policy_resolver<Op, ArgsArray, TopPolicy, Policies...> {
-    template<typename Op1>
-    constexpr auto operator()(
-        Op1&& op, TopPolicy const& top_policy, Policies const&... policies
-    ) const {
-        auto&& new_op = [&] {
-            if constexpr (can_apply_policy_v<ArgsArray, Op, TopPolicy>)
-                return apply_policy(
-                    std::forward<Op1>(op), top_policy, ArgsArray{}
-                );
-            else
-                return std::forward<Op1>(op);
-        }();
-        using resolver =
-            operation_resolver<raw_t<decltype(new_op)>, ArgsArray, Policies...>;
-        return resolver{}(std::forward<decltype(new_op)>(new_op), policies...);
-    }
-};
-
-template<Operation Op, typename ArgsArray, typename... Policies>
-    requires requires { specialization(std::declval<Op>(), ArgsArray{}); }
-struct specialization_resolver<Op, ArgsArray, Policies...> {
-    template<typename Op1>
-    constexpr auto operator()(
-        Op1&& op, Policies const&... policies
-    ) const noexcept {
-        auto&& new_op = specialization(std::forward<Op1>(op), ArgsArray{});
-        return operation_resolver<
-            raw_t<decltype(new_op)>,
-            ArgsArray,
-            Policies...>{}(std::forward<decltype(new_op)>(new_op), policies...);
-    }
-};
-
-template<Operation Op, typename... Args, typename... Policies>
-    requires(
-        !requires(Op op, Args&&... args) { op.evaluate(args...); } &&
-        !requires(Op op) { specialization(op, type_array<Args...>{}); }
-    )
-struct specialization_resolver<Op, type_array<Args...>, Policies...> {
-    // Error here means that the operation cannot be evaluated for the given
-    // arguments, and there are no specializations found to mitigate that.
-    // Dummy type is defined to produce a helpful compilation error that
-    // explains why all the found specializations didn't match.
-    using _ =
-        decltype(specialization(std::declval<Op>(), type_array<Args...>{}));
-};
 
 } // namespace ac
