@@ -16,7 +16,10 @@ namespace ac {
 struct Compare3WayScalar : operation_base<Compare3WayScalar> {
     using parent = Compare3Way::op;
 
-    static constexpr auto formula = as<int>(is_greater) - as<int>(is_less);
+    template<typename Args>
+    friend constexpr auto specialization(Compare3WayScalar, Args) noexcept {
+        return as<int>(is_greater) - as<int>(is_less);
+    }
 };
 inline constexpr Compare3WayScalar compare_3way_scalar;
 

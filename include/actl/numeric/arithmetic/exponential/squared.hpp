@@ -14,7 +14,10 @@ namespace ac {
 struct Squared : operation_base<Squared> {
     using operation_category = exponential_operation;
 
-    static constexpr auto formula = t_ * t_;
+    template<typename ArgsArray>
+    friend constexpr auto specialization(Squared, ArgsArray) noexcept {
+        return t_ * t_;
+    }
 };
 inline constexpr Squared squared;
 

@@ -16,7 +16,10 @@ namespace ac {
 struct SgnScalar : operation_base<SgnScalar> {
     using parent = Sgn::op;
 
-    static constexpr auto formula = compare_3way(t_, 0_c);
+    template<typename ArgsArray>
+    friend constexpr auto specialization(SgnScalar, ArgsArray) noexcept {
+        return compare_3way(t_, 0_c);
+    }
 };
 inline constexpr SgnScalar sgn_scalar;
 

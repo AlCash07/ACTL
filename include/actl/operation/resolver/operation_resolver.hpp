@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/operation/policy/policy.hpp>
-#include <actl/operation/resolver/specialization.hpp>
+#include <actl/sequence/type_array/type_array.hpp>
 
 namespace ac {
 

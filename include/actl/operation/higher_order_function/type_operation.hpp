@@ -8,7 +8,6 @@
 
 #include <actl/operation/arg.hpp>
 #include <actl/operation/higher_order_function/placeholder.hpp>
-#include <actl/operation/resolver/specialization.hpp>
 #include <actl/sequence/type_array/at.hpp>
 
 namespace ac {
