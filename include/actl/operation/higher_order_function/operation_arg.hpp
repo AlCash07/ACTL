@@ -7,7 +7,7 @@
 #pragma once
 
 #include <actl/operation/higher_order_function/strip_placeholders.hpp>
-#include <actl/operation/operation/operation_base.hpp>
+#include <actl/operation/operation_base.hpp>
 
 namespace ac {
 

@@ -7,8 +7,8 @@
 #pragma once
 
 #include <actl/functional/noexcept/AC_DEDUCE_NOEXCEPT_AND_RETURN.hpp>
-#include <actl/operation/operation/Operation.hpp>
-#include <actl/operation/operation/inout.hpp>
+#include <actl/operation/Operation.hpp>
+#include <actl/operation/evaluation/inout.hpp>
 #include <actl/operation/policy/tuned_operation.hpp>
 #include <actl/operation/resolver/all.hpp>
 

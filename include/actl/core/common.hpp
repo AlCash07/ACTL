@@ -8,7 +8,7 @@
 
 #include <actl/AC_ASSERT.hpp>
 #include <actl/core/none.hpp>
-#include <actl/operation/operation/operation_base.hpp>
+#include <actl/operation/operation_base.hpp>
 
 namespace ac {
 

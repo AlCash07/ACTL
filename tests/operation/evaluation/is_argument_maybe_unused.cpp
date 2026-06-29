@@ -5,7 +5,7 @@
 //   http://www.boost.org/LICENSE_1_0.txt)
 
 #include <actl/operation/evaluation/is_argument_maybe_unused.hpp>
-#include <actl/operation/operation/operation_base.hpp>
+#include <actl/operation/operation_base.hpp>
 
 struct Empty : ac::operation_base<Empty> {};
 

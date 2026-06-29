@@ -6,7 +6,7 @@
 
 #include <actl/numeric/arithmetic/additive/add_scalar.hpp>
 #include <actl/numeric/constant.hpp>
-#include <actl/operation/operation/operation_base.hpp>
+#include <actl/operation/operation_base.hpp>
 #include "lifetime/int_move_copy.hpp"
 #include "test.hpp"
 
