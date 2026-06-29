@@ -20,7 +20,7 @@ struct tuned_operation : operation_base<tuned_operation<Op, Policy>> {
 };
 
 template<Operation Op, Policy P>
-constexpr auto operator|(Op&& op, P&& policy) {
+constexpr auto tune(Op&& op, P&& policy) {
     return tuned_operation<value_if_cheap_t<Op>, value_if_cheap_t<P>>{
         {}, std::forward<Op>(op), std::forward<P>(policy)
     };

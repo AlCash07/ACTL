@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <actl/operation/policy/policy.hpp>
+#include <type_traits> // for std::remove_cvref_t
 
 namespace ac {
 
 template<typename... Ts>
 concept EnableOperators =
-    (... || (requires {
-         typename std::remove_cvref_t<Ts>::enable_operators;
-     })) && !(... || Policy<Ts>);
+    (... || (requires { typename std::remove_cvref_t<Ts>::enable_operators; }));
 
 } // namespace ac

@@ -19,13 +19,13 @@ struct Eps {
 constexpr ac::absolute_error<Eps> eps_policy;
 
 TEST_CASE("equal") {
-    constexpr auto abs_equal = ac::is_equal | eps_policy;
+    constexpr auto abs_equal = tune(ac::is_equal, eps_policy);
     CHECK(abs_equal(0.0, eps));
     CHECK_FALSE(abs_equal(0.0, eps + ac::squared(eps)));
 }
 
 TEST_CASE("less") {
-    constexpr auto abs_less = ac::is_less | eps_policy;
+    constexpr auto abs_less = tune(ac::is_less, eps_policy);
     CHECK_FALSE(ac::is_less(0.0, -eps));
     CHECK(ac::is_less(-eps, 0.0));
     CHECK_FALSE(abs_less(-eps, 0.0));
