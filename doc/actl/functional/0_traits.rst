@@ -135,6 +135,19 @@ Function type assembly
 
 .. ac-tests:: tests/functional/traits/
 
+`constexpr`
+-----------
+
+Checks for `constexpr` are very different from other traits,
+but this is the most relevant place to put them.
+
+.. ac-include:: actl/functional/traits/constexpr.hpp
+
+.. doxygenfunction:: ac::is_constexpr(...)
+.. doxygendefine:: AC_REQUIRES_CONSTEXPR
+
+.. ac-tests:: tests/functional/traits/constexpr.cpp
+
 Design
 ======
 
@@ -150,7 +163,7 @@ supports qualified free function types like
 
 .. code::
 
-  Return(Args...) const volatile &
+  Return(Parameters...) const volatile &
 
 These types indeed exist in C++, but declaring a function like
 `void f() const {}` results in a compilation error.

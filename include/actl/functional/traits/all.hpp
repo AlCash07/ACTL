@@ -9,6 +9,7 @@
 #include <actl/functional/traits/FreeFunction.hpp>
 #include <actl/functional/traits/FunctionObject.hpp>
 #include <actl/functional/traits/MemberFunction.hpp>
+#include <actl/functional/traits/constexpr.hpp>
 #include <actl/functional/traits/function_traits.hpp>
 #include <actl/functional/traits/member_qualifiers.hpp>
 #include <actl/functional/traits/member_traits.hpp>
