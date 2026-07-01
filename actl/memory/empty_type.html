@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>AC_NO_UNIQUE_ADDRESS &#8212; ACTL  documentation</title>
+    <title>Empty type optimizations &#8212; ACTL  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
     <script src="../../_static/documentation_options.js?v=7f41d439"></script>
@@ -85,9 +85,11 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">AC_NO_UNIQUE_ADDRESS</a><ul>
+<li><a class="reference internal" href="#">Empty type optimizations</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac12EmptyTrivialE"><code class="docutils literal notranslate"><span class="pre">EmptyTrivial</span></code></a></li>
 <li><a class="reference internal" href="#c.AC_NO_UNIQUE_ADDRESS"><code class="docutils literal notranslate"><span class="pre">AC_NO_UNIQUE_ADDRESS</span></code></a></li>
+<li><a class="reference internal" href="#c.AC_EMPTY_BASES"><code class="docutils literal notranslate"><span class="pre">AC_EMPTY_BASES</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -135,9 +137,11 @@
   <div class="row">
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
-<li><a class="reference internal" href="#">AC_NO_UNIQUE_ADDRESS</a><ul>
+<li><a class="reference internal" href="#">Empty type optimizations</a><ul>
 <li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#_CPPv4I0EN2ac12EmptyTrivialE"><code class="docutils literal notranslate"><span class="pre">EmptyTrivial</span></code></a></li>
 <li><a class="reference internal" href="#c.AC_NO_UNIQUE_ADDRESS"><code class="docutils literal notranslate"><span class="pre">AC_NO_UNIQUE_ADDRESS</span></code></a></li>
+<li><a class="reference internal" href="#c.AC_EMPTY_BASES"><code class="docutils literal notranslate"><span class="pre">AC_EMPTY_BASES</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -163,8 +167,8 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <section id="ac-no-unique-address">
-<h1>AC_NO_UNIQUE_ADDRESS<a class="headerlink" href="#ac-no-unique-address" title="Link to this heading">¶</a></h1>
+  <section id="empty-type-optimizations">
+<h1>Empty type optimizations<a class="headerlink" href="#empty-type-optimizations" title="Link to this heading">¶</a></h1>
 <p>C++20 introduced
 <a class="reference external" href="https://en.cppreference.com/w/cpp/language/attributes/no_unique_address">[[no_unique_address]]</a>
 attribute, which makes empty class fields not waste any memory.
@@ -177,20 +181,46 @@ which is very inconvenient and doesn’t work for <code class="code highlight cp
 <p>Unfortunately, the standard attribute is ignored in the current MSVC version.
 For portability we need a custom wrapper until that’s fixed. See
 <a class="reference external" href="https://devblogs.microsoft.com/cppblog/msvc-cpp20-and-the-std-cpp20-switch/#c20-no_unique_address">MSVC blog</a>,
-<a class="reference external" href="https://github.com/microsoft/STL/issues/1364">github issue</a>.</p>
+<a class="reference external" href="https://github.com/microsoft/STL/issues/1364">github issue</a>.
+Moreover, MSVC has issues with multiple inheritance support,
+requiring even move workarounds:
+<a class="reference external" href="https://devblogs.microsoft.com/cppblog/optimizing-the-layout-of-empty-base-classes-in-vs2015-update-2-3">MSVC blog</a>.</p>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h2>
-<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/memory/AC_NO_UNIQUE_ADDRESS.hpp">actl/memory/AC_NO_UNIQUE_ADDRESS.hpp</a>&gt;</pre>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/memory/empty_type/EmptyTrivial.hpp">actl/memory/empty_type/EmptyTrivial.hpp</a>&gt;</pre>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN2ac12EmptyTrivialE">
+<span id="_CPPv3I0EN2ac12EmptyTrivialE"></span><span id="_CPPv2I0EN2ac12EmptyTrivialE"></span><span class="target" id="conceptac_1_1_empty_trivial"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EmptyTrivial</span></span></span><a class="headerlink" href="#_CPPv4I0EN2ac12EmptyTrivialE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<p>Concept of an empty type with an additional requirement to be trivial.</p>
+<p>Objects of such type can be efficiently created on the fly instead of adding <code class="docutils literal notranslate"><span class="pre">[[no_unique_address]]</span></code> complexity for efficient storage. Even with <code class="docutils literal notranslate"><span class="pre">[[no_unique_address]]</span></code>, storage can use extra memory in case the same empty type is used multiple times.</p>
+<p>Having all of default/copy/move constructors and destructor to be trivial, that is no-op for an empty type, implies that creating an object on the fly instead of storing it has the same observable behavior.</p>
+<p>This requirement holds for the typical use cases for empty types, such as function objects. </p>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/memory/empty_type/EmptyTrivial.cpp">tests/memory/empty_type/EmptyTrivial.cpp</a></p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp">actl/memory/empty_type/AC_NO_UNIQUE_ADDRESS.hpp</a>&gt;</pre>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.AC_NO_UNIQUE_ADDRESS">
 <span class="target" id="_a_c___n_o___u_n_i_q_u_e___a_d_d_r_e_s_s_8hpp_1aa0d53dd00e9ce375208fe38b731e09d5"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_NO_UNIQUE_ADDRESS</span></span></span><a class="headerlink" href="#c.AC_NO_UNIQUE_ADDRESS" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Portable replacement for <code class="docutils literal notranslate"><span class="pre">[[no_unique_address]]</span></code> attribute. </p>
 </dd></dl>
 
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/memory/empty_type/AC_NO_UNIQUE_ADDRESS.cpp">tests/memory/empty_type/AC_NO_UNIQUE_ADDRESS.cpp</a></p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/memory/empty_type/AC_EMPTY_BASES.hpp">actl/memory/empty_type/AC_EMPTY_BASES.hpp</a>&gt;</pre>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AC_EMPTY_BASES">
+<span class="target" id="_a_c___e_m_p_t_y___b_a_s_e_s_8hpp_1adcdd4935ae725404fc8dd7316a00b13a"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_EMPTY_BASES</span></span></span><a class="headerlink" href="#c.AC_EMPTY_BASES" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Workaround to make EBO work as expected on MSVC with multiple inheritance: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AC_EMPTY_BASES</span><span class="w"> </span><span class="n">derived</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">empty1</span><span class="p">,</span><span class="w"> </span><span class="n">empty2</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">derived</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</pre></div>
 </div>
-<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/memory/AC_NO_UNIQUE_ADDRESS.cpp">tests/memory/AC_NO_UNIQUE_ADDRESS.cpp</a></p>
+</p>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/memory/empty_type/AC_EMPTY_BASES.cpp">tests/memory/empty_type/AC_EMPTY_BASES.cpp</a></p>
 </section>
 </section>
 

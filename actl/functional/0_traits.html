@@ -134,6 +134,11 @@
 <li><a class="reference internal" href="#_CPPv4I0EN2ac18as_free_function_tE"><code class="docutils literal notranslate"><span class="pre">as_free_function_t</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#constexpr"><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">constexpr</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N2ac12is_constexprEz"><code class="docutils literal notranslate"><span class="pre">is_constexpr()</span></code></a></li>
+<li><a class="reference internal" href="#c.AC_REQUIRES_CONSTEXPR"><code class="docutils literal notranslate"><span class="pre">AC_REQUIRES_CONSTEXPR</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#design">Design</a><ul>
@@ -233,6 +238,11 @@
 <li><a class="reference internal" href="#function-type-assembly">Function type assembly</a><ul>
 <li><a class="reference internal" href="#_CPPv4I_17function_category00_b_bEN2ac19assemble_function_tE"><code class="docutils literal notranslate"><span class="pre">assemble_function_t</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv4I0EN2ac18as_free_function_tE"><code class="docutils literal notranslate"><span class="pre">as_free_function_t</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constexpr"><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">constexpr</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N2ac12is_constexprEz"><code class="docutils literal notranslate"><span class="pre">is_constexpr()</span></code></a></li>
+<li><a class="reference internal" href="#c.AC_REQUIRES_CONSTEXPR"><code class="docutils literal notranslate"><span class="pre">AC_REQUIRES_CONSTEXPR</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -617,6 +627,41 @@ which is not supported by the library as of now.</p>
 
 <p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/functional/traits/">tests/functional/traits/</a></p>
 </section>
+<section id="constexpr">
+<h3><code class="code highlight cpp docutils literal highlight-cpp"><span class="k">constexpr</span></code><a class="headerlink" href="#constexpr" title="Link to this heading">¶</a></h3>
+<p>Checks for <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">constexpr</span></code> are very different from other traits,
+but this is the most relevant place to put them.</p>
+<pre class="literal-block">#include &lt;<a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/include/actl/functional/traits/constexpr.hpp">actl/functional/traits/constexpr.hpp</a>&gt;</pre>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N2ac12is_constexprEz">
+<span id="_CPPv3N2ac12is_constexprEz"></span><span id="_CPPv2N2ac12is_constexprEz"></span><span id="ac::is_constexpr__z"></span><span class="target" id="namespaceac_1a49c565e2e9c36ba76b8a0546ba3f671a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="1_member_traits.html#_CPPv42ac" title="ac"><span class="n"><span class="pre">ac</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_constexpr</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N2ac12is_constexprEz" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks if the expression can be evaluated at compilation time.</p>
+<p>Expression must be wrapped into a lambda, for example, <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">is_constexpr</span><span class="p">([]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Array</span><span class="o">::</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="p">}))</span>
+</pre></div>
+</div>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The expression must be valid. AC_REQUIRES_CONSTEXPR should be used if this isn’t guaranteed. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AC_REQUIRES_CONSTEXPR">
+<span class="target" id="constexpr_8hpp_1a058a76bb89294cb0fa26194d58ba6076"></span><span class="sig-name descname"><span class="n"><span class="pre">AC_REQUIRES_CONSTEXPR</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.AC_REQUIRES_CONSTEXPR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Checks if the expression is valid and can be evaluated at compilation time.</p>
+<p>Expression must be dependent on a template type, for example, <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Array</span><span class="o">&gt;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">process_array</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">AC_REQUIRES_CONSTEXPR</span><span class="p">(</span><span class="n">Array</span><span class="o">::</span><span class="n">size</span><span class="p">()))</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<p>See tests at <a class="reference external" href="https://github.com/AlCash07/ACTL/tree/main/tests/functional/traits/constexpr.cpp">tests/functional/traits/constexpr.cpp</a></p>
+</section>
 </section>
 <section id="design">
 <h2>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h2>
@@ -626,7 +671,7 @@ was used at first, but it was heavily expanded.</p>
 <h3>Qualified free functions<a class="headerlink" href="#qualified-free-functions" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://www.boost.org/doc/libs/latest/libs/callable_traits/doc/html/index.html">Boost.CallableTraits</a>
 supports qualified free function types like</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Return</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="o">&amp;</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Return</span><span class="p">(</span><span class="n">Parameters</span><span class="p">...)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="o">&amp;</span>
 </pre></div>
 </div>
 <p>These types indeed exist in C++, but declaring a function like
